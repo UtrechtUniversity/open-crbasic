@@ -1,0 +1,200 @@
+"""Syntax tree for CRBasic.
+
+A program is a flat list of statements, one per logical source line (or per `:`-separated
+part). Block structure (If/EndIf, Scan/NextScan, DataTable/EndTable, ...) is kept flat, as the
+original compiler does, and is checked by `opencrbasic.structure`. Every node carries the
+1-based source line it came from and, for diagnostics, the file it came from.
+"""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+
+
+@dataclass
+class Node:
+    line: int
+    file: str = ""
+
+
+# ---------------------------------------------------------------- expressions
+
+
+@dataclass
+class Expr(Node):
+    pass
+
+
+@dataclass
+class Number(Expr):
+    value: float | int = 0
+    text: str = ""              # source spelling, e.g. "&H1F", "1.5E3"
+
+
+@dataclass
+class String(Expr):
+    value: str = ""
+
+
+@dataclass
+class Name(Expr):
+    """A bare identifier: variable, constant, predefined symbol, table name, ..."""
+    name: str = ""
+
+
+@dataclass
+class Index(Expr):
+    """`name(i, j, k)`: array element, or a call when `name` is a builtin function / Function."""
+    name: str = ""
+    args: list[Expr | None] = field(default_factory=list)   # None marks an empty argument slot
+
+
+@dataclass
+class Member(Expr):
+    """`Table.Field`, `Status.Battery(1)`, `Struct.member`."""
+    base: Expr | None = None
+    member: str = ""
+    args: list[Expr | None] | None = None
+
+
+@dataclass
+class Unary(Expr):
+    op: str = ""                # "-", "+", "NOT"
+    operand: Expr | None = None
+
+
+@dataclass
+class Binary(Expr):
+    op: str = ""                # upper-case operator text: + - * / \ ^ & MOD AND OR XOR IMP EQV = <> < > <= >= << >>
+    left: Expr | None = None
+    right: Expr | None = None
+
+
+# ---------------------------------------------------------------- statements
+
+
+@dataclass
+class Stmt(Node):
+    text: str = ""              # the logical line as written (for diagnostics that echo it)
+
+
+@dataclass
+class VarDecl:
+    name: str
+    dims: list[Expr] = field(default_factory=list)          # up to 3
+    type: str | None = None     # upper-case: FLOAT LONG BOOLEAN STRING DOUBLE UINT1 UINT2 UINT4 BOOL8 NSEC or a StructureType name
+    string_size: Expr | None = None                         # `As String * n`
+    init: list[Expr] | None = None                          # `= value` or `= {a, b, c}`
+    units: str | None = None
+
+
+@dataclass
+class Declaration(Stmt):
+    """Public / Dim / Static (keyword upper-case in `kind`)."""
+    kind: str = ""
+    vars: list[VarDecl] = field(default_factory=list)
+
+
+@dataclass
+class ConstDecl(Stmt):
+    name: str = ""
+    value: Expr | None = None
+    type: str | None = None
+
+
+@dataclass
+class Assignment(Stmt):
+    target: Expr | None = None  # Name, Index or Member
+    value: Expr | None = None
+
+
+@dataclass
+class Instruction(Stmt):
+    """Any statement of the form `Keyword [(] args [)]`, including block keywords.
+
+    `keyword` is the instruction-table spelling in upper case (`SCAN`, `NEXTSCAN`, `DATATABLE`,
+    `SAMPLE`, `ENDIF`, `CALLTABLE`, ...). `args` are the comma-separated arguments, None for an
+    empty slot. Statements that need extra structure use the dedicated classes below.
+    """
+    keyword: str = ""
+    args: list[Expr | None] = field(default_factory=list)
+
+
+@dataclass
+class If(Stmt):
+    """`If cond Then` (block form, `inline` None) or `If cond Then stmt [Else stmt]`."""
+    cond: Expr | None = None
+    inline: list[Stmt] | None = None
+    inline_else: list[Stmt] | None = None
+
+
+@dataclass
+class ElseIf(Stmt):
+    cond: Expr | None = None
+
+
+@dataclass
+class For(Stmt):
+    var: Expr | None = None
+    start: Expr | None = None
+    end: Expr | None = None
+    step: Expr | None = None
+
+
+@dataclass
+class DoLoop(Stmt):
+    """`Do [While|Until cond]` or `Loop [While|Until cond]`; `keyword` is DO or LOOP."""
+    keyword: str = ""
+    cond_kind: str | None = None    # WHILE / UNTIL
+    cond: Expr | None = None
+
+
+@dataclass
+class Case(Stmt):
+    """`Case a, b To c, Is > d, Else`; each item is ("value", e) / ("range", lo, hi) / ("is", op, e)."""
+    items: list[tuple] = field(default_factory=list)
+    is_else: bool = False
+
+
+@dataclass
+class Param:
+    name: str
+    by_ref: bool | None = None      # None when not written
+    type: str | None = None
+    string_size: Expr | None = None
+    dims: int = 0                   # `x()` style array parameter
+    default: Expr | None = None     # `Optional x = 1`
+
+
+@dataclass
+class SubDef(Stmt):
+    """`Sub name(params)` or `Function name(params) [As type]`; `keyword` SUB or FUNCTION."""
+    keyword: str = ""
+    name: str = ""
+    params: list[Param] = field(default_factory=list)
+    return_type: str | None = None
+
+
+@dataclass
+class Call(Stmt):
+    """`Call name(args)` or a bare `name(args)` / `name args` invocation of a Sub."""
+    name: str = ""
+    args: list[Expr | None] = field(default_factory=list)
+    explicit: bool = False          # written with `Call`
+
+
+@dataclass
+class Label(Stmt):
+    name: str = ""
+
+
+@dataclass
+class Unparsed(Stmt):
+    """A line the parser could not handle; carries the reason for diagnostics."""
+    reason: str = ""
+
+
+@dataclass
+class Program:
+    name: str
+    statements: list[Stmt] = field(default_factory=list)

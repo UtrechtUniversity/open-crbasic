@@ -1,0 +1,20 @@
+[project]
+name = "opencrbasic"
+version = "0.0.1"
+description = "Open-source re-implementation of the Campbell Scientific CR6 CRBasic pre-compiler"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+crbc = "opencrbasic.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opencrbasic"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
