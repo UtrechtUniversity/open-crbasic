@@ -15,15 +15,18 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 | Phase | State |
 |---|---|
-| 0 Oracle + corpus | in progress: Wine oracle works; repo programs reproduce `STATUS.md` expected warnings; harness + CHM corpus being built (`tools/oracle.py`, `tools/record_corpus.py`) |
-| 1 Binary RE | in progress: CLI decoded (`docs/cli.md`); instruction/function/symbol tables extracted (`tools/extract_tables.py`, `docs/binary.md`); message catalogue (`docs/messages.tsv`); TDF format decoded and round-tripped (`src/opencrbasic/tdf.py`); type codes and pass 1 being documented (`docs/type-codes.md`, `docs/pass1.md`) |
+| 0 Oracle + corpus | done: `tools/oracle.py` (cached Wine runs, any compiler exe), `tools/difftest.py` (ours vs real, per logger), 507 CHM examples in `tests/corpus/chm/` (many deliberately or accidentally invalid: they exercise error paths); cache warmed for CR6, CR1000X, CR300, CR350 |
+| 1 Binary RE | in progress: CLI decoded (`docs/cli.md`); instruction/function/symbol tables extracted (`tools/extract_tables.py`, `docs/binary.md`); message catalogue (`docs/messages.tsv`); TDF format decoded and round-tripped (`src/opencrbasic/tdf.py`); parameter type codes (`docs/type-codes.md`, `data/type_codes.json`); mode rule (`docs/modes.md`); table-definition rules (`docs/tdf-rules.md`). Pass-1 doc agent was cancelled; its findings are covered by `docs/frontend.md` and `docs/type-codes.md` |
 | 2 Front end | done: `lexer.py`, `source.py`, `consteval.py`, `parser.py` written; minimal `checker.py` placeholder (mode.py only) so `python3 -m opencrbasic` runs end to end; `docs/frontend.md` records verified quirks. 825 unit/corpus tests pass (`cd opencrbasic && python3 -m pytest -q`); all 15 `crbasic/*.CR6` entry programs and 196/198 oracle-accepted CHM examples parse with zero `Unparsed` (2 known, documented gaps: a doc typo, an SNMP OID literal). |
-| 3 Checker | not started |
+| 3 Checker | in progress (agent): `checker/` package driven by `tools/difftest.py` |
 | 4 Fuzzing | not started |
-| 5 Outputs | not started |
+| 5 Outputs | in progress: mode decision matches the reference on all 16 crbasic programs; `-l` table list byte-identical 16/16; `-z` TDF byte-identical 8/16 (rest differ only in auto-allocated sizes, mixed regime — agent working); CHM sample TDF 72%, table list 77% (`tools/tdftest.py`) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-25 (later): background agents interrupted by a user interruption at 15:56 and relaunched;
+  front end, type codes, TDF rules/generator completed; checker in progress.
 
 - 2026-09-25: Wine oracle installed; all 16 `crbasic/*.CR6` compile under Wine with the
   warnings `STATUS.md` expects. Instruction table found at VA 0x60c320 (16-byte records).
@@ -48,9 +51,10 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 ## Next steps
 
-1. Phase 3: semantic checker (structure, instruction signatures, table/terminal validation,
-   full diagnostics matching `docs/messages.tsv`).
-2. Finish CLI option map (`docs/cli.md`) from decompilation.
-3. Decode parameter type codes (`docs/type-codes.md`).
-4. The two documented front-end gaps (`docs/frontend.md`'s "Known residual gaps") are low value
-   and were left for phase 3 or later, not blocking.
+1. Phase 3 checker (agent running): exact diagnostics, no false errors on accepted programs.
+2. Auto-allocated table sizes, mixed regime (agent running).
+3. Multi-logger: CR1000X, CR300, CR350 profiles (symbol filtering per logger, `Compiled OK.`
+   output, terminal model); run `tools/difftest.py --logger ...` for each.
+4. Optional fallback in `scripts/cr6comp.py` to use opencrbasic when neither Wine nor PowerShell
+   exists, clearly labelled as unverified against hardware.
+5. ProgSignature (`-s`) algorithm; `-p` preprocessed output; `[Times]` (`-t`) are low priority.
