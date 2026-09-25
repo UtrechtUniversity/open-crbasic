@@ -57,6 +57,23 @@ class Profile:
         path = self.data_dir / "terminals.json"
         return json.loads(path.read_text()) if path.is_file() else {"channels": {}, "instructions": {}}
 
+    @cached_property
+    def fnotch(self) -> dict:
+        """`fN1`/fnotch argument value-set check (CR300/CR350 only, `checker/warnings.py`,
+        `docs/instructions.md`). Absent (`{}`) for CR6/CR1000X, which allow any value in range
+        instead of a fixed set (evidence: `docs/instructions.md`)."""
+        path = self.data_dir / "fnotch.json"
+        return json.loads(path.read_text()) if path.is_file() else {}
+
+    @cached_property
+    def background_calibration(self) -> dict:
+        """`Scan` interval threshold, in whole milliseconds, below which the "background
+        calibration will be disabled" warning fires (CR6/CR1000X only, `checker/warnings.py`,
+        `docs/instructions.md`). Absent (`{}`) for CR300/CR350, which were oracle-probed down to a
+        100us scan interval with no such warning (`docs/instructions.md`)."""
+        path = self.data_dir / "background_calibration.json"
+        return json.loads(path.read_text()) if path.is_file() else {}
+
 
 PROFILES = {
     "cr6": Profile("cr6", "CR6", "CR6.14.2.0", "03/04/2025", DATA, True, "CR6Comp.exe"),

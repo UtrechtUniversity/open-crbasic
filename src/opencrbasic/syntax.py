@@ -92,6 +92,11 @@ class VarDecl:
     string_size: Expr | None = None                         # `As String * n`
     init: list[Expr] | None = None                          # `= value` or `= {a, b, c}`
     units: str | None = None
+    dim0_span: tuple[int, int] | None = None                # (start, end) columns of the first
+    # dimension expression's own source text within the enclosing `Declaration.text` -- lets
+    # `checker/structure.py` echo it verbatim for `Variable %s dimension exceeds max of %d.`
+    # (oracle-confirmed to always name the *first* dimension, `docs/checker.md`), without the
+    # parser needing to reconstruct an expression's source spelling from its AST.
 
 
 @dataclass

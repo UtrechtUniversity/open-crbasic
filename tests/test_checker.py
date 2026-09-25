@@ -132,6 +132,101 @@ def test_alias_without_eq():
     assert "Need '=' in alias definition: ." in messages_of(result)
 
 
+# ------------------------------------------------------------------ array dimension limits
+#
+# `docs/checker.md` "Array dimension limits", `docs/fuzz-findings.md` "Hang": oracle-confirmed
+# against a fuzz-found reproducer where an oversized `Public` array dimension made
+# `tables.py`'s `-l` renderer enumerate ~10^12 indices and never return.
+
+
+def test_oversized_array_dimension_is_rejected():
+    # tests/corpus/fuzz/cr6/hang/dd9cc650482d.CR6, minimized: >2147483647 (INT32_MAX).
+    result = compile_text("Public X(999999999999) As Long\n" + wrapped(""))
+    assert messages_of(result) == [
+        "Illegally dimension: Public X(999999999999) As Long"
+    ]
+
+
+def test_zero_array_dimension_is_rejected():
+    result = compile_text("Public X(0) As Long\n" + wrapped(""))
+    assert messages_of(result) == ["Illegally dimension: Public X(0) As Long"]
+
+
+def test_negative_array_dimension_is_rejected():
+    result = compile_text("Public X(-5) As Long\n" + wrapped(""))
+    assert messages_of(result) == ["Illegally dimension: Public X(-5) As Long"]
+
+
+def test_max_int32_array_dimension_is_accepted():
+    # The boundary itself (INT32_MAX) is not this checker's concern (the real compiler crashes on
+    # it, `docs/checker.md`); a comfortably-legal size stays accepted.
+    result = compile_text("Public X(2000000) As Long\n" + wrapped(""))
+    assert result.diagnostics.errors == []
+
+
+def test_illegally_dimension_echoes_the_whole_declaration_verbatim():
+    # oracle-confirmed: the echoed text is the *whole* declaration statement, not just the
+    # offending variable, and even a fully-valid sibling variable on the same line doesn't change
+    # that -- `docs/checker.md`.
+    result = compile_text(
+        "Public A As Long, X(0) As Long, B As Float\n" + wrapped("")
+    )
+    assert messages_of(result) == [
+        "Illegally dimension: Public A As Long, X(0) As Long, B As Float"
+    ]
+
+
+def test_illegally_dimension_fires_once_per_bad_dimension():
+    # oracle-confirmed: two illegal dimensions on the same variable report the message twice.
+    result = compile_text("Public X(0,-1) As Long\n" + wrapped(""))
+    assert messages_of(result) == [
+        "Illegally dimension: Public X(0,-1) As Long",
+        "Illegally dimension: Public X(0,-1) As Long",
+    ]
+
+
+def test_array_dimension_count_over_three_is_rejected():
+    # oracle-confirmed: more than 3 dimensions, named with the variable plus its *first*
+    # dimension's own raw source text -- independent of which later dimension would itself be
+    # out of range (`Public X(1,1,1,2147483648)` still names the first dimension, "1").
+    result = compile_text("Dim Arr(2,2,2,2) As Long\n" + wrapped(""))
+    assert messages_of(result) == ["Variable Arr(2 dimension exceeds max of 3."]
+
+
+def test_array_dimension_count_echoes_first_dimension_raw_text():
+    result = compile_text("Public X(1 + 1,2,2,2) As Long\n" + wrapped(""))
+    assert messages_of(result) == ["Variable X(1 + 1 dimension exceeds max of 3."]
+
+
+def test_array_dimension_count_checked_before_value():
+    # oracle-confirmed: a 4th dimension's own value being illegal doesn't change the message --
+    # the dimension-count check runs first and wins.
+    result = compile_text("Public X(1,1,1,2147483648) As Long\n" + wrapped(""))
+    assert messages_of(result) == ["Variable X(1 dimension exceeds max of 3."]
+
+
+def test_array_dimension_count_reports_once_per_over_dim_variable():
+    result = compile_text(
+        "Public X(1,1,1,1) As Long, Y(2,2,2,2) As Long\n" + wrapped("")
+    )
+    assert messages_of(result) == [
+        "Variable X(1 dimension exceeds max of 3.",
+        "Variable Y(2 dimension exceeds max of 3.",
+    ]
+
+
+def test_array_dimension_named_by_a_const_is_accepted():
+    result = compile_text("Const N = 5\nPublic X(N) As Long\n" + wrapped(""))
+    assert result.diagnostics.errors == []
+
+
+def test_non_constant_array_dimension_is_not_flagged():
+    # No oracle evidence for this shape; AGENTS.md's priority (never reject an accepted program)
+    # rules out guessing at it, so a dimension that doesn't fold to a constant is left alone.
+    result = compile_text(wrapped("") + "Sub S(N As Long)\n  Dim X(N) As Long\nEndSub\n")
+    assert result.diagnostics.errors == []
+
+
 # ------------------------------------------------------------------ instr_rules.py
 
 
@@ -230,3 +325,70 @@ def test_table_called_is_not_warned():
 
 def messages_of(result) -> list[str]:
     return [d.message for d in result.diagnostics.errors]
+
+
+# ------------------------------------------------------------------ file-origin prefix (diagnostics.py)
+#
+# `docs/checker.md` "Errors from an included file": an error whose statement came from an
+# `Include`d/`IncludeSection`ed file is printed as `<file> line N: message`, except for two
+# oracle-confirmed message classes that never get it. These use `compiler.compile_file` (not
+# `compile_text`) so the main program has a real name to compare each diagnostic's own `file`
+# against.
+
+
+def _compile_with_include(tmp_path, lib_text: str, main_text: str):
+    from opencrbasic.compiler import compile_file
+
+    (tmp_path / "Lib.crb").write_text(lib_text)
+    main = tmp_path / "main.CR6"
+    main.write_text(main_text)
+    return compile_file(main, PROFILE)
+
+
+def test_error_from_an_included_file_gets_the_file_prefix(tmp_path):
+    result = _compile_with_include(
+        tmp_path,
+        '#If Section = "Defs" Then\nPublic LibArr(0) As Long\n#EndIf\n',
+        'IncludeSection("Defs", "CPU:Lib.crb")\n' + wrapped(""),
+    )
+    assert messages_of(result) == ["Illegally dimension: Public LibArr(0) As Long"]
+    assert result.result_lines() == [
+        "main.CR6 -- Compile Failed!",
+        "",
+        "<Lib.crb> line 2: Illegally dimension: Public LibArr(0) As Long",
+    ]
+
+
+def test_error_in_the_main_file_itself_gets_no_prefix(tmp_path):
+    result = _compile_with_include(
+        tmp_path,
+        '#If Section = "Defs" Then\nPublic LibVar As Long\n#EndIf\n',
+        'IncludeSection("Defs", "CPU:Lib.crb")\nPublic X(0) As Long\n' + wrapped(""),
+    )
+    assert "<main.CR6>" not in result.result_lines()[2]
+    assert result.result_lines()[2] == "line 2: Illegally dimension: Public X(0) As Long"
+
+
+def test_sub_not_defined_never_gets_the_file_prefix(tmp_path):
+    # Oracle-confirmed exception (`docs/checker.md`): unlike every other message class tested,
+    # `Sub %s not defined.` never carries the `<file>` prefix even when the undefined `Call` is
+    # itself inside the included file.
+    result = _compile_with_include(
+        tmp_path,
+        '#If Section = "Body" Then\n  Call NoSuchLibSub\n#EndIf\n',
+        'BeginProg\n  Scan (1,Sec,3,1)\n'
+        '    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
+    )
+    assert messages_of(result) == ["Sub NoSuchLibSub not defined."]
+    assert "<Lib.crb>" not in result.result_lines()[2]
+
+
+def test_bare_unresolved_statement_never_gets_the_file_prefix(tmp_path):
+    result = _compile_with_include(
+        tmp_path,
+        '#If Section = "Body" Then\nNotBogusButUndefined\n#EndIf\n',
+        'BeginProg\n  Scan (1,Sec,3,1)\n'
+        '    IncludeSection("Body", "CPU:Lib.crb")\n  NextScan\nEndProg\n',
+    )
+    assert messages_of(result) == ["Invalid, or out of place expression: NotBogusButUndefined."]
+    assert "<Lib.crb>" not in result.result_lines()[2]

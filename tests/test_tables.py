@@ -135,3 +135,38 @@ def test_attach_sets_result_tables_and_table_list():
     attach(program, profile, result)
     assert result.tables and any(t.name == "Status" for t in result.tables)
     assert result.table_list and "Table:" in result.table_list
+
+
+# ------------------------------------------------------------------ robustness
+#
+# `docs/fuzz-findings.md` "Crash"/"Hang": neither reproducer should ever reach `build_tables`
+# (`checker/structure.py`'s array-dimension check rejects the first before `tables_hook.attach`
+# would run at all, and `checker/instructions.py`'s -- not this module's -- own `Scan` value check
+# is the intended fix for the second), but `tables.py` itself must still never crash or hang if
+# either ever *did* reach it, e.g. through some other path this project has not found yet.
+
+
+def test_scan_weights_never_crashes_on_a_non_numeric_interval():
+    # tests/corpus/fuzz/cr6/crash/ce0f811dd89e.CR6, minimized: `Scan("fuzz",Sec,0,0)` used to raise
+    # `ValueError: could not convert string to float: 'fuzz'` inside `_scan_weights`, reachable for
+    # *any* `Scan` block regardless of whether a table is even called inside it.
+    text = (
+        'DataTable (T,-1,-1)\n  Sample (1,X,FP2)\nEndTable\n'
+        'Public X As Float\nBeginProg\n'
+        '  Scan("fuzz",Sec,0,0)\n    CallTable T\n  NextScan\n'
+        'EndProg\n'
+    )
+    program, diags = parser.parse_text(text, "t.CR6")
+    tables, table_list_text, _ = build_tables(program, profiles.get("cr6"), dict(program.consts))
+    assert any(t.name == "T" for t in tables)
+
+
+def test_explode_indices_is_bounded():
+    # `docs/fuzz-findings.md` "Hang": `_explode_indices`/`render_table_list` must never try to
+    # enumerate an unbounded number of index tuples, regardless of how large a field's `dimension`
+    # claims to be -- defense in depth alongside `checker/structure.py`'s declaration-time check,
+    # for any `TdfField` this module derives a huge `dimension` for by some other path.
+    from opencrbasic.tables import _explode_indices, _MAX_EXPLODE_COUNT
+
+    out = list(_explode_indices([999_999_999_999], False, 1, 999_999_999_999))
+    assert len(out) == _MAX_EXPLODE_COUNT

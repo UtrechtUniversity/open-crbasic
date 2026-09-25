@@ -485,6 +485,23 @@ def test_includesection_section_binding(tmp_path):
     assert prog.consts.get("FROMDEFS") == 2
 
 
+def test_includesection_tolerates_a_trailing_argument(tmp_path):
+    # Regression, `docs/fuzz-findings.md` "False reject" #3: the real compiler accepts (and
+    # ignores) an `IncludeSection` call with a third argument
+    # (`IncludeSection("Rail", "CPU:BenchLib.crb",(1+2))`, oracle-confirmed,
+    # `tests/corpus/fuzz/cr6/false_reject/28b79b4c2e87.CR6`) -- `source.py`'s regex used to require
+    # the call to end right after the two strings it uses, so a trailing argument (however
+    # harmless) silently fell through to being parsed as an ordinary, meaningless statement
+    # instead of expanding the include at all.
+    (tmp_path / "Lib.crb").write_text(
+        '#If Section = "Rail" Then\nConst FromRail = 1\n#EndIf\n'
+    )
+    text = 'IncludeSection("Rail", "CPU:Lib.crb",(1+2))\n'
+    prog, diags = parser.parse_text(text, "t.cr6", directory=tmp_path)
+    assert prog.consts.get("FROMRAIL") == 1
+    assert not diags.errors
+
+
 def test_missing_include_is_a_warning_not_a_crash(tmp_path):
     text = 'Public X\nBeginProg\n  Include "CPU:DoesNotExist.CR6"\nEndProg\n'
     prog, diags = parser.parse_text(text, "t.cr6", directory=tmp_path)

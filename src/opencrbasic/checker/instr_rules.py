@@ -1,10 +1,16 @@
 """Instruction-specific checks that are not channel/port related (that logic lives in
-`checker/instructions.py`, a different workstream, `PLAN.md`). Currently: a required argument
-position with no corresponding value at all. Rules and oracle evidence: `docs/checker.md`.
+`checker/instructions.py`, a different workstream, `PLAN.md`). A required argument position with
+no corresponding value at all (`check`, pass-1, gated normally through `checker/__init__.py`), plus
+a small set of *ungated* `Scan`/`DataInterval` numeric-value checks (`check_scan_params`,
+`check_data_interval`, called from `checker/warnings.py`'s `check_early` -- oracle-confirmed to
+fire even on an otherwise-failed compile, same as that module's own ungated warnings; see its
+module docstring). Rules and oracle evidence: `docs/checker.md` (the required-parameter check) and
+`docs/instructions.md` (the numeric-value checks).
 """
 
 from __future__ import annotations
 
+from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from .expressions import _type_code_kinds

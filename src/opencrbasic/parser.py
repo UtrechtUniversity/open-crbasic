@@ -693,16 +693,20 @@ class _Parser:
     def _parse_vardecl(self, p: _TokStream, line: int, file: str) -> S.VarDecl:
         name_tok = p.expect_ident()
         dims: list[S.Expr] = []
+        dim0_span: tuple[int, int] | None = None
         if p.is_op("("):
             p.next()
             if not p.is_op(")"):
+                start_col = p.peek().col
                 dims.append(self._parse_expr(p, line, file))
+                dim0_span = (start_col, p.peek().col)
                 while p.is_op(","):
                     p.next()
                     dims.append(self._parse_expr(p, line, file))
             p.expect_close(")")
         vtype = None
         strsize = None
+        init = None
         if p.is_ident("AS"):
             p.next()
             type_tok = p.expect_ident()
@@ -719,17 +723,41 @@ class _Parser:
                 # (pointervariable_1.CR6); see docs/frontend.md.
                 p.next()
                 if not p.is_op(")"):
+                    start_col = p.peek().col
                     dims.append(self._parse_expr(p, line, file))
+                    dim0_span = (start_col, p.peek().col)
                     while p.is_op(","):
                         p.next()
                         dims.append(self._parse_expr(p, line, file))
                 p.expect_close(")")
-        init = None
-        if p.is_op("="):
+            if p.is_op("="):
+                p.next()
+                val = self._parse_expr(p, line, file)
+                init = list(val.items) if isinstance(val, S.ArrayLiteral) else [val]
+            # Oracle-confirmed quirk (`docs/frontend.md`): once a variable's own `As Type` clause
+            # has been fully parsed, any further tokens before the next comma (or end of line) are
+            # silently discarded rather than rejected -- `Public X As Long asX String, Y As Float`
+            # compiles, `Y` declared normally, `asX String` simply vanishes (confirmed not
+            # resolvable afterwards, not a second variable).
+            while not p.at_end() and not p.is_op(","):
+                p.next()
+        elif p.is_op("="):
             p.next()
             val = self._parse_expr(p, line, file)
             init = list(val.items) if isinstance(val, S.ArrayLiteral) else [val]
-        return S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init)
+        elif not (p.at_end() or p.is_op(",")):
+            # Oracle-confirmed (`docs/fuzz-findings.md` "5. Message diff", well evidenced by 6
+            # independent fuzz mutants): a token here -- right after the variable's own name/dims,
+            # where `As`, `=`, a comma or end of line was expected -- that is none of those is a
+            # malformed `As` clause, most often a corrupted spelling of the keyword itself (`asX`,
+            # `As_Mut`, a stray extra space splitting one identifier into two, ...). The real
+            # compiler reports it immediately and abandons the *whole* declaration statement, not
+            # just this one variable: no later variable in the same comma list is parsed or
+            # reported, confirmed with a valid first variable followed by a malformed second one.
+            bad = p.peek()
+            raise _ParseError(f"Invalid As clause: {bad.text}")
+        return S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
+                          dim0_span=dim0_span)
 
     # ---- Alias / Units --------------------------------------------------
 

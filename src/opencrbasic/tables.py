@@ -324,7 +324,14 @@ def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
             secs = None
             if s.args:
                 val = _fold(s.args[0], env, None)
-                if val is not None:
+                # `_fold` legitimately returns a non-numeric Python value (e.g. a string literal's
+                # own text) for a `Scan` interval the real compiler itself rejects elsewhere with
+                # its own specific message (`Scan Interval parameter must be a non-negative
+                # integer`, an instruction-specific value check, not this module's concern, see
+                # `docs/fuzz-findings.md` "Crash"). This function unconditionally runs for every
+                # `Scan` block regardless of whether that check ran or found anything, so it must
+                # tolerate the value being un-usable here rather than assume `float()` succeeds.
+                if isinstance(val, (int, float)) and not isinstance(val, bool):
                     unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
                     secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
             stack.append(secs if secs else 1.0)
@@ -943,12 +950,28 @@ def build_tables(program: S.Program, profile, consts: dict):
 
 # ---------------------------------------------------------------- `-l` table list (docs/cli.md)
 
+# Defensive cap on how many index tuples a single field's `-l` listing will ever enumerate.
+# `checker/structure.py`'s array-dimension check (`docs/checker.md` "Array dimension limits")
+# rejects the specific fuzz-found case that made this hang outright (a `Public`/`Dim` dimension
+# above `INT32_MAX`, `docs/fuzz-findings.md` "Hang"), so `build_tables`/`tables_hook.attach` is
+# only ever reached for a declaration this checker considers legal -- but that still allows a
+# dimension anywhere up to `INT32_MAX` through to here, and the real compiler itself rejects most
+# of that range with `Out of memory.` (a check this module does not implement, `docs/
+# checker.md`'s "Known remaining gaps"). This is therefore pure robustness, not a claim about a
+# verified real-compiler limit: `_MAX_EXPLODE_COUNT` is comfortably above the largest single-field
+# element count this session could get the real compiler to actually accept (2,000,000, oracle-
+# confirmed), so no known-exact `-l` output is affected, and it keeps this generator from ever
+# building tens or hundreds of millions of index tuples for a declaration this checker did not
+# (or, for some other field this module derives a huge `dimension` for, cannot) reject.
+_MAX_EXPLODE_COUNT = 2_000_000
+
 
 def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: int = 1):
     """Row-major (last dim fastest) index tuples for the `dim` stored elements starting at the
     1-based linear position `begin` within `subdims` (after dropping the trailing string-storage
     dim for ASCII fields, per §3/§8's alias-prefix/suffix fields and §3's Reps<array-size case:
-    both need the *slice*, not every valid coordinate of the full declared shape)."""
+    both need the *slice*, not every valid coordinate of the full declared shape). Bounded by
+    `_MAX_EXPLODE_COUNT` regardless of how large `dim`/`subdims` claim to be; see that constant."""
     dims = subdims[:-1] if drop_last and subdims else subdims
     if not dims:
         yield ()
@@ -963,6 +986,7 @@ def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: i
         acc *= dims[i]
     start = max(min(begin - 1, total - 1), 0)
     count = max(min(dim, total - start), 0)
+    count = min(count, _MAX_EXPLODE_COUNT)
     for lin in range(start, start + count):
         coord = []
         rem = lin
@@ -1011,6 +1035,7 @@ def render_table_list(tables: list[TdfTable]) -> str:
                 # legacy quirk in the exe's own lister); reproduced, not derived.
                 stored_len = f.subdims[-1]
                 total = f.dimension // stored_len if stored_len else 0
+                total = min(total, _MAX_EXPLODE_COUNT)
                 explode_iter = ((lin // stored_len + 1, lin % stored_len + 1)
                                  for lin in range(total))
             else:

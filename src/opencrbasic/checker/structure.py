@@ -6,9 +6,20 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 from __future__ import annotations
 
+from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from . import symbols
+
+# Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
+# "Array dimension limits"): at most 3 dimensions, and each one's constant value must be in
+# `[1, _MAX_DIM_VALUE]`. `_MAX_DIM_VALUE` is `INT32_MAX` -- every value at or below it that this
+# session could actually get the real compiler to accept/reject cleanly (rather than crash) falls
+# on the expected side of this boundary; a handful of merely-too-large-to-allocate values well
+# below it instead get `Out of memory.` (a distinct, not-yet-implemented message, `docs/
+# checker.md`), so this check only ever fires where "Illegally dimension" is the confirmed text.
+_MAX_ARRAY_DIMS = 3
+_MAX_DIM_VALUE = 2147483647
 
 # `Unparsed.reason` values from two oracle-confirmed parser gaps (docs/frontend.md "Known
 # residual gaps"): the real compiler still accepts these lines, so the generic "not a valid
@@ -55,8 +66,10 @@ def _block_word(args: list) -> str | None:
     return None
 
 
-def check(program: S.Program, profile, diags: Diagnostics) -> None:
+def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env | None = None) -> None:
     subs = symbols.declared_subs(program)
+    if env is None:
+        env = consteval.Env(profile, dict(program.consts))
 
     seen_beginprog = False
     scan_depth = 0
@@ -73,8 +86,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         fire_suppress = suppress_line is not None and stmt.line == suppress_line
         suppress_line = None
 
-        if isinstance(stmt, S.Declaration) and not stmt.vars and stmt.kind in ("PUBLIC", "DIM"):
-            suppress_line = _check_declaration(stmt, diags)
+        if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
+            if not stmt.vars:
+                suppress_line = _check_declaration(stmt, diags)
+            else:
+                _check_array_dims(stmt, diags, env)
         elif fire_suppress:
             pass
         elif isinstance(stmt, S.Call):
@@ -116,14 +132,20 @@ def _check_call(stmt: S.Call, subs: set[str], profile, diags: Diagnostics) -> No
         # working code in this repository's own `Main.CR6` does this throughout.
         return
     if stmt.explicit:
-        # `Call NoSuchSub`: oracle-confirmed (docs/type-codes.md section 3).
-        diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file)
+        # `Call NoSuchSub`: oracle-confirmed (docs/type-codes.md section 3). `show_file=False`:
+        # oracle-confirmed this session (`docs/checker.md` "Errors from an included file") that
+        # this specific message never gets the `<file>` prefix other errors from an included
+        # statement do, even when the undefined `Call` itself is inside one.
+        diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
         return
     # A bare `Name` or `Name(args)` with no `Call` keyword, resolving to nothing declared: the
     # real compiler's generic bare-expression-statement fallback ("Expr" in its instruction
     # table) rejects it with this message, echoing the statement's own source text (oracle:
     # docs/checker.md, `NOTE` / `SWVX(Vx1,1,1)` / `TableFieldNames(...)`-shaped corpus cases).
-    diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file)
+    # `show_file=False`: see the note on the `Sub %s not defined.` branch above -- the same
+    # oracle-confirmed exception applies to this message too.
+    diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                show_file=False)
 
 
 def _check_declaration(stmt: S.Declaration, diags: Diagnostics) -> int:
@@ -145,6 +167,53 @@ def _check_declaration(stmt: S.Declaration, diags: Diagnostics) -> int:
     """
     diags.error(stmt.line, "Variable not named.", stmt.file)
     return stmt.line + 1
+
+
+def _first_dim_text(stmt_text: str, v: S.VarDecl) -> str:
+    if v.dim0_span is None:
+        return ""
+    start, end = v.dim0_span
+    return stmt_text[start:end]
+
+
+def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Public`/`Dim` array-dimension limits (oracle-confirmed, `docs/checker.md` "Array
+    dimension limits"): more than `_MAX_ARRAY_DIMS` dimensions on one variable, checked before any
+    per-dimension value, reports `Variable %s dimension exceeds max of %d.` naming the variable
+    plus its *first* dimension's own raw source text (`Dim Arr(2,2,2,2)` ->
+    `Variable Arr(2 dimension exceeds max of 3.`, verified for both `Public` and `Dim`, and
+    independent of which later dimension would itself be illegal). Otherwise, each dimension that
+    folds to a constant outside `[1, _MAX_DIM_VALUE]` (a literal zero/negative, or one too large to
+    represent, such as `999999999999` -- the fuzz-found hang, `docs/fuzz-findings.md`) reports
+    `Illegally dimension: %s`, `%s` = the *whole declaration statement's* own verbatim source text
+    (not just the offending variable -- oracle-confirmed with a multi-variable declaration where
+    only one variable's dimension is illegal), no trailing period (oracle-confirmed, unlike most
+    other messages here). One diagnostic per illegal dimension value found (not deduplicated by
+    statement), oracle-confirmed with two illegal dimensions on one variable and with two on
+    separate variables of the same declaration.
+
+    A dimension that does not fold to a constant at all (`NotConstant`) is left alone: no oracle
+    evidence this session found supports guessing at that shape, and AGENTS.md's priority (never
+    reject an accepted program) rules out it.
+    """
+    for v in stmt.vars:
+        if len(v.dims) > _MAX_ARRAY_DIMS:
+            first_text = _first_dim_text(stmt.text, v)
+            diags.error(
+                stmt.line,
+                f"Variable {v.name}({first_text} dimension exceeds max of {_MAX_ARRAY_DIMS}.",
+                stmt.file,
+            )
+            continue
+        for d in v.dims:
+            try:
+                val = consteval.value_of(d, env)
+            except consteval.NotConstant:
+                continue
+            if isinstance(val, bool) or not isinstance(val, (int, float)):
+                continue
+            if not (1 <= val <= _MAX_DIM_VALUE):
+                diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
 
 
 def _after_keyword(stmt: S.Unparsed) -> str:
@@ -173,4 +242,7 @@ def _check_unparsed(stmt: S.Unparsed, diags: Diagnostics) -> None:
         # but no `=`) this doesn't try to echo exactly.
         diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}.", stmt.file)
         return
-    diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file)
+    # `show_file=False`: the same oracle-confirmed exception as `_check_call`'s identical fallback
+    # message -- see that function's comment.
+    diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                show_file=False)

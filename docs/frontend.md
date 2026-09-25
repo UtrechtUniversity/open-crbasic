@@ -27,6 +27,15 @@ commands are given so they can be re-run.
 - A missing `Include`/`IncludeSection` target is only a **warning** (`Cannot open include file
   %s.` -- note the real message has a *double* space before `%s`; `source.py` reproduces it), and
   the inclusion contributes no lines; compilation continues.
+- **`IncludeSection` tolerates (and ignores) a trailing third argument**: found by fuzzing
+  (`docs/fuzz-findings.md` "3. False reject"), oracle-confirmed --
+  `IncludeSection("Rail", "CPU:BenchLib.crb",(1+2))` compiles exactly as the two-argument form
+  would. `source.py`'s `_INCLUDE_SECTION_RE` used to require the call to end (`\)\s*$`) right
+  after the second quoted string, so a call with a third argument matched nothing at all and fell
+  through to being parsed as an ordinary, meaningless statement -- silently *not* expanding the
+  include. The regex now allows (and discards) `,` followed by anything up to the closing `)`,
+  which handles a parenthesised extra argument (nested parens included) because the match is
+  still anchored on the statement's own trailing `\)\s*$`.
 - `Include` (not `IncludeSection`) nested inside an already-included file is a hard error
   (`Include file within an Include file is illegal.`); `source.py` does not expand a second level
   of bare `Include` and records an error instead. Nothing in this repository's corpus nests

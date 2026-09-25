@@ -12,11 +12,11 @@ real `CR6Comp.exe` under Wine, and cross-checked against `tests/corpus/chm/`.
 Metric (`tools/difftest.py --logger cr6`), round 1 (previous session) / round 2 (this session,
 2026-09-25 continued):
 
-| Group | Round 1 start | Round 1 end | Round 2 end |
-|---|---|---|---|
-| `crbasic/` (16 programs) | 14 exact, 2 verdict, 0 mismatch | **16 exact**, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch |
-| `examples/` (4 programs) | 0 exact, 0 verdict, 4 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch |
-| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch |
+| Group | Round 1 start | Round 1 end | Round 2 end | Round 3 end |
+|---|---|---|---|---|
+| `crbasic/` (16 programs) | 14 exact, 2 verdict, 0 mismatch | **16 exact**, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch |
+| `examples/` (4 programs) | 0 exact, 0 verdict, 4 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch |
+| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch | 310 exact, 188 verdict, 9 mismatch |
 
 Round 2's own headline: **268 -> 310 exact** (+42) on `chm`, verdict 229 -> 188, mismatch 10 -> 9
 (one instance, `mqttpublishmeta_1.CR6`, moved from false-accept to exact as a side effect of the
@@ -24,6 +24,19 @@ new required-parameter check below -- not chased on purpose, just a consequence 
 to be shaped that way). Re-verified after every change this round: every `their_exit == 0` program
 in the corpus (accepted by the real compiler) is `exact` for us, zero exceptions -- the working
 invariant this round optimised against ("never reject an accepted program" first, "exact" second).
+
+**Round 3 (this session) did not move the static-corpus counts** -- its fixes (array dimension
+limits, the two fuzz-found robustness bugs, error-reporting internals) are exercised by
+`tests/corpus/fuzz/` and targeted oracle scratch probes, not `tests/corpus/chm/`'s existing 507
+files, none of which happen to hit these shapes. `tools/fuzz_replay.py --workers 2` (248 saved
+reproducers): 5 fixed outright (the hang; two crash instances; the `IncludeSection` false reject;
+one `cr1000x` `false_accept` fixed as a side effect of the array-dimension check), 2 changed class
+for the better (the third crash instance and the `cr350` hang copy both stopped crashing/hanging
+and now report a real, if incomplete, diagnostic instead -- `message_diff`/`false_accept`, both
+pre-existing, documented, not-this-workstream's-scope gaps, not new problems this round
+introduced). False-reject count stayed 0 on `cr6`/`cr300`/`cr350` throughout and the 1 pre-existing
+`cr1000x` false reject (`structuretype_3.CR6`, unrelated) is untouched. Full detail: `docs/
+fuzz-findings.md`, "Robustness" and "Array dimension limits" above.
 
 "mismatch" (one side accepts, the other rejects) is the priority-1 metric: a placeholder checker
 that accepted everything meant most of `chm`'s (deliberately, doc-derived) invalid programs were
@@ -227,6 +240,65 @@ This file isn't listed as owned by either this session or the concurrent multi-l
 it's small, generic glue, and the fix is a correctness issue independent of logger or instruction
 set, so it was made here rather than left broken.
 
+### Errors from an included file: the `<file>` prefix (round 3 finding, `diagnostics.py`)
+
+An *error* whose statement came from a file other than the main program (pulled in by `Include`/
+`IncludeSection`, `source.py`) is printed as `<file> line N: <message>` -- the included file's own
+name in angle brackets before the usual `line N:` -- for most message classes, oracle-confirmed
+this session with `IncludeSection`d libraries carrying a deliberate error (`python3 tools/oracle.py`
+scratch probes, not saved to the corpus): `Variable not named.`, `Illegally dimension: %s.`,
+`Variable %s dimension exceeds max of %d.`, `Const with no assignment.`,
+`Invalid symbol in expression: %s.` (`expressions.py`) and `Invalid or missing parameter.`
+(`instr_rules.py`) all get it when the flagged statement is inside the included file, and never get
+it when the statement is in the main program itself (even in the *same* compile, comparing a
+library error against a main-file error of the same message class side by side).
+
+**Two oracle-confirmed exceptions, both `structure.py`'s own generic "this statement could not be
+resolved as anything valid" fallback**: `Sub %s not defined.` (an explicit `Call` to an undeclared
+name) and `Invalid, or out of place expression: %s.` (a bare unresolved name, or anything our
+parser marks `Unparsed`) never carry the prefix, regardless of which file the statement came from
+-- confirmed with the same side-by-side setup (a library `Call NoSuchLibSub` and a main-file `Call
+NoSuchMainSub` in the same compile: the library one prints as plain `line N: Sub NoSuchLibSub not
+defined.`, no `<file>`). No other exception is known; every other message class this session tested
+carries it. Modelled as `Diagnostic.show_file` (`diagnostics.py`, default `True`; `Diagnostics.
+error(..., show_file=False)` is how the two exception call sites opt out) rather than the reverse,
+since opting *in* would need every other checker module (including ones this session does not own)
+to be updated, while the two exceptions are both in `structure.py`. Warnings are untested against
+this rule and are left unprefixed (`cr6comp` only applies it to errors) rather than guessed at.
+
+An early false start, worth recording so it is not retried: a bare "Invalid, or out of place
+expression" case looked prefix-less at first only because it happened to be the *sole* diagnostic
+in a program that also independently stops compiling after that one statement (see "Placement
+before `BeginProg`" above) -- with only one diagnostic to look at, "no prefix" and "this file's
+diagnostics never got a chance to need one" were indistinguishable. The side-by-side setup (forcing
+a *second*, main-file diagnostic of a different, prefix-confirmed class in the same compile) is
+what separated "this message class never gets it" from "no other diagnostic happened to exist yet".
+
+### Error message buffer: a 4096-byte cap, then pass 1 stops (round 3 finding, `compiler.py`)
+
+Error messages accumulate in a 4096-byte buffer; once a message no longer fits, it is dropped with
+no truncation marker of any kind, and no further diagnostic is reported for the rest of the file
+(oracle-confirmed: a 150-line program with a distinct, guaranteed-non-stopping undefined-symbol
+error on every line -- `docs/checker.md`'s "before `BeginProg`" stop-after-first behaviour is a
+different, unrelated mechanism, deliberately avoided here by keeping every offending statement
+inside a `Scan` block -- prints only 69 of the 150 possible errors and then falls silent). The
+budget is spent on the rendered `line N: <message>` text alone (the `<file> ` prefix included, when
+present) plus a 2-byte CRLF terminator per line; the `"<program> -- Compile Failed!"` header and
+the blank line after it are not part of it. Reproduced byte-for-byte against the real `CR6cmple.xxx`
+file (not just stdout, which Wine's console layer doubles a stray `\r` into -- `tools/oracle.py`'s
+own docstring): the 69th message's own text brings the running total to 4065 bytes, and the 70th
+(`+59` bytes with its own longer line-number prefix) would push it to 4124, over the limit, and is
+the first one missing. `CompileResult.result_lines` (`compiler.py`, `_bounded_by_message_buffer`)
+applies this to the sorted, rendered error-line list; this only changes *rendering*, not how many
+diagnostics this checker itself finds or knows about (see "Robustness" below for why that
+architectural shortcut is fine here: nothing past a real truncation point would ever be visible to
+a user of either compiler anyway). Not implemented: a warning-side equivalent, if one exists (the
+task's own working note floated "warnings capped at 1000"; this session could not construct a
+scalable oracle probe for it -- `warnings.py`'s only implemented warning kind, "table declared but
+never called," is capped far earlier by a *different*, unrelated, oracle-confirmed real limit,
+`Maximum number of tables of 128 exceeded.`, itself worth a future `structure.py`/`tables.py`
+declaration-count check but not implemented this session, out of this task's explicit scope).
+
 ### `Public`/`Dim` with no name at all: `Variable not named.`
 
 A `Public`/`Dim` with nothing following it at all on its own physical line -- almost always a CHM
@@ -320,6 +392,52 @@ Deliberately checks only a *shortfall in count* (`len(stmt.args) < required`), n
 from a skipped comma in the middle of an otherwise-complete list -- no oracle evidence this session
 found supports flagging that shape, and AGENTS.md's priority (never reject an accepted program)
 rules out guessing at it.
+
+### Array dimension limits: `Illegally dimension: %s` / `Variable %s dimension exceeds max of %d.` (round 3, `structure.py`)
+
+Fixes the fuzz-found hang (`docs/fuzz-findings.md` "1. Hang"): `tables.py`'s `-l` renderer used to
+enumerate every element of a `Public X(999999999999) As Long`-shaped declaration with no upper
+bound checked first. The real compiler rejects the declaration itself, immediately and cheaply,
+before any table-building code would ever see it -- so the fix belongs at declaration time, not in
+`tables.py` (which still got a defensive bound too, "Robustness" below, for whatever a future gap
+in this check lets through).
+
+Oracle-confirmed rules (`Public`/`Dim`/`Static`, `checker/structure.py`'s `_check_array_dims`):
+
+- **More than 3 dimensions** on one variable is checked *before* any dimension's own value:
+  `Variable %s dimension exceeds max of %d.`, `%s` = the variable's name immediately followed by
+  (no closing paren) its **first** dimension's own raw source text, verbatim -- not evaluated, not
+  the dimension that is actually out of range (`Public X(1,1,1,2147483648)`, only the 4th
+  dimension being illegal, still reports `Variable X(1 dimension exceeds max of 3.`, naming the
+  first). `%d` is always 3 on the CR6 (not independently confirmed on the other three loggers this
+  session; `parser.py`'s `VarDecl.dim0_span` -- a source column range captured while parsing the
+  first dimension, alongside the existing token stream -- is what lets `structure.py` echo this
+  verbatim without the parser needing to reconstruct an expression's spelling from its AST).
+- **Otherwise, each dimension that folds to a constant outside `[1, 2147483647]`** (`INT32_MAX`):
+  zero, negative, or too large to represent as a signed 32-bit int (the fuzz-found
+  `999999999999`, and every oracle-tried value at or above `2147483648` -- `2147483648`,
+  `4294967295`, `10000000000`) reports `Illegally dimension: %s`, `%s` = the **whole declaration
+  statement's own verbatim source text** (not just the offending variable: `Public A As Long,
+  X(0) As Long, B As Float` echoes all three), no trailing period, unlike most other messages this
+  document catalogues. One diagnostic per illegal dimension value found, not deduplicated:
+  `Public X(0,-1) As Long` (two illegal dimensions on one variable) and `Public X(1,1,1,1) As
+  Long, Y(2,2,2,2) As Long` (two over-dimensioned variables) both print the relevant message
+  *twice*, oracle-confirmed. A dimension that does not fold to a constant at all is left alone
+  (no oracle evidence supports guessing at that shape).
+- **`2147483647` (`INT32_MAX`) itself is not this checker's concern**: the real compiler *crashes*
+  on it (a wow64 page fault under Wine, confirmed reproducible, not a Wine artifact this session
+  could rule out either way) rather than accepting or rejecting it cleanly, so no oracle text
+  exists to match. Values just below it (oracle-tried up to `2100000000`) instead get a real,
+  different, **not implemented** message, `Out of memory.`, reported at the program's last
+  statement's line rather than the declaration's own -- a genuine, memory-size-dependent real
+  limit this session did not attempt to model (it would need the same auto-allocation-pool
+  reverse-engineering `docs/tdf-rules.md` §10 already flags as low-confidence for a much smaller,
+  better-understood table-sizing problem); every value in this session's own accepted-corpus and
+  fuzz-seed evidence stays well under it, so this remains a `mismatch`, not a false accept this
+  session introduced.
+- The check is **per-dimension**, not per total element count: `Public X(100000,100000) As Long`
+  (10^10 elements) is *not* `Illegally dimension` (each individual dimension, 100000, is legal) --
+  it is the same `Out of memory.` gap above.
 
 ## `expressions.py`: undefined-symbol checking (deliberately narrow)
 
@@ -430,6 +548,46 @@ statement's own declaration) as a use.
 Shunt_Data` is inside `#If ShuntSequenceEnabled Then`, false by default, so the parser's own
 `#If` resolution (which only keeps the active branch's statements, `docs/frontend.md`) already
 removes it from `program.statements` before this check runs.
+
+## Robustness (round 3): `compile_file` never raises, `tables.py` never hangs
+
+Two fuzz-found bugs, both traced and fixed this session; full reproduction detail and root-cause
+analysis stays in `docs/fuzz-findings.md` ("1. Hang", "2. Crash") rather than being duplicated
+here.
+
+- **Hang** (`tables.py`'s `-l` renderer enumerating every element of an unbounded array
+  dimension): the array-dimension check above closes the specific reported case (the real
+  compiler rejects it before any table-building code would run at all), but as defense in depth
+  for whatever this checker does not yet catch, `tables.py`'s `_explode_indices`/
+  `render_table_list` now also caps how many index tuples a single field will ever enumerate
+  (`_MAX_EXPLODE_COUNT`, comfortably above the largest single-field element count this session
+  could get the real compiler to actually accept) -- silent truncation of the `-l` text for a
+  pathological case, never a hang, and never observed to affect any table size this session
+  could confirm the real compiler accepts.
+- **Crash** (`tables.py`'s `_scan_weights` calling `float()` on a non-numeric `Scan` interval
+  unconditionally, reachable from the smallest possible `Scan` block regardless of whether a
+  table is even called inside it): now type-checked before the conversion; a non-numeric interval
+  falls back to the same default weight an *absent* interval already used, and the fold this
+  function does is unconditional and best-effort only for auto-sizing purposes, not a claim that
+  the `Scan` interval is itself valid (`checker/instructions.py`'s own value-range check is the
+  intended place for the real compiler's `Scan Interval parameter must be a non-negative integer`
+  message; not implemented this session, out of this workstream's scope, `PLAN.md`).
+- **Every checker pass is now wrapped** (`checker/__init__.py`'s `_run_pass`) so a bug in any one
+  of them -- including modules this session does not own -- cannot take down the whole compile;
+  a pass that raises is treated as having found nothing further, and every other pass still runs.
+  `compiler.py`'s `compile_file` adds an outer safety net of the same shape around parsing, the
+  whole checker call, and the program-signature computation, so no path through it can raise. No
+  oracle text can ever exist for "opencrbasic itself broke" (the real compiler does not crash on a
+  syntactically-loadable file, `pointervariable_2.CR6`'s known real-compiler-side crash under Wine
+  is the one confirmed exception, "Known remaining gaps" below), so none of this invents a
+  diagnostic to paper over an internal bug -- it only guarantees a `CompileResult` comes back
+  instead of a Python traceback.
+
+Regression tests for both bugs: `tests/test_tables.py`'s "robustness" section (a synthetic
+`_explode_indices` call with a ~10^12 `dim`, and a `Scan("fuzz",...)` program through
+`build_tables` directly); `tests/test_checker.py`'s "array dimension limits" section covers the
+declaration-time fix that keeps the hang's specific reported input from ever reaching `tables.py`
+at all.
 
 ## Known remaining gaps (`mismatch`, not "false accept" vs. "exact wording")
 

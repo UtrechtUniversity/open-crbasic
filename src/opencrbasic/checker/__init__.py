@@ -46,16 +46,35 @@ from ..profiles import Profile
 from . import expressions, instr_rules, instructions, structure, warnings
 
 
-def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
-    structure.check(program, profile, diags)
-    expressions.check(program, profile, diags)
-    instr_rules.check(program, profile, diags)
+def _run_pass(fn, *args) -> None:
+    """Never let one checker pass's bug take down the whole compile (AGENTS.md: a crash is worse
+    than a wrong-but-returned answer; `docs/fuzz-findings.md` "Hang"/"Crash" -- both found by
+    fuzzing, both in code this session does not exhaustively re-verify). A pass that raises is
+    treated as having found nothing further this run: whatever diagnostics it already recorded
+    (via `diags`, mutated in place) stand, and every other pass still runs. No oracle text can ever
+    exist for "opencrbasic itself broke", so this never invents a diagnostic to paper over it --
+    the caller is responsible for still returning a usable `CompileResult` either way.
+    """
+    try:
+        fn(*args)
+    except Exception:
+        pass
 
+
+def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
     env = consteval.Env(profile, dict(program.consts))
+
+    _run_pass(structure.check, program, profile, diags, env)
+    _run_pass(expressions.check, program, profile, diags)
+    _run_pass(instr_rules.check, program, profile, diags)
+    # Ungated (unlike step 4 below): reachability/background-calibration/fnotch all oracle-confirmed
+    # to fire even when the file has other errors elsewhere (`checker/warnings.py`, `docs/instructions.md`).
+    _run_pass(warnings.check_early, program, profile, diags, env)
+
     if not diags.errors:
         # Pass 2 (see this module's docstring): the real compiler never reaches an instruction's
         # own channel/range validation once pass 1 recorded any error anywhere in the file.
-        instructions.check(program, profile, diags, env)
+        _run_pass(instructions.check, program, profile, diags, env)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)
@@ -63,7 +82,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     def value_of(expr: S.Expr | None):
         return consteval.value_of(expr, env)
 
-    result.mode = mode.decide(program.statements, profile, is_constant, value_of)
+    try:
+        result.mode = mode.decide(program.statements, profile, is_constant, value_of)
+    except Exception:
+        result.mode = None
 
     if not diags.errors:
         try:
@@ -71,5 +93,5 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         except ImportError:
             pass
         else:
-            tables_hook.attach(program, profile, result)
-            warnings.check(program, result, diags)
+            _run_pass(tables_hook.attach, program, profile, result)
+            _run_pass(warnings.check, program, result, diags)

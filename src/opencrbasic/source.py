@@ -31,8 +31,13 @@ from pathlib import Path
 from .diagnostics import Diagnostics
 
 _INCLUDE_RE = re.compile(r'^\s*Include\s*\(?\s*"([^"]*)"\s*\)?\s*$', re.IGNORECASE)
+# A third (or later) argument is tolerated and ignored, matching the real compiler
+# (oracle-confirmed, `docs/fuzz-findings.md` "False reject": `IncludeSection("Rail",
+# "CPU:BenchLib.crb",(1+2))` compiles -- `(1+2)` is accepted and has no effect). `(?:,.*)?` is
+# greedy and the trailing `\)\s*$` still anchors the match to the statement's own closing paren,
+# so a parenthesised extra argument (nested parens included) does not break the match.
 _INCLUDE_SECTION_RE = re.compile(
-    r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*\)\s*$', re.IGNORECASE
+    r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*(?:,.*)?\)\s*$', re.IGNORECASE
 )
 _DRIVE_RE = re.compile(r'^(CPU|USR|CRD|USB):', re.IGNORECASE)
 
