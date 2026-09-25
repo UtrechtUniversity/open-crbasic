@@ -91,19 +91,26 @@ def _runner_command(exe_path: Path):
     return [wine, str(exe_path)], env
 
 
+class NotCached(RuntimeError):
+    """Raised by `run_oracle_tdf(..., cache_only=True)` for a program with no cached result."""
+
+
 def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path = DEFAULT_COMPILER,
-                    use_cache: bool = True):
+                    use_cache: bool = True, cache_only: bool = False):
     """Compile with the real exe under Wine; return {"ok", "stdout", "tdf": bytes|None,
-    "lst": bytes|None}, cached under TDF_CACHE_DIR."""
+    "lst": bytes|None}, cached under TDF_CACHE_DIR. `cache_only=True` never invokes Wine, raising
+    `NotCached` instead of a cache miss (used to report on a partially-warmed cache quickly)."""
     key = _cache_key(compiler_path, program_path, siblings_dir)
     cache_path = TDF_CACHE_DIR / f"{key}.json"
-    if use_cache and cache_path.is_file():
+    if (use_cache or cache_only) and cache_path.is_file():
         rec = json.loads(cache_path.read_text())
         return {
             "ok": rec["ok"], "stdout": rec["stdout"],
             "tdf": base64.b64decode(rec["tdf"]) if rec["tdf"] else None,
             "lst": base64.b64decode(rec["lst"]) if rec["lst"] else None,
         }
+    if cache_only:
+        raise NotCached(str(program_path))
 
     with tempfile.TemporaryDirectory(prefix="tdftest-") as tmp:
         tmp_dir = Path(tmp)
@@ -209,10 +216,13 @@ def main(argv=None) -> int:
     mismatches: list[tuple[str, str, str]] = []
     skipped = 0
 
+    not_cached = 0
     for group, path, siblings in programs:
         try:
-            oracle_result = run_oracle_tdf(path, siblings, use_cache=not args.no_oracle
-                                            or True)
+            oracle_result = run_oracle_tdf(path, siblings, cache_only=args.no_oracle)
+        except NotCached:
+            not_cached += 1
+            continue
         except RuntimeError as exc:
             print(f"oracle unavailable: {exc}", file=sys.stderr)
             return 2
@@ -256,7 +266,8 @@ def main(argv=None) -> int:
 
     total = len(programs)
     print(f"programs: {total}  compiled by real exe: {compiled_ok}  skipped (real exe rejected "
-          f"or no TDF): {skipped}")
+          f"or no TDF): {skipped}"
+          + (f"  not yet cached (--no-oracle): {not_cached}" if args.no_oracle else ""))
     print(f"TDF byte-identical: {tdf_match}/{compiled_ok}")
     print(f"table-list byte-identical: {lst_match}/{compiled_ok}")
     if mismatches:

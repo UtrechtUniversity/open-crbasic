@@ -43,7 +43,12 @@ _POOL1 = 4_119_534
 _PER_TABLE_DECREMENT = 5198
 _CARDOUT_BONUS_BYTES = 160
 _EVENT_ALONE_OVERHEAD = 16
-_EVENT_ALONE_POOL2 = 4_188_132
+_EVENT_ALONE_POOL2 = 4_188_120
+# Exact oracle measurements for a single no-DataInterval/DataEvent auto table, alone in the
+# program (docs/tdf-rules.md §10): no flat `overhead` value reconciles all four simultaneously
+# (checked exhaustively), so known byte-widths are looked up directly and only an unseen width
+# falls back to the floor(Pool2/(bytes+16)) approximation.
+_EVENT_ALONE_SIZES = {2: 232_674, 4: 209_406, 6: 190_368, 8: 174_504}
 # Measured Pool (records * rate, low bound) for 1 DataInterval(1s) participant + e DataEvent/
 # no-interval participants, all FP2 (2 bytes/record) -- docs/tdf-rules.md §10 "mixed regime".
 _MIXED_POOL_BY_EVENT_COUNT = {1: 835_244, 2: 659_568, 3: 596_616, 4: 564_160, 5: 544_320}
@@ -116,6 +121,10 @@ class VarInfo:
     shape: list[int] = field(default_factory=list)   # declared array dims, e.g. [10] or [2,3]
     stored_len: int | None = None                     # STRING only: rounded storage length
     units: str = ""
+    name: str = ""                                     # declared spelling (CRBasic is
+    # case-insensitive; a `Source` reference may use different casing than the declaration, but
+    # the default output field name follows the declaration -- oracle-confirmed, ftpclient_4.CR6:
+    # `Public Count As Long` + `Sample(1,count,LONG)` -> field name `Count`, not `count`).
 
     def full_shape(self) -> list[int]:
         s = list(self.shape)
@@ -154,14 +163,27 @@ def _var_type_code(v: S.VarDecl) -> int:
     return TYPE_CODES.get(t, 9)
 
 
+def _string_size_expr(v: S.VarDecl) -> S.Expr | None:
+    """`v.string_size`, working around a parser quirk: `As String * 60 = "x"` currently parses
+    the size and the initializer together as one `Binary(op='=', left=60, right="x")` node
+    instead of splitting them; the real size is the left side."""
+    e = v.string_size
+    if isinstance(e, S.Binary) and e.op == "=":
+        return e.left
+    return e
+
+
 def _make_var_info(v: S.VarDecl, env: consteval.Env) -> VarInfo:
     type_code = _var_type_code(v)
     shape = _var_shape(v, env)
     stored_len = None
     if (v.type or "").upper() == "STRING":
-        n = _as_int(_fold(v.string_size, env), default=1)
+        # A bare `As String` with no `* n` defaults to n=20 (oracle-confirmed: formatlong_1.CR6's
+        # `FormatString As String` and ctype_1.CR6's `Type(6) As String` both round to dim=24 per
+        # element, matching n=20 -- `(20 div 4 + 1) * 4`).
+        n = _as_int(_fold(_string_size_expr(v), env), default=20)
         stored_len = _string_stored_len(max(n, 1))
-    return VarInfo(type_code, shape, stored_len)
+    return VarInfo(type_code, shape, stored_len, name=v.name)
 
 
 # ---------------------------------------------------------------- statement block scanning
@@ -199,6 +221,7 @@ def _scan_program(program: S.Program):
     data_tables: list[DataTableDecl] = []
     alias_stmts: list[S.Instruction] = []
     units_stmts: list[S.Instruction] = []
+    readonly_names: set[str] = set()
     slow_seq_count = 0
 
     stmts = program.statements
@@ -251,16 +274,28 @@ def _scan_program(program: S.Program):
             units_stmts.append(s)
             i += 1
             continue
+        if kw == "READONLY":
+            for arg in s.args:
+                if isinstance(arg, S.Name):
+                    readonly_names.add(arg.name.upper())
+            i += 1
+            continue
         i += 1
 
     called: set[str] = set()
     for s in stmts:
-        if _kw(s) == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name):
+        kw2 = _kw(s)
+        if kw2 == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name):
             called.add(s.args[0].name.upper())
+        elif kw2 == "ACCEPTDATARECORDS" and len(s.args) > 2 and isinstance(s.args[2], S.Name):
+            # AcceptDataRecords(PakBusAddr, TableNo, DestTableName): populates DestTableName
+            # without a `CallTable` (oracle-confirmed, acceptdatarecords_1.CR6: a fixed-size
+            # table named only here still gets its declared size, not the uncalled `size=1`).
+            called.add(s.args[2].name.upper())
 
     return dict(publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
-                slow_seq_count=slow_seq_count, called=called)
+                readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
 
 
 # ---------------------------------------------------------------- Status table (§4)
@@ -310,7 +345,8 @@ def _resolve_alias_target(expr: S.Expr | None) -> tuple[str, int | None]:
 
 
 def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
-                         alias_stmts: list[S.Instruction], units_stmts: list[S.Instruction]):
+                         alias_stmts: list[S.Instruction], units_stmts: list[S.Instruction],
+                         readonly_names: set[str]):
     """Returns (TdfTable('Public') or None, display_name -> TdfField, base_name -> [TdfField])."""
     if not publics:
         return None, {}, {}
@@ -336,6 +372,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
         base = v.name.upper()
         info = var_info[base]
         display_name = whole_alias.get(base, v.name)
+        ro = base in readonly_names
 
         elements = aliased_elements.get(base)
         if elements and info.shape and len(info.shape) == 1:
@@ -345,7 +382,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             pos = 1
             while pos <= array_size:
                 if pos in elements:
-                    f = TdfField(info.type_code, False, elements[pos], [], "", "", "", 1, 1, [])
+                    f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, 1, [])
                     group.append(f)
                     pos += 1
                 else:
@@ -353,7 +390,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
                     while pos <= array_size and pos not in elements:
                         pos += 1
                     run_len = pos - run_start
-                    f = TdfField(info.type_code, False, v.name, [], "", "", "", run_start,
+                    f = TdfField(info.type_code, ro, v.name, [], "", "", "", run_start,
                                  run_len, list(full_shape))
                     group.append(f)
             fields.extend(group)
@@ -363,7 +400,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             continue
 
         dim, subdims = info.collapsed()
-        f = TdfField(info.type_code, False, display_name, [], "", "", "", 1, dim, subdims)
+        f = TdfField(info.type_code, ro, display_name, [], "", "", "", 1, dim, subdims)
         fields.append(f)
         by_display[display_name.upper()] = f
         by_base[base] = [f]
@@ -397,7 +434,16 @@ def _build_const_tables(const_tables: list[ConstTableDecl], env: consteval.Env) 
         fields = []
         for c in ct.consts:
             is_str = isinstance(c.value, S.String)
-            if is_str:
+            if c.type:
+                # An explicit `Const X As <Type> = ...` (oracle-confirmed,
+                # mqttpublishconsttable_1.CR6: `Const myDouble As Double = 987.654321` -> IEEE8,
+                # not the IEEE4 the literal alone would infer) overrides literal-based inference.
+                type_code = TYPE_CODES.get(c.type.upper(), TYPE_CODES["IEEE4"])
+                is_ascii = type_code == TYPE_CODES["STRING"]
+                dim, subdims = (80, [80]) if is_ascii else (1, [])
+                fields.append(TdfField(type_code, False, c.name, [], "", "", "", 1, dim, subdims))
+                int_names[c.name.upper()] = type_code == TYPE_CODES["LONG"]
+            elif is_str:
                 fields.append(TdfField(TYPE_CODES["STRING"], False, c.name, [], "", "", "",
                                         1, 80, [80]))
                 int_names[c.name.upper()] = True
@@ -436,15 +482,20 @@ def _datatableinfo_table(n: int) -> TdfTable:
 # ---------------------------------------------------------------- DataTable output fields (§9)
 
 
-def _source_name(expr: S.Expr | None) -> str:
-    if isinstance(expr, S.Name):
-        return expr.name
-    if isinstance(expr, S.Index):
-        return expr.name
-    return "Anonymous"
+def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None) -> str:
+    raw = None
+    if isinstance(expr, (S.Name, S.Index)):
+        raw = expr.name
+    if raw is None:
+        return "Anonymous"
+    if var_info is not None:
+        info = var_info.get(raw.upper())
+        if info is not None and info.name:
+            return info.name  # declared spelling; CRBasic is case-insensitive at the use site
+    return raw
 
 
-def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], by_display: dict,
+def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: consteval.Env,
                    reps: int) -> tuple[int, list[int]]:
     """(begin, subdims) for an output field's Source, per §3."""
     if isinstance(expr, S.Index):
@@ -452,14 +503,14 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], by_display:
         array_shape = list(info.shape) if info and info.shape else [reps]
         begin = 1
         if expr.args:
-            begin = _as_int(getattr(expr.args[0], "value", None), 1)
+            begin = _as_int(_fold(expr.args[0], env, 1), 1)
         return begin, array_shape
     return 1, []
 
 
 def _units_for_source(expr: S.Expr | None, var_info: dict[str, VarInfo],
                        by_display: dict[str, TdfField]) -> str:
-    name = _source_name(expr).upper()
+    name = _source_name(expr, var_info).upper()
     f = by_display.get(name)
     if f is not None:
         return f.units
@@ -489,7 +540,8 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
     return _TYPE_BYTES.get(type_code, 4)
 
 
-def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict) -> list[_OutField]:
+def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
+                         env: consteval.Env) -> list[_OutField]:
     kw = instr.keyword.upper()
     a = instr.args
 
@@ -497,39 +549,41 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict) 
         name = getattr(a[idx], "name", None) if idx < len(a) else None
         return TYPE_CODES.get((name or "").upper(), 9)
 
-    if kw == "SAMPLE":
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
-        src = a[1] if len(a) > 1 else None
-        tcode = type_of(2)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
+    def reps_of():
+        return _as_int(_fold(a[0], env, 1), 1) if a else 1
+
+    def shaped(src, reps):
+        begin, shape = _source_shape(src, var_info, env, reps)
         subdims = shape if shape else ([] if reps == 1 else [reps])
         units = _units_for_source(src, var_info, by_display)
-        name = _source_name(src)
-        return [_OutField(name, tcode, True, "Smp", begin, reps, subdims, units)]
+        return begin, subdims, units
+
+    if kw == "SAMPLE":
+        reps = reps_of()
+        src = a[1] if len(a) > 1 else None
+        tcode = type_of(2)
+        begin, subdims, units = shaped(src, reps)
+        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, reps, subdims, units)]
 
     if kw in ("AVERAGE", "TOTALIZE", "STDDEV"):
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
+        reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
-        subdims = shape if shape else ([] if reps == 1 else [reps])
-        units = _units_for_source(src, var_info, by_display)
+        begin, subdims, units = shaped(src, reps)
         suffix, tag = {"AVERAGE": ("_Avg", "Avg"), "TOTALIZE": ("_Tot", "Tot"),
                        "STDDEV": ("_Std", "Std")}[kw]
-        name = _source_name(src) + suffix
+        name = _source_name(src, var_info) + suffix
         return [_OutField(name, tcode, True, tag, begin, reps, subdims, units)]
 
     if kw in ("MAXIMUM", "MINIMUM"):
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
+        reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
-        subdims = shape if shape else ([] if reps == 1 else [reps])
-        units = _units_for_source(src, var_info, by_display)
+        begin, subdims, units = shaped(src, reps)
         time_flag = False
         if len(a) > 4:
             time_flag = str(getattr(a[4], "name", "")).upper() == "TRUE"
-        base = _source_name(src)
+        base = _source_name(src, var_info)
         vsuf, vtag, tsuf, ttag = (("_Max", "Max", "_TMx", "TMx") if kw == "MAXIMUM"
                                    else ("_Min", "Min", "_TMn", "TMn"))
         out = [_OutField(base + vsuf, tcode, True, vtag, begin, reps, subdims, units)]
@@ -539,91 +593,84 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict) 
         return out
 
     if kw == "MEDIAN":
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
+        reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(3)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
-        subdims = shape if shape else ([] if reps == 1 else [reps])
-        units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src) + "_Med", tcode, True, "Med", begin, reps, subdims, units)]
+        begin, subdims, units = shaped(src, reps)
+        return [_OutField(_source_name(src, var_info) + "_Med", tcode, True, "Med", begin, reps, subdims, units)]
 
     if kw == "MOMENT":
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
+        reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(3)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
-        subdims = shape if shape else ([] if reps == 1 else [reps])
-        units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src) + "_MMT", tcode, True, "MMT", begin, reps, subdims, units)]
+        begin, subdims, units = shaped(src, reps)
+        return [_OutField(_source_name(src, var_info) + "_MMT", tcode, True, "MMT", begin, reps, subdims, units)]
 
     if kw == "SAMPLEMAXMIN":
-        reps = _as_int(getattr(a[0], "value", None), 1) if a else 1
+        reps = reps_of()
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
-        begin, shape = _source_shape(src, var_info, by_display, reps)
-        subdims = shape if shape else ([] if reps == 1 else [reps])
-        units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src) + "_SMM", tcode, True, "SMM", begin, reps, subdims, units)]
+        begin, subdims, units = shaped(src, reps)
+        return [_OutField(_source_name(src, var_info) + "_SMM", tcode, True, "SMM", begin, reps, subdims, units)]
 
     if kw == "COVARIANCE":
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
-        n_cov = _as_int(getattr(a[4], "value", None), 1) if len(a) > 4 else 1
+        n_cov = _as_int(_fold(a[4], env, 1), 1) if len(a) > 4 else 1
         units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src) + "_Cov", tcode, True, "Cov", 1, n_cov,
+        return [_OutField(_source_name(src, var_info) + "_Cov", tcode, True, "Cov", 1, n_cov,
                            [] if n_cov == 1 else [n_cov], units)]
 
     if kw == "WINDVECTOR":
         speed = a[1] if len(a) > 1 else None
         tcode = type_of(3)
-        output_opt = _as_int(getattr(a[7], "value", None), 0) if len(a) > 7 else 0
+        output_opt = _as_int(_fold(a[7], env, 0), 0) if len(a) > 7 else 0
         dim = {0: 3, 1: 2, 2: 4, 3: 1, 4: 2}.get(output_opt, 3)
         units = _units_for_source(speed, var_info, by_display)
-        return [_OutField(_source_name(speed) + "_WVc", tcode, True, "WVc", 1, dim,
+        return [_OutField(_source_name(speed, var_info) + "_WVc", tcode, True, "WVc", 1, dim,
                            [] if dim == 1 else [dim], units)]
 
     if kw == "HISTOGRAM":
         bin_select = a[0] if a else None
         tcode = type_of(1)
-        bins = _as_int(getattr(a[3], "value", None), 1) if len(a) > 3 else 1
-        wtval = _fold_number(a[5]) if len(a) > 5 else 0.0
-        lolim = _fold_number(a[6]) if len(a) > 6 else 0.0
-        uplim = _fold_number(a[7]) if len(a) > 7 else 0.0
-        tag = f"Hst,{bins},{wtval:.4e},{lolim:.4e},{uplim:.4e}"
+        bins = _as_int(_fold(a[3], env, 1), 1) if len(a) > 3 else 1
+        wtval = _fold(a[5], env, 0.0) if len(a) > 5 else 0.0
+        lolim = _fold(a[6], env, 0.0) if len(a) > 6 else 0.0
+        uplim = _fold(a[7], env, 0.0) if len(a) > 7 else 0.0
+        tag = f"Hst,{bins},{float(wtval):.4e},{float(lolim):.4e},{float(uplim):.4e}"
         units = _units_for_source(bin_select, var_info, by_display)
-        return [_OutField(_source_name(bin_select) + "_Hst", tcode, True, tag, 1, bins,
+        return [_OutField(_source_name(bin_select, var_info) + "_Hst", tcode, True, tag, 1, bins,
                            [] if bins == 1 else [bins], units)]
 
     return []
 
 
-def _fold_number(expr) -> float:
-    if isinstance(expr, S.Number):
-        return float(expr.value)
-    if isinstance(expr, S.Unary) and isinstance(expr.operand, S.Number):
-        v = float(expr.operand.value)
-        return -v if expr.op == "-" else v
-    return 0.0
-
-
 def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
     parts = [p.strip() for p in arg.split(",")]
-    if len(parts) == 1:
+    if len(fields) == 1 and len(parts) == 1 and fields[0].dim == 1:
         name, _, desc = parts[0].partition(":")
-        if fields:
-            fields[0].name = name.strip()
-            if desc:
-                fields[0].processing += ":" + desc.strip()
+        fields[0].name = name.strip()
+        if desc:
+            fields[0].processing += ":" + desc.strip()
         return fields
-    # one name per repetition: split a single Reps>1 field into scalar fields (§9, exp #33/#37)
-    if len(fields) == 1 and fields[0].dim == len(parts):
+    if len(fields) == 1 and fields[0].dim > 1:
+        # One name per repetition (§9, exp #33/#37): split a single Reps>1 field into scalar
+        # fields. Fewer names than Reps (oracle-confirmed, SbdPayload_tester.CR6:
+        # `Average(2,FinApp_Neutrons(),...) FieldNames("Neutrons")` on a 2-element array) renames
+        # only the first len(parts) elements individually and leaves the rest as one field under
+        # the original default name, keeping the source array's full declared subdims.
         base = fields[0]
         out = []
-        for i, part in enumerate(parts):
-            name, _, desc = part.partition(":")
+        n_named = min(len(parts), base.dim)
+        for i in range(n_named):
+            name, _, desc = parts[i].partition(":")
             proc = base.processing + (":" + desc.strip() if desc else "")
             out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
                                   base.begin + i, 1, [], base.units))
+        remaining = base.dim - n_named
+        if remaining > 0:
+            out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
+                                  base.begin + n_named, remaining, base.subdims, base.units))
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")
@@ -684,7 +731,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         elif kw in _OUTPUT_KEYWORDS:
             if pending:
                 out_fields.extend(pending)
-            pending = _emit_output_fields(s, var_info, by_display)
+            pending = _emit_output_fields(s, var_info, by_display, env)
     if pending:
         out_fields.extend(pending)
 
@@ -748,7 +795,8 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]]):
     elif event_ones and not interval_ones:
         if n == 1:
             t, m = event_ones[0]
-            records = _EVENT_ALONE_POOL2 // (m["bytes_per_record"] + _EVENT_ALONE_OVERHEAD)
+            b = m["bytes_per_record"]
+            records = _EVENT_ALONE_SIZES.get(b, _EVENT_ALONE_POOL2 // (b + _EVENT_ALONE_OVERHEAD))
             t.size = records
             return
         pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
@@ -767,7 +815,12 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]]):
 def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]]):
     for t, m in tables_meta:
         if not m["called"]:
+            # A table with no `CallTable` anywhere in the compiled program never gets its
+            # DataInterval/DataEvent finalised either (oracle-confirmed, docs/tdf-rules.md §13):
+            # `size=1` *and* `interval`/`into` reset to (0,0), as if declared with neither.
             t.size = 1
+            t.interval = (0, 0)
+            t.time_into = (0, 0)
         elif m["size_val"] != -1:
             t.size = m["size_val"]
     _resolve_auto_sizes(tables_meta)
@@ -787,7 +840,8 @@ def build_tables(program: S.Program, profile, consts: dict):
     # Build the Public table first (source-variable units lookups for output fields need its
     # display-name map), but keep its position in the TDF (after DataTableInfo/ConstTables, §2).
     public_table, by_display, by_base = _build_public_table(
-        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"])
+        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"],
+        scanned["readonly_names"])
 
     tables: list[TdfTable] = [_status_table(scanned["slow_seq_count"])]
 
@@ -814,18 +868,32 @@ def build_tables(program: S.Program, profile, consts: dict):
 # ---------------------------------------------------------------- `-l` table list (docs/cli.md)
 
 
-def _explode_indices(subdims: list[int], drop_last: bool):
+def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: int = 1):
+    """Row-major (last dim fastest) index tuples for the `dim` stored elements starting at the
+    1-based linear position `begin` within `subdims` (after dropping the trailing string-storage
+    dim for ASCII fields, per §3/§8's alias-prefix/suffix fields and §3's Reps<array-size case:
+    both need the *slice*, not every valid coordinate of the full declared shape)."""
     dims = subdims[:-1] if drop_last and subdims else subdims
     if not dims:
         yield ()
         return
-    def rec(prefix, rest):
-        if not rest:
-            yield tuple(prefix)
-            return
-        for i in range(1, rest[0] + 1):
-            yield from rec(prefix + [i], rest[1:])
-    yield from rec([], dims)
+    total = 1
+    for d in dims:
+        total *= d
+    strides = [1] * len(dims)
+    acc = 1
+    for i in range(len(dims) - 1, -1, -1):
+        strides[i] = acc
+        acc *= dims[i]
+    start = max(min(begin - 1, total - 1), 0)
+    count = max(min(dim, total - start), 0)
+    for lin in range(start, start + count):
+        coord = []
+        rem = lin
+        for d, stride in zip(dims, strides):
+            coord.append(rem // stride + 1)
+            rem %= stride
+        yield tuple(coord)
 
 
 def render_table_list(tables: list[TdfTable]) -> str:
@@ -849,7 +917,29 @@ def render_table_list(tables: list[TdfTable]) -> str:
         lines.append("Fields:")
         for f in t.fields:
             drop_last = f.type == 11 and bool(f.subdims)
-            for idx in _explode_indices(f.subdims, drop_last):
+            dims_after_drop = f.subdims[:-1] if drop_last else f.subdims
+            if f.type == 11 and len(dims_after_drop) >= 2:
+                # Oracle-confirmed quirk (DataTableInfo's DataFilled at n=1,2,7; a 2D Public
+                # String array, filelist_1.CR6's `Files(3,10) As String * 25`): an ASCII field
+                # with 2+ non-string dims does NOT get the plain Cartesian product every other
+                # multi-dim field gets (contrast DataRecordSize/DataFillDays, same [n,2] shape but
+                # type LONG/IEEE4, which *do* show the full product): the `-l` lister instead
+                # computes both displayed coordinates via `divmod` by the *string storage length*
+                # (`stored_len` = `subdims[-1]`) rather than by the true adjacent declared
+                # dimension -- confirmed exactly for `Files(3,10)` (`stored_len`=28, wrong stride
+                # vs. the true 10): entries 1..28 show as `(1,1)..(1,28)`, then `(2,1)`, `(2,2)`
+                # for the last 2 of its 30 true elements, not `(1,1)..(1,10)` then `(2,1)..`.
+                # Total entry count is still correct (`dim / stored_len`). A field with 3+
+                # non-string dims is unverified; this always yields exactly 2 coordinates like
+                # the confirmed cases, which may not generalise. Mechanism not understood (a
+                # legacy quirk in the exe's own lister); reproduced, not derived.
+                stored_len = f.subdims[-1]
+                total = f.dimension // stored_len if stored_len else 0
+                explode_iter = ((lin // stored_len + 1, lin % stored_len + 1)
+                                 for lin in range(total))
+            else:
+                explode_iter = _explode_indices(f.subdims, drop_last, f.begin_index, f.dimension)
+            for idx in explode_iter:
                 suffix = "(" + ",".join(str(i) for i in idx) + ")" if idx else ""
                 line = f" {f.name}{suffix}"
                 if f.units:

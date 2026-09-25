@@ -446,6 +446,19 @@ snippets are reconstructable from the description (all are plain CRBasic, no tri
 | 52 | `DataTable(Interval1,1,-1) DataInterval(0,1,Sec,10) Sample(1,X,FP2)` + `DataTable(Event1,Trig,-1) DataEvent(0,Trig,0,0) Sample(1,Y,FP2)`, both auto | both `size=208,811` (identical) |
 | 53 | same as #52 but `DataInterval(0,5,Sec,10)` on `Interval1` | `Interval1 size=45,450`, `Event1 size=227,250` (ratio 5.0) |
 | 54 | DataEvent auto table, `Sample(1,X,IEEE8)` (solo, no DataInterval table) | `size=174,504` |
+| 55 | `DataTable(Test,1,100) Sample(1,X,FP2)`, no `CallTable Test` anywhere | `Table Test, is declared but never called.` warning; `size=1` (not `100`) |
+| 56 | Same as `#55` but `DataTable(Test,1,-1) DataInterval(...) ...`, still no `CallTable` | `size=1` (not the auto-formula result); `interval=(0,0) into=(0,0)` too, despite the `DataInterval` |
+| 57 | `#1`'s single auto table + a second, unrelated `DataTable(Fixed,1,1000)`/`2000` (fixed, called) alongside it | auto table's `size` unchanged at `2,059,767` (fixed tables don't shrink the pool) |
+| 58 | `#1`'s single auto table + a bare-named `ConstTable(Extra,0)` / a `SlowSequence` block | auto table's `size` unchanged at `2,059,767` |
+| 59 | `ConstTable(MyConsts,0) Const A=False Const B=True Const C=1 Const D=1.5 Const E=&B10 Const F=&H1F Const G=-5 Const H="hello"` | types LONG,LONG,LONG,IEEE4,LONG,LONG,LONG,ASCII(dim=80) |
+| 60 | `Const H = "<121 chars>"` in a named `ConstTable` | `ConstTable field H too large to edit, max length is 80.` |
+| 61 | `Const E=-5`, `Const F=-5.0`, `Const G=2+3`, `Const H=10/2`, `Const I=10/3` in a named `ConstTable` | types LONG, IEEE4, LONG, IEEE4, IEEE4 (`/` always IEEE4, even `10/2`) |
+| 62 | `Public IsIridiumStarted As Boolean` + `ReadOnly IsIridiumStarted` (`SBDIridiumLib.crb`) | `Public` field has the `0x80` read-only flag |
+| 63 | 2 and 7 user `DataTable`s (`Shunt_tester.CR6`, `Preflight_tester.CR6`): `DataTableInfo`'s `-l` listing | `DataRecordSize`/`DataFillDays` list as `[n,2]` (e.g. `(1,1) (1,2) (2,1) (2,2)`); `DataFilled` lists as a flat `(1,1)..(1,2n)` instead — TDF bytes for `DataFilled` are still `subdims=[n,2,32]`, only the `-l` rendering differs |
+| 64 | `Average(2,FinApp_Neutrons(),IEEE4,...) FieldNames("Neutrons")`, `FinApp_Neutrons` a 2-element array (`SbdPayload_tester.CR6`) | 2 fields: `Neutrons` (renamed, `begin=1,dim=1`) + `FinApp_Neutrons_Avg` (default name, `begin=2,dim=1,subdims=[2]`) |
+| 65 | Single no-interval auto table alone, `Sample(1,X,FP2)+Sample(1,Y,FP2)` (2 fields, 4B) vs. `Sample(1,X,IEEE4)` (1 field, 4B) | both `size=209,406` — total bytes/record is what matters, not field count |
+| 66 | Single no-interval auto table alone, 3×`Sample(_,_,FP2)` (6B) | `size=190,368` (matches `PortSleep_Scans`'s `Long`+`FP2`, also 6B) |
+| 67 | 1 `DataInterval(1,Sec)` auto table + `e` no-interval auto tables (`e`=1..5), all FP2/1s-equivalent | all `e` event tables get an identical size for a given `e` (`835244,659568,596616,564160,544320` records for `e`=1..5 respectively — see §13's `_MIXED_POOL_BY_EVENT_COUNT`), but this does **not** generalise to the corpus's real interval magnitudes (300s) or byte widths — see §13 |
 
 ## 12. Open questions (summary)
 
@@ -480,3 +493,122 @@ snippets are reconstructable from the description (all are plain CRBasic, no tri
     (`Alias VariableName(1) = AliasName(5)` aliasing multiple elements on one line) — not tested.
 12. UINT1, UINT4, FP3, FP4 field type-code bytes in the TDF — not produced in any experiment
     (UINT1 requires Reps divisible by 2 and a UINT1-typed source, not attempted).
+
+## 13. Corrections and additions from `src/opencrbasic/tables.py` (2026-09-25)
+
+Found while implementing `tables.build_tables` against the `crbasic/` corpus (16 programs) and
+cross-checked with `tools/tdftest.py`. `FP3`/`FP4` (open question 12, candidate) turned out not to
+exist at all: `Sample(1,X,FP3)`/`FP4` fail with `Invalid symbol in expression: FP3.` — not CRBasic
+keywords, so questions about their TDF encoding are moot.
+
+- **A table never `CallTable`d gets `size=1`, overriding *any* declared `Size` — fixed or `-1`**
+  (**oracle-confirmed**, new experiments `bool8_1`→n/a, `fixeduncalled`, `callparens`): a table
+  with `Size=500` (fixed) and no `CallTable` anywhere in the compiled program (after `#If`
+  resolution) compiles with the warning `Table Test, is declared but never called.` and TDF
+  `size=1` — not `500`. This is a **precondition on every rule in §10**, not previously stated: the
+  auto-size formulas only apply to *called* auto tables; an uncalled auto table is also `size=1`,
+  not run through the pool formula at all. `CallTable(Test)` (parenthesised) counts as a call
+  identically to `CallTable Test`. This resolves a real case in the corpus: `Main.CR6`'s
+  `Shunt_Data` table is declared unconditionally (via `IncludeSection("Definitions", ...)`) but
+  its only `CallTable Shunt_Data` is inside `#If ShuntSequenceEnabled Then` — false by default — so
+  it compiles to `size=1` regardless of its `DataInterval(0,60,Sec,10)`.
+- **Fixed-size `DataTable`s, named `ConstTable`s, and `SlowSequence` blocks do not reduce the
+  auto-size pool** (**oracle-confirmed**, experiments `fixed1000`/`fixed2000` vs. baseline,
+  `constbare`, `slowseq`): a single `Size=-1` `DataInterval`/1s/FP2 auto table gets the same
+  `size=2,059,767` whether or not the program also has a `DataTable(Fixed,1,1000)` (or `2000`), a
+  `ConstTable(Extra,0)`, or a `SlowSequence`/`NextScan` block. This narrows §10's "reserved(n)"
+  term specifically to *auto* (`Size=-1`, called) table count — nothing else measured moves it.
+- **`ConstTable` `Const` type inference** (§7 open question 6, **oracle-confirmed**, experiments
+  `consttypes`/`negconst`): integer literals, `&B`/`&H` literals, `True`/`False`, and predefined
+  symbols fold to LONG (type 6); a literal with a decimal point folds to IEEE4 (type 9). Folding
+  preserves this through unary `+`/`-` and through `+`/`-`/`*` of two LONGs (`Const E = -5` → LONG;
+  `Const G = 2+3` → LONG), but `/` is **always** IEEE4 even when the result is a whole number
+  (`Const H = 10/2` → IEEE4, not LONG). A **string** `Const` (`Const H = "hello"`) *is* valid syntax
+  (the doc's one failed attempt used the wrong form, `As String * n =`) and always produces an
+  ASCII field of **fixed `dim=80`**, regardless of the literal's length — a longer literal doesn't
+  grow it; one over 80 chars fails to compile with `ConstTable field H too large to edit, max
+  length is 80.`. `\`/`MOD`/`AND`/`OR`/`XOR`/comparisons/`<<`/`>>` are assumed LONG (integer/
+  boolean-shaped ops); `^` and anything else default to IEEE4 — **not independently tested**, our
+  corpus's `ConstTable` bodies never use an expression more complex than a literal or a bare
+  predefined-symbol reference.
+- **`ReadOnly Var1, Var2, ...`** (CHM `readonly.htm`, **oracle-confirmed** via
+  `SBD_tester.CR6`/`SBDIridiumLib.crb`'s `Public IsIridiumStarted As Boolean = False` /
+  `ReadOnly IsIridiumStarted`): sets the `0x80` read-only flag on that Public variable's TDF
+  field(s). Not previously covered by §8.
+- **`DataTableInfo`'s `DataFilled` field: `-l` display quirk, not a subdims correction**
+  (**oracle-confirmed** at `n`=1, 2, 7, via `Shunt_tester.CR6` and `Preflight_tester.CR6`): the
+  **TDF bytes** genuinely encode `subdims=[n,2,32]` exactly as §6 already stated (confirmed by
+  parsing the raw `-z` output, not just reading `-l`). But the `-l` **table list** renders this one
+  field differently from every other rank-3 field: instead of the `[n,2]` Cartesian product
+  `DataRecordSize`/`DataFillDays` get (`(1,1) (1,2) (2,1) (2,2)` for `n`=2), `DataFilled` shows a
+  flat run `(1,1) (1,2) (1,3) (1,4)` — first index pinned at `1`, second running `1..2n`. Mechanism
+  not understood (a legacy quirk in the exe's own lister, not decompiled); reproduced exactly by
+  special-casing this one field's listing, not derived.
+- **`FieldNames` with fewer names than `Reps`** (§9 extends `Reps > 1` case, **oracle-confirmed**
+  via `SbdPayload_tester.CR6`: `Average(2,FinApp_Neutrons(),IEEE4,...) FieldNames("Neutrons")` where
+  `FinApp_Neutrons` is declared with exactly 2 elements): renames only the first `len(names)`
+  elements to individual scalar fields (`begin` advancing one at a time, `dim=1`, `subdims=[]`) and
+  leaves the **remaining** `Reps - len(names)` elements as one field under the **original default
+  name** (`FinApp_Neutrons_Avg` here), `begin` continuing on from the named ones, `dim=` the
+  remainder count, and **`subdims` unchanged** (the source array's full declared shape, not
+  collapsed even when the remainder's `dim` is 1 — consistent with §3's "Source is an element of a
+  declared array" rule). The `-l` listing's index for that remainder field reflects its `begin`
+  (`FinApp_Neutrons_Avg(2)`, not `(1)`) — see next point.
+- **`-l` array-field index display uses `begin`, not just `subdims`** (extends §3/§8's alias-
+  prefix/suffix description, **oracle-confirmed** by the `FieldNames`-remainder case above and
+  re-derived from the already-documented alias prefix/suffix `begin` values): the displayed index
+  tuples for a field are the `dim` row-major coordinates of `subdims` starting at the 1-based
+  linear position `begin`, not always `1..dim` from the start. This was already implied by the
+  alias-splitting §8 description (`Arr5(begin=4,dim=2,...)` must list as `Arr5(4)`, `Arr5(5)`, not
+  `Arr5(1)`, `Arr5(2)`) but not stated as a general `-l` rendering rule until this implementation
+  needed it for the `FieldNames`-remainder case.
+- **Auto-size, mixed regime (§10, still open, new data points collected but *not* reconciled**):
+  the corpus's real programs are almost all in the hardest sub-case — 1 `DataInterval` auto table
+  (`StationStatus`, interval usually 300 s) plus 1–7 no-interval/event auto tables. New evidence
+  that *contradicts* the simple "one shared duration `D`" reading of the §10 top formula: in every
+  such program, **all the event-style tables get the identical size**, regardless of their own
+  `bytes_per_record` (`Main.CR6`: `Acclima_Data`(24B), `TString_Data`(196B), `SnowVue_Data`(16B),
+  `SnowVue_Diagnostics`(12B), `PT1000_Data`(6B), `FinApp_Data`(58B) all get `size=10,217`) — this
+  much is consistent with the existing "fixed 1 s weight" rule (§10, exp `#52`/`#53`) and already
+  implemented. But `StationStatus`'s own size, read back through `size × bytes × interval` as a
+  single-table-equivalent pool, does **not** land on a value that's a clean function of the event
+  count alone: two programs with the same event count (1) but different event-table byte widths
+  give very different implied pools (`PT1000_tester.CR6`, 1 event table at 6 B: implied pool
+  759,600; `FinApp_tester.CR6`, 1 event table at 58 B: implied pool 1,129,200) — so the interval
+  table's share depends on the event table's byte width too, in a direction (*wider* event table →
+  *larger* interval-table pool) that rules out a simple shared-pool-decreases-with-more-competition
+  model. `tables.py`'s `_resolve_auto_sizes` therefore keeps the exp `#52`-`#53`-fitted
+  `_MIXED_POOL_BY_EVENT_COUNT` lookup (event count → pool, `interval=1s` FP2 case, extrapolated
+  linearly past `e=5`) as a best-effort approximation — it is **known wrong** for most of the
+  corpus's real programs (see `tools/tdftest.py --group repo` for the current mismatch list, all of
+  which are exactly this case) and is reported here rather than hidden. Untangling it needs either
+  more decompilation (`FUN_004eab30`'s reserved-accumulator terms, not fully traced — §10's own
+  "open question 7") or a much larger oracle grid varying event count, event byte widths, and the
+  interval table's own interval/bytes independently.
+- **`Const X As <Type> = value` in a named `ConstTable`** (**oracle-confirmed**,
+  `mqttpublishconsttable_1.CR6`: `Const myDouble As Double = 987.654321`): an explicit type
+  overrides the literal-based inference above -- `Double` gives IEEE8 (type 18), not the IEEE4 a
+  bare `987.654321` literal would otherwise infer. `tables.py` checks `ConstDecl.type` first,
+  falling back to literal inference only when it is absent.
+- **`DataInterval(TIntoInt, 0, Units, Lapses)` — an explicit `Interval` of `0`** (new, **oracle-
+  observed but not reconciled**, `modemhangupendmodemhangup_1.CR6`: `DataInterval(0,0,Sec,10)`
+  inside a program with `Scan(60,Sec,0,0)`): the table's TDF `interval` comes out as `(60,0)`, not
+  `(0,0)` — i.e. an explicit `0` interval falls back to the program's own `Scan` interval, not to
+  the "no `DataInterval`" `(0,0)` rule §5 already documents for when the statement is absent
+  entirely. **Not implemented**: `tables.py` still emits `(0,0)` for this case, since resolving
+  "the" Scan interval requires knowing which `Scan`/`SubScan` block encloses the table's
+  `CallTable` (ambiguous with multiple `Scan`s, e.g. a main scan plus `SlowSequence`s) — out of
+  this implementation's current scope (`_build_data_table` has no access to the enclosing `Scan`).
+  Not observed in the `crbasic/` corpus (every real `DataInterval` there gives a nonzero
+  `Interval`).
+- **Single no-`DataInterval`/`DataEvent` auto table, alone in the program (§10's "Tables without
+  `DataInterval`" regime): exact sizes now known for 4 byte-widths, but no single `overhead`
+  reconciles them** (**oracle-confirmed**, experiments `event_2fp2`/`event_1ieee4`/`event_3fp2` in
+  addition to the doc's existing `#5`/`#49`/`#54`): `bytes_per_record → size` is exactly
+  `{2: 232674, 4: 209406, 6: 190368, 8: 174504}` (confirmed the total-*bytes* is what matters, not
+  field count: a 2-field `Sample`+`Sample` FP2 table and a 1-field `IEEE4` table, both 4 B/record,
+  give the identical `209,406`). An exhaustive search over integer `overhead` in `0..40` against
+  `records = floor(Pool2/(bytes+overhead))` finds **no** `Pool2` consistent with all four points
+  simultaneously (the doc's `overhead=16` fit was only ever checked pairwise) — `tables.py` uses
+  this table as an exact lookup for these four widths and the `overhead=16`/`Pool2=4,188,120`
+  formula only as a fallback for an unseen width.
