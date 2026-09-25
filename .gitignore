@@ -1,3 +1,4 @@
 .oracle-cache/
 __pycache__/
 .venv/
+difftest-*.json

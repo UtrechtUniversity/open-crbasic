@@ -1,0 +1,67 @@
+"""Logger profiles: the per-model data and conventions the compiler is parameterised by.
+
+Each profile names the directory of tables extracted from that model's compiler
+(`tools/extract_tables.py`) and the few output conventions that differ between models.
+"""
+
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass
+from functools import cached_property
+from pathlib import Path
+
+DATA = Path(__file__).resolve().parent / "data"
+
+
+@dataclass(frozen=True)
+class Profile:
+    name: str               # "cr6", "cr1000x", ...
+    display: str            # logger name as the exe prints it
+    version: str            # OS version string of the reference compiler
+    date: str               # build date string of the reference compiler
+    data_dir: Path
+    reports_mode: bool      # True: "Compiled in <X>Mode."; False: "Compiled OK."
+    exe_name: str           # reference compiler file name in compiler/
+
+    def _load(self, name: str) -> list[dict]:
+        return json.loads((self.data_dir / f"{name}.json").read_text())
+
+    @cached_property
+    def instructions(self) -> dict[str, dict]:
+        """Upper-case name -> record (with `id` = table index + 1)."""
+        rows = self._load("instructions")
+        return {r["name"].upper(): {**r, "id": r["index"] + 1} for r in rows}
+
+    @cached_property
+    def functions(self) -> dict[str, dict]:
+        return {r["name"].upper(): r for r in self._load("functions")}
+
+    @cached_property
+    def symbols(self) -> dict[str, dict]:
+        return {r["name"].upper(): r for r in self._load("symbols")}
+
+
+PROFILES = {
+    "cr6": Profile("cr6", "CR6", "CR6.14.2.0", "03/04/2025", DATA, True, "CR6Comp.exe"),
+    "cr1000x": Profile("cr1000x", "CR1000X", "CR1000X.8.2.0", "03/04/2025", DATA / "cr1000x", True,
+                       "cr1000xcomp.exe"),
+    "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
+                     "cr300comp.exe"),
+    "cr350": Profile("cr350", "CR350", "CR350.Std.1.07", "02/04/2025", DATA / "cr350", False,
+                     "cr350comp.exe"),
+}
+
+EXTENSIONS = {".cr6": "cr6", ".cr1x": "cr1000x", ".cr300": "cr300", ".cr350": "cr350"}
+
+
+def get(name: str) -> Profile:
+    try:
+        return PROFILES[name.lower()]
+    except KeyError:
+        raise ValueError(f"unknown logger {name!r}; choose from {', '.join(PROFILES)}") from None
+
+
+def for_file(path: Path, default: str = "cr6") -> Profile:
+    """Profile implied by a program's extension (`.CR6`, `.CR1X`, `.CR300`, `.CR350`)."""
+    return get(EXTENSIONS.get(path.suffix.lower(), default))
