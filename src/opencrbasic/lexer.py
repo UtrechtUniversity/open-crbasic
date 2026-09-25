@@ -28,6 +28,7 @@ _OPERATORS = [
     "+", "-", "*", "/", "\\", "^", "&",
     "=", "<", ">",
     "(", ")", ",", ".", ":", ";", "{", "}", "#",
+    "!", "@",  # pointer variables: `Type!` declarations, `!x` dereference, `@x` address-of
 ]
 # Sort by length desc so the regex alternation tries multi-char spellings first.
 _OPERATORS.sort(key=len, reverse=True)

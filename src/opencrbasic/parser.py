@@ -88,6 +88,18 @@ class _TokStream:
         t = self.peek()
         raise _ParseError(f"expected {text!r}, found {t.text or t.kind!r}")
 
+    def expect_close(self, text: str) -> Token:
+        """Like `expect_op`, but a `)`/`}` implicitly closes at end-of-line: CR6Comp accepts an
+        unclosed paren that runs off the end of a logical line, silently completing the call
+        right there (confirmed with the oracle: `Call Foo(1,2,3` with nothing further on the
+        line compiles; only a genuinely missing argument -- a trailing comma, `Call Foo(1,2,` --
+        is rejected, and even then as a semantic `Call argument required.`, not a parse error).
+        See docs/frontend.md.
+        """
+        if self.at_end():
+            return self.peek()
+        return self.expect_op(text)
+
     def expect_ident(self, upper: str | None = None) -> Token:
         t = self.peek()
         if t.kind == "IDENT" and (upper is None or t.upper == upper):
@@ -98,6 +110,50 @@ class _TokStream:
 
 def _eof_like(line: int) -> Token:
     return Token("EOF", "", "", 0, line)
+
+
+def _split_text_segments(text: str) -> list[str]:
+    """Split a logical line's raw text on top-level `:` (outside `(...)` and `"..."` strings),
+    without tokenising -- so a segment whose content isn't tokenisable CRBasic at all (a `Units`
+    label) can still be found and routed separately. Mirrors `_split_colon_segments`'s paren-depth
+    rule at the character level.
+    """
+    segments: list[str] = []
+    current: list[str] = []
+    depth = 0
+    in_string = False
+    i = 0
+    n = len(text)
+    while i < n:
+        ch = text[i]
+        if in_string:
+            current.append(ch)
+            if ch == '"':
+                if i + 1 < n and text[i + 1] == '"':
+                    current.append(text[i + 1])
+                    i += 2
+                    continue
+                in_string = False
+            i += 1
+            continue
+        if ch == '"':
+            in_string = True
+            current.append(ch)
+            i += 1
+            continue
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth = max(0, depth - 1)
+        if ch == ":" and depth == 0:
+            segments.append("".join(current))
+            current = []
+            i += 1
+            continue
+        current.append(ch)
+        i += 1
+    segments.append("".join(current))
+    return segments
 
 
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
@@ -134,6 +190,7 @@ class _Parser:
         self.env = consteval.Env(profile)
         self.cond_stack: list[_CondFrame] = []
         self.program = S.Program(name="")
+        self._done = False  # set once a top-level EndProg is seen; see `run()`
 
     # ------------------------------------------------------------ driver
 
@@ -152,6 +209,11 @@ class _Parser:
                 continue
             self.env.section = ll.section
             self._parse_line(ll)
+            if self._done:
+                # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
+                # the oracle: garbage (even unlexable text, even a second full program) after it
+                # compiles fine, because it is never looked at. See docs/frontend.md.
+                break
         self.program.consts = dict(self.env.consts)
         return self.program, self.diags
 
@@ -218,24 +280,36 @@ class _Parser:
     # ---------------------------------------------------------- one line
 
     def _parse_line(self, ll: source.LogicalLine) -> None:
-        if _LEADING_WORD_RE.match(ll.text) and _LEADING_WORD_RE.match(ll.text).group(1).upper() == "UNITS":
-            self.program.statements.append(self._parse_units_line(ll))
-            return
-        try:
-            tokens = lexer.tokenize(ll.text, ll.line)
-        except lexer.LexError as e:
-            self.program.statements.append(
-                S.Unparsed(ll.line, ll.file, text=ll.text, reason=f"lex error: {e.message}")
-            )
-            return
-        for seg in _split_colon_segments(tokens):
-            real = [t for t in seg if t.kind != "EOF"]
-            if not real:
+        # `Units`' label is free-form text, not tokenisable CRBasic (`%`, a raw ISO-8859-1 `deg`
+        # byte, ...), so a top-level (outside `(...)`/strings) `:` split happens at the character
+        # level first, and only a segment that isn't a `Units` statement gets tokenised at all
+        # (found by corpus testing -- `Public TC(120) : Units TC = C` -- see docs/frontend.md).
+        for seg_text_raw in _split_text_segments(ll.text):
+            if not seg_text_raw.strip():
                 continue
-            seg_text = self._segment_text(ll.text, real)
-            self.program.statements.append(self._parse_segment(seg, ll.line, ll.file, seg_text))
+            word = _LEADING_WORD_RE.match(seg_text_raw)
+            if word and word.group(1).upper() == "UNITS":
+                stmt = self._parse_units_segment(seg_text_raw, ll.line, ll.file)
+                self.program.statements.append(stmt)
+            else:
+                stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
+                self.program.statements.append(stmt)
             # A `Const` just parsed is folded into `self.env` inside `_parse_const` itself, so
             # later statements/#If on the same or a later line see it.
+            if isinstance(stmt, S.Instruction) and stmt.keyword == "ENDPROG":
+                self._done = True
+                return
+
+    def _parse_text_segment(self, seg_text_raw: str, line: int, file: str) -> S.Stmt:
+        try:
+            tokens = lexer.tokenize(seg_text_raw, line)
+        except lexer.LexError as e:
+            return S.Unparsed(line, file, text=seg_text_raw.strip(), reason=f"lex error: {e.message}")
+        real = [t for t in tokens if t.kind != "EOF"]
+        if not real:
+            return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
+        seg_text = self._segment_text(seg_text_raw, real)
+        return self._parse_segment(tokens, line, file, seg_text)
 
     @staticmethod
     def _segment_text(line_text: str, real_tokens: list[Token]) -> str:
@@ -269,6 +343,10 @@ class _Parser:
         if p.at_end():
             return None
         first = p.peek()
+        if first.kind == "OP" and first.text in ("!", "@"):
+            # `!ptr = ...`: a pointer dereference used as an assignment target (see
+            # docs/frontend.md; pointervariable_3.CR6).
+            return self._parse_assignment_or_call(p, line, file)
         if first.kind != "IDENT":
             raise _ParseError(
                 f"statement does not start with an identifier (found {first.text or first.kind!r})"
@@ -295,10 +373,11 @@ class _Parser:
         if kw == "ALIAS":
             return self._parse_alias(p, line, file)
         if kw == "UNITS":
-            # Normally intercepted in `_parse_line` before tokenisation (see
-            # `_parse_units_line`); reached here only when `Units` isn't the first word of the
-            # logical line (e.g. after a `:`), which no corpus program does.
-            raise _ParseError("Units combined with another statement on one line is not supported")
+            # `_parse_line` intercepts every top-level `:`-segment starting with `Units` before
+            # tokenising it (see `_parse_units_segment`); reached here only for a `Units` nested
+            # inside something already tokenised, such as an inline `If`'s then-clause, which is
+            # not a real CRBasic pattern.
+            raise _ParseError("Units nested inside another statement is not supported")
         if kw == "CALL":
             return self._parse_call(p, line, file)
         if kw in self.profile.instructions:
@@ -311,6 +390,11 @@ class _Parser:
         if p.is_op("("):
             p.next()
             args = self._parse_arglist(p, ")", line, file)
+        elif p.is_op("="):
+            # A handful of instructions (`StationName=Value`) take `=Value` instead of an
+            # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
+            p.next()
+            args = self._parse_bare_arglist(p, line, file)
         elif not p.at_end():
             args = self._parse_bare_arglist(p, line, file)
         return S.Instruction(line, file, keyword=kw, args=args)
@@ -346,6 +430,23 @@ class _Parser:
                 base_op = op_tok.text[0]
                 value = S.Binary(op_tok.line, file, base_op, target, value)
             return S.Assignment(line, file, target=target, value=value)
+        if isinstance(target, S.Name) and p.is_ident("AS"):
+            # A StructureType member declaration (`Frequency As Float`, no Public/Dim prefix):
+            # confirmed valid CRBasic inside StructureType...EndStructureType by corpus testing
+            # (structuretype_1.CR6); see docs/frontend.md. Reuses `Declaration`/`VarDecl` with a
+            # distinct `kind` rather than adding a new node.
+            p.next()  # AS
+            type_tok = p.expect_ident()
+            vtype = type_tok.upper
+            if p.is_op("!"):
+                p.next()  # pointer type (see docs/frontend.md)
+                vtype += "!"
+            strsize = None
+            if vtype == "STRING" and p.is_op("*"):
+                p.next()
+                strsize = self._parse_expr(p, line, file)
+            var = S.VarDecl(name=target.name, dims=[], type=vtype, string_size=strsize, init=None)
+            return S.Declaration(line, file, kind="STRUCTUREMEMBER", vars=[var])
         if isinstance(target, S.Name):
             return S.Call(line, file, name=target.name, args=[], explicit=False)
         if isinstance(target, S.Index):
@@ -357,7 +458,13 @@ class _Parser:
     def _parse_if(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # IF
         cond = self._parse_expr(p, line, file)
-        p.expect_ident("THEN")
+        if p.is_ident("THEN"):
+            p.next()
+        elif not p.at_end():
+            # Block-form `If` may omit `Then` entirely (confirmed with the oracle: `If Flag` /
+            # `EndIf` compiles) -- but inline form (something follows on the line) still needs
+            # it, so only tolerate the omission when nothing follows. See docs/frontend.md.
+            raise _ParseError(f"expected THEN, found {p.peek().text or p.peek().kind!r}")
         if p.at_end():
             return S.If(line, file, cond=cond, inline=None, inline_else=None)
         rest = [t for t in p.remaining() if t.kind != "EOF"]
@@ -468,12 +575,15 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     params.append(self._parse_param(p, line, file))
-            p.expect_op(")")
+            p.expect_close(")")
         return_type = None
         if which == "FUNCTION" and p.is_ident("AS"):
             p.next()
             type_tok = p.expect_ident()
             return_type = type_tok.upper
+            if p.is_op("!"):
+                p.next()  # pointer type (see docs/frontend.md)
+                return_type += "!"
             if return_type == "STRING" and p.is_op("*"):
                 p.next()
                 self._parse_expr(p, line, file)  # size; SubDef has no slot for it (see docs/frontend.md)
@@ -492,7 +602,7 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     self._parse_expr(p, line, file)
-            p.expect_op(")")
+            p.expect_close(")")
             dims = 1
         vtype = None
         strsize = None
@@ -500,6 +610,9 @@ class _Parser:
             p.next()
             type_tok = p.expect_ident()
             vtype = type_tok.upper
+            if p.is_op("!"):
+                p.next()  # pointer type (see docs/frontend.md)
+                vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 p.next()
                 strsize = self._parse_expr(p, line, file)
@@ -520,6 +633,9 @@ class _Parser:
             p.next()
             type_tok = p.expect_ident()
             vtype = type_tok.upper
+            if p.is_op("!"):
+                p.next()  # pointer type (see docs/frontend.md)
+                vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 p.next()
                 self._parse_expr(p, line, file)
@@ -542,6 +658,11 @@ class _Parser:
         vars_ = [self._parse_vardecl(p, line, file)]
         while p.is_op(","):
             p.next()
+            if p.at_end():
+                # A trailing comma that runs off the end of the line: confirmed valid CRBasic
+                # (stddevrun_3.CR6, `Public Counter As Long,` with nothing further) -- tolerated
+                # the same way as an unclosed paren (`expect_close`). See docs/frontend.md.
+                break
             vars_.append(self._parse_vardecl(p, line, file))
         return S.Declaration(line, file, kind=kind, vars=vars_)
 
@@ -555,16 +676,30 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     dims.append(self._parse_expr(p, line, file))
-            p.expect_op(")")
+            p.expect_close(")")
         vtype = None
         strsize = None
         if p.is_ident("AS"):
             p.next()
             type_tok = p.expect_ident()
             vtype = type_tok.upper
+            if p.is_op("!"):
+                p.next()  # pointer type (see docs/frontend.md)
+                vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
                 p.next()
                 strsize = self._parse_expr(p, line, file)
+            elif not dims and p.is_op("("):
+                # `Public floatArr As Float(5) = {...}`: the dimension can follow the type
+                # instead of the variable name. Confirmed valid CRBasic by corpus testing
+                # (pointervariable_1.CR6); see docs/frontend.md.
+                p.next()
+                if not p.is_op(")"):
+                    dims.append(self._parse_expr(p, line, file))
+                    while p.is_op(","):
+                        p.next()
+                        dims.append(self._parse_expr(p, line, file))
+                p.expect_close(")")
         init = None
         if p.is_op("="):
             p.next()
@@ -584,35 +719,32 @@ class _Parser:
             rhs.append(self._parse_expr(p, line, file))
         return S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
 
-    def _parse_units_line(self, ll: source.LogicalLine) -> S.Stmt:
-        """`Units` is handled before general tokenisation: `UnitLabel` is free-form text, not an
-        expression (`Units Acclima_BulkEC()=uS/cm`, `Units Acclima_VWC()=%` -- `%` is not even a
-        valid CRBasic token), so the label is taken verbatim from the source line rather than
-        lexed (found by corpus testing; see docs/frontend.md). Only fires when `Units` is the
-        first word of the logical line (no evidence in the corpus of `Units` combined with other
-        statements via `:`).
+    def _parse_units_segment(self, seg_text: str, line: int, file: str) -> S.Stmt:
+        """`Units` is handled before general tokenisation of its segment: `UnitLabel` is
+        free-form text, not an expression (`Units Acclima_BulkEC()=uS/cm`, `Units
+        Acclima_VWC()=%` -- `%` is not even a valid CRBasic token, and some real labels carry a
+        raw ISO-8859-1 byte, e.g. a degree sign), so the label is taken verbatim from the source
+        text rather than lexed (found by corpus testing; see docs/frontend.md).
         """
-        text = ll.text
-        eq = text.find("=")
+        eq = seg_text.find("=")
         if eq == -1:
-            return S.Unparsed(ll.line, ll.file, text=text.strip(), reason="Units without '='")
-        lhs_text, label = text[:eq], text[eq + 1:].strip()
+            return S.Unparsed(line, file, text=seg_text.strip(), reason="Units without '='")
+        lhs_text, label = seg_text[:eq], seg_text[eq + 1:].strip()
         try:
-            lhs_tokens = lexer.tokenize(lhs_text, ll.line)
+            lhs_tokens = lexer.tokenize(lhs_text, line)
         except lexer.LexError as e:
-            return S.Unparsed(ll.line, ll.file, text=text.strip(),
+            return S.Unparsed(line, file, text=seg_text.strip(),
                                reason=f"lex error in Units target: {e.message}")
         p = _TokStream(lhs_tokens)
         try:
             p.expect_ident("UNITS")
-            lhs = self._parse_atom(p, ll.line, ll.file)
+            lhs = self._parse_atom(p, line, file)
             if not p.at_end():
                 raise _ParseError("unexpected trailing input in Units target")
         except _ParseError as e:
-            return S.Unparsed(ll.line, ll.file, text=text.strip(), reason=str(e))
-        stmt = S.Instruction(ll.line, ll.file, keyword="UNITS",
-                              args=[lhs, S.String(ll.line, ll.file, label)])
-        stmt.text = text.strip()
+            return S.Unparsed(line, file, text=seg_text.strip(), reason=str(e))
+        stmt = S.Instruction(line, file, keyword="UNITS", args=[lhs, S.String(line, file, label)])
+        stmt.text = seg_text.strip()
         return stmt
 
     # ------------------------------------------------------- expressions
@@ -698,12 +830,32 @@ class _Parser:
         left = self._parse_atom(p, line, file)
         while p.peek().kind == "OP" and p.peek().text == "^":
             p.next()
-            right = self._parse_unary(p, line, file)
+            # The right operand must NOT recurse into `_parse_unary` -> `_parse_power`: that
+            # would let it swallow a *chain* of further `^`, making `^` effectively
+            # right-associative. `^` is left-associative (confirmed with the oracle: `2^3^2 =
+            # 64`, not 512 -- see docs/frontend.md), so the right operand is just a single
+            # (optionally signed) atom; the enclosing `while` loop handles the chaining.
+            right = self._parse_power_operand(p, line, file)
             left = S.Binary(line, file, "^", left, right)
         return left
 
+    def _parse_power_operand(self, p: _TokStream, line: int, file: str) -> S.Expr:
+        if p.peek().kind == "OP" and p.peek().text in ("-", "+"):
+            tok = p.next()
+            operand = self._parse_power_operand(p, line, file)
+            return S.Unary(tok.line, file, tok.text, operand)
+        return self._parse_atom(p, line, file)
+
     def _parse_atom(self, p: _TokStream, line: int, file: str) -> S.Expr:
         tok = p.peek()
+        if tok.kind == "OP" and tok.text in ("!", "@"):
+            # Pointer variables: `!x` dereferences (also valid as an assignment target -- `!val1
+            # = !val2` -- so this is handled at atom level, not just as a read-only unary op),
+            # `@x` takes the address of `x`. Confirmed valid CRBasic by corpus testing
+            # (pointervariable_1.CR6, pointervariable_3.CR6); see docs/frontend.md.
+            p.next()
+            operand = self._parse_atom(p, line, file)
+            return S.Unary(tok.line, file, tok.text, operand)
         if tok.kind == "NUMBER":
             p.next()
             return S.Number(tok.line, file, tok.value, tok.text)
@@ -713,7 +865,7 @@ class _Parser:
         if tok.kind == "OP" and tok.text == "(":
             p.next()
             e = self._parse_expr(p, line, file)
-            p.expect_op(")")
+            p.expect_close(")")
             return e
         if tok.kind == "OP" and tok.text == "{":
             p.next()
@@ -723,7 +875,7 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     items.append(self._parse_expr(p, line, file))
-            p.expect_op("}")
+            p.expect_close("}")
             return S.ArrayLiteral(tok.line, file, items)
         if tok.kind == "IDENT":
             p.next()
@@ -748,8 +900,10 @@ class _Parser:
         if p.is_op(close):
             p.next()
             return args
+        if p.at_end():
+            return args  # implicit close at end-of-line; see `expect_close`
         while True:
-            if p.peek().kind == "OP" and p.peek().text in (",", close):
+            if p.at_end() or (p.peek().kind == "OP" and p.peek().text in (",", close)):
                 args.append(None)
             else:
                 args.append(self._parse_expr(p, line, file))
@@ -757,7 +911,7 @@ class _Parser:
                 p.next()
                 continue
             break
-        p.expect_op(close)
+        p.expect_close(close)
         return args
 
     def _parse_bare_arglist(self, p: _TokStream, line: int, file: str) -> list[S.Expr | None]:
