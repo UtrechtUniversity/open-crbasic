@@ -132,9 +132,10 @@ def function_table(img: Image) -> list[dict]:
 
 
 def symbol_table(img: Image) -> list[dict]:
-    """52-byte records {char name[40]; float value; int value; int extra}."""
-    stride = 0x34
+    """Records {char name[40]; float value; int value; int extra; ...}: 52 bytes on CR6/CR1000X,
+    64 bytes on CR300/CR350. The stride is measured between the adjacent `SCAN` and `SUBSCAN`."""
     anchor = find_string(img, "SUBSCAN")
+    stride = anchor - img.d.rfind(b"\0SCAN\0", 0, anchor) - 1
 
     def name(off: int) -> str | None:
         raw = img.d[off:off + 36]
@@ -156,16 +157,18 @@ def symbol_table(img: Image) -> list[dict]:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--exe", type=Path, default=Path(os.environ.get("CR6COMP_EXE", DEFAULT_EXE)))
+    parser.add_argument("--out", type=Path, default=DATA, help="output directory (default: package data)")
     args = parser.parse_args()
     img = Image(args.exe)
-    DATA.mkdir(parents=True, exist_ok=True)
+    out = args.out
+    out.mkdir(parents=True, exist_ok=True)
     outputs = {
         "instructions.json": instruction_table(img),
         "functions.json": function_table(img),
         "symbols.json": symbol_table(img),
     }
     for name, rows in outputs.items():
-        (DATA / name).write_text(json.dumps(rows, indent=1) + "\n")
+        (out / name).write_text(json.dumps(rows, indent=1) + "\n")
         print(f"{name}: {len(rows)} records")
     return 0
 

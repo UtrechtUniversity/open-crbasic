@@ -33,6 +33,10 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   re-serialises it byte-identically. Status table fields depend on the program (slow sequences);
   auto-allocated table sizes (`-1`) come from a memory-allocation rule not yet decoded.
 
+- 2026-09-25: branch rebased onto `add-compilers` (CR1000X, CR300, CR350 and other compilers).
+  All three stretch targets run under Wine. `extract_tables.py` generalised (symbol record stride
+  52 or 64 bytes) and per-logger data extracted to `data/cr1000x|cr300|cr350/`.
+
 ## Next steps
 
 1. Finish CLI option map (`docs/cli.md`) from decompilation.

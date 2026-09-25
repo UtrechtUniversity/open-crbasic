@@ -26,6 +26,22 @@ are in `docs/`. If work stops mid-way, resume from `PROGRESS.md` -> "Next steps"
   as `mV5000`, `ComC1`, `TypeT`). These are extracted by `tools/extract_tables.py` into
   `src/opencrbasic/data/`.
 
+## Target loggers
+
+Primary: CR6 (`CR6Comp.exe`). Stretch (human request 2026-09-25): CR1000X, CR300, CR350, whose
+compilers are in `compiler/` on the `add-compilers` branch (`cr1000xcomp.exe` CR1000X.8.2.0,
+`cr300comp.exe` CR300.Std.11.02, `cr350comp.exe` CR350.Std.1.07; also Granite 6/9/10 and legacy
+CR1000/CR3000/CR800/CR9000X/CR5000 compilers, out of scope). All share the language front end and
+the table-driven design; they differ in instruction set, predefined symbols (terminals, COM
+ports, ranges), parameter type codes of some instructions, and output conventions (CR300/CR350
+print `<file> -- Compiled OK.` instead of a mode). The implementation therefore takes a *logger
+profile*: `data/<logger>/{instructions,functions,symbols}.json` extracted from each exe by
+`tools/extract_tables.py --exe ... --out ...`, plus a small hand-written profile module
+(terminal model, messages that differ). CR6 data currently sits at `data/` root and moves to
+`data/cr6/` once the first front end lands. Differences measured 2026-09-25: CR1000X vs CR6
+share 402 instructions and all 134 functions (CR1000X adds `SWVX`, C5-C8, P1/P2, VX1-VX4);
+CR300/CR350 share 240 instructions with the CR6, 23-24 of them with different signatures.
+
 ## Approach
 
 1. **Oracle first.** Wine runs the real exe (`tools/oracle.py`, cached by content hash). Every
