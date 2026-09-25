@@ -36,10 +36,10 @@ _OP_RE = re.compile("|".join(re.escape(op) for op in _OPERATORS))
 _IDENT_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?")
 _HEX_RE = re.compile(r"&[Hh][0-9A-Fa-f]+")
 _BIN_RE = re.compile(r"&[Bb][01]+")
-# Exponent / decimal point are both optional; `_NUMBER_RE` requires at least one digit before
-# any decimal point (CRBasic examples never write a bare `.5`, and the compiler's own lexer
-# treats a leading `.` as an operator token, so we do not special-case it).
-_NUMBER_RE = re.compile(r"\d+(\.\d+)?([Ee][+-]?\d+)?")
+# Exponent is optional; the decimal point may lead with no integer part (`.111111`, confirmed
+# valid CRBasic by corpus testing -- addprecise_1.CR6 -- see docs/frontend.md) or have no
+# fractional part at all.
+_NUMBER_RE = re.compile(r"(\d+\.\d*|\.\d+|\d+)([Ee][+-]?\d+)?")
 
 KEYWORD_KINDS = {"IDENT"}
 
@@ -105,7 +105,7 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
             tokens.append(Token("NUMBER", raw, raw.upper(), i, line, _number_value(raw)))
             i = m.end()
             continue
-        if ch.isdigit():
+        if ch.isdigit() or (ch == "." and i + 1 < n and text[i + 1].isdigit()):
             m = _NUMBER_RE.match(text, i)
             raw = m.group(0)
             tokens.append(Token("NUMBER", raw, raw, i, line, _number_value(raw)))
