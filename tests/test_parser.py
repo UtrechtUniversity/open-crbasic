@@ -369,6 +369,49 @@ def test_endprog_stops_parsing():
     assert [type(s).__name__ for s in prog.statements] == ["Declaration", "Instruction", "Instruction"]
 
 
+# ------------------------------------------------------------------ line-wrapped declarations
+# (`docs/checker.md` "`Public`/`Dim` with no name at all" / "`Units`/`Const`/`Alias` truncated"):
+# a CHM corpus example wrapped a declaration's own required content onto the next physical line
+# with no `_` continuation. The checker (`structure.py`) turns these into specific messages;
+# these tests only cover the parser's own shape.
+
+
+def test_public_with_nothing_following_is_an_empty_declaration():
+    d = one("Public\n")
+    assert isinstance(d, S.Declaration) and d.kind == "PUBLIC" and d.vars == []
+
+
+def test_dim_with_nothing_following_is_an_empty_declaration():
+    d = one("Dim\n")
+    assert isinstance(d, S.Declaration) and d.kind == "DIM" and d.vars == []
+
+
+def test_const_with_nothing_following_is_unparsed_with_specific_reason():
+    prog, diags = parse("Const\n")
+    (s,) = prog.statements
+    assert isinstance(s, S.Unparsed) and s.reason == "Const without '='"
+
+
+def test_const_truncated_after_as_is_the_same_reason():
+    # `sprintf_4.CR6`: `Const ToAddr As` / `String = "..."` -- truncated further into the grammar,
+    # same message either way (oracle-confirmed, `docs/checker.md`).
+    prog, diags = parse("Const ToAddr As\n")
+    (s,) = prog.statements
+    assert isinstance(s, S.Unparsed) and s.reason == "Const without '='"
+
+
+def test_alias_with_nothing_following_is_unparsed_with_specific_reason():
+    prog, diags = parse("Alias\n")
+    (s,) = prog.statements
+    assert isinstance(s, S.Unparsed) and s.reason == "Alias without '='"
+
+
+def test_alias_target_present_but_no_eq_is_the_same_reason():
+    prog, diags = parse("Alias rTime(1)\n")
+    (s,) = prog.statements
+    assert isinstance(s, S.Unparsed) and s.reason == "Alias without '='"
+
+
 # ------------------------------------------------------------------ conditional compilation
 
 

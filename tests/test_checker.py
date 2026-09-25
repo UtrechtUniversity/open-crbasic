@@ -96,6 +96,82 @@ def test_known_parser_gap_is_not_flagged():
     assert result.diagnostics.errors == []
 
 
+def test_echo_preserves_leading_indentation_and_is_not_trimmed():
+    # round 2: the real compiler's echo is the raw physical-line text, comment-stripped only
+    # (`udpsocketopen_1.CR6` etc., `docs/checker.md` "Verbatim echo text") -- not the token-trimmed
+    # text an earlier version of `parser.py`'s `_segment_text` produced.
+    result = compile_text(wrapped("    ThisIsBogus stuff here\n"))
+    assert "Invalid, or out of place expression:     ThisIsBogus stuff here." in messages_of(result)
+
+
+def test_public_with_no_name_reports_variable_not_named():
+    # `docs/checker.md` "`Public`/`Dim` with no name at all": a CHM line-wrap shape (`Public` /
+    # `Y, Z` split across two physical lines with no `_` continuation).
+    result = compile_text("Public\nY, Z\n" + wrapped(""))
+    assert "Variable not named." in messages_of(result)
+
+
+def test_public_with_no_name_suppresses_only_the_next_line():
+    result = compile_text("Public\nY, Z\n" + wrapped(""))
+    msgs = messages_of(result)
+    assert msgs == ["Variable not named."]  # the stranded "Y, Z" line is not separately reported
+
+
+def test_units_without_eq():
+    result = compile_text("Public X As Float\nUnits\nX = Volts\n" + wrapped(""))
+    assert "Need '=' in units definition: ." in messages_of(result)
+
+
+def test_const_without_eq():
+    result = compile_text("Const\nPI = 3.14159\n" + wrapped(""))
+    assert "Const with no assignment." in messages_of(result)
+
+
+def test_alias_without_eq():
+    result = compile_text("Public X As Float\nAlias\nX = Y\n" + wrapped(""))
+    assert "Need '=' in alias definition: ." in messages_of(result)
+
+
+# ------------------------------------------------------------------ instr_rules.py
+
+
+def test_missing_required_parameter():
+    # `docs/checker.md` "Required parameter missing": `Battery` (`params=[8]`) with no argument at
+    # all -- oracle-confirmed (`docs/type-codes.md` section 3).
+    result = compile_text(wrapped("    Battery\n"))
+    assert "Invalid or missing parameter." in messages_of(result)
+
+
+def test_bare_do_loop_is_not_flagged_as_missing_parameter():
+    # code 4 (`Do`/`Loop`'s own optional `While`/`Until` marker) is exempt: `_TOLERANT_CODES`.
+    result = compile_text(wrapped("    Do\n      X = 1\n    Loop\n"))
+    assert result.diagnostics.errors == []
+
+
+def test_bare_endsub_is_not_flagged_as_missing_parameter():
+    # code 14 (`EndSub`'s own `none`-kind marker) is not a real argument slot: `_real_params`.
+    text = "Public X As Float\nSub MySub()\nEndSub\n" + wrapped("")
+    result = compile_text(text)
+    assert result.diagnostics.errors == []
+
+
+def test_channel_check_suppressed_when_file_has_an_earlier_pass1_error():
+    # `docs/checker.md` "Two-pass compilation": pass 2 (the channel-range check) never runs once
+    # pass 1 recorded any error anywhere in the file.
+    text = wrapped(
+        "    ExciteV (Vx1,2500,0)\n"
+        "    TCDiff (X,1,mv200C,1,TypeT,X,True,0,15000,1.0,0)\n"
+    )
+    msgs = messages_of(compile_text(text))
+    assert "Invalid symbol in expression: Vx1." in msgs
+    assert "Invalid channel 1, must use U1..U12." not in msgs
+
+
+def test_channel_check_runs_when_file_is_otherwise_clean():
+    result = compile_text(wrapped("    TCDiff (X,1,mv200C,1,TypeT,X,True,0,15000,1.0,0)\n"))
+    assert "Invalid channel 1, must use U1..U12." in messages_of(result)
+
+
 # ------------------------------------------------------------------ expressions.py
 
 

@@ -18,12 +18,42 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 | 0 Oracle + corpus | done: `tools/oracle.py` (cached Wine runs, any compiler exe), `tools/difftest.py` (ours vs real, per logger), 507 CHM examples in `tests/corpus/chm/` (many deliberately or accidentally invalid: they exercise error paths); cache warmed for CR6, CR1000X, CR300, CR350 |
 | 1 Binary RE | in progress: CLI decoded (`docs/cli.md`); instruction/function/symbol tables extracted (`tools/extract_tables.py`, `docs/binary.md`); message catalogue (`docs/messages.tsv`); TDF format decoded and round-tripped (`src/opencrbasic/tdf.py`); parameter type codes (`docs/type-codes.md`, `data/type_codes.json`); mode rule (`docs/modes.md`); table-definition rules (`docs/tdf-rules.md`). Pass-1 doc agent was cancelled; its findings are covered by `docs/frontend.md` and `docs/type-codes.md` |
 | 2 Front end | done: `lexer.py`, `source.py`, `consteval.py`, `parser.py` written; minimal `checker.py` placeholder (mode.py only) so `python3 -m opencrbasic` runs end to end; `docs/frontend.md` records verified quirks. 825 unit/corpus tests pass (`cd opencrbasic && python3 -m pytest -q`); all 15 `crbasic/*.CR6` entry programs and 196/198 oracle-accepted CHM examples parse with zero `Unparsed` (2 known, documented gaps: a doc typo, an SNMP OID literal). |
-| 3 Checker | in progress: `checker/` package (`structure.py` block matching/placement, `expressions.py` narrow undefined-symbol check, `instructions.py` `U1..U12` channel range, `warnings.py` table-never-called, `symbols.py`), rules and oracle evidence in `docs/checker.md`. `tools/difftest.py --logger cr6`: `crbasic/` 16/16 exact; `examples/` 0 exact, 2 verdict, 2 mismatch; `chm` 268 exact, 229 verdict, 10 mismatch (was 198/0/309) |
+| 3 Checker | in progress: `checker/` package (`structure.py` block matching/placement + placement-before-BeginProg + declaration/Units/Const/Alias line-wrap messages, `expressions.py` narrow undefined-symbol check, `instr_rules.py` required-parameter-count check, `instructions.py` `U1..U12` channel range (now gated to pass 2 only, see below), `warnings.py` table-never-called, `symbols.py`), rules and oracle evidence in `docs/checker.md`. Round 2 found the real compiler is two-pass (pass 2 semantic checks only run when pass 1 found nothing wrong anywhere in the file) and that echoed source text is verbatim (leading indentation/trailing whitespace preserved, not trimmed) -- both documented in `docs/checker.md`. `tools/difftest.py --logger cr6`: `crbasic/` 16/16 exact; `examples/` 0 exact, 2 verdict, 2 mismatch; `chm` 310 exact, 188 verdict, 9 mismatch (round 1: 268/229/10; round 1 start: 198/0/309) |
 | 4 Fuzzing | not started |
 | 5 Outputs | in progress: mode decision matches the reference on all 16 crbasic programs; `-l` table list byte-identical 16/16; `-z` TDF byte-identical 8/16 (rest differ only in auto-allocated sizes, mixed regime — agent working); CHM sample TDF 72%, table list 77% (`tools/tdftest.py`) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-25 (checker round 2): resumed the phase-3 checker (previous session's own summary is the
+  "later still" entry below). Grouped the CR6 corpus's remaining `verdict`/`mismatch` cases by the
+  real compiler's own first message and worked the largest groups. Two architectural findings drove
+  most of it, both written up in `docs/checker.md`: (1) `CR6Comp.exe` compiles in two passes --
+  pass 2 (semantic/value checks, e.g. `instructions.py`'s channel-range check) only runs when
+  pass 1 (parsing + symbol resolution) found nothing wrong *anywhere in the file*, oracle-confirmed
+  by placing an unrelated pass-1 error both before and after an otherwise-invalid channel argument
+  in a scratch probe; `checker/__init__.py` now gates `instructions.check` accordingly (a
+  wiring-only change, `instructions.py` itself untouched) -- this alone fixed the largest single
+  chunk of remaining diffs and also surfaced a likely latent bug in `instructions.py`'s own
+  `VoltSe`/`VoltDiff` channel-range entries, documented but left for the owning workstream.
+  (2) The real compiler's "echo the statement's own text" messages are the *raw* source line,
+  comment-stripped only -- leading indentation and trailing whitespace both preserved, not trimmed
+  as this checker previously assumed; fixed in `parser.py`'s `_segment_text`. New rules: a
+  required-parameter-count check (`checker/instr_rules.py`, new file, not
+  `checker/instructions.py`); `Public`/`Dim`/`Units`/`Const`/`Alias` each truncated mid-declaration
+  across a CHM line-wrap now get their own correct message instead of the generic fallback
+  (`structure.py`, `parser.py`). `tools/difftest.py --logger cr6`: `chm` 268/229/10 ->
+  **310/188/9** (exact/verdict/mismatch); `crbasic/` stayed 16/16 exact throughout; re-verified
+  after every change that every program the real compiler accepts (`their_exit == 0`) is `exact`
+  for us, zero exceptions. Remaining top categories, all lower-value/higher-risk and deliberately
+  not chased further this round (see `docs/checker.md` "Open questions"): the same "one diagnostic,
+  then silence for the rest of the file" behaviour now confirmed broader than "before `BeginProg`"
+  with still no discriminator found; a built-in-function-name/prose collision
+  (`Expression expects ( : %s.`) whose naive fix would misfire because `data/functions.json`
+  contains non-function entries (`AND`, `IS`, `TO`); a handful of single-instance
+  instruction-specific checks. `python3 -m pytest -q`: 868 -> 915 passed (17 new unit tests for the
+  rules above in `test_checker.py`/`test_parser.py`, the rest from corpus-driven cases that now
+  pass), 0 failed, throughout.
 
 - 2026-09-25 (multi-logger): CR1000X/CR300/CR350 support (`PLAN.md` "Target loggers"): per-logger
   checker lookups (`checker/terminals.py` + `data/<logger>/terminals.json` replace the CR6-only
