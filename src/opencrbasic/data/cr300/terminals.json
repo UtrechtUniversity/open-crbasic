@@ -1,0 +1,44 @@
+{
+ "channels": {
+  "diff_chan": {
+   "min": 1,
+   "max": 3,
+   "transform": "none",
+   "skip_nonpositive": true,
+   "message": "Channel {v} exceeds number of valid channels."
+  },
+  "se_chan": {
+   "min": 1,
+   "max": 6,
+   "transform": "none",
+   "skip_nonpositive": true,
+   "message": "Channel {v} exceeds number of valid channels."
+  }
+ },
+ "instructions": {
+  "TCDIFF": [
+   [
+    4,
+    "diff_chan"
+   ]
+  ],
+  "TCSE": [
+   [
+    4,
+    "se_chan"
+   ]
+  ],
+  "VOLTSE": [
+   [
+    4,
+    "se_chan"
+   ]
+  ],
+  "VOLTDIFF": [
+   [
+    4,
+    "diff_chan"
+   ]
+  ]
+ }
+}

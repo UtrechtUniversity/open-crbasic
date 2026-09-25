@@ -22,6 +22,19 @@ _KNOWN_PARSER_GAP_REASONS = (
 # `Unparsed.reason` values that never denote real statement content (nothing to echo or reject).
 _BENIGN_REASONS = ("empty statement",)
 
+# `parser.py`'s `_parse_units_segment` reason for a `Units` segment with no `=` at all (most often
+# a CHM corpus example that wrapped `Units Var = Label` across two physical lines with no `_`
+# continuation, `Units` alone on its own line -- `am25t_1.CR6` etc., `docs/checker.md`).
+_UNITS_WITHOUT_EQ = "Units without '='"
+
+# `parser.py`'s `_parse_const`/`_parse_alias` reasons for the same CHM line-wrap shape applied to
+# `Const`/`Alias` (`docs/checker.md`): `Const` never echoes any trailing text (`Const with no
+# assignment.` is a fixed string, oracle-confirmed on both a fully empty `Const` and one truncated
+# partway through its own grammar, `rectpolar_1.CR6`/`sprintf_4.CR6`); `Alias` echoes an (always
+# empty, in this session's evidence) trailing target, like `Units`.
+_CONST_WITHOUT_EQ = "Const without '='"
+_ALIAS_WITHOUT_EQ = "Alias without '='"
+
 
 def _keyword(stmt: S.Stmt) -> str:
     if isinstance(stmt, S.Instruction):
@@ -49,12 +62,22 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     scan_depth = 0
     cond_depth = 0
     last_line = program.statements[-1].line if program.statements else 1
+    # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
+    # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
+    suppress_line: int | None = None
 
     for stmt in program.statements:
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
 
-        if isinstance(stmt, S.Call):
+        fire_suppress = suppress_line is not None and stmt.line == suppress_line
+        suppress_line = None
+
+        if isinstance(stmt, S.Declaration) and not stmt.vars and stmt.kind in ("PUBLIC", "DIM"):
+            suppress_line = _check_declaration(stmt, diags)
+        elif fire_suppress:
+            pass
+        elif isinstance(stmt, S.Call):
             _check_call(stmt, subs, profile, diags)
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed(stmt, diags)
@@ -103,7 +126,51 @@ def _check_call(stmt: S.Call, subs: set[str], profile, diags: Diagnostics) -> No
     diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file)
 
 
+def _check_declaration(stmt: S.Declaration, diags: Diagnostics) -> int:
+    """A `Public`/`Dim` with nothing at all following on its own physical line (`parser.py`'s
+    `_parse_declaration` models this as an empty `vars` list rather than raising a parse error).
+    Oracle-confirmed (`docs/checker.md`): the real compiler's declaration parser reports `Variable
+    not named.` right at the keyword's own line -- most CHM corpus instances are a name list
+    wrapped onto the next physical line with no `_` continuation (`log10_1.CR6`: `Public` /
+    `Number, B, Log10ofNumber, LogBofNumber`).
+
+    Returns the line number of the statement immediately following this one to suppress: every
+    corpus instance of this shape also has the real compiler saying nothing at all about that next
+    physical line (the stranded name list), even though it independently fails to parse as a valid
+    statement -- consistent across every sample this session checked, including ones with several
+    consecutive nameless `Public`s (`getdatarecord_3.CR6`) and ones where the file's compile
+    otherwise continues normally afterward (`cdmresistance_1.CR6`), so this is modelled as "this
+    one specific next line is silent", not the broader (and only sometimes correct, `docs/
+    checker.md`'s "before BeginProg" section) "the whole file stops" behaviour.
+    """
+    diags.error(stmt.line, "Variable not named.", stmt.file)
+    return stmt.line + 1
+
+
+def _after_keyword(stmt: S.Unparsed) -> str:
+    """`stmt.text` (the raw, unstripped physical-line text, `parser.py`'s `_segment_text`) with
+    its own leading whitespace and 5-letter keyword (`Units`/`Const`/`Alias`, all coincidentally
+    5 characters) removed -- the echoed trailing text these "ran off the end of the line" messages
+    share (empty in every corpus instance this session found)."""
+    return stmt.text.lstrip()[5:].strip()
+
+
 def _check_unparsed(stmt: S.Unparsed, diags: Diagnostics) -> None:
     if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
+        return
+    if stmt.reason == _UNITS_WITHOUT_EQ:
+        # `Units`'s own sub-parser reports this (not the generic fallback). `docs/frontend.md`'s
+        # `Units X =` experiment shows the *paired* message ("Nothing after '=' in units
+        # definition: %s.", not implemented here, no corpus evidence for it) uses the same echo
+        # shape.
+        diags.error(stmt.line, f"Need '=' in units definition: {_after_keyword(stmt)}.", stmt.file)
+        return
+    if stmt.reason == _CONST_WITHOUT_EQ:
+        diags.error(stmt.line, "Const with no assignment.", stmt.file)
+        return
+    if stmt.reason == _ALIAS_WITHOUT_EQ:
+        # See `parser.py`'s `_parse_alias` for the one known-imprecise sub-case (a target present
+        # but no `=`) this doesn't try to echo exactly.
+        diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}.", stmt.file)
         return
     diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file)

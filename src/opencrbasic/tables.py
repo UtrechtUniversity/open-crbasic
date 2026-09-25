@@ -49,9 +49,18 @@ _EVENT_ALONE_POOL2 = 4_188_120
 # (checked exhaustively), so known byte-widths are looked up directly and only an unseen width
 # falls back to the floor(Pool2/(bytes+16)) approximation.
 _EVENT_ALONE_SIZES = {2: 232_674, 4: 209_406, 6: 190_368, 8: 174_504}
-# Measured Pool (records * rate, low bound) for 1 DataInterval(1s) participant + e DataEvent/
-# no-interval participants, all FP2 (2 bytes/record) -- docs/tdf-rules.md §10 "mixed regime".
-_MIXED_POOL_BY_EVENT_COUNT = {1: 835_244, 2: 659_568, 3: 596_616, 4: 564_160, 5: 544_320}
+# A called auto table's own "default" single-table buffer allocation: `FUN_004f4400`'s probe call
+# (decompiled) sizes an initial 1024-byte buffer as `(1024-16)/bytes_per_record` records before any
+# pool-sharing runs. In the mixed regime (see below) a table that would get *less* than this from
+# its equal-duration share is instead pinned at this minimum and removed from the shared pool
+# (oracle-confirmed: `StationStatus` gets exactly `floor(1008/4)=252` in `Preflight_tester.CR6`,
+# `SnowVue_tester.CR6`, `TString_tester.CR6` -- all three cases where the real compiler's own
+# station-table size independently comes out to exactly 252).
+_DEFAULT_PROBE_BUFFER_BYTES = 1024
+_DEFAULT_PROBE_OVERHEAD = 16
+# Best-fit (NOT exact -- see docs/tdf-rules.md §10/§13) per-active-event-table pool cost used only
+# once >=1 event/no-interval auto table is still competing for the shared pool after capping.
+_MIXED_EVENT_K = 15
 
 
 def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
@@ -296,6 +305,35 @@ def _scan_program(program: S.Program):
     return dict(publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
+
+
+def _scan_weights(stmts: list[S.Stmt], env: consteval.Env) -> dict[str, float]:
+    """Maps each `CallTable`d table name (upper) to the interval, in seconds, of the nearest
+    enclosing `Scan` block (a top-level `Scan` or a `SlowSequence`'s own `Scan`) that contains its
+    `CallTable` statement. Used as the auto-size weight for a table with no `DataInterval` (see
+    `_build_data_table`/`_resolve_auto_sizes` and docs/tdf-rules.md §10 "scan-interval weighting",
+    oracle-confirmed against `FinApp_tester.CR6`: real weight is the enclosing scan's interval, not
+    a flat 1 second). `SubScan` is transparent (does not change the enclosing weight) -- untested,
+    matches §4's "SubScan has no effect" finding for the Status table.
+    """
+    stack: list[float] = []
+    weights: dict[str, float] = {}
+    for s in stmts:
+        kw = _kw(s)
+        if kw == "SCAN":
+            secs = None
+            if s.args:
+                val = _fold(s.args[0], env, None)
+                if val is not None:
+                    unit_name = (getattr(s.args[1], "name", "") or "SEC").upper() if len(s.args) > 1 else "SEC"
+                    secs = float(val) * _UNIT_SECONDS.get(unit_name, 1)
+            stack.append(secs if secs else 1.0)
+        elif kw == "NEXTSCAN":
+            if stack:
+                stack.pop()
+        elif kw == "CALLTABLE" and s.args and isinstance(s.args[0], S.Name) and stack:
+            weights[s.args[0].name.upper()] = stack[-1]
+    return weights
 
 
 # ---------------------------------------------------------------- Status table (§4)
@@ -766,53 +804,90 @@ def _field_record_bytes(of: "_OutField") -> int:
 # ---------------------------------------------------------------- auto-size (§10)
 
 
-def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]]):
+def _table_default_min(bytes_per_record: int) -> int:
+    """A table's own single-table "probe buffer" allocation (§10): `floor((1024-16)/bytes)`,
+    oracle-confirmed as the floor a table's mixed-regime share cannot fall below (see
+    `_DEFAULT_PROBE_BUFFER_BYTES`)."""
+    if bytes_per_record <= 0:
+        return 1
+    return max((_DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD) // bytes_per_record, 1)
+
+
+def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float]):
     autos = [(t, m) for t, m in tables_meta if m["size_val"] == -1 and m["called"]]
     if not autos:
         return
-    interval_ones = [(t, m) for t, m in autos if m["interval_seconds"]]
-    event_ones = [(t, m) for t, m in autos if not m["interval_seconds"]]
     n = len(autos)
-
-    rate = 0.0
     for t, m in autos:
-        secs = m["interval_seconds"] or 1.0
-        rate += m["bytes_per_record"] / secs
+        # weight: a DataInterval table's own interval; a DataEvent/no-interval table's enclosing
+        # Scan/SlowSequence interval (§10 "scan-interval weighting"), falling back to 1s if no
+        # enclosing Scan was found (matches the historical default for a table never seen inside a
+        # Scan at all -- not observed in the corpus).
+        m["_weight"] = m["interval_seconds"] or scan_weights.get(t.name.upper(), 1.0)
 
-    if event_ones and interval_ones:
-        e = len(event_ones)
-        if e in _MIXED_POOL_BY_EVENT_COUNT:
-            pool = _MIXED_POOL_BY_EVENT_COUNT[e]
+    event_ones = [(t, m) for t, m in autos if not m["interval_seconds"]]
+    interval_ones = [(t, m) for t, m in autos if m["interval_seconds"]]
+
+    if event_ones and not interval_ones and n == 1:
+        # solo no-interval/DataEvent auto table, alone in the program: exact oracle lookup (§10).
+        t, m = event_ones[0]
+        b = m["bytes_per_record"]
+        t.size = _EVENT_ALONE_SIZES.get(b, _EVENT_ALONE_POOL2 // (b + _EVENT_ALONE_OVERHEAD))
+        return
+
+    if not event_ones:
+        # Pure DataInterval-only auto tables: the well-established, oracle-confirmed formula
+        # (equal duration, pool shrinking by a flat amount per extra auto table).
+        pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
+        rate = sum(m["bytes_per_record"] / m["_weight"] for _, m in autos)
+        duration = pool / rate if rate else 0
+        for t, m in autos:
+            records = int(duration / m["_weight"])
+            if m["has_card"] and m["bytes_per_record"]:
+                records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
+            t.size = max(records, 1)
+        return
+
+    # Mixed regime (>=1 DataEvent/no-interval auto table, alone with others or alongside >=1
+    # DataInterval table): oracle-confirmed water-filling. A table whose naive equal-duration share
+    # would fall below its own `_table_default_min` is instead pinned at that minimum and dropped
+    # from the shared pool, and the remaining pool/rate is recomputed for the survivors -- this
+    # reproduces `StationStatus`'s exact size in `Preflight_tester.CR6`/`SnowVue_tester.CR6`/
+    # `TString_tester.CR6` (all capped at exactly `floor(1008/4)=252`). The surviving pool itself
+    # (`_MIXED_EVENT_K`) is a best-fit approximation, not an exact derivation -- see
+    # docs/tdf-rules.md §10/§13: it reproduces the corpus's real sizes to within roughly 3%, not
+    # byte-exactly.
+    active = list(autos)
+    while active:
+        active_events = [(t, m) for t, m in active if not m["interval_seconds"]]
+        b_event = sum(m["bytes_per_record"] for _, m in active_events)
+        n_event = len(active_events)
+        if n_event:
+            denom = b_event + _MIXED_EVENT_K * n_event
+            pool = _POOL1 * b_event / denom if denom else float(_POOL1)
         else:
-            # extrapolate past the measured e=1..5 range using the last observed delta (low
-            # confidence -- docs/tdf-rules.md §10 "mixed regime" is not reconciled to a formula)
-            keys = sorted(_MIXED_POOL_BY_EVENT_COUNT)
-            last, prev = _MIXED_POOL_BY_EVENT_COUNT[keys[-1]], _MIXED_POOL_BY_EVENT_COUNT[keys[-2]]
-            delta = last - prev
-            pool = max(last - delta * (e - keys[-1]), 1)
-        if len(interval_ones) > 1:
-            pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)  # unverified combination; fallback
-    elif event_ones and not interval_ones:
-        if n == 1:
-            t, m = event_ones[0]
-            b = m["bytes_per_record"]
-            records = _EVENT_ALONE_SIZES.get(b, _EVENT_ALONE_POOL2 // (b + _EVENT_ALONE_OVERHEAD))
-            t.size = records
-            return
-        pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
-    else:
-        pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
-
-    duration = pool / rate if rate else 0
-    for t, m in autos:
-        secs = m["interval_seconds"] or 1.0
-        records = int(duration / secs)
-        if m["has_card"] and m["bytes_per_record"]:
-            records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
-        t.size = max(records, 1)
+            pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
+        rate = sum(m["bytes_per_record"] / m["_weight"] for _, m in active)
+        if rate == 0:
+            for t, m in active:
+                t.size = _table_default_min(m["bytes_per_record"])
+            break
+        duration = pool / rate
+        capped = [(t, m) for t, m in active
+                  if int(duration / m["_weight"]) < _table_default_min(m["bytes_per_record"])]
+        if not capped:
+            for t, m in active:
+                records = int(duration / m["_weight"])
+                if m["has_card"] and m["bytes_per_record"]:
+                    records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
+                t.size = max(records, 1)
+            break
+        for t, m in capped:
+            t.size = max(_table_default_min(m["bytes_per_record"]), 1)
+            active.remove((t, m))
 
 
-def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]]):
+def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float]):
     for t, m in tables_meta:
         if not m["called"]:
             # A table with no `CallTable` anywhere in the compiled program never gets its
@@ -823,7 +898,7 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]]):
             t.time_into = (0, 0)
         elif m["size_val"] != -1:
             t.size = m["size_val"]
-    _resolve_auto_sizes(tables_meta)
+    _resolve_auto_sizes(tables_meta, scan_weights)
 
 
 # ---------------------------------------------------------------- top-level
@@ -832,6 +907,7 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]]):
 def build_tables(program: S.Program, profile, consts: dict):
     env = consteval.Env(profile, dict(consts))
     scanned = _scan_program(program)
+    scan_weights = _scan_weights(program.statements, env)
 
     var_info: dict[str, VarInfo] = {}
     for v in scanned["all_vars"]:
@@ -859,7 +935,7 @@ def build_tables(program: S.Program, profile, consts: dict):
     if public_table is not None:
         tables.append(public_table)
 
-    _apply_sizes(data_table_metas)
+    _apply_sizes(data_table_metas, scan_weights)
 
     table_list_text = render_table_list(tables)
     return tables, table_list_text, None

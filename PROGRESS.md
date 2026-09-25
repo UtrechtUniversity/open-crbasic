@@ -25,6 +25,34 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 ## Log
 
+- 2026-09-25 (multi-logger): CR1000X/CR300/CR350 support (`PLAN.md` "Target loggers"): per-logger
+  checker lookups (`checker/terminals.py` + `data/<logger>/terminals.json` replace the CR6-only
+  hard-coded `U1..U12` channel check `instructions.py` used to apply to every logger regardless of
+  `profile`); `mode.py`'s Sequential/PipelineMode trigger lists moved to `data/<logger>/mode.json`
+  (`Profile.mode_rules`), CR1000X's re-derived from a fresh Ghidra decompile of `cr1000xcomp.exe`
+  (`docs/loggers.md`: structurally identical to CR6's mode-decision function, minus the 2-3
+  instructions CR1000X doesn't have at all); per-logger unresolved-symbol message text
+  (`Profile.unresolved_symbol_message`, CR300/CR350's `"{name} is not defined."` vs CR6/CR1000X's
+  `"Invalid symbol in expression: {name}."`); `tests/test_profiles.py` (extension/`--logger`
+  mapping for all four loggers). Found and fixed a shared-infrastructure bug along the way:
+  `parser.parse_file`/`parse_text` always folded `Const`s against the **CR6** profile regardless of
+  `--logger` (derived from the file extension only), which was silently feeding wrong symbol values
+  into every non-CR6 checker run. Full evidence, per-logger channel/terminal ranges, and remaining
+  gaps: `docs/loggers.md`.
+
+  `tools/difftest.py --logger <l>` (exact/verdict/mismatch), before this session's start / after:
+
+  | Logger | repo | chm |
+  |---|---|---|
+  | cr6 | 16/0/0 -> 16/0/0 (unchanged; chm 268/229/10 -> 310/188/9 is the concurrent phase-3 checker work, not this row) | |
+  | cr1000x | 8/1/7 -> 8/5/3 | 224/213/70 -> 327/172/8 |
+  | cr300 | 0/3/13 -> 0/8/8 | 92/335/80 -> 93/396/18 |
+  | cr350 | 0/1/15 -> 0/6/10 | 95/330/82 -> 96/394/17 |
+
+  False-reject count (we reject, they accept -- the worse failure mode) stayed 0 throughout for
+  cr6/cr300/cr350; cr1000x has one, a pre-existing general parser gap unrelated to logger
+  differences (`StructureType` bare-name members), `docs/loggers.md` for detail and follow-up.
+
 - 2026-09-25 (later still): checker phase 3 first pass: `checker.py` split into a `checker/`
   package; `structure.py` (`BeginProg`/`Scan`/`If`/`Select` block matching and placement,
   undefined `Call` targets), `expressions.py` (type-code-driven undefined-symbol check, narrow by
@@ -65,8 +93,14 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 1. Phase 3 checker (agent running): exact diagnostics, no false errors on accepted programs.
 2. Auto-allocated table sizes, mixed regime (agent running).
-3. Multi-logger: CR1000X, CR300, CR350 profiles (symbol filtering per logger, `Compiled OK.`
-   output, terminal model); run `tools/difftest.py --logger ...` for each.
+3. Multi-logger (in progress, `docs/loggers.md`): terminal/channel model, mode lists, and
+   unresolved-symbol message text are now per-logger data; `Compiled OK.` output already was.
+   Remaining: CR300/CR350's broader `"X is not defined."` message likely also replaces
+   `structure.py`'s `Invalid, or out of place expression:` fallback and others (not chased, needs
+   the message-text owner); the negative/burst channel value shape on CR300/CR350
+   (`abs(v) - 1`, distinct from CR1000X's `abs(v)`) is identified but deliberately left
+   unimplemented; CR1000X's one false reject (`structuretype_3.CR6`, a general `StructureType`
+   bare-member parsing gap) is unfixed.
 4. Optional fallback in `scripts/cr6comp.py` to use opencrbasic when neither Wine nor PowerShell
    exists, clearly labelled as unverified against hardware.
 5. ProgSignature (`-s`) algorithm; `-p` preprocessed output; `[Times]` (`-t`) are low priority.

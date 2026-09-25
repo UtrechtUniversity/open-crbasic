@@ -1,0 +1,47 @@
+{
+ "channels": {
+  "u_terminal": {
+   "min": 201,
+   "max": 212,
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must use U1..U12."
+  }
+ },
+ "instructions": {
+  "TCDIFF": [
+   [
+    4,
+    "u_terminal"
+   ]
+  ],
+  "TCSE": [
+   [
+    4,
+    "u_terminal"
+   ]
+  ],
+  "VOLTSE": [
+   [
+    4,
+    "u_terminal"
+   ]
+  ],
+  "VOLTDIFF": [
+   [
+    4,
+    "u_terminal"
+   ]
+  ],
+  "ACPOWER": [
+   [
+    4,
+    "u_terminal"
+   ],
+   [
+    7,
+    "u_terminal"
+   ]
+  ]
+ }
+}

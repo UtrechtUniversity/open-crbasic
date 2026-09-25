@@ -76,4 +76,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                 continue
             arg = stmt.args[i]
             if isinstance(arg, S.Name) and arg.name.upper() not in known:
-                diags.error(stmt.line, f"Invalid symbol in expression: {arg.name}.", stmt.file)
+                # message text is per-logger data (`profile.unresolved_symbol_message`,
+                # `docs/loggers.md`): CR300/CR350 word this "{name} is not defined." instead of
+                # CR6/CR1000X's "Invalid symbol in expression: {name}."
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=arg.name), stmt.file)

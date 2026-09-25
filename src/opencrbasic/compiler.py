@@ -27,7 +27,16 @@ class CompileResult:
     def result_lines(self, show_signature: bool = False) -> list[str]:
         """The lines CR6Comp prints to stdout (and the message file) for this result."""
         if not self.ok:
-            return [f"{self.program} -- Compile Failed!", ""] + [d.cr6comp() for d in self.diagnostics.errors]
+            # CR6Comp is a single top-to-bottom pass over the file, so its own diagnostics are
+            # always in ascending line order (oracle-confirmed throughout `docs/checker.md`'s
+            # corpus evidence). `self.diagnostics.errors` is insertion order, which several
+            # independent checker passes each contribute to in their own statement-list order
+            # (`checker/__init__.py`) -- individually ascending, but not necessarily interleaved
+            # correctly against each other, so a stable sort by line (never observed out of order
+            # on the same line, so ties keep each check's own relative order) reproduces the
+            # single-pass compiler's output order without each checker pass needing to coordinate.
+            errors = sorted(self.diagnostics.errors, key=lambda d: d.line)
+            return [f"{self.program} -- Compile Failed!", ""] + [d.cr6comp() for d in errors]
         if self.profile.reports_mode:
             lines = [f"{self.program} -- Compiled in {self.mode or 'Sequential'}Mode."]
         else:
@@ -43,7 +52,7 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
 
     profile = profile or profiles.for_file(path)
     name = display_name or path.name
-    program, diags = parser.parse_file(path)
+    program, diags = parser.parse_file(path, profile=profile)
     result = CompileResult(name, profile, diags)
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")

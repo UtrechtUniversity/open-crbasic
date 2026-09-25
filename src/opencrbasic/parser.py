@@ -313,10 +313,15 @@ class _Parser:
 
     @staticmethod
     def _segment_text(line_text: str, real_tokens: list[Token]) -> str:
-        start = real_tokens[0].col
-        last = real_tokens[-1]
-        end = last.col + len(last.text)
-        return line_text[start:end]
+        # The real compiler's own "Invalid, or out of place expression: %s." (`docs/checker.md`)
+        # echoes the segment's raw source text verbatim -- leading indentation and any trailing
+        # whitespace before a stripped-off `'` comment both preserved, oracle-confirmed
+        # (`udpsocketopen_1.CR6` etc.: a 4-space-indented `UDPSocketOpen(...)` followed by a
+        # comment is echoed as `    UDPSocketOpen(SockID, 0, 3) .`, not the token-trimmed form an
+        # earlier version of this function returned). `real_tokens` is unused now but kept in the
+        # signature since callers already have it computed.
+        del real_tokens
+        return line_text
 
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
         p = _TokStream(seg)
@@ -627,20 +632,29 @@ class _Parser:
 
     def _parse_const(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()
-        name_tok = p.expect_ident()
-        vtype = None
-        if p.is_ident("AS"):
-            p.next()
-            type_tok = p.expect_ident()
-            vtype = type_tok.upper
-            if p.is_op("!"):
-                p.next()  # pointer type (see docs/frontend.md)
-                vtype += "!"
-            if vtype == "STRING" and p.is_op("*"):
+        try:
+            name_tok = p.expect_ident()
+            vtype = None
+            if p.is_ident("AS"):
                 p.next()
-                self._parse_expr(p, line, file)
-        p.expect_op("=")
-        value = self._parse_expr(p, line, file)
+                type_tok = p.expect_ident()
+                vtype = type_tok.upper
+                if p.is_op("!"):
+                    p.next()  # pointer type (see docs/frontend.md)
+                    vtype += "!"
+                if vtype == "STRING" and p.is_op("*"):
+                    p.next()
+                    self._parse_expr(p, line, file)
+            p.expect_op("=")
+            value = self._parse_expr(p, line, file)
+        except _ParseError:
+            # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
+            # corpus example wrapped the assignment onto the next line with no `_` continuation
+            # (`rectpolar_1.CR6`: `Const` entirely alone, then `Pi=4*ATN(1)`; `sprintf_4.CR6`:
+            # `Const ToAddr As` / `String = "..."`, truncated further into the grammar). The real
+            # compiler reports the same message either way (oracle-confirmed, `docs/checker.md`),
+            # so this doesn't try to distinguish how far through its own grammar it got.
+            return S.Unparsed(line, file, text="", reason="Const without '='")
         node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype)
         try:
             self.env.define(name_tok.text, consteval.value_of(value, self.env))
@@ -655,6 +669,16 @@ class _Parser:
         if kind == "DIM" and p.is_ident("PUBLIC"):
             p.next()
             kind = "PUBLIC"
+        if p.at_end():
+            # `Public`/`Dim` with nothing at all following on its own physical line -- a CHM
+            # corpus example wrapped the name list onto the next line with no `_` continuation
+            # (`log10_1.CR6`: `Public` / `Number, B, Log10ofNumber, LogBofNumber`). The real
+            # compiler's declaration parser reports `Variable not named.` right here rather than
+            # raising a generic parse error (oracle-confirmed, `docs/checker.md`); modelled as a
+            # `Declaration` with an empty `vars` list so `structure.py` can emit that specific
+            # message instead of the generic "not a valid statement" fallback an `Unparsed` would
+            # get.
+            return S.Declaration(line, file, kind=kind, vars=[])
         vars_ = [self._parse_vardecl(p, line, file)]
         while p.is_op(","):
             p.next()
@@ -711,8 +735,19 @@ class _Parser:
 
     def _parse_alias(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()
-        lhs = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
-        p.expect_op("=")
+        try:
+            lhs = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
+            p.expect_op("=")
+        except _ParseError:
+            # `Alias` with no `Target = Name` on its own physical line -- the same CHM line-wrap
+            # shape as `Const`/`Units`/`Public` above (`rectpolar_1.CR6`: `Alias` entirely alone,
+            # then `XY(1)=X`). Oracle-confirmed message: `docs/checker.md`. A partially-parsed
+            # target (present but no `=`, e.g. `realtime_1.CR6`'s `Alias rTime(1)` / `= Year`) gets
+            # the same reason with an empty echo rather than reconstructing the target's source
+            # text -- no oracle evidence pinned down that echo's exact shape (it embeds a literal
+            # newline the empty-target case does not), so this only claims the simpler, verified
+            # case.
+            return S.Unparsed(line, file, text="", reason="Alias without '='")
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
             p.next()
@@ -926,15 +961,22 @@ def _profile_for(name: str) -> profiles.Profile:
     return profiles.for_file(Path(name))
 
 
-def parse_file(path: Path | str) -> tuple[S.Program, Diagnostics]:
+def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
+    """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical
+    default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
+    `compiler.compile_file`'s own `profile` argument) so `Const` folding during parsing (predefined
+    symbols such as `U1`) uses the *same* profile the checker later runs with. Before this, a
+    `.CR6` file always folded against the CR6 profile regardless of `--logger`, silently baking a
+    CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path)
-    parser = _Parser(_profile_for(path.name), diags)
+    parser = _Parser(profile or _profile_for(path.name), diags)
     return parser.run(lines, path.name)
 
 
-def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = None) -> tuple[S.Program, Diagnostics]:
+def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = None,
+               profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(text, name, directory)
-    parser = _Parser(_profile_for(name), diags)
+    parser = _Parser(profile or _profile_for(name), diags)
     return parser.run(lines, name)

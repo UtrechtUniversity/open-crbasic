@@ -1,38 +1,23 @@
-"""Sequential / Pipeline mode decision (CR6, CR1000X). Rules: docs/modes.md."""
+"""Sequential / Pipeline mode decision (CR6, CR1000X). Rules: docs/modes.md.
+
+The trigger lists themselves are per-logger data (`data/<logger>/mode.json`, `Profile.mode_rules`
+-- `docs/loggers.md`), not module constants: CR1000X's compiled mode-decision function
+(`docs/loggers.md`'s Ghidra evidence) is structurally identical to CR6's but three
+`task_instructions` names and two `nonconstant_arg` names are absent because those instructions
+(`ExciteI`, `VibratingWire`, and -- `task_instructions` only -- `Resistance`) do not exist on
+CR1000X at all, so the two loggers' *observable* behaviour is identical: a name missing from a
+logger's list can never occur as a real instruction in a program that logger accepts anyway.
+CR300/CR350 never print a mode line (`Profile.reports_mode`), so their `mode.json` is an unverified
+copy of CR6's, kept only so every profile has one; `mode.decide`'s result for them is computed but
+discarded by `compiler.py`.
+"""
 
 from __future__ import annotations
 
 from typing import Callable
 
 from . import syntax as S
-
-ALWAYS_SEQUENTIAL = {"SDMCAN", "SDMCD16AC", "SDMAO4", "SDMAO4A", "SDMCVO4", "SDMIO16", "WRITEIO",
-                     "TDR100", "TDR200"}
-
-# Measurement-task instructions that force SequentialMode when they occur inside a conditional
-# or loop, or outside any Scan (e.g. in a Sub).
-TASK_INSTRUCTIONS = {
-    "VOLTSE", "VOLTDIFF", "BRHALF", "BRHALF3W", "BRHALF4W", "BRFULL6W", "BRFULL", "PANELTEMP", "TCSE",
-    "TCDIFF", "EXCITEV", "BATTERY", "PERIODAVG", "CS616", "SETDAC", "AM25T", "CALIBRATE", "PORTGET",
-    "PORTSET", "SDMINT8", "SDMTRIGGER", "SW12", "CS7500", "CSAT3", "SDMSW8A", "DELAY", "THERM107",
-    "LI7200", "LI7700", "THERM108", "THERM109", "PULSEPORT", "SDMX50", "VIBRATINGWIRE", "TGA", "EC100",
-    "EXCITEI", "RESISTANCE", "PULSECOUNT", "MUXSELECT", "SERIALINRECORD", "SERIALOUTBLOCK",
-    "CDM_VOLTSE", "CDM_VOLTDIFF", "CDM_BRHALF", "CDM_BRHALF3W", "CDM_MUXSELECT", "CDM_PULSEPORT",
-    "CDM_BRHALF4W", "CDM_BRFULL6W", "CDM_BRFULL", "CDM_PANELTEMP", "CDM_TCSE", "CDM_TCDIFF",
-    "CDM_EXCITEV", "CDM_BATTERY", "CDM_PERIODAVG", "CDM_SW12", "CDM_SW5", "CDM_THERM107",
-    "CDM_THERM108", "CDM_THERM109", "CDM_CURRENTDIFF", "CDM_SWPOWER",
-}
-
-# Instruction -> 0-based argument(s) that force SequentialMode when not constant.
-NONCONSTANT_ARG = {
-    "EXCITEV": (1,), "EXCITEI": (1,), "PORTSET": (1,), "MUXSELECT": (3,), "VIBRATINGWIRE": (3, 4),
-    "CDM_EXCITEV": (3,), "CDM_EXCITEI": (3,), "CDM_SW12": (3,), "CDM_SW5": (3,),
-    "CDM_MUXSELECT": (5,), "CDM_SWPOWER": (2,),
-}
-
-# Instruction -> 0-based argument that forces SequentialMode anywhere when it is a variable or
-# omitted (an omitted optional argument is stored as -0.0, whose sign bit the exe tests).
-VARIABLE_ARG = {"CDM_SW12": 4, "CDM_SW5": 4, "CDM_SWPOWER": 3, "SW12": 2}
+from .profiles import Profile
 
 
 def _const_value(expr, value_of: Callable) -> float | None:
@@ -42,12 +27,19 @@ def _const_value(expr, value_of: Callable) -> float | None:
         return None
 
 
-def decide(statements: list[S.Stmt], is_constant: Callable, value_of: Callable) -> str:
+def decide(statements: list[S.Stmt], profile: Profile, is_constant: Callable, value_of: Callable) -> str:
     """Return "Sequential" or "Pipeline".
 
     `is_constant(expr)` tells whether an argument is a compile-time constant; `value_of(expr)`
-    returns its numeric value (raises when it has none).
+    returns its numeric value (raises when it has none). Trigger lists come from
+    `profile.mode_rules` (`data/<logger>/mode.json`).
     """
+    rules = profile.mode_rules
+    always_sequential = set(rules["always_sequential"])
+    task_instructions = set(rules["task_instructions"])
+    nonconstant_arg = {k: tuple(v) for k, v in rules["nonconstant_arg"].items()}
+    variable_arg = dict(rules["variable_arg"])
+
     sequential = False
     pipeline_forced = False
     depth = 0           # open If/Select/For/While/Do since the last Scan
@@ -63,9 +55,9 @@ def decide(statements: list[S.Stmt], is_constant: Callable, value_of: Callable) 
         elif kw == "PIPELINEMODE":
             pipeline_forced = True
         if not sequential and not pipeline_forced:
-            if kw in ALWAYS_SEQUENTIAL:
+            if kw in always_sequential:
                 sequential = True
-            elif kw in TASK_INSTRUCTIONS and (depth or not in_scan):
+            elif kw in task_instructions and (depth or not in_scan):
                 if kw == "SW12":
                     sequential = _const_value(_arg(args, 2), value_of) == 1
                 elif kw == "DELAY":
@@ -74,9 +66,9 @@ def decide(statements: list[S.Stmt], is_constant: Callable, value_of: Callable) 
                     sequential = not in_slow
                 else:
                     sequential = True
-            elif kw in NONCONSTANT_ARG:
+            elif kw in nonconstant_arg:
                 sequential = any(_arg(args, i) is not None and not is_constant(_arg(args, i))
-                                 for i in NONCONSTANT_ARG[kw])
+                                 for i in nonconstant_arg[kw])
             elif kw in ("FOR", "IF", "SELECT", "WHILE", "DO"):
                 depth += 1
             elif kw in ("NEXT", "ENDIF", "END", "WEND", "LOOP"):
@@ -96,8 +88,8 @@ def decide(statements: list[S.Stmt], is_constant: Callable, value_of: Callable) 
             in_scan += 1
         elif kw == "NEXTSCAN":
             in_scan -= 1
-        if kw in VARIABLE_ARG and not pipeline_forced:
-            arg = _arg(args, VARIABLE_ARG[kw])
+        if kw in variable_arg and not pipeline_forced:
+            arg = _arg(args, variable_arg[kw])
             if arg is None or not is_constant(arg):
                 sequential = True
         # single-line If: the inline statements are inside a conditional

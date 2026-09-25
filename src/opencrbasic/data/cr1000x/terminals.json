@@ -1,0 +1,44 @@
+{
+ "channels": {
+  "diff_chan": {
+   "min": 0,
+   "max": 8,
+   "transform": "abs",
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must use 1..8."
+  },
+  "se_chan": {
+   "min": 1,
+   "max": 16,
+   "transform": "abs",
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must use 1..16."
+  }
+ },
+ "instructions": {
+  "TCDIFF": [
+   [
+    4,
+    "diff_chan"
+   ]
+  ],
+  "TCSE": [
+   [
+    4,
+    "se_chan"
+   ]
+  ],
+  "VOLTSE": [
+   [
+    4,
+    "se_chan"
+   ]
+  ],
+  "VOLTDIFF": [
+   [
+    4,
+    "diff_chan"
+   ]
+  ]
+ }
+}
