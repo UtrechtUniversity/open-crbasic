@@ -41,6 +41,7 @@ _DIRECTIVE_RE = re.compile(
     r'^\s*#\s*(If_no_remove|If|ElseIf|Else|EndIf|UnDef)\b(.*)$', re.IGNORECASE
 )
 _THEN_SUFFIX_RE = re.compile(r'\bThen\s*$', re.IGNORECASE)
+_LEADING_WORD_RE = re.compile(r'^\s*([A-Za-z_][A-Za-z0-9_]*\$?)')
 
 _RELOPS = {"=", "<>", "<", ">", "<=", ">="}
 _COMPOUND_OPS = {"+=", "-=", "*=", "/=", "\\=", "^=", "&="}
@@ -217,6 +218,9 @@ class _Parser:
     # ---------------------------------------------------------- one line
 
     def _parse_line(self, ll: source.LogicalLine) -> None:
+        if _LEADING_WORD_RE.match(ll.text) and _LEADING_WORD_RE.match(ll.text).group(1).upper() == "UNITS":
+            self.program.statements.append(self._parse_units_line(ll))
+            return
         try:
             tokens = lexer.tokenize(ll.text, ll.line)
         except lexer.LexError as e:
@@ -291,7 +295,10 @@ class _Parser:
         if kw == "ALIAS":
             return self._parse_alias(p, line, file)
         if kw == "UNITS":
-            return self._parse_units(p, line, file, seg_text)
+            # Normally intercepted in `_parse_line` before tokenisation (see
+            # `_parse_units_line`); reached here only when `Units` isn't the first word of the
+            # logical line (e.g. after a `:`), which no corpus program does.
+            raise _ParseError("Units combined with another statement on one line is not supported")
         if kw == "CALL":
             return self._parse_call(p, line, file)
         if kw in self.profile.instructions:
@@ -326,7 +333,11 @@ class _Parser:
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
 
     def _parse_assignment_or_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
-        target = self._parse_expr(p, line, file)
+        # An lvalue only (never a full expression): `=` is also the relational operator, so
+        # going through `_parse_expr` here would swallow it as an equality test instead of
+        # leaving it for the assignment check below (found by corpus testing; see
+        # docs/frontend.md).
+        target = self._parse_atom(p, line, file)
         t = p.peek()
         if t.kind == "OP" and (t.text == "=" or t.text in _COMPOUND_OPS):
             op_tok = p.next()
@@ -391,7 +402,7 @@ class _Parser:
 
     def _parse_for(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # FOR
-        var = self._parse_expr(p, line, file)
+        var = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
         p.expect_op("=")
         start = self._parse_expr(p, line, file)
         p.expect_ident("TO")
@@ -565,7 +576,7 @@ class _Parser:
 
     def _parse_alias(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()
-        lhs = self._parse_expr(p, line, file)
+        lhs = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
         p.expect_op("=")
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
@@ -573,18 +584,36 @@ class _Parser:
             rhs.append(self._parse_expr(p, line, file))
         return S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
 
-    def _parse_units(self, p: _TokStream, line: int, file: str, seg_text: str) -> S.Stmt:
-        p.next()
-        lhs = self._parse_expr(p, line, file)
-        p.expect_op("=")
-        # UnitLabel is free-form text, not an expression (e.g. `uS/cm` tokenizes as three
-        # tokens): take everything after the first top-level `=` verbatim from the segment's own
-        # source text instead (see docs/frontend.md).
-        eq_pos = seg_text.find("=")
-        label = seg_text[eq_pos + 1:].strip() if eq_pos != -1 else ""
-        while not p.at_end():
-            p.next()  # consume the rest of the segment; it is not tokenised as an expression
-        return S.Instruction(line, file, keyword="UNITS", args=[lhs, S.String(line, file, label)])
+    def _parse_units_line(self, ll: source.LogicalLine) -> S.Stmt:
+        """`Units` is handled before general tokenisation: `UnitLabel` is free-form text, not an
+        expression (`Units Acclima_BulkEC()=uS/cm`, `Units Acclima_VWC()=%` -- `%` is not even a
+        valid CRBasic token), so the label is taken verbatim from the source line rather than
+        lexed (found by corpus testing; see docs/frontend.md). Only fires when `Units` is the
+        first word of the logical line (no evidence in the corpus of `Units` combined with other
+        statements via `:`).
+        """
+        text = ll.text
+        eq = text.find("=")
+        if eq == -1:
+            return S.Unparsed(ll.line, ll.file, text=text.strip(), reason="Units without '='")
+        lhs_text, label = text[:eq], text[eq + 1:].strip()
+        try:
+            lhs_tokens = lexer.tokenize(lhs_text, ll.line)
+        except lexer.LexError as e:
+            return S.Unparsed(ll.line, ll.file, text=text.strip(),
+                               reason=f"lex error in Units target: {e.message}")
+        p = _TokStream(lhs_tokens)
+        try:
+            p.expect_ident("UNITS")
+            lhs = self._parse_atom(p, ll.line, ll.file)
+            if not p.at_end():
+                raise _ParseError("unexpected trailing input in Units target")
+        except _ParseError as e:
+            return S.Unparsed(ll.line, ll.file, text=text.strip(), reason=str(e))
+        stmt = S.Instruction(ll.line, ll.file, keyword="UNITS",
+                              args=[lhs, S.String(ll.line, ll.file, label)])
+        stmt.text = text.strip()
+        return stmt
 
     # ------------------------------------------------------- expressions
 
@@ -642,7 +671,9 @@ class _Parser:
 
     def _parse_intdiv(self, p: _TokStream, line: int, file: str) -> S.Expr:
         left = self._parse_muldiv(p, line, file)
-        while p.peek().kind == "OP" and p.peek().text == "\\":
+        while (p.peek().kind == "OP" and p.peek().text == "\\") or p.is_ident("INTDV"):
+            # `INTDV` is a word spelling of `\` (integer division; docs/binary.md kind 311),
+            # found missing by corpus testing -- see docs/frontend.md.
             p.next()
             right = self._parse_muldiv(p, line, file)
             left = S.Binary(line, file, "\\", left, right)
