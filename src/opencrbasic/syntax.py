@@ -64,6 +64,12 @@ class Unary(Expr):
 
 
 @dataclass
+class ArrayLiteral(Expr):
+    """`{a, b, c}`: a `Const` array value, or an array initialiser in a `Public`/`Dim`."""
+    items: list[Expr | None] = field(default_factory=list)
+
+
+@dataclass
 class Binary(Expr):
     op: str = ""                # upper-case operator text: + - * / \ ^ & MOD AND OR XOR IMP EQV = <> < > <= >= << >>
     left: Expr | None = None
@@ -198,3 +204,6 @@ class Unparsed(Stmt):
 class Program:
     name: str
     statements: list[Stmt] = field(default_factory=list)
+    consts: dict[str, object] = field(default_factory=dict)   # name (upper) -> resolved value,
+    # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
+    # this (via `consteval.Env`) instead of re-walking the program to rebuild it.
