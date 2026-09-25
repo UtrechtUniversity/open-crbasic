@@ -21,8 +21,11 @@ State: `sequential` (starts false), `pipeline_forced` (set by a `PipeLineMode` s
 - A non-constant argument forces sequential: `ExciteV`/`ExciteI`/`PortSet` 2nd argument,
   `MuxSelect` 4th, `VibratingWire` 4th and 5th, `CDM_ExciteV`/`CDM_ExciteI`/`CDM_SW12`/`CDM_SW5`
   4th, `CDM_MuxSelect` 6th, `CDM_SWPower` 3rd.
-- A variable (not constant) in `SW12` 3rd, `CDM_SW12`/`CDM_SW5` 5th or `CDM_SWPower` 4th
-  argument forces sequential anywhere.
+- A variable (not constant) **or omitted** `SW12` 3rd, `CDM_SW12`/`CDM_SW5` 5th or
+  `CDM_SWPower` 4th argument forces sequential anywhere: omitted optional arguments are stored as
+  -0.0 and the exe tests the sign bit. Oracle: `SW12(SW12_1, 0)` inside a Scan -> Sequential;
+  `SW12(SW12_1, 0, 0)` / `(..., 1)` inside a Scan -> Pipeline; `SW12(SW12_1, 0, 1)` before the
+  Scan -> Sequential, `(..., 0)` there -> Pipeline. Matches the help page for SW12.
 - `For If Select While Do` increment `depth`; `Next EndIf End WEnd Loop` decrement it, except
   `Next Scan` (decrements `in_scan`), `Next SubScan` (no effect), and `End` followed by anything
   but `If`/`Select`. **Quirk:** the one-word `EndSelect` is not in the closing list, so after a

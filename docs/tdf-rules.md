@@ -83,11 +83,10 @@ once here because §§4–8 all depend on it.
   subdims=[3]`; Reps=3, i.e. the whole array, gives `dim=3 subdims=[3]` — the general case
   degenerating to the familiar "whole array" TDF field). `begin` is the 1-based starting index of
   Source within the declared array (`Sample(1,Arr3(2),FP2)` → `begin=2`) (exp `#18`).
-- `String * n` fields (any table) are always rank-1 with `subdims=[stored_len]` even though the
-  stored length may be 1 char more than the declared length is not — see §8 for the string
-  length-rounding rule; the point here is only that String fields follow the same
-  scalar-collapse/no-collapse rule (`String * 1` did **not** collapse to `subdims=[]`, because its
-  stored length is 4, not 1).
+- `String * n` fields (any table) are always rank-1 with `subdims=[stored_len]`, where
+  `stored_len` is the rounded-up storage length, not the declared `n` — see §8 for the rounding
+  rule. The point here is only that String fields follow the same scalar-collapse/no-collapse rule
+  (`String * 1` did **not** collapse to `subdims=[]`, because its stored length is 4, not 1).
 
 ## 4. Status table
 
@@ -286,10 +285,9 @@ Intersection of all 8 bounds: **Pool(1 table) ∈ {4,119,534, 4,119,535} bytes**
 within integer-rounding, essentially exactly (R² ≈ 1 in the sense that every measurement is
 consistent with a single shared constant). The single-table `size` was observed to be
 **independent of the actual `interval_seconds`** (1 s and 60 s gave the identical `size=2,059,767`
-for a 1-field FP2 table) — expected from the formula above, since `records = D/interval =
-(Pool/bytes/interval)/interval`... no: substituting `D = Pool*interval/bytes` (single-table sum
-reduces to `bytes/interval`) gives `records = Pool/bytes`, interval cancels exactly, matching the
-observation.
+for a 1-field FP2 table) — expected from the formula above: for one table the sum
+`Σ bytes/interval` is just `bytes/interval`, so `D = Pool*interval/bytes`, and
+`records = D/interval = Pool/bytes` — `interval` cancels exactly, matching the observation.
 
 **Multiple auto tables share the pool by equal duration, not equal record count**
 (**oracle-confirmed**): two FP2 tables at 1 s and 300 s intervals got 2,050,333 and 6,834 records

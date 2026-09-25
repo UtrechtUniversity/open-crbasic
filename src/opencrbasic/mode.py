@@ -30,7 +30,8 @@ NONCONSTANT_ARG = {
     "CDM_MUXSELECT": (5,), "CDM_SWPOWER": (2,),
 }
 
-# Instruction -> 0-based argument that forces SequentialMode anywhere when it is a variable.
+# Instruction -> 0-based argument that forces SequentialMode anywhere when it is a variable or
+# omitted (an omitted optional argument is stored as -0.0, whose sign bit the exe tests).
 VARIABLE_ARG = {"CDM_SW12": 4, "CDM_SW5": 4, "CDM_SWPOWER": 3, "SW12": 2}
 
 
@@ -97,7 +98,7 @@ def decide(statements: list[S.Stmt], is_constant: Callable, value_of: Callable) 
             in_scan -= 1
         if kw in VARIABLE_ARG and not pipeline_forced:
             arg = _arg(args, VARIABLE_ARG[kw])
-            if arg is not None and not is_constant(arg):
+            if arg is None or not is_constant(arg):
                 sequential = True
         # single-line If: the inline statements are inside a conditional
         if isinstance(stmt, S.If) and stmt.inline is not None:
