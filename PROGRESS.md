@@ -18,12 +18,24 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 | 0 Oracle + corpus | done: `tools/oracle.py` (cached Wine runs, any compiler exe), `tools/difftest.py` (ours vs real, per logger), 507 CHM examples in `tests/corpus/chm/` (many deliberately or accidentally invalid: they exercise error paths); cache warmed for CR6, CR1000X, CR300, CR350 |
 | 1 Binary RE | in progress: CLI decoded (`docs/cli.md`); instruction/function/symbol tables extracted (`tools/extract_tables.py`, `docs/binary.md`); message catalogue (`docs/messages.tsv`); TDF format decoded and round-tripped (`src/opencrbasic/tdf.py`); parameter type codes (`docs/type-codes.md`, `data/type_codes.json`); mode rule (`docs/modes.md`); table-definition rules (`docs/tdf-rules.md`). Pass-1 doc agent was cancelled; its findings are covered by `docs/frontend.md` and `docs/type-codes.md` |
 | 2 Front end | done: `lexer.py`, `source.py`, `consteval.py`, `parser.py` written; minimal `checker.py` placeholder (mode.py only) so `python3 -m opencrbasic` runs end to end; `docs/frontend.md` records verified quirks. 825 unit/corpus tests pass (`cd opencrbasic && python3 -m pytest -q`); all 15 `crbasic/*.CR6` entry programs and 196/198 oracle-accepted CHM examples parse with zero `Unparsed` (2 known, documented gaps: a doc typo, an SNMP OID literal). |
-| 3 Checker | in progress (agent): `checker/` package driven by `tools/difftest.py` |
+| 3 Checker | in progress: `checker/` package (`structure.py` block matching/placement, `expressions.py` narrow undefined-symbol check, `instructions.py` `U1..U12` channel range, `warnings.py` table-never-called, `symbols.py`), rules and oracle evidence in `docs/checker.md`. `tools/difftest.py --logger cr6`: `crbasic/` 16/16 exact; `examples/` 0 exact, 2 verdict, 2 mismatch; `chm` 268 exact, 229 verdict, 10 mismatch (was 198/0/309) |
 | 4 Fuzzing | not started |
 | 5 Outputs | in progress: mode decision matches the reference on all 16 crbasic programs; `-l` table list byte-identical 16/16; `-z` TDF byte-identical 8/16 (rest differ only in auto-allocated sizes, mixed regime — agent working); CHM sample TDF 72%, table list 77% (`tools/tdftest.py`) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-25 (later still): checker phase 3 first pass: `checker.py` split into a `checker/`
+  package; `structure.py` (`BeginProg`/`Scan`/`If`/`Select` block matching and placement,
+  undefined `Call` targets), `expressions.py` (type-code-driven undefined-symbol check, narrow by
+  design), `instructions.py` (`U1..U12` channel range check), `warnings.py` (table declared but
+  never called, independent of the concurrent `tables.py` work), `symbols.py` (declared-name
+  collection); wired `tables_hook.attach` in. `tools/difftest.py --logger cr6`: `crbasic/` 14->16
+  exact; `chm` 198/0/309 (exact/verdict/mismatch) -> 268/229/10. Full rules and oracle evidence:
+  `docs/checker.md`. Two regressions caught and fixed during development (both documented in
+  `docs/checker.md`): built-in *functions* (`Timer`, `SerialOpen`, ...) called as bare statements
+  in `crbasic/Main.CR6`, and `StructureType` names used as a `Sample`/`Average` `DataType`
+  argument.
 
 - 2026-09-25 (later): background agents interrupted by a user interruption at 15:56 and relaunched;
   front end, type codes, TDF rules/generator completed; checker in progress.
