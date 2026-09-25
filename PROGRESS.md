@@ -19,11 +19,30 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 | 1 Binary RE | in progress: CLI decoded (`docs/cli.md`); instruction/function/symbol tables extracted (`tools/extract_tables.py`, `docs/binary.md`); message catalogue (`docs/messages.tsv`); TDF format decoded and round-tripped (`src/opencrbasic/tdf.py`); parameter type codes (`docs/type-codes.md`, `data/type_codes.json`); mode rule (`docs/modes.md`); table-definition rules (`docs/tdf-rules.md`). Pass-1 doc agent was cancelled; its findings are covered by `docs/frontend.md` and `docs/type-codes.md` |
 | 2 Front end | done: `lexer.py`, `source.py`, `consteval.py`, `parser.py` written; minimal `checker.py` placeholder (mode.py only) so `python3 -m opencrbasic` runs end to end; `docs/frontend.md` records verified quirks. 825 unit/corpus tests pass (`cd opencrbasic && python3 -m pytest -q`); all 15 `crbasic/*.CR6` entry programs and 196/198 oracle-accepted CHM examples parse with zero `Unparsed` (2 known, documented gaps: a doc typo, an SNMP OID literal). |
 | 3 Checker | in progress: `checker/` package (`structure.py` block matching/placement + placement-before-BeginProg + declaration/Units/Const/Alias line-wrap messages, `expressions.py` narrow undefined-symbol check, `instr_rules.py` required-parameter-count check, `instructions.py` `U1..U12` channel range (now gated to pass 2 only, see below), `warnings.py` table-never-called, `symbols.py`), rules and oracle evidence in `docs/checker.md`. Round 2 found the real compiler is two-pass (pass 2 semantic checks only run when pass 1 found nothing wrong anywhere in the file) and that echoed source text is verbatim (leading indentation/trailing whitespace preserved, not trimmed) -- both documented in `docs/checker.md`. `tools/difftest.py --logger cr6`: `crbasic/` 16/16 exact; `examples/` 0 exact, 2 verdict, 2 mismatch; `chm` 310 exact, 188 verdict, 9 mismatch (round 1: 268/229/10; round 1 start: 198/0/309) |
-| 4 Fuzzing | not started |
+| 4 Fuzzing | first pass done: `tools/fuzz.py` (mutation-based differential fuzzer, 16 operators, seeded/reproducible, re-runnable) and `tools/fuzz_replay.py` (re-checks saved reproducers) against all four loggers; 248 reproducers under `tests/corpus/fuzz/<logger>/<class>/`, findings in `docs/fuzz-findings.md`. Headline: one genuine hang (`tables.py` `render_table_list`/`_explode_indices` enumerates every index of an unbounded-size `Public`/`Dim` array with no size check first) and one crash (`tables.py` `_scan_weights` calls `float()` on a non-numeric `Scan` interval unconditionally), both now also caught as false accepts in the corpus's ordinary `Scan`-interval-value cases (the real compiler always rejects these with a specific message; opencrbasic checks neither the type nor the range at all) -- a single value-range check on `Scan`/`DataInterval`/array-dimension arguments would close all three at once; 3 false rejects (an `IncludeSection` call with a harmless extra argument is silently not expanded, `source.py`'s regex; `ESSInitialize`'s type-code-127 argument parsed as a full expression instead of raw text, 2 instances found via a fuzzer artifact -- caveated in the doc); a well-evidenced missing `Invalid Variable declaration %s.` message (4 corpus-distinct mutants); new concrete instances of `docs/checker.md`'s open "one diagnostic, then silence" question; confirmation that `warnings.py` implements only 1 of at least 5 warning kinds the real compiler has. `false_accept` volume (671 mutants) mostly reconfirms already-tracked phase-3 incompleteness rather than new gaps. |
 | 5 Outputs | in progress: mode decision matches the reference on all 16 crbasic programs; `-l` table list byte-identical 16/16; `-z` TDF byte-identical 8/16 (rest differ only in auto-allocated sizes, mixed regime — agent working); CHM sample TDF 72%, table list 77% (`tools/tdftest.py`) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-25 (fuzzing): phase 4 first pass. `tools/fuzz.py`: seeds from `crbasic/*.CR6` (with
+  `.crb` siblings) and oracle-accepted `tests/corpus/chm/` files; 16 text-level mutation operators
+  (delete/duplicate/swap line, rename identifier, replace numeric literal, add/drop/replace
+  argument, keyword case, whitespace/comment/line-continuation insertion, insert a foreign
+  statement, toggle `EndIf`/`End If`-style two-word forms, change a declared type, change a
+  DataTable/DataInterval/Scan interval value), 1-2 per mutant, seeded RNG (`--seed`). Classifies
+  `false_reject`/`false_accept`/`message_diff`/`mode_diff`/`crash`, plus a `hang` class added after
+  a mutant (an oversized array dimension) wedged the tool's own worker pool indefinitely --
+  `run_ours` now runs `compile_file` in a forked child under an 8s timeout. Deduplicates by a
+  coarse signature and shrinks (bounded delta-debugging) each kept exemplar before saving it to
+  `tests/corpus/fuzz/<logger>/<class>/<hash>.CR6` + a `.json` of both verdicts. `tools/fuzz_replay.py`
+  re-checks saved reproducers standalone. Ran `--logger all` (cr6 1500 mutants, cr1000x/cr300/cr350
+  300 each, seed 1); 248 reproducers saved, all 248 re-confirmed with `fuzz_replay.py` just before
+  writing up. Full counts, methodology caveats (dedup granularity, a fuzzer-side comma-splitting
+  gap in the argument operators, `--workers 4` contention occasionally misclassifying a fast case
+  as `hang`), and findings grouped by root cause: `docs/fuzz-findings.md`. Did not touch
+  `src/opencrbasic/**` (checker workstream owns it; this session only builds/runs the fuzzer and
+  records findings for that workstream to act on).
 
 - 2026-09-25 (checker round 2): resumed the phase-3 checker (previous session's own summary is the
   "later still" entry below). Grouped the CR6 corpus's remaining `verdict`/`mismatch` cases by the
@@ -134,3 +153,11 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 4. Optional fallback in `scripts/cr6comp.py` to use opencrbasic when neither Wine nor PowerShell
    exists, clearly labelled as unverified against hardware.
 5. ProgSignature (`-s`) algorithm; `-p` preprocessed output; `[Times]` (`-t`) are low priority.
+6. From fuzzing (`docs/fuzz-findings.md`), highest leverage first: a `Scan`/`DataInterval`/array-
+   dimension value-range check (closes a hang, a crash, and a chunk of `false_accept` volume at
+   once); the `IncludeSection` extra-argument false reject (`source.py` regex too strict); a
+   missing `Invalid Variable declaration %s.` message (`structure.py`, 4 corpus-distinct mutants);
+   more `warnings.py` warning kinds (currently only table-never-called is implemented; at least 4
+   more real warning texts found). Re-run `tools/fuzz.py --logger cr6 --count 1500 --seed 1` (and
+   the other three loggers) after any of these land, and `tools/fuzz_replay.py` to confirm which
+   saved reproducers are now fixed.

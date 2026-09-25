@@ -14,6 +14,14 @@ random text-level mutation operators (`OPERATORS` below) to a seed's lines, seed
   message_diff  both reject, different text
   mode_diff     both accept, different text (mode line or warnings)
   crash         opencrbasic raised a Python exception
+  hang          opencrbasic did not return at all within a timeout (see below)
+
+`run_ours` calls `compile_file` in a forked child process with a hard wall-clock timeout
+(`--hang-timeout`, default 8s) rather than in-process, specifically because a fuzzed mutant found
+exactly this during development: a `Public` array whose declared dimension a mutation blew up to
+~10^12 makes `tables.py`'s `render_table_list` -> `_explode_indices` enumerate every index with no
+bound on the size first, which never returns (`docs/fuzz-findings.md` "Hang"). Without this, one
+such mutant wedges the whole run forever with no diagnostic.
 
 Non-exact mutants are deduplicated by a coarse signature (class + the first differing output
 line with digits/quoted text generalised) because a single systematic gap can otherwise produce
@@ -36,10 +44,9 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures
-import contextlib
 import hashlib
-import io
 import json
+import multiprocessing
 import random
 import re
 import shutil
@@ -65,9 +72,10 @@ CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
 
 DEFAULT_COUNTS = {"cr6": 1500, "cr1000x": 300, "cr300": 300, "cr350": 300}
-CLASSES = ["crash", "false_reject", "false_accept", "message_diff", "mode_diff"]
-# Crashes and false rejects are the important ones; keep more exemplars of those.
-SIGNATURE_CAP_OVERRIDE = {"crash": 20, "false_reject": 10}
+CLASSES = ["crash", "hang", "false_reject", "false_accept", "message_diff", "mode_diff"]
+# Crashes, hangs and false rejects are the important ones; keep more exemplars of those.
+SIGNATURE_CAP_OVERRIDE = {"crash": 20, "hang": 20, "false_reject": 10}
+HANG_TIMEOUT = 8.0
 
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"
 
@@ -456,13 +464,41 @@ def normalise(text: str) -> str:
     return "\n".join(line.rstrip() for line in text.strip().splitlines())
 
 
-def run_ours(path: Path, profile: profiles.Profile) -> tuple[int, str]:
+def _run_ours_child(path_str: str, logger: str, q: "multiprocessing.Queue") -> None:
+    """Runs in a forked child (see `run_ours`); never raises across the fork boundary."""
     try:
-        with contextlib.redirect_stdout(io.StringIO()):
-            result = compile_file(path, profile)
-        return (0 if result.ok else 1), "\n".join(result.result_lines())
+        profile = profiles.get(logger)
+        result = compile_file(Path(path_str), profile)
+        q.put(((0 if result.ok else 1), "\n".join(result.result_lines())))
     except Exception as exc:  # a crash is a result, not a harness failure
-        return 2, f"CRASH {type(exc).__name__}: {exc}"
+        q.put((2, f"CRASH {type(exc).__name__}: {exc}"))
+
+
+def run_ours(path: Path, profile: profiles.Profile, timeout: float = HANG_TIMEOUT) -> tuple[int, str]:
+    # compile_file() does not itself print to stdout (checked: no `print` outside cli.py/tdf.py's
+    # own __main__), so unlike difftest.py's single-threaded `ours()` this is not wrapped in
+    # contextlib.redirect_stdout -- that redirect is process-global, not thread-local, and would
+    # race with other worker threads' own output under this module's thread pool.
+    #
+    # Run in a forked child with a hard wall-clock timeout: see the module docstring's "hang"
+    # entry for why this can't just be an in-process try/except -- some mutants make
+    # compile_file() never return at all, and a bare in-process call would wedge the whole run.
+    ctx = multiprocessing.get_context("fork")
+    q: multiprocessing.Queue = ctx.Queue()
+    proc = ctx.Process(target=_run_ours_child, args=(str(path), profile.name, q))
+    proc.start()
+    proc.join(timeout)
+    if proc.is_alive():
+        proc.terminate()
+        proc.join(1.0)
+        if proc.is_alive():
+            proc.kill()
+            proc.join()
+        return 3, f"HANG: opencrbasic did not return within {timeout:.0f}s"
+    try:
+        return q.get_nowait()
+    except Exception:
+        return 2, f"CRASH: worker process exited without a result (code {proc.exitcode})"
 
 
 def run_theirs(path: Path, profile: profiles.Profile, siblings: Path | None) -> tuple[int, str]:
@@ -472,6 +508,8 @@ def run_theirs(path: Path, profile: profiles.Profile, siblings: Path | None) -> 
 
 
 def classify(our_exit: int, our_out: str, their_exit: int, their_out: str) -> str | None:
+    if our_exit == 3:
+        return "hang"
     if our_exit == 2:
         return "crash"
     if normalise(our_out) == normalise(their_out):
@@ -557,11 +595,20 @@ def shrink(seed: Seed, lines: list[str], profile: profiles.Profile, target_class
 def _signature(cls: str, our_out: str, their_out: str) -> tuple[str, str]:
     a = normalise(our_out).splitlines()
     b = normalise(their_out).splitlines()
-    first_diff = ""
-    for x, y in zip(a + [""] * max(0, len(b) - len(a)), b + [""] * max(0, len(a) - len(b))):
-        if x != y:
-            first_diff = y or x
-            break
+    if cls in ("false_accept", "false_reject", "crash", "hang"):
+        # The exit codes differ, so the first (banner) line always differs on its own -- "X --
+        # Compiled ..." vs "X -- Compile Failed!" -- and would swamp a first-differing-line
+        # signature with the seed's filename, collapsing every distinct rejection reason from the
+        # same seed into one bucket. Use the rejecting side's own detail lines (after the banner)
+        # instead, since that is the text that actually distinguishes root causes.
+        detail = a if cls in ("crash", "hang") else (b[1:] if cls == "false_accept" else a[1:])
+        first_diff = " | ".join(detail) if detail else (b[0] if b else a[0] if a else "")
+    else:
+        first_diff = ""
+        for x, y in zip(a + [""] * max(0, len(b) - len(a)), b + [""] * max(0, len(a) - len(b))):
+            if x != y:
+                first_diff = y or x
+                break
     generic = re.sub(r"\d+", "#", first_diff)
     generic = re.sub(r'"[^"]*"', '"…"', generic)
     return cls, generic
