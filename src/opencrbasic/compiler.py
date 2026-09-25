@@ -57,4 +57,6 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     checker.check(program, profile, diags, result)
+    from .signature import program_signature
+    result.signature = program_signature(path)
     return result

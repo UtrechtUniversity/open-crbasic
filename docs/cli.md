@@ -25,7 +25,7 @@ CR6Comp.exe [options] program.CR6 [messagefile]
 | `-l` | file | Write the table list: per table name, `Interval`, and fields with `Units`. Includes system tables (`DataTableInfo`, ConstTable, `Public`). |
 | `-m` | none | Allocates a 1 KiB buffer and sets a flag; effect not yet determined. |
 | `-p` | file | Write the preprocessed source (includes expanded, conditional compilation resolved, comments stripped). |
-| `-s` | none | After success, also print `ProgSignature =  <n>.` (two spaces). |
+| `-s` | none | After success, also print `ProgSignature =  <n>.` (two spaces). The value is the PakBus signature (seed 0xAAAA) of the main file's bytes, continued over each included file's bytes in expansion order (`src/opencrbasic/signature.py`; matches the exe on 5 repo programs). |
 | `-t` | none | Write a `[Times]` section to the message file with per-line timing estimates (`line 205: Scan: 0`, `line 212: PanelTemp = 1100`). |
 | `-u` | none | Sets a flag; effect not yet determined. |
 | `-v` | none | Print the version line, then compile normally. The version line is also written to the message file under `[Version]`. |

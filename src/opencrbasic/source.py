@@ -100,13 +100,15 @@ class _Loader:
     def __init__(self, directory: Path | None, diags: Diagnostics):
         self.directory = directory
         self.diags = diags
+        self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
 
     def load_file(self, path: Path, *, section: str | None, in_include: bool) -> list[LogicalLine]:
         try:
-            raw = path.read_bytes().decode("latin-1")
+            data = path.read_bytes()
         except OSError:
             return []
-        return self.load_text(raw, path.name, section=section, in_include=in_include)
+        self.files.append(data)
+        return self.load_text(data.decode("latin-1"), path.name, section=section, in_include=in_include)
 
     def load_text(
         self, raw: str, filename: str, *, section: str | None, in_include: bool
