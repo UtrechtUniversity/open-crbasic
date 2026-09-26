@@ -394,4 +394,171 @@ through to `structure.check_pass2`'s bare-call handling instead of `expressions.
 argument walk); and a handful of single-file `Units`/`Const`-with-no-assignment truncation-message
 differences (`The is not defined.` vs. this project's own `Need '=' in units definition:`/`Variable
 not named.` on malformed CHM-prose-as-code examples, likely a parser-level tokenisation difference
-on CR300/CR350 specifically, not chased).
+on CR300/CR350 specifically, not chased). **Both of the two named gaps above were closed this
+round** -- see "Round 6b" below.
+
+## Round 6b (2026-09-26): undefined bare calls, `SerialOpen`'s `ComPort` argument
+
+Owned files this round: `checker/cr3xx.py` (new), `data/cr300/`, `data/cr350/`, `profiles.py` (one
+additive field), `docs/loggers.md`. One shared-module edit, `checker/structure.py`
+(`_check_call_pass2`), gated behind a new, minimal `Profile.undefined_call_message` flag rather than
+a broader rewrite (`checker/__init__.py`'s own tiny wiring line for the new `cr3xx.check` is
+described in that module's own docstring). Method: grouped every CR300/CR350 `chm` `verdict` case
+by `(their first message, our first message)` (same technique as the agreement round above), then
+oracle-probed the two largest groups with minimal scratch programs
+(`python3 tools/oracle.py`/direct `wine cr300comp.exe`/`cr350comp.exe` scratch probes, no option
+flags).
+
+### Finding 1: an undefined bare call gets its own `{name} is not defined.` line first, and never the before-`BeginProg` follow-up/stop
+
+The single largest CR300/CR350 `verdict` group by far (187/300 and 190/374 files respectively,
+`(NAME is not defined., Invalid, or out of place expression: ...)` after generic-ising every
+digit/instruction-name): a bare call (`Name(args)`/`Name`, no `Call` keyword) whose head name
+resolves to nothing this project's own `_check_call_pass2` already recognises (not a declared
+`Sub`, not a built-in function, not a recognised instruction -- most often an instruction this
+logger's own smaller table lacks entirely, e.g. `DisplayMenu`/`I2COpen`/`I2CWrite`/`CardOut`/
+`PortPairConfig`, or a genuinely nonexistent name) gets an extra `{name} is not defined.` line
+*before* the existing generic `Invalid, or out of place expression: %s.` fallback line, oracle-
+confirmed identical on both loggers:
+
+```
+DisplayMenu("t",1)   (unresolved on CR300/CR350) ->
+  line 4: DisplayMenu is not defined.
+  line 4: Invalid, or out of place expression:     DisplayMenu("t",1)
+  .
+```
+(the trailing `\n.` -- the closing period on its own line -- is a further, smaller formatting
+difference in how CR300/CR350 echo this one message's own argument text, not chased this round;
+see "Not implemented" below.) Confirmed for every one of the six instructions the earlier round's
+own "Remaining gaps" note named (`DisplayMenu`, `UDPSocketOpen`, `I2COpen`, `I2CWrite`, `CardOut`,
+`PortPairConfig`) plus a fresh, deliberately-nonexistent name (`FooBarBaz`) and the corpus's own
+`ACPower`/`TableFieldNames`/`MovePrecise`/`AddPrecise`/`ArgosError`/`HydraProbe` -- all identical
+shape. **CR6/CR1000X are unaffected**: the same probes against `CR6Comp.exe`/`cr1000xcomp.exe`
+show only the existing fallback line, no `{name} is not defined.` line (`Invalid symbol in
+expression: %s.` is CR6/CR1000X's own wording for this concept, and it is never used for this
+particular call shape on those two loggers, unchanged).
+
+**A second, independent difference in the same branch**: the existing before-`BeginProg` placement
+follow-up (`Expr illegally occurs before BeginProg.`) and pass-2 stop -- both oracle-confirmed real
+and correct for CR6/CR1000X on this exact shape (`docs/checker.md` "Pass model") -- **do not fire
+at all on CR300/CR350** for this one branch, even when the statement genuinely precedes
+`BeginProg`, and pass 2 does not stop (oracle, three independent probes): a bare `FooBarBaz(1,2)`
+placed before `BeginProg` gives only `FooBarBaz is not defined.`/`Invalid, or out of place
+expression: FooBarBaz(1,2).` and then *keeps going*, reporting a later, unrelated `Too many
+parameters: Sec.` on a subsequent line; the corpus's own `Tablefieldnames_2.CR6` (`NOTE:` used as a
+bare call before `BeginProg`, a CHM-prose artifact) and `DoublePrecArith_1.CR6` show the identical
+pattern. **The other two branches of the same check are unaffected** -- oracle-confirmed
+identical to CR6/CR1000X on both loggers: a bare call resolving to a declared `Sub` still gets
+`Call illegally occurs before BeginProg.` before `BeginProg` (probe: a declared `Sub` called bare
+before `BeginProg`), and an explicit `Call NoSuchSub` still gets the unchanged `Sub %s not
+defined.` alone, no extra line, before `BeginProg` or not.
+
+Implemented as `Profile.undefined_call_message` (`profiles.py`, `False` default, `True` for
+cr300/cr350) and a single gated branch inside `structure.py`'s `_check_call_pass2`, in the
+"resolves to nothing" case only -- the other two branches (`Sub`/function) are untouched. Result
+(`tools/difftest.py --logger <l> --show 0`, `chm`, before this finding's own fix / after): cr300
+135/359/13 -> 138/358/11 exact/verdict/mismatch; cr350 139/356/12 -> 142/355/10. (The 2-file
+`mismatch` improvement on each logger, ahead of Finding 2 below, is this finding's own residual
+effect on files that also touch `SerialOpen`; not chased apart from Finding 2's own fix.) The
+"NAME is not defined." vs. "Invalid, or out of place expression" `verdict` group itself shrank from
+187 to 81 files (cr300) and 190 to 81 (cr350) -- the remainder are CHM-prose-as-code artifacts
+(`Unparsed`, not `S.Call`, several undefined *words* per physical line, e.g. `DoublePrecArith_1.CR6`
+line 2's `To force double-precision arithmetic, ...` -- deliberately not chased, see "Not
+implemented" below) or a compound expression this project's own single-name `stmt.name` head does
+not fully cover.
+
+### Finding 2: `SerialOpen`'s own `ComPort` argument (position 0) needs a genuine compile-time constant
+
+`SerialOpen` (and every other `Serial*` function: `SerialClose`/`SerialFlush`/`SerialOut`/
+`SerialIn`/`SerialInBlock`/`SerialInChk`/`SerialBrk`) is a *function* (`data/<logger>/
+functions.json`, `kind: 309`), not an `S.Instruction` -- called as a bare statement, its arguments
+were never checked for undefined names at all (a real, general gap in this project's own scope,
+`docs/checker.md`: `expressions.check` only ever walks a recognised `S.Instruction`'s own
+arguments, "never ... a `Sub`/`Function` argument list's own runtime scoping"). Oracle
+(`avw200_1.CR6`/`acceptdatarecords_2.CR6`, both real corpus programs using `SerialOpen(COMC1,...)`
+-- `COMC1` a genuine CR1000X-only symbol absent from CR300/CR350's own smaller symbol table,
+`docs/loggers.md` above): `SerialOpen`'s own `ComPort` argument (position 0) uniquely, among every
+`Serial*` function checked this round, additionally requires a genuine compile-time constant:
+
+```
+SerialOpen(COMC1,...)          (COMC1 undefined)      -> COMC1 is not defined.
+                                                           ComPort 0 illegal.
+                                                           Parameter must be a constant integer: <stmt.text>
+                                                           .
+SerialOpen(MyPort,...)  (MyPort a declared Public)      -> ComPort 0 illegal.
+                                                           Parameter must be a constant integer: <stmt.text>
+                                                           .
+SerialOpen(ComRS232,...)         (a real, defined port) -> compiles clean
+SerialClose(BadCom)/SerialFlush(BadCom)/SerialOut(BadCom,...)
+                                (undefined arg, same position) -> BadCom is not defined. (alone --
+                                                           no `ComPort .../Parameter must be a
+                                                           constant integer` follow-up on these)
+```
+i.e. the trigger for the extra two lines is "not a compile-time constant at all" (an undefined
+name *or* a live declared variable, not "undefined" specifically), unique to `SerialOpen` among
+this family -- every other `Serial*` function's same-position argument gets only the plain
+undefined-name line, oracle-confirmed individually for `SerialClose`/`SerialFlush`/`SerialOut`.
+**Deliberately not implemented**: a genuine constant that is merely out of range (oracle:
+`SerialOpen(99,...)` -> `ComPort 99 illegal.` plus a *different* second line, `No Matching, or out
+of place ) in expression: ...`, not the "must be a constant integer" line) -- CR300/CR350's own
+valid `ComPort` value set was not oracle-pinned down this round (their smaller hardware's own
+comm-port symbol table, `Com1`/`ComRS232`/`ComUSB`/`ComRF`/... plus `Com2`/`Com3` on CR350, gives no
+obvious small integer range to bound-check against), and guessing it risks flagging a value this
+project cannot confirm is actually invalid (AGENTS.md: never guess into a false reject) --
+`checker/cr3xx.py`'s own module docstring has the full evidence and the same reasoning.
+
+Implemented in the new `checker/cr3xx.py` (a no-op on every logger but cr300/cr350, so
+`checker/__init__.py`'s own call site is unconditional), reusing `expressions._known_names`/
+`_undefined_names`/`_variable_refs` and `symbols.declared_variable_names` rather than
+reimplementing name resolution. Oracle-confirmed **ungated** (fires alongside unrelated errors
+elsewhere in the same file, same as `expressions.check_consts`): `acceptdatarecords_2.CR6`'s own
+`SerialOpen(COMC1,...)` diagnostic (line 10) prints together with a separate, later
+`CallTable`-shaped issue (line 15) in the same file, both present in the oracle transcript.
+
+Result (`tools/difftest.py --logger <l> --show 0`, `chm`, after Finding 1 / after both findings):
+cr300 138/358/11 -> 138/358/11 exact/verdict unchanged, `mismatch` 13 -> 11 (2 files: both real
+`SerialOpen(COMC1,...)`-using corpus programs moved from a silent false accept to a correct
+reject); cr350 142/355/10, `mismatch` 12 -> 10, same two-file effect. Combined round total (before
+this round's start / after both findings): cr300 135/359/13 -> 138/358/11; cr350 139/356/12 ->
+142/355/10. Zero false rejects throughout on all four loggers
+(`their_exit==0 and our_exit!=0`, checked after every step); cr6/cr1000x completely unaffected
+(both changes are cr300/cr350-only, either by the new module's own logger check or the
+`undefined_call_message` flag's default). `python3 -m pytest -q`: 963 passed throughout (0 failed).
+
+Fixed-seed fuzz (`tools/fuzz.py --logger cr300/cr350 --count 300 --seed 42/43`), before this
+round's start / after both findings, `false_reject = 0` throughout except the one already-
+documented, pre-existing `cr350` seed-43 flake (`docs/fuzz-findings.md` "4."), unchanged by this
+round: cr300 seed42 false_accept 27->27 (exact 210->210), cr300 seed43 33->33 (203->203), cr350
+seed42 33->33 (exact 201->202), cr350 seed43 26->26 (exact 207->208, one pre-existing flake). The
+random fixed-seed fuzz corpus does not happen to exercise either of this round's two fixed shapes
+often (both are corpus-representative but low-frequency per any single random seed of 300
+mutants), so the raw false-accept *count* barely moves even though the underlying `chm`-corpus
+groups they target are large; the `chm` corpus numbers above are the more representative measure
+for this specific pair of fixes. The remaining `false_accept` reproducers from this round's own
+fresh fuzz runs are a long, low-frequency, scattered tail (largest group found, `Invalid fnotch
+value` warning interacting with an unrelated `SDI12Recorder`/reps-argument gap, 7 of 119 combined
+reproducers) not owned by this workstream's files (`checker/warnings.py`/`instr_measure.py`) and
+not chased this round.
+
+### Not implemented (this round's own scope)
+
+- **The trailing-newline echo quirk** (`Invalid, or out of place expression: %s.`'s own argument
+  text, and `Parameter must be a constant integer: %s`'s, both include the statement's own raw
+  source line's trailing newline before the closing period when nothing else follows on that
+  physical line, unlike CR6/CR1000X's own version of the first message and unlike either logger's
+  `Sub %s not defined.` -- same *general* quirk `docs/checker.md` already documents for `Units`,
+  applied to two further messages this round found it also applies to) -- implemented directly in
+  `checker/cr3xx.py`'s own new "Parameter must be a constant integer" message (isolated, low risk),
+  left unimplemented in the shared `structure.py` fallback line touched by Finding 1 (higher risk of
+  disturbing CR6/CR1000X's own, unaffected version of the same call site; only ever costs an
+  "exact" vs. "verdict" precision loss, never a wrong verdict).
+- **CHM-prose-as-code `Unparsed` statements' own per-word `is not defined.` echoing** (Finding 1's
+  own residual 81/81-file group): the real compiler echoes each undefined *word* of a malformed,
+  multi-word line as its own diagnostic (`This example shows...` -> `This is not defined.`/`example
+  is not defined.`, apparently stopping after the first two words and falling back to one whole-line
+  echo for the rest) -- reproducing this exactly would need re-tokenising already-malformed
+  `Unparsed` text to find bare-identifier-shaped words, a meaningfully riskier and more speculative
+  change than Finding 1's own clean `S.Call` case, and these are CHM documentation-prose artifacts
+  the corpus contains for historical-example reasons, not real programs (`AGENTS.md`: `examples/`
+  and, by the same reasoning, the CHM prose-as-code corpus rows are not to be over-fitted).
+- **`SerialOpen`'s own valid `ComPort` numeric range/message** -- see Finding 2 above.

@@ -150,6 +150,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
     suppress_line: int | None = None
+    dim0_sizes = symbols.declared_dim0_sizes(program, env)
 
     for stmt in program.statements:
         kw = _keyword(stmt)
@@ -167,6 +168,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
+        elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
+            _check_alias_dims(stmt, diags, env, dim0_sizes)
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
@@ -188,6 +191,21 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw == "ENDIF" or (kw == "END" and _block_word(args) == "IF"):
             cond_depth = max(0, cond_depth - 1)
 
+    # Round 6 finding, oracle-confirmed: these three block-balance summary checks are themselves
+    # suppressed entirely once *any* other pass-1 error already fired in this same loop --
+    # `Variable not named.`/`Illegally dimension: ...`/`Illegally dimensioned aliased name`/
+    # `Need '=' in units definition: ...` (one from each of `_check_declaration`/
+    # `_check_array_dims`/`_check_alias_dims`/`_check_unparsed_pass1`, oracle-swept independently)
+    # all suppress a *following* `No BeginProg in Program.`/`Scan without NextScan.` the same way
+    # -- a minimal one-line `Public` (no name at all, no `BeginProg` anywhere in the file) real-
+    # rejects with only `Variable not named.`, never a second, additional `No BeginProg in
+    # Program.` alongside it, and the same holds for an unbalanced `Scan`/`If` in a file that also
+    # has an earlier declaration error. `diags.errors` at this point only reflects this same
+    # function's own loop above (`check_pass1` is always the first thing `checker/__init__.py`
+    # runs), so this is safe without threading a separate "did this loop itself find anything"
+    # flag through it.
+    if diags.errors:
+        return
     if not seen_beginprog:
         diags.error(last_line, "No BeginProg in Program.")
         return
@@ -259,6 +277,35 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # `solarposition_1.CR6` -- the two container kinds genuinely behave differently for these two
     # different checks, so one shared flag cannot correctly cover both).
     in_table = False
+    # `Multiple BeginProgs.` (round 6, `docs/checker.md`): a genuine nesting-depth check, not "has
+    # `BeginProg` appeared more than once in the file" -- oracle-confirmed, a dozen probes: a
+    # *second*, complete `BeginProg...EndProg` pair (the first one properly closed first) compiles
+    # clean, while a `BeginProg` encountered before the previous one's own `EndProg` real-rejects
+    # at that second `BeginProg`'s own line, with no preceding echo. Accumulates with other pass-2
+    # errors rather than stopping the pass (oracle: an unrelated `Randomize(FooBar)` right after a
+    # nested `BeginProg` still gets its own, separate `Invalid symbol in expression` line), and a
+    # *third* `BeginProg` nested inside the second gets its own second `Multiple BeginProgs.` line
+    # too (one diagnostic per excess `BeginProg`, not just the first).
+    in_beginprog = False
+    # `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (round 6, `docs/checker.md`):
+    # not "an `If`/`Select` contains a `Scan`" by itself (a `Scan...NextScan` pair fully closed
+    # *inside* the same `If`/`Select` block, textually, compiles clean, oracle-confirmed) but "a
+    # `Scan` opened while this block was open is still open (no matching `NextScan` yet) when the
+    # block's own `EndIf`/`EndSelect` is reached" -- a genuine nesting-depth comparison, not a
+    # syntactic "contains" check. Modelled the same way `check_pass1` tracks `scan_depth`/
+    # `cond_depth` for its own, coarser file-wide balance checks, but as a stack here: each open
+    # `If`/`Select` remembers `scan_depth`'s own value at the moment it opened, and its own
+    # `EndIf`/`EndSelect` compares the *current* `scan_depth` against that remembered value --
+    # greater means an unclosed `Scan` from inside this block. Reported at the `EndIf`/`EndSelect`
+    # line itself, oracle-confirmed regardless of how many `ElseIf`/`Else` segments sit in between
+    # (`docs/checker.md` "Round 6": both fire at the same line as a plain `If...EndIf`). Pass 2
+    # (oracle-confirmed: suppressed by an earlier pass-1 `Variable not named.`, but accumulates
+    # freely with an unrelated pass-2 `Invalid symbol in expression` either side of it) -- tracked
+    # unconditionally here, in the same top-of-loop bookkeeping section as `in_table`/
+    # `in_beginprog` above, independent of `in_body_block`/`in_table` (no oracle evidence either
+    # suppresses this specific check the way they do the "before `BeginProg`" ones).
+    scan_depth = 0
+    cond_stack: list[int] = []
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
             in_body_block = True
@@ -268,6 +315,24 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_table = True
         elif kw == "ENDTABLE":
             in_table = False
+        elif kw == "BEGINPROG":
+            if in_beginprog:
+                diags.error(stmt.line, "Multiple BeginProgs.", stmt.file)
+            in_beginprog = True
+        elif kw == "ENDPROG":
+            in_beginprog = False
+        elif kw == "SCAN":
+            scan_depth += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            scan_depth = max(0, scan_depth - 1)
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            cond_stack.append(scan_depth)
+        elif kw == "ENDSELECT" or (kw == "END" and _block_word(getattr(stmt, "args", []) or []) == "SELECT"):
+            if cond_stack and scan_depth > cond_stack.pop():
+                diags.error(stmt.line, "IF or SELECT statement illegally has SCAN without NEXT SCAN.", stmt.file)
+        elif kw == "ENDIF" or (kw == "END" and _block_word(getattr(stmt, "args", []) or []) == "IF"):
+            if cond_stack and scan_depth > cond_stack.pop():
+                diags.error(stmt.line, "IF or SELECT statement illegally has SCAN without NEXT SCAN.", stmt.file)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue
@@ -474,6 +539,46 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
                 continue
             if not (1 <= val <= _MAX_DIM_VALUE):
                 diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
+
+
+def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
+                       dim0_sizes: dict[str, int]) -> None:
+    """`Illegally dimensioned aliased name` (round 6, no trailing period, oracle-confirmed
+    verbatim): an `Alias <name>(<index>) = <target>` whose `<index>` -- only the *first* index,
+    when `<name>` is itself multi-dimensional -- is a compile-time constant outside `[1,
+    dim0_sizes[name]]`. Pass 1, unconditional (oracle-confirmed: accumulates with an unrelated,
+    later `Variable not named.` in the same file, and, being pass 1, suppresses every pass-2 check
+    the same way any other pass-1 error already does -- no special "stop the file" behaviour of
+    its own needed).
+
+    A dozen oracle probes (`docs/checker.md` "Round 6") pin down the exact shape: `name` must be a
+    *declared* `Public`/`Dim`/`Static` variable (`dim0_sizes`, built once per `check_pass1` call --
+    an undeclared name here is a different, unimplemented gap, left alone rather than guessed at);
+    the index folds via `int()` (truncating toward zero, matching every other value check in this
+    project) and is compared only against that variable's **first** declared dimension's own size
+    (`wind` declared `Public wind(5)`: index `1`/`5`/`2.5`/`5.9` all compile clean, `0`/`-1`/`6`/
+    `&HFF` (255) all fail) -- a **scalar** (no declared dimensions at all) behaves exactly like a
+    size-1 array (`Public y` / `Alias y(1) = Ts` compiles, `Alias y(2) = Ts` fails), which is why
+    `dim0_sizes` maps every declared variable, not just array ones. **A later dimension's own value
+    is never checked at all**, however far out of range -- oracle-confirmed with a genuine 2D
+    array, `Public grid(3,3)`: `Alias grid(2,4) = Ts` (second index `4` > `3`) compiles clean,
+    while `Alias grid(4,2) = Ts` (first index `4` > `3`) fails -- so this only ever inspects
+    `stmt.args[0].args[0]`, never any later index in the same `Index` node.
+    """
+    target = stmt.args[0] if stmt.args else None
+    if not isinstance(target, S.Index) or not target.args:
+        return
+    size = dim0_sizes.get(target.name.upper())
+    if size is None:
+        return
+    try:
+        value = consteval.value_of(target.args[0], env)
+    except consteval.NotConstant:
+        return
+    if not isinstance(value, (int, float)) or isinstance(value, bool):
+        return
+    if not (1 <= int(value) <= size):
+        diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
 
 
 def _after_keyword(stmt: S.Unparsed) -> str:

@@ -28,8 +28,8 @@ not re-measured independently since.
 |---|---|---|---|
 | CR6 | 16 / 0 / 0 | 336 / 162 / 9 | 0 |
 | CR1000X | 9 / 7 / 0 | 352 / 149 / 6 | 0 |
-| CR300 | 0 / 16 / 0 | 135 / 359 / 13 | 0 |
-| CR350 | 0 / 16 / 0 | 139 / 356 / 12 | 0 |
+| CR300 | 0 / 16 / 0 | 138 / 358 / 11 | 0 |
+| CR350 | 0 / 16 / 0 | 142 / 355 / 10 | 0 |
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
@@ -54,6 +54,38 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-26 (checker round 6b: CR300/CR350 undefined bare calls, `SerialOpen` `ComPort`): new
+  `checker/cr3xx.py` (CR300/CR350-only checks, wired into `checker/__init__.py` with one additive
+  call), one additive `Profile.undefined_call_message` field (`profiles.py`) and its one gated
+  branch in the shared `checker/structure.py::_check_call_pass2`, `data/cr300/`/`data/cr350/`
+  unchanged (no new data files needed this round), `docs/loggers.md` "Round 6b". Two fixes, found
+  by grouping every CR300/CR350 `chm` `verdict`/`mismatch` case by `(their first message, our
+  first message)`: (1) a bare call to a name CR300/CR350 don't recognise (most often an
+  instruction absent from their smaller table, e.g. `DisplayMenu`/`I2COpen`/`CardOut`) now gets its
+  own `{name} is not defined.` line before the existing generic fallback line, and (oracle-
+  confirmed the opposite of CR6/CR1000X for this one branch) never the before-`BeginProg`
+  follow-up/stop -- the single largest CR300/CR350 `chm` `verdict` group, 187/190 files, cut to
+  81/81 (the residual is CHM prose-as-code artifacts, a different, `Unparsed`-shaped case, not
+  chased); (2) `SerialOpen`'s own `ComPort` argument (a *function* call's argument, never checked
+  by this project's `expressions.py` at all before now) needs a genuine compile-time constant on
+  CR300/CR350 -- an undefined name or live variable there now gets `{name} is not defined.` (if
+  undefined) plus `ComPort 0 illegal.`/`Parameter must be a constant integer: %s`, closing 2 real
+  corpus `mismatch`es (silent false accepts) per logger. `tools/difftest.py --logger <l> --show 0`
+  (`chm`, before this round's start / after both fixes): cr300 135/359/13 -> 138/358/11; cr350
+  139/356/12 -> 142/355/10; cr6/cr1000x unaffected (both fixes are cr300/cr350-only, either by
+  `cr3xx.check`'s own logger guard or `undefined_call_message`'s default). Zero false rejects on
+  all four loggers throughout (`their_exit==0 and our_exit!=0`, empty every time).
+  `python3 -m pytest -q`: 963 passed, 311 skipped throughout (0 failed). Fixed-seed fuzz
+  (`--logger cr300/cr350 --count 300 --seed 42/43`): false-accept counts barely move (this round's
+  two fixes are corpus-representative but each individually low-frequency in any one random
+  300-mutant sample) -- `false_reject = 0` throughout except the one already-documented,
+  pre-existing cr350 seed-43 flake (`docs/fuzz-findings.md` "4."), unchanged. Remaining gaps
+  (evidence only, not attempted): the `Units`/`Const`-truncation echo's own trailing-newline quirk
+  in the *shared* `structure.py` fallback line (implemented in this round's own new
+  `checker/cr3xx.py` message, left alone in the higher-risk shared one); CHM prose-as-code
+  `Unparsed` statements' own per-word echoing; `SerialOpen`'s valid `ComPort` numeric range. Full
+  evidence and oracle transcripts: `docs/loggers.md` "Round 6b".
 
 - 2026-09-26 (checker round 5: fuzz-driven false-accept reduction): `checker/structure.py`,
   `checker/expressions.py`, `checker/symbols.py`, `checker/instr_rules.py`, `parser.py` (owned this

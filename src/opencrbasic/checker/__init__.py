@@ -26,37 +26,43 @@ Runs, in order:
    evidence, `docs/loggers.md`: `Const` folding happens eagerly at declaration time, so this
    accumulates alongside an unrelated, earlier `Variable not named.` rather than being suppressed
    by it the way the *rest* of `expressions.py`'s pass-2 checks would be).
-3. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
+3. `cr3xx.check` -- CR300/CR350 only (a no-op on every other logger): `SerialOpen`'s own `ComPort`
+   argument and every other `Serial*` function's own first argument (`docs/loggers.md`). Also
+   ungated, oracle-confirmed the same way as step 2.
+4. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
    parameter.", `checker/instr_rules.py`, owned alongside this package). Also pass 1 (oracle
    evidence, `docs/checker.md`: a file with several earlier "Variable not named." errors still
    gets its own, later "Invalid or missing parameter." reported). `instr_rules.check_too_many` --
    the mirror image, an argument list running past the declared count ("Too many parameters:  %s.",
    round 5, `docs/checker.md`) -- runs alongside it, also pass 1 (oracle-confirmed the same way).
-4. `warnings.check_early` -- reachability/background-calibration/fnotch; ungated, fires even when
-   the file has other errors elsewhere (`docs/instructions.md`).
+5. `warnings.check_early` -- reachability/fnotch; ungated, fires even when the file has other
+   errors elsewhere (`docs/instructions.md`). `warnings.check_background_calibration` is a
+   related but separately-gated check, run at step 11 below instead (round 6, `docs/checker.md`).
 
-If, and only if, steps 1-4 found nothing:
+If, and only if, steps 1-5 found nothing:
 
-5. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
+6. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
    placement check (returns the cutoff line, if any).
-6. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
+7. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
    position that resolves nowhere, and the constant-only-family "rejects a variable" check
    (deliberately narrow; see that module's docstring).
-7. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
+8. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
    parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
    `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value checks, `docs/instructions.md`) run
    alongside it.
-8. Every error step 5-7 added is truncated to step 5's cutoff line, if it returned one.
+9. Every error step 6-8 added is truncated to step 6's cutoff line, if it returned one.
 
 Then, regardless of errors so far:
 
-9. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
-   values via `consteval.Env`, as the previous placeholder checker did).
-10. `tables_hook.attach`, when the compile has no errors so far and the module is available (it is
-    written by a different concurrent workstream, `PLAN.md`; guarded so this checker still runs
-    standalone while that module is in progress), then `warnings.check` ("table declared but never
-    called") and `instr_data.check_duplicate_fields`.
+10. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
+    values via `consteval.Env`, as the previous placeholder checker did).
+11. When the compile has no errors so far: `warnings.check_background_calibration` (round 6, see
+    that function's own docstring for why it is not part of step 5 above), then `tables_hook.
+    attach`, when the module is available (it is written by a different concurrent workstream,
+    `PLAN.md`; guarded so this checker still runs standalone while that module is in progress),
+    then `warnings.check` ("table declared but never called") and
+    `instr_data.check_duplicate_fields`.
 
 Full instruction-signature checks (the rest of `instructions.py`) and a general expression-tree
 name/type resolution (the rest of `expressions.py`) are future work; see `docs/checker.md` and
@@ -69,7 +75,9 @@ from .. import consteval, mode
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
-from . import expressions, instr_data, instr_measure, instr_rules, instructions, structure, warnings
+from . import (
+    cr3xx, expressions, instr_data, instr_measure, instr_rules, instructions, structure, warnings,
+)
 
 
 def _run_pass(fn, *args) -> None:
@@ -106,6 +114,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # reported alongside pass-1's other declaration errors, not deferred to pass 2's gated
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
+    # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): `SerialOpen`'s own
+    # `ComPort` argument, and every other `Serial*` function's own first argument. Also ungated
+    # (oracle-confirmed, `docs/loggers.md`).
+    _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
@@ -170,6 +182,13 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         result.mode = None
 
     if not diags.errors:
+        # `When Main Sequence Scan %d is running, background calibration will be disabled.`:
+        # round 6, moved here from the unconditional `warnings.check_early` call above -- oracle-
+        # confirmed *not* ungated the way `_check_reachability`/`_check_fnotch` are, unlike this
+        # module's own docstring previously claimed for all of `check_early` (`checker/warnings.py`'s
+        # `check_background_calibration` docstring has the oracle evidence). Independent of
+        # `tables_hook`'s own availability, so called ahead of that guard rather than inside it.
+        _run_pass(warnings.check_background_calibration, program, profile, diags, env)
         try:
             from .. import tables_hook
         except ImportError:

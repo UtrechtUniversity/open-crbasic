@@ -4,6 +4,7 @@ bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `
 
 from __future__ import annotations
 
+from .. import consteval
 from .. import syntax as S
 
 
@@ -140,6 +141,36 @@ def declared_variable_names(program: S.Program) -> set[str]:
             for p in stmt.params:
                 names.add(p.name.upper())
     return names
+
+
+def declared_dim0_sizes(program: S.Program, env: consteval.Env) -> dict[str, int]:
+    """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its *first* dimension's own
+    declared constant size, for `structure.py`'s `Illegally dimensioned aliased name` check
+    (round 6, `docs/checker.md`). A dimension that does not fold to an `int`/`float` constant is
+    skipped (no entry -- the caller must then leave that name unchecked, `structure.py`'s own
+    `check_array_dims` makes the same conservative choice for the same reason, AGENTS.md: never
+    guess into a false reject).
+
+    A variable with **no** declared dimensions at all (a plain scalar) maps to `1`, not omitted --
+    oracle-confirmed (`docs/checker.md`): `Alias y(2) = Ts` on a scalar `Public y` fails the exact
+    same way an out-of-range array index does, while `Alias y(1) = Ts` compiles clean, matching a
+    size-1 array rather than "no array at all, so anything goes".
+    """
+    sizes: dict[str, int] = {}
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC")):
+            continue
+        for v in stmt.vars:
+            if not v.dims:
+                sizes[v.name.upper()] = 1
+                continue
+            try:
+                val = consteval.value_of(v.dims[0], env)
+            except consteval.NotConstant:
+                continue
+            if isinstance(val, (int, float)) and not isinstance(val, bool):
+                sizes[v.name.upper()] = int(val)
+    return sizes
 
 
 def declared_names(program: S.Program) -> set[str]:

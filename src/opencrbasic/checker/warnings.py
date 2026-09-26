@@ -63,7 +63,6 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
 
 def check_early(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     _check_reachability(program, profile, diags, env)
-    _check_background_calibration(program, profile, diags, env)
     _check_fnotch(program, profile, diags, env)
     # Numeric `Scan`/`DataInterval` value checks: also ungated (oracle-confirmed,
     # `docs/instructions.md`), implemented in `instr_rules.py` alongside this module's other
@@ -213,7 +212,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
         i += 1
 
 
-def _check_background_calibration(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+def check_background_calibration(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`When Main Sequence Scan %d is running, background calibration will be disabled.` --
     oracle-confirmed (`docs/instructions.md`) to fire once per *main-sequence* `Scan` (not one
     declared under `SlowSequence`, whose own minimum interval, 100mSec, is far above every
@@ -222,6 +221,28 @@ def _check_background_calibration(program: S.Program, profile: Profile, diags: D
     100us scan interval with no such warning). Reported at the *last* statement's line, like
     `structure.py`'s `No BeginProg in Program.` (same oracle-confirmed convention, independently
     re-derived here since `structure.py` is a different workstream's owned file, `PLAN.md`).
+
+    **Round 6, gating correction**: unlike `_check_reachability`/`_check_fnotch` (still called from
+    `check_early`, genuinely ungated -- oracle-confirmed, `docs/instructions.md` "Two ungated call
+    sites"), this warning is **not** ungated on CR6/CR1000X either, despite living in the same
+    `check_early` function until this round and being covered by that same doc section's blanket
+    claim. Oracle-confirmed (a fresh sweep this round, an unrelated undefined-symbol error placed
+    both *before* and, separately, *after* an otherwise-calibration-warning-triggering `Scan(1,
+    mSec,...)` in the same file): the warning is suppressed **entirely** whenever the file has any
+    error anywhere, regardless of that error's own position relative to the `Scan` -- unlike
+    `_check_reachability`, which still fires on a later statement even with an earlier, unrelated
+    `Invalid symbol in expression` error present (`Delay never reached at run time.` alongside it,
+    same probe file). A warning-only file (no errors, e.g. a reachability warning with no error
+    anywhere) still gets *both* warnings together, confirming this is specifically errors, not "any
+    diagnostic", that gates it. Moved to `checker/__init__.py`'s own final `if not diags.errors:`
+    tier (alongside `warnings.check`/`tables_hook.attach`, the same "only on an otherwise-clean
+    compile" gate already used there) instead of `check_early`'s unconditional call site -- this is
+    the only change; the rule and message above are unchanged. Found as a side effect of developing
+    `instr_rules.check_scan_min_interval` (this round): dozens of pre-existing `false_accept`/
+    `message_diff` fuzz reproducers (`tests/corpus/fuzz/cr6/message_diff/ba333c2ee146.CR6` and
+    siblings) already showed this exact extra, spurious warning line alongside an unrelated real
+    error -- a genuine, previously-undocumented false-accept-shaped bug independent of this round's
+    own `Scan`-interval work, not a regression it introduced.
     """
     data = profile.background_calibration
     if not data:
