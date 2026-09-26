@@ -709,3 +709,37 @@ arguments are exactly that shape, not a bespoke `MQttPublishMeta` check after al
   expression: Tables and Store Data\n.` / `Illegal Data parameter Tables and Store Data\n.`, a
   `Data`-keyword/prose collision seen in `brfull_1.CR6`/`brhalf_1.CR6`/`totalize_1.CR6` and others)
   -- not reproduced, no mechanism found; low value; see the `Alias` subsection above.
+
+## Pass model (authoritative, oracle-confirmed 2026-09-26)
+
+The exe's diagnostics come from two passes (compile driver 0x424160, `docs/binary.md`):
+
+- **Pass 1** parses every line into a record. It is lenient about statement *shape*: a line that
+  is not a known instruction becomes an `Expr` record without error. Pass-1 errors are parse and
+  declaration errors: parameter parsing by type code (`Invalid or missing parameter.`,
+  `Too many parameters: <rest>.`), `Need '=' in units definition: <echo>.`,
+  `Variable not named.`, `Const with no assignment.`, `Line exceeds max characters of 512.`,
+  duplicate/invalid declarations, block `#If` errors, etc. All pass-1 errors in the file are
+  printed, in line order.
+- **Pass 2** runs only when pass 1 reported no error. It walks the records in order and calls
+  each instruction's handler; `Expr` records are compiled here, so `Invalid, or out of place
+  expression: <echo>.`, `Invalid symbol in expression: <echo>.` and `Invalid assignment in
+  expression: <echo>.` are **pass-2** errors, as are instruction semantic checks (channel ranges,
+  table rules). Errors accumulate record by record, **except** that a placement error
+  (`%s illegally occurs before BeginProg.`, `%s is declared in the middle of an executing
+  sequence`, `%s illegally occurs after EndSequence.`) ends the pass immediately.
+
+Probes (CR6):
+
+```
+Public x / foo bar baz / Units x / BeginProg ...   ->  line 3: Need '=' in units definition: x
+                                                       .            (line 2 never reported)
+Scan body: foo bar baz / x = y / qux quux          ->  line 4 out-of-place, line 5 invalid symbol,
+                                                       line 6 out-of-place (all three)
+Public x / foo bar / x = 2 / zap zip / BeginProg   ->  line 2: Invalid, or out of place expression: foo bar.
+                                                       line 2: Expr illegally occurs before BeginProg.
+                                                       (stops; line 4 never reported)
+```
+
+Note the first probe: the `Units` echo includes the raw line's newline, so the closing `.` is
+printed on the next line.
