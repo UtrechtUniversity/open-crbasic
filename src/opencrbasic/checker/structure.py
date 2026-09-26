@@ -53,6 +53,20 @@ _ALIAS_WITHOUT_EQ = "Alias without '='"
 # token's own text after this prefix.
 _INVALID_AS_CLAUSE = "Invalid As clause: "
 
+# Named, `EndXxx`-terminated body blocks conventionally declared before `BeginProg`, alongside
+# `Sub`/`Function` (`S.SubDef`, tracked separately since it is its own AST node type, not a plain
+# `S.Instruction`): a statement lexically inside one of these is never subject to the "before
+# `BeginProg`" placement check in `check_pass2`, regardless of its own textual line. See that
+# function's docstring for the oracle/corpus evidence behind each one.
+_BODY_BLOCK_STARTS = frozenset({
+    "DIALSEQUENCE", "MODEMHANGUP", "MENU", "SUBMENU", "VOICE", "BURSTTRIGGER",
+    "APPLYANDRESTARTSEQUENCE", "PROCHIPRI",
+})
+_BODY_BLOCK_ENDS = frozenset({
+    "ENDDIALSEQUENCE", "ENDMODEMHANGUP", "ENDMENU", "ENDSUBMENU", "ENDVOICE", "ENDBURSTTRIGGER",
+    "ENDAPPLYANDRESTARTSEQUENCE", "ENDPROCHIPRI",
+})
+
 
 def _keyword(stmt: S.Stmt) -> str:
     if isinstance(stmt, S.Instruction):
@@ -73,8 +87,13 @@ def _block_word(args: list) -> str | None:
     return None
 
 
-def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env | None = None) -> None:
-    subs = symbols.declared_subs(program)
+def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.Env | None = None) -> None:
+    """Structural/declaration errors: parameter parsing by shape, `Variable not named.`,
+    `Units`/`Const`/`Alias` truncation, array-dimension limits, and `BeginProg`/`Scan`/`If`/
+    `Select` block matching. Unconditional -- fires regardless of what else is wrong elsewhere in
+    the file (`docs/checker.md` "Pass model"). `checker/__init__.py` runs `check_pass2` (below)
+    only when this pass reports nothing.
+    """
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
 
@@ -100,10 +119,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env | 
                 _check_array_dims(stmt, diags, env)
         elif fire_suppress:
             pass
-        elif isinstance(stmt, S.Call):
-            _check_call(stmt, subs, profile, diags)
         elif isinstance(stmt, S.Unparsed):
-            _check_unparsed(stmt, diags)
+            _check_unparsed_pass1(stmt, diags)
+        # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
+        # statement" fallback are **not** handled here at all any more (round 4, this session):
+        # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
+        # `check_pass2` below.
 
         if kw == "BEGINPROG":
             seen_beginprog = True
@@ -130,29 +151,124 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env | 
         diags.error(last_line, "IF or SELECT without EndIf or EndSelect.")
 
 
-def _check_call(stmt: S.Call, subs: set[str], profile, diags: Diagnostics) -> None:
+def check_pass2(program: S.Program, profile, diags: Diagnostics,
+                 env: consteval.Env | None = None) -> int | None:
+    """The generic "Expr"/implicit-`Call` record family: a statement our parser turns into `Call`
+    (a bare `Name`/`Name(args)`, with or without the `Call` keyword) or `Unparsed` (it could not
+    parse at all) that never got a specific pass-1 diagnosis (`check_pass1`'s
+    `_check_unparsed_pass1`). Only called by `checker/__init__.py` when `check_pass1` found nothing
+    wrong anywhere in the file (`docs/checker.md` "Pass model", oracle-confirmed round 4: an
+    earlier "Variable not named." on an unrelated line suppresses `Sub %s not defined.`/`Invalid,
+    or out of place expression: %s.` just as much as it suppresses `expressions.py`'s own checks).
+
+    Returns the line of the first **placement** error -- a misplaced statement before `BeginProg`
+    (oracle-confirmed; `docs/checker.md` "Pass model" -- the only placement shape implemented this
+    round, see that section for the other two, real but unimplemented, kinds) -- or `None`.
+    `checker/__init__.py` truncates every *other* pass-2 module's own diagnostics to that same line,
+    reproducing the real compiler's own "stop entirely" behaviour for the rest of the file without
+    each pass-2 module needing to coordinate the cutoff itself.
+
+    "Before `BeginProg`" only means the top level of the program, never a statement lexically
+    inside a `Sub`/`Function` body (regardless of that body's own textual position, almost always
+    before `BeginProg` itself, `docs/checker.md` "Pass model": found as a **regression** against
+    this repository's own `crbasic/Main.CR6` and several siblings, all of which call a built-in
+    function bare, with no `Call` keyword, e.g. `SerialOpen(...)` inside a `Function`/`Sub` defined
+    above `BeginProg` -- perfectly ordinary CRBasic, since the body only executes when the
+    `Sub`/`Function` is later called from inside `Scan`/`NextScan`, oracle-reconfirmed by re-running
+    this exact shape standalone) *and* the same shape inside any of CRBasic's other named,
+    `EndXxx`-terminated body blocks that are themselves conventionally declared before `BeginProg`
+    (`_BODY_BLOCK_STARTS`/`_BODY_BLOCK_ENDS` below -- found from the corpus, `modemhangupendmodemhangup_1.CR6`:
+    a bare `SerialOpen(...)` inside `ModemHangup...EndModemHangup`, the same false-reject shape as
+    `Sub`/`Function`). `in_body_block` tracks this the same way `structure.py`'s block-matching
+    tracks `Scan`/`If` depth: a flat pass over the statement list toggled on the relevant start/end
+    keyword, since the AST keeps block structure flat (`syntax.py`'s own docstring). Only `Sub`/
+    `Function`/`ModemHangup`/`DialSequence` have corpus or repository evidence; the rest
+    (`Menu`/`SubMenu`/`Voice`/`BurstTrigger`/`ApplyAndRestartSequence`/`ProcHiPri`) are the same
+    documented shape (a named, `EndXxx`-terminated, conventionally-before-`BeginProg` body block,
+    `data/instructions.json`) added on that pattern rather than individually oracle-tested --
+    including them only ever *suppresses* a placement diagnostic, never adds one, so a wrong
+    inclusion costs at most an "exact" vs "verdict" precision loss on some other file, never a new
+    false reject (AGENTS.md's priority order).
+    """
+    if env is None:
+        env = consteval.Env(profile, dict(program.consts))
+    subs = symbols.declared_subs(program)
+    beginprog_line = next((s.line for s in program.statements if _keyword(s) == "BEGINPROG"), None)
+
+    in_body_block = False
+    for stmt in program.statements:
+        if isinstance(stmt, S.SubDef):
+            in_body_block = True
+            continue
+        kw = _keyword(stmt)
+        if kw in _BODY_BLOCK_STARTS:
+            in_body_block = True
+            continue
+        if kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
+            in_body_block = False
+            continue
+
+        if isinstance(stmt, S.Call):
+            stop = _check_call_pass2(stmt, subs, profile, diags, beginprog_line, in_body_block)
+            if stop is not None:
+                return stop
+        elif isinstance(stmt, S.Unparsed):
+            if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
+                continue
+            if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
+                    stmt.reason.startswith(_INVALID_AS_CLAUSE):
+                continue  # already reported by `check_pass1`
+            diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                        show_file=False)
+            if not in_body_block and (beginprog_line is None or stmt.line < beginprog_line):
+                diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+                return stmt.line
+    return None
+
+
+def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
+                       beginprog_line: int | None, in_body_block: bool) -> int | None:
+    """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
+    to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
+    verified this round:
+
+    - `Call NoSuchSub` (explicit keyword, undefined): `Sub %s not defined.`, **no** placement
+      follow-up and **no** stop, before `BeginProg` or not (`show_file=False`: oracle-confirmed,
+      `docs/checker.md` "Errors from an included file" -- this message never gets the `<file>`
+      prefix either).
+    - A bare bare `Name`/`Name(args)` (no `Call` keyword) resolving to a declared `Sub`/`Function`:
+      valid, silent, *unless* it precedes `BeginProg`, where it is `Call illegally occurs before
+      BeginProg.` (`%s` = literally `Call`) -- and then processing stops.
+    - The same, resolving to a built-in *function* (`Timer`, `SerialOpen`, ... -- `data/
+      functions.json`): also valid/silent after `BeginProg`, but `Expr illegally occurs before
+      BeginProg.` (`%s` = literally `Expr`, **no** preceding "Invalid, or out of place expression"
+      line -- the call itself compiles fine, only its position is illegal) before it, and stops.
+    - Resolving to nothing at all: `Invalid, or out of place expression: %s.` (`%s` = the
+      statement's own verbatim source text) always, **plus** `Expr illegally occurs before
+      BeginProg.` and a stop when it precedes `BeginProg`.
+    """
     name = stmt.name.upper()
-    if name in subs or name in profile.functions:
-        # A declared `Sub`/`Function` (oracle: docs/checker.md, `MySub(5)`) or a built-in
-        # *function* (`Timer`, `SerialOpen`, ... -- `data/functions.json`, not the 410-entry
-        # instruction table) called for its side effect with the return value discarded: real,
-        # working code in this repository's own `Main.CR6` does this throughout.
-        return
+    before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
     if stmt.explicit:
-        # `Call NoSuchSub`: oracle-confirmed (docs/type-codes.md section 3). `show_file=False`:
-        # oracle-confirmed this session (`docs/checker.md` "Errors from an included file") that
-        # this specific message never gets the `<file>` prefix other errors from an included
-        # statement do, even when the undefined `Call` itself is inside one.
-        diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
-        return
-    # A bare `Name` or `Name(args)` with no `Call` keyword, resolving to nothing declared: the
-    # real compiler's generic bare-expression-statement fallback ("Expr" in its instruction
-    # table) rejects it with this message, echoing the statement's own source text (oracle:
-    # docs/checker.md, `NOTE` / `SWVX(Vx1,1,1)` / `TableFieldNames(...)`-shaped corpus cases).
-    # `show_file=False`: see the note on the `Sub %s not defined.` branch above -- the same
-    # oracle-confirmed exception applies to this message too.
+        if name not in subs:
+            diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
+        return None
+    if name in subs:
+        if before_beginprog:
+            diags.error(stmt.line, "Call illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
+        return None
+    if name in profile.functions:
+        if before_beginprog:
+            diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
+        return None
     diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
                 show_file=False)
+    if before_beginprog:
+        diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+        return stmt.line
+    return None
 
 
 def _check_declaration(stmt: S.Declaration, diags: Diagnostics) -> int:
@@ -231,7 +347,12 @@ def _after_keyword(stmt: S.Unparsed) -> str:
     return stmt.text.lstrip()[5:].strip()
 
 
-def _check_unparsed(stmt: S.Unparsed, diags: Diagnostics) -> None:
+def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
+    """The specific-reason `Unparsed` diagnoses only -- true pass-1 (`docs/checker.md` "Pass
+    model": `Need '=' in units definition: %s.`/`Const with no assignment.`/`Need '=' in alias
+    definition: %s.`/`Invalid Variable declaration %s.` are all in the coordinator's own pass-1
+    list, unlike the generic "not a valid statement" fallback, which is pass-2 (`check_pass2`
+    above) and is *not* handled here at all."""
     if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
         return
     if stmt.reason == _UNITS_WITHOUT_EQ:
@@ -253,7 +374,5 @@ def _check_unparsed(stmt: S.Unparsed, diags: Diagnostics) -> None:
         bad_token = stmt.reason[len(_INVALID_AS_CLAUSE):]
         diags.error(stmt.line, f"Invalid Variable declaration {bad_token}.", stmt.file)
         return
-    # `show_file=False`: the same oracle-confirmed exception as `_check_call`'s identical fallback
-    # message -- see that function's comment.
-    diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
-                show_file=False)
+    # Any other reason (including the generic "not a valid statement" shape) is `check_pass2`'s
+    # job, not this pass's -- deliberately does nothing further here.

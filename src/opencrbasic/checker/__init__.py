@@ -1,38 +1,55 @@
 """Semantic checker: `check(program, profile, diags, result)`.
 
+Two passes, mirroring the real compiler's own architecture (`docs/checker.md` "Pass model",
+oracle-confirmed): **pass 1** parses every statement into a record and is lenient about *shape* --
+an unrecognised line becomes an `Expr`/`Call` record without error at this stage. Pass-1 errors are
+parsing and declaration errors (parameter-count/shape by type code, `Variable not named.`,
+`Units`/`Const`/`Alias` truncation, array-dimension limits, block matching); every one in the file
+is reported regardless of what else is wrong. **Pass 2** runs only when pass 1 reported nothing at
+all, and compiles the records in order: this is where the generic "Expr"/implicit-`Call` fallback
+(`Invalid, or out of place expression: %s.`, `Sub %s not defined.`) and every instruction's own
+semantic handler (`expressions.py`'s undefined-symbol/constant-only checks, `instructions.py`'s
+channel/port checks, `instr_data.py`'s table-structure checks, `instr_measure.py`'s value checks)
+live. Pass 2 stops entirely at the first **placement** error (a statement occurring somewhere it
+structurally cannot, e.g. before `BeginProg`) -- `structure.check_pass2` is both the "Expr" fallback
+*and* the only place that currently detects a placement error (the before-`BeginProg` case; two
+other real placement shapes are not yet implemented, `docs/checker.md`), so its return value (the
+placement error's own line, or `None`) is what `check` below uses to truncate every other pass-2
+module's diagnostics to the same cutoff, without those modules needing to coordinate it themselves.
+
 Runs, in order:
 
-This checker's own two-pass split mirrors an oracle-confirmed real-compiler architecture (see
-"Two-pass compilation" in `docs/checker.md`): pass 1 (steps 1-3 below) parses and resolves every
-statement in the file, accumulating *every* such error regardless of what came before or after;
-pass 2 (step 4, plus `tables_hook`/`warnings.check`) is deeper semantic validation that the real
-compiler runs only when pass 1 found nothing wrong anywhere in the file -- confirmed with the
-oracle by placing an unrelated pass-1 error before, and separately after, an otherwise-invalid
-channel argument: the channel check fired in neither case, only when the file had no other error at
-all. `tables_hook`/`warnings.check` were already gated this way before this session; step 4 below
-now matches.
+1. `structure.check_pass1` -- `BeginProg`/`EndProg` presence, `Scan`/`NextScan` and `If`/`Select`
+   block matching, declaration/array-dimension errors, `Units`/`Const`/`Alias` truncation.
+2. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
+   parameter.", `checker/instr_rules.py`, owned alongside this package). Also pass 1 (oracle
+   evidence, `docs/checker.md`: a file with several earlier "Variable not named." errors still
+   gets its own, later "Invalid or missing parameter." reported).
+3. `warnings.check_early` -- reachability/background-calibration/fnotch; ungated, fires even when
+   the file has other errors elsewhere (`docs/instructions.md`).
 
-1. `structure.check` -- `BeginProg`/`EndProg` presence, `Scan`/`NextScan` and `If`/`Select` block
-   matching, undefined explicit `Call` targets, and the generic "not a valid statement" fallback.
-2. `expressions.check` -- a bare identifier used as a direct instruction argument that resolves
-   nowhere (deliberately narrow; see that module's docstring).
-3. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
-   parameter.", `checker/instr_rules.py`, owned alongside this package; instruction-specific
-   channel/port checks are a separate, concurrently-owned module, `instructions.py`, `PLAN.md`).
-   Pass 1, like 1-2 above: fires regardless of earlier errors (oracle evidence, `docs/checker.md`:
-   a file with several earlier "Variable not named." errors still gets its own, later "Invalid or
-   missing parameter." reported).
-4. `instructions.check` -- per-instruction argument checks layered on top of the generic
-   type-code parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
+If, and only if, steps 1-3 found nothing:
+
+4. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
+   placement check (returns the cutoff line, if any).
+5. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
+   position that resolves nowhere, and the constant-only-family "rejects a variable" check
+   (deliberately narrow; see that module's docstring).
+6. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
+   parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
    `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value checks, `docs/instructions.md`) run
-   alongside it; pass 2, run only when steps 1-3 found nothing (see above).
-5. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
+   alongside it.
+7. Every error step 4-6 added is truncated to step 4's cutoff line, if it returned one.
+
+Then, regardless of errors so far:
+
+8. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
    values via `consteval.Env`, as the previous placeholder checker did).
-6. `tables_hook.attach`, when the compile has no errors so far and the module is available (it is
+9. `tables_hook.attach`, when the compile has no errors so far and the module is available (it is
    written by a different concurrent workstream, `PLAN.md`; guarded so this checker still runs
    standalone while that module is in progress), then `warnings.check` ("table declared but never
-   called").
+   called") and `instr_data.check_duplicate_fields`.
 
 Full instruction-signature checks (the rest of `instructions.py`) and a general expression-tree
 name/type resolution (the rest of `expressions.py`) are future work; see `docs/checker.md` and
@@ -63,19 +80,55 @@ def _run_pass(fn, *args) -> None:
         pass
 
 
+def _run_pass_capture(fn, *args):
+    """Like `_run_pass`, but returns `fn`'s own return value (or `None` on an exception) -- for
+    `structure.check_pass2`, whose return value (the placement-error cutoff line) the caller needs.
+    """
+    try:
+        return fn(*args)
+    except Exception:
+        return None
+
+
 def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
     env = consteval.Env(profile, dict(program.consts))
 
-    _run_pass(structure.check, program, profile, diags, env)
-    _run_pass(expressions.check, program, profile, diags, env)
+    _run_pass(structure.check_pass1, program, profile, diags, env)
     _run_pass(instr_rules.check, program, profile, diags)
-    # Ungated (unlike step 4 below): reachability/background-calibration/fnotch all oracle-confirmed
+    # Ungated (unlike step 2 below): reachability/background-calibration/fnotch all oracle-confirmed
     # to fire even when the file has other errors elsewhere (`checker/warnings.py`, `docs/instructions.md`).
     _run_pass(warnings.check_early, program, profile, diags, env)
 
     if not diags.errors:
-        # Pass 2 (see this module's docstring): the real compiler never reaches an instruction's
-        # own channel/range validation once pass 1 recorded any error anywhere in the file.
+        # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
+        # fallback (`structure.check_pass2`) and the undefined-symbol/constant-only-family checks
+        # on a *recognised* instruction's own arguments (`expressions.check`) freely accumulate
+        # with each other -- oracle-confirmed, `docs/checker.md` "Pass model": `Randomize(FooBar)`
+        # (an `expressions.check` finding) followed by a separate bare `qux quux` (a
+        # `structure.check_pass2` finding) reports *both*. `structure.check_pass2` also reports
+        # where (if anywhere) tier B should be considered cut off, matching the real compiler's own
+        # "stop entirely at the first placement error" behaviour.
+        pass2_start = len(diags.items)
+        cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
+        _run_pass(expressions.check, program, profile, diags, env)
+        if cutoff is not None:
+            # Every pass-2 error past the placement-error's own line is dropped, reproducing the
+            # real compiler's "stop entirely" behaviour without any of the modules above needing
+            # to coordinate the cutoff themselves (`docs/checker.md` "Pass model"). Warnings and
+            # anything already present before this pass (pass-1 errors -- none, since `not
+            # diags.errors` just gated this whole block, but defensive) are left untouched.
+            diags.items = diags.items[:pass2_start] + [
+                d for d in diags.items[pass2_start:]
+                if d.severity != "error" or not d.line or d.line <= cutoff
+            ]
+
+    if not diags.errors:
+        # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
+        # table/value validation once *either* tier A or tier B recorded any error anywhere in the
+        # file -- oracle-confirmed, `docs/checker.md` "Two-pass compilation"/"Pass model":
+        # `ExciteV(Vx1,...)` (an `expressions.check` finding, tier B) on an earlier line suppresses
+        # a later, otherwise-invalid `TCDiff` channel argument entirely -- no accumulation across
+        # this boundary, unlike within tier B itself above.
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.

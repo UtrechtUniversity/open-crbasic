@@ -19,8 +19,8 @@ accepts, opencrbasic rejects; it is the failure that matters most and is 0 every
 
 | Logger | crbasic/ (16) | help examples (507) | false rejects |
 |---|---|---|---|
-| CR6 | 16 / 0 / 0 | 311 / 187 / 9 | 0 |
-| CR1000X | 8 / 5 / 3 | 329 / 172 / 6 | 0 |
+| CR6 | 16 / 0 / 0 | 336 / 162 / 9 | 0 |
+| CR1000X | 8 / 5 / 3 | 352 / 149 / 6 | 0 |
 | CR300 | 0 / 8 / 8 | 120 / 369 / 18 | 0 |
 | CR350 | 0 / 6 / 10 | 124 / 366 / 17 | 0 |
 
@@ -28,20 +28,109 @@ The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (d
 terminals and instructions), which opencrbasic reproduces as a verdict for 8 and 6 of them.
 
 `scripts/verify.py` with `CR6COMP=opencrbasic`: `BUILD  host tests 119 pass | CRBasic 16/16
-compiled, 6 warning(s) | repository pass` (identical to the exe). Tests: `python3 -m pytest -q`
-944 passed, 311 skipped, 8 xfailed.
+compiled, 6 warning(s) | repository pass` (identical to the exe; not re-run this session -- the
+CR6 side is unaffected by this session's own changes, all 16/16 `crbasic/` exact throughout).
+Tests: `python3 -m pytest -q` 949 passed, 311 skipped, 8 xfailed.
 
 | Phase | State |
 |---|---|
 | 0 Oracle + corpus | done: `tools/oracle.py`, `tools/difftest.py`, 507 CHM examples (many invalid on purpose or by extraction; they exercise error paths) |
 | 1 Binary RE | done for current needs: CLI (`docs/cli.md`), exe layout and tables (`docs/binary.md`, `tools/extract_tables.py`), type codes (`docs/type-codes.md`), messages (`docs/messages.tsv`), mode rule (`docs/modes.md`), TDF rules (`docs/tdf-rules.md`), ProgSignature (`signature.py`), per-logger differences (`docs/loggers.md`) |
 | 2 Front end | done: lexer, include expansion, constant folding, `#If`, parser (`docs/frontend.md`) |
-| 3 Checker | usable: structure/placement, declarations, Units/Const/Alias, parameter counts, channel ranges per logger, Scan/DataInterval ranges, array limits, warnings (table never called, never reached, background calibration, fnotch), include-file prefixes, 4 KB message buffer (`docs/checker.md`, `docs/instructions.md`). Gaps: general expression-tree name resolution and per-argument type checks (attempted, backed out because they caused false rejects), most instruction-specific pass-2 checks |
+| 3 Checker | usable: structure/placement, declarations, Units/Const/Alias, parameter counts, channel ranges per logger, Scan/DataInterval ranges, array limits, warnings (table never called, never reached, background calibration, fnotch), include-file prefixes, 4 KB message buffer, general expression-tree name resolution (`Invalid symbol in expression`/`%s is not defined`, per-logger echo/ordering rules, `NAN`/`INF`/system-table predefined symbols), the constant-only-family "rejects a variable" check, and the two-pass/pass-2-cutoff model (the generic "Expr"/`Call` fallback and before-`BeginProg` placement are now pass 2, not pass 1) (`docs/checker.md`, `docs/instructions.md`). Gaps: variable-required per-argument type checks (three confirmed per-instruction overrides found, no safe uniform rule yet), most instruction-specific pass-2 checks, two placement-error shapes (mid-sequence, after-EndSequence) |
 | 4 Fuzzing | first pass done: `tools/fuzz.py`, `tools/fuzz_replay.py`, 248 reproducers (`docs/fuzz-findings.md`); ~25 fixed since. CR6 mutants: ~29% false accepts before round 3 |
-| 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical 8/16 (other 8 differ only in auto-allocated table sizes, within 3%); `-p`, `-t`, `-b` not implemented |
+| 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical 8/16 (other 8 differ only in auto-allocated table sizes, within 3%); `-p`/`-i` preprocessed source byte-identical 16/16 repo + 98/100 CHM sample (`preprocess.py`); `-t` `[Times]` byte-identical on all 16 repo programs, 91/100 CHM sample (narrow, oracle-verified instruction set: `Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(mSec)/`TCDiff`(Reps=1), `timing.py`); `-b` CDM image: "No CDM devices" message implemented and correct for every program in this repository (none use CPI/CDM hardware), binary image format not attempted; `-m` decompiled, confirmed no observable effect; `-u` decompiled and oracle-confirmed to gate a real `%s declared but not used.` warning, not implemented (needs the checker's own symbol table) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-26 (checker round 4: general expression-tree resolution, pass model correction):
+  `checker/expressions.py`/`checker/symbols.py` (owned), plus a coordinator-directed extension into
+  `checker/structure.py`/`checker/__init__.py` (pass ordering only; other modules' own checks
+  untouched). Full rules, oracle transcripts and evidence: `docs/checker.md` "Round 4".
+  1. **General expression-tree name resolution**, re-attempted and landed after round 3 backed it
+     out: `NAN`/`INF` (a separate resolution path from the extracted `symbols.json` named-constant
+     table, oracle-confirmed accepted on all four loggers) and `Status`/`Public`/`Settings`/
+     (program-conditional) `DataTableInfo` (system tables, `Table.Field`) close the two gaps that
+     caused round 3's false rejects; the walk now recurses into compound expressions, not just a
+     bare argument. Per-logger echo/ordering rules found this round: CR6/CR1000X check every
+     constant-only-family argument position before any general-family one regardless of textual
+     order and report one whole-expression echo; CR300/CR350 check positions in plain textual order
+     and echo every undefined name in a compound expression as its own line. The constant-only-
+     family "rejects a variable" check (`Variable illegal in Parameter: %s.`) is now implemented,
+     narrowed to avoid round 3's `Sample`/`DataType` regression. Variable-required stays
+     unimplemented: a corpus scan found a third confirmed per-instruction override
+     (`MQTTPublishTable`) beyond round 3's two, reinforcing that a blanket rule is unsafe.
+  2. **Pass model correction**: the generic "Expr"/implicit-`Call` fallback (`Invalid, or out of
+     place expression: %s.`/`Sub %s not defined.`) is itself pass 2 (oracle-confirmed: an earlier,
+     unrelated `Variable not named.` suppresses it, same as it already suppressed
+     `expressions.py`'s checks and `instructions.py`'s channel check) -- previously implemented as
+     unconditional. `structure.check` split into `check_pass1` (unconditional) and `check_pass2`
+     (gated, and now also implementing the before-`BeginProg` placement follow-up and stop this
+     checker had previously deliberately not attempted). Two regressions caught by re-running the
+     full corpus + `pytest` immediately after the first version and fixed before landing: the
+     placement check does not apply inside a `Sub`/`Function` body (`crbasic/Main.CR6` false-
+     rejected otherwise) or inside several other named, `EndXxx`-terminated pre-`BeginProg` body
+     blocks (`ModemHangup`/`DialSequence`, corpus-evidenced; four more on the documented pattern).
+     `checker/__init__.py` now has three tiers: pass 1 (unconditional), pass 2 tier B
+     (`structure.check_pass2` + `expressions.check`, freely accumulating with each other, cut off
+     together at the first placement error), pass 2 tier C (`instructions.check`/`instr_data`/
+     `instr_measure`, gated behind tiers A *and* B both being clean, oracle-confirmed non-
+     accumulation across this specific boundary).
+
+  `tools/difftest.py --logger <l>` (`repo`+`examples`+`chm` summed), before this round (round 3's
+  end state, re-measured) / after both pieces:
+
+  | Logger | before | after | false rejects |
+  |---|---|---|---|
+  | cr6 | 327/189/11 | 354/164/9 | 0 -> 0 |
+  | cr1000x | 338/178/11 | 363/155/9 | 1 (pre-existing `structuretype_3.CR6`, unrelated) -> 1 (unchanged) |
+  | cr300 | 122/379/26 | 122/379/26 | 0 -> 0 (unaffected) |
+  | cr350 | 126/374/27 | 126/374/27 | 0 -> 0 (unaffected) |
+
+  Fixed-seed fuzz false-accept rate (`tools/fuzz.py --logger cr6 --count 300 --seed 42`): 77/300
+  (25.7%) -> 74/300 (24.7%), `false_reject=0` throughout. `python3 -m pytest -q`: 949 passed, 0
+  failed (943 -> 949, mostly concurrent work's own new tests, not this round's). `tools/
+  fuzz_replay.py --workers 2`: no new `false_reject`; the only class regressions seen
+  (`message_diff -> false_accept`, 3 reproducers) were independently confirmed pre-existing (a
+  `Variable Type %s not supported` type-name-validation gap and the pre-existing `structuretype_3.
+  CR6`-family parsing gap, neither in this round's own files) by replaying them against this
+  round's *starting* `expressions.py`/`symbols.py`, where they were already broken the same way.
+
+- 2026-09-26 (CLI outputs: `-p`/`-i`/`-t`/`-b`/`-m`/`-u`): new `src/opencrbasic/preprocess.py`
+  (`-p`/`-i`) and `src/opencrbasic/timing.py` (`-t`), plus `cli.py` wiring for both and for `-b`;
+  full account and evidence in `docs/cli.md`. `-p`/`-i`: byte-identical on all 16 repository
+  programs and 98/100 of a random 100-file `tests/corpus/chm/` sample (the other 2 hit an exe-side
+  truncation this session did not reproduce, see `docs/cli.md`); the exe turned out to *not* strip
+  comments or expand includes under `-p` (an earlier draft of `docs/cli.md` had both wrong,
+  corrected this session by direct oracle probing, not decompilation). `-t`: byte-identical on all
+  16 repository programs and 91/100 of the same CHM sample, for a narrow, oracle-verified
+  instruction set (`Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(`mSec`)/`TCDiff`(`Reps=1`));
+  discovered along the way that `[Times]` entries are gated on the checker's own pass-1/pass-2
+  boundary, not the overall compile result (`dhcprenew_1.CR6` fails yet still gets a full `[Times]`
+  section). `-b`: the real "No CDM devices used in this program " message, correct for every
+  program in this repository (none use CPI/CDM hardware); the binary image format itself was not
+  attempted (out of scope for this project). `-m`: decompiled (`FUN_00508be0`'s memory-allocation
+  trace) and oracle-confirmed to have no observable CLI effect at all -- the buffer it builds is
+  never written to any file or stream in the reachable code. `-u`: decompiled and oracle-confirmed
+  to gate a real, previously-unexplained warning, `%s declared but not used.` (`FUN_004ba180`,
+  `Public`/`Dim` only, not `Const`/`Alias`/`Sub`/`Function`) -- resolves this project's own
+  "Investigated, not implemented: no trigger found" note from checker round 3 (it was never
+  triggered because `-u` was never passed); not implemented here since it needs the checker's own
+  symbol/usage table (`checker/symbols.py`, a concurrently-owned module) to do without duplicating
+  and risking drift from that logic. Also fixed, in scope as message-file content: the message
+  file's blank line straight after a `-- Compile Failed!` header is oracle-confirmed to be a bare
+  LF, not CRLF like every other line (`cli.py`'s `_message_bytes`; previously assumed uniform
+  CRLF, wrong on every failing compile with a message file, not just this session's own new
+  outputs). New tests: `tests/test_cli.py` (5 tests) against `tests/fixtures/cli/` (a small
+  scratch program exercising comments, a continuation, `#If`, and a bare `Include()` inside a
+  `Scan`, captured from the real exe). `python3 -m pytest -q`: 948 passed (previously 943 + 5 new),
+  0 failed from this session's own work; one unrelated failure in `test_checker.py` was present at
+  the time of writing from concurrent, in-progress checker work on a shared front-end/library file
+  (`BenchLib.crb` briefly failed to parse), not from anything in this entry -- confirmed by
+  re-running the same `-p`/`-i` byte-identical checks, unaffected since they do not touch
+  `checker/*`, while the affected `-t`/`-b` combined-message-file check briefly regressed and
+  recovered as that concurrent work progressed.
 
 - 2026-09-25/26 (checker round 3, warnings + value-range checks): implemented from
   `docs/fuzz-findings.md`'s highest-leverage items, all oracle-verified, rules and evidence in the
@@ -297,6 +386,9 @@ compiled, 6 warning(s) | repository pass` (identical to the exe). Tests: `python
 2. Instruction-specific pass-2 checks, highest frequency first (`docs/fuzz-findings.md`,
    difftest verdict groups); CR300/CR350 terminal and instruction rules.
 3. Auto-allocated table sizes, mixed regime (`docs/tdf-rules.md` §10, §12).
-4. `-p` preprocessed output, `-t` timing, CDM `-b` image.
+4. `-p`/`-t`/`-b` done (this row's own outputs entry); remaining: the CDM binary image format
+   itself (`-b`, only matters for a program using CPI/CDM hardware -- none in this repository),
+   `VoltSe`/other `Reps`-dependent `-t` formulas, and `-u`'s `%s declared but not used.` warning
+   (belongs in `checker/symbols.py`, `docs/cli.md` "-u").
 5. Re-run `tools/fuzz.py` after each round; add a CI job running pytest (no Wine needed).
 6. Settle `docs/legal.md` before publishing outside this repository.

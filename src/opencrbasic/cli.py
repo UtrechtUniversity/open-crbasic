@@ -77,8 +77,51 @@ def _parse(argv: list[str]):
     return opts, positional
 
 
+def _message_bytes(lines: list[str]) -> bytes:
+    """`lines` joined the way the message file actually wants them: CRLF throughout, except the
+    blank line straight after a `-- Compile Failed!` header, which the real exe writes as a bare
+    LF (oracle-confirmed on both a plain failing compile and a `-t`/`-b` one, `docs/cli.md`
+    "Message file layout" -- previously assumed to be a uniform CRLF join, which this replaces).
+    """
+    if len(lines) >= 2 and lines[1] == "" and lines[0].endswith("Failed!"):
+        return (lines[0] + "\r\n\n" + "\r\n".join(lines[2:]) + "\r\n").encode("latin-1", "replace")
+    return ("\r\n".join(lines) + "\r\n").encode("latin-1", "replace")
+
+
 def _write_message_file(path: Path, lines: list[str]) -> None:
-    path.write_bytes(("\r\n".join(lines) + "\r\n").encode("latin-1", "replace"))
+    path.write_bytes(_message_bytes(lines))
+
+
+def _pass1_ok(program_ast, profile, fallback: bool) -> bool:
+    """Whether `checker/__init__.py`'s own pass 1 (structure/expressions/required-parameter
+    checks) finds nothing wrong -- the same condition that module uses to gate pass 2 (instruction
+    channel/range validation). `-t`'s `[Times]` entries are oracle-confirmed to follow *this* gate,
+    not `result.ok`: `dhcprenew_1.CR6` (a CHM corpus example) fails to compile on a pass-2-only
+    channel-range error yet still gets a full `[Times]` section including the very instruction
+    that errored, while `readonly_1.CR6` (a pass-1 parse error, a malformed multi-line `TCDiff`
+    call) gets none at all, though it has a `Scan` and a `PanelTemp` call before the error
+    (`docs/cli.md` "-t"). This re-runs pass 1 standalone by calling `checker/structure.py`'s and
+    friends' own public pass-1 functions (unmodified) rather than editing that package, which a
+    concurrent workstream owns and actively changes (its pass-1 entry point has already been
+    renamed once, `check` -> `check_pass1`, during this session); `getattr` tries both spellings,
+    and any failure -- an incompatible signature, a missing module -- falls back to `fallback`
+    (the caller's own `result.ok`), so a future rename degrades to the simpler, still-correct-most-
+    of-the-time rule rather than breaking `-t` outright.
+    """
+    from . import consteval
+    from .diagnostics import Diagnostics
+
+    try:
+        from .checker import expressions, instr_rules, structure
+        structure_check = getattr(structure, "check_pass1", None) or structure.check
+        diags = Diagnostics()
+        env = consteval.Env(profile, dict(program_ast.consts))
+        structure_check(program_ast, profile, diags, env)
+        expressions.check(program_ast, profile, diags, env)
+        instr_rules.check(program_ast, profile, diags)
+    except Exception:
+        return fallback
+    return not diags.errors
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -113,12 +156,69 @@ def main(argv: list[str] | None = None) -> int:
             _write_message_file(message_path, lines)
         return 1
 
+    if opts["p"]:
+        from . import preprocess
+        try:
+            Path(opts["p"]).write_bytes(
+                preprocess.preprocess(program, profile, expand_includes=opts["i"])
+            )
+        except OSError:
+            pass
+
     result = compile_file(program, profile, display_name=program.name)
     lines = result.result_lines(show_signature=opts["s"])
     print("\n".join(lines))
+
+    # `-t` (`[Times]`) and `-b` (CDM image) both need the parsed program; re-parsed once, shared,
+    # only when asked for (docs/cli.md: this does not affect `result`, which already parsed its
+    # own copy inside `compile_file`).
+    program_ast = None
+    if opts["t"] or opts["b"]:
+        from . import parser as parser_mod
+        try:
+            program_ast, _ = parser_mod.parse_file(program, profile=profile)
+        except Exception:
+            program_ast = None
+
+    times_entries: list[str] = []
+    if opts["t"] and program_ast is not None and _pass1_ok(program_ast, profile, result.ok):
+        from . import timing
+        try:
+            times_entries = timing.times_lines(program_ast, profile, program.name)
+        except Exception:
+            times_entries = []
+
+    cdm_message = None
+    if opts["b"]:
+        uses_cdm = False
+        if program_ast is not None:
+            for stmt in program_ast.statements:
+                kw = getattr(stmt, "keyword", "")
+                if kw.startswith("CDM") or kw in ("CPIADDMODULE2", "CPISPEED2", "CPIFILESEND"):
+                    uses_cdm = True
+                    break
+        try:
+            Path(opts["b"]).write_bytes(b"")  # the image format itself is not implemented
+        except OSError:
+            pass
+        if not uses_cdm:
+            cdm_message = "No CDM devices used in this program "
+            print(cdm_message)
+
     if opts["message_file"]:
-        header = ["[Version]", version_line] if version_line else []
-        _write_message_file(message_path, header + lines)
+        body = b""
+        if version_line:
+            body += ("[Version]\r\n" + version_line + "\r\n").encode("latin-1", "replace")
+        if opts["t"]:
+            times_blob = "[Times]" + "".join(f"\r\n{e}" for e in times_entries)
+            body += times_blob.encode("latin-1", "replace")
+            if times_entries:
+                body += b"\r\n"
+        if cdm_message is not None:
+            body += (cdm_message + "\r\n").encode("latin-1", "replace")
+        body += _message_bytes(lines)
+        Path(message_path).write_bytes(body)
+
     if result.ok:
         if opts["z"] and result.tables:
             from . import tdf

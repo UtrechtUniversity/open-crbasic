@@ -12,11 +12,15 @@ real `CR6Comp.exe` under Wine, and cross-checked against `tests/corpus/chm/`.
 Metric (`tools/difftest.py --logger cr6`), round 1 (previous session) / round 2 (this session,
 2026-09-25 continued):
 
-| Group | Round 1 start | Round 1 end | Round 2 end | Round 3 end |
-|---|---|---|---|---|
-| `crbasic/` (16 programs) | 14 exact, 2 verdict, 0 mismatch | **16 exact**, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch |
-| `examples/` (4 programs) | 0 exact, 0 verdict, 4 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch |
-| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch | **311 exact**, 188 verdict, 8 mismatch |
+| Group | Round 1 start | Round 1 end | Round 2 end | Round 3 end | Round 4 end (cr6) |
+|---|---|---|---|---|---|
+| `crbasic/` (16 programs) | 14 exact, 2 verdict, 0 mismatch | **16 exact**, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch |
+| `examples/` (4 programs) | 0 exact, 0 verdict, 4 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch | 2 exact, 2 verdict, 0 mismatch |
+| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch | **311 exact**, 188 verdict, 8 mismatch (this row's own baseline re-measured 311/187/9 at round 4's start, a 1-verdict wobble from concurrent work between sessions, not a round-3 regression) | **336 exact**, 162 verdict, 9 mismatch |
+
+Round 4's own full account (`expressions.py`/`symbols.py`'s general expression-tree resolution,
+then a `structure.py`/`checker/__init__.py` pass-model correction): "Round 4" section near the end
+of this document.
 
 Round 2's own headline: **268 -> 310 exact** (+42) on `chm`, verdict 229 -> 188, mismatch 10 -> 9
 (one instance, `mqttpublishmeta_1.CR6`, moved from false-accept to exact as a side effect of the
@@ -743,3 +747,175 @@ Public x / foo bar / x = 2 / zap zip / BeginProg   ->  line 2: Invalid, or out o
 
 Note the first probe: the `Units` echo includes the raw line's newline, so the closing `.` is
 printed on the next line.
+
+## Round 4 (`expressions.py`/`symbols.py`, then `structure.py`/`checker/__init__.py`)
+
+Two pieces of work, oracle-confirmed 2026-09-26, `tools/oracle.py`/scratch probes against all four
+compilers unless noted CR6-only.
+
+### General expression-tree name resolution (`expressions.py`, `symbols.py`)
+
+Round 3 tried this and backed it out after finding `NAN`/the system `Status` table missing from
+`known` (see that section above). Both gaps are now closed, and the walk (`_undefined_names`,
+already written in round 3) is wired into `check` for real:
+
+- **`known` additions** (`_known_names`, `expressions.py`; `symbols.system_table_names`,
+  `symbols.py`): `NAN`/`INF` (oracle-confirmed accepted as float literals on all four loggers,
+  despite being absent from every `data/<logger>/symbols.json` -- that table is the compiler's
+  *named-constant* lookup, `docs/type-codes.md`'s `FUN_004ee4f0`, and `NAN`/`INF` evidently resolve
+  through a separate, special-cased path this session did not trace to the decompilation, so they
+  are added here rather than misrepresented as rows of that extracted table); `Status`/`Public`/
+  `Settings` (system tables addressable as `Table.Field` unconditionally, on all four loggers, no
+  program-shape precondition); `DataTableInfo`, same shape but **conditional** on the program
+  declaring at least one user `DataTable` (oracle-confirmed, all four loggers: `DataTableInfo.
+  SkippedRecord(1)` alone fails `Could not find DataTableInfo.`/`Could not find DataTable
+  DataTableInfo.`; the same reference compiles once any `DataTable` exists anywhere in the
+  program).
+- **The walk itself** now recurses into `Unary`/`Binary`/`Index`/`Member.base`/`ArrayLiteral`, not
+  just a direct bare-`Name` argument, at the same `_RESOLVED_KINDS` positions round 3 already
+  restricted to.
+- **Per-statement reporting order and shape is per-logger** (`_report_statement`), found by testing
+  multiple-bad-argument shapes the corpus never happened to exercise (`WriteIO`/`CardTest`/
+  `InternalTemp`/`PRT`-shaped scratch probes, not saved): CR6/CR1000X check every *constant-only*-
+  family position (`_CONST_FAMILY_KINDS`: `const_expr`/`const_expr_only`/`datatype_kw`, codes
+  1/39, 5/38, 20) ahead of every general-family position, **regardless of textual order**
+  (`WriteIO(1,BazQux,FooBar)`, `params=[1,25,101]`, reports `FooBar` -- position 2, the later
+  const-family slot -- never `BazQux` at position 1; `CardTest(GenBad,ConstBad)`, `params=[8,1]`,
+  reports `ConstBad`, the const-family slot, even though it is the later argument), and report only
+  the first bad position found (one whole-expression-echo diagnostic per statement). CR300/CR350
+  have no such reordering (`InternalTemp(GenBad,ConstBad)`, `params=[8,20]`, reports the
+  textually-first `GenBad`, then abandons the rest of the statement's own parameter list --
+  `Too many parameters:  ConstBad.` -- rather than moving on to check position 1 at all) and echo
+  *every* undefined name found inside one compound expression as its own separate line
+  (`Randomize(X + FooBar + BazQux)`: one line on CR6/CR1000X, two on CR300/CR350). Modelled as a
+  plain `profile.name` branch (`_WHOLE_EXPR_ECHO_LOGGERS`) to stay inside this session's two owned
+  files.
+- **The constant-only "rejects a variable" check is now implemented**, narrower than the type code
+  alone would suggest on two axes that route around round 3's own found regression (`Sample`'s
+  `DataType` argument, also coded `1`, legitimately accepting a `StructureType` name): `datatype_kw`
+  (code 20) is excluded entirely (a keyword-validated slot with its own untraced per-instruction
+  legal-value list, not this generic mechanism); the trigger is "references a declared runtime
+  variable" (`symbols.declared_variable_names`: `Public`/`Dim`/`Static`/a `Sub`/`Function`
+  parameter), not "fails to fold to a constant" -- a `StructureType` name is neither, so it is
+  simply never reached by this narrower trigger, no `Sample`-specific carve-out needed. Oracle-
+  confirmed uniform message text and whole-expression echo across all four loggers (`WriteIO(X,1)`
+  -> `Variable illegal in Parameter: X.`; `Scan(X+1,Sec,0,0)` -> `Variable illegal in Parameter:
+  X+1.`, identical on CR6/CR1000X/CR300/CR350), so no per-logger branch for it. **Ordering
+  interaction, oracle-confirmed**: it runs as part of the *same* const-family-first pass as the
+  undefined-symbol check above (not a separate later pass) -- `WriteIO(X,BazQux)` (`X` a live
+  variable at the const-family position 0, `BazQux` undefined at the general-family position 1)
+  reports `Variable illegal in Parameter: X.`, never reaching `BazQux`'s own undefined-symbol error,
+  and the reverse shape (`PRT(GenBad,X,3,3,3)` on CR300, `GenBad` undefined at the general-family
+  position 0, `X` a live variable at the const-family position 1) reports only `GenBad is not
+  defined.`, confirming CR300/CR350 have no family reordering for this combined check either.
+  Variable-required (the opposite direction, `_VARIABLE_REQUIRED_KINDS`) stays unimplemented: this
+  round's own corpus scan for a literal at a variable-required position found a *third* confirmed
+  override beyond round 3's `Move`/`ModBusClient` -- `MQTTPublishTable`'s optional `Longitude`/
+  `Latitude`/`Altitude` arguments (code `148`, oracle-confirmed accepting a bare literal in
+  isolation on CR6 and CR1000X, `mqttpublishtable_1.CR6` line 17) -- reinforcing that a blanket rule
+  here is not safe without a per-instruction exception list wider than this session had time to
+  build.
+
+Measured in isolation during development (a scratch difference-only harness re-running just this
+piece's own two files against the unchanged rest of the tree): improved `cr6`/`cr1000x`/`cr300`
+each by a couple of `mismatch -> verdict`/`exact` moves with zero new false rejects. The single
+authoritative before/after number for this round as a whole (both this piece and the pass-model
+piece below combined, since the two were developed back to back against a live, concurrently-edited
+tree and are not independently reproducible in isolation after the fact) is under "Pass model
+correction" below.
+
+Fixed-seed fuzz false-accept rate (`tools/fuzz.py --logger cr6 --count 300 --seed 42`, a scratch
+`--out` directory, not committed): 77/300 (25.7%) -> 74/300 (24.7%), `false_reject=0` in both runs.
+`tools/fuzz_replay.py --workers 2` (248+ reproducers): several `false_accept -> message_diff`
+transitions on cr6/cr1000x/cr300 (closed false accepts), zero new `false_reject`.
+
+### Pass model correction (`structure.py`, `checker/__init__.py`)
+
+A coordinator-directed extension mid-round, once oracle probing (`docs/checker.md`'s own "Pass
+model" section above, and further probes this round) established the real architecture more
+precisely than round 2's "two-pass" finding had: pass 1 is lenient about statement *shape* (an
+unrecognised line becomes an `Expr`/`Call` record without error at parse time), and the generic
+"Expr"/implicit-`Call` fallback (`Invalid, or out of place expression: %s.`, `Sub %s not defined.`)
+is itself **pass 2**, not pass 1 as this checker previously implemented it (`structure.check` used
+to run this fallback unconditionally). Oracle-confirmed (`gate1.CR6`-shaped scratch probe): a
+`Public` with no name at all (line 1) followed by `Randomize(FooBar)` (line 6) reports only
+`Variable not named.` -- the undefined-symbol error is completely suppressed, exactly like
+`instructions.py`'s channel check already was.
+
+`structure.py`'s `check` is split into `check_pass1` (block matching, declaration/array-dimension
+errors, `Units`/`Const`/`Alias` truncation -- unconditional, unchanged from before) and
+`check_pass2` (the "Expr"/`Call` fallback, moved out of `check_pass1`, now only invoked when
+`check_pass1` found nothing). `check_pass2` also implements the before-`BeginProg` placement
+follow-up this checker previously deliberately did not attempt (round 2's "before BeginProg"
+section, above): a bare statement resolving to a declared `Sub`/`Function` is normally silent, but
+`Call illegally occurs before BeginProg.` if it precedes `BeginProg`; the same resolving to a
+built-in *function* is `Expr illegally occurs before BeginProg.` (no preceding "Invalid, or out of
+place expression" line -- the call itself compiles fine, only its position is illegal); resolving
+to nothing is the usual fallback line plus the same `Expr illegally occurs before BeginProg.`
+follow-up. All three stop pass 2 entirely once emitted (oracle-confirmed, `gate2.CR6`: `foo bar`
+before `BeginProg` suppresses a later, unrelated `zap zip`); an **explicit** `Call NoSuchSub` gets
+neither the follow-up nor the stop, before `BeginProg` or not (oracle-confirmed, `bp2.CR6`).
+`check_pass2` returns this stop line (or `None`) so `checker/__init__.py` can truncate every other
+pass-2 module's diagnostics to it without those modules coordinating the cutoff themselves.
+
+**Two regressions caught and fixed during this round's own development, both real false rejects on
+this repository's own `crbasic/` programs and one `chm` file, all caught by re-running the full
+corpus + `pytest` immediately after the first version of this change (this session's own
+methodological lesson, echoing round 3's)**:
+
+1. "Before `BeginProg`" only means the *top level* of the program, never a statement lexically
+   inside a `Sub`/`Function` body -- a `Function`/`Sub` is routinely defined above `BeginProg`, and
+   a bare, no-`Call`-keyword built-in-function call inside its body (`SerialOpen(...)` inside
+   `Function LogDebug(...)`, `crbasic/Main.CR6`) is completely ordinary CRBasic; the body only
+   executes when the `Sub`/`Function` is later invoked from inside `Scan`/`NextScan`. The first
+   version of this change flagged it as a placement error, false-rejecting `crbasic/Main.CR6` and
+   several siblings. Fixed by tracking `in_body_block` (a flat pass over the statement list,
+   toggled on `S.SubDef`/`EndSub`/`EndFunction`, `syntax.py`'s block structure being flat) and
+   suppressing the before-`BeginProg` check entirely while inside one.
+2. The same shape recurs for CRBasic's other named, `EndXxx`-terminated body blocks conventionally
+   declared before `BeginProg` -- found via the corpus, not a hand-written probe:
+   `modemhangupendmodemhangup_1.CR6`'s bare `SerialOpen(...)` inside `ModemHangup...EndModemHangup`.
+   `_BODY_BLOCK_STARTS`/`_BODY_BLOCK_ENDS` extends the same tracking to `DialSequence`/
+   `ModemHangup` (corpus-evidenced) and, on the documented pattern rather than individual oracle
+   probes, `Menu`/`SubMenu`/`Voice`/`BurstTrigger`/`ApplyAndRestartSequence`/`ProcHiPri` -- safe
+   either way, since including one only ever *suppresses* a placement diagnostic, never adds one.
+
+**Cross-module interaction, oracle-confirmed** (`checker/__init__.py`'s own tiering): `structure.
+check_pass2` and `expressions.check` freely accumulate with *each other* (an `expressions.check`
+finding on one statement does not suppress a `structure.check_pass2` finding on another --
+`Randomize(FooBar)` followed by a separate bare `qux quux` reports both), but *either* of them
+finding anything at all suppresses `instructions.check`/`instr_data.check_table_structure`/
+`instr_measure.check` entirely (`ExciteV(Vx1,...)` on an earlier line suppresses a later, otherwise-
+invalid `TCDiff` channel argument -- this is the same round-2 "two-pass compilation" finding,
+generalised to include `expressions.check`/`structure.check_pass2` as the gate, not just "any
+pass-1 error"). Modelled as two sequential `if not diags.errors:` tiers in `checker/__init__.py`,
+tier B (`structure.check_pass2` + `expressions.check`, with the cutoff-line truncation) then tier C
+(`instructions.check`/`instr_data`/`instr_measure`).
+
+Full corpus difftest (`tools/difftest.py --logger <l>`, `repo`+`examples`+`chm` summed), before
+this whole round (round 3's end state, re-measured at this round's own start) / after both pieces
+above (the authoritative before/after for this round as a whole):
+
+| Logger | before | after | false rejects |
+|---|---|---|---|
+| cr6 | 327/189/11 | 354/164/9 | 0 -> 0 |
+| cr1000x | 338/178/11 | 363/155/9 | 1 (pre-existing `structuretype_3.CR6`) -> 1 (unchanged) |
+| cr300 | 122/379/26 | 122/379/26 | 0 -> 0 (unaffected -- CR300/CR350 never shared the pass-model mechanism, and the expression-resolution piece's own corpus effect here nets to zero in the final measurement) |
+| cr350 | 126/374/27 | 126/374/27 | 0 -> 0 (unaffected, same reason) |
+
+(`repo`/`examples` groups, not shown separately: `repo` briefly regressed to 2/0/14 on cr6 and
+1/7/8 on cr1000x during development, from regression 1 above -- re-verified back at 16/0/0 and
+8/5/3, unchanged from every prior session, once both regressions were fixed; `examples` improved
+from 0/2/2 to 2/2/0 on cr6 and 1/1/2 to 3/1/0 on cr1000x as a side effect, not chased on purpose.)
+
+`python3 -m pytest -q`: 949 passed throughout (0 failed), after both fixes above. `tools/
+fuzz_replay.py --workers 2`: no new `false_reject` (the two `still false_reject` entries and the
+three `message_diff -> false_accept` entries seen this round are all pre-existing, independently
+root-caused to a `Variable Type %s not supported` type-name-validation gap and the pre-existing
+`structuretype_3.CR6` bare-member parsing gap -- neither in `expressions.py`/`symbols.py`/
+`structure.py`/`checker/__init__.py`, confirmed by replaying the same reproducer against this
+round's *starting* `expressions.py`/`symbols.py` and finding it already broken there too).
+
+Not implemented: the other two placement-error shapes (`%s is declared in the middle of an
+executing sequence`, `%s illegally occurs after EndSequence.`) -- no oracle evidence gathered this
+round, left as a documented gap rather than guessed at.

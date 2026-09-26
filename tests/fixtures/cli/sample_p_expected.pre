@@ -1,0 +1,18 @@
+'Sample CLI fixture program
+Public BattV ' battery reading
+Public PTemp
+Public TCTemp
+Const UseFeatureA = 1
+
+  Const Note = 1
+
+BeginProg
+  Scan (1,Sec,3,0)
+    Battery (BattV)
+    PanelTemp (PTemp,15000)       'timed twice
+    TCDiff (TCTemp,1,mv200C,1,TypeT,PTemp,True,0,15000,1.0,0)
+    PortSet (C1,1)
+    Delay (0,100,mSec)
+    Include("CPU:sample_inc.crb")
+  NextScan
+EndProg

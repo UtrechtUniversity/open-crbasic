@@ -274,6 +274,43 @@ loggers on the strength of that probe plus the CR6/CR1000X agreement, filtered p
 CR6-only CDM/GOES instruction absent from CR300/CR350, simply never matches -- safe by
 construction, never a false reject from a logger difference this round did not individually probe).
 
+### `Table %s declared with no output fields.`
+
+Also `check_table_structure` (same function, same pass-2 gate): at a properly-paired `EndTable`,
+if the just-closed table's body contained no instruction from `_FIELD_PRODUCING_INSTRUCTIONS` (a
+curated subset of `TABLE_ONLY_INSTRUCTIONS` -- every instruction there that is purely
+configuration, `DataInterval`/`CardOut`/`TableFile`/`DataEvent`/`FillStop`/`DataTime`/
+`OpenInterval`/`TableHide`, is excluded), the table declaration itself is `Table %s declared with
+no output fields.` at the `EndTable` line -- oracle-confirmed with three from-scratch probes (a
+body with only `DataInterval`, only `CardOut`, or nothing at all, all three give this exact message
+at the `EndTable`'s own line) and a saved fuzz reproducer for the "nothing at all" shape
+(`tests/corpus/fuzz/cr6/false_accept/5d5ffec92ac4.json`, a `change_interval` mutant of a real CHM
+seed).
+
+Deliberately does **not** reuse `result.tables`' already-computed field *count* the way
+`check_duplicate_fields` does (a `len(table.fields) == 0` test would have been simpler): `tables.py`
+does not yet derive output fields for several instructions this project already knows are real
+field producers (`RainFlow`/`LevelCrossing`/`Histogram4D`/`SampleFieldCal`, `docs/tdf-rules.md`'s
+open gaps), so that shortcut would misreport a table containing *only* one of those as having no
+output fields too. **Found as a regression during this round's own development, fixed before
+landing**: `FFT` is exactly this shape (not handled by `tables.py`'s `_emit_output_fields` at all)
+and was originally left out of both `TABLE_ONLY_INSTRUCTIONS` and `_FIELD_PRODUCING_INSTRUCTIONS`
+for lack of a confident decompiled-call-site attribution (an unlabelled string constant, `"FFT"`,
+this document's own instruction-set section originally logged as one of two it could not attribute
+with confidence) -- a full `tools/difftest.py --logger <l> --group all` re-run after first landing
+this check caught two real CHM corpus files (`fft_1.CR6`, and CR1000X's `covspa_1.CR6`, both
+`DataTable` bodies containing only `FFT(...)` calls) going from accepted to a false reject on the
+loggers that have `FFT`. A fresh scratch probe (a bare `FFT(...)` outside any table) confirmed `FFT`
+does belong in `TABLE_ONLY_INSTRUCTIONS` too (`FFT must be used inside a table declaration.`,
+digit for digit), and it is now included in both sets; the one remaining unattributed string,
+`"Et"`, stays excluded.
+
+`GoesTable`/`MQTTPublishTable` are included in `_FIELD_PRODUCING_INSTRUCTIONS` leniently, without
+oracle confirmation that either alone (with no accompanying `Sample`/`GOESField`, a shape not seen
+in this project's corpus) counts as a field producer by itself -- if that lenient guess is ever
+wrong, the failure mode is under-reporting a table this rule should flag but doesn't, never a false
+reject.
+
 ### `Duplicate field name %s in DataTable %s.`
 
 `check_duplicate_fields` deliberately does not re-derive each output instruction's own default
@@ -367,7 +404,179 @@ exact)"; no reproducer of any class newly reports `false_reject`.
   `ExChan`/`SEChan` positions, `FUN_005147a0`/`FUN_005177a0`) -- already noted as not implemented
   in `docs/checker.md`; not picked up this round either (no corpus mismatch currently needs it).
 - **CR6's per-instruction "measurement instruction reps/range/channel/excitation" checks** beyond
-  the existing `U1..U12`/CR300-CR350 channel-range check (`checker/terminals.py`) -- out of scope
-  for this round's budget; the highest-frequency gaps chased were the `Scan`/`DataInterval` value
-  checks and the warnings above, per the task's own prioritisation ("frequency in the fuzz
-  false_accept reproducers").
+  the existing `U1..U12`/CR300-CR350 channel-range check (`checker/terminals.py`) -- picked up in
+  the round below ("Measurement/I-O instruction checks").
+
+## Measurement/I-O instruction checks (`checker/instr_measure.py`, `checker/terminals.py`)
+
+Owned by the same workstream as `checker/terminals.py`/`data/<logger>/terminals.json` (the
+channel/port *terminal* model) and the new `checker/instr_measure.py`/`data/<logger>/measure.json`
+(everything else: range codes, `SW12`, `Delay`, `CS616`, `TimerInput`, `ExciteV`/`ExciteI`).
+`instr_measure.check` is pass 2 (`docs/checker.md` "Pass model"), wired into `checker/__init__.py`
+alongside `instructions.check`; it emits one diagnostic per statement with that statement's own
+line number and relies on no ordering trick of its own -- the record/line-order interleaving with
+`expressions.py`'s errors and the placement-error cutoff are both handled centrally in
+`checker/__init__.py`. All rules below are oracle-confirmed this round (`python3 tools/oracle.py`
+CR6 scratch probes, and direct `wine <logger>comp.exe` scratch probes for CR1000X/CR300/CR350 --
+`tools/oracle.py`'s own CLI always runs `CR6Comp.exe` regardless of a `.cr1x`/`.cr300`/`.cr350`
+file's extension, so the other three loggers need the direct invocation the task/AGENTS.md
+describes).
+
+### Channel/port terminal model fixes and additions (`checker/terminals.py`)
+
+**Real bug fixed, CR6 only (the session's highest-priority finding: an active false reject).**
+`VoltDiff`/`VoltSe`/`TCDiff`/`TCSe`'s `DiffChan`/`SEChan` (terminals.py's pre-existing `u_terminal`
+kind, unconditionally `transform: "none"`) rejected a burst-mode negative channel value
+(`VoltDiff(X,1,mv5000C,-U1,0,0,15000,1,0)`, oracle-accepted) with `Invalid channel -201, must use
+U1..U12.` -- confirmed by direct call before any other change this round. Root cause: the CR6
+`u_terminal` kind never gained the `transform: "abs"` burst-mode allowance CR1000X's own
+`diff_chan`/`se_chan` already had (`docs/loggers.md`). Split into three kinds, all oracle-verified
+this round with a `U1`..`U12`/`-U1`..`-U12`/plain-integer-literal boundary sweep on `CR6Comp.exe`:
+
+- `u_terminal_se` (`VoltSe`/`TCSe` position 4): any `U1..U12`, burst negative allowed (`transform:
+  "abs"`) -- unchanged range, only the missing burst allowance added.
+- `u_terminal_diff` (`VoltDiff`/`TCDiff` position 4): burst negative allowed, **plus** a second,
+  previously entirely missing constraint -- the (absolute) value must be an *odd* terminal
+  (`U1,U3,U5,...,U11`); an even one in range (`U2`..`U12`) gets a distinct message, `Invalid start
+  channel for Differential Measurement. Must be U1, U3, U5 ...` (`terminals.py`'s new `odd_only`/
+  `odd_message` fields). `docs/checker.md`'s round-2 entry claiming `VoltDiff`'s `DiffChan` is "a
+  plain small integer, not a terminal name" is now known wrong -- that session's own probe used a
+  CR1000X CHM example's argument style (`DiffChan=1`) against `CR6Comp.exe` without checking the
+  odd/burst rule, and mistook the two-pass gate's suppression of an *unrelated* co-occurring error
+  for "no channel check at all"; corrected here with a from-scratch, isolated sweep.
+- `u_terminal` (unchanged: `ACPower`, plus newly added `CS616`'s `CS616Chan` and `ExciteV`/
+  `ExciteI`'s `ExChan`) keeps the old no-burst, no-oddness shape -- not re-verified for burst/odd
+  behaviour on those three, so left conservative rather than guessed.
+
+**New kinds, both oracle-confirmed on CR6 and CR1000X (absent on CR300/CR350, which never validate
+either shape -- `PortSet(1,1)`/`PortSet(C1,1)` both compile clean on `cr300comp.exe`/
+`cr350comp.exe`):**
+
+- `port_c1c4_u1u12` (CR6: `PortSet` position 1, `PortGet` position 2, `CS616`'s `CS616Port`
+  position 4) / `port_c1c8` (same three, CR1000X): a disjoint two-range union, `C1..C4` or
+  `U1..U12` on CR6 (`Invalid port {v}, use C1..C4 or U1..U12.`) vs. `C1..C8` only (no `U`-terminal
+  at all) on CR1000X (`Invalid port {v}, use C1..C8.`). Closes two long-standing corpus mismatches,
+  `examples/SBD_example_hirise.CR6`/`SBD_example_hirise_SBDWB.CR6` (`docs/checker.md`'s own "Known
+  remaining gaps": "a check not yet implemented ... likely the same `_check_channel_arg`-shaped
+  rule ... but for a 'port' parameter accepting `C1..C4` too").
+- `sdi_port` (CR6: `SDI12Recorder` position 2, odd-only `C1,C3` or `U1,U3,U5,U7,U9,U11`, message
+  `Invalid SDI-12 port, must be C1,C3 or U1,U3...U11`) / `sdi_port_cr1000x` (same position, odd-only
+  `C1,C3,C5,C7` only, no `U`-terminal at all, message `Invalid SDI-12 port, must be C1, C3, C5, or
+  C7`) -- CR1000X's 8-control-port hardware exposes twice CR6's own `C1..C4` range for this check
+  specifically, oracle-confirmed with a `C1..C8` sweep. CR300/CR350 accept any value here too.
+- `excite_channel` (CR6 only: `ExciteV`/`ExciteI` position 1, same `U1..U12` range as `u_terminal`
+  but its own message, `Invalid Excitation channel (must be U1-U12).`) -- both this and the shared
+  `u_terminal` message fire *together* for the same bad value (oracle: a literal `1` or `C1` gets
+  both `Invalid channel 1, must use U1..U12.` and `Invalid Excitation channel...` on the same line,
+  in that order), so `terminals.json` lists the position twice, once per kind, rather than
+  reworking the model to emit two messages from one entry.
+
+`terminals.py` itself: `_evaluate` now returns `(in_range, odd_ok, shown)` instead of `(is_valid,
+shown)`, and a kind's range may be `"ranges": [[min,max], ...]` (checked as a union) in place of a
+single `"min"`/`"max"` pair, kept for the pre-existing CR1000X/CR300/CR350 `diff_chan`/`se_chan`
+entries. Both changes are additive to the existing per-kind dict shape; no existing kind's
+behaviour changed except the two CR6 fixes above.
+
+### `Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.` (CR6/CR1000X only)
+
+`VoltSe`/`VoltDiff`/`TCSe`/`TCDiff`/`CurrentSe`'s own `Range` argument (position 3 on all five,
+`FUN_00514690`) is a named constant like any other (type code 1, not `20` -- it folds via the same
+fast path as `U1` or `Sec`, so a genuinely undefined name there is `expressions.py`'s concern, not
+this one's); this instruction-layered check additionally restricts the *folded value* to
+`{mV5000, mV1000, mV200, AutoRange}` and their open-detection `...C` siblings (`data/symbols.json`
+values `800,802,804,810,820,822,824,830`) -- every other defined range symbol (`mv2500`, `mv250`,
+`mv50`, `mv25`, `mv20`, `mv7_5`, `mv2_5`, `mv10000`, and their own `...c` siblings) is rejected with
+this exact message, oracle-confirmed identical on CR6 and CR1000X (`VoltDiff(X,1,mv2500,...)` fails
+with this text on both `CR6Comp.exe` and `cr1000xcomp.exe`; `VoltDiff(X,1,mv5000,...)`/`mv1000`/
+`mv200`/the `...c` variants all compile clean on both). **CR300/CR350 have no such check at all**:
+their own symbol table simply does not define `mv5000`/`mv1000`/`mv200` (`docs/loggers.md`: "CR300/
+CR350's *only* two range codes are `mv2500` and `mv34`"), so the same corpus shape surfaces there
+as a plain, already-handled `mv5000 is not defined.` (`expressions.py`'s concern) -- oracle-
+confirmed this round (`cr300comp.exe`/`cr350comp.exe` both reject `mv5000` as undefined, and both
+compile `VoltDiff(X,1,mv2500,...)`/`mv34` clean with no warning).
+
+### `SW12`: `Invalid SW12 port %d.`
+
+An exact, small, per-logger set of valid ports -- both a plain small integer and the logger's own
+named `SW12_n`/`P_SW12` constant resolve to *different* raw values but both compile; every other
+value in the swept neighbourhood fails, oracle-confirmed by a boundary sweep (`0` through `12`, and
+each logger's own named constants, `data/<logger>/symbols.json`) on each of the four compilers:
+
+| Logger | Valid ports | Evidence |
+|---|---|---|
+| CR6 | `{1, 2, 501, 502}` | `SW12_1`=501/`SW12_2`=502 and their plain-integer siblings `1`/`2` all compile; `0,3..12,501..503` swept and rejected (`SW12_CSIO`=503 also rejected) |
+| CR1000X | `{501, 502}` only | same symbol values as CR6, but the plain integers `1`/`2`/`3`/`-1` all **crash the real compiler** under Wine (a wow64 page fault, not a clean rejection -- `docs/checker.md`'s own precedent for `pointervariable_2.CR6`, no oracle text to match); deliberately not modelled, since guessing a message for an input that crashes the oracle risks the exact false-reject/false-accept ambiguity AGENTS.md warns against -- only the two crash-free, confirmed-valid values are in the set, so nothing this checker doesn't understand is ever flagged |
+| CR300 | none (`SW12(Port)`, type code 25, no compile-time check at all) | `7`/`1`/`2`/`501`/`3`/`0` all compile clean |
+| CR350 | `{1, 2, 9, 10}` | own `SW12_1`=9/`SW12_2`=10 plus plain `1`/`2`; `0,3..8,11,12` swept and rejected |
+
+### `Delay`: three checks, split by `Option`
+
+`Delay(Option, Interval, Units)` (`FUN_0045d530`/`FUN_00450e80`/`FUN_004f11d0`-family). Oracle-swept
+per logger (boundary values in `min`/`hr`/`sec` units, and a string/variable `Interval`):
+
+- `Illegal option %d` (all four loggers) when `Option` does not fold to `0`, `1` or `2` -- the shown
+  value is the folded number truncated to an unsigned byte (oracle: `Option=-1` shows as `255`,
+  `Option=3` shows as `3`, matching Python's own `value % 256`).
+- `Delay interval cannot be of type String.` (all four loggers, any `Option`) when `Interval` folds
+  to a string constant -- this is the *only* diagnostic for a string interval (oracle: no
+  accompanying "must be constant" line, unlike a non-constant *variable* interval).
+- Then, by `Option`:
+  - `Option=0` (measurement-task-sequence delay) -- **CR6/CR1000X only** (oracle: CR300/CR350 both
+    compile `Delay(0,61,min)`/a variable interval clean, no error at all): `Interval` must itself be
+    a compile-time constant (`Measurement delay must have constant interval.`) and, once resolved,
+    at most 60 minutes inclusive (`60,min` compiles; `61,min` / `3601` seconds worth in any unit
+    fails with `Measurement Delay Exceeds 60 min.`).
+  - `Option=1` (processing delay) -- **all four loggers**: no constant-interval requirement (a
+    variable compiles clean, unlike `Option=0`), but the resolved interval must be strictly less
+    than 24 hours (`23.999,hr` compiles; `24,hr`/`1440,min`/`86400,sec` all fail with `Max Delay is
+    24 Hours`, oracle-confirmed identical text and boundary on all four compilers).
+  - `Option=2` (SDM delay) -- **all four loggers**: `Interval` must be a compile-time constant
+    (`SDM Delay interval must be constant.`); no duration limit found (`24hr`/`25hr` both compile).
+
+### `CS616`: `Invalid reps %d, must be > 0` (CR6 only)
+
+`CS616(Dest,Reps,CS616Chan,CS616Port,MeasPerPort,Mult,Offset)`'s `Reps` (position 2) must be a
+positive folded constant; `0` and negative values fail with this exact text. Not re-verified on
+CR1000X/CR300/CR350 this round (`CS616Chan`/`CS616Port` themselves are covered by the terminal-model
+entries above, which *are* per-logger); left CR6-only rather than guessed.
+
+### `TimerInput`: `TimerInput starting channel must be C1 or U1.` (CR6 only)
+
+`TimerInput(Dest,StartChan,Edge,Function,Timeout,Timeout_Units)`'s `StartChan` (position 2) must
+fold to exactly `C1` or `U1` -- every other terminal in either family (`C2`, `U2`, ...) fails with
+this text, oracle-confirmed with a `C1/C2/U1/U2` sweep. Not re-verified on CR1000X/CR300/CR350.
+
+### `ExciteV`/`ExciteI`: `Excitation exceeds 2500.000000.` (CR6 only)
+
+`ExciteV(ExChan,ExmV,Delay)`/`ExciteI(ExChan,ExmI,Delay)`'s excitation magnitude (position 2) must
+have `|value| <= 2500`; `2500` compiles, `2501` (and `-2501`) fail with this exact text (note the
+message's own `%f`-style fixed six-decimal formatting of the *limit*, not the input value).
+**Deliberately not applied to CR1000X**: oracle-confirmed `ExciteV(Vx1,2501,0)` (CR1000X's own
+excitation-channel name) compiles clean at `2501` and even `2500`-plus values were not found to have
+any limit in the range swept -- applying the CR6 threshold there would be a false reject, so this
+check is CR6-only rather than logger-unconditional. `ExciteI` does not exist as an instruction on
+CR1000X/CR300/CR350 at all (`docs/loggers.md`), so it is moot there regardless.
+
+### Investigated, not implemented (this round)
+
+- **`AM25T`'s own channel/excitation checks** -- a boundary sweep of `AM25TChan` (1, 16, 17, 0)
+  against `CS1000, AM25T(...)` all reported the *same* `Invalid channel -1, must use U1..U12.`
+  regardless of the swept value, meaning some *other* argument (not `AM25TChan`) is what that
+  message is actually validating in this probe's shape; not chased further to avoid guessing at an
+  argument mapping this round could not isolate cleanly.
+- **`PortsConfig`'s `Function` argument** -- swept `0..5` and `-1`, all compiled clean (type code 2,
+  no compile-time validation found).
+- **`WriteIO`/`ReadIO`'s `Mask` argument** -- swept `0, 255, 256, -1, 1000`, all compiled clean (type
+  code 1, no range restriction found).
+- **`SDI12Recorder`'s `SDIAddress` argument** -- swept `0, 9, 10, -1, "A", "Z", "z"`, all compiled
+  clean (resolved at run time, not compile time).
+- **General terminal-allocation-conflict tracking** (`%s: channel %c%d already in use or
+  unavailable.`, `FUN_0050cf90`) -- decompiled call-site tracing found this shared validator is
+  called from many instructions' own handlers, including ones in this document's scope
+  (`TimerInput`, `PulseCount`, the channel-range function `VoltSe`/etc. itself use), but the exact
+  conflict semantics (which instruction/position pairs actually collide, and the meaning of each
+  call site's own flags word) were not isolated with confidence this round; implementing a plausible
+  but wrong version of this risks the worst failure mode (AGENTS.md), so it stays unimplemented.
+- **`Resistance`/`PeriodAvg`/`Pulsecount`'s own excitation/gain/reps checks** -- not reached this
+  round (time budget); `Pulsecount`'s low-level-AC-pulse "even U channel only" restriction and its
+  own reps range are both real (`messages.tsv`, `FUN_00510250`) but not oracle-probed yet.
