@@ -1,0 +1,3 @@
+Public LibAUnused As Float
+Sub LibASub()
+EndSub

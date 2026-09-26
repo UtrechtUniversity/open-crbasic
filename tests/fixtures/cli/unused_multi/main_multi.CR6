@@ -1,0 +1,8 @@
+Public MainUnused As Float
+Include("CRD:libA.crb")
+Include("CRD:libB.crb")
+
+BeginProg
+  Scan (1,Sec,0,0)
+  NextScan
+EndProg

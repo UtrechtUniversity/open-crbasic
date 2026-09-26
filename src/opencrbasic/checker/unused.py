@@ -9,19 +9,26 @@ per-logger branching):
   reference to *any* element marks the whole declaration used) and a `Sub`/`Function` parameter
   that is never referenced anywhere else in the program text, each as `line N: Warning: %s declared
   but not used.`.
-- Also flags a `Sub` (**not** a `Function`, oracle-confirmed asymmetry: an entirely uncalled
-  `Function` gets no such warning, only an uncalled `Sub` does) that is never called anywhere, as a
+- Also flags a `Sub` **or** `Function` that is never referenced anywhere else in the program, as a
   *bare* `Warning: %s declared but not used.` -- no `line N:` prefix, the same "no line" shape as
-  the pre-existing "table declared but never called" warning (`checker/warnings.py`).
-- **Not** flagged: `Const`/`ConstTable` fields, a `Sub`/`Function`'s own name (except the uncalled-
-  `Sub` case above), and an `Alias` name. Aliasing merges the alias name and the underlying
-  declared variable into one usage identity: a reference to the alias name elsewhere in the program
-  counts as using the original variable (oracle: `Public X` / `Alias X = Y` / `Y = 1` -- `X` is
-  *not* flagged), but the `Alias`/`Units`/`ReadOnly` statement's own mention of a name is never
-  itself a use (oracle: `Public X` / `Alias X = Y` alone, `Y` never referenced again -- `X` *is*
-  flagged; likewise a bare `Units X = Label` or `ReadOnly X` with no other reference to `X` still
-  flags it). A variable referenced only as a `DataTable` output source (a `Sample`/`Average`/...
-  argument) counts as used.
+  the pre-existing "table declared but never called" warning (`checker/warnings.py`). An initial
+  reading of one oracle probe (an uncalled `Function` whose body sets its return value the usual
+  way, `MyFunc = value`) looked like an uncalled `Function` is *never* flagged, unlike an uncalled
+  `Sub` -- corrected once the real corpus (`ShuntLib.crb`'s `SampleShunt`, uncalled in
+  `Main.CR6`/`PowerBudget_tester.CR6`/`Preflight_tester.CR6` because its only call site sits behind
+  a false `#If`) turned out to *be* flagged: `MyFunc = value` inside the function's own body is
+  itself a reference to `MyFunc` (an ordinary `Assignment.target`, walked like any other), which is
+  what suppressed the warning in the first probe, not the `Function`/`Sub` distinction; a second
+  probe with `Return value` instead of self-assignment confirmed an uncalled `Function` *is*
+  flagged identically to an uncalled `Sub` once nothing else references its name.
+- **Not** flagged: `Const`/`ConstTable` fields and an `Alias` name. Aliasing merges the alias name
+  and the underlying declared variable into one usage identity: a reference to the alias name
+  elsewhere in the program counts as using the original variable (oracle: `Public X` / `Alias X =
+  Y` / `Y = 1` -- `X` is *not* flagged), but the `Alias`/`Units`/`ReadOnly` statement's own mention
+  of a name is never itself a use (oracle: `Public X` / `Alias X = Y` alone, `Y` never referenced
+  again -- `X` *is* flagged; likewise a bare `Units X = Label` or `ReadOnly X` with no other
+  reference to `X` still flags it). A variable referenced only as a `DataTable` output source (a
+  `Sample`/`Average`/... argument) counts as used.
 - The whole check is suppressed by *any* compile error anywhere in the file, not just the ones
   after a given declaration (oracle: a single unrelated error anywhere removes every `-u` warning).
   `compiler.compile_file` only calls `check` after the ordinary checker has run and found no
@@ -141,20 +148,19 @@ def check(program: S.Program, diags: Diagnostics) -> None:
     """Add every `-u` warning for `program` to `diags`. Caller's responsibility (`compiler.py`):
     only call this when `not diags.errors` (oracle-confirmed gate, see this module's docstring).
     """
-    variables: list[tuple[str, int, str]] = []   # (NAME upper, line, display spelling)
-    params: list[tuple[str, int, str]] = []
-    subs: list[tuple[str, str]] = []              # (NAME upper, display) -- `Sub` only
-    alias_map: dict[str, str] = {}                # ALIAS-TARGET upper -> ORIGINAL-BASE upper
+    variables: list[tuple[str, int, str, str]] = []   # (NAME upper, line, display, file)
+    params: list[tuple[str, int, str, str]] = []
+    subs: list[tuple[str, str, str]] = []              # (NAME upper, display, file)
+    alias_map: dict[str, str] = {}                     # ALIAS-TARGET upper -> ORIGINAL-BASE upper
 
     for stmt in program.statements:
         if isinstance(stmt, S.Declaration) and stmt.kind.upper() in ("PUBLIC", "DIM"):
             for v in stmt.vars:
-                variables.append((v.name.upper(), stmt.line, v.name))
+                variables.append((v.name.upper(), stmt.line, v.name, stmt.file))
         elif isinstance(stmt, S.SubDef):
             for p in stmt.params:
-                params.append((p.name.upper(), stmt.line, p.name))
-            if stmt.keyword.upper() == "SUB":
-                subs.append((stmt.name.upper(), stmt.name))
+                params.append((p.name.upper(), stmt.line, p.name, stmt.file))
+            subs.append((stmt.name.upper(), stmt.name, stmt.file))
         elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" and stmt.args:
             original = _base_name(stmt.args[0])
             if original:
@@ -171,12 +177,12 @@ def check(program: S.Program, diags: Diagnostics) -> None:
         if mapped:
             used.add(mapped)
 
-    for upper, line, display in variables:
+    for upper, line, display, file in variables:
         if upper not in used:
-            diags.warning(line, f"{display} declared but not used.")
-    for upper, line, display in params:
+            diags.warning(line, f"{display} declared but not used.", file)
+    for upper, line, display, file in params:
         if upper not in used:
-            diags.warning(line, f"{display} declared but not used.")
-    for upper, display in subs:
+            diags.warning(line, f"{display} declared but not used.", file)
+    for upper, display, file in subs:
         if upper not in used:
-            diags.warning(0, f"{display} declared but not used.")
+            diags.warning(0, f"{display} declared but not used.", file)

@@ -414,9 +414,27 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     #    evidence yet for its exact trigger/shape beyond this one example, and it is a second,
     #    distinct message rather than a difference in this one's own text); the per-name line(s)
     #    alone already turn the previously-silent false accept into a correct reject.
+    #
+    # **Round 5 addition, oracle-confirmed (`docs/checker.md` "Round 5")**: an assignment whose own
+    # *target* itself does not resolve (`FuzzVar = 1`, `FuzzVar` never declared) is a completely
+    # different message family -- the generic "Expr" fallback `structure.py`'s `check_pass2` already
+    # owns for `Call`/`Unparsed` (`Invalid, or out of place expression: <whole statement>.`, plus a
+    # before-`BeginProg` placement follow-up) -- never this module's own `Invalid symbol in
+    # expression: %s.`, even when the RHS is *also* undefined (`FuzzVar1 = FuzzVar2` ->
+    # `Invalid, or out of place expression: FuzzVar1 = FuzzVar2.` alone, no second, separate
+    # "Invalid symbol" line for `FuzzVar2`). `_undefined_names` doubles as the target-resolution
+    # test here (an `Index`'s own base name, or a `Member`'s base, exactly like a normal read
+    # reference -- oracle-confirmed for an undeclared array base, `X(BadIdx) = 1` with `X`
+    # undeclared, and for an undeclared *index* on an otherwise-declared array, `X(BadIdx) = 1`
+    # with `X` declared and `BadIdx` not -- both land in the same "Invalid, or out of place
+    # expression" bucket, `structure.py`'s job, not checked again here). Skipping these statements
+    # entirely (rather than still checking the RHS) is what reproduces the oracle's "one message,
+    # not two" behaviour without `structure.py` needing to know this module's own diagnostics.
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
             continue
+        if _undefined_names(stmt.target, known):
+            continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
         names = _undefined_names(stmt.value, known)
         if not names:
             continue

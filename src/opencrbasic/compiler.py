@@ -21,6 +21,15 @@ from .profiles import Profile
 _MESSAGE_BUFFER_LIMIT = 4096
 
 
+def _no_line_kind(d) -> int:
+    """Secondary sort key for a no-line (`d.line == 0`) diagnostic: `-u`'s own "declared but not
+    used"/"declared but never called" (`checker/unused.py`) before any other no-line warning (in
+    this project, only the pre-existing "table declared but never called" check) -- see
+    `CompileResult.result_lines`'s docstring for the decompiled/oracle evidence.
+    """
+    return 0 if d.message.endswith("declared but not used.") else 1
+
+
 def _bounded_by_message_buffer(lines: list[str]) -> list[str]:
     used = 0
     out = []
@@ -42,6 +51,8 @@ class CompileResult:
     tables: list = field(default_factory=list)      # tdf.TdfTable list, when available
     table_list: str | None = None   # text of the `-l` output, when available
     signature: int | None = None
+    file_order: dict = field(default_factory=dict)  # file name -> its rank in expansion order
+    # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
 
     @property
     def ok(self) -> bool:
@@ -64,7 +75,31 @@ class CompileResult:
         # correctly against each other or against warnings, so this stable sort (never observed out
         # of order on the same line, so ties keep each check's own relative order) reproduces the
         # single-pass compiler's output order without each checker pass needing to coordinate.
-        ordered = sorted(self.diagnostics.items, key=lambda d: (d.line == 0, d.line))
+        #
+        # That per-line stable sort is only correct *within one file*: `Include`/`IncludeSection`
+        # give each included file its own independent line numbering (this module's own docstring,
+        # `source.py`), so a raw ascending sort across files interleaves them by coincidence, not by
+        # the real single top-to-bottom pass over the *expanded* source (oracle-confirmed,
+        # `checker/unused.py`'s corpus run: `SbdPayload_tester.CR6`'s `-u` warnings come out grouped
+        # by included library file, in `Include` order, each *group* internally ascending by that
+        # file's own line numbers -- not a single global ascending run). `self.file_order` (built
+        # below from `program.statements`' own `.file` field, in expansion order) is the primary
+        # sort key for exactly this reason; it is `{}` for a single-file program, where every
+        # diagnostic's `.file` maps to the same missing-key default and this reduces to the
+        # pre-existing ascending-line-only behaviour unchanged.
+        #
+        # Among no-line (`d.line == 0`) items specifically, file order does not apply (decompiled,
+        # `FUN_004eab30`: the `-u` check (`thunk_FUN_004ba180`) runs once, early, well before the
+        # later per-table finalisation loop that detects and prints "table declared but never
+        # called" -- oracle-confirmed on the corpus, `checker/unused.py`'s docstring: every
+        # no-line `-u` warning, regardless of which included file declared it, prints before every
+        # "table declared but never called" warning). `_no_line_kind` below reproduces that
+        # ordering by message shape rather than by which module raised it, so this stays correct
+        # without `checker/warnings.py` (a concurrently-owned module) needing to tag its own
+        # diagnostics; a stable sort keeps each kind's own relative (insertion) order within itself.
+        ordered = sorted(self.diagnostics.items,
+                          key=lambda d: (d.line == 0, self.file_order.get(d.file, 0), d.line)
+                          if d.line else (True, _no_line_kind(d), 0))
         if not self.ok:
             rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in ordered])
             return [f"{self.program} -- Compile Failed!", ""] + rendered
@@ -99,7 +134,10 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         diags = Diagnostics()
         diags.error(0, "Internal error: unable to parse program.")
         return CompileResult(name, profile, diags)
-    result = CompileResult(name, profile, diags)
+    file_order: dict[str, int] = {}
+    for stmt in program.statements:
+        file_order.setdefault(getattr(stmt, "file", "") or name, len(file_order))
+    result = CompileResult(name, profile, diags, file_order=file_order)
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     try:

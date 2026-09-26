@@ -1,0 +1,38 @@
+Public UsedVar As Float
+Public UnusedVar As Float
+Public UnusedArray(3) As Float
+Public AliasedVar As Float
+Alias AliasedVar = AliasedName
+Dim UnusedDim As Float
+Const MyConst = 5
+
+DataTable(T,1,-1)
+  DataInterval(0,1,Sec,10)
+  Sample(1,UsedVar,FP2)
+EndTable
+
+DataTable(NeverCalled,1,10)
+  Sample(1,UsedVar,FP2)
+EndTable
+
+Sub CalledSub(P1 As Float, P2 As Float)
+  Dim LocalUsed As Float
+  Dim LocalUnused As Float
+  LocalUsed = P1
+EndSub
+
+Sub NeverCalledSub()
+EndSub
+
+Function NeverCalledFunc(FP As Float) As Float
+  Return FP
+EndFunction
+
+BeginProg
+  UsedVar = 1
+  AliasedName = 2
+  Call CalledSub(1, 2)
+  Scan (1,Sec,0,0)
+    CallTable T
+  NextScan
+EndProg

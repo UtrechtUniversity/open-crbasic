@@ -247,32 +247,53 @@ one `Temp_Max` field, `dim=3`).
 
 ## 10. Auto-allocated table size (`Size = -1`)
 
-The hardest part; **partially decompiled, black-box-fit with high confidence for the interval-
-table case and for the mixed-regime mechanism (weighting, capping), lower confidence for the
-mixed-regime's exact pool magnitude**. Mechanism read from `FUN_004eab30` (2026-09-25 pass,
-**decompiled**, see `docs/binary.md`): for every table whose `Size` is `-1` **and** that is
-`CallTable`d somewhere in the compiled program (table-struct flags dword at offset `+0x1c`, bit
-`0x1000` — set by the `CallTable`-reference resolver `FUN_004f6540`, and checked by the exact
-`Table <Name>, is declared but never called.` warning path in `FUN_004eab30` itself, so this is the
-same flag §13's "uncalled → size=1" rule already describes, now with a decompiled citation), the
-compiler: (1) finalises `Status`, `DataTableInfo`, `Public`, any named `ConstTable`, and any
-*fixed*-size `DataTable` **first** (these do not consume the auto-size pool at all — their
-finalisation call, `thunk_FUN_004f4400`, is reached through a code path that never touches the
-loop's reserved-bytes accumulator; matches §13's "fixed/const/slowseq don't reduce the pool"
-finding exactly); (2) for every called auto table, an initial "probe" call to `FUN_004f4400` (same
-function, called with a null output pointer) gives it a **default single-table buffer** —
-`floor((1024 − 16) / bytes_per_record)` records, i.e. what it would get with no other table
-competing, from a flat 1024-byte buffer (**decompiled**; independently reproduced black-box, see
-"capping" below); (3) accumulates a rate `Σ(bytes_per_record_i / weight_i)` over the *still-active*
-(uncapped) auto tables — where `weight_i` is `interval_seconds_i` for a `DataInterval` table, and
-turned out (2026-09-25 oracle experiments) **not** to be a flat 1 second for a `DataEvent`/no-
-interval table but the interval of that table's own enclosing `Scan`/`SlowSequence` block (see
-below); (4) divides the pool's remaining free bytes by that rate to get a **duration** shared by
-the active tables, `records_i = floor(duration / weight_i)`; (5) **water-fills**: any active table
-whose `records_i` from step 4 would be *below* its own step-2 default gets pinned at that default
-instead and dropped from the active set, and steps 3–4 repeat for the survivors (**oracle-
-confirmed** exactly for the capped table — see "capping" below; the *survivors'* recomputed pool is
-still only an approximate fit, not a closed form — see "mixed regime" below).
+**Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower
+confidence for the mixed-regime pool magnitude" note this section previously carried; see
+`docs/binary.md` for the method). Mechanism read from `FUN_004eab30` (the table finalisation loop)
+and `FUN_004f4400`/`thunk_FUN_004f4400` (the per-table probe/commit allocator it calls), then
+verified two independent ways: a 4-point synthetic oracle grid (one `DataInterval` auto table
+competing against one `DataEvent` auto table, varying the event table's enclosing-`Scan` weight and
+byte width) and all 8 real `crbasic/` corpus programs that exercise this regime — both agree on the
+same formula and the same pool constant to the byte, and `tools/tdftest.py --group repo` is now
+**16/16 TDF byte-identical** (previously 8/16; the other 8 differed only in this section's sizes).
+
+For every table whose `Size` is `-1` **and** that is `CallTable`d somewhere in the compiled program
+(table-struct flags dword at offset `+0x1c`, bit `0x1000` — set by the `CallTable`-reference
+resolver `FUN_004f6540`, and checked by the exact `Table <Name>, is declared but never called.`
+warning path in `FUN_004eab30` itself, so this is the same flag §13's "uncalled → size=1" rule
+already describes), the compiler: (1) finalises `Status`, `DataTableInfo`, `Public`, any named
+`ConstTable`, and any *fixed*-size `DataTable` **first** (these do not consume the auto-size pool
+at all — their finalisation call is reached through a code path that never touches the loop's
+reserved-bytes accumulator; matches §13's "fixed/const/slowseq don't reduce the pool" finding
+exactly); (2) for every called auto table, gives it a **default record count**
+(`_table_default_records` in `tables.py`): `floor((1024 − 16) / bytes_per_record)` for a table with
+a real `DataInterval`, or exactly `1` for a `DataEvent`/no-interval table — the flag `thunk_
+FUN_004f4400` branches on for this (`param_5[6]`, i.e. table-struct offset `+0x18`) is *not* "has
+CardOut/TableFile" as an earlier reading of this section guessed from its later reuse in the
+CardOut-bonus term (§10 "CardOut"/"TableFile" below) — it is set for every `DataInterval` table
+regardless of CardOut, oracle-confirmed by a synthetic A/B test (a `DataEvent` auto table heavily
+squeezed by a competing `DataInterval` table shrinks to a record count *below* its own
+`floor(1008/bytes)`, e.g. `171` for a 4-byte table, never bumped up to it — the competing
+`DataInterval` table's *own* size, by contrast, reliably is); (3) accumulates two running sums over
+every active (called, auto) table: a **reserved-bytes** total (`_table_reserved_bytes`: starting at
+a fixed `4096`, `t8 = default_records·bytes_per_record + 16` per table, then `(floor(2048/t8) +
+(1 if default_records==1 else 0) + (1 if t8<1024 else 3)) · t8` added for each) and a **rate**
+(`_table_rate_contrib`: `t8 / (default_records · weight_i)`, `weight_i` = a `DataInterval` table's
+own interval, or a `DataEvent`/no-interval table's *enclosing* `Scan`/`SlowSequence` interval — see
+"scan-interval weighting" below); (4) `pool = M − reserved`, `duration = pool / rate`, where `M`
+(`_MIXED_POOL` in `tables.py`) is a single fitted constant, `4,194,139` — the compiler's own
+free-memory query (`FUN_00508f40(1)`) at the point this regime's finalisation runs; (5) **one pass,
+no iteration**: every active table's final size is `max(floor(duration / weight_i),
+default_records)` — the "cap" a table with a real `DataInterval` can hit is exactly its own
+step-2 default (`floor(1008/bytes)`), applied as a plain per-table floor on the *single* shared
+`duration`, not a removal-and-recompute water-fill (the earlier, approximate implementation's
+model); a `CardOut`/`TableFile` table gets `160/bytes_per_record` extra records added on top (§10
+"CardOut"/"TableFile" below), unchanged from the pure-`DataInterval` regime's own rule. This is
+*not* the same pool constant as `_POOL1` (§10 "Interval-based tables", the pure-`DataInterval`-only
+regime) or `_EVENT_ALONE_POOL2` (§10 "Tables without `DataInterval`", the solo-event-alone regime)
+— the compiler's free-memory snapshot genuinely differs between these three code paths (open
+question 9 below), and `tables.py` keeps each regime's own fitted constant rather than assuming
+they coincide.
 
 ### Interval-based tables (have `DataInterval`)
 
@@ -400,37 +421,41 @@ implements this as `_scan_weights` (a flat pass over the statement list tracking
 `NextScan` stack); `SubScan` is treated as transparent (untested — extrapolated from §4's "`SubScan`
 has no effect [on Status]" finding, not independently verified for auto-sizing).
 
-**Capping (water-filling), oracle-confirmed:** once a fast/heavy competitor (a small enclosing-
-scan interval, or many bytes) is present, a *slower* table's naive equal-duration share can fall
-*below* what it would get completely alone. In that case it does not shrink further — it is pinned
-at its own single-table default (`floor((1024−16)/bytes_per_record)`, from `FUN_004f4400`'s probe
-allocation — see §10 top) and removed from the shared pool, with the remaining pool re-split among
-the survivors. Confirmed exactly (not approximately) via `StationStatus` (4 bytes/record →
-`floor(1008/4)=252`) in three real corpus programs where the event competition is heavy enough to
-trigger it: `Preflight_tester.CR6`, `SnowVue_tester.CR6`, `TString_tester.CR6` all give
-`StationStatus size=252` — the exact predicted floor, byte-for-byte, in all three, despite very
-different event-table configurations. `tables.py`'s `_resolve_auto_sizes` implements this as an
-explicit iterative loop (recompute pool/rate, pin any table below its default, repeat).
+**Capping — resolved exactly (2026-09-26, decompiled and oracle-confirmed), superseding this
+section's earlier "water-filling"/iterative-removal reading.** `FUN_004eab30` computes **one**
+shared `duration` from **every** active auto table in a single pass (§10 top, step 4) — it never
+removes a table and recomputes `duration` for the survivors. What looked like water-filling was
+this single-pass floor applied uniformly: a table's final size is `max(floor(duration/weight),
+default_records)`, and `default_records` is `floor(1008/bytes_per_record)` for a `DataInterval`
+table but exactly `1` for a `DataEvent`/no-interval table (§10 top, step 2) — so in practice only a
+`DataInterval` table's own floor is ever high enough to matter; a squeezed `DataEvent` table's
+`default_records=1` floor is a no-op and it is free to shrink far below what
+`floor(1008/bytes_per_record)` would give it (oracle-confirmed by a synthetic test: a `DataEvent`
+table heavily disadvantaged by a competing `DataInterval` table settles at `171` records, nowhere
+near `floor(1008/4)=252`). `StationStatus` (4 bytes/record) hitting its own floor of exactly
+`floor(1008/4)=252` in `Preflight_tester.CR6`/`SnowVue_tester.CR6`/`TString_tester.CR6` — the
+finding that originally read as "water-filling" — is this same single-pass floor, not evidence of
+iteration; no case in the 8-program corpus or the synthetic grid below needed more than one pass to
+reproduce exactly.
 
-**Still open — the surviving tables' pool magnitude.** With weighting and capping both correct,
-the *remaining* unknown is how much pool `n_event` still-active `DataEvent`/no-interval tables
-(with combined byte width `B_event`) leave for the shared duration. `tables.py` uses the fitted
-approximation `pool ≈ Pool1 · B_event / (B_event + 15·n_event)` (recomputed each capping round on
-the *surviving* event tables only), reusing `Pool1=4,119,534` from the pure-`DataInterval` case.
-This is a genuine improvement — it now gets every one of the 8 corpus "mixed regime" programs
-within roughly 0.1–3% of the real record count (previously the flat per-event-count lookup was off
-by up to 5x, e.g. `TDR_tester.CR6`'s real `104,534` vs. the old formula's `34,780`) — but it is
-**not exact**: an exhaustive local search over the single constant `15` (range 12–17, step 0.01)
-found no value that reproduces more than 1 of the 8 real programs byte-for-byte simultaneously,
-and the per-configuration constant that *would* fit each program exactly ranges from about 12.6 to
-15.6 and does not correlate cleanly with byte width, weight, or table count alone. This means the
-real formula has at least one more term this session did not isolate — plausibly the
-`(iVar2<<4)/bytes_per_record + 1` "card"/checkpoint-property term visible in `FUN_004eab30`'s
-decompilation next to the rate accumulation (§10 open question 8's `CardOut` term, structurally
-adjacent to this code but not algebraically reconciled there either), or a genuinely different
-pool-vs-byte-width relationship than the hyperbolic `B/(B+K)` shape tried here. Flagged as **open
-question**, superseding the old `_MIXED_POOL_BY_EVENT_COUNT` lookup (removed — it was reproducibly
-wrong for the real corpus, as §13 already said).
+**The surviving tables' pool magnitude — resolved exactly (2026-09-26).** `pool = M − reserved`
+(§10 top, step 3–4): `reserved` accumulates a per-table term (`_table_reserved_bytes`, decompiled
+from `FUN_004eab30`'s own `local_18 +=` line, see §10 top) over *every* active auto table
+regardless of type, starting from a fixed `4096`; `M` (`_MIXED_POOL`) is a single global constant,
+`4,194,139`. Both were pinned down together by a 4-point synthetic oracle grid (one `DataInterval`
+auto table, weight 1 s, 4 bytes/record, competing against one `DataEvent` auto table whose weight
+and byte width were varied: `(weight=6000,bytes=4)`, `(3000,4)`, `(6000,8)`, `(12000,4)`, giving
+`DataInterval`-table sizes `1,028,527`/`1,027,685`/`1,028,357`/`1,028,949` and `DataEvent`-table
+sizes `171`/`342`/`171`/`85`) solved exactly (integer/`Fraction` arithmetic, not floating-point
+curve-fitting) for the two unknowns, then independently re-derived from all 8 real `crbasic/`
+corpus "mixed regime" programs (`StationStatus`/`Shunt_Data` vs. their competing event tables) —
+**both derivations agree on `M=4,194,139` exactly**, and every one of the 16 sizes across all 8
+corpus programs (both the `DataInterval` table and every `DataEvent` table, several sharing an
+identical size per program as §10's original "all events collapse to one size" finding already
+showed) now matches the real compiler byte-for-byte (`tools/tdftest.py --group repo`: 16/16, up
+from 8/16). This supersedes the old `pool ≈ Pool1 · B_event / (B_event + 15·n_event)` curve fit
+(removed — it was accurate to only ~0.1–3%, not exact, and its single free constant did not
+generalise across byte widths the way the real per-table `_table_reserved_bytes` term does).
 
 ### Not investigated
 
@@ -548,20 +573,20 @@ snippets are reconstructable from the description (all are plain CRBasic, no tri
    `overhead=16 bytes` fit is now 3-point-confirmed (FP2/IEEE4/IEEE8, exp `#5`/`#49`/`#54`), but
    why its implied `Pool2` (~4,188,1xx) differs from the pure-interval `Pool(1)` (4,119,534) is
    unexplained.
-10. **Mostly resolved (2026-09-25, superseding the "fixed 1 s" reading above)**: a `DataEvent`/no-
-    interval auto table's weight is the interval of its nearest enclosing `Scan`/`SlowSequence`
-    block, not a flat 1 s (exp `#52`/`#53` only *looked* like "1 s" because both used
-    `Scan(1,Sec,...)`; `FinApp_tester.CR6`'s real `Scan(5,Sec,...)` proves the enclosing-scan
-    reading exactly — see §10 "Event/no-interval table sharing a program"). A table whose naive
-    share would undercut its own single-table default (`floor(1008/bytes)`) is pinned there and
-    removed from the pool instead (**oracle-confirmed exactly**, `StationStatus`=252 in three real
-    corpus programs). **Still open**: the surviving tables' pool magnitude — the best available fit
-    (`Pool1·B/(B+15·n_event)`) is within ~0.1–3% of every real corpus case but not exact for any of
-    them; the per-case constant that *would* fit exactly varies 12.6–15.6 without an obvious
-    correlate. Needs either more decompilation of `FUN_004eab30`'s reserved-accumulator (the
-    `(iVar2<<4)/bytes+1` term next to it, §10 open question 8, is a plausible missing piece) or a
-    larger oracle grid holding byte width and weight independently constant while varying the
-    other.
+10. **Resolved (2026-09-26, superseding the "fixed 1 s" reading and the "still open" pool-magnitude
+    note both above)**: a `DataEvent`/no-interval auto table's weight is the interval of its
+    nearest enclosing `Scan`/`SlowSequence` block, not a flat 1 s (`FinApp_tester.CR6`'s real
+    `Scan(5,Sec,...)` proves the enclosing-scan reading — see §10 "Event/no-interval table sharing
+    a program"). A `DataInterval` table whose naive share would undercut its own single-table
+    default (`floor(1008/bytes)`) is pinned there via a plain per-table floor on one shared
+    `duration` (**oracle-confirmed exactly**, `StationStatus`=252 in three real corpus programs) —
+    a `DataEvent`/no-interval table's own default is `1`, not `floor(1008/bytes)`, so this floor is
+    a no-op for it and it can shrink far below that value (oracle-confirmed by a synthetic A/B
+    test). The pool magnitude itself is now an exact, decompiled formula (`_table_reserved_bytes`/
+    `_MIXED_POOL=4,194,139`, §10 "Event/no-interval table sharing a program"), independently
+    derived from a 4-point synthetic oracle grid and from all 8 real corpus "mixed regime"
+    programs, agreeing to the byte in both derivations; `tools/tdftest.py --group repo` is 16/16 TDF
+    byte-identical (up from 8/16, all 8 of the previous gaps were exactly this).
 11. `SlowSequence` count's own effect on auto-sizing (only its Status-table field effect is
     checked — §4), `WorstCase` trigger modifier's effect on auto-sizing (decompiled: its sub-tables
     get the same "called" flag bit `0x1000` as an ordinary `CallTable`d table — §10 top — but this
@@ -645,27 +670,27 @@ keywords, so questions about their TDF encoding are moot.
   alias-splitting §8 description (`Arr5(begin=4,dim=2,...)` must list as `Arr5(4)`, `Arr5(5)`, not
   `Arr5(1)`, `Arr5(2)`) but not stated as a general `-l` rendering rule until this implementation
   needed it for the `FieldNames`-remainder case.
-- **Auto-size, mixed regime — weighting and capping resolved, pool magnitude still open
-  (2026-09-25, supersedes the note previously here)**: the corpus's real programs are almost all in
-  the hardest sub-case — 1 `DataInterval` auto table (`StationStatus`/`Shunt_Data`, interval
-  60–300 s) plus 1–7 no-interval/event auto tables. The earlier reading of this data (quoted below
-  for the record) diagnosed a byte-width effect on the interval table's pool share that turned out
-  to be a **confound with the event table's weight**, not a real byte-width effect: `PT1000_tester.
-  CR6`'s single event table (6 B) sits in a `Scan(1,Sec,...)`, while `FinApp_tester.CR6`'s (58 B)
-  sits in a `Scan(5,Sec,...)` — different scan intervals, not just different byte widths — see §10
-  "Event/no-interval table sharing a program" for the corrected "weight = enclosing scan interval"
-  rule and the exact `StationStatus`-capping mechanism, both now oracle-confirmed. What *is* still
-  open, with the confound removed: the surviving (uncapped) tables' shared pool is not yet an exact
-  closed form; `tables.py` uses the fitted approximation `Pool1·B_event/(B_event + 15·n_event)`
-  (§10), accurate to ~0.1–3% on all 8 real corpus "mixed regime" programs but not exact on any of
-  them — a real, if smaller, gap than before. Original (2026-09-24) note, kept for the record: "in
-  every such program, all the event-style tables get the identical size, regardless of their own
-  `bytes_per_record`... `StationStatus`'s own size, read back through `size × bytes × interval` as
-  a single-table-equivalent pool, does not land on a value that's a clean function of the event
-  count alone... (*wider* event table → *larger* interval-table pool)" — the "all events identical"
-  observation stands (it follows structurally from every event table in one program sharing the
-  same enclosing-scan weight), but the pool-vs-byte-width reading was the scan-interval confound
-  above, not a real relationship to chase further.
+- **Auto-size, mixed regime — fully resolved (2026-09-26, supersedes the "pool magnitude still
+  open" note previously here)**: the corpus's real programs are almost all in the hardest sub-case
+  — 1 `DataInterval` auto table (`StationStatus`/`Shunt_Data`, interval 60–300 s) plus 1–7
+  no-interval/event auto tables. An earlier reading of this data (quoted below for the record)
+  diagnosed a byte-width effect on the interval table's pool share that turned out to be a
+  **confound with the event table's weight**, not a real byte-width effect — see §10 "Event/
+  no-interval table sharing a program" for the corrected "weight = enclosing scan interval" rule.
+  With that confound removed, the exact mechanism (single shared `duration`, a per-table
+  `default_records` floor that is `floor(1008/bytes)` for a `DataInterval` table but `1` for a
+  `DataEvent` table, and a fully decompiled `reserved`/`pool` formula with one fitted constant,
+  `_MIXED_POOL=4,194,139`) reproduces all 8 real corpus "mixed regime" programs byte-for-byte —
+  `tools/tdftest.py --group repo` is 16/16 TDF byte-identical, up from 8/16. Superseded the earlier
+  `Pool1·B_event/(B_event+15·n_event)` curve fit (accurate to only ~0.1–3%, never exact) entirely;
+  see §10 for the full derivation and both the synthetic and corpus evidence. Original (2026-09-24)
+  note, kept for the record: "in every such program, all the event-style tables get the identical
+  size, regardless of their own `bytes_per_record`... `StationStatus`'s own size, read back through
+  `size × bytes × interval` as a single-table-equivalent pool, does not land on a value that's a
+  clean function of the event count alone... (*wider* event table → *larger* interval-table pool)"
+  — the "all events identical" observation stands (it follows structurally from every event table
+  in one program sharing the same enclosing-scan weight), but the pool-vs-byte-width reading was
+  the scan-interval confound above, not a real relationship to chase further.
 - **`Const X As <Type> = value` in a named `ConstTable`** (**oracle-confirmed**,
   `mqttpublishconsttable_1.CR6`: `Const myDouble As Double = 987.654321`): an explicit type
   overrides the literal-based inference above -- `Double` gives IEEE8 (type 18), not the IEEE4 a

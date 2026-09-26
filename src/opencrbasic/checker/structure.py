@@ -9,7 +9,7 @@ from __future__ import annotations
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
-from . import symbols
+from . import expressions, symbols
 
 # Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
 # "Array dimension limits"): at most 3 dimensions, and each one's constant value must be in
@@ -189,10 +189,17 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     including them only ever *suppresses* a placement diagnostic, never adds one, so a wrong
     inclusion costs at most an "exact" vs "verdict" precision loss on some other file, never a new
     false reject (AGENTS.md's priority order).
+
+    **Round 5 addition** (`docs/checker.md` "Round 5"): an `S.Assignment` statement goes through
+    the exact same three-way split as `S.Call` above (`_check_assignment_pass2`), keyed off
+    whether its own *target* resolves rather than a bare name -- see that function's docstring for
+    the oracle evidence and its interaction with `expressions.check`'s own RHS-undefined-name check
+    on the same statement.
     """
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
     subs = symbols.declared_subs(program)
+    known = expressions._known_names(program, profile)
     beginprog_line = next((s.line for s in program.statements if _keyword(s) == "BEGINPROG"), None)
 
     in_body_block = False
@@ -210,6 +217,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
 
         if isinstance(stmt, S.Call):
             stop = _check_call_pass2(stmt, subs, profile, diags, beginprog_line, in_body_block)
+            if stop is not None:
+                return stop
+        elif isinstance(stmt, S.Assignment):
+            stop = _check_assignment_pass2(stmt, known, diags, beginprog_line, in_body_block)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Unparsed):
@@ -265,6 +276,52 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         return None
     diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
                 show_file=False)
+    if before_beginprog:
+        diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+        return stmt.line
+    return None
+
+
+def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnostics,
+                             beginprog_line: int | None, in_body_block: bool) -> int | None:
+    """One `Assignment` (`target = value`) statement's pass-2 check. Returns the line to stop pass 2
+    at, or `None` to keep going. Oracle-confirmed shapes (`docs/checker.md` "Round 5", a scratch
+    probe set alongside `_check_call_pass2`'s own):
+
+    - **Target does not resolve** (`expressions._undefined_names(stmt.target, known)` -- the same
+      walk a read-context argument uses, applied to the target: an undeclared bare name, an
+      undeclared array *base*, or a declared array with an undeclared *index* expression all land
+      here, oracle-confirmed each independently, `FuzzVar = 1` / `X(BadIdx) = 1` with `X`
+      undeclared / `X(BadIdx) = 1` with `X` declared and `BadIdx` not): `Invalid, or out of place
+      expression: %s.`, `%s` = the whole statement's own verbatim text (`stmt.text`, same echo
+      convention as `_check_call_pass2`'s own "resolves to nothing" case) -- **regardless of
+      whether the RHS is itself also undefined** (`FuzzVar1 = FuzzVar2`, both undeclared, still
+      gives only this one message, not a second `Invalid symbol in expression` line for the RHS
+      too -- `expressions.check`'s own assignment loop skips a statement shaped this way for
+      exactly this reason, see its docstring) -- plus, if before `BeginProg` (and not inside a
+      `Sub`/`Function`/other body block, same `in_body_block` rule as `_check_call_pass2`), `Expr
+      illegally occurs before BeginProg.` and a stop.
+    - **Target resolves, RHS has an undefined name** (`X = FuzzVar` with `X` declared): silent
+      here, **including when before `BeginProg`** -- oracle-confirmed (`X = FuzzVar` on its own
+      line before `BeginProg` gives only `expressions.check`'s own `Invalid symbol in expression: X
+      = FuzzVar.`, no placement follow-up at all, unlike every other shape in this function). Left
+      entirely to `expressions.check`'s own RHS-undefined-name loop, which already reports this
+      correctly; this function does nothing further for such a statement (no diagnostic, no stop).
+    - **Target resolves, RHS is clean**: normally silent (an ordinary assignment), but `Expr
+      illegally occurs before BeginProg.` (no preceding "Invalid, or out of place expression" line
+      -- the assignment itself compiles fine, only its position is illegal, same shape as a bare
+      built-in-function call) and a stop when it precedes `BeginProg`.
+    """
+    before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
+    if expressions._undefined_names(stmt.target, known):
+        diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                    show_file=False)
+        if before_beginprog:
+            diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
+        return None
+    if expressions._undefined_names(stmt.value, known):
+        return None  # `expressions.check` reports this alone; no placement follow-up (oracle).
     if before_beginprog:
         diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
         return stmt.line
