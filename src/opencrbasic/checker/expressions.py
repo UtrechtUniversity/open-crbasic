@@ -165,6 +165,27 @@ def _variable_refs(expr: S.Expr | None, variable_names: set[str]) -> list[str]:
 # enabling this safely.
 _VARIABLE_REQUIRED_KINDS = frozenset({"variable_or_array"})
 
+# Per-instruction overrides of a `variable_or_array` (kind 8) `Dest` position: `AddPrecise`'s and
+# `MovePrecise`'s own first argument (both `params=[8, 2]`, adjacent table indices 25/26) accepts
+# an *undeclared* name outright -- oracle-confirmed (round 7, this session, a saved fuzz false-
+# reject reproducer, `tests/corpus/fuzz/cr6/false_reject/fac2798b6778.CR6`):
+# `AddPrecise(UndeclaredFuzzName123, .000000111111)`/`MovePrecise(UndeclaredMoveDest, .111111)`
+# alone both compile clean, unlike `VoltDiff`'s or `Erase`'s own kind-8 `Dest` (same code, oracle-
+# swept the same session: both still reject an undeclared name there with the ordinary `Invalid
+# symbol in expression: %s.`). **Not a general auto-declaration**: the name does not become usable
+# anywhere else in the program (oracle: `AddPrecise(NewVar123,...)` followed by `NewVar123 =
+# NewVar123 + 1` still fails, `structure.py`'s own "target does not resolve" placement check,
+# `Invalid, or out of place expression: ...`) -- this is narrowly "this one argument position never
+# runs the undefined-symbol check at all," the same shape round 3/4's own `Move`/`ModBusClient`/
+# `MQTTPublishTable` overrides of the *variable-required* rule already document (`_VARIABLE_
+# REQUIRED_KINDS`'s own docstring above), just for the *undefined-name* check instead. Modelled as a
+# position exemption (rather than adding the name to `known`) so it costs nothing outside these two
+# instructions' own first argument.
+_UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
+    "ADDPRECISE": frozenset({0}),
+    "MOVEPRECISE": frozenset({0}),
+}
+
 
 @lru_cache(maxsize=1)
 def _type_code_kinds() -> dict[int, str]:
@@ -172,12 +193,16 @@ def _type_code_kinds() -> dict[int, str]:
     return {int(code): entry["kind"] for code, entry in data.items()}
 
 
-def _position_kinds(params: list[int]) -> dict[int, str]:
+def _position_kinds(params: list[int], keyword: str = "") -> dict[int, str]:
     """0-based argument index -> `type_codes.json` `kind`, for every position whose type code
-    routes through the general symbol/expression compiler (`_RESOLVED_KINDS`)."""
+    routes through the general symbol/expression compiler (`_RESOLVED_KINDS`), minus any position
+    `_UNDEFINED_CHECK_EXEMPT_POSITIONS` names for this instruction's own keyword."""
     kinds = _type_code_kinds()
+    exempt = _UNDEFINED_CHECK_EXEMPT_POSITIONS.get(keyword.upper(), frozenset())
     out = {}
     for i, code in enumerate(params):
+        if i in exempt:
+            continue
         base = code - 100 if code >= 100 else code
         kind = kinds.get(base)
         if kind in _RESOLVED_KINDS:
@@ -379,7 +404,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
             continue
-        positions = _position_kinds(record["params"])
+        positions = _position_kinds(record["params"], stmt.keyword)
         if positions:
             _report_statement(stmt, positions, known, variable_names, profile, diags)
 
