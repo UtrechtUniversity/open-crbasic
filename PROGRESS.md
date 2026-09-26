@@ -4,6 +4,10 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 ## Environment setup (needed to resume)
 
+- Python: uv (`uv sync`, `uv run pytest -q`, `uv run tools/<tool>.py`), with
+  `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic` (`.envrc`); never a `.venv` in the
+  repository (scripts/verify.py rejects it).
+
 - Oracle: `apt-get install wine32:i386 wine64 wine` (on Ubuntu 24.04 with the ondrej PPA,
   first `apt-get install --allow-downgrades libgd3=2.3.3-9ubuntu5 libgd3:i386=2.3.3-9ubuntu5`),
   `dpkg --add-architecture i386` first. Run with `WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all`.
@@ -32,10 +36,12 @@ terminals and instructions), which opencrbasic now reproduces as a verdict for a
 both loggers (0 mismatch, up from 8/8 and 10/6 respectively -- `docs/loggers.md`'s "CR300/CR350
 agreement round").
 
-`scripts/verify.py` with `CR6COMP=opencrbasic`: `BUILD  host tests 119 pass | CRBasic 16/16
-compiled, 6 warning(s) | repository pass` (identical to the exe; not re-run this session -- the
-CR6 side is unaffected by this session's own changes, all 16/16 `crbasic/` exact throughout).
-Tests: `python3 -m pytest -q` 949 passed, 311 skipped, 8 xfailed.
+`scripts/verify.py` with `CR6COMP=opencrbasic`: `BUILD  host tests 44 FAIL | CRBasic 16/16
+compiled, 6 warning(s) | repository pass` (CRBasic side identical to the exe, unaffected by this
+session's own changes, all 16/16 `crbasic/` exact throughout; the host-test failures are pre-
+existing `scripts/` import errors unrelated to `opencrbasic`, not run via `uv` per this project's
+own instructions). Tests: `python3 -m pytest -q` 963 passed, 311 skipped, 0 xfailed (the 8
+TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§10 entry below).
 
 | Phase | State |
 |---|---|
@@ -44,10 +50,61 @@ Tests: `python3 -m pytest -q` 949 passed, 311 skipped, 8 xfailed.
 | 2 Front end | done: lexer, include expansion, constant folding, `#If`, parser (`docs/frontend.md`) |
 | 3 Checker | usable: structure/placement, declarations, Units/Const/Alias, parameter counts, channel ranges per logger, Scan/DataInterval ranges, array limits, warnings (table never called, never reached, background calibration, fnotch), include-file prefixes, 4 KB message buffer, general expression-tree name resolution (`Invalid symbol in expression`/`%s is not defined`, per-logger echo/ordering rules, `NAN`/`INF`/system-table predefined symbols), the constant-only-family "rejects a variable" check, and the two-pass/pass-2-cutoff model (the generic "Expr"/`Call` fallback and before-`BeginProg` placement are now pass 2, not pass 1) (`docs/checker.md`, `docs/instructions.md`). Gaps: variable-required per-argument type checks (three confirmed per-instruction overrides found, no safe uniform rule yet), most instruction-specific pass-2 checks, two placement-error shapes (mid-sequence, after-EndSequence) |
 | 4 Fuzzing | first pass done: `tools/fuzz.py`, `tools/fuzz_replay.py`, 248 reproducers (`docs/fuzz-findings.md`); ~25 fixed since. CR6 mutants: ~29% false accepts before round 3 |
-| 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical 8/16 (other 8 differ only in auto-allocated table sizes, within 3%); `-p`/`-i` preprocessed source byte-identical 16/16 repo + 98/100 CHM sample (`preprocess.py`); `-t` `[Times]` byte-identical on all 16 repo programs, 91/100 CHM sample (narrow, oracle-verified instruction set: `Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(mSec)/`TCDiff`(Reps=1), `timing.py`); `-b` CDM image: "No CDM devices" message implemented and correct for every program in this repository (none use CPI/CDM hardware), binary image format not attempted; `-m` decompiled, confirmed no observable effect; `-u` decompiled and oracle-confirmed to gate a real `%s declared but not used.` warning, not implemented (needs the checker's own symbol table) |
+| 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical **16/16** (`tables.py`'s auto-size formula, §10, fully decompiled and oracle-exact as of 2026-09-26 -- was 8/16, the other 8 within ~3%); `-p`/`-i` preprocessed source byte-identical 16/16 repo + 98/100 CHM sample (`preprocess.py`); `-t` `[Times]` byte-identical on all 16 repo programs, 91/100 CHM sample (narrow, oracle-verified instruction set: `Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(mSec)/`TCDiff`(Reps=1), `timing.py`); `-b` CDM image: "No CDM devices" message implemented and correct for every program in this repository (none use CPI/CDM hardware), binary image format not attempted; `-m` decompiled, confirmed no observable effect; `-u` **implemented** (`checker/unused.py`, wired through `compiler.compile_file`/`cli.py`, not through `checker.check`): `%s declared but not used.` for an unreferenced `Public`/`Dim`/`Sub`-or-`Function`-parameter, and for an unreferenced `Sub` or `Function` itself; oracle-confirmed identical across all four loggers; byte-identical on all 16 `crbasic/` programs with `-u` (`tests/test_unused.py`) |
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-26 (`-z` TDF auto-size exact, `-u` implemented): two independent pieces, `tables.py`
+  (owned this round, no `checker/*` changes needed) and `checker/unused.py` (new file) plus small
+  wiring in `compiler.py`/`cli.py`.
+  1. **TDF auto-size, mixed regime, now exact** (`tables.py`'s `_resolve_auto_sizes`, docs/tdf-
+     rules.md §10/§12/§13): decompiled `FUN_004eab30` (table finalisation loop) and `FUN_004f4400`/
+     `thunk_FUN_004f4400` (per-table probe/commit allocator) in `/opt/re/out/decomp.c`, corrected
+     two earlier misreadings along the way (the mechanism is a **single pass**, not iterative
+     water-filling; and the flag `thunk_FUN_004f4400` branches on to pick a table's own default
+     record count is "has a real `DataInterval`", not "has CardOut/TableFile" as an earlier session
+     guessed from its later reuse in the CardOut-bonus term). Pinned the one remaining fitted
+     constant (`_MIXED_POOL=4,194,139`, the compiler's own free-memory query at this point) two
+     independent ways -- a 4-point synthetic `tdf_probe.py` grid (exact `Fraction` arithmetic, not
+     curve-fitting) and all 8 real `crbasic/` corpus "mixed regime" programs -- both agreeing
+     exactly. Result: `tools/tdftest.py --group repo` **16/16 TDF byte-identical** (up from 8/16);
+     `tests/test_tables.py`'s 8 xfails now pass outright. CHM sample agreement unaffected by this
+     change (before/after, same 100-file slice: 22/36 both times -- the sample's own remaining
+     gaps are all CPI/CDM system tables (`CPIStatus`/`CH400Status`), out of scope, not auto-sizing).
+     Full derivation and evidence: docs/tdf-rules.md §10.
+  2. **`-u` implemented** (`checker/unused.py`, a new, standalone module -- deliberately *not*
+     routed through `checker.check`, so `checker/__init__.py` (concurrently owned) needed no
+     changes at all; wired via a new `warn_unused` parameter on `compiler.compile_file` and `-u` on
+     `cli.py`). Oracle-confirmed (`tools/tdf_probe.py <snippet> --extra=-u` against `CR6Comp.exe`,
+     cross-checked identical on `cr1000xcomp.exe`/`cr300comp.exe`/`cr350comp.exe`, no per-logger
+     differences): flags an unreferenced `Public`/`Dim` (whole array, any element's use counts) and
+     an unreferenced `Sub`/`Function` parameter, each `line N: Warning: %s declared but not used.`;
+     also an unreferenced `Sub` **or** `Function` itself (corrected an earlier false inference from
+     one probe, that only `Sub` is checked -- a real corpus case, `ShuntLib.crb`'s `SampleShunt`,
+     uncalled in three testers because its only call site sits behind a false `#If`, showed a
+     `Function` *is* flagged too; the original probe's `Function` happened to self-assign its
+     return value, `MyFunc = value`, itself a reference that suppressed the warning), as a bare
+     `Warning: %s declared but not used.` positioned after every numbered-line warning but *before*
+     the pre-existing "table declared but never called" warning (decompiled: `FUN_004eab30` calls
+     the `-u` check once, early, well before the later per-table loop that detects an uncalled
+     table). `Const`/`ConstTable` fields never flagged; `Alias` merges the alias name and the
+     original into one usage identity, but `Alias`/`Units`/`ReadOnly`'s own mention of a name is
+     never itself a use; a variable used only as a `DataTable` output source counts as used.
+     Suppressed entirely by any compile error anywhere in the file. Along the way, fixed a real,
+     previously-latent bug in `compiler.CompileResult.result_lines`'s diagnostic sort: it sorted
+     every diagnostic by raw line number globally, which silently scrambles output once a program
+     spans multiple `Include`d files (each restarts its own line numbering at 1) -- exposed at scale
+     by `-u`, since unused-declaration warnings are the first diagnostic class dense enough to span
+     many included library files in one program (`SbdPayload_tester.CR6`'s real corpus fixture);
+     added a `file_order` primary sort key (expansion order, from `program.statements`), a no-op for
+     every single-file program (i.e. every previously-verified case). Verified byte-identical
+     against the real exe on all 16 `crbasic/` programs with `-u` (siblings dir, for `Include`s),
+     plus a synthetic multi-`Include` fixture isolating the ordering fix
+     (`tests/test_unused.py`, fixtures in `tests/fixtures/cli/`). `python3 -m pytest -q`: 963
+     passed (957 + 6 new), 0 failed. `difftest.py`: `cr6 repo` 16/16 exact, 0 mismatch; `cr1000x`/
+     `cr300`/`cr350 repo`: 0 mismatch (false rejects) on all three, unchanged from this session's
+     starting point (the CR300/CR350 agreement round below, not touched by this entry's own files).
 
 - 2026-09-26 (CR300/CR350 agreement round): `checker/expressions.py`, `checker/__init__.py`,
   `profiles.py` (owned this round), plus two small additive fields needed by them (`syntax.py`

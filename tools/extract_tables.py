@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Extract CR6Comp.exe's built-in data tables into src/opencrbasic/data/*.json.
 
-    python3 tools/extract_tables.py [--exe path/to/CR6Comp.exe]
+    uv run tools/extract_tables.py [--exe path/to/CR6Comp.exe] [--out DIR]
 
-Needs `pefile` (pip install pefile). The exe is located by --exe, $CR6COMP_EXE, or
+Needs `pefile` (in the uv `dev` group: `uv sync`). The exe is located by --exe, $CR6COMP_EXE, or
 ../compiler/CR6Comp.exe relative to the repository. Table locations and record layouts are
 documented in docs/binary.md; the addresses below are for CR6.14.2.0 (2025-03-04) and are
 checked by content before use.

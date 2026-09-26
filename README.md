@@ -11,10 +11,17 @@ Status, measured against the real compilers: `PROGRESS.md`. Design and plan: `PL
 
 ## Use
 
+Python dependencies are managed with [uv](https://docs.astral.sh/uv/). The package itself has
+no runtime dependencies; the `dev` group adds pytest and pefile (for the reverse-engineering
+tools). Keep the environment outside the repository tree (`.envrc` does this with direnv):
+
 ```bash
 cd opencrbasic
-python3 -m pip install -e .          # optional: installs the `crbc` command
-crbc Program.CR6                     # or: PYTHONPATH=src python3 -m opencrbasic Program.CR6
+export UV_PROJECT_ENVIRONMENT="$HOME/.uv-envs/opencrbasic"   # or: direnv allow
+uv sync                              # environment from uv.lock
+uv run crbc Program.CR6              # compile
+uv run pytest -q                     # tests
+uv tool install .                    # optional: `crbc` on PATH outside the project
 ```
 
 `crbc` is a drop-in for `CR6Comp.exe` (`docs/cli.md`):
@@ -65,7 +72,7 @@ everything is checked differentially:
 | `tools/difftest.py --logger L` | our output vs the exe over the repo programs, examples, and 507 help-file examples |
 | `tools/tdftest.py` | `-z` TDF and `-l` table list, byte for byte |
 | `tools/fuzz.py`, `tools/fuzz_replay.py` | mutated programs, differential; reproducers in `tests/corpus/fuzz/` |
-| `python3 -m pytest -q` | unit tests, corpus parse tests, TDF fixtures |
+| `uv run pytest -q` | unit tests, corpus parse tests, TDF fixtures |
 
 Reverse-engineering notes: `docs/binary.md` (exe layout), `docs/cli.md`, `docs/type-codes.md`
 (parameter kinds), `docs/frontend.md` (language quirks), `docs/checker.md` and
