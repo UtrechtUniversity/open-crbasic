@@ -59,6 +59,67 @@ def system_table_names(program: S.Program) -> set[str]:
     return names
 
 
+def _walk_names(expr: S.Expr | None):
+    """Yields every `Name`/`Index`/`Member`-base's own bare name, in source order, from anywhere
+    inside `expr` -- the same recursion shape `expressions._undefined_names` walks for a different
+    purpose (undefined-name detection), duplicated here rather than imported so `symbols.py` does
+    not depend on `expressions.py` (the reverse dependency already holds, `expressions.py` imports
+    this module)."""
+    if expr is None:
+        return
+    if isinstance(expr, S.Name):
+        yield expr.name
+    elif isinstance(expr, S.Unary):
+        yield from _walk_names(expr.operand)
+    elif isinstance(expr, S.Binary):
+        yield from _walk_names(expr.left)
+        yield from _walk_names(expr.right)
+    elif isinstance(expr, S.Index):
+        yield expr.name
+        for a in expr.args:
+            yield from _walk_names(a)
+    elif isinstance(expr, S.Member):
+        yield from _walk_names(expr.base)
+    elif isinstance(expr, S.ArrayLiteral):
+        for item in expr.items:
+            yield from _walk_names(item)
+
+
+def ess_variable_names(program: S.Program) -> set[str]:
+    """Names this checker treats as resolved once the program declares `ESSVariables` (`docs/
+    checker.md` "Round 5" -- a fuzz-found false reject): `ESSVariables Dim`/`ESSVariables Public`
+    implicitly declares a whole predefined family of NTCIP `ess...`-prefixed variables
+    (`essNtcipSiteDescription`, `essBatteryStatus`, ...), oracle-confirmed accepted even though none
+    of them is a `Public`/`Dim`/`Const` `declared_names` would ever see (`ESSVariables Dim` /
+    `essNtcipSiteDescription = "Main Street"` compiles on `CR6Comp.exe`).
+
+    This project has not extracted the actual, complete ESS-variable name list from the binary (no
+    table this project has decoded enumerates it, unlike a `DataTable`'s own fields), so rather than
+    guess at it, this returns every name *actually referenced anywhere in this specific program*
+    that starts with the documented `ess` prefix (case-insensitive, matching the CHM's own spelling
+    convention) when -- and only when -- the program declares `ESSVariables` somewhere. Deliberately
+    conservative both ways: a genuinely misspelled `ess`-prefixed name is silently accepted too
+    (under-reporting, the safe side of AGENTS.md's priority), and this costs nothing when the
+    program never uses `ESSVariables` at all (the overwhelmingly common case -- returns empty
+    immediately).
+    """
+    if not any(isinstance(s, S.Instruction) and s.keyword.upper() == "ESSVARIABLES"
+               for s in program.statements):
+        return set()
+    names: set[str] = set()
+    for stmt in program.statements:
+        exprs: list[S.Expr | None] = []
+        if isinstance(stmt, S.Assignment):
+            exprs = [stmt.target, stmt.value]
+        elif isinstance(stmt, S.Instruction):
+            exprs = list(stmt.args)
+        for expr in exprs:
+            for name in _walk_names(expr):
+                if name.upper().startswith("ESS"):
+                    names.add(name.upper())
+    return names
+
+
 def declared_variable_names(program: S.Program) -> set[str]:
     """Names that are genuine runtime storage: `Public`/`Dim`/`Static` variables and `Sub`/
     `Function` parameters -- deliberately excluding `Const`/`ConstTable`, `DataTable`/

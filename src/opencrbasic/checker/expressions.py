@@ -237,8 +237,10 @@ def _known_names(program: S.Program, profile) -> set[str]:
     """Every name a checked expression position may legally reference: this program's own
     declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
     instruction keywords (`profile.*`), its always-or-conditionally-valid system table names
-    (`symbols.system_table_names`), and the two floating-point special values found this session to
-    resolve outside the extracted symbol table entirely (`_EXTRA_PREDEFINED_SYMBOLS`).
+    (`symbols.system_table_names`), the two floating-point special values found this session to
+    resolve outside the extracted symbol table entirely (`_EXTRA_PREDEFINED_SYMBOLS`), and, when
+    the program declares `ESSVariables`, whichever `ess`-prefixed names it actually references
+    (`symbols.ess_variable_names` -- round 5, `docs/checker.md`).
     """
     return (
         symbols.declared_names(program)
@@ -246,6 +248,7 @@ def _known_names(program: S.Program, profile) -> set[str]:
         | set(profile.functions)
         | set(profile.instructions)
         | symbols.system_table_names(program)
+        | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
 

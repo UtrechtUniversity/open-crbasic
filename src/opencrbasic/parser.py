@@ -764,6 +764,20 @@ class _Parser:
             p.next()
             val = self._parse_expr(p, line, file)
             init = list(val.items) if isinstance(val, S.ArrayLiteral) else [val]
+        elif dims and not (p.at_end() or p.is_op(",")):
+            # Oracle-confirmed round-5 exception to the malformed-`As`-clause rule just below
+            # (`docs/checker.md` "Round 5", a fuzz-found false reject): an **array** declaration
+            # (`dims` non-empty) never raises here at all, regardless of what token follows the
+            # dimensions -- `Public Result(4) as_Fz Boolean` compiles clean (`Result` left at its
+            # default type, the same as `Public Result(4)` alone), where the exact same malformed
+            # token after a *scalar* declaration (`Public Result as_Fz Boolean`, no dims) correctly
+            # raises `Invalid Variable declaration as_Fz.` (oracle-confirmed side by side). A later
+            # variable in the same comma list still parses normally (`Public Result(4) as_Fz
+            # Boolean, Y As Long` declares `Y` fine), matching the ordinary "discard anything before
+            # the next comma" quirk just above -- so this is modelled the same way, silently
+            # skipping to the next comma/end of line rather than raising.
+            while not p.at_end() and not p.is_op(","):
+                p.next()
         elif not (p.at_end() or p.is_op(",")):
             # Oracle-confirmed (`docs/fuzz-findings.md` "5. Message diff", well evidenced by 6
             # independent fuzz mutants): a token here -- right after the variable's own name/dims,

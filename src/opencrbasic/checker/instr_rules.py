@@ -91,6 +91,112 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
 
 
+# --- Too many parameters: `Too many parameters:  %s.` (round 5, new this round) -----------------
+
+# `docs/type-codes.md` `kind`s eligible for `check_too_many` below: every `kind` whose own argument
+# is always exactly one ordinary, comma-delimited token compiled through the generic per-code
+# expression/constant/keyword resolver -- the same shared assumption `expressions.py`'s
+# `_RESOLVED_KINDS` makes for a *different* purpose (name resolution), deliberately narrower here.
+# **Not** included, each for its own oracle/corpus-evidenced reason a corpus safety scan (`docs/
+# checker.md` "Round 5") found necessary:
+#
+# - `identifier` (6), `deferred_text` (11), `raw_line_text` (18), `expr_marker` (37), `type_name`
+#   (45): raw-text-capturing codes whose own instruction (`Units`, `ConstTable`, `MenuPick`, ...)
+#   may swallow embedded commas as part of *one* declared slot's own text (`Units X = Volts` is one
+#   code-6 argument to the real compiler, never comma-split) -- comparing this checker's own,
+#   always-comma-split `stmt.args` length against the declared code count for these would flag
+#   real, oracle-accepted programs as having "too many" parameters purely from this checker's own
+#   parsing convention, not a real excess (found as 631 `Alias`/534 `Units`/35 `MenuPick`/17
+#   `ConstTable` false hits on this project's own *accepted* `crbasic/`+`chm` corpus before this
+#   exclusion was added).
+# - `sub_params` (12/35), `for_header` (3), `expr_list` (13): declaration/loop-header/call-argument
+#   grammars with their own, already-implemented parsing (`Sub`/`Function`/`FOR`/`Call`), never
+#   reached via a plain `S.Instruction`'s `args` list at all (`Call` parses to `S.Call`, `Sub`/
+#   `Function` to `S.SubDef`, `FOR` to `S.For` -- `checker/structure.py`'s own AST node types), so
+#   excluding them here is defensive rather than corpus-evidenced.
+_TOO_MANY_SAFE_KINDS = frozenset({
+    "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
+    "expr_typed", "expr_special", "expr_pair", "datatype_kw", "const_int_kw", "next_kw",
+    "end_exit_kw",
+})
+
+# `FUN_004baf00`'s own "end of a simple token" delimiter set (`docs/type-codes.md` section 1,
+# `FUN_004ba440`): comma, colon, both parens, space, `=`, newline, tab, `>`. The "too many
+# parameters" message's own echo uses *this* flat tokenizer, not the depth-aware one a normal
+# argument boundary is parsed with (`FUN_004b9700`) -- oracle-confirmed, `docs/checker.md` "Round
+# 5": an extra, fully-parenthesised argument (`(1+2)`) echoes as `1+2`, its own leading `(`
+# consumed as a delimiter (the *skip-leading-delimiters* step) and its first inner `)` ending the
+# token, the nested nesting being coincidental rather than honoured; `Battery(X,X,X)` (two bare
+# extra `X`s) echoes only the *first* one, `X` -- confirming the echo is a single next-token
+# lookup, not the whole remaining comma list, matching `docs/type-codes.md`'s own worked example.
+_TOO_MANY_DELIMS = frozenset(",:() =\n\t>")
+
+
+def _next_simple_token(text: str) -> str:
+    i, n = 0, len(text)
+    while i < n and text[i] in _TOO_MANY_DELIMS:
+        i += 1
+    start = i
+    while i < n and text[i] not in _TOO_MANY_DELIMS:
+        i += 1
+    return text[start:i]
+
+
+def _too_many_eligible(params: list[int]) -> bool:
+    """`params` (the raw, un-filtered declared code list) is eligible for `check_too_many` only
+    when it is non-empty and every code's `kind` is either `_TOO_MANY_SAFE_KINDS` or `none`
+    (`_real_params` already strips `none`-kind codes for the actual count, but a `none` code does
+    not itself disqualify the surrounding instruction). An **empty** `params` list (`Alias`,
+    `Units`, `Data`, `EssVariables`, oracle/corpus-evidenced above) is never eligible: it means this
+    project's own extracted table has no per-code model for the instruction's arguments at all --
+    real, custom parsing the generic per-code loop this check models does not apply to.
+    """
+    if not params:
+        return False
+    kinds = _type_code_kinds()
+    for code in params:
+        base = code - 100 if code >= 100 else code
+        kind = kinds.get(base)
+        if kind != "none" and kind not in _TOO_MANY_SAFE_KINDS:
+            return False
+    return True
+
+
+def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Too many parameters:  %s.` (note the two spaces before `%s`, oracle-confirmed verbatim,
+    `docs/type-codes.md`) when an `Instruction` statement's parsed argument list runs *past* its
+    declared parameter count -- the mirror image of `check` above (a shortfall), and, like it, pass
+    1 (unconditional -- oracle-confirmed this round, `docs/checker.md` "Round 5": fires alongside an
+    earlier, unrelated `Variable not named.` in the same file, the same "ungated" shape `check`
+    already has). Deliberately restricted to instructions whose declared codes are *all*
+    `_too_many_eligible` -- see that function and `_TOO_MANY_SAFE_KINDS` for the corpus-evidenced
+    reasoning; this is the check's actual safety margin, not the echo logic below.
+
+    The echoed text is the *next* token by the real compiler's own flat, non-depth-aware tokenizer
+    (`_next_simple_token`) starting at the first excess argument's own raw source position
+    (`Instruction.arg_spans`) -- not a re-derived or whole-remaining-text form. A missing span
+    (an empty/skipped argument slot with no captured position) is left unflagged rather than
+    guessed at.
+    """
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        record = profile.instructions.get(stmt.keyword.upper())
+        if not record or not _too_many_eligible(record["params"]):
+            continue
+        max_count = len(_real_params(record["params"]))
+        if len(stmt.args) <= max_count:
+            continue
+        spans = getattr(stmt, "arg_spans", None)
+        if not spans or max_count >= len(spans) or spans[max_count] is None:
+            continue
+        start = spans[max_count][0]
+        token = _next_simple_token(stmt.text[start:])
+        if not token:
+            continue
+        diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+
+
 # --- Ungated `Scan`/`DataInterval` numeric-value checks (called from `checker/warnings.py`'s
 # `check_early`; see this module's docstring and `docs/instructions.md` for the oracle evidence
 # that both fire even when the file has other errors elsewhere) ------------------------------
@@ -180,6 +286,35 @@ def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: con
     return value * us_per_unit
 
 
+def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None,
+                            env: consteval.Env) -> float | None:
+    """`_interval_us`, but `None` (never trackable for the divisibility check below) when the
+    interval's own raw declared value is not a whole number -- oracle-confirmed this round
+    (`docs/checker.md` "Round 5", a fuzz-found false reject): a fractional `Interval` on *either*
+    side (`DataInterval`'s own or the enclosing `Scan`'s) silences `DataTable interval ... not
+    integrally divisible ...` entirely, at every fractional value swept (`1.1`..`2.9` in `0.1`
+    steps against a `1`-second `Scan`, and a `1.5`-second `Scan` against a `10`-second
+    `DataInterval`) -- `DataInterval(0,1.5,Sec,10)` inside `Scan(1,Sec,...)` compiles clean on
+    `CR6Comp.exe` despite `1.5` not being an integer multiple of `1`, while `DataInterval(0,5,...)`
+    (an integer) against the same `2`-second `Scan` still correctly fires (`5000000 uSec not
+    integrally divisible by 2000000 uSec.`) -- so this is not "the check never fires for a
+    non-integer `Scan`/`DataInterval` combination", only "a *fractional-valued* interval argument
+    on either side is exempt". A whole-number **float** literal (`5.0`) still counts as an integer
+    here and the check still fires for it (oracle-confirmed, `5.0` against a `2`-second `Scan`) --
+    this is about the folded *value*, not whether the source token has a decimal point.
+    """
+    us = _interval_us(interval_arg, units_arg, env)
+    if us is None:
+        return None
+    try:
+        value = consteval.value_of(interval_arg, env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
+        return None
+    return us
+
+
 def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """Two `DataInterval` checks, both oracle-confirmed ungated (`docs/instructions.md`):
 
@@ -239,7 +374,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             if isinstance(value, (int, float)) and value < 0:
                 diags.error(stmt.line, "DataInterval TintoInt and Interval parameters must be non-negative", stmt.file)
                 break
-        interval_us = _interval_us(interval, units, env)
+        interval_us = _divisible_interval_us(interval, units, env)
         if interval_us is not None:
             declared_interval_us[current_table] = (interval_us, stmt.line)
 
@@ -250,7 +385,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
         kw = stmt.keyword.upper()
         if kw == "SCAN":
             args = stmt.args
-            scan_interval_us = _interval_us(
+            scan_interval_us = _divisible_interval_us(
                 args[0] if args else None, args[1] if len(args) > 1 else None, env
             )
             continue

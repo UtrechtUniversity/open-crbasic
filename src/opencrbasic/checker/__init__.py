@@ -29,7 +29,9 @@ Runs, in order:
 3. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
    parameter.", `checker/instr_rules.py`, owned alongside this package). Also pass 1 (oracle
    evidence, `docs/checker.md`: a file with several earlier "Variable not named." errors still
-   gets its own, later "Invalid or missing parameter." reported).
+   gets its own, later "Invalid or missing parameter." reported). `instr_rules.check_too_many` --
+   the mirror image, an argument list running past the declared count ("Too many parameters:  %s.",
+   round 5, `docs/checker.md`) -- runs alongside it, also pass 1 (oracle-confirmed the same way).
 4. `warnings.check_early` -- reachability/background-calibration/fnotch; ungated, fires even when
    the file has other errors elsewhere (`docs/instructions.md`).
 
@@ -105,6 +107,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
+    _run_pass(instr_rules.check_too_many, program, profile, diags)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
