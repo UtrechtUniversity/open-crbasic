@@ -13,6 +13,20 @@
    "transform": "abs",
    "skip_nonpositive": false,
    "message": "Invalid channel {v}, must use 1..16."
+  },
+  "port_c1c8": {
+   "ranges": [[101, 108]],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port {v}, use C1..C8."
+  },
+  "sdi_port_cr1000x": {
+   "ranges": [[101, 107]],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "odd_only": true,
+   "message": "Invalid SDI-12 port, must be C1, C3, C5, or C7",
+   "odd_message": "Invalid SDI-12 port, must be C1, C3, C5, or C7"
   }
  },
  "instructions": {
@@ -39,6 +53,18 @@
     4,
     "diff_chan"
    ]
+  ],
+  "PORTSET": [
+   [1, "port_c1c8"]
+  ],
+  "PORTGET": [
+   [2, "port_c1c8"]
+  ],
+  "CS616": [
+   [4, "port_c1c8"]
+  ],
+  "SDI12RECORDER": [
+   [2, "sdi_port_cr1000x"]
   ]
  }
 }

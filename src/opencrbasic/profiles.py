@@ -66,6 +66,14 @@ class Profile:
         return json.loads(path.read_text()) if path.is_file() else {}
 
     @cached_property
+    def measure(self) -> dict:
+        """Value-set/value-range checks for `Range` codes, `SW12`, `Delay`, `CS616`,
+        `TimerInput` and `ExciteV`/`ExciteI` (`checker/instr_measure.py`, `docs/instructions.md`).
+        Absent (`{}`) means none of these are oracle-confirmed for this logger yet."""
+        path = self.data_dir / "measure.json"
+        return json.loads(path.read_text()) if path.is_file() else {}
+
+    @cached_property
     def background_calibration(self) -> dict:
         """`Scan` interval threshold, in whole milliseconds, below which the "background
         calibration will be disabled" warning fires (CR6/CR1000X only, `checker/warnings.py`,

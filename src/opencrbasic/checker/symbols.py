@@ -29,6 +29,58 @@ def declared_subs(program: S.Program) -> set[str]:
 _NAME_DECLARING_INSTRUCTIONS = ("DATATABLE", "STRUCTURETYPE", "OBJECTTYPE")
 
 
+# System tables always addressable as `Table.Field` (`Status.SerialNumber`, `Public.X`,
+# `Settings.PakBusAddress`), oracle-confirmed accepted on all four loggers (CR6/CR1000X/CR300/
+# CR350) with no program-shape precondition -- unlike `DataTableInfo` below, these three exist in
+# every program regardless of whether any `DataTable`/`ConstTable`/`SlowSequence` is declared
+# (`docs/checker.md`). Not sourced from any `data/<logger>/symbols.json` (that table is the
+# compiler's *named-constant* table, `docs/type-codes.md`; a table name resolves through a
+# different mechanism entirely, oracle-confirmed by `Status`/`Public`/`Settings` never appearing
+# in any of the four extracted `symbols.json` files despite compiling cleanly).
+_ALWAYS_KNOWN_SYSTEM_TABLES = frozenset({"STATUS", "PUBLIC", "SETTINGS"})
+
+
+def system_table_names(program: S.Program) -> set[str]:
+    """System table names a bare `Name`/`Member` base may legally reference, beyond the
+    program's own declared `DataTable`s (already covered by `declared_names`).
+
+    `DataTableInfo` only resolves once the program declares at least one user `DataTable`
+    (oracle-confirmed, all four loggers: `DataTableInfo.SkippedRecord(1)` alone in an otherwise
+    table-less program fails `Could not find DataTableInfo.`/`Could not find DataTable
+    DataTableInfo.`; the same reference compiles once any `DataTable(...)...EndTable` exists
+    anywhere in the program, `docs/checker.md`). `Status`/`Public`/`Settings` have no such
+    precondition. Checked against `program.statements` (post-`#If`-resolution, so an inactive
+    `DataTable` inside a false `#If` branch correctly does not count, matching what the real
+    compiler would also not see).
+    """
+    names = set(_ALWAYS_KNOWN_SYSTEM_TABLES)
+    if any(isinstance(s, S.Instruction) and s.keyword.upper() == "DATATABLE" for s in program.statements):
+        names.add("DATATABLEINFO")
+    return names
+
+
+def declared_variable_names(program: S.Program) -> set[str]:
+    """Names that are genuine runtime storage: `Public`/`Dim`/`Static` variables and `Sub`/
+    `Function` parameters -- deliberately excluding `Const`/`ConstTable`, `DataTable`/
+    `StructureType`/`ObjectType` names, `Alias` targets, and `Label`s, none of which are a live
+    variable a compile-time-constant-only argument could illegally reference.
+
+    Used only by the constant-only-family check below (`_CONST_ONLY_FAMILY_KINDS`): a narrower
+    purpose than `declared_names`' whole-program symbol-exists check, so this is its own function
+    rather than a filter over that one's result (`declared_names` does not tag *which kind* of
+    name each entry is).
+    """
+    names: set[str] = set()
+    for stmt in program.statements:
+        if isinstance(stmt, S.Declaration):
+            for v in stmt.vars:
+                names.add(v.name.upper())
+        elif isinstance(stmt, S.SubDef):
+            for p in stmt.params:
+                names.add(p.name.upper())
+    return names
+
+
 def declared_names(program: S.Program) -> set[str]:
     """Every name a bare `Name` expression may legally reference: declared `Public`/`Dim`/`Const`/
     `ConstTable` variables, `Sub`/`Function` names and their parameters, `DataTable` and

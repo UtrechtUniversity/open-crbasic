@@ -194,6 +194,150 @@ differently-interval'd `Scan`, a table called from outside any `Scan` at all (e.
 destination-table exception. None of these gaps risk a false reject (they only mean the check
 silently doesn't fire), consistent with AGENTS.md's priority order.
 
+## Data tables and output processing (`checker/instr_data.py`)
+
+New module, `checker/instr_data.py`, alongside this workstream's other files (`PLAN.md`: "data
+tables and output processing"). Wired into `checker/__init__.py` with two additive lines, both
+inside the pre-existing "no pass-1 error anywhere in the file" gate (`docs/checker.md`'s
+"Two-pass compilation"; both rules below are oracle-confirmed to belong there, same method as that
+section -- an unrelated pass-1 error placed both before and after the statement in question
+suppresses the message either way, only firing when the file has no other error at all).
+
+### `%s must be used inside a table declaration.` / `EndTable without DataTable.`
+
+`check_table_structure` tracks one "currently inside a `DataTable`" flag (CRBasic `DataTable`
+blocks do not nest, `tables.py`'s own `_scan_program` docstring) over the flat statement list:
+
+- An orphan or extra `EndTable` (no `DataTable` currently open) is `EndTable without DataTable.`
+  at its own line -- oracle-confirmed (scratch probes `te1.cr6`/`te3.cr6`/`te5.cr6`): a bare
+  `EndTable` alone, and a *second* `EndTable` right after a properly-closed table, both give this
+  exact message at the extra statement's own line. A `DataTable` that is *never* closed does
+  **not** get a complementary "not matched" message of any kind (despite one existing in
+  `docs/messages.tsv`, `'DataTable ... EndTable not matched.'`) -- oracle-confirmed (`te2.cr6`): it
+  instead surfaces later, indirectly, as `Could not find DataTable %s.` at the table's first
+  `CallTable` site, because everything after the unclosed `DataTable` (including `BeginProg` and
+  the whole rest of the program) is apparently still absorbed as part of the table's own body.
+  Not implemented (a different, unimplemented message; low corpus value; this checker's own
+  simple boolean-flag tracking degrades safely there -- see below).
+- Every instruction in `TABLE_ONLY_INSTRUCTIONS` found *outside* an open `DataTable` is `%s must
+  be used inside a table declaration.`, `%s` = that dict's own display spelling. The set and
+  spelling were found from the decompiled call sites of the shared validator function this
+  message comes from -- `thunk_FUN_004ea5d0` on CR6, `thunk_FUN_004ea5f0` on CR1000X,
+  `/opt/re/out/decomp.c`/`decomp_cr1000x.c`, grepped narrowly (never the whole file) for each
+  function's own call sites, which pass each instruction's own name (or, for `Maximum`/`Minimum`,
+  the unlabelled short strings `"Max"`/`"Min"`, read directly out of the compiled string table at
+  their call sites with `pefile.get_string_at_rva`, not guessed) as the validator's argument. Both
+  loggers' call-site lists are identical: `CardOut`, `MQTTPublishTable`, `GoesTable`, `TableFile`,
+  `Totalize`, `Average`, `Max`(imum), `Min`(imum), `SampleMaxMin`, `StdDev`, `Moment`, `Sample`,
+  `Histogram`, `Histogram4D`, `Covariance`, `RainFlow`, `LevelCrossing`, `WindVector`, `Median`,
+  `SampleFieldCal`, `FillStop`, `DataTime`, `OpenInterval`, `DataInterval`, `DataEvent`,
+  `TableHide`. Two more call sites (unlabelled strings `"FFT"`/`"Et"`, near the
+  `Histogram4D`/`SampleFieldCal` call sites) could not be attributed to a specific instruction
+  with confidence and are deliberately left out of the checked set (AGENTS.md: never guess into a
+  false reject).
+
+  Independently oracle-confirmed this round (fresh scratch probes against `CR6Comp.exe`, each
+  instruction called correctly-shaped but outside any table): `CardOut`, `TableFile`, `Totalize`,
+  `Average`, `Maximum` (as `Max`), `SampleMaxMin`, `StdDev`, `Median`, `WindVector`, `Histogram`,
+  `RainFlow`, `LevelCrossing`, `FillStop`, `DataTime`, `OpenInterval`, `TableHide` all reproduce
+  exactly, digit for digit. `Sample`, `Average`, `Minimum` (as `Min`) and `DataInterval` are also
+  each backed by a saved fuzz reproducer (`tests/corpus/fuzz/cr6/false_accept/
+  {470441546122,5b5ae86fd087,1ded68266aec}.json`, all `duplicate_line`/`delete_line` mutants of
+  real CHM corpus programs -- not hand-written). `DataEvent` alone is decompiled-call-site
+  evidence only: a from-scratch probe placing a bare, correctly-shaped `DataEvent(...)` outside
+  any table **crashes the real compiler under Wine** rather than printing this text -- the same
+  class of real-compiler-side crash `docs/checker.md`'s `pointervariable_2.CR6` entry already
+  documents as unmatchable, so this checker's own clean rejection there is a deliberate
+  improvement on the real compiler's own behaviour, not a claim to reproduce it exactly.
+  `Moment`, `Covariance`, `Histogram4D`, `GoesTable`, `MQTTPublishTable` and `SampleFieldCal` are
+  decompiled-call-site evidence only (each individually blocked from a clean from-scratch probe
+  this round by an unrelated pass-1 argument-shape error in the minimal test case -- e.g.
+  `MQTTPublishTable`'s first argument must itself be a constant -- not chased further, given the
+  time already spent and the strength of the call-site evidence, which is byte-identical in
+  structure to every instruction already confirmed).
+
+  Verified this round that `FieldNames` -- named in the task's own illustrative instruction list
+  alongside `Sample`/`Average`/etc. -- is **not** in this set despite the obvious analogy: a bare
+  `FieldNames("X")` outside any table compiles clean (oracle-confirmed, scratch probe `tfn.cr6`).
+  It plainly has its own validation (`FUN_004ec300`'s `'FieldNames cannot be a variable.'`/`'Must
+  use FieldNames with reserved field .%s.'`/... in `docs/messages.tsv`) but not this placement
+  rule; not implemented (out of this round's time budget).
+
+Per-logger: a from-scratch probe of `Sample` alone outside a table gives the identical message,
+digit for digit, on all four loggers' own compilers (`CR6Comp.exe`/`cr1000xcomp.exe`/
+`cr300comp.exe`/`cr350comp.exe`); CR1000X's own decompiled call-site list
+(`thunk_FUN_004ea5f0`) is identical in membership to CR6's. CR300/CR350 have no separate
+decompilation available (`/opt/re/out/` only carries CR6 and CR1000X); the one live probe is
+this round's only direct CR300/CR350 evidence, so the checked set is applied uniformly to all four
+loggers on the strength of that probe plus the CR6/CR1000X agreement, filtered per logger by
+`kw in profile.instructions` (an instruction a given logger's own table does not have, e.g. a
+CR6-only CDM/GOES instruction absent from CR300/CR350, simply never matches -- safe by
+construction, never a false reject from a logger difference this round did not individually probe).
+
+### `Duplicate field name %s in DataTable %s.`
+
+`check_duplicate_fields` deliberately does not re-derive each output instruction's own default
+field-naming rule (`_Avg`/`_Min`/`_TMx`/... suffixes, `FieldNames` renaming, reps-array expansion)
+a second time; it reuses the names `tables.py` (a concurrently-owned module) has already computed
+in `result.tables`, once per table, flagging every field beyond the first that shares an
+already-seen name (oracle-confirmed shape: exactly one diagnostic for a name that occurs twice, not
+one per pair -- `tests/corpus/fuzz/cr6/false_accept/{0004dc1d7a39,7076907a77b3,
+d4b49fb47507}.json`, three independent `duplicate_line` fuzz mutants of real CHM seeds, plus the
+CHM corpus's own `ch400status_2.CR6`). No line number (oracle-confirmed, matching the pre-existing
+"table declared but never called" warning, which shares this message's emitting function,
+`FUN_004eab30`, per `docs/messages.tsv`).
+
+**Found as a regression during this round's own development, fixed before landing**: `tables.py`'s
+`_source_name` returns the fixed sentinel `"Anonymous"` for any output-instruction source that is
+not a plain `Name`/`Index` expression (a `Table.Field` cross-table reference, or a string literal
+source) -- not a real field name, just a "cannot derive one" placeholder that is never itself
+exercised by the TDF/`-l` output this project has verified byte-identical, so it was never
+previously visible as a bug. Two or more such sources in the same table collide on this one shared
+sentinel and were flagged as duplicates of each other, even though the real compiler accepts the
+file cleanly: `tests/corpus/chm/goestable_1.CR6` (two `Sample`s of a cross-table `HR_DATA.
+battery_voltage_Avg`/`HR_DATA.panel_temperature_Avg`) went from accepted to a false reject on all
+four loggers, caught by this round's own full `tools/difftest.py --logger <l>` re-run before
+landing (AGENTS.md: verify a generalisation against the whole corpus, not a hand-written probe,
+before trusting it -- the same methodological finding `docs/checker.md`'s "Round 3" section
+records for a different check). Fixed by excluding every field named exactly `"Anonymous"` from
+this check on both sides of the comparison (never recorded as seen, never itself flagged) --
+conservative in the correct direction, since a name already known not to be a genuine derived name
+is not evidence of a genuine collision either way. `ch400status_2.CR6`'s own `CH400Status`
+reps-cycling shape (`docs/checker.md`'s "Known remaining gaps") is a *different*, already-documented
+gap in `tables.py`'s field derivation (it collapses a 30-rep structured measurement into a single
+field, never per-element aliased names) that this exclusion does not touch and does not need to:
+that gap only ever *under*-reports here (a single field can never collide with itself), never
+over-reports.
+
+Difftest impact of this section (`tools/difftest.py --logger <l> --group all`, before this round's
+end-of-session measurement / after, all four loggers, zero false rejects throughout both
+measurements): cr6 chm 311/187/9 -> 312/186/9; cr1000x chm 327/172/8 -> 329/172/6; cr300 chm
+119/369/19 -> 120/369/18; cr350 chm 123/366/18 -> 124/366/17. `tools/fuzz_replay.py --workers 2`:
+the seven false-accept reproducers this section targets by name above all now report "FIXED (now
+exact)"; no reproducer of any class newly reports `false_reject`.
+
+### Investigated, not implemented (this section's own scope)
+
+- **`SerialClose`'s own `ComPort` argument**: `examples/SBD_example_hirise.CR6`/
+  `SBD_example_hirise_SBDWB.CR6` (the top-level repo's historical `examples/`, read-only, used here
+  only as `tools/difftest.py`'s pre-existing third oracle-comparison group, never compiled or
+  modernised as production CRBasic per `AGENTS.md`) each real-reject twice with `Invalid port %d,
+  use C1..C4 or U1..U12.` (CR6) / `...C1..C8.` (CR1000X) at their own two `SerialClose
+  (IRIDIUM_COM_PORT)` call sites, where `IRIDIUM_COM_PORT` folds to `ComRS232`. The same constant
+  is used freely at `SerialOpen`/`SerialFlush`/`SerialOut`/`SerialIn` call sites earlier in the same
+  file with no error at all -- so this is specifically `SerialClose`'s own argument validation
+  being stricter than every other `Serial*` instruction's, not a general "COMRS232 is never a valid
+  port" rule. Not implemented: confirming the exact boundary (is it `ComRS232` specifically, or
+  every non-hardware/virtual port name?) needs more oracle probing than this round's remaining time
+  allowed; left for a future session with this entry as its starting point.
+- **`GPS pps synchronization is only available on COMU1.`**: two CHM corpus mismatches
+  (`gps_2.CR6`, `structuretype_3.CR6`), both a `GPS(Dest,ComC1,...,100,...)` call -- `ComC1` for the
+  `ComPort` argument together with `100` for the `PPSMethod` argument. Plausibly a two-argument
+  interaction (a specific `PPSMethod` value requiring `ComPort = COMU1`), but only two corpus
+  instances exist and both share the same `PPSMethod` value, so the actual triggering set of
+  `PPSMethod` values (is it only `100`, or a range?) is not pinned down; not implemented this round
+  to avoid guessing at a boundary with no evidence either way (AGENTS.md priority order).
+
 ## Investigated, not implemented
 
 - **`%s declared but not used.`** (`FUN_004ba180`, `docs/messages.tsv`) -- probed an unused

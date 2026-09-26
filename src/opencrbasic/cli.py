@@ -3,8 +3,13 @@
     crbc [options] program [messagefile]
 
 CR6Comp-compatible options (docs/cli.md): -d, -v, -s, -z FILE (binary TDF), -l FILE / -c FILE
-(table list). Extra long options: --logger {cr6,cr1000x,cr300,cr350} (default: from the file
-extension, else cr6) and --no-message-file (do not write CR6cmple.xxx).
+(table list), -p FILE / -i FILE (preprocessed source; -i also expands Include/IncludeSection),
+-t (the `[Times]` section), -b FILE (CDM binary image; writes the "No CDM devices..." message
+when the program uses none). -m/-u are accepted (matching the exe's own option set) but have no
+implemented effect: -m is oracle-confirmed to have none observable from the CLI either; -u is
+documented, not implemented (docs/cli.md "-u"). Extra long options: --logger
+{cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
+not write CR6cmple.xxx).
 Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF line endings);
 exit status 0 on success, 1 on failure.
 """
@@ -19,7 +24,7 @@ from . import __version__, profiles
 
 def _parse(argv: list[str]):
     opts = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
-            "logger": None, "message_file": True}
+            "i": False, "t": False, "b": None, "logger": None, "message_file": True}
     positional: list[str] = []
     i = 0
     while i < len(argv):
@@ -53,10 +58,14 @@ def _parse(argv: list[str]):
                         i += 1
                         value = argv[i] if i < len(argv) else ""
                     opts["p" if ch == "i" else ch] = value
+                    if ch == "i":
+                        opts["i"] = True
                     break
                 if ch in "svd":
                     opts[ch] = True
-                elif ch in "tmu":
+                elif ch == "t":
+                    opts["t"] = True
+                elif ch in "mu":
                     pass
                 else:
                     print("illegal option!")

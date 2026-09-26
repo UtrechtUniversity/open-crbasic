@@ -33,23 +33,113 @@ _RESOLVED_KINDS = frozenset({
     "expr_typed", "expr_special", "expr_pair", "expr_list", "datatype_kw",
 })
 
-# Constant-only kinds (`docs/type-codes.md` codes 1/39, 5/38, 20) are **not** generically checked
-# here, despite oracle evidence that the real compiler's constant-folding path does reject a
-# genuine variable reference at some of them (`WriteIO(Mode,X)` -> `Variable illegal in Parameter:
-# Mode.`, `Scan(X+1,Sec,0,0)` -> `Variable illegal in Parameter: X+1.`, both oracle-confirmed this
-# session, `docs/checker.md` "Constant-only and variable-required type codes"). Found as a
-# **regression** during development: `Sample`'s own `DataType` argument is *also* coded `1`
-# (`const_expr`) in `data/instructions.json`, yet legitimately accepts a `StructureType` name
-# (`structuretype_1.CR6`, `Sample(1,S,VWSensor)`) -- not a foldable constant by this project's own
-# `consteval` either. This means at least one specific argument silently overrides the generic
-# code-1 "reject a variable" rule (most likely `Sample`'s own `compile_fn` recognising a `DataType`-
-# shaped keyword/type-name before generic constant-folding would even run), and this session found
-# no reliable way to tell such an argument apart from an ordinary code-1 position using only the
-# type-code table -- so a blanket rule here risks an unknown number of further false rejects this
-# session's oracle probing did not have time to rule out. Left unimplemented rather than guessed
-# at (AGENTS.md: never reject an accepted program); a future session would need to check each
-# const-only-coded parameter individually (or find the compiler's own keyword-argument flag) before
-# enabling this safely.
+# The compile-time-constant-only family (`docs/type-codes.md` codes 1/39, 5/38, 20 --
+# `FUN_004b8700`/its `const`-only wrappers) is checked in its own pass, ahead of every other
+# resolved kind, on CR6/CR1000X -- oracle-confirmed (round 4, this session): `WriteIO(1,BazQux,
+# FooBar)` (`params=[1,25,101]`: position 0 code 1 = valid literal, position 1 code 25 = `BazQux`,
+# position 2 code 101 = optional code 1 = `FooBar`) reports only `FooBar` (position 2, the later
+# *const-family* position), never `BazQux` (position 1, the textually-earlier *general* position)
+# -- and the reverse instruction shape, `CardTest(GenBad,ConstBad)` (`params=[8,1]`: position 0
+# general, position 1 const), reports only `ConstBad` (the const-family position) even though it
+# is the *later* argument. Within one family, the ordering is the ordinary ascending textual
+# position (`WriteIO(FooBar,BazQux,1)` -> `FooBar`, the first *const*-family position; `WriteIO(1,
+# BazQux,FooBar)` with only position 1 bad -> `BazQux`). Read together, this is one const-family
+# pre-pass over every const-coded position (ascending) before the general-family pass runs at all,
+# not a per-position textual scan -- plausibly the same constant-folding pre-pass CRBasic needs to
+# size buffers/arrays from other arguments before it can even parse the rest of the call. Not
+# traced to the decompilation; `docs/checker.md` records the oracle transcript.
+_CONST_FAMILY_KINDS = frozenset({"const_expr", "const_expr_only", "datatype_kw"})
+
+# CR300/CR350 do not share this pre-pass at all: their own position order is the plain ascending
+# textual order, oracle-confirmed with the same `InternalTemp(GenBad,ConstBad)` shape
+# (`params=[8,20]`: position 0 general, position 1 const-family `datatype_kw`) reporting the
+# textually-*first* position (`GenBad is not defined.`) and then, unlike CR6/CR1000X, abandoning
+# the rest of the statement's own parameter list entirely rather than moving on to check position 1
+# at all (`Too many parameters:  ConstBad.` -- position 1's own token was never consumed). They also
+# echo every undefined name found *inside* one compound expression as its own separate diagnostic
+# line, not one whole-expression echo (`docs/checker.md`, "Round 4"): `Randomize(X + FooBar +
+# BazQux)` is one `Invalid symbol in expression: X + FooBar + BazQux.` line on CR6/CR1000X but two
+# separate `FooBar is not defined.` / `BazQux is not defined.` lines on CR300/CR350, in the source
+# (left-to-right) order `_undefined_names` already walks in. Modelled below as a plain per-logger
+# branch on `profile.name` (both loggers in each pair share identical behaviour, oracle-confirmed
+# side by side) rather than a new `Profile` field, to keep this session's change inside
+# `checker/expressions.py`/`checker/symbols.py` (`PLAN.md`'s ownership split).
+_WHOLE_EXPR_ECHO_LOGGERS = frozenset({"cr6", "cr1000x"})
+
+# `NAN`/`INF` are accepted as predefined float constants on all four loggers (oracle-confirmed,
+# this session, `docs/checker.md`) despite being absent from every `data/<logger>/symbols.json` --
+# that table is the compiler's *named-constant* lookup (`FUN_004ee4f0`, `docs/type-codes.md`), and
+# `NAN`/`INF` evidently resolve through a separate, special-cased path in the expression compiler
+# itself (a floating-point literal spelling, not a named constant) that this session did not trace
+# to the decompilation. Added here rather than to the extracted `symbols.json` files so as not to
+# misrepresent a value as extracted-from-the-binary-table when it demonstrably is not one of that
+# table's rows (AGENTS.md: label inference and unverified behaviour explicitly; here the *acceptance*
+# is oracle-verified even though the *mechanism* is not).
+_EXTRA_PREDEFINED_SYMBOLS = frozenset({"NAN", "INF"})
+
+# Constant-only-and-rejects-a-variable, the narrower half of `_CONST_FAMILY_KINDS` (`docs/
+# type-codes.md` codes 1/39 `const_expr`, 5/38 `const_expr_only` -- **not** 20 `datatype_kw`,
+# excluded below): oracle-confirmed uniform across all four loggers, identical message text and no
+# per-logger branch needed (unlike the undefined-symbol family) -- `WriteIO(X,1)` ->
+# `Variable illegal in Parameter: X.` and `Scan(X+1,Sec,0,0)` -> `Variable illegal in Parameter:
+# X+1.` both reproduce byte-for-byte on CR6/CR1000X/CR300/CR350, whole-expression echo included
+# (round 4, this session, `docs/checker.md`).
+#
+# Deliberately narrower than the type code alone would suggest, on two axes, both to route around
+# round 3's own found regression (`Sample`'s `DataType` argument, also coded `1`, legitimately
+# accepting a `StructureType` name, `structuretype_1.CR6`):
+#
+# 1. **`datatype_kw` (code 20) is excluded from this set entirely** -- it is a keyword-validated
+#    slot (`thunk_FUN_00523010`, not `FUN_004b8700`) with its own per-instruction legal-value list
+#    this project has not traced (`docs/type-codes.md` "inferred" confidence only), so no oracle
+#    evidence here supports even the ordinary "rejects a variable" half of the rule for it.
+# 2. **The trigger is "references a declared runtime variable" (`symbols.declared_variable_names`
+#    -- `Public`/`Dim`/`Static`/a `Sub`/`Function` parameter), not "fails to fold to a constant."**
+#    A `StructureType` name is neither: it is not a live variable (so this check leaves it alone,
+#    unlike a generic `not consteval.is_constant(...)` test would) and it is not expected to fold
+#    (so `Sample(1,S,VWSensor)` is simply never flagged by this narrower trigger, without needing
+#    a `Sample`-specific carve-out at all). A corpus-wide scan this session ran (every `chm`/`repo`
+#    const-only-family argument that is a bare `Name` resolving to a declared *variable*) found
+#    exactly one candidate, and it turned out to be an unrelated CHM-prose-as-code parsing
+#    artifact (`straincalc_1.CR6`'s `Average Strain` line, a stray heading fragment, not a real
+#    statement) rather than a genuine override -- some further override may still exist outside
+#    this corpus's ~400-instruction coverage, so this stays a scoped, corpus-verified rule, not a
+#    claim that every const-only position everywhere is now covered.
+_CONST_ONLY_VARIABLE_REJECT_KINDS = frozenset({"const_expr", "const_expr_only"})
+
+
+def _variable_refs(expr: S.Expr | None, variable_names: set[str]) -> list[str]:
+    """Every reference to a genuine runtime variable (`variable_names`) anywhere inside `expr`,
+    in source order -- the const-only-family counterpart of `_undefined_names` above, same
+    recursion shape (walks `Unary`/`Binary`/`Index`'s own name and args/`Member`'s base/
+    `ArrayLiteral` items; `Member.member` text untouched, same reasoning as `_undefined_names`).
+    A name that resolves to anything *other* than a declared variable (a `Const`, a
+    `StructureType` name, a predefined symbol, ...) is not itself a live variable, so it is left
+    alone here even though it may still be flagged separately by `_undefined_names` if it is
+    undefined outright.
+    """
+    if expr is None:
+        return []
+    if isinstance(expr, S.Name):
+        return [expr.name] if expr.name.upper() in variable_names else []
+    if isinstance(expr, S.Unary):
+        return _variable_refs(expr.operand, variable_names)
+    if isinstance(expr, S.Binary):
+        return _variable_refs(expr.left, variable_names) + _variable_refs(expr.right, variable_names)
+    if isinstance(expr, S.Index):
+        head = [expr.name] if expr.name.upper() in variable_names else []
+        for a in expr.args:
+            head += _variable_refs(a, variable_names)
+        return head
+    if isinstance(expr, S.Member):
+        return _variable_refs(expr.base, variable_names)
+    if isinstance(expr, S.ArrayLiteral):
+        out: list[str] = []
+        for item in expr.items:
+            out += _variable_refs(item, variable_names)
+        return out
+    return []  # Number, String: nothing to resolve
+
 
 # Variable-required kinds (`docs/type-codes.md` codes 8, 27, 29, 33, 41, 47, 48): the shared
 # "variable or array" handler accepts a bare name, an array reference, or any expression that
@@ -58,7 +148,21 @@ _RESOLVED_KINDS = frozenset({
 # expression) with `Invalid Variable or Array: %s.`, **unless the constant is a string**
 # (oracle-confirmed this session: `Battery(5)`, `Battery(1+2)`, and `Battery(SomeConst)` -- a
 # `Const SomeConst = 5` -- all rejected this way; `Battery("x")` compiles fine, no type check at
-# all on a string constant here).
+# all on a string constant here). Still **not** generically checked here, unlike the const-only
+# family above: round 3 found two overriding instructions (`Move`'s third argument, `ModBusClient`'s
+# last argument, both accepting a bare literal), and round 4's own corpus scan (this session) found
+# a *third*, independent of either -- `MQTTPublishTable`'s optional `Longitude`/`Latitude`/
+# `Altitude` arguments (code `148`, `mqttpublishtable_1.CR6` line 17, oracle-confirmed accepted in
+# isolation on both CR6 and CR1000X: `MQTTPublishTable(1, 0, 5, Min, 2, -111.85, 41.76, 1)`). Three
+# confirmed overrides found from a ~523-file corpus sampling only a fraction of each logger's
+# ~400-instruction table make a blanket rule too risky to enable without a plausibly-still-
+# incomplete per-instruction exception list; unlike the const-only-family rule above, no version of
+# this trigger (bare-literal vs. "fails to fold", posed several ways during round 3 and again this
+# round) has been found that reliably separates the genuine cases from the overrides using only the
+# type-code table. Left unimplemented (AGENTS.md: never reject an accepted program); a future
+# session would need to check each variable-required-coded parameter individually across all four
+# loggers' instruction tables (or find the compiler's own per-instruction override flag) before
+# enabling this safely.
 _VARIABLE_REQUIRED_KINDS = frozenset({"variable_or_array"})
 
 
@@ -129,28 +233,110 @@ def _arg_text(stmt: S.Instruction, i: int) -> str:
     return arg.name if isinstance(arg, S.Name) else ""
 
 
-def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
-    """Only checks a direct `Instruction` argument that parsed as a bare `Name`, at a position
-    whose declared type code actually resolves through the general symbol/expression compiler
-    (`_position_kinds`) -- not one nested inside a larger expression, an array index,
-    `Table.Field`, or a unary/binary operator, and not an identifier/raw-text-kind position such
-    as a `DataTable`/`ConstTable` name. This project's evidence for the rule is all of this shape
-    (a CR1000X-only terminal name such as `Vx1`/`P1`/`C5` used where CR6 does not define it --
-    `docs/checker.md`).
-
-    This session tried, and then deliberately backed out, two extensions once the full corpus (not
-    just this session's own hand-written oracle probes) exposed real false rejects: a full
-    expression-tree name-resolution walk (`_undefined_names`, unused for now -- `NAN` and the
-    system `Status` table both turned out to be missing from `known` in ways only a nested lookup
-    reached) and the constant-only/variable-required type-code rules (`_CONST_ONLY_KINDS`/
-    `_VARIABLE_REQUIRED_KINDS`, both real per-instruction oracle evidence, but not uniform across
-    every instruction sharing a code -- `Sample`'s `DataType`, `Move`'s third argument and
-    `ModBusClient`'s last argument each override their own code's generic rule). See the module
-    docstring above each constant for the full evidence trail; `env` is accepted (unused by the
-    active code below) so a future session can re-enable either without changing the call site in
-    `checker/__init__.py` again.
+def _known_names(program: S.Program, profile) -> set[str]:
+    """Every name a checked expression position may legally reference: this program's own
+    declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
+    instruction keywords (`profile.*`), its always-or-conditionally-valid system table names
+    (`symbols.system_table_names`), and the two floating-point special values found this session to
+    resolve outside the extracted symbol table entirely (`_EXTRA_PREDEFINED_SYMBOLS`).
     """
-    known = symbols.declared_names(program) | set(profile.symbols) | set(profile.functions) | set(profile.instructions)
+    return (
+        symbols.declared_names(program)
+        | set(profile.symbols)
+        | set(profile.functions)
+        | set(profile.instructions)
+        | symbols.system_table_names(program)
+        | _EXTRA_PREDEFINED_SYMBOLS
+    )
+
+
+def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
+                       variable_names: set[str], profile, diags: Diagnostics) -> None:
+    """One statement's own undefined-symbol and constant-only-family checks, at every position
+    `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
+    expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
+    this session: safe now that `_known_names` closes the two gaps -- `NAN`/`Status` -- that made
+    this walk reject real programs when first tried in round 3, `docs/checker.md`).
+
+    Both the *order* positions are checked in and the *shape* of what gets reported differ by
+    logger family (oracle-confirmed this session, `docs/checker.md` "Round 4" -- see
+    `_CONST_FAMILY_KINDS`/`_WHOLE_EXPR_ECHO_LOGGERS` above for the evidence): CR6/CR1000X check
+    every constant-only-family position (ascending) before any general-family position regardless
+    of textual order; CR300/CR350 check every position in plain ascending textual order, no family
+    split. Both stop at the first position with *any* problem (an undefined name, checked at every
+    position, or a live-variable reference, checked at const-only-family positions only,
+    `_CONST_ONLY_VARIABLE_REJECT_KINDS`) and report only that one -- **within one position**, the
+    undefined-name check runs first (the two are mutually exclusive for a single name: a name is
+    either undefined or resolves to something, so this ordering only matters for picking which
+    message a position with *both* an undefined name and, elsewhere in the same expression, a live
+    variable gets -- not evidenced either way this session, so undefined-first was kept as the
+    simpler, already-existing rule). Oracle-confirmed cross-family interleaving, not just two
+    independent passes (`WriteIO(X,BazQux)`, `X` a live variable at the const-family position 0,
+    `BazQux` undefined at the general-family position 1: CR6/CR1000X report `Variable illegal in
+    Parameter: X.`, never reaching `BazQux`'s own undefined-name error even though the *undefined-
+    name* pass alone, run across both families before any variable-reject check, would reach
+    `BazQux` first if the two checks were separate top-level passes over the statement -- they are
+    not; `PRT(GenBad,X,3,3,3)` on CR300, `GenBad` undefined at the general-family position 0 (the
+    textually-first position there), `X` a live variable at the const-family position 1: CR300
+    reports only `GenBad is not defined.`, never reaching `X` at all, confirming CR300/CR350 have
+    no family reordering for this combined check either). Neither family is known to check past the
+    first bad position in the same statement -- under-reporting a second, independent bad position
+    in the same call is the deliberate, safe side of that gap (AGENTS.md: never reject an accepted
+    program), not a claim that the real compiler is silent about it. The variable-reject message
+    itself (`Variable illegal in Parameter: %s.`) is oracle-confirmed uniform across all four
+    loggers (`docs/checker.md`), so no per-logger branch for its own text.
+    """
+    def _check_position(i: int) -> bool:
+        """Checks position `i`, reports at most one diagnostic, returns whether it did."""
+        if i >= len(stmt.args) or stmt.args[i] is None:
+            return False
+        arg = stmt.args[i]
+        names = _undefined_names(arg, known)
+        if names:
+            if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=_arg_text(stmt, i)),
+                            stmt.file)
+            else:
+                for name in names:
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            return True
+        if positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS and _variable_refs(arg, variable_names):
+            diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file)
+            return True
+        return False
+
+    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+        order = sorted(i for i, k in positions.items() if k in _CONST_FAMILY_KINDS)
+        order += sorted(i for i, k in positions.items() if k not in _CONST_FAMILY_KINDS)
+    else:
+        order = sorted(positions)
+
+    for i in order:
+        if _check_position(i):
+            return
+
+
+def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """Undefined-symbol checking at every `Instruction` argument position whose declared type code
+    routes through the real expression/named-constant resolver (`_position_kinds`) -- a full
+    expression-tree walk (`_undefined_names`), not restricted to a direct bare `Name` argument
+    (round 4, this session; rules and evidence: `_report_statement` above, `docs/checker.md`).
+
+    Still deliberately narrow in scope, unchanged from round 3: only positions
+    `_RESOLVED_KINDS` names (never an identifier/raw-text-kind position such as a `DataTable`/
+    `ConstTable` name, `Member.member` text, or a `Sub`/`Function` argument list's own runtime
+    scoping); `symbols.declared_names` stays whole-program and unscoped rather than tracking which
+    names are visible inside which `Sub`/`Function` (both documented limitations, `docs/checker.md`
+    "Not implemented" -- tightening either risks a false reject this session did not have the
+    oracle evidence to rule out, so neither was attempted here).
+
+    `env` is accepted (unused) to keep this call site's signature stable for a future session
+    that wires in the variable-required type-code check (still not implemented -- see the
+    docstring above `_VARIABLE_REQUIRED_KINDS`; the const-only-family "rejects a variable" check
+    is implemented, `_CONST_ONLY_VARIABLE_REJECT_KINDS`).
+    """
+    known = _known_names(program, profile)
+    variable_names = symbols.declared_variable_names(program)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -158,47 +344,21 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
             continue
-        for i, kind in _position_kinds(record["params"]).items():
-            if i >= len(stmt.args):
-                continue
-            arg = stmt.args[i]
-            if arg is None:
-                continue
-
-            # Undefined-symbol resolution stays deliberately restricted to a *direct* bare `Name`
-            # argument, not a full expression-tree walk (`_undefined_names` above is currently
-            # unused for this reason, kept for a future, more thoroughly oracle-tested session):
-            # found as a **regression** during this session's own development, extending it to
-            # look inside a compound expression immediately produced false rejects across this
-            # repository's own `crbasic/*.CR6` entry programs and several `chm` corpus files --
-            # `NAN` (a predefined float constant used throughout this repo's sensor code, e.g.
-            # `PT1000_Temp_C <> NAN`) and `Status` (the system `Status` table, as in
-            # `Status.SerialNumber`) both turned out to be missing from `known`
-            # (`symbols.declared_names`/`profile.symbols`) in ways the previous, narrower check
-            # never exercised. Given AGENTS.md's priority (never reject an accepted program) and
-            # no budget left this session to audit `known` exhaustively against every name a
-            # nested expression might reference, this stays at the original, corpus-verified
-            # scope; `_undefined_names` is ready for a session that can do that verification.
-            if isinstance(arg, S.Name) and arg.name.upper() not in known:
-                # message text is per-logger data (`profile.unresolved_symbol_message`,
-                # `docs/loggers.md`): CR300/CR350 word this "{name} is not defined." instead of
-                # CR6/CR1000X's "Invalid symbol in expression: {name}."
-                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=arg.name), stmt.file)
-                continue
+        positions = _position_kinds(record["params"])
+        if positions:
+            _report_statement(stmt, positions, known, variable_names, profile, diags)
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions
             # (`Battery(5)`, `Erase(5)`, `ReadIO(5,1)`, all code 8/27/29 on CR6, all oracle-
-            # confirmed rejected). Found as a **regression** during this session's own testing
-            # against the full corpus on all four loggers: `Move`'s own third argument (code 41)
-            # accepts a literal `0` (`Move (IridiumData(),ID, 0,1)`, `modbusclient_2.CR6`... no,
-            # `embracer.cr6`), and `ModBusClient`'s own last, optional argument (also code 27, the
-            # *same* code that correctly rejects a literal for `Erase`) also accepts a literal `2`
-            # (`modbusclient_2.CR6`) -- both on CR1000X. So the same type code does not behave
-            # uniformly across every instruction that uses it; at least `Move` and `ModBusClient`
-            # override it (most likely their own `compile_fn`, similar to the const-only kinds'
-            # `Sample`/`DataType` exception above). No budget left this session to check each
-            # variable-required-coded parameter individually across four loggers' instruction
-            # tables before enabling this safely; see `docs/checker.md` "Constant-only and
+            # confirmed rejected). Found as a **regression** during round 3's own testing against
+            # the full corpus on all four loggers: `Move`'s own third argument (code 41) accepts a
+            # literal `0` (`embracer.cr6`), and `ModBusClient`'s own last, optional argument (also
+            # code 27, the *same* code that correctly rejects a literal for `Erase`) also accepts a
+            # literal `2` (`modbusclient_2.CR6`) -- both on CR1000X. So the same type code does not
+            # behave uniformly across every instruction that uses it; at least `Move` and
+            # `ModBusClient` override it (most likely their own `compile_fn`, similar to the
+            # const-only kinds' `Sample`/`DataType` exception, `docs/checker.md`). Still not
+            # implemented this session either: see `docs/checker.md` "Constant-only and
             # variable-required type codes" for the full evidence and what a future session would
             # need to verify first.

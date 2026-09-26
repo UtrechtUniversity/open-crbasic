@@ -1,0 +1,16 @@
+{
+ "range_codes": [800, 802, 804, 810, 820, 822, 824, 830],
+ "range_code_message": "Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.",
+ "range_code_instructions": {
+  "VOLTSE": 3,
+  "VOLTDIFF": 3,
+  "TCSE": 3,
+  "TCDIFF": 3,
+  "CURRENTSE": 3
+ },
+ "sw12_ports": [501, 502],
+ "delay": {
+  "option0_limit": 3600000000,
+  "option1_limit": 86400000000
+ }
+}

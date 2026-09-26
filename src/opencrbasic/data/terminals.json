@@ -1,47 +1,83 @@
 {
  "channels": {
   "u_terminal": {
-   "min": 201,
-   "max": 212,
+   "ranges": [[201, 212]],
    "transform": "none",
    "skip_nonpositive": false,
    "message": "Invalid channel {v}, must use U1..U12."
+  },
+  "u_terminal_se": {
+   "ranges": [[201, 212]],
+   "transform": "abs",
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must use U1..U12."
+  },
+  "u_terminal_diff": {
+   "ranges": [[201, 212]],
+   "transform": "abs",
+   "skip_nonpositive": false,
+   "message": "Invalid channel {v}, must use U1..U12.",
+   "odd_only": true,
+   "odd_message": "Invalid start channel for Differential Measurement. Must be U1, U3, U5 ..."
+  },
+  "excite_channel": {
+   "ranges": [[201, 212]],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid Excitation channel (must be U1-U12)."
+  },
+  "port_c1c4_u1u12": {
+   "ranges": [[101, 104], [201, 212]],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port {v}, use C1..C4 or U1..U12."
+  },
+  "sdi_port": {
+   "ranges": [[101, 103], [201, 211]],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "odd_only": true,
+   "message": "Invalid SDI-12 port, must be C1,C3 or U1,U3...U11",
+   "odd_message": "Invalid SDI-12 port, must be C1,C3 or U1,U3...U11"
   }
  },
  "instructions": {
   "TCDIFF": [
-   [
-    4,
-    "u_terminal"
-   ]
+   [4, "u_terminal_diff"]
   ],
   "TCSE": [
-   [
-    4,
-    "u_terminal"
-   ]
+   [4, "u_terminal_se"]
   ],
   "VOLTSE": [
-   [
-    4,
-    "u_terminal"
-   ]
+   [4, "u_terminal_se"]
   ],
   "VOLTDIFF": [
-   [
-    4,
-    "u_terminal"
-   ]
+   [4, "u_terminal_diff"]
   ],
   "ACPOWER": [
-   [
-    4,
-    "u_terminal"
-   ],
-   [
-    7,
-    "u_terminal"
-   ]
+   [4, "u_terminal"],
+   [7, "u_terminal"]
+  ],
+  "CS616": [
+   [3, "u_terminal"],
+   [4, "port_c1c4_u1u12"]
+  ],
+  "EXCITEV": [
+   [1, "u_terminal"],
+   [1, "excite_channel"]
+  ],
+  "EXCITEI": [
+   [1, "u_terminal"],
+   [1, "excite_channel"]
+  ],
+  "PORTSET": [
+   [1, "port_c1c4_u1u12"]
+  ],
+  "PORTGET": [
+   [2, "port_c1c4_u1u12"]
+  ],
+  "SDI12RECORDER": [
+   [2, "sdi_port"]
   ]
  }
 }
