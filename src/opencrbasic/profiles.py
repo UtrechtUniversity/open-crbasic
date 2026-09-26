@@ -46,6 +46,18 @@ class Profile:
     # `check_early` on CR300/CR350 behind the *same* "tier A and tier B both clean" condition tier
     # C already uses, rather than a blanket "any error anywhere" rule.
     early_warnings_gated: bool = False
+    # CR300/CR350 only (`checker/structure.py`'s `_check_call_pass2`, `docs/loggers.md`): a bare
+    # call whose head name resolves to nothing (not a declared `Sub`, built-in function, or
+    # recognised instruction -- most often an instruction name this logger's own smaller table
+    # lacks entirely, e.g. `DisplayMenu`/`CardOut`/`ACPower`) gets its own `{name} is not
+    # defined.` line immediately before the existing generic `Invalid, or out of place
+    # expression: %s.` fallback line, and this shape's before-`BeginProg` placement follow-up
+    # (`Expr illegally occurs before BeginProg.`) and pass-2 stop do **not** fire (oracle-
+    # confirmed, `docs/loggers.md`) -- unlike CR6/CR1000X, which show only the fallback line and
+    # do apply the placement follow-up/stop there (unchanged). The *other* two branches of the
+    # same check (a bare call resolving to a declared `Sub` or a built-in function) are
+    # unaffected either way -- oracle-confirmed identical on all four loggers, `docs/loggers.md`.
+    undefined_call_message: bool = False
 
     def _load(self, name: str) -> list[dict]:
         return json.loads((self.data_dir / f"{name}.json").read_text())
@@ -107,10 +119,10 @@ PROFILES = {
                        "cr1000xcomp.exe"),
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
                      "cr300comp.exe", unresolved_symbol_message="{name} is not defined.",
-                     early_warnings_gated=True),
+                     early_warnings_gated=True, undefined_call_message=True),
     "cr350": Profile("cr350", "CR350", "CR350.Std.1.07", "02/04/2025", DATA / "cr350", False,
                      "cr350comp.exe", unresolved_symbol_message="{name} is not defined.",
-                     early_warnings_gated=True),
+                     early_warnings_gated=True, undefined_call_message=True),
 }
 
 EXTENSIONS = {".cr6": "cr6", ".cr1x": "cr1000x", ".cr300": "cr300", ".cr350": "cr350"}

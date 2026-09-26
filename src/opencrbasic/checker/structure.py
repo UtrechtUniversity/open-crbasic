@@ -322,7 +322,13 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
       line -- the call itself compiles fine, only its position is illegal) before it, and stops.
     - Resolving to nothing at all: `Invalid, or out of place expression: %s.` (`%s` = the
       statement's own verbatim source text) always, **plus** `Expr illegally occurs before
-      BeginProg.` and a stop when it precedes `BeginProg`.
+      BeginProg.` and a stop when it precedes `BeginProg` -- **CR6/CR1000X only**
+      (`profile.undefined_call_message`, `profiles.py`). **CR300/CR350** additionally report the
+      call's own name as unresolved first (`{name} is not defined.`, `profile.
+      unresolved_symbol_message`) and, oracle-confirmed the opposite of CR6/CR1000X here, never
+      show the placement follow-up or stop for this one branch, even when the statement does
+      precede `BeginProg` (`docs/loggers.md`) -- the other two branches above (resolving to a
+      `Sub`/function) are unaffected, oracle-confirmed identical on all four loggers.
     """
     name = stmt.name.upper()
     before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
@@ -339,6 +345,14 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         if before_beginprog:
             diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
             return stmt.line
+        return None
+    if profile.undefined_call_message:
+        # CR300/CR350 only (`profiles.py`'s own field docstring, `docs/loggers.md`): an extra
+        # `{name} is not defined.` line right before the generic fallback below, and no
+        # before-`BeginProg` follow-up/stop for this branch (unlike the two branches above).
+        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name), stmt.file)
+        diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                    show_file=False)
         return None
     diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
                 show_file=False)

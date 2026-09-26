@@ -276,6 +276,67 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
 _US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
 
 
+def check_scan_min_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
+    (round 6, CR6/CR1000X only, same `FUN_00468900` family as `check_scan_params` above -- oracle-
+    confirmed ungated the same way, fires alongside unrelated errors both before and after it in
+    the file). Previously investigated and left unimplemented (`docs/instructions.md`
+    "Investigated, not implemented": "each has a boundary this session could not pin down cleanly
+    ... smells like float-precision artifacts") -- pinned down this round with a dozen fresh
+    `Interval` x `Units` probes: the declared `Interval` is truncated toward zero **in its own
+    declared unit** (`int(value)`, matching `_is_negative_or_invalid`'s own truncation convention)
+    *before* being multiplied by that unit's microsecond factor (`_US_PER_UNIT`) -- not the real,
+    fractional microsecond value. This single rule, applied uniformly regardless of which unit was
+    declared, reproduces every probe in the sweep:
+
+    - `Scan(0.5,mSec,...)` -> `int(0.5) * 1_000 = 0` uSec (not `500`) -> `Scan 0uSec invalid...`
+    - `Scan(0.0015,Sec,...)` -> `int(0.0015) * 1_000_000 = 0` uSec (not `1500`) -> same message
+    - `Scan(1.9999,mSec,...)` -> `int(1.9999) * 1_000 = 1000` uSec -> compiles clean
+    - `Scan(1500,uSec,...)` -> `int(1500) * 1 = 1500` uSec -> `Scans must be a multiple of 1mSec.`
+      (not a multiple of 1000), while the numerically-equal `Scan(1.5,mSec,...)` truncates to
+      `int(1.5) * 1_000 = 1000` uSec first and compiles clean -- this reproduces the previous
+      session's own unresolved `uSec`-vs-`mSec` asymmetry (`7999uSec` fails, `7.9mSec` compiles)
+      exactly, with no per-unit branch: after truncate-then-multiply, an `mSec`/`Sec`-declared
+      interval is *always* already an exact multiple of 1000, so the "must be a multiple" branch
+      can structurally never fire for those two units.
+
+    Both comparisons run on this one folded `raw_us` value, **independently of whether
+    `check_scan_params`'s own non-negative check above also already fired for the same `Interval`
+    argument** -- oracle-confirmed not mutually exclusive: `Scan(-1,mSec,...)` fires *both* `Scan
+    Interval parameter must be a non-negative integer` *and* `Scan -1000uSec invalid must be at
+    least 1mSec.`, on the same line, in that order (`check_scan_params` is called first in
+    `warnings.check_early`). Only `Interval` (position 0) -- no oracle evidence either message
+    applies to `BufferOption`/`Count`.
+    """
+    if profile.name not in _SCAN_VALUE_CHECK_LOGGERS:
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SCAN":
+            continue
+        args = stmt.args
+        interval = args[0] if args else None
+        units = args[1] if len(args) > 1 else None
+        if interval is None or units is None:
+            continue
+        if not (consteval.is_constant(interval, env) and consteval.is_constant(units, env)):
+            continue
+        try:
+            value = consteval.value_of(interval, env)
+            unit = consteval.value_of(units, env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(value, str) or not isinstance(value, (int, float)):
+            continue
+        us_per_unit = _US_PER_UNIT.get(unit)
+        if us_per_unit is None:
+            continue
+        raw_us = int(value) * us_per_unit
+        if raw_us < 1000:
+            diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
+        elif raw_us % 1000 != 0:
+            diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
+
+
 def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env) -> float | None:
     if interval_arg is None or units_arg is None:
         return None
