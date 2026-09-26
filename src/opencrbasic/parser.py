@@ -191,6 +191,7 @@ class _Parser:
         self.cond_stack: list[_CondFrame] = []
         self.program = S.Program(name="")
         self._done = False  # set once a top-level EndProg is seen; see `run()`
+        self._in_struct = False  # inside StructureType ... EndStructureType
 
     # ------------------------------------------------------------ driver
 
@@ -326,7 +327,22 @@ class _Parser:
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
         p = _TokStream(seg)
         try:
-            stmt = self._parse_stmt(p, line, file, seg_text)
+            if (self._in_struct and seg and seg[0].kind == "IDENT"
+                    and seg[0].upper not in self.profile.instructions):
+                # StructureType members: `Name`, `A, B, C`, `Name As Double`,
+                # `Arr(2) As String * 110` -- a declaration list without Public/Dim (the real
+                # compilers accept bare members; structuretype_3.CR6 on CR1000X).
+                vars_ = [self._parse_vardecl(p, line, file)]
+                while p.is_op(","):
+                    p.next()
+                    if p.at_end():
+                        break
+                    vars_.append(self._parse_vardecl(p, line, file))
+                stmt = S.Declaration(line, file, kind="STRUCTUREMEMBER", vars=vars_)
+            else:
+                stmt = self._parse_stmt(p, line, file, seg_text)
+            if isinstance(stmt, S.Instruction) and stmt.keyword in ("STRUCTURETYPE", "ENDSTRUCTURETYPE"):
+                self._in_struct = stmt.keyword == "STRUCTURETYPE"
             if stmt is None:
                 return S.Unparsed(line, file, text=seg_text, reason="empty statement")
             if not p.at_end():
