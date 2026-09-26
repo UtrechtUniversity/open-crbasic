@@ -35,6 +35,15 @@ class Diagnostic:
 
     def cr6comp(self, main_file: str = "") -> str:
         if self.severity == "warning":
+            # A warning with a real line (`checker/warnings.py`'s ungated reachability/background-
+            # calibration/fnotch checks) is prefixed `line N: `, same as an error (oracle:
+            # `docs/instructions.md`, e.g. `line 6: Warning: Delay never reached at run time.`); one
+            # with no line (the pre-existing "table declared but never called" check, `diags.warning
+            # (0, ...)`) stays bare (oracle: `Warning: Table Foo, is declared but never called.`,
+            # no `line N:` at all). The `<file>` include prefix is left untested for warnings, as
+            # before (see this module's docstring).
+            if self.line:
+                return f"line {self.line}: Warning: {self.message}"
             return f"Warning: {self.message}"
         if not self.line:
             return self.message

@@ -129,6 +129,10 @@ class Instruction(Stmt):
     """
     keyword: str = ""
     args: list[Expr | None] = field(default_factory=list)
+    arg_spans: list[tuple[int, int] | None] = field(default_factory=list)   # (start, end) columns
+    # of each argument's own raw source text within this statement's `text` (`None` for an empty
+    # slot); lets a checker echo an argument's *verbatim* spelling (e.g. `1+2`, not a re-derived
+    # `3` or a spacing-normalised `1 + 2`) without reconstructing it from the parsed `Expr` tree.
 
 
 @dataclass

@@ -49,17 +49,24 @@ class CompileResult:
 
     def result_lines(self, show_signature: bool = False) -> list[str]:
         """The lines CR6Comp prints to stdout (and the message file) for this result."""
+        # CR6Comp is a single top-to-bottom pass over the file, so its own diagnostics -- errors
+        # *and* the small set of ungated warnings (`checker/warnings.py`'s `check_early`:
+        # reachability/background-calibration/fnotch, oracle-confirmed to print interleaved with
+        # errors by line even on an otherwise-failed compile, `docs/instructions.md`) -- are always
+        # in ascending line order together. A warning with no line (the pre-existing "table
+        # declared but never called" check, `diags.warning(0, ...)`) has no fixed position in the
+        # real output either, but every oracle sample found it printed *after* every numbered line,
+        # so `d.line == 0` sorts last (stable, so several such warnings keep their own relative
+        # order) instead of first, which a plain ascending sort would otherwise do since 0 is the
+        # smallest line number. `self.diagnostics.items` is insertion order, which several
+        # independent checker passes each contribute to in their own statement-list order
+        # (`checker/__init__.py`) -- individually ascending, but not necessarily interleaved
+        # correctly against each other or against warnings, so this stable sort (never observed out
+        # of order on the same line, so ties keep each check's own relative order) reproduces the
+        # single-pass compiler's output order without each checker pass needing to coordinate.
+        ordered = sorted(self.diagnostics.items, key=lambda d: (d.line == 0, d.line))
         if not self.ok:
-            # CR6Comp is a single top-to-bottom pass over the file, so its own diagnostics are
-            # always in ascending line order (oracle-confirmed throughout `docs/checker.md`'s
-            # corpus evidence). `self.diagnostics.errors` is insertion order, which several
-            # independent checker passes each contribute to in their own statement-list order
-            # (`checker/__init__.py`) -- individually ascending, but not necessarily interleaved
-            # correctly against each other, so a stable sort by line (never observed out of order
-            # on the same line, so ties keep each check's own relative order) reproduces the
-            # single-pass compiler's output order without each checker pass needing to coordinate.
-            errors = sorted(self.diagnostics.errors, key=lambda d: d.line)
-            rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in errors])
+            rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in ordered])
             return [f"{self.program} -- Compile Failed!", ""] + rendered
         if self.profile.reports_mode:
             lines = [f"{self.program} -- Compiled in {self.mode or 'Sequential'}Mode."]
@@ -67,7 +74,7 @@ class CompileResult:
             lines = [f"{self.program} -- Compiled OK."]
         if show_signature and self.signature is not None:
             lines.append(f"ProgSignature =  {self.signature}.")
-        lines += [d.cr6comp(self.program) for d in self.diagnostics.warnings]
+        lines += [d.cr6comp(self.program) for d in ordered if d.severity == "warning"]
         return lines
 
 

@@ -392,17 +392,18 @@ class _Parser:
     def _parse_generic_instruction(self, p: _TokStream, line: int, file: str, kw: str) -> S.Stmt:
         p.next()
         args: list[S.Expr | None] = []
+        spans: list[tuple[int, int] | None] = []
         if p.is_op("("):
             p.next()
-            args = self._parse_arglist(p, ")", line, file)
+            args, spans = self._parse_arglist(p, ")", line, file)
         elif p.is_op("="):
             # A handful of instructions (`StationName=Value`) take `=Value` instead of an
             # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
             p.next()
-            args = self._parse_bare_arglist(p, line, file)
+            args, spans = self._parse_bare_arglist(p, line, file)
         elif not p.at_end():
-            args = self._parse_bare_arglist(p, line, file)
-        return S.Instruction(line, file, keyword=kw, args=args)
+            args, spans = self._parse_bare_arglist(p, line, file)
+        return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)
 
     def _parse_select(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # SELECT
@@ -416,9 +417,9 @@ class _Parser:
         args: list[S.Expr | None] = []
         if p.is_op("("):
             p.next()
-            args = self._parse_arglist(p, ")", line, file)
+            args, _spans = self._parse_arglist(p, ")", line, file)
         elif not p.at_end():
-            args = self._parse_bare_arglist(p, line, file)
+            args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
 
     def _parse_assignment_or_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
@@ -945,7 +946,7 @@ class _Parser:
             node: S.Expr = S.Name(tok.line, file, tok.text)
             if p.is_op("("):
                 p.next()
-                args = self._parse_arglist(p, ")", line, file)
+                args, _spans = self._parse_arglist(p, ")", line, file)
                 node = S.Index(tok.line, file, tok.text, args)
             while p.is_op("."):
                 p.next()
@@ -953,36 +954,48 @@ class _Parser:
                 margs = None
                 if p.is_op("("):
                     p.next()
-                    margs = self._parse_arglist(p, ")", line, file)
+                    margs, _mspans = self._parse_arglist(p, ")", line, file)
                 node = S.Member(tok.line, file, node, member_tok.text, margs)
             return node
         raise _ParseError(f"expected an expression, found {tok.text or tok.kind!r}")
 
-    def _parse_arglist(self, p: _TokStream, close: str, line: int, file: str) -> list[S.Expr | None]:
+    def _parse_arglist(
+        self, p: _TokStream, close: str, line: int, file: str
+    ) -> tuple[list[S.Expr | None], list[tuple[int, int] | None]]:
         args: list[S.Expr | None] = []
+        spans: list[tuple[int, int] | None] = []
         if p.is_op(close):
             p.next()
-            return args
+            return args, spans
         if p.at_end():
-            return args  # implicit close at end-of-line; see `expect_close`
+            return args, spans  # implicit close at end-of-line; see `expect_close`
         while True:
             if p.at_end() or (p.peek().kind == "OP" and p.peek().text in (",", close)):
                 args.append(None)
+                spans.append(None)
             else:
+                start_col = p.peek().col
                 args.append(self._parse_expr(p, line, file))
+                spans.append((start_col, p.peek().col))
             if p.is_op(","):
                 p.next()
                 continue
             break
         p.expect_close(close)
-        return args
+        return args, spans
 
-    def _parse_bare_arglist(self, p: _TokStream, line: int, file: str) -> list[S.Expr | None]:
+    def _parse_bare_arglist(
+        self, p: _TokStream, line: int, file: str
+    ) -> tuple[list[S.Expr | None], list[tuple[int, int] | None]]:
+        start_col = p.peek().col
         args: list[S.Expr | None] = [self._parse_expr(p, line, file)]
+        spans: list[tuple[int, int] | None] = [(start_col, p.peek().col)]
         while p.is_op(","):
             p.next()
+            start_col = p.peek().col
             args.append(self._parse_expr(p, line, file))
-        return args
+            spans.append((start_col, p.peek().col))
+        return args, spans
 
 
 def _profile_for(name: str) -> profiles.Profile:

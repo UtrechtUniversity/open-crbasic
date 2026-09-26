@@ -132,6 +132,39 @@ def test_alias_without_eq():
     assert "Need '=' in alias definition: ." in messages_of(result)
 
 
+# ------------------------------------------------------------------ malformed `As` clause
+#
+# `docs/checker.md` "Invalid Variable declaration", `docs/fuzz-findings.md` "5. Message diff":
+# well evidenced by 6 independent fuzz mutants, all a corrupted spelling of the `As` keyword.
+
+
+def test_malformed_as_clause_reports_invalid_variable_declaration():
+    result = compile_text("Public X asX Long\n" + wrapped(""))
+    assert messages_of(result) == ["Invalid Variable declaration asX."]
+
+
+def test_malformed_as_clause_with_no_as_keyword_at_all():
+    result = compile_text("Public X garbage\n" + wrapped(""))
+    assert messages_of(result) == ["Invalid Variable declaration garbage."]
+
+
+def test_malformed_as_clause_stops_the_whole_declaration():
+    # oracle-confirmed: a valid first variable followed by a malformed second one reports only
+    # the second's own message and parses no further variable in the same comma list.
+    result = compile_text("Public pppSocket As Long,pppIP As_Mut String\n" + wrapped(""))
+    assert messages_of(result) == ["Invalid Variable declaration As_Mut."]
+
+
+def test_trailing_text_after_a_complete_as_clause_is_silently_ignored():
+    # oracle-confirmed quirk: once a variable's own `As Type` has been fully parsed, anything
+    # before the next comma (or end of line) is discarded, not rejected -- `Y` is still declared
+    # normally afterwards.
+    result = compile_text(
+        "Public X As Long asX String, Y As Float\n" + wrapped("    Y = 1\n")
+    )
+    assert result.diagnostics.errors == []
+
+
 # ------------------------------------------------------------------ array dimension limits
 #
 # `docs/checker.md` "Array dimension limits", `docs/fuzz-findings.md` "Hang": oracle-confirmed

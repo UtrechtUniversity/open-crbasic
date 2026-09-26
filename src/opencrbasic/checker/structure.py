@@ -46,6 +46,13 @@ _UNITS_WITHOUT_EQ = "Units without '='"
 _CONST_WITHOUT_EQ = "Const without '='"
 _ALIAS_WITHOUT_EQ = "Alias without '='"
 
+# `parser.py`'s `_parse_vardecl` reason for a `Public`/`Dim` variable whose own type clause is
+# malformed -- a token right after the name/dims that is neither `As`, `=`, a comma nor end of
+# line, most often a corrupted spelling of `As` itself (`docs/fuzz-findings.md` "5. Message diff",
+# `docs/checker.md` "Invalid Variable declaration"). The reason string carries the offending
+# token's own text after this prefix.
+_INVALID_AS_CLAUSE = "Invalid As clause: "
+
 
 def _keyword(stmt: S.Stmt) -> str:
     if isinstance(stmt, S.Instruction):
@@ -241,6 +248,10 @@ def _check_unparsed(stmt: S.Unparsed, diags: Diagnostics) -> None:
         # See `parser.py`'s `_parse_alias` for the one known-imprecise sub-case (a target present
         # but no `=`) this doesn't try to echo exactly.
         diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}.", stmt.file)
+        return
+    if stmt.reason.startswith(_INVALID_AS_CLAUSE):
+        bad_token = stmt.reason[len(_INVALID_AS_CLAUSE):]
+        diags.error(stmt.line, f"Invalid Variable declaration {bad_token}.", stmt.file)
         return
     # `show_file=False`: the same oracle-confirmed exception as `_check_call`'s identical fallback
     # message -- see that function's comment.

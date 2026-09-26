@@ -14,6 +14,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
+from . import instr_rules
 
 
 def _table_arg_name(stmt: S.Instruction) -> str | None:
@@ -64,6 +65,11 @@ def check_early(program: S.Program, profile: Profile, diags: Diagnostics, env: c
     _check_reachability(program, profile, diags, env)
     _check_background_calibration(program, profile, diags, env)
     _check_fnotch(program, profile, diags, env)
+    # Numeric `Scan`/`DataInterval` value checks: also ungated (oracle-confirmed,
+    # `docs/instructions.md`), implemented in `instr_rules.py` alongside this module's other
+    # required-parameter check since they are instruction-argument-shaped, not warnings.
+    instr_rules.check_scan_params(program, profile, diags, env)
+    instr_rules.check_data_interval(program, profile, diags, env)
 
 
 def _kw(stmt: S.Stmt) -> str:
@@ -173,9 +179,17 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             continue
 
         if kw == "SLOWSEQUENCE":
-            dead = False
-            i += 1
-            continue
+            # A `SlowSequence` starts a genuinely separate, concurrently-scheduled task (oracle:
+            # `docs/instructions.md` -- a `SlowSequence`/`Scan`/`NextScan` right after an infinite,
+            # no-`ExitScan` main scan is never itself flagged). This checker has no oracle evidence
+            # either way for reachability *within* a slow sequence's own scan chain (a second,
+            # chained slow `Scan...NextScan` the way the main sequence supports, `docs/checker.md`'s
+            # own CHM "Scan Loop #1/#2" example) or for its own `EndSequence` terminator, which a
+            # false positive here (10 corpus regressions during development, all real, oracle-
+            # accepted programs, e.g. `ftpclient_1.CR6`'s `EndSequence`) showed is *not* flagged
+            # either. Rather than guess at slow-sequence-internal reachability, stop this analysis
+            # entirely once a `SlowSequence` is seen -- AGENTS.md: never guess into a false warning.
+            return
 
         if kw == "SCAN":
             if dead:
