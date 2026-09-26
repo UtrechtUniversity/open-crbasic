@@ -58,6 +58,31 @@ _INVALID_AS_CLAUSE = "Invalid As clause: "
 # `S.Instruction`): a statement lexically inside one of these is never subject to the "before
 # `BeginProg`" placement check in `check_pass2`, regardless of its own textual line. See that
 # function's docstring for the oracle/corpus evidence behind each one.
+#
+# **Round 5 finding, tried and reverted**: `DATATABLE`/`CONSTTABLE`/`ENDTABLE`/`ENDCONSTTABLE`
+# (and, by the same reasoning, `STRUCTURETYPE`/`OBJECTTYPE`) look like the same shape at first --
+# a `DataTable...EndTable` body's own `Sample`/`Average`/... field instructions are routinely,
+# legitimately placed before `BeginProg`, a 740-accepted-file corpus safety scan this round
+# (`docs/checker.md` "Round 5") confirmed -- but adding them here is **wrong**: a full
+# `tools/difftest.py --logger cr6 --group chm` re-run caught a real regression,
+# `tests/corpus/chm/solarposition_1.CR6` (`exact` -> `verdict`), a malformed, unresolved statement
+# (a CHM prose-wrap artifact, `'must be` / `in units of seconds when used in SolarPosition` split
+# across two physical lines with no `'` on the second) **inside** a `ConstTable...EndConstTable`
+# body still gets the real compiler's own before-`BeginProg` placement follow-up
+# (`Expr illegally occurs before BeginProg.`), unlike the same shape inside a genuine `Sub`/
+# `Function`/`DialSequence`/... body. The distinguishing property these body blocks share and
+# `DataTable`/`ConstTable`/`StructureType`/`ObjectType` do not: their contents are *deferred*,
+# invoked-later code (a `Sub` only runs when called, a `DialSequence` only runs when dialled), while
+# a `DataTable`/`ConstTable`/`StructureType` body is compiled immediately, in place -- an unresolved
+# statement inside one is exactly as illegal as one at the true top level, oracle-confirmed by this
+# one corpus counter-example. Left out of this set entirely; `Sample`/`Average`/etc.'s own
+# legitimate placement inside a `DataTable` body was never actually at risk (they are recognised,
+# resolving `Instruction`s, not `Call`/`Unparsed`/`Assignment` records this check's own three
+# branches would ever flag), so nothing needed this addition in the first place -- the 4-file
+# `cr1000x` `chm` exact improvement this change also produced during development was a
+# coincidental side effect of it, not independent evidence it was correct, and was given up along
+# with the fix once the regression was found (AGENTS.md: verify a generalisation against the whole
+# corpus, not a hand-written probe or a partial metric, before trusting it).
 _BODY_BLOCK_STARTS = frozenset({
     "DIALSEQUENCE", "MODEMHANGUP", "MENU", "SUBMENU", "VOICE", "BURSTTRIGGER",
     "APPLYANDRESTARTSEQUENCE", "PROCHIPRI",
@@ -66,6 +91,27 @@ _BODY_BLOCK_ENDS = frozenset({
     "ENDDIALSEQUENCE", "ENDMODEMHANGUP", "ENDMENU", "ENDSUBMENU", "ENDVOICE", "ENDBURSTTRIGGER",
     "ENDAPPLYANDRESTARTSEQUENCE", "ENDPROCHIPRI",
 })
+
+# Ordinary, recognised `Instruction`s that are oracle- *and* corpus-confirmed illegal at the
+# top level before `BeginProg` (round 5, `docs/checker.md`): unlike the generic "Expr"/`Call`
+# fallback above, these are real, declared instructions our parser resolves normally, so they
+# would otherwise never reach any placement check at all. Found by fuzzing (`Scan`/`Delay`, both
+# oracle-confirmed single-line messages, `%s illegally occurs before BeginProg.` with `%s` = the
+# instruction's own proper-cased `data/<logger>/instructions.json` name, no preceding "Invalid, or
+# out of place expression" line -- the statement itself compiles fine, only its position is
+# illegal, the same shape a resolved bare function call or a resolved `Assignment` already gets).
+# Deliberately **not** generalised to "every instruction with runtime behaviour" or any other
+# broad rule: a 740-accepted-file corpus safety scan this round (`docs/checker.md` "Round 5") found
+# dozens of instructions that legitimately *do* appear before `BeginProg` (everything inside a
+# `DataTable`/`ConstTable`/`StructureType` body, plus program-wide directives such as
+# `PipeLineMode`/`SequentialMode`/`ReadOnly`/`StationName`/`TimedControl`/`CH400Status`/
+# `SDMBeginPort`), including two (`CH400Status`, `SDMBeginPort`) that share `Scan`/`Delay`'s own
+# non-null `runtime_fn` marker in the extracted instruction table -- ruling out that marker as a
+# safe discriminator. Only instructions with **both** a real oracle transcript *and* zero
+# counter-examples in that same scan are included here; every other instruction is left alone
+# (AGENTS.md: never guess into a false reject) rather than risk misclassifying one of the many
+# still-unverified entries in `data/cr6/instructions.json`.
+_FORBIDDEN_BEFORE_BEGINPROG = frozenset({"SCAN", "DELAY"})
 
 
 def _keyword(stmt: S.Stmt) -> str:
@@ -203,11 +249,25 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     beginprog_line = next((s.line for s in program.statements if _keyword(s) == "BEGINPROG"), None)
 
     in_body_block = False
+    # Narrower than `in_body_block` and used *only* by `_FORBIDDEN_BEFORE_BEGINPROG` below -- kept
+    # deliberately separate rather than folded into `_BODY_BLOCK_STARTS`/`_BODY_BLOCK_ENDS`
+    # (round 5, `docs/checker.md`): a fuzz-found false reject (`Delay(0,1,Sec)` inserted inside a
+    # `DataTable...EndTable` body, `structuretype_2.CR6`-derived) shows `DataTable` bodies *do*
+    # suppress this specific check, unlike the "before `BeginProg`" placement check the paragraph
+    # above documents reverting `DataTable`/`ConstTable` out of (a `ConstTable` body's own
+    # unresolved-statement fallback does **not** get the same suppression, oracle-confirmed via
+    # `solarposition_1.CR6` -- the two container kinds genuinely behave differently for these two
+    # different checks, so one shared flag cannot correctly cover both).
+    in_table = False
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
             in_body_block = True
             continue
         kw = _keyword(stmt)
+        if kw == "DATATABLE":
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue
@@ -223,6 +283,12 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             stop = _check_assignment_pass2(stmt, known, diags, beginprog_line, in_body_block)
             if stop is not None:
                 return stop
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _FORBIDDEN_BEFORE_BEGINPROG:
+            if not in_body_block and not in_table and (beginprog_line is None or stmt.line < beginprog_line):
+                record = profile.instructions.get(stmt.keyword.upper())
+                display = record["name"] if record else stmt.keyword
+                diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
+                return stmt.line
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
                 continue

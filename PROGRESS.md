@@ -28,8 +28,8 @@ not re-measured independently since.
 |---|---|---|---|
 | CR6 | 16 / 0 / 0 | 336 / 162 / 9 | 0 |
 | CR1000X | 9 / 7 / 0 | 352 / 149 / 6 | 0 |
-| CR300 | 0 / 16 / 0 | 135 / 356 / 16 | 0 |
-| CR350 | 0 / 16 / 0 | 139 / 353 / 15 | 0 |
+| CR300 | 0 / 16 / 0 | 135 / 359 / 13 | 0 |
+| CR350 | 0 / 16 / 0 | 139 / 356 / 12 | 0 |
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
@@ -54,6 +54,61 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-26 (checker round 5: fuzz-driven false-accept reduction): `checker/structure.py`,
+  `checker/expressions.py`, `checker/symbols.py`, `checker/instr_rules.py`, `parser.py` (owned this
+  round, plus `checker/__init__.py`, one wiring line). Full rules, oracle transcripts and the two
+  "tried broader, reverted" accounts: `docs/checker.md` "Round 5". Six items: (1) `Assignment`
+  placement before `BeginProg` (a three-way split mirroring the existing `Call` check -- target
+  doesn't resolve / target resolves+RHS undefined / target resolves+RHS clean -- was the largest
+  single false-accept group, ~70 of ~300 mutants); (2) `ESSVariables`-implied variable names
+  (`symbols.ess_variable_names`, a false reject item 1 exposed, fixed conservatively: only names the
+  program itself references); (3) a **pre-existing** false reject found while re-measuring a clean
+  baseline, not caused by this round -- `DataInterval`/`Scan`'s divisibility check needs a
+  whole-number-value exemption (`DataInterval(0,1.5,Sec,10)` inside `Scan(1,Sec,...)` compiles
+  clean despite 1.5 not being an integer multiple of 1); (4) a malformed `As` clause is exempt for
+  **array** declarations (`Public Result(4) as_Fz Boolean` compiles clean, `parser.py`); (5) `Too
+  many parameters:  %s.` (new `check_too_many`, restricted by a 740-accepted-file corpus safety
+  scan to type-code `kind`s proven safe -- `Alias`/`Units`/`MenuPick`/`ConstTable`/instructions with
+  an empty declared `params` list are excluded, all found to misfire otherwise); (6) `Scan`/`Delay`
+  illegally occur before `BeginProg` -- tried as a general "any recognised `Instruction`" rule and
+  reverted (a 740-file corpus scan found dozens of legitimate counter-examples, no safe
+  discriminator found even in the extracted instruction table's own `runtime_fn` field); kept as a
+  narrow, two-instruction set instead. Three genuine false rejects were found and fixed this round
+  (items 2/3/4's own root causes), each caught by the mandatory full-corpus + `fuzz_replay.py`
+  re-run before being called done -- this round's own repeat of earlier sessions' methodological
+  finding (a hand-written probe is not a substitute for the full corpus before trusting a
+  generalisation), twice over (see item 6's own two "tried, reverted" attempts in `docs/checker.md`).
+
+  `tools/fuzz.py --logger cr6/cr1000x --count 300` false-accept count, before this round's start /
+  after, `false_reject = 0` throughout every intermediate and final measurement:
+
+  | Logger | seed | before | after |
+  |---|---|---|---|
+  | cr6 | 42 | 67 | 44 |
+  | cr6 | 43 | 59 | 32 |
+  | cr6 | 44 | 62 | 36 |
+  | cr1000x | 42 | 57 | 39 |
+
+  (The task brief's own stated baseline, 74/300 on cr6 seed 42, predates the "CR300/CR350 agreement
+  round" below, which had already lowered it to 67/300 before this round started -- not this
+  round's own work.)
+
+  `tools/difftest.py --logger <l> --show 0`: exact counts never lowered (cr6 336, cr1000x 352, cr300
+  135, cr350 139, all unchanged), zero false rejects on all four loggers throughout (`their_exit==0
+  and our_exit!=0` check, empty every time); cr300/cr350 chm mismatch improved (16->13, 15->12, item
+  5's own effect) with no exact-count change. `python3 -m pytest -q`: 963 passed throughout (0
+  failed). `tools/fuzz_replay.py --workers 2`: 193 reproducers fixed outright by this round's end
+  (708 total by then, up from 644 at the round's start as fresh false-accept saves accumulated), 60
+  changed class, zero new `false_reject` at every checkpoint; the two `cr350` `false_reject` entries
+  present throughout are the pre-existing, already-documented `ESSInitialize`/`SNMPVariable`-shaped
+  gap (`docs/fuzz-findings.md` "4."), unchanged. Top remaining `false_accept` groups (`docs/
+  checker.md` "Round 5" has the full list): `Scan %duSec invalid must be at least %dmSec.`
+  (sub-millisecond granularity, boundary not pinned down); general expression-tree gaps outside
+  `expressions.py`'s deliberately narrow scope; `Illegally dimensioned aliased name`; `Multiple
+  BeginProgs.`; `Need closing )`; `DataTable ... EndTable not matched.`; `IF or SELECT statement
+  illegally has SCAN without NEXT SCAN.` (a new placement shape along item 6's own lines, not
+  chased this round).
 
 - 2026-09-26 (`-z` TDF auto-size exact, `-u` implemented): two independent pieces, `tables.py`
   (owned this round, no `checker/*` changes needed) and `checker/unused.py` (new file) plus small

@@ -216,17 +216,23 @@ def _is_negative_or_invalid(value: object) -> bool:
     """`True` when a folded constant `value` is what the real compiler's shared `Scan`/
     `DataInterval` parameter validator (`FUN_00468900`/`FUN_004f11d0`) rejects: a non-numeric
     constant (a string, oracle: `Scan("fuzz",Sec,1,0)` -> `Scan Interval parameter must be a
-    non-negative integer`), or a number whose value truncated toward zero is negative. Python's
-    `int()` on a float already truncates toward zero, matching the oracle's own boundary exactly:
-    `-0.5` (`int(-0.5) == 0`) passes this check and is accepted (`docs/instructions.md`), `-1`
-    fails it. An unrecognised constant type (never observed; `consteval.value_of` only ever
-    returns `int`/`float`/`str`) is deliberately treated as *not* negative -- AGENTS.md: never
-    guess into a false rejection.
+    non-negative integer`), a number whose value truncated toward zero is negative, or one that
+    overflows a signed 32-bit int. Python's `int()` on a float already truncates toward zero,
+    matching the oracle's own boundary exactly: `-0.5` (`int(-0.5) == 0`) passes this check and is
+    accepted (`docs/instructions.md`), `-1` fails it. **Round 5 addition, oracle-confirmed**
+    (`docs/checker.md` "Round 5", a fuzz-found false accept): the same message also covers a
+    positive value too large to fit `INT32_MAX` (`2147483647`) -- `Scan(1,Sec,3,2147483647)`
+    compiles, `Scan(1,Sec,3,2147483648)` fails with this exact text, boundary-swept on both `Count`
+    and `Interval`; `DataInterval`'s own sibling check (`check_data_interval` below, same shared
+    predicate) shares the identical boundary (`DataInterval(2147483648,10,Sec,10)` ->
+    `DataInterval TintoInt and Interval parameters must be non-negative`). An unrecognised constant
+    type (never observed; `consteval.value_of` only ever returns `int`/`float`/`str`) is
+    deliberately treated as valid -- AGENTS.md: never guess into a false rejection.
     """
     if isinstance(value, str):
         return True
     if isinstance(value, (int, float)):
-        return int(value) < 0
+        return int(value) < 0 or int(value) > 2147483647
     return False
 
 
@@ -371,7 +377,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
                 value = consteval.value_of(arg, env)
             except consteval.NotConstant:
                 continue
-            if isinstance(value, (int, float)) and value < 0:
+            if _is_negative_or_invalid(value):
                 diags.error(stmt.line, "DataInterval TintoInt and Interval parameters must be non-negative", stmt.file)
                 break
         interval_us = _divisible_interval_us(interval, units, env)

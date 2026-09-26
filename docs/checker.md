@@ -919,3 +919,229 @@ round's *starting* `expressions.py`/`symbols.py` and finding it already broken t
 Not implemented: the other two placement-error shapes (`%s is declared in the middle of an
 executing sequence`, `%s illegally occurs after EndSequence.`) -- no oracle evidence gathered this
 round, left as a documented gap rather than guessed at.
+
+## Round 5 (`structure.py`, `expressions.py`, `symbols.py`, `instr_rules.py`)
+
+Fuzz-driven false-accept reduction (`tools/fuzz.py --logger cr6/cr1000x`), method: group saved
+`tests/corpus/fuzz/<logger>/false_accept/` reproducers by the real compiler's own message (line
+numbers/echoed text generalised), implement the most frequent groups, oracle-confirm each rule and
+its pass-tier behaviour, re-verify the whole corpus + all four loggers + `fuzz_replay.py` after
+every change (this round's own methodological lesson, twice -- see "Reverted" below). All probes
+via `python3 tools/oracle.py <file> --no-cache` against `CR6Comp.exe`/`cr1000xcomp.exe` under Wine,
+2026-09-26.
+
+### 1. Assignment placement before `BeginProg` (`structure.py`, `expressions.py`)
+
+The largest single group by far (~70 of the ~300-mutant `false_accept` count before this round):
+an `Assignment` statement (`X = 1`) was not subject to *any* placement or target-resolution check
+at all, unlike `Call`/`Unparsed` (`_check_call_pass2`, already implemented). Oracle sweep (a dozen
+minimal probes, target declared/undeclared x RHS clean/undefined x before/after `BeginProg` x
+inside/outside a `Sub` body) establishes the exact three-way split, mirroring `_check_call_pass2`'s
+own shape:
+
+- **Target does not resolve** (`FuzzVar = 1`; an array base or index that doesn't resolve,
+  `X(BadIdx) = 1`, works the same way): `Invalid, or out of place expression: <verbatim statement
+  text>.` always (`show_file=False`, same exception as the `Call`/`Unparsed` fallback), **plus** a
+  before-`BeginProg` placement follow-up + stop, regardless of whether the RHS is *also* undefined
+  (`FuzzVar1 = FuzzVar2`, both undeclared, still gives only the one "Invalid, or out of place"
+  line, never a second "Invalid symbol in expression" for the RHS too).
+- **Target resolves, RHS has an undefined name** (`X = FuzzVar`, `X` declared): silent here,
+  **including when before `BeginProg`** -- oracle-confirmed the placement follow-up does *not*
+  fire in this shape (`X = FuzzVar` alone before `BeginProg` gives only `expressions.check`'s own
+  `Invalid symbol in expression: X = FuzzVar.`, no `Expr illegally occurs before BeginProg.` at
+  all). Modelled by having `expressions.check`'s pre-existing assignment-RHS loop (`docs/loggers.md`
+  "CR300/CR350 agreement round") skip a statement entirely when its own target doesn't resolve
+  (`_undefined_names(stmt.target, known)`, reusing the same walk a read-context argument uses), and
+  by having `structure.py`'s new placement check do nothing when the RHS doesn't resolve either --
+  each defers to the other's own diagnostic for the two disjoint failure shapes, matching the real
+  compiler's own "one message per statement" behaviour exactly.
+- **Target resolves, RHS is clean**: normally silent, but `Expr illegally occurs before
+  BeginProg.` (no preceding echo line, same shape as a resolved bare function call) and a stop when
+  before `BeginProg`.
+
+`_check_assignment_pass2` (`structure.py`) implements this, called from the same per-statement loop
+`_check_call_pass2` already runs in, with the same `in_body_block`/`beginprog_line` inputs (an
+assignment inside a `Sub`/`Function`/other body block is exempt the same way a bare call already
+was). Fuzz false-accept rate (`tools/fuzz.py --logger cr6 --count 300 --seed 42`): 67 -> ~44 (this
+item alone was measured mid-round at ~54; see the round's combined total below).
+
+### 2. `ESSVariables`-implied variable names (`symbols.py`, new `ess_variable_names`)
+
+Caught by the mandatory full-corpus + `fuzz_replay.py` re-run after item 1 landed, not a hand probe:
+`ESSVariables Dim` implicitly declares a whole family of predefined NTCIP `ess...`-prefixed
+variables (`essNtcipSiteDescription`, `essBatteryStatus`, ...) this project has no extracted table
+for (unlike a `DataTable`'s own fields). `ESSVariables Dim` / `essNtcipSiteDescription = "Main
+Street"` compiles on `CR6Comp.exe`, but the new assignment-target check (item 1) treated the name
+as unresolved, a genuine false reject (`chm/essinitialize_1.CR6`-derived fuzz mutant). Fixed
+conservatively: `symbols.ess_variable_names(program)` returns every `ess`-prefixed name the program
+*itself* references, only when it declares `ESSVariables` somewhere -- no attempt to enumerate the
+real, complete name list, so a genuine typo is silently accepted too (under-reporting, the safe
+side of AGENTS.md's priority). Wired into `expressions._known_names`, the single shared `known`
+computation both `structure.py`'s and `expressions.py`'s checks already use.
+
+### 3. `DataInterval`/`Scan` fractional-interval divisibility exemption (`instr_rules.py`)
+
+A **pre-existing bug**, found while re-measuring a clean baseline for this round (not caused by
+this round's own work): `check_data_interval`'s "table interval must be an exact multiple of the
+scan interval" check (`docs/instructions.md`) computes both sides in whole microseconds and applies
+unconditionally -- but oracle sweeps (`DataInterval(0,1.1..2.9,Sec,10)` inside `Scan(1,Sec,...)`,
+and `Scan(1.5,Sec,...)` against a whole-number `DataInterval`) show the real compiler silently
+**exempts** the check entirely whenever *either* side's own raw declared value is not a whole
+number, regardless of the resulting divisibility in microseconds (`DataInterval(0,1.5,Sec,10)`
+inside `Scan(1,Sec,...)` compiles clean, on all loggers this project has a `DataInterval`-value
+check for, despite `1.5` not being an integer multiple of `1`). A whole-number **float** literal
+(`5.0`) still counts as an integer and the check still fires for it -- this is about the folded
+*value*, not whether the source token has a decimal point. Fixed with a new
+`_divisible_interval_us` wrapper (`_interval_us` plus a `value == int(value)` guard) used only by
+the two `check_data_interval` call sites that feed the divisibility comparison; `check_scan_params`
+and the other `check_data_interval` call site (the non-negative check) are untouched. Found via a
+`tools/fuzz.py --logger cr1000x` false-reject saved reproducer this round's own clean-baseline
+measurement surfaced (`chm/goesstatus_1.CR6`-derived), confirmed on CR6 too (not logger-specific).
+
+### 4. Malformed `As` clause: array declarations are exempt (`parser.py`)
+
+Another false reject found the same way (a `chm/imp_1.CR6`-derived fuzz mutant, CR1000X):
+`structure.py`'s existing "Invalid Variable declaration %s." rule (`docs/checker.md` above,
+`parser.py`'s `_parse_vardecl`) fires for *any* unexpected token right after a variable's own
+name/dims -- but oracle-confirmed side by side, `Public Result as_Fz Boolean` (scalar, no dims)
+correctly raises `Invalid Variable declaration as_Fz.`, while the *exact same* malformed token
+after an **array** declaration, `Public Result(4) as_Fz Boolean`, compiles clean (`Result` left at
+its default type, as if the `As`-clause were never there at all; a later variable in the same comma
+list, `Public Result(4) as_Fz Boolean, Y As Long`, still parses `Y` normally). `_parse_vardecl` now
+only raises `_ParseError` here when `dims` is empty; an array declaration instead silently discards
+tokens up to the next comma/end of line, the same "post-`As`-clause discard" quirk this function
+already implements for a *different* shape.
+
+### 5. `Too many parameters:  %s.` (`instr_rules.py`, new `check_too_many`)
+
+Documented as unimplemented since `docs/fuzz-findings.md` (phase 4's first pass): the single
+largest remaining group this round (~28 of ~300 mutants), an argument list running *past* an
+instruction's declared parameter count. Pass 1 (oracle-confirmed: fires alongside an earlier,
+unrelated `Variable not named.`), mirroring `check`'s own shortfall check. The echo is the *next*
+token by the real compiler's own flat, non-depth-aware tokenizer (`docs/type-codes.md` section 1's
+`FUN_004ba440`-style delimiter set, `,:() =\n\t>`) starting at the first excess argument's own raw
+position (`Instruction.arg_spans`) -- oracle-confirmed: `Battery(X,X,X)` (2 extra bare `X`s) echoes
+only the *first* one (`Too many parameters:  X.`), and `PanelTemp(PTemp,15000,(1+2))` (one extra,
+parenthesised argument) echoes `1+2`, its own leading `(` consumed as a delimiter.
+
+**Deliberately restricted to a narrow, corpus-verified-safe set of type-code `kind`s**
+(`_TOO_MANY_SAFE_KINDS`): a 740-accepted-file corpus safety scan (every `repo`/`chm` file
+`tools/difftest.py` shows `their_exit == 0` for, all four loggers, parsed and checked against this
+rule before it was wired in) found several instructions that would otherwise misfire, all sharing
+one root cause -- their declared codes capture raw text that may itself contain embedded commas as
+*one* slot (`Units X = Volts` is one code-6 argument to the real compiler, never comma-split, while
+this checker's own generic `stmt.args` is always comma-split): `Alias` (631 hits), `Units` (534),
+`MenuPick` (35), `ConstTable` (17) from the `identifier`/`deferred_text`/`raw_line_text`/
+`expr_marker` kinds, plus four instructions whose extracted `params` is simply **empty**
+(`Alias`/`Units`/`Data`/`EssVariables`/`ReadOnly` -- meaning this project's own table has no
+per-code model for them at all, real custom parsing outside the generic loop this check models).
+`_too_many_eligible` requires every declared code's `kind` to be in the safe set (or `none`) *and*
+`params` to be non-empty; the safety scan found zero false hits with this restriction across all
+740 files. `Call`/`Sub`/`Function`/`FOR` (codes 12/13/35/3, inherently variable-length) are excluded
+defensively rather than corpus-evidenced: they parse to `S.Call`/`S.SubDef`/`S.For`, never reach a
+plain `S.Instruction`'s `args` list at all.
+
+### 6. `Scan`/`Delay` illegally occur before `BeginProg` (`structure.py`) -- tried broader, reverted to two instructions
+
+Fuzzing also found `Scan(...)`/`Delay(...)` statements placed before `BeginProg` compile clean here
+but real-reject with `Scan illegally occurs before BeginProg.`/`Delay illegally occurs before
+BeginProg.` (single line, no preceding echo -- the same shape a resolved bare function call already
+gets). These are *recognised* `S.Instruction`s, so `_check_call_pass2`'s `Call`-only placement
+check never reaches them at all -- a new, third check type was needed.
+
+**A broad version was tried and reverted, twice, both times caught only by a full
+`tools/difftest.py --group chm` re-run, not a hand probe** (this round's own repeat of the "Round
+3"/"pass model" sessions' own methodological finding):
+
+1. **"Any recognised `Instruction` before `BeginProg` is illegal"**: a 740-accepted-file corpus
+   scan (same technique as item 5) found this false immediately -- dozens of instructions
+   legitimately appear before `BeginProg` in real, accepted programs: everything inside a
+   `DataTable`/`ConstTable`/`StructureType` body (`Sample`/`Average`/`Maximum`/.../`FieldNames`),
+   and program-wide directives (`PipeLineMode`/`SequentialMode`/`ReadOnly`/`StationName`/
+   `TimedControl`/`CH400Status`/`SDMBeginPort`/...). A `runtime_fn is not None` heuristic (the
+   extracted instruction table's own field) looked promising -- it agrees with `Scan`/`Delay` and
+   with every instruction the scan found legitimate -- but `CH400Status`/`SDMBeginPort` are
+   counter-examples (non-null `runtime_fn`, legitimately used before `BeginProg`), ruling it out as
+   a safe discriminator. **Kept narrow instead**: `_FORBIDDEN_BEFORE_BEGINPROG = {"SCAN", "DELAY"}`,
+   the two instructions with both a real oracle transcript and zero counter-examples in the scan;
+   every other instruction is left alone.
+2. **Suppressing the check inside `DataTable`/`ConstTable`/`StructureType`/`ObjectType` bodies, by
+   adding them to the shared `_BODY_BLOCK_STARTS`/`_BODY_BLOCK_ENDS` set** `_check_call_pass2`/
+   `_check_assignment_pass2` already use for `Sub`/`Function`/`DialSequence`/...: looked safe (a
+   `DataTable` body's own field instructions are legitimately there) and even improved `cr1000x`
+   `chm` exact by 4 files during development -- but a full `tools/difftest.py --logger cr6 --group
+   chm` re-run caught a real regression, `tests/corpus/chm/solarposition_1.CR6` (`exact` ->
+   `verdict`): a CHM prose-wrap artifact (`'must be` / `in units of seconds when used in
+   SolarPosition` split across two physical lines with no `'` on the second) **inside** a
+   `ConstTable...EndConstTable` body still gets the real compiler's own placement follow-up
+   (`Expr illegally occurs before BeginProg.`), unlike the same shape inside a genuine `Sub`/
+   `DialSequence` body. The distinguishing property: `Sub`/`DialSequence`/... bodies are *deferred*,
+   invoked-later code, while `DataTable`/`ConstTable`/`StructureType` bodies compile immediately in
+   place -- an unresolved statement inside one is exactly as illegal as one at the true top level.
+   Reverted entirely (the cr1000x improvement was a coincidental side effect, not independent
+   evidence the change was correct, and was given up along with the fix).
+   
+   A **second** fuzz-found false reject then showed the opposite gap for the *narrow* `Scan`/
+   `Delay` rule specifically: `Delay(0,1,Sec)` inserted inside a `DataTable...EndTable` body
+   (`chm/structuretype_2.CR6`-derived) real-compiles clean, but the reverted-to-narrow version still
+   flagged it (no body-block suppression left at all after the full revert). Fixed with a third,
+   independent tracking flag, `in_table` (`DataTable`/`EndTable` only, toggled in the same
+   `check_pass2` loop), used *only* by the `_FORBIDDEN_BEFORE_BEGINPROG` branch -- deliberately
+   **not** merged into the shared `in_body_block` flag `Call`/`Assignment` use, since item 2's own
+   counter-example shows `DataTable` and `ConstTable` do not behave identically for *that* check
+   either kind of container is involved in.
+
+### Measured impact
+
+`tools/fuzz.py --logger cr6/cr1000x --count 300`, false-accept count (the task's own headline
+metric), before this round's first commit / after all six items above, `false_reject = 0`
+throughout every intermediate and final measurement:
+
+| Logger | seed | before | after |
+|---|---|---|---|
+| cr6 | 42 | 67 | 44 |
+| cr6 | 43 | 59 | 32 |
+| cr6 | 44 | 62 | 36 |
+| cr1000x | 42 | 57 | 39 |
+
+(The task brief's own stated baseline, 74/300 on `cr6` seed 42, is this project's state as of
+"checker round 4"/before the later "CR300/CR350 agreement round" landed a few more fixes
+between sessions; 67/300 is this round's own freshly re-measured starting point on the same seed,
+already lower than the brief's figure for reasons independent of this round's own work.)
+
+`tools/difftest.py --logger <l> --show 0` (`repo`+`examples`+`chm`), before / after, exact counts
+never lowered, zero false rejects (`their_exit==0 and our_exit!=0`) throughout:
+
+| Logger | chm exact before | chm exact after | repo exact |
+|---|---|---|---|
+| cr6 | 336 | 336 | 16/16 (unchanged) |
+| cr1000x | 352 | 352 | 9/16 (unchanged) |
+| cr300 | 135 | 135 (verdict 356->359, mismatch 16->13, item 5's own effect there) | 0/16 (unchanged) |
+| cr350 | 139 | 139 (verdict 353->356, mismatch 15->12, same) | 0/16 (unchanged) |
+
+`python3 -m pytest -q`: 963 passed throughout (0 failed; the concurrent `checker/unused.py`/
+`tables.py`/`compiler.py` workstream's own new tests are included in this count, not this round's
+own). `tools/fuzz_replay.py --workers 2` (708 reproducers by the round's end, up from 644 at the
+start as fresh false-accept saves accumulated): 193 fixed outright (up from 0), 60 changed class,
+**zero new `false_reject`** at every checkpoint -- including three genuine, this-round-found false
+rejects (items 2/3/4's own root causes, none pre-existing) that were each caught by the mandatory
+full-corpus + `fuzz_replay` re-run *before* being treated as done, fixed, and re-verified fixed; the
+two `cr350` `false_reject` entries present throughout are the pre-existing, already-documented
+`ESSInitialize`/`SNMPVariable`-shaped gap (`docs/fuzz-findings.md` "4. False reject"), unchanged.
+
+### Top remaining `false_accept` groups (this round's own end state)
+
+By re-running `fuzz_replay.py --workers 2` and grouping the still-reproducing `false_accept`
+entries by the real compiler's own (generalised) message text, most frequent first: `Scan %duSec
+invalid must be at least %dmSec.` (a sub-millisecond-granularity check, boundary not pinned down,
+`docs/instructions.md` "Known gaps"); general expression-tree undefined-name gaps not yet reached
+by `expressions.py`'s deliberately narrow scope (`Invalid symbol in expression`, e.g. a name nested
+inside a `SplitStr`/`FileReadLine`-style argument); `Illegally dimensioned aliased name` (an
+`Alias` target's own array-shape validation, not yet implemented); `Multiple BeginProgs.` (no
+duplicate-`BeginProg`/duplicate-declaration check exists yet, `docs/fuzz-findings.md` "8."); `Need
+closing )` (a parser-level unclosed-paren tolerance gap, `docs/frontend.md`); `DataTable ...
+EndTable not matched.` (an unclosed `DataTable`, `docs/instructions.md`'s own documented,
+not-implemented gap); `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (a `Scan`
+opened inside an `If`/`Select` body without its own matching `NextScan`, a new placement shape
+along the lines of item 6 above, not chased this round); `Duplicate Alias`/`MenuRecompile must be
+used within DisplayMenu..EndMenu.` (single-digit-count, instruction-specific gaps).
