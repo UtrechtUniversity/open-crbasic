@@ -55,6 +55,57 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 
 ## Log
 
+- 2026-09-26 (checker round 6a: fuzz-driven false-accept reduction, continued): `checker/
+  structure.py`, `checker/symbols.py`, `checker/instr_rules.py`, `checker/instr_data.py`,
+  `checker/warnings.py`, `checker/__init__.py` (owned this round). Full rules and oracle evidence:
+  `docs/checker.md` "Round 6". Seven items, same method as round 5 (group saved fuzz reproducers
+  by the real compiler's own message, oracle-confirm the exact shape, re-verify the whole corpus +
+  all four loggers + `fuzz_replay.py` after every change): (1) `Scan %duSec invalid must be at
+  least %dmSec.`/`Scans must be a multiple of %dmSec.` (`docs/instructions.md`'s own "boundary
+  this session could not pin down" gap, resolved: the declared `Interval` truncates toward zero
+  *in its own declared unit* before multiplying by that unit's microsecond factor, no float-
+  precision subtlety at all, one rule with no per-unit branch); (2) a **pre-existing** bug found as
+  a side effect of (1), not caused by anything this round changed -- the background-calibration
+  warning is not actually ungated on CR6/CR1000X the way this project's own docs previously claimed
+  for all of `check_early`; moved it to `checker/__init__.py`'s final "no errors so far" tier;
+  (3) another **pre-existing** bug, found the same way -- `structure.py`'s three end-of-file block-
+  balance summary checks (`No BeginProg in Program.`/`Scan without NextScan.`/`IF or SELECT without
+  EndIf or EndSelect.`) needed a one-line guard, since the real compiler suppresses all three once
+  any other pass-1 declaration error already fired; (4) `Illegally dimensioned aliased name`/`Alias
+  is illegally dimensioned.` (an `Alias` target's own out-of-range or empty-parens index, new
+  `symbols.declared_dim0_sizes`); (5) `Multiple BeginProgs.` (a genuine nesting-depth check, not
+  "seen more than once"); (6) `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (a
+  `Scan` opened inside an `If`/`Select` still open, no matching `NextScan`, when that block's own
+  `EndIf`/`EndSelect` is reached); (7) `DataTable ... EndTable not matched.`/`Could not find
+  DataTable %s.` (an unclosed `DataTable`, split by whether anything later `CallTable`s it, new
+  `instr_data.calltable_targets`/`check_unclosed_calltable`). Cross-checked the two `DataTable`
+  messages directly against `cr300comp.exe` (byte-identical) since `tools/oracle.py`'s CLI always
+  drives `CR6Comp.exe`; implemented logger-unconditionally.
+
+  `tools/fuzz.py --logger cr6/cr1000x --count 300` false-accept count, this round's own fresh
+  start/end measurements (`false_reject = 0` throughout except one long-standing, pre-existing,
+  independently-root-caused `AddPrecise` gap found during baseline re-measurement, unattempted):
+
+  | Logger | seed | before | after |
+  |---|---|---|---|
+  | cr6 | 42 | 44 | 36 |
+  | cr6 | 43 | 32 | 29 |
+  | cr6 | 44 | 36 | 27 |
+  | cr1000x | 42 | 39 | 31 |
+
+  `tools/difftest.py --logger <l> --show 0`: exact counts never lowered (cr6 336, cr1000x 352,
+  unchanged), zero false rejects on all four loggers throughout. `python3 -m pytest -q`: 963 passed
+  throughout (0 failed). `tools/fuzz_replay.py` (930 reproducers across cr6+cr1000x): several
+  hundred fixed outright, dozens changed class, zero new `false_reject` (five older, independently
+  root-caused pre-existing `false_reject` entries were themselves fixed outright as a side effect).
+  This round ran on a repository shared live with the concurrent "Round 6b" session below, whose
+  commits landed in this same working tree mid-round; the numbers above are this round's own
+  fresh, unadjusted start/end points, not attributed to that other session's unrelated changes.
+  Remaining groups: `Duplicate Alias`, further `Need closing )` shapes beyond item 4's own, general
+  expression-tree gaps outside `expressions.py`'s deliberately narrow scope, `DataTable without
+  EndTable.` (item 7's own not-attempted nested-table shape), and function/`Sub`/`Function`
+  argument-count/type checks from `data/functions.json` (none attempted this round).
+
 - 2026-09-26 (checker round 6b: CR300/CR350 undefined bare calls, `SerialOpen` `ComPort`): new
   `checker/cr3xx.py` (CR300/CR350-only checks, wired into `checker/__init__.py` with one additive
   call), one additive `Profile.undefined_call_message` field (`profiles.py`) and its one gated

@@ -1145,3 +1145,231 @@ not-implemented gap); `IF or SELECT statement illegally has SCAN without NEXT SC
 opened inside an `If`/`Select` body without its own matching `NextScan`, a new placement shape
 along the lines of item 6 above, not chased this round); `Duplicate Alias`/`MenuRecompile must be
 used within DisplayMenu..EndMenu.` (single-digit-count, instruction-specific gaps).
+
+## Round 6 (`structure.py`, `symbols.py`, `instr_rules.py`, `instr_data.py`, `warnings.py`,
+`checker/__init__.py`)
+
+Continues round 5's fuzz-driven false-accept reduction, same method (group saved fuzz reproducers
+by the real compiler's own message, oracle-confirm each shape's exact rule and pass-tier
+behaviour with `tools/oracle.py <file> --no-cache` scratch probes, re-verify the whole corpus + all
+four loggers + `fuzz_replay.py` after every change). All probes CR6 via the oracle harness, 2026-09-
+26; the two `DataTable`-related messages were also cross-checked directly against `cr300comp.exe`
+under Wine (`tools/oracle.py`'s own CLI always drives `CR6Comp.exe`) and found byte-identical, so
+implemented logger-unconditionally.
+
+### 1. `Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
+(`instr_rules.check_scan_min_interval`)
+
+The single largest remaining false-accept group (9 of a ~300-mutant fresh sample) and the one
+`docs/instructions.md` "Investigated, not implemented" flagged as unresolved: "the multiple-of-1ms
+message fires for some sub-millisecond `uSec`-unit values but not for numerically equal `mSec`-unit
+fractional values ... smells like float-precision artifacts". Pinned down with a dozen fresh
+`Interval` x `Units` probes: there is no float-precision subtlety at all -- the declared `Interval`
+is truncated toward zero **in its own declared unit** (`int(value)`) *before* being multiplied by
+that unit's microsecond factor, not the real fractional microsecond value:
+
+```
+Scan(0.5,mSec,...)   -> int(0.5)*1000    = 0    uSec -> Scan 0uSec invalid must be at least 1mSec.
+Scan(0.0015,Sec,...) -> int(0.0015)*1e6  = 0    uSec -> same message
+Scan(1.9999,mSec,..) -> int(1.9999)*1000 = 1000 uSec -> compiles clean
+Scan(1500,uSec,...)  -> int(1500)*1      = 1500 uSec -> Scans must be a multiple of 1mSec.
+Scan(1.5,mSec,...)   -> int(1.5)*1000    = 1000 uSec -> compiles clean (numerically equal to the
+                                                          uSec probe just above, but not truncated
+                                                          the same way -- this is the "asymmetry"
+                                                          docs/instructions.md flagged)
+```
+
+This single truncate-then-multiply rule (`raw_us = int(value) * us_per_unit`, then `raw_us < 1000`
+-> the first message, `raw_us % 1000 != 0` -> the second) reproduces every oracle probe with no
+per-unit branch: after truncate-then-multiply, an `mSec`/`Sec`-declared interval is *always*
+already an exact multiple of 1000, so the second message can structurally never fire for those two
+units. Both checks run independently of `check_scan_params`'s own non-negative check on the same
+`Interval` argument, not mutually exclusive with it -- oracle-confirmed `Scan(-1,mSec,...)` fires
+*both* `Scan Interval parameter must be a non-negative integer` and `Scan -1000uSec invalid must be
+at least 1mSec.`, on the same line, in that order. Ungated (called from `warnings.check_early`
+alongside `check_scan_params`/`check_data_interval`), CR6/CR1000X only (no evidence either way for
+CR300/CR350, which don't have `check_scan_params`'s own non-negative check either).
+
+### 2. `_check_background_calibration` gating correction (`warnings.py`, `checker/__init__.py`)
+
+Found as a side effect of oracle-probing item 1, not chased on purpose: `When Main Sequence Scan %d
+is running, background calibration will be disabled.` had lived in `check_early` (the "ungated,
+fires even when the file has other errors elsewhere" bucket) since it was implemented, and
+`docs/instructions.md`'s own "Two ungated call sites" section made that claim for *every* check in
+that file. A fresh sweep this round shows it is not true for this one specific warning: an unrelated
+undefined-symbol error placed either before or after an otherwise-calibration-warning-triggering
+`Scan(1,mSec,...)` in the same file suppresses the warning **entirely**, while the same probe
+re-run with `_check_reachability`'s own trigger shape (`Delay` after an infinite `Scan`) still
+fires alongside the error exactly as documented. A warning-only file (no errors at all) still gets
+both warnings together, confirming the gate is specifically "any error", not "any diagnostic".
+Moved `_check_background_calibration` (renamed `check_background_calibration`, public) out of
+`check_early` to `checker/__init__.py`'s own final `if not diags.errors:` tier (alongside
+`warnings.check`/`tables_hook.attach`, the same "only on an otherwise-clean compile" gate already
+used there); `_check_reachability`/`_check_fnotch` stay in `check_early`, unchanged. Pre-existing
+bug, not a regression from anything this round changed -- `git blame`-independent confirmation:
+dozens of already-saved `message_diff`/`false_accept` fuzz reproducers from earlier rounds already
+showed the exact spurious-extra-warning-alongside-a-real-error shape
+(`tests/corpus/fuzz/cr6/message_diff/ba333c2ee146.CR6` and about a dozen siblings).
+
+### 3. Block-balance summary checks suppressed by an earlier declaration error (`structure.py`)
+
+Also found while oracle-probing item 4 below, and, like item 2, pre-existing rather than caused by
+anything this round changed: `structure.check_pass1`'s three end-of-file summary checks (`No
+BeginProg in Program.`, `Scan without NextScan.`, `IF or SELECT without EndIf or EndSelect.`) were
+unconditional, but oracle-confirmed (`Public` with no name at all, alone in an otherwise beginprog-
+less/scan-imbalanced file) the real compiler suppresses all three once *any* other pass-1 error
+(`Variable not named.`/`Illegally dimension: ...`/`Need '=' in units definition: ...`, swept
+independently) already fired earlier in the same pass -- a minimal one-line `Public` alone reports
+only `Variable not named.`, never a second `No BeginProg in Program.` alongside it. Fixed with one
+guard, `if diags.errors: return`, right before the three checks (`check_pass1` is always the first
+thing `checker/__init__.py` runs, so `diags.errors` at that point only reflects this same
+function's own loop).
+
+### 4. `Illegally dimensioned aliased name` / `Alias is illegally dimensioned.` (`structure.py`,
+new `symbols.declared_dim0_sizes`/`_check_alias_dims`)
+
+The second-largest group (8 of the fresh sample). `Alias <name>(<index>) = <target>`'s `<index>` --
+only the *first* index, when `<name>` is itself multi-dimensional -- must be a compile-time constant
+in `[1, <name>'s own first declared dimension size>]`; a dozen probes pin down the exact shape:
+
+- A **scalar** (`Public y`, no dimensions at all) behaves exactly like a size-1 array: `Alias y(1) =
+  Ts` compiles, `Alias y(2) = Ts` fails -- so `declared_dim0_sizes` maps every declared `Public`/
+  `Dim`/`Static` variable, including scalars (mapped to `1`), not just array ones.
+- **Only the first index is ever checked**, however far out of range a later one is: `Public
+  grid(3,3)` / `Alias grid(2,4) = Ts` (second index `4` > `3`) compiles clean, while `Alias
+  grid(4,2) = Ts` (first index `4` > `3`) fails.
+- **Pass 1, unconditional**: accumulates with an unrelated, later `Variable not named.` in the same
+  file, and, being pass 1, suppresses every pass-2 check the same way any other pass-1 error already
+  does (no special "stop the file" behaviour of its own).
+- **Empty parens are a distinct shape** (`Alias Flag() = WriteMessage`, `Flag` a declared array):
+  our parser already accepts an `Index` node with an empty `args` list as ordinary (`y()` alone as a
+  plain expression compiles clean, unrelated to `Alias`), so this needed its own branch rather than
+  falling out of the "index out of range" logic above. Oracle-confirmed by a saved fuzz reproducer
+  (`tests/corpus/fuzz/cr6/false_accept/2b628e5fb8f1.CR6`, cross-checked with a from-scratch probe):
+  **two** diagnostics together, `Need closing )` then `Alias is illegally dimensioned.` (a different
+  message text from the out-of-range case, also no trailing period), both at the `Alias`
+  statement's own line, only when `name` is itself a declared variable.
+
+### 5. `Multiple BeginProgs.` (`structure.check_pass2`)
+
+A genuine nesting-depth check, not "has `BeginProg` appeared more than once in the file": a
+*second*, complete `BeginProg...EndProg` pair (the first one properly closed first) compiles clean,
+while a `BeginProg` encountered before the previous one's own `EndProg` real-rejects at that second
+`BeginProg`'s own line, with no preceding echo. Tier B (pass 2, gated behind pass 1 being clean, but
+accumulates freely with an unrelated `expressions.check`/`structure.check_pass2` finding either
+side of it -- oracle-confirmed both orderings); a *third* `BeginProg` nested inside the second gets
+its own second `Multiple BeginProgs.` line too (one diagnostic per excess `BeginProg`). Tracked with
+a plain `in_beginprog` boolean in `check_pass2`'s existing per-statement loop, toggled by
+`BEGINPROG`/`ENDPROG`, alongside the pre-existing `in_body_block`/`in_table` bookkeeping there.
+
+### 6. `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (`structure.check_pass2`)
+
+Not "an `If`/`Select` contains a `Scan`" (a `Scan...NextScan` pair fully closed *inside* the same
+block compiles clean) but "a `Scan` opened while this block was open is still open -- no matching
+`NextScan` yet -- when the block's own `EndIf`/`EndSelect` is reached": a genuine nesting-depth
+*comparison*, not a syntactic "contains" check. Modelled as a stack, `cond_stack`, of the value
+`scan_depth` (a second counter added to `check_pass2`, mirroring `check_pass1`'s own) had when each
+currently-open `If`/`Select` was entered; that block's own `EndIf`/`EndSelect` pops its own
+remembered value and compares it against the *current* `scan_depth` -- greater means an unclosed
+`Scan` from inside. Applies to `Select` too (reported at `EndSelect`'s own line), and to `If`
+regardless of how many `ElseIf`/`Else` segments sit in between (reported at `EndIf`'s own line
+either way, oracle-confirmed both shapes). Tier B, same accumulation/gating evidence as item 5
+(an earlier pass-1 `Variable not named.` suppresses it; an unrelated tier-B `Invalid symbol in
+expression` either side of it does not). Not attempted: the related "`Scan` nested directly inside
+another `Scan`" shape (`Scan without NextScan or nested Scans.`, oracle-confirmed real but a
+distinct message, and not among this round's own top fresh-fuzz groups) -- left undocumented
+territory rather than guessed at.
+
+### 7. `DataTable ... EndTable not matched.` / `Could not find DataTable %s.` (`structure.py`,
+new `instr_data.calltable_targets`/`check_unclosed_calltable`)
+
+An unclosed `DataTable` (declared, no matching `EndTable` anywhere in the rest of the file) gives
+one of **two** different messages depending on whether anything later references it by name, found
+by a dozen oracle probes after the fuzz corpus turned up the bare-message shape:
+
+- **Never referenced** (no `CallTable <name>` anywhere in the program): the bare, no-line
+  `DataTable ... EndTable not matched.` (oracle-confirmed verbatim, including the literal `...`,
+  and printed with no `line N:` prefix at all -- `diagnostics.py`'s existing `d.line == 0`
+  convention already renders this correctly once emitted with `diags.error(0, ...)`).
+- **Referenced** (`CallTable <name>` exists): the unclosed table never gets "finalised" into the
+  real compiler's table registry, so the later reference fails exactly like a genuine typo would --
+  `Could not find DataTable %s.` at the `CallTable`'s own line, not the `DataTable`'s. **Tier B, not
+  pass 1** (oracle-confirmed: accumulates with an unrelated tier-B `Invalid symbol in expression`
+  either side of it, unlike the bare message above, which an earlier pass-1 error suppresses the
+  same way item 3's other three summary checks are).
+- **Lower priority than the other summary checks**: a co-occurring `Scan without NextScan.`
+  (unrelated to the table at all) reports only that, never the bare `DataTable` message too --
+  oracle-confirmed with an unclosed table *and* an unbalanced `Scan` in the same file.
+- Not attempted: a *second* `DataTable` opened while the first is still unclosed (`DataTable
+  without EndTable.`, a third, distinct message at the second `DataTable`'s own line, oracle-
+  confirmed real but a different shape `DataTable` blocks nesting was never evidenced for) -- this
+  project's own `instr_data.py` already documents `DataTable`/`ConstTable` bodies as never nesting,
+  so this shape is left alone rather than guessed at; `in_table`/`table_name` in `check_pass1`
+  simply stay pointed at the *first* table if it happens.
+
+Implementation split across the pass-1/tier-B boundary the same way item 7's own evidence requires:
+`structure.check_pass1` tracks a single (non-nesting) `in_table`/`table_name` flag and, at end of
+file, checks `instr_data.calltable_targets(program)` (every upper-case name any `CallTable`
+anywhere refers to) to decide whether to emit the bare message itself; `instr_data.
+check_unclosed_calltable` (new, called from `checker/__init__.py`'s existing tier-B block) does its
+own, independent open/close scan and reports `Could not find DataTable %s.` at each `CallTable`
+site whose target is open-but-never-closed.
+
+### Measured impact
+
+Fresh false-accept groups (session-local `tools/fuzz.py` runs, saved reproducers grouped by the
+real compiler's own generalised message, most frequent first, before any of items 1-7):
+`Scan %duSec invalid must be at least %dmSec.` (9), `Illegally dimensioned aliased name` (8),
+general expression-tree `Invalid symbol in expression` gaps outside `expressions.py`'s scope (~13,
+not chased this round -- see `docs/checker.md`'s existing "deliberately narrow" scope note),
+`Need closing )` (6, item 4's own empty-parens `Alias` shape accounts for at least one sub-case),
+`Multiple BeginProgs.` (5), `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (5),
+`Duplicate Alias` (4, not attempted this round), assorted `DataTable`/`Could not find DataTable`
+shapes (~7 combined), `Scan Interval/BufferOption/Count parameter must be a non-negative integer`
+(already implemented, unaffected).
+
+`tools/fuzz.py --logger cr6/cr1000x --count 300`, false-accept count, before this round's first
+commit / after items 1-7 above, `false_reject = 0` throughout every intermediate and final
+measurement (one long-standing pre-existing exception, unchanged: `false_reject=1` on a fresh
+`cr6` seed-46 run, root-caused to `AddPrecise`'s first argument legitimately accepting an
+auto-declared name this project's `expressions.py` does not yet special-case -- found this round
+during baseline re-measurement, not caused by anything in items 1-7, and not attempted, since
+`AddPrecise`'s own argument-type rule has no oracle evidence gathered yet):
+
+| Logger | seed | before | after |
+|---|---|---|---|
+| cr6 | 42 | 44 | 36 |
+| cr6 | 43 | 32 | 29 |
+| cr6 | 44 | 36 | 27 |
+| cr1000x | 42 | 39 | 31 |
+
+(This round ran on a repository shared live with a concurrent session's own "Round 6b" work on
+`checker/cr3xx.py`/CR300/CR350, whose commits landed in the same working tree mid-round; the
+before/after pairs above are this round's own freshly-measured start/end points on the same
+machine, not adjusted for or attributable to that other session's unrelated changes, which its own
+log entry accounts for separately.)
+
+`tools/difftest.py --logger <l> --show 0` (`repo`+`examples`+`chm`), before / after, exact counts
+never lowered, zero false rejects (`their_exit==0 and our_exit!=0`) throughout: cr6 chm exact 336
+(unchanged), cr1000x chm exact 352 (unchanged), cr6/cr1000x repo 16/16 and 9/16 (unchanged). `python3
+-m pytest -q`: 963 passed throughout (0 failed). `tools/fuzz_replay.py --workers 2/4` (930
+reproducers across cr6+cr1000x by this round's end): several hundred fixed outright, dozens changed
+class, **zero new `false_reject`** -- the one `cr6` `false_reject` present throughout is the
+pre-existing `AddPrecise` gap above (confirmed pre-existing, not newly introduced, by replaying the
+same reproducer against this round's own *starting* tree and finding it already broken there);
+three pre-existing `cr6` and two pre-existing `cr1000x` `false_reject` entries (older, independently
+root-caused saved reproducers, not `AddPrecise`) were themselves fixed outright by this round's own
+changes and are not newly broken by anything else. A handful of `--workers 4`
+parallel-run `hang` classifications (`opencrbasic did not return within 8s`) did **not** reproduce
+at all when the same files were replayed individually with `--workers 1` immediately after --
+resource contention with the concurrent CR300/CR350 fuzzing session on this shared machine, not a
+real infinite loop in any of items 1-7's own code.
+
+### Top remaining groups (this round's own end state)
+
+`Duplicate Alias`, remaining `Need closing )` shapes beyond item 4's own empty-parens `Alias` case,
+general expression-tree `Invalid symbol in expression` gaps nested inside argument shapes
+`expressions.py` does not walk (deliberately out of that module's scope, unchanged), `DataTable
+without EndTable.` (item 7's own explicitly-not-attempted nested-table shape), function
+argument-count/type checks from `data/functions.json`'s own `argtypes`, and `Sub`/`Function` call
+argument-count checks (neither attempted this round).

@@ -390,16 +390,19 @@ exact)"; no reproducer of any class newly reports `false_reject`.
   the message text's own claimed threshold, and getting it wrong by rounding to a clean "2" would
   falsely reject any real program using a value in `[1.44, 2)` -- not found in the corpus, but not
   worth the false-reject risk for an edge case this narrow (AGENTS.md priority order).
-- **`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.` /
-  `Maximum Scan interval is 1 Day.`** -- all three are real (oracle-confirmed present, same
-  `FUN_00468900` family as the non-negative check above) but each has a boundary this session
-  could not pin down cleanly: the multiple-of-1ms message fires for some sub-millisecond `uSec`-
-  unit values but not for numerically equal `mSec`-unit fractional values (`7999uSec` fails,
-  `7.9mSec` compiles), and the 1-day maximum accepted `1.0001 Day` while rejecting `25 Hr` (~1.04
-  days) -- both smell like float-precision artifacts in the real compiler's own internal
-  representation rather than a simple threshold. Implementing either risks a false reject on a
-  borderline value; left unimplemented (`checker/instr_rules.py`'s `check_scan_params` docstring
-  notes this explicitly).
+- **`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`** --
+  **implemented, round 6** (`checker/instr_rules.check_scan_min_interval`, `docs/checker.md` "Round
+  6" item 1): the "boundary this session could not pin down cleanly" turned out to have no float-
+  precision subtlety at all -- the declared `Interval` truncates toward zero *in its own declared
+  unit* before multiplying by that unit's microsecond factor, which reproduces the `7999uSec`-fails/
+  `7.9mSec`-compiles asymmetry exactly, with one rule and no per-unit branch.
+- **`Maximum Scan interval is 1 Day.`** -- still not implemented. The same truncate-then-multiply
+  model that resolved the two messages above also fits this round's own *re-derivation* of the two
+  data points this project already had (`1.0001 Day` -> `int(1.0001)*86_400_000_000 = 86_400_000_000`
+  us, at the boundary, accepted; `25 Hr` -> `int(25)*3_600_000_000 = 90_000_000_000` us, over the
+  boundary, rejected -- no float-precision artifact needed under this model either), but this round
+  did not re-run fresh oracle probes to confirm it, so it stays a documented hypothesis, not a
+  verified rule -- a future session should re-sweep it the same way before implementing.
 - **`ExChan must be U1-U12.`** (`BrHalf`/`BrHalf3W`/`BrHalf4W`/`BrFull`/`BrFull6W`'s own
   `ExChan`/`SEChan` positions, `FUN_005147a0`/`FUN_005177a0`) -- already noted as not implemented
   in `docs/checker.md`; not picked up this round either (no corpus mismatch currently needs it).

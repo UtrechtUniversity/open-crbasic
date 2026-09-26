@@ -140,6 +140,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         pass2_start = len(diags.items)
         cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
         _run_pass(expressions.check, program, profile, diags, env)
+        # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
+        # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
+        # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as
+        # the other two calls just above (accumulates with an unrelated `expressions.check` finding
+        # rather than being suppressed by it).
+        _run_pass(instr_data.check_unclosed_calltable, program, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing

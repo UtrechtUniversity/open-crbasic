@@ -9,7 +9,7 @@ from __future__ import annotations
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
-from . import expressions, symbols
+from . import expressions, instr_data, symbols
 
 # Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
 # "Array dimension limits"): at most 3 dimensions, and each one's constant value must be in
@@ -146,6 +146,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     seen_beginprog = False
     scan_depth = 0
     cond_depth = 0
+    in_table = False
+    table_name: str | None = None
     last_line = program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
@@ -190,6 +192,18 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             cond_depth = max(0, cond_depth - 1)
         elif kw == "ENDIF" or (kw == "END" and _block_word(args) == "IF"):
             cond_depth = max(0, cond_depth - 1)
+        # `DataTable ... EndTable not matched.` (round 6, below): a single "currently open" flag,
+        # not a depth stack -- `DataTable` blocks never nest (`instr_data.py`'s own docstring), so
+        # this only tracks the *last*-opened table's own name; a second `DataTable` opened while
+        # one is already unclosed is a different, distinctly-messaged shape (`docs/checker.md`
+        # "Round 6": oracle-confirmed `DataTable without EndTable.`, at the second `DataTable`'s
+        # own line) not implemented here -- left `in_table`/`table_name` unchanged in that shape
+        # rather than guessed at, since it is not this check's own concern either way.
+        elif kw == "DATATABLE" and not in_table:
+            in_table = True
+            table_name = args[0].name if args and isinstance(args[0], S.Name) else None
+        elif kw == "ENDTABLE":
+            in_table = False
 
     # Round 6 finding, oracle-confirmed: these three block-balance summary checks are themselves
     # suppressed entirely once *any* other pass-1 error already fired in this same loop --
@@ -213,6 +227,18 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         diags.error(last_line, "Scan without NextScan.")
     if cond_depth > 0:
         diags.error(last_line, "IF or SELECT without EndIf or EndSelect.")
+    # `DataTable ... EndTable not matched.` -- no line number at all (oracle-confirmed verbatim,
+    # `docs/checker.md` "Round 6"), the lowest-priority of these four summary checks (oracle: a
+    # co-occurring `Scan without NextScan.` reports only that, never this too) and, unlike the
+    # other three, itself conditional on whether *anything else in the whole program* references
+    # the unclosed table by name: when it does (any `CallTable <name>`, oracle-confirmed at that
+    # `CallTable`'s own line, tier B not pass 1 -- accumulates with an unrelated `expressions.
+    # check`/`structure.check_pass2` finding, unlike this bare message, which pass-1 errors alone
+    # suppress), the real compiler instead reports `Could not find DataTable %s.` there
+    # (`checker/instr_data.py`'s `check_unclosed_calltable`, tier B) and says nothing here at all.
+    if not diags.errors and in_table and table_name is not None:
+        if table_name.upper() not in instr_data.calltable_targets(program):
+            diags.error(0, "DataTable ... EndTable not matched.")
 
 
 def check_pass2(program: S.Program, profile, diags: Diagnostics,
@@ -566,7 +592,22 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
     `stmt.args[0].args[0]`, never any later index in the same `Index` node.
     """
     target = stmt.args[0] if stmt.args else None
-    if not isinstance(target, S.Index) or not target.args:
+    if not isinstance(target, S.Index):
+        return
+    if not target.args:
+        # `Alias Flag() = WriteMessage` (empty parens, no index at all) -- a distinct shape from
+        # an out-of-range index, oracle-confirmed by a saved fuzz reproducer (`docs/checker.md`
+        # "Round 6", `tests/corpus/fuzz/cr6/false_accept/2b628e5fb8f1.CR6`, cross-checked with a
+        # from-scratch probe): **two** diagnostics together, `Need closing )` then `Alias is
+        # illegally dimensioned.` (a different message from the out-of-range one above -- no
+        # trailing period either), both at the `Alias` statement's own line. Only when `name` is a
+        # declared variable (`dim0_sizes`), matching this function's own general scoping decision;
+        # an empty-parens `Index` elsewhere (a plain array reference, `y()`) is ordinary and
+        # legal, oracle-confirmed compiling clean, so this is specific to `Alias`'s own target
+        # grammar, not a general "empty parens" parser gap.
+        if target.name.upper() in dim0_sizes:
+            diags.error(stmt.line, "Need closing )", stmt.file)
+            diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
         return
     size = dim0_sizes.get(target.name.upper())
     if size is None:

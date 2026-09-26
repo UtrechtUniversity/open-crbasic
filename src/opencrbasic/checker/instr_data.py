@@ -122,6 +122,74 @@ def _table_name(stmt: S.Instruction) -> str | None:
     return None
 
 
+def calltable_targets(program: S.Program) -> set[str]:
+    """Upper-case names every `CallTable <name>` statement in `program` refers to. Used by
+    `structure.py`'s `check_pass1` to decide whether an unclosed `DataTable` at end-of-file gets
+    the bare `DataTable ... EndTable not matched.` (nothing references it) or is left for
+    `check_unclosed_calltable` below to report as `Could not find DataTable %s.` instead (it *is*
+    referenced) -- see that function's own docstring for the oracle evidence distinguishing the
+    two (round 6, `docs/checker.md`).
+    """
+    names: set[str] = set()
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE":
+            name = _table_name(stmt)
+            if name:
+                names.add(name.upper())
+    return names
+
+
+def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
+    """`Could not find DataTable %s.` (round 6, `docs/checker.md`) at a `CallTable <name>` site
+    whose own `DataTable(name,...)` was declared somewhere in the program but never closed with a
+    matching `EndTable` -- an unclosed table never gets "finalised" into the real compiler's table
+    registry, so a later reference to it fails exactly like a genuine typo would, oracle-confirmed
+    (`docs/checker.md`): `DataTable (Test,True,-1)` with one real field (`Sample`), no `EndTable`
+    anywhere in the file, `CallTable Test` later -> `Could not find DataTable Test.` at the
+    `CallTable`'s own line (not the `DataTable`'s).
+
+    **Tier B, not pass 1** (oracle-confirmed, a fresh sweep this round): unlike the sibling
+    `DataTable ... EndTable not matched.` bare message (`structure.py`'s `check_pass1`, pass 1,
+    suppressed by an earlier pass-1 error) this one accumulates freely with an unrelated
+    `expressions.check`/`structure.check_pass2` finding elsewhere in the file (`Randomize
+    (FooBar)` on an earlier line still gets its own `Invalid symbol in expression` *and* this
+    message on the `CallTable` line, in that order) -- called from `checker/__init__.py`'s own
+    tier-B block alongside those two, not from this module's existing (tier-C-gated)
+    `check_table_structure`.
+
+    Deliberately simple, matching `check_table_structure`'s own stated assumption that `DataTable`
+    blocks never nest: a table name counts as "closed" once *any* `EndTable` follows *any* of its
+    own `DataTable` declarations anywhere in the program (no attempt to pair a specific `EndTable`
+    with a specific same-named `DataTable`, since two same-named `DataTable`s in one program is not
+    a shape this project has evidence for either way).
+    """
+    opened: set[str] = set()
+    closed: set[str] = set()
+    pending: str | None = None
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        if kw == "DATATABLE":
+            name = _table_name(stmt)
+            if name:
+                opened.add(name.upper())
+                pending = name.upper()
+        elif kw == "ENDTABLE":
+            if pending is not None:
+                closed.add(pending)
+            pending = None
+    unclosed = opened - closed
+    if not unclosed:
+        return
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE"):
+            continue
+        target = stmt.args[0] if stmt.args else None
+        if isinstance(target, S.Name) and target.name.upper() in unclosed:
+            diags.error(stmt.line, f"Could not find DataTable {target.name}.", stmt.file)
+
+
 def check_table_structure(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
     """`%s must be used inside a table declaration.` for an output-processing instruction (see
     `TABLE_ONLY_INSTRUCTIONS`) found outside any `DataTable...EndTable` block,
