@@ -78,7 +78,8 @@ class CompileResult:
         return lines
 
 
-def compile_file(path: Path, profile: Profile | None = None, display_name: str | None = None) -> CompileResult:
+def compile_file(path: Path, profile: Profile | None = None, display_name: str | None = None,
+                  warn_unused: bool = False) -> CompileResult:
     """Never lets an unexpected exception escape (`docs/checker.md` "Robustness"): the real
     compiler never crashes on a syntactically-loadable file, so an internal bug in this project
     should surface as a rejected program, not a Python traceback that takes down whatever called
@@ -105,6 +106,18 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         checker.check(program, profile, diags, result)
     except Exception:
         pass
+    if warn_unused and not diags.errors:
+        # `-u` (`docs/cli.md` "-u", `checker/unused.py`): oracle-confirmed to add nothing at all
+        # once any error is present anywhere in the file, so this only ever runs on an otherwise-
+        # clean pass -- matching the ordinary checker's own post-check tier (`checker/__init__.py`:
+        # `tables_hook.attach`/`warnings.check`/`instr_data.check_duplicate_fields` are all gated
+        # the same way). A crash here must not take down an otherwise-successful compile any more
+        # than a checker pass's own crash does (`checker/__init__.py`'s `_run_pass`).
+        try:
+            from .checker import unused
+            unused.check(program, diags)
+        except Exception:
+            pass
     from .signature import program_signature
     try:
         result.signature = program_signature(path)

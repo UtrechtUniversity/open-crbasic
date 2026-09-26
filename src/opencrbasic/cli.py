@@ -5,9 +5,10 @@
 CR6Comp-compatible options (docs/cli.md): -d, -v, -s, -z FILE (binary TDF), -l FILE / -c FILE
 (table list), -p FILE / -i FILE (preprocessed source; -i also expands Include/IncludeSection),
 -t (the `[Times]` section), -b FILE (CDM binary image; writes the "No CDM devices..." message
-when the program uses none). -m/-u are accepted (matching the exe's own option set) but have no
-implemented effect: -m is oracle-confirmed to have none observable from the CLI either; -u is
-documented, not implemented (docs/cli.md "-u"). Extra long options: --logger
+when the program uses none), -u (adds `%s declared but not used.` warnings for an unreferenced
+Public/Dim/Sub-or-Function-parameter, and for an uncalled Sub; `checker/unused.py`). -m is
+accepted (matching the exe's own option set) but has no implemented effect: oracle-confirmed to
+have none observable from the CLI either. Extra long options: --logger
 {cr6,cr1000x,cr300,cr350} (default: from the file extension, else cr6) and --no-message-file (do
 not write CR6cmple.xxx).
 Output goes to stdout and to the message file (CR6cmple.xxx by default, CRLF line endings);
@@ -24,7 +25,7 @@ from . import __version__, profiles
 
 def _parse(argv: list[str]):
     opts = {"s": False, "v": False, "d": False, "z": None, "l": None, "c": None, "p": None,
-            "i": False, "t": False, "b": None, "logger": None, "message_file": True}
+            "i": False, "t": False, "b": None, "u": False, "logger": None, "message_file": True}
     positional: list[str] = []
     i = 0
     while i < len(argv):
@@ -65,7 +66,9 @@ def _parse(argv: list[str]):
                     opts[ch] = True
                 elif ch == "t":
                     opts["t"] = True
-                elif ch in "mu":
+                elif ch == "u":
+                    opts["u"] = True
+                elif ch == "m":
                     pass
                 else:
                     print("illegal option!")
@@ -165,7 +168,7 @@ def main(argv: list[str] | None = None) -> int:
         except OSError:
             pass
 
-    result = compile_file(program, profile, display_name=program.name)
+    result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"])
     lines = result.result_lines(show_signature=opts["s"])
     print("\n".join(lines))
 

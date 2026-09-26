@@ -663,7 +663,9 @@ class _Parser:
                     p.next()
                     self._parse_expr(p, line, file)
             p.expect_op("=")
+            value_start_col = p.peek().col
             value = self._parse_expr(p, line, file)
+            value_span = (value_start_col, p.peek().col)
         except _ParseError:
             # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
             # corpus example wrapped the assignment onto the next line with no `_` continuation
@@ -672,7 +674,7 @@ class _Parser:
             # compiler reports the same message either way (oracle-confirmed, `docs/checker.md`),
             # so this doesn't try to distinguish how far through its own grammar it got.
             return S.Unparsed(line, file, text="", reason="Const without '='")
-        node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype)
+        node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype, value_span=value_span)
         try:
             self.env.define(name_tok.text, consteval.value_of(value, self.env))
         except consteval.NotConstant:

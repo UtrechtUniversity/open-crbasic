@@ -21,35 +21,40 @@ Runs, in order:
 
 1. `structure.check_pass1` -- `BeginProg`/`EndProg` presence, `Scan`/`NextScan` and `If`/`Select`
    block matching, declaration/array-dimension errors, `Units`/`Const`/`Alias` truncation.
-2. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
+2. `expressions.check_consts` -- an undefined name inside a `Const`'s own value expression
+   (`<name> is not defined.`/`Invalid symbol in expression: %s.`, per-logger). Also pass 1 (oracle
+   evidence, `docs/loggers.md`: `Const` folding happens eagerly at declaration time, so this
+   accumulates alongside an unrelated, earlier `Variable not named.` rather than being suppressed
+   by it the way the *rest* of `expressions.py`'s pass-2 checks would be).
+3. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
    parameter.", `checker/instr_rules.py`, owned alongside this package). Also pass 1 (oracle
    evidence, `docs/checker.md`: a file with several earlier "Variable not named." errors still
    gets its own, later "Invalid or missing parameter." reported).
-3. `warnings.check_early` -- reachability/background-calibration/fnotch; ungated, fires even when
+4. `warnings.check_early` -- reachability/background-calibration/fnotch; ungated, fires even when
    the file has other errors elsewhere (`docs/instructions.md`).
 
-If, and only if, steps 1-3 found nothing:
+If, and only if, steps 1-4 found nothing:
 
-4. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
+5. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
    placement check (returns the cutoff line, if any).
-5. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
+6. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
    position that resolves nowhere, and the constant-only-family "rejects a variable" check
    (deliberately narrow; see that module's docstring).
-6. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
+7. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
    parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
    `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value checks, `docs/instructions.md`) run
    alongside it.
-7. Every error step 4-6 added is truncated to step 4's cutoff line, if it returned one.
+8. Every error step 5-7 added is truncated to step 5's cutoff line, if it returned one.
 
 Then, regardless of errors so far:
 
-8. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
+9. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
    values via `consteval.Env`, as the previous placeholder checker did).
-9. `tables_hook.attach`, when the compile has no errors so far and the module is available (it is
-   written by a different concurrent workstream, `PLAN.md`; guarded so this checker still runs
-   standalone while that module is in progress), then `warnings.check` ("table declared but never
-   called") and `instr_data.check_duplicate_fields`.
+10. `tables_hook.attach`, when the compile has no errors so far and the module is available (it is
+    written by a different concurrent workstream, `PLAN.md`; guarded so this checker still runs
+    standalone while that module is in progress), then `warnings.check` ("table declared but never
+    called") and `instr_data.check_duplicate_fields`.
 
 Full instruction-signature checks (the rest of `instructions.py`) and a general expression-tree
 name/type resolution (the rest of `expressions.py`) are future work; see `docs/checker.md` and
@@ -94,10 +99,19 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     env = consteval.Env(profile, dict(program.consts))
 
     _run_pass(structure.check_pass1, program, profile, diags, env)
+    # Also pass 1 (unconditional -- oracle-confirmed, `docs/loggers.md`): a `Const`'s own value
+    # expression is folded eagerly at declaration time, so an undefined name inside it is
+    # reported alongside pass-1's other declaration errors, not deferred to pass 2's gated
+    # `expressions.check` below.
+    _run_pass(expressions.check_consts, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
-    # Ungated (unlike step 2 below): reachability/background-calibration/fnotch all oracle-confirmed
-    # to fire even when the file has other errors elsewhere (`checker/warnings.py`, `docs/instructions.md`).
-    _run_pass(warnings.check_early, program, profile, diags, env)
+    # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
+    # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
+    # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
+    # `docs/loggers.md`): there, this same call is deferred to the tier-C gate below instead of
+    # running here unconditionally.
+    if not profile.early_warnings_gated:
+        _run_pass(warnings.check_early, program, profile, diags, env)
 
     if not diags.errors:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
@@ -129,6 +143,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `ExciteV(Vx1,...)` (an `expressions.check` finding, tier B) on an earlier line suppresses
         # a later, otherwise-invalid `TCDiff` channel argument entirely -- no accumulation across
         # this boundary, unlike within tier B itself above.
+        if profile.early_warnings_gated:
+            # CR300/CR350 only (see the step-4 comment above): `check_early` itself is gated the
+            # same way tier C is, not run unconditionally.
+            _run_pass(warnings.check_early, program, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.

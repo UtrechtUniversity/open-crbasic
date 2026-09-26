@@ -111,6 +111,10 @@ class ConstDecl(Stmt):
     name: str = ""
     value: Expr | None = None
     type: str | None = None
+    value_span: tuple[int, int] | None = None  # (start, end) columns of `value`'s own source
+    # text within `Stmt.text` -- lets `checker/expressions.py` echo the initializer verbatim for
+    # `check_consts`'s undefined-symbol message, the same way `Instruction.arg_spans` already
+    # lets `_arg_text` echo an argument (`docs/checker.md` "Round 4"'s whole-expression echo).
 
 
 @dataclass

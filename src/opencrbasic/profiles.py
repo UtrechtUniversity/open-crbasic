@@ -28,6 +28,24 @@ class Profile:
     # defined." for the same case (oracle evidence: `docs/loggers.md`). `{name}` = the identifier
     # as written in source (not case-normalised).
     unresolved_symbol_message: str = "Invalid symbol in expression: {name}."
+    # `checker/__init__.py`'s call to `warnings.check_early` (reachability/fnotch/background-
+    # calibration): CR6/CR1000X run it unconditionally, oracle-confirmed genuinely ungated even
+    # when a later, unrelated tier-B error exists in the same file (`docs/instructions.md` "Two
+    # ungated call sites"; the `caf5c15cd16b.CR6` fuzz reproducer explicitly shows a tier-B
+    # placement/fallback error *and* a reachability warning together on CR6). CR300/CR350 do
+    # **not** share this: an undefined-symbol-class error anywhere in the file (tier A's
+    # `check_consts`, or tier B's `expressions.check`) suppresses every `check_early` warning in
+    # the *whole* file, including ones on lines textually before the error and on statements that
+    # are themselves otherwise clean (oracle, this round, `docs/loggers.md`: `PanelTemp(PTemp,
+    # 15000)` on its own line 4 loses its own fnotch warning merely because a *different*,
+    # unrelated `TCDiff` two lines later references an undefined name; reachability shows the same
+    # suppression). A same-file error that is *not* itself an undefined-symbol-class finding (e.g.
+    # `FileManage`'s own drive-string validation, not implemented by this project but visible in
+    # the corpus's own oracle transcripts) does **not** suppress it (`tablefile_1.CR6` keeps its
+    # own fnotch warning alongside an unrelated `Invalid drive` error) -- consistent with gating
+    # `check_early` on CR300/CR350 behind the *same* "tier A and tier B both clean" condition tier
+    # C already uses, rather than a blanket "any error anywhere" rule.
+    early_warnings_gated: bool = False
 
     def _load(self, name: str) -> list[dict]:
         return json.loads((self.data_dir / f"{name}.json").read_text())
@@ -88,9 +106,11 @@ PROFILES = {
     "cr1000x": Profile("cr1000x", "CR1000X", "CR1000X.8.2.0", "03/04/2025", DATA / "cr1000x", True,
                        "cr1000xcomp.exe"),
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
-                     "cr300comp.exe", unresolved_symbol_message="{name} is not defined."),
+                     "cr300comp.exe", unresolved_symbol_message="{name} is not defined.",
+                     early_warnings_gated=True),
     "cr350": Profile("cr350", "CR350", "CR350.Std.1.07", "02/04/2025", DATA / "cr350", False,
-                     "cr350comp.exe", unresolved_symbol_message="{name} is not defined."),
+                     "cr350comp.exe", unresolved_symbol_message="{name} is not defined.",
+                     early_warnings_gated=True),
 }
 
 EXTENSIONS = {".cr6": "cr6", ".cr1x": "cr1000x", ".cr300": "cr300", ".cr350": "cr350"}

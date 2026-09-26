@@ -58,9 +58,69 @@ _EVENT_ALONE_SIZES = {2: 232_674, 4: 209_406, 6: 190_368, 8: 174_504}
 # station-table size independently comes out to exactly 252).
 _DEFAULT_PROBE_BUFFER_BYTES = 1024
 _DEFAULT_PROBE_OVERHEAD = 16
-# Best-fit (NOT exact -- see docs/tdf-rules.md §10/§13) per-active-event-table pool cost used only
-# once >=1 event/no-interval auto table is still competing for the shared pool after capping.
-_MIXED_EVENT_K = 15
+
+# Mixed regime (>=1 DataInterval auto table together with >=1 DataEvent/no-interval auto table, or
+# >=2 DataEvent/no-interval auto tables together): decompiled from `FUN_004eab30`/`FUN_004f4400`
+# (`/opt/re/out/decomp.c`, 2026-09-26 pass), then oracle-fitted to an exact byte-for-byte constant
+# (see docs/tdf-rules.md §10 "Event/no-interval table sharing a program", superseding the old
+# `_MIXED_EVENT_K` curve fit). The mechanism: every auto table gets a "default record count"
+# (`_table_default_min`'s `floor(1008/bytes)` for a table with a real `DataInterval`, or exactly `1`
+# for a `DataEvent`/no-interval table -- confirmed by a synthetic A/B test, `Event1` in a program
+# with a heavily-disadvantaged competing `DataInterval` table shrinks to 171 records, *not* bumped
+# up to any `floor(1008/bytes)`-shaped floor, while the interval table itself reliably *is*), which
+# also sets its contribution to the reserved-bytes accumulator and to the shared "rate" sum via
+# `_table_reserved_bytes`/`_table_rate_contrib` below. The shared duration `D = pool / rate` is
+# computed **once** (a single pass, not iterative water-filling) from every active auto table, and
+# each table's final size is `max(floor(D / weight), default_records)` -- the "cap" is simply this
+# per-table floor, not a removal-and-recompute loop. `_MIXED_POOL` is the one remaining fitted
+# constant (the compiler's own free-memory query, `FUN_00508f40(1)`, at the point this regime's
+# finalisation runs): independently oracle-fitted twice -- once against a 4-point synthetic probe
+# grid (one `DataInterval`+one `DataEvent` auto table, varying the event table's enclosing-`Scan`
+# weight and byte width) and once against all 8 real `crbasic/` corpus programs in this regime
+# (byte-for-byte on both the `DataInterval` table and every `DataEvent`/no-interval table, per
+# `tools/tdftest.py --group repo`) -- both agree exactly on 4_194_139. It is *not* the same constant
+# as `_POOL1` (the pure-`DataInterval`-only regime) or `_EVENT_ALONE_POOL2` (the solo-event-alone
+# regime) -- those two are established, working formulas for their own regimes and are left
+# untouched; per docs/tdf-rules.md §10 open question 9, the compiler's free-memory snapshot
+# genuinely differs between these code paths, and why has not been traced further.
+_MIXED_POOL = 4_194_139
+# The finalisation loop's reserved-bytes accumulator starting value (decompiled: `local_18 =
+# 0x1000` before the per-table loop runs).
+_TABLE_INIT_RESERVED = 4096
+
+
+def _table_default_records(bytes_per_record: int, is_interval: bool) -> int:
+    """A table's own single-table default record count (`FUN_004f4400`'s probe, decompiled): a
+    real `DataInterval` table gets `_table_default_min` (`floor(1008/bytes)`); a `DataEvent`/
+    no-interval table always gets exactly `1` (oracle-confirmed, see `_MIXED_POOL`'s docstring)."""
+    if is_interval:
+        return _table_default_min(bytes_per_record)
+    return 1
+
+
+def _table_reserved_bytes(bytes_per_record: int, default_records: int) -> int:
+    """One active auto table's contribution to the mixed-regime reserved-bytes accumulator
+    (decompiled, `FUN_004eab30`'s per-table `local_18 +=` term): `t8 = default_records *
+    bytes_per_record + 16` (the table's own default buffer, in bytes, including the fixed 16-byte
+    checkpoint overhead), then `(floor(2048/t8) + (1 if default_records==1 else 0) + segs) * t8`,
+    `segs = 1 if t8 < 1024 else 3`."""
+    t8 = default_records * bytes_per_record + _DEFAULT_PROBE_OVERHEAD
+    segs = 1 if t8 < _DEFAULT_PROBE_BUFFER_BYTES else 3
+    floor_term = 1 if default_records == 1 else 0
+    return ((2 * _DEFAULT_PROBE_BUFFER_BYTES) // t8 + floor_term + segs) * t8
+
+
+def _table_rate_contrib(bytes_per_record: int, weight: float, default_records: int) -> float:
+    """One active auto table's contribution to the shared "rate" sum (decompiled: `local_c +=
+    t8/(default_records*weight)`, `t8` as in `_table_reserved_bytes`) -- reduces, for a
+    `DataInterval` table, to `bytes_per_record/weight` plus a tiny `16/(default_records*weight)`
+    correction; for a `DataEvent`/no-interval table (`default_records=1`) it is
+    `(bytes_per_record+16)/weight`, not the plain `bytes_per_record/weight` the old approximation
+    used."""
+    if weight <= 0:
+        return 0.0
+    t8 = default_records * bytes_per_record + _DEFAULT_PROBE_OVERHEAD
+    return t8 / (default_records * weight)
 
 
 def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
@@ -856,42 +916,27 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         return
 
     # Mixed regime (>=1 DataEvent/no-interval auto table, alone with others or alongside >=1
-    # DataInterval table): oracle-confirmed water-filling. A table whose naive equal-duration share
-    # would fall below its own `_table_default_min` is instead pinned at that minimum and dropped
-    # from the shared pool, and the remaining pool/rate is recomputed for the survivors -- this
-    # reproduces `StationStatus`'s exact size in `Preflight_tester.CR6`/`SnowVue_tester.CR6`/
-    # `TString_tester.CR6` (all capped at exactly `floor(1008/4)=252`). The surviving pool itself
-    # (`_MIXED_EVENT_K`) is a best-fit approximation, not an exact derivation -- see
-    # docs/tdf-rules.md §10/§13: it reproduces the corpus's real sizes to within roughly 3%, not
-    # byte-exactly.
-    active = list(autos)
-    while active:
-        active_events = [(t, m) for t, m in active if not m["interval_seconds"]]
-        b_event = sum(m["bytes_per_record"] for _, m in active_events)
-        n_event = len(active_events)
-        if n_event:
-            denom = b_event + _MIXED_EVENT_K * n_event
-            pool = _POOL1 * b_event / denom if denom else float(_POOL1)
-        else:
-            pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
-        rate = sum(m["bytes_per_record"] / m["_weight"] for _, m in active)
-        if rate == 0:
-            for t, m in active:
-                t.size = _table_default_min(m["bytes_per_record"])
-            break
-        duration = pool / rate
-        capped = [(t, m) for t, m in active
-                  if int(duration / m["_weight"]) < _table_default_min(m["bytes_per_record"])]
-        if not capped:
-            for t, m in active:
-                records = int(duration / m["_weight"])
-                if m["has_card"] and m["bytes_per_record"]:
-                    records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
-                t.size = max(records, 1)
-            break
-        for t, m in capped:
-            t.size = max(_table_default_min(m["bytes_per_record"]), 1)
-            active.remove((t, m))
+    # DataInterval table): decompiled single-pass formula (see `_MIXED_POOL`'s docstring above),
+    # oracle-fitted byte-for-byte exact on all 8 `crbasic/` corpus programs in this regime
+    # (`tools/tdftest.py --group repo`, docs/tdf-rules.md §10). No iteration/removal: one shared
+    # duration `D` from every active table's reserved-bytes and rate contribution, then each
+    # table's own size is `max(floor(D/weight), default_records)` -- `default_records` is `1` for
+    # a `DataEvent`/no-interval table (so this "cap" is a no-op for it in practice) and
+    # `floor(1008/bytes)` for a `DataInterval` table (reproducing `StationStatus`'s exact 252 in
+    # `Preflight_tester.CR6`/`SnowVue_tester.CR6`/`TString_tester.CR6`).
+    defaults = {id(t): _table_default_records(m["bytes_per_record"], bool(m["interval_seconds"]))
+                for t, m in autos}
+    reserved = _TABLE_INIT_RESERVED + sum(
+        _table_reserved_bytes(m["bytes_per_record"], defaults[id(t)]) for t, m in autos)
+    rate = sum(_table_rate_contrib(m["bytes_per_record"], m["_weight"], defaults[id(t)])
+               for t, m in autos)
+    pool = _MIXED_POOL - reserved
+    duration = pool / rate if rate else 0.0
+    for t, m in autos:
+        records = int(duration / m["_weight"]) if m["_weight"] else 0
+        if m["has_card"] and m["bytes_per_record"]:
+            records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
+        t.size = max(records, defaults[id(t)], 1)
 
 
 def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float]):

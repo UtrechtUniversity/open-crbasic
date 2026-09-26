@@ -287,23 +287,55 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
     loggers (`docs/checker.md`), so no per-logger branch for its own text.
     """
     def _check_position(i: int) -> bool:
-        """Checks position `i`, reports at most one diagnostic, returns whether it did."""
+        """Checks position `i`, reports at most one diagnostic (CR6/CR1000X) or up to two
+        (CR300/CR350, see below), returns whether it reported anything.
+
+        **CR300/CR350 do not share CR6/CR1000X's mutual exclusivity** between the undefined-name
+        check and the const-only-family "rejects a variable" check, oracle-confirmed this round
+        (`docs/loggers.md`): at a const-family position (`_CONST_ONLY_VARIABLE_REJECT_KINDS`), an
+        *undefined* name gets **both** its own undefined-name line(s) *and* a `Variable illegal in
+        Parameter: <whole arg text>.` line right after -- `TCDiff(Dest,1,BazQux,...)` on
+        `cr300comp.exe` -> `BazQux is not defined.` then `Variable illegal in Parameter: BazQux.`,
+        two lines, where CR6/CR1000X give only `Invalid symbol in expression: BazQux.` (one line,
+        the existing rule, unchanged). A compound expression mixing an undefined name with a live
+        variable (`TCDiff(Dest,1,X+BazQux,...)`, `X` declared) gives `BazQux is not defined.` (the
+        undefined name only, per CR300/CR350's existing per-name echo) then `Variable illegal in
+        Parameter: X+BazQux.` (the whole expression, since it is not a foldable constant either
+        way) -- i.e. the second check's trigger is "argument contains any non-constant name
+        reference at all" (undefined *or* a declared variable), not "is a declared variable"
+        alone, and always echoes the whole argument once. Modelled below as one unified
+        computation (`trigger = names or var_refs`) that happens to reduce to the pre-existing
+        CR6/CR1000X mutual-exclusivity behaviour automatically, since `names` is always empty by
+        the time CR6/CR1000X (`_WHOLE_EXPR_ECHO_LOGGERS`) reach the second check (a non-empty
+        `names` already returned above, for that family only).
+        """
         if i >= len(stmt.args) or stmt.args[i] is None:
             return False
         arg = stmt.args[i]
         names = _undefined_names(arg, known)
+        whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS
+
         if names:
-            if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            if whole_echo:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=_arg_text(stmt, i)),
                             stmt.file)
-            else:
-                for name in names:
-                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            return True
-        if positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS and _variable_refs(arg, variable_names):
-            diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file)
-            return True
-        return False
+                return True
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            if not is_const_family:
+                return True
+            # CR300/CR350 const-family position: fall through to also run the
+            # "Variable illegal in Parameter" check below, independent of the undefined-name
+            # report just made (oracle-confirmed; see this method's own docstring).
+
+        if is_const_family:
+            var_refs = _variable_refs(arg, variable_names)
+            if names or var_refs:
+                diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file)
+                return True
+
+        return bool(names)
 
     if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
         order = sorted(i for i, k in positions.items() if k in _CONST_FAMILY_KINDS)
@@ -362,3 +394,82 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             # implemented this session either: see `docs/checker.md` "Constant-only and
             # variable-required type codes" for the full evidence and what a future session would
             # need to verify first.
+
+    # An `Assignment`'s own RHS (`x = <value>`): not an `Instruction` at all, so untouched by the
+    # loop above -- a previously-unaddressed gap on *every* logger, found via this round's own
+    # CR300/CR350 repo-mismatch chase (`WDogTimer = WatchdogTimer(0,Sec)`, `WatchdogTimer` a real
+    # CR6/CR1000X function absent from CR300/CR350 entirely, `docs/loggers.md`). Oracle-confirmed
+    # pass 2, same gating as the rest of this function (`BazQux(0,Sec)` in place of `WatchdogTimer`
+    # on CR6: alone, `line N: Invalid symbol in expression: <assignment's own text>.`; preceded by
+    # an unrelated pass-1 `Variable not named.`, suppressed entirely -- `docs/loggers.md`). Two
+    # differences from the instruction-argument case above, both oracle-confirmed:
+    #
+    # 1. The whole-expression echo (CR6/CR1000X) is the **entire assignment statement's own
+    #    text**, target and `=` included (`stmt.text`, already the raw segment text with its
+    #    original indentation -- the same field `structure.py`'s "Expr" fallback echoes), not just
+    #    the value sub-expression (unlike a `Const`'s `value_span`, there is no separate span to
+    #    prefer here since the oracle's own echo includes the target).
+    # 2. CR300/CR350 additionally emit a `Dimensions not declared: <text>` follow-up line after
+    #    their own per-name `<name> is not defined.` line(s) -- not reproduced here (no oracle
+    #    evidence yet for its exact trigger/shape beyond this one example, and it is a second,
+    #    distinct message rather than a difference in this one's own text); the per-name line(s)
+    #    alone already turn the previously-silent false accept into a correct reject.
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Assignment):
+            continue
+        names = _undefined_names(stmt.value, known)
+        if not names:
+            continue
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file)
+        else:
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+
+
+def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Const <name> = <value>.` initializer resolution (this round's own new check, all four
+    loggers): a `Const`'s value expression is folded eagerly, at declaration time, so an
+    unresolved name inside it is diagnosed there and then rather than deferred to any later
+    argument-checking pass -- oracle-confirmed **pass 1** (ungated, unconditional), not pass 2:
+    `Const Foo = BazQux` reports its own diagnostic *alongside* an unrelated, earlier `Public`
+    with no name (`Variable not named.`), on every logger, where an ordinary pass-2 finding (e.g.
+    `expressions.check`'s own instruction-argument checks) would have been completely suppressed
+    by that same earlier pass-1 error (`docs/checker.md` "Pass model"; probe transcript,
+    `docs/loggers.md`). Message family and per-logger shape are identical to the general
+    undefined-symbol check above, reusing the same `_WHOLE_EXPR_ECHO_LOGGERS` split: CR6/CR1000X
+    report one whole-expression `Invalid symbol in expression: <value text>.` line; CR300/CR350
+    report each undefined name in the expression as its own `<name> is not defined.` line (oracle,
+    a compound expression, `docs/loggers.md`: `Const Foo = BazQux + Corge` -> one line, `Invalid
+    symbol in expression: BazQux + Corge.`, on CR6; two lines, `BazQux is not defined.` then
+    `Corge is not defined.`, on CR300 -- same shape as an instruction argument's own compound
+    expression, `_report_statement` above). `ConstDecl.value_span` (new field, `syntax.py`/
+    `parser.py`, same technique as `Instruction.arg_spans`) captures the value expression's own
+    source columns so the whole-expression echo is the verbatim text, not a re-derived form.
+
+    Narrow and deliberately conservative, mirroring `check` above: only an outright-undefined
+    name is flagged (`_undefined_names` against the same `known` universe, so a `Const` that
+    legitimately forward/cross-references another declared name is never flagged); a `Const`
+    referencing a *live* runtime variable is a real, different, oracle-confirmed rule of its own
+    (`Variable used in CONST expression.`, all loggers, `docs/loggers.md`) but not implemented
+    here -- zero occurrences of that message anywhere in this project's own corpus sample, so
+    there is no evidence this specific project's programs need it, and guessing its trigger
+    shape/gating without corpus signal risks a false reject for no measured benefit.
+    """
+    known = _known_names(program, profile)
+    whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+    for stmt in program.statements:
+        if not isinstance(stmt, S.ConstDecl):
+            continue
+        names = _undefined_names(stmt.value, known)
+        if not names:
+            continue
+        if whole_echo:
+            if stmt.value_span is not None:
+                text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
+            else:  # defensive: only reached if a `Const` was built without a span
+                text = stmt.value.name if isinstance(stmt.value, S.Name) else names[0]
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text), stmt.file)
+        else:
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)

@@ -15,17 +15,22 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 Measured 2026-09-26 with `tools/difftest.py` (exact output / same verdict, different message /
 verdict mismatch) against the real compilers under Wine. "False reject" = the real compiler
-accepts, opencrbasic rejects; it is the failure that matters most and is 0 everywhere.
+accepts, opencrbasic rejects; it is the failure that matters most and is 0 everywhere. CR300/CR350
+updated later the same day by the agreement round below (`docs/loggers.md`); CR6/CR1000X's own
+`crbasic/`/`help examples` numbers are that round's *starting* point, re-verified unchanged by it,
+not re-measured independently since.
 
 | Logger | crbasic/ (16) | help examples (507) | false rejects |
 |---|---|---|---|
 | CR6 | 16 / 0 / 0 | 336 / 162 / 9 | 0 |
-| CR1000X | 8 / 5 / 3 | 352 / 149 / 6 | 0 |
-| CR300 | 0 / 8 / 8 | 120 / 369 / 18 | 0 |
-| CR350 | 0 / 6 / 10 | 124 / 366 / 17 | 0 |
+| CR1000X | 9 / 7 / 0 | 352 / 149 / 6 | 0 |
+| CR300 | 0 / 16 / 0 | 135 / 356 / 16 | 0 |
+| CR350 | 0 / 16 / 0 | 139 / 353 / 15 | 0 |
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
-terminals and instructions), which opencrbasic reproduces as a verdict for 8 and 6 of them.
+terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
+both loggers (0 mismatch, up from 8/8 and 10/6 respectively -- `docs/loggers.md`'s "CR300/CR350
+agreement round").
 
 `scripts/verify.py` with `CR6COMP=opencrbasic`: `BUILD  host tests 119 pass | CRBasic 16/16
 compiled, 6 warning(s) | repository pass` (identical to the exe; not re-run this session -- the
@@ -43,6 +48,34 @@ Tests: `python3 -m pytest -q` 949 passed, 311 skipped, 8 xfailed.
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-09-26 (CR300/CR350 agreement round): `checker/expressions.py`, `checker/__init__.py`,
+  `profiles.py` (owned this round), plus two small additive fields needed by them (`syntax.py`
+  `ConstDecl.value_span`, `parser.py`'s one-line computation of it). Full rules and oracle evidence:
+  `docs/loggers.md` "CR300/CR350 agreement round". Three findings, all oracle-confirmed: (1) CR300/
+  CR350 do not share CR6/CR1000X's undefined-name/`Variable illegal in Parameter` mutual
+  exclusivity at a const-family argument position -- they report *both* (accounts for this round's
+  largest `verdict` groups, `mv200C`/`mv5000C` range-constant names CR300/CR350 simply don't have);
+  (2) neither a `Const`'s initializer nor a plain `Assignment`'s RHS was ever checked for an
+  undefined name on *any* logger (new `expressions.check_consts`, pass 1/ungated, and a second loop
+  in `expressions.check` for assignments, pass 2/gated like the rest of that function) -- closes
+  CR300's and CR350's repo-program `mismatch` count to 0 (was 8 and 10) and fixes one of CR1000X's
+  three pre-existing repo mismatches too; (3) CR300/CR350's `warnings.check_early`
+  (reachability/fnotch) is not unconditional the way CR6's is -- an undefined-symbol-class error
+  anywhere in the file suppresses every `check_early` warning in the whole file, even on an earlier,
+  otherwise-clean line (new `Profile.early_warnings_gated`). Full-corpus `tools/difftest.py`
+  (`repo`+`examples`+`chm`): cr300 chm exact 120->135, mismatch 18->16, repo 0/8/8->0/16/0; cr350
+  chm exact 124->139, mismatch 17->15, repo 0/6/10->0/16/0; cr6/cr1000x chm exact unchanged (336,
+  352); cr1000x repo 8/5/3->9/7/0. False rejects 0->0 on all four loggers throughout (`--show 0` +
+  the `their_exit==0 and our_exit!=0` check). `python3 -m pytest -q`: 949 passed both before and
+  after (a later, unrelated 957/0-xfailed run in the same shared tree was the concurrent `tables.py`
+  workstream's own progress, confirmed by `git diff --stat` touching only this round's five files).
+  `tools/fuzz_replay.py --workers 2` (357 reproducers): 41 fixed, 48 changed class, 0 new
+  `false_reject`. Remaining CR300/CR350 gaps (evidence only, not attempted): a `SerialOpen`-style
+  `ComPort` argument's own three-message diagnostic; several instructions absent from CR300/CR350
+  whose bare-call syntax falls into the generic "Expr" fallback rather than a per-name `is not
+  defined.` (`DisplayMenu`/`UDPSocketOpen`/`I2COpen`/`I2CWrite`/`CardOut`/`PortPairConfig`); a
+  handful of single-file `Units`/`Const`-truncation message differences on malformed CHM examples.
 
 - 2026-09-26 (checker round 4: general expression-tree resolution, pass model correction):
   `checker/expressions.py`/`checker/symbols.py` (owned), plus a coordinator-directed extension into
