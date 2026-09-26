@@ -65,7 +65,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     env = consteval.Env(profile, dict(program.consts))
 
     _run_pass(structure.check, program, profile, diags, env)
-    _run_pass(expressions.check, program, profile, diags)
+    _run_pass(expressions.check, program, profile, diags, env)
     _run_pass(instr_rules.check, program, profile, diags)
     # Ungated (unlike step 4 below): reachability/background-calibration/fnotch all oracle-confirmed
     # to fire even when the file has other errors elsewhere (`checker/warnings.py`, `docs/instructions.md`).

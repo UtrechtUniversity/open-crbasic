@@ -16,7 +16,7 @@ Metric (`tools/difftest.py --logger cr6`), round 1 (previous session) / round 2 
 |---|---|---|---|---|
 | `crbasic/` (16 programs) | 14 exact, 2 verdict, 0 mismatch | **16 exact**, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch | 16 exact, 0 verdict, 0 mismatch |
 | `examples/` (4 programs) | 0 exact, 0 verdict, 4 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch | 0 exact, 2 verdict, 2 mismatch |
-| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch | 310 exact, 188 verdict, 9 mismatch |
+| `tests/corpus/chm/` (507 programs) | 198 exact, 0 verdict, 309 mismatch | 268 exact, 229 verdict, 10 mismatch | **310 exact**, 188 verdict, 9 mismatch | **311 exact**, 188 verdict, 8 mismatch |
 
 Round 2's own headline: **268 -> 310 exact** (+42) on `chm`, verdict 229 -> 188, mismatch 10 -> 9
 (one instance, `mqttpublishmeta_1.CR6`, moved from false-accept to exact as a side effect of the
@@ -25,18 +25,24 @@ to be shaped that way). Re-verified after every change this round: every `their_
 in the corpus (accepted by the real compiler) is `exact` for us, zero exceptions -- the working
 invariant this round optimised against ("never reject an accepted program" first, "exact" second).
 
-**Round 3 (this session) did not move the static-corpus counts** -- its fixes (array dimension
-limits, the two fuzz-found robustness bugs, error-reporting internals) are exercised by
-`tests/corpus/fuzz/` and targeted oracle scratch probes, not `tests/corpus/chm/`'s existing 507
-files, none of which happen to hit these shapes. `tools/fuzz_replay.py --workers 2` (248 saved
-reproducers): 5 fixed outright (the hang; two crash instances; the `IncludeSection` false reject;
-one `cr1000x` `false_accept` fixed as a side effect of the array-dimension check), 2 changed class
-for the better (the third crash instance and the `cr350` hang copy both stopped crashing/hanging
-and now report a real, if incomplete, diagnostic instead -- `message_diff`/`false_accept`, both
-pre-existing, documented, not-this-workstream's-scope gaps, not new problems this round
-introduced). False-reject count stayed 0 on `cr6`/`cr300`/`cr350` throughout and the 1 pre-existing
-`cr1000x` false reject (`structuretype_3.CR6`, unrelated) is untouched. Full detail: `docs/
-fuzz-findings.md`, "Robustness" and "Array dimension limits" above.
+**Round 3 (this session)**: `chm` 310 -> 311 exact, mismatch 9 -> 8 (`hex_2.CR6`,
+`Scan Count parameter must be a non-negative integer`, moved to exact as a side effect of a
+concurrent workstream's `Scan`-value check, not chased on purpose). The session's own targeted
+fixes (array dimension limits, malformed `As` clause, the two fuzz-found robustness bugs, error-
+reporting internals) are mostly exercised by `tests/corpus/fuzz/` and targeted oracle scratch
+probes rather than `tests/corpus/chm/`'s existing 507 files, which mostly don't happen to hit
+these shapes -- `tools/fuzz_replay.py --workers 2` (248 saved reproducers) is the more informative
+number: 23 fixed outright, 9 changed class (all toward a less-severe class; none newly false-reject
+or crash/hang). **Re-verified with `tools/difftest.py --logger <l> --group all` on all four
+loggers after every change this round, not just `cr6`**: false-reject count is 0 on `cr6`/`cr300`/
+`cr350` and the 1 pre-existing `cr1000x` false reject (`structuretype_3.CR6`, a `StructureType`
+bare-member parsing gap, unrelated to this round's work and not fixed) is unchanged. Two extensions
+this round tried and reverted after the full-corpus run (not just hand-written probes) surfaced
+real false rejects on `crbasic/Main.CR6` and others -- see `expressions.py`'s "Round 3" section
+below for the full account; this is the session's own most important methodological finding:
+**a hand-written oracle probe is not a substitute for the full corpus + all four loggers before
+trusting a generalisation.** Full detail: `docs/fuzz-findings.md`, "Robustness" and "Array
+dimension limits"/"Malformed `As` clause" above, `expressions.py`'s own section below.
 
 "mismatch" (one side accepts, the other rejects) is the priority-1 metric: a placeholder checker
 that accepted everything meant most of `chm`'s (deliberately, doc-derived) invalid programs were
@@ -393,6 +399,28 @@ from a skipped comma in the middle of an otherwise-complete list -- no oracle ev
 found supports flagging that shape, and AGENTS.md's priority (never reject an accepted program)
 rules out guessing at it.
 
+### Malformed `As` clause: `Invalid Variable declaration %s.` (round 3, `parser.py`/`structure.py`)
+
+Well evidenced by 6 independent fuzz mutants (`docs/fuzz-findings.md` "5. Message diff"), all a
+corrupted spelling of the `As` keyword (`asX`, `As_Mut`, a stray space splitting one identifier
+into two, ...). Oracle-confirmed rules (`parser.py`'s `_parse_vardecl`, a `_ParseError` with reason
+`"Invalid As clause: <token>"`, mapped by `structure.py` to the message below):
+
+- A token right after a `Public`/`Dim` variable's own name/dims -- where `As`, `=`, a comma or end
+  of line was expected -- that is none of those reports `Invalid Variable declaration %s.`, `%s` =
+  that token's own text, and **abandons the whole declaration statement**, not just the one
+  variable: a valid first variable followed by a malformed second one (`Public pppSocket As
+  Long,pppIP As_Mut String`) reports only the second's own message, parsing no further variable in
+  the same comma list (oracle-confirmed).
+- **Oracle-confirmed quirk, easy to get wrong**: once a variable's own `As Type` clause has been
+  *fully* parsed, anything before the next comma (or end of line) is silently **discarded, not
+  rejected** -- `Public X As Long asX String, Y As Float` compiles, `Y` declared normally, `asX
+  String` simply vanishes (confirmed not resolvable afterwards, not a second variable). This is
+  what distinguishes the message from a plain "unexpected trailing input" rejection: the malformed-
+  clause check only fires *before* a valid `As`/`=`/comma/EOL is found for that variable, never
+  after. Two pre-existing false rejects (this exact "trailing garbage after a complete `As`
+  clause" shape) were fixed as a side effect of getting this ordering right.
+
 ### Array dimension limits: `Illegally dimension: %s` / `Variable %s dimension exceeds max of %d.` (round 3, `structure.py`)
 
 Fixes the fuzz-found hang (`docs/fuzz-findings.md` "1. Hang"): `tables.py`'s `-l` renderer used to
@@ -487,6 +515,46 @@ TCDiff(TCTemp(),6,mv200C,Vx1,TypeT,PTemp,True,0,15000,1.0,0) -- CR1000X-only ter
 `Public`/`Dim`'s array initialiser (`Public Bridge3(2,3) As Long = {ComC5,0,0,0,0,0}`, corpus:
 `portbridge_1.CR6`); a name nested inside a larger expression, index, or `Table.Field`; scoped
 (rather than whole-program) resolution.
+
+### Round 3: two extensions tried and reverted (real false rejects on the full corpus)
+
+The task brief for this round asked for exactly the two extensions above, plus a constant-only/
+variable-required type-code check. Both were implemented, both initially looked correct against
+this session's own hand-written oracle probes, and both were then reverted once a full run of
+`tools/difftest.py --logger <l> --group all` (all four loggers, the whole `chm`/`repo`/`examples`
+corpus, not just targeted probes) turned up real false rejects -- exactly the failure mode
+AGENTS.md ranks worst. Recorded here so a future session does not repeat the same probing without
+also checking the full corpus before trusting a hand-written probe:
+
+- **Full expression-tree name resolution** (`expressions.py`'s `_undefined_names`, written but not
+  wired into `check`): extending the undefined-symbol check to walk into `Unary`/`Binary`/`Index`/
+  `ArrayLiteral` immediately rejected this repository's own `crbasic/Main.CR6` and five of its
+  siblings, plus `tests/corpus/chm/tablefile_1.CR6`. Two distinct, previously-invisible gaps in
+  `known`: `NAN` (a predefined float constant used throughout this repo's own sensor code, e.g.
+  `PT1000_Temp_C <> NAN`) is not present in `data/symbols.json` at all, and the system `Status`
+  table (`Status.SerialNumber`) is not in `known` either -- both invisible to the old, direct-
+  bare-`Name`-only check because neither previously-exact program happened to reference either name
+  as a *direct* instruction argument, only nested inside a larger expression. Given no time left
+  this round to audit `known` against every name a nested expression anywhere in the corpus might
+  reference, this stays unimplemented; `_undefined_names` is written and ready, but `check` does
+  not call it.
+- **Constant-only (codes 1/39, 5/38, 20) and variable-required (codes 8, 27, 29, 33, 41, 47, 48)
+  type-code checks**: both are real rules for *specific* instructions (oracle-confirmed:
+  `WriteIO(Mode,X)` -> `Variable illegal in Parameter: Mode.`; `Scan(X+1,Sec,0,0)` -> `Variable
+  illegal in Parameter: X+1.`; `Battery(5)`/`Battery(1+2)`/`Battery(SomeConst)` -> `Invalid
+  Variable or Array: <text>.`, a `Const SomeConst = 5` rejected exactly like a bare literal, only a
+  *string* constant such as `Battery("x")` accepted) -- but **not uniform across every instruction
+  that shares a type code**, which only the full-corpus run exposed: `Sample`'s own `DataType`
+  argument is coded `1` (`const_expr`) like `Scan`'s interval, yet legitimately accepts a
+  `StructureType` name (`structuretype_1.CR6`, not a foldable constant); `Move`'s third argument
+  and `ModBusClient`'s last, optional argument are both coded `27`/`41` (`variable_or_array`) like
+  `Erase`'s argument, yet both legitimately accept a bare literal (`embracer.cr6`,
+  `modbusclient_2.CR6`, both CR1000X). The most likely mechanism is each such instruction's own
+  `compile_fn` recognising a keyword- or type-name-shaped argument before generic constant-folding
+  would run, which the type-code table alone does not record. Not implemented; would need each
+  const-only/variable-required-coded parameter checked individually (or the compiler's own
+  per-instruction override flag identified) before it could be enabled without more false rejects
+  like these.
 
 ## `instructions.py`: the analog-channel `U1..U12` range check
 

@@ -25,6 +25,139 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 ## Log
 
+- 2026-09-25/26 (checker round 3, warnings + value-range checks): implemented from
+  `docs/fuzz-findings.md`'s highest-leverage items, all oracle-verified, rules and evidence in the
+  new `docs/instructions.md`: four warnings (`%s never reached at run time.`, all four loggers;
+  `When Main Sequence Scan %d is running, background calibration will be disabled.`, CR6 threshold
+  <8ms / CR1000X <2ms, absent on CR300/CR350; `Invalid fnotch value, must be 50,60 400 or 4000`,
+  CR300/CR350 only, 16 instructions' `fN1` argument) and three `Scan`/`DataInterval` value-range
+  errors (`Scan Interval/BufferOption/Count parameter must be a non-negative integer` and
+  `DataInterval TintoInt and Interval parameters must be non-negative`, both CR6/CR1000X only --
+  found absent on CR300/CR350 as a false-reject regression, `hex_2.CR6`, and gated off there;
+  `DataTable interval %d uSec not integrally divisible by scan interval %d uSec.`, project
+  knowledge from `knowledge/crbasic/lessons.md`, identical on all four loggers). Closes the
+  fuzz-found crash (`tables.py`'s `_scan_weights`, a non-numeric `Scan` interval) with a real
+  diagnostic; the fuzz-found hang (`tables.py`'s `render_table_list`) was independently already
+  fixed by the concurrent `structure.py` array-dimension check before this round started (re-
+  verified fixed here too). New: `checker/warnings.py`'s `check_early` (ungated -- all of the above
+  are oracle-confirmed to fire even when the file has other errors elsewhere, a second
+  architectural finding this round alongside the pre-existing pass-1/pass-2 split), new functions in
+  `checker/instr_rules.py`, one additive line in `checker/__init__.py`, `Profile.fnotch`/
+  `Profile.background_calibration` in `profiles.py`, `data/<logger>/{fnotch,
+  background_calibration}.json`. Also fixed, as shared/unowned glue (`diagnostics.py`,
+  `compiler.py`, matching a precedent set by the checker-round-2 session): a warning with a real
+  line now prints `line N: Warning: ...` (previously always bare `Warning: ...`, which happened to
+  be right for the one warning that existed before this round); errors and warnings are now
+  rendered as one line-ordered list (a line-less warning sorts last), on both the failure and
+  success paths. One regression caught and fixed during development, not left in: the reachability
+  check's first version falsely flagged `EndSequence` (a `SlowSequence`'s own terminator) as
+  unreached on 10 real, oracle-accepted corpus programs; fixed by stopping the analysis entirely at
+  the first `SlowSequence` rather than guessing at slow-sequence-internal reachability (`docs/
+  instructions.md`). `python3 -m pytest -q`: 939-943 passed (small run-to-run count changes are
+  from the CHM-corpus-driven test collecting differently as unrelated concurrent `structure.py`/
+  `parser.py` work landed, not this round's own tests), 0 failed throughout. Investigated, not
+  implemented (evidence and reasoning in `docs/instructions.md` "Investigated, not implemented"):
+  `%s declared but not used.` (no trigger found); CR6's own `Invalid fnotch, minimum allowed is 2
+  Hz.` error and three more `Scan`-family messages (`...must be at least...`/`...multiple of...`/
+  `Maximum Scan interval is 1 Day.`) -- all real, but each has a boundary this round could not pin
+  down cleanly enough to implement without a false-reject risk.
+
+  `tools/difftest.py --logger <l>` (`chm` group; `repo`/`examples` unchanged throughout),
+  before (`git worktree` at the last commit before this round, `5b4692a`) / after (this round plus
+  the concurrent `structure.py`/`parser.py`/`tables.py` work landing in the same window -- both
+  contributed to the same shared files, so the two are not separable from `git diff` alone;
+  `docs/instructions.md`/this entry describe only this round's own rules):
+
+  | Logger | chm exact/verdict/mismatch before | after | false rejects before -> after |
+  |---|---|---|---|
+  | cr6 | 310/188/9 | 311/188/8 | 0 -> 0 |
+  | cr1000x | 327/172/8 | 328/172/7 | 0 -> 1 (pre-existing, `structuretype_3.CR6`, unrelated parser gap) |
+  | cr300 | 93/396/18 | 120/369/18 | 0 -> 0 |
+  | cr350 | 96/394/17 | 124/366/17 | 0 -> 0 |
+
+  `tools/fuzz_replay.py --workers 2` (248 reproducers): 23-26 fixed, 0 new false rejects (run twice;
+  the exact fixed/changed counts wobble a little between runs on this box -- worker contention
+  re-classifying a fast case, `docs/fuzz-findings.md`'s own documented flakiness note -- but no run
+  ever showed a `false_reject`). Confirmed fixed: the `_scan_weights` crash
+  (`cr6/crash/ce0f811dd89e.CR6`, `cr300/crash/{237270eb6999,f3505c8f84ae}.CR6`), both `mode_diff`
+  reachability/background-calibration reproducers, both `fnotch` `mode_diff` reproducers
+  (`cr300`/`cr350`), and several `false_accept`/`message_diff` reproducers that were the same root
+  causes. A `hang` classification seen once on a `false_accept` reproducer during this round's own
+  fuzz_replay runs did not reproduce on direct, isolated re-invocation (20 back-to-back calls, 71ms
+  total) and is judged transient (worker contention / the mid-round container restart), not a real
+  regression -- flagged here rather than silently discarded, per AGENTS.md's evidence discipline.
+
+- 2026-09-25/26 (checker round 3, the other half -- fuzz bugs, error-reporting internals, array
+  dimension limits, expression checks): `source.py`, `lexer.py`, `parser.py`, `consteval.py`,
+  `tables.py` (robustness only), `checker/__init__.py`, `checker/structure.py`,
+  `checker/expressions.py`. Full rules and oracle evidence: `docs/checker.md` (new "round 3"
+  sections throughout) and `docs/frontend.md`.
+  1. **Fixed the three fuzz-found bugs** (`docs/fuzz-findings.md`): the hang
+     (`Public X(999999999999) As Long`, `tables.py`'s `-l` renderer enumerating ~10^12 indices) is
+     now rejected at declaration time with the real `Illegally dimension: %s`/`Variable %s
+     dimension exceeds max of %d.` messages (`structure.py`'s new array-dimension-limit check,
+     oracle-confirmed boundary at `INT32_MAX`, at most 3 dimensions) *and* `tables.py`'s renderer
+     itself got a defensive element-count cap as a second line of defence; the crash (`tables.py`'s
+     `_scan_weights` calling `float()` on a non-numeric `Scan` interval) is now type-checked first;
+     the false reject (`IncludeSection` with a harmless third argument silently not expanding) is
+     fixed in `source.py`'s regex. Added `checker/__init__.py`'s `_run_pass` (every checker pass
+     wrapped so one module's bug can't take down the whole compile) and `compiler.py`'s own
+     try/except around parsing/checking/signature -- belt-and-suspenders so `compile_file` never
+     raises, matching what a fuzzer or any other caller needs.
+  2. **Error-reporting internals**, both oracle-confirmed by construction (scratch probes, not
+     saved to the corpus): a 4096-byte running buffer for error messages -- once a message no
+     longer fits, it is dropped and pass 1 reports nothing further (`compiler.py`'s
+     `_bounded_by_message_buffer`, verified byte-for-byte against a 150-line reproducer that
+     stops after its 69th message); and an included file's own name in angle brackets,
+     `<file> line N: message`, for most error classes but *not* `Sub %s not defined.`/`Invalid, or
+     out of place expression: %s.` (both structure.py's generic bare-statement fallback), modelled
+     as `Diagnostic.show_file` (`diagnostics.py`, default on, opted out only at those two call
+     sites). The task's third claimed fact, "warnings capped at 1000", could not be verified: the
+     only implemented warning kind is itself capped far earlier by a different, oracle-confirmed
+     real limit, `Maximum number of tables of 128 exceeded.` (found while trying to construct the
+     probe; not implemented, noted in `docs/checker.md` for whoever next touches `structure.py`'s
+     declaration-count checks or `tables.py`).
+  3. **`Invalid Variable declaration %s.`** for a malformed `Public`/`Dim` `As` clause (fuzz
+     finding 4, well evidenced by 6 fuzz mutants): `parser.py`'s `_parse_vardecl` now distinguishes
+     "no `As`/`=`/comma/EOL token here at all" (this error, abandoning the whole declaration
+     statement) from an oracle-confirmed quirk this fix also had to get right to avoid two *new*
+     false rejects -- once a variable's own `As Type` clause has fully parsed, anything before the
+     next comma is silently discarded, not rejected.
+  4. **Type-code-driven argument checks (task's 3rd item) were attempted and mostly reverted.**
+     Implemented, verified against hand-written oracle probes, wired in, and then found to cause
+     real false rejects once checked against the *full* corpus on all four loggers (not just the
+     probes): a full expression-tree undefined-name walk rejected this repository's own
+     `crbasic/Main.CR6` and siblings (`NAN` and the system `Status` table are both missing from
+     `known` in a way only a nested-expression lookup reaches); constant-only (codes 1/39, 5/38,
+     20) and variable-required (codes 8, 27, 29, 33, 41, 47, 48) rejection rules are real for
+     specific instructions but not uniform across every instruction sharing a code (`Sample`'s
+     `DataType`, `Move`'s third argument, `ModBusClient`'s last argument each override their own
+     code's generic rule). All three are backed out of `expressions.check`'s active path (the
+     helper functions are written and documented, not deleted, for a session with time to verify
+     per-instruction); `docs/checker.md`'s `expressions.py` "Round 3" section has the full account.
+     This is the session's main methodological finding: verify a generalisation against the whole
+     corpus and all four loggers before trusting a hand-written probe, not just the probe.
+
+  `python3 -m pytest -q`: 943 passed, 0 failed. `tools/difftest.py --logger <l> --group all`,
+  before this round (2026-09-25 checker-round-2 end state, `PROGRESS.md`'s own prior numbers) /
+  after (this entry plus the concurrent warnings/value-range round above -- both landed in the same
+  window and are not separable from a plain `git diff`):
+
+  | Logger | repo | chm | false rejects |
+  |---|---|---|---|
+  | cr6 | 16/0/0 unchanged | 310/188/9 -> 311/188/8 | 0 -> 0 |
+  | cr1000x | 8/5/3 unchanged | 327/172/8 -> 328/172/7 | 1 (pre-existing `structuretype_3.CR6`) -> 1 (unchanged, not fixed -- see below) |
+  | cr300 | unchanged | 93/396/18 -> 120/369/18 | 0 -> 0 |
+  | cr350 | unchanged | 96/394/17 -> 124/366/17 | 0 -> 0 |
+
+  `structuretype_3.CR6`'s false reject (a `StructureType` body's bare, keyword-less member
+  declarations, e.g. `LatitudeDegrees` or `Speed,Course,...` alone on a line -- CR6's parser has no
+  notion of this shape at all) was looked at again this round per an explicit ask to fix it "if
+  quick"; it is not quick -- it needs the parser to recognise `StructureType`/`EndStructureType`
+  block context and parse a bare comma-separated name list (optionally `As Type`) specially there,
+  without accidentally swallowing an ordinary bare statement elsewhere -- so it stays open,
+  unchanged from prior sessions' own assessment.
+
 - 2026-09-25 (fuzzing): phase 4 first pass. `tools/fuzz.py`: seeds from `crbasic/*.CR6` (with
   `.crb` siblings) and oracle-accepted `tests/corpus/chm/` files; 16 text-level mutation operators
   (delete/duplicate/swap line, rename identifier, replace numeric literal, add/drop/replace

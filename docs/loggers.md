@@ -213,6 +213,29 @@ instructions probed?) was not worth the false-reject risk of guessing wrong, per
 falsely reject" priority. Left for a future session with a reason to chase burst-mode CR300/CR350
 programs specifically.
 
+## Warnings and value-range checks that differ by logger
+
+Full rules and oracle evidence: `docs/instructions.md` (owned by the same workstream as this
+file's terminal/channel section). Summary of what's per-logger there:
+
+- **`Invalid fnotch value, must be 50,60 400 or 4000`**: CR300/CR350 only, a fixed-set restriction
+  on 16 instructions' `fN1` filter-frequency argument; CR6/CR1000X accept any value in a continuous
+  range instead (e.g. `PanelTemp(...,15000)` compiles clean on both).
+- **`Scan Interval/BufferOption/Count parameter must be a non-negative integer`** and
+  **`DataInterval TintoInt and Interval parameters must be non-negative`**: CR6/CR1000X only.
+  Genuinely absent on CR300/CR350 (oracle: `Scan("fuzz",Sec,3,0)`, `Scan(-1,Sec,3,0)`, and
+  `DataInterval(0,-3,Sec,0)` all compile clean on `cr300comp.exe`) -- found as a regression during
+  this round's own development (the corpus's `hex_2.CR6`, already a documented CR6/CR1000X-
+  rejected example, is real CR300/CR350-*accepted* code).
+- **`When Main Sequence Scan %d is running, background calibration will be disabled.`**: CR6
+  (threshold < 8ms) and CR1000X (threshold < 2ms, i.e. only its own minimum achievable 1ms
+  granularity) only; CR300/CR350 never show it, oracle-probed down to a 100us scan interval.
+- **`DataTable interval %d uSec not integrally divisible by scan interval %d uSec.`**: the one
+  exception -- identical, message and all, on **all four loggers including CR300/CR350** (unlike
+  the two non-negative checks above, which look similar but are CR6/CR1000X-only).
+- **`%s never reached at run time.`** (reachability): identical condition and text on all four
+  loggers (oracle-confirmed with the same minimal probe on each compiler).
+
 ## Extension / `--logger` mapping
 
 Already implemented in `profiles.py` (`EXTENSIONS`, `for_file`) and `cli.py` (`--logger`); this
