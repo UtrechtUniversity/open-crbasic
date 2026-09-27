@@ -112,8 +112,11 @@ class CompileResult:
         # ordering by message shape rather than by which module raised it, so this stays correct
         # without `checker/warnings.py` (a concurrently-owned module) needing to tag its own
         # diagnostics; a stable sort keeps each kind's own relative (insertion) order within itself.
+        # On one line the reachability warning follows that line's errors (oracle: 15 of 15 corpus
+        # and fuzz transcripts); other warnings keep their check order.
         ordered = sorted(self.diagnostics.items,
-                          key=lambda d: (False, self._position(d))
+                          key=lambda d: (False, self._position(d),
+                                         d.message.endswith("never reached at run time."))
                           if d.line else (True, _no_line_kind(d), 0))
         if not self.ok:
             rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in ordered])

@@ -179,6 +179,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # "stop entirely at the first placement error" behaviour.
         pass2_start = len(diags.items)
         cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
+        _run_pass(structure.check_block_closers, program, profile, diags)
         _run_pass(expressions.check, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was

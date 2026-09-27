@@ -536,6 +536,58 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     return None
 
 
+
+_CLOSER_MESSAGES = {
+    "IF": ("IF or SELECT statement illegally has SCAN without NEXT SCAN.",
+           "END IF without IF or END SELECT without SELECT."),
+    "FOR": ("FOR NEXT statement illegally has SCAN without NEXT SCAN.", "NEXT without FOR."),
+    "DO": ("LOOP statement illegally has SCAN without NEXT SCAN.", "LOOP without DO."),
+}
+
+
+def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Pass 2, all four loggers: a closing `EndIf`/`EndSelect`/`Next`/`Loop` pops whatever block
+    is innermost; if that was a `Scan`/`SubScan` it reports `<kind> statement illegally has SCAN
+    without NEXT SCAN.`, and with no block of its own kind open it reports `END IF without IF or
+    END SELECT without SELECT.`/`NEXT without FOR.`/`LOOP without DO.`; an `EndSelect` with no
+    `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends").
+    Programs using `While`/`Wend` are skipped (not probed)."""
+    if any(_keyword(st) in ("WHILE", "WEND") for st in program.statements):
+        return
+    stack: list[str] = []
+    open_count = {"IF": 0, "FOR": 0, "DO": 0, "SCAN": 0}
+    selects = 0
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        args = getattr(stmt, "args", []) or []
+        word = _block_word(args) if kw in ("END", "NEXT") else None
+        if kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None) or kw == "SELECT":
+            stack.append("IF")
+            open_count["IF"] += 1
+            selects += kw == "SELECT"
+        elif kw in ("FOR", "DO"):
+            stack.append(kw)
+            open_count[kw] += 1
+        elif kw in ("SCAN", "SUBSCAN"):
+            stack.append("SCAN")
+        elif kw in ("NEXTSCAN", "NEXTSUBSCAN") or (kw == "NEXT" and word in ("SCAN", "SUBSCAN")):
+            if stack:
+                stack.pop()
+        elif kw in ("ENDIF", "ENDSELECT", "NEXT", "LOOP") or (kw == "END" and word in ("IF", "SELECT")):
+            is_select = kw == "ENDSELECT" or (kw == "END" and word == "SELECT")
+            if is_select and selects == 0:
+                diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
+                return
+            kind = {"NEXT": "FOR", "LOOP": "DO"}.get(kw, "IF")
+            illegal_scan, without = _CLOSER_MESSAGES[kind]
+            if stack and stack.pop() == "SCAN":
+                diags.error(stmt.line, illegal_scan, stmt.file)
+            if open_count[kind] == 0:
+                diags.error(stmt.line, without, stmt.file)
+            else:
+                open_count[kind] -= 1
+                selects -= is_select
+
 def _leftover_first_name_known(text: str, known: set[str]) -> bool:
     """Only the *first* identifier tokenisable out of `text` (skipping any leading punctuation --
     `(`/`,` -- and numeric/string literals) needs to be in `known` (`expressions._known_names`);

@@ -662,6 +662,8 @@ coordinator commits it. Tick items here as they land.
 - [x] Declaration expressions: undefined names / variables in array dimensions, `Alias` indices and
       initializers; `Variable Type %s not supported` (`docs/checker.md` "Declaration
       expressions"). Fuzz replay: 105 saved false accepts now rejected.
+- [x] Unmatched `EndIf`/`EndSelect`/`Next`/`Loop` (all loggers, `docs/checker.md` "Unmatched block
+      ends").
 - [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
 - [ ] All loggers: `%s already defined as an internal function.` for a `Public`/global `Dim`
       named like a built-in function (oracle: `Public X, exp` on CR6)

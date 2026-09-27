@@ -2174,3 +2174,19 @@ Parameter: <echo>.` instead of the `Invalid symbol` line:
 `Int4`, `Integer` and `ULong` are rejected on all four loggers. Not done: `Public C() As Boolean`
 (`Invalid symbol in expression:  As.`). Fuzz replay: 105 saved false accepts now rejected, no
 new false rejects.
+
+## Unmatched block ends (2026-09-27)
+
+Pass 2, all four loggers (CR6 and CR300 probed side by side, identical), `structure.py`
+`check_block_closers`. One stack of open blocks (`If`/`Select`, `For`, `Do`, `Scan`/`SubScan`) and
+a counter per kind. A closing `EndIf`/`EndSelect`/`Next`/`Loop` always pops the innermost block;
+if that was a `Scan`/`SubScan` it first reports `IF or SELECT` / `FOR NEXT` / `LOOP statement
+illegally has SCAN without NEXT SCAN.`; with no block of its own kind open it reports `END IF
+without IF or END SELECT without SELECT.` / `NEXT without FOR.` / `LOOP without DO.`. An
+`EndSelect` with no `Select` open reports only `EndSelect w/o Select` (no period). Examples:
+`For I = 1 To 2` / `EndIf` / `Next` inside a Scan -> `END IF without IF...` on the `EndIf` (the
+`For` is popped) and `FOR NEXT statement illegally has SCAN...` on the `Next`; two stray `EndIf`s
+-> both messages on the first, only `END IF without IF...` on the second (the `Scan` was popped).
+Programs with `While`/`Wend` are skipped. On one line the "never reached at run time" warning
+prints after that line's errors (15 of 15 transcripts); other warnings keep their order.
+Fuzz replay: 122 saved false accepts now rejected in total, 168 reproducers exact.
