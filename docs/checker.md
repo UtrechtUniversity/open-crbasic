@@ -2019,3 +2019,44 @@ text than ours entirely -- these files open with an unquoted documentation parag
 mid-sentence; the real compiler evidently resynchronizes on that keyword without ever flagging the
 preceding run of bare words, which our checker does not model. Needs its own oracle investigation,
 not attempted here.
+
+## Pass-1 fallback: statements that start with a known word (2026-09-27, not yet implemented)
+
+This refines "Pass model" above and explains the 16-file CR6/CR1000X "keyword-resync" group (the
+note just above; `calibrate_1.CR6`, `cdmacpower_1.CR6`, `sinh_1.CR6`, ...). There is no keyword
+resynchronisation. Pass 1 syntax-checks a statement whose **first token is known**: a declared
+variable/alias, a numeric literal, a built-in function name, or a reserved word (`To` in
+`calibrate_1.CR6`'s prose line 2). A syntax failure there is a **pass-1** error, so it is printed
+next to other pass-1 errors and it suppresses all of pass 2, including pass-2 errors on earlier
+lines (an opening prose paragraph's `Expr illegally occurs before BeginProg.`). A statement whose
+first token is an unknown identifier stays an `Expr` record for pass 2, as documented above.
+
+Oracle probes, CR6 (CR1000X identical on the two marked `*`). Template: `Public Pi, X` / optional
+`Dim Z banana` (pass-1 `Invalid Variable declaration banana.`) / `BeginProg` / probe line / `Scan
+(1,Sec,0,0)` / `NextScan` / `EndProg`:
+
+| Probe line(s) | With `Dim Z banana` | Pass |
+|---|---|---|
+| `Pi bar`*, `Pi(1) bar`, `Pi +`, `1 + 2` | `Invalid, or out of place expression: <echo>.` still printed | 1 |
+| `Sin bar` | `Expression expects ( :   Sin bar.` printed | 1 |
+| `Scan bar` | `Invalid symbol in expression: bar.` printed | 1 |
+| `foo bar`, `foo` | nothing | 2 |
+| `Pi = Q` (Q undefined) | nothing | 2 |
+| `Pi = 4 * ATN( 1` | `No Matching, or out of place ) in expression: <echo>.` printed | 1 |
+| `Pi.`, `X.Y`, `Pi.5` | nothing (alone: `Could not find Pi.` then the fallback, same line) | 2 |
+
+Without `Dim Z banana`: `X = Q` / `foo bar` / `Pi bar`* on lines 3-5 prints only `line 5: ...
+Pi bar.`; `X = Q` / `1 + 2` prints only the `1 + 2` line; `Pi = 4 * ATN( 1` then `X = Q` prints
+only the `No Matching )` line.
+
+A line made only of `(`, `)`, `,`, blanks and a comment (`)`, `))`, `(`, `((((`, `)(`, `( )`,
+`),`, `)  'x`), in the body or before `BeginProg`, compiles with no message (ours rejects it with
+the fallback). `) X banana`, `) + 3`, `,x` and `(X)` get the normal fallback. This is why
+`atn_1.CR6`/`atn2_1.CR6` report only their `No Matching )` line.
+
+CR300 prints every line instead (`Q is not defined.`, `foo is not defined.`, fallbacks with the
+newline echo): its pass model differs and is not covered by this section.
+
+To implement: in `structure.py`, emit the fallback for known-first-token statements from
+`check_pass1` instead of `check_pass2`; accept paren/comma-only lines; move `No Matching )` to
+pass 1; add `Could not find %s.` for `name.` in pass 2. Gate every step on zero false rejects.

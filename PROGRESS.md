@@ -667,6 +667,15 @@ coordinator commits it. Tick items here as they land.
       "ran off the end of the line" quirks (`Data`-keyword/prose collision, `docs/checker.md`
       "Open questions") remain unreproduced. New tests: `tests/test_echo_quirk.py`.
 - [ ] CR300/CR350: next largest fuzz false-accept group (repeat)
+- [x] CR6/CR1000X 16-file "keyword-resync" group: investigated, root cause is the pass model, not
+      resynchronisation (`docs/checker.md` "Pass-1 fallback: statements that start with a known
+      word"). Implementation split into the four items below.
+- [ ] CR6/CR1000X: fallback for a statement whose first token is known (declared name, number,
+      function, reserved word) is pass 1 and suppresses pass 2 (`structure.py`)
+- [ ] All loggers?: a line of only `(`, `)`, `,` compiles silently (ours: false reject; probe
+      CR300/CR350 first)
+- [ ] CR6/CR1000X: `No Matching, or out of place ) in expression` is pass 1
+- [ ] CR6/CR1000X: `Could not find %s.` for `name.`/`name.x` (pass 2, before the fallback)
 - [x] Re-measure fuzz false-accept rates (2026-09-27, tree at `69b05f3`, `tools/fuzz.py --count
       300`, false_reject 0 in every run): cr6 seed 42 false_accept 30 (exact 235, message_diff
       35), seed 43 26 (241/33), seed 44 23 (250/27); cr1000x seed 42 27 (239/33, 1 hang); cr300
