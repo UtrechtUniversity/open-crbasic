@@ -2065,6 +2065,31 @@ expression: <echo>.` (whole statement echo). Implemented (`structure.py` `_unclo
 An unclosed call statement is different: `Sin(1` -> pass-1 `No Matching )`, `foo(1` -> pass-2
 fallback; our parser accepts both as a `Call` (not yet handled).
 
-To implement: in `structure.py`, emit the fallback for known-first-token statements from
-`check_pass1` instead of `check_pass2`; accept paren/comma-only lines; move `No Matching )` to
-pass 1; add `Could not find %s.` for `name.` in pass 2. Gate every step on zero false rejects.
+### The scan (implemented 2026-09-27, `structure.py` `_pass1_scan`, CR6/CR1000X)
+
+Pass 1 reads the statement left to right. An identifier in operand position that is not a
+declared variable/parameter/`Const`/`Alias` name or predefined symbol (`pass1_operands`; `Sub`,
+`DataTable` and system-table names do not count) stops the scan: the statement is left for pass
+2. A syntax error reached first is a pass-1 error. Messages, all echoing the whole statement:
+
+| Shape | Message |
+|---|---|
+| statement-start operand then EOL/operand/non-`=` (`Pi`, `Pi bar`, `-1 bar`, `1 + 2`) | fallback |
+| statement starts with `And`/`Or`/`Mod`/`Xor`/`Imp`/`Eqv`/`Is`/`To` | fallback |
+| binary operator where an operand is expected, or EOL after an operator (`Pi = * 2`, `Pi = 1 +`) | fallback |
+| operand after a complete operand inside an expression (`Pi = 1 bar`, `Not 1 2`) | `Incomplete expression: %s.` |
+| extra `)` (`Pi = (1))`) | `Incomplete expression: %s.` |
+| assignment ends with `(` open (`Pi = (1`) | `No Matching, or out of place ) in expression: %s.` |
+| non-assignment ends with `(` open (`1 + (2`) | fallback |
+
+Pass 2 then reports a deferred assignment as `Invalid symbol in expression: %s.` (`Pi = Q bar`,
+`Pi = Not bar`) and a deferred non-assignment as the fallback (`Pi + Q`, `foo bar`). A bare call
+statement whose name is a pass-1 operand (`Pi`, `Pi(1)`) is a pass-1 fallback. Oracle-matched on
+107 of 124 probes on both CR6 and CR1000X; the 17 others are the shapes below, which the scan
+leaves unclassified (old behaviour). chm exact: cr6 381 -> 397, cr1000x 403 -> 419.
+
+Not done: a function name without `(` (`Sin`, `Sin bar`, `X = Sin bar`: `Expression expects ( :
+%s.`, pass 1); `Could not find %s.` for `Pi.`/`X.Y` (pass 2, before the fallback); index
+parentheses at statement start (`Pi(1) bar` fallback, `Pi(1 = 2` -> `Invalid assignment in
+expression: %s.`, both pass 1); an unclosed call statement (`Sin(1` pass-1 `No Matching )`);
+`Scan bar` (`Invalid symbol in expression: bar.`); `Exit bar` (`Illegal END or EXIT bar.`).

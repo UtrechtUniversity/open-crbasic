@@ -202,6 +202,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     seen_alias_names: set[str] = set()
     seen_alias_sources: dict[str, set[tuple]] = {}
     known: set[str] | None = None
+    operands: set[str] = set()
 
     for stmt in program.statements:
         kw = _keyword(stmt)
@@ -219,13 +220,26 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
-            if stmt.reason == _UNCLOSED_PAREN_EXPR and profile.known_first_word_pass1:
+            if profile.known_first_word_pass1 and _is_generic_unparsed(stmt):
                 if known is None:
                     known = expressions._known_names(program, profile)
-                if _unclosed_paren_kind(stmt.text, known) == "pass1":
-                    diags.error(stmt.line,
-                                f"No Matching, or out of place ) in expression: {stmt.text}.",
-                                stmt.file, show_file=False)
+                    operands = pass1_operands(program, profile)
+                verdict = _pass1_scan(stmt.text, operands, profile)
+                if verdict is None and stmt.reason == _UNCLOSED_PAREN_EXPR and \
+                        _unclosed_paren_kind(stmt.text, known) == "pass1":
+                    verdict = ("pass1", "no_matching")
+                if verdict and verdict[0] == "pass1":
+                    diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
+                                show_file=False)
+        elif (isinstance(stmt, S.Call) and profile.known_first_word_pass1 and not stmt.explicit
+              and stmt.name.upper() not in profile.instructions
+              and stmt.name.upper() not in profile.functions):
+            if known is None:
+                known = expressions._known_names(program, profile)
+                operands = pass1_operands(program, profile)
+            if stmt.name.upper() in operands and stmt.name.upper() not in symbols.declared_subs(program):
+                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
+                            show_file=False)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
             _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
                                seen_alias_sources)
@@ -481,8 +495,14 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
                             show_file=False)
             else:
-                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                            show_file=False)
+                verdict = (_pass1_scan(stmt.text, pass1_operands(program, profile), profile)
+                           if profile.known_first_word_pass1 else None)
+                if verdict == ("pass2", "symbol"):
+                    diags.error(stmt.line, _pass1_message(profile, stmt, "symbol"), stmt.file,
+                                show_file=False)
+                else:
+                    diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol),
+                                stmt.file, show_file=False)
                 if profile.undefined_call_message:
                     # CR300/CR350 only (`profiles.py`'s own field, reused here from
                     # `_check_call_pass2`'s identical carve-out below): no before-`BeginProg`
@@ -548,6 +568,157 @@ def _unclosed_paren_kind(text: str, known: set[str]) -> str:
         return "symbol"
     return "pass1"
 
+
+
+def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
+    """An `Unparsed` statement no specific pass-1 diagnosis claims (`_check_unparsed_pass1`)."""
+    return not (stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
+                or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
+                                   _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ)
+                or stmt.reason.startswith(_INVALID_AS_CLAUSE)
+                or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
+
+_BINARY_WORDS = frozenset({"MOD", "OR", "XOR", "AND", "IMP", "EQV"})
+_START_ERROR_WORDS = _BINARY_WORDS | {"IS", "TO"}
+_BINARY_OPS = frozenset({"=", "<>", "<", ">", "<=", ">=", "+", "-", "*", "/", "^", "&", "\\",
+                         ">>", "<<"})
+
+
+def pass1_operands(program: S.Program, profile) -> set[str]:
+    """Names pass 1 resolves as operands (`_pass1_scan`): declared variables, `Sub`/`Function`
+    parameters, `Const`s, `Alias` names, `For` variables and predefined symbols. Not `Sub`,
+    `DataTable` or system-table names, which pass 1 leaves for pass 2 (`MySub bar`, `Tab bar`,
+    `Status bar` are silent after a pass-1 error, `docs/checker.md` "Pass-1 fallback")."""
+    names = symbols.declared_variable_names(program) | set(program.consts)
+    names |= {k.upper() for k in program.consts}
+    for stmt in program.statements:
+        if isinstance(stmt, S.ConstDecl):
+            names.add(stmt.name.upper())
+        elif isinstance(stmt, S.For) and isinstance(stmt.var, S.Name):
+            names.add(stmt.var.name.upper())
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
+            names.update(a.name.upper() for a in stmt.args[1:] if isinstance(a, S.Name))
+    return names | set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+
+
+def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
+    """Replays the CR6/CR1000X pass-1 left-to-right statement scan (`docs/checker.md` "Pass-1
+    fallback: statements that start with a known word") over an unparsable statement.
+
+    Returns `("pass1", kind)` when a syntax error comes before any unknown name, `("pass2",
+    kind)` when an unknown name comes first (the record is left for pass 2), or `None` for a shape
+    not oracle-probed. `kind` names the message: `fallback`, `incomplete`, `no_matching`,
+    `symbol`."""
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return None
+    if not toks:
+        return None
+    functions = profile.functions
+    first = toks[0]
+    i = 1
+    if first.kind == "IDENT":
+        u = first.upper
+        if u in _START_ERROR_WORDS:
+            return ("pass1", "fallback")
+        if u == "NOT":
+            return _scan_expr(toks, 1, operands, functions, assign=False, start_operand=False)
+        if u in functions or u not in operands:
+            return None
+        if i < len(toks) and toks[i].kind == "OP" and toks[i].text == "(":
+            return None
+    elif first.kind in ("NUMBER", "STRING"):
+        pass
+    elif first.kind == "OP" and first.text == "-" and len(toks) > 1 and toks[1].kind == "NUMBER":
+        i = 2
+    else:
+        return None
+    if i == len(toks):
+        return ("pass1", "fallback")
+    nxt = toks[i]
+    if nxt.kind == "OP" and nxt.text == "=" and first.kind == "IDENT":
+        return _scan_expr(toks, i + 1, operands, functions, assign=True, start_operand=False)
+    if nxt.kind in ("IDENT", "NUMBER", "STRING") and not (nxt.kind == "IDENT"
+                                                         and nxt.upper in _BINARY_WORDS):
+        return ("pass1", "fallback")
+    if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
+        return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
+    return None
+
+
+def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
+               start_operand: bool) -> tuple[str, str] | None:
+    unknown = ("pass2", "symbol" if assign else "fallback")
+    parens: list[str] = []          # "call" or "group"
+    expect_operand = not start_operand
+    while i < len(toks):
+        t = toks[i]
+        nxt = toks[i + 1] if i + 1 < len(toks) else None
+        opens = nxt is not None and nxt.kind == "OP" and nxt.text == "("
+        if expect_operand:
+            if t.kind in ("NUMBER", "STRING"):
+                expect_operand = False
+            elif t.kind == "IDENT":
+                u = t.upper
+                if u == "NOT":
+                    pass
+                elif u in _START_ERROR_WORDS:
+                    return None
+                elif u in functions:
+                    if not opens:
+                        return None
+                    parens.append("call")
+                    i += 1
+                elif u in operands:
+                    if opens:
+                        parens.append("call")
+                        i += 1
+                    else:
+                        expect_operand = False
+                else:
+                    return unknown
+            elif t.kind == "OP" and t.text == "(":
+                parens.append("group")
+            elif t.kind == "OP" and t.text in ("-", "+"):
+                pass
+            elif t.kind == "OP" and t.text in _BINARY_OPS:
+                return ("pass1", "fallback")
+            else:
+                return None
+        else:
+            if t.kind == "OP" and t.text == ")":
+                if not parens:
+                    return ("pass1", "incomplete")
+                parens.pop()
+            elif t.kind == "OP" and t.text == ",":
+                if not parens or parens[-1] != "call":
+                    return None
+                expect_operand = True
+            elif t.kind == "OP" and t.text in _BINARY_OPS:
+                expect_operand = True
+            elif t.kind == "IDENT" and t.upper in _BINARY_WORDS:
+                expect_operand = True
+            elif t.kind in ("IDENT", "NUMBER", "STRING"):
+                return ("pass1", "incomplete")
+            else:
+                return None
+        i += 1
+    if expect_operand:
+        return ("pass1", "fallback") if not parens else None
+    if parens:
+        return ("pass1", "no_matching") if assign else ("pass1", "fallback")
+    return None if assign else ("pass1", "fallback")
+
+
+def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
+    return {
+        "fallback": _out_of_place(profile, stmt.text, getattr(stmt, "at_eol", True)),
+        "incomplete": f"Incomplete expression: {stmt.text}.",
+        "no_matching": f"No Matching, or out of place ) in expression: {stmt.text}.",
+        "symbol": f"Invalid symbol in expression: {stmt.text}.",
+    }[kind]
+
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
     """When `instr_rules.check`'s required-parameter-shortfall message (`Invalid or missing
     parameter.`) fires for an instruction whose argument list was wrapped across two physical
@@ -612,6 +783,8 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             known = expressions._known_names(program, profile)
         if not _leftover_first_name_known(nxt.text, known):
             continue
+        if any(d.line == nxt.line and d.file == nxt.file for d in diags.errors):
+            continue  # already reported by `check_pass1`'s pass-1 scan
         if nxt.reason == _UNCLOSED_PAREN_EXPR:
             diags.error(nxt.line, f"No Matching, or out of place ) in expression: {nxt.text}.",
                         nxt.file, show_file=False)

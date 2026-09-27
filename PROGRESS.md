@@ -670,8 +670,13 @@ coordinator commits it. Tick items here as they land.
 - [x] CR6/CR1000X 16-file "keyword-resync" group: investigated, root cause is the pass model, not
       resynchronisation (`docs/checker.md` "Pass-1 fallback: statements that start with a known
       word"). Implementation split into the four items below.
-- [ ] CR6/CR1000X: fallback for a statement whose first token is known (declared name, number,
-      function, reserved word) is pass 1 and suppresses pass 2 (`structure.py`)
+- [x] CR6/CR1000X: fallback for a statement whose first token is known is pass 1 and suppresses
+      pass 2 -- implemented as a left-to-right pass-1 scan (`structure.py` `_pass1_scan`,
+      `docs/checker.md` "The scan", `tests/test_pass1_scan.py`). chm exact cr6 381 -> 397,
+      cr1000x 403 -> 419 (measured alone in a clean worktree), zero false rejects.
+- [ ] CR6/CR1000X: remaining pass-1 scan shapes (`docs/checker.md` "The scan", "Not done"):
+      function name without `(`, index parentheses at statement start, unclosed call statement,
+      `Scan bar`, `Exit bar`
 - [x] All loggers: a line of only `(`, `)`, `,` compiles silently (was a false reject; oracle-
       confirmed on all four; `parser.py`, `tests/test_paren_only_line.py`). chm exact cr6 378 ->
       380, cr1000x 400 -> 402, cr300/cr350 unchanged.
