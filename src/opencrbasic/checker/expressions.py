@@ -829,11 +829,94 @@ def _arity_message(kind: str, text: str, profile) -> str:
     return f"{verb}{text}."
 
 
+def _is_bare_reference_problem(name: str, profile, declared_variables: frozenset[str]) -> bool:
+    """True when `name` is a built-in function (`data/<logger>/functions.json`) that can take at
+    least one argument -- a required one (`nargs>=1`) or a purely-optional one (`nargs==0` but
+    `argspec` non-zero: `EMAILRELAY`'s own shape, the sole `nargs==0` outlier, oracle-confirmed
+    identical across all four loggers' own tables -- `docs/checker.md`) -- so a bare reference to
+    it with no `(` at all is `Expression expects ( : %s.`.
+
+    Unlike `_call_arity_problem`'s off-by-one arity check, this is not restricted to
+    `_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE`: the oracle sweep for *that* rule needed a safe subset
+    because some functions accept fewer/more than their own table `nargs` (an undocumented
+    optional argument). This rule only asks whether the call has *no* argument list whatsoever,
+    which every corpus example with `nargs>=1` -- `Sin`, `Timer`, `FindSpa`, `TCPOpen`,
+    `SerialOpen`, `SerialOut`, `EmailSend`, `HTTPPut`, `IPTrace`, `SecsSince1990`,
+    `DaylightSaving` -- confirms uniformly (`docs/checker.md`). A genuinely zero-argument function
+    (`argspec` also 0: `Rnd`, `Signature`, `LineNum`, `PPPOpen`, `PPPClose`, `TimeUntilTransmit`,
+    `IntDV`, `NewFieldCal`, `CType`, `AbsLong`, `ClockChange`) is oracle-confirmed to compile clean
+    bare, with or without parens, on all four loggers -- this rule leaves those alone.
+
+    A name the program itself declares as a genuine runtime variable
+    (`symbols.declared_variable_names` -- `Public`/`Dim`/`Static`/a `Sub`/`Function` parameter)
+    shadows the built-in function of the same name for bare-identifier resolution and is never
+    flagged here -- found by this session's own false-reject sweep (`examples/embracer.cr6`'s
+    `Dim sgn As Long, exp As Long, mant As Long` followed by the plain arithmetic
+    `... + (exp << 13) + ...`, which the real compiler resolves as the *variable* `exp`, not the
+    math function `Exp`, and compiles clean).
+    """
+    if name.upper() in declared_variables:
+        return False
+    record = profile.functions.get(name.upper())
+    if not record:
+        return False
+    nargs = record.get("nargs")
+    if nargs is None:
+        return False
+    return nargs > 0 or bool(record.get("argspec"))
+
+
+def _find_bare_function_ref(expr: S.Expr | None, profile, declared_variables: frozenset[str]) -> bool:
+    """Whether a `Name` node anywhere inside `expr` (same recursion shape as
+    `_find_arity_problem`) bare-references a function `_is_bare_reference_problem` flags -- a
+    built-in function used as a plain name, with no argument list at all, rather than as a call
+    (`S.Index`). An `Index` node's own name is by definition already followed by `(`, so only its
+    *arguments* are recursed into, matching `Randomize(Sin)` -> flags the nested `Sin`, not
+    `Randomize` itself (oracle-confirmed, `docs/checker.md`).
+    """
+    if expr is None:
+        return False
+    if isinstance(expr, S.Name):
+        return _is_bare_reference_problem(expr.name, profile, declared_variables)
+    if isinstance(expr, S.Index):
+        return any(_find_bare_function_ref(a, profile, declared_variables) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _find_bare_function_ref(expr.operand, profile, declared_variables)
+    if isinstance(expr, S.Binary):
+        return (_find_bare_function_ref(expr.left, profile, declared_variables)
+                or _find_bare_function_ref(expr.right, profile, declared_variables))
+    if isinstance(expr, S.Member):
+        return _find_bare_function_ref(expr.base, profile, declared_variables)
+    if isinstance(expr, S.ArrayLiteral):
+        return any(_find_bare_function_ref(item, profile, declared_variables) for item in expr.items)
+    return False  # Number, String: no name to check
+
+
+def _bare_function_message(text: str, profile, whole_statement: bool) -> str:
+    # `whole_statement`: CR300/CR350 embed a literal newline before the closing `.` only when
+    # `text` is the *whole* logical statement (`Call`/`Assignment`, matching `_arity_message`'s
+    # own `_ARITY_TRAILING_NEWLINE_LOGGERS` convention for their arity messages) -- **not** for an
+    # `Instruction` argument's own sub-span. Oracle-confirmed, this session: `Randomize(Sin)` on
+    # `cr300comp.exe`/`cr350comp.exe` gives the plain, single-line `Expression expects ( : Sin.`
+    # (no embedded newline), while `X = Sin` alone gives `Expression expects ( :   X = Sin\n.`
+    # (`docs/checker.md`).
+    if whole_statement and profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
+        return f"Expression expects ( : {text}\n."
+    return f"Expression expects ( : {text}."
+
+
 def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> None:
     """Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
-    in expression: %s.`), this module's own top-of-file comment for the oracle evidence, the safe
-    allow-lists, and the pass-1 tier this needs (wired unconditionally in `checker/__init__.py`,
-    alongside `instr_rules.check`/`check_too_many`, not inside the gated `check` above).
+    in expression: %s.`) *and* a bare function-name reference with no argument list at all
+    (`Expression expects ( : %s.`, `_is_bare_reference_problem`/`_find_bare_function_ref`) --
+    this module's own top-of-file comment for the arity oracle evidence, `docs/checker.md`
+    ("Expression expects ( (bare function name)") for the bare-reference evidence, and the pass-1
+    tier this needs (wired unconditionally in `checker/__init__.py`, alongside
+    `instr_rules.check`/`check_too_many`, not inside the gated `check` above). The bare-reference
+    check runs first in each branch below and, when it fires, is the statement's only diagnostic
+    from this function (matching the oracle: a bare reference is a parse-time concern that
+    preempts the arity check, which only ever sees a real call with a real, if wrong, argument
+    count).
 
     At most one diagnostic per statement, matching the oracle (a second, independent bad-arity call
     later in the *same* statement is never additionally reported -- confirmed both across two
@@ -858,16 +941,35 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
       not checked (a function call is never a valid assignment target; not oracle-tested, left
       alone rather than guessed at).
     """
+    declared_variables = frozenset(symbols.declared_variable_names(program))
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
             for i, arg in enumerate(stmt.args):
                 if arg is None:
                     continue
+                if _find_bare_function_ref(arg, profile, declared_variables):
+                    msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
+                    diags.error(stmt.line, msg, stmt.file)
+                    break
                 problem = _find_arity_problem(arg, profile)
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
                     break
         elif isinstance(stmt, S.Call):
+            # A bare call with no argument list at all (`TCPOpen` alone, no trailing `(`
+            # anywhere in this statement's own text) is textually indistinguishable, once
+            # parsed, from an explicit empty call (`TCPOpen()`, also `args=[]`) -- `stmt.text`
+            # is this statement's own source segment (`parser.py`'s `seg_text`), so checking it
+            # for `(` recovers exactly that distinction without touching the parser (`docs/
+            # checker.md`: `SerialOpen`/`TCPOpen`/`Timer`/`IPTrace` alone, each split from its
+            # own argument list onto the next source line, all `Expression expects (`).
+            if (not stmt.args and "(" not in stmt.text
+                    and _is_bare_reference_problem(stmt.name, profile, declared_variables)):
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                continue
+            if any(_find_bare_function_ref(a, profile, declared_variables) for a in stmt.args):
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                continue
             problem = _call_arity_problem(stmt.name, stmt.args, profile)
             if not problem:
                 for a in stmt.args:
@@ -877,6 +979,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
         elif isinstance(stmt, S.Assignment):
+            if _find_bare_function_ref(stmt.value, profile, declared_variables):
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                continue
             problem = _find_arity_problem(stmt.value, profile)
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)

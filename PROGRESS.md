@@ -652,8 +652,13 @@ coordinator commits it. Tick items here as they land.
       CR300/CR350 unaffected). The other four message kinds in this item's title (`Expression
       expects (`, `Need '=' in units definition`, `Incomplete expression`, `No Matching, or out of
       place ) in expression`) are not attempted this round -- re-queued below.
-- [ ] CR6 help-corpus wording, remaining message kinds: `Expression expects (`, `Need '=' in units
-      definition`, `Incomplete expression`, `No Matching, or out of place ) in expression`
+- [x] `Expression expects (` for a bare function name in an assignment, call statement or
+      instruction argument, all four loggers (`expressions.py`, `docs/checker.md` "Expression
+      expects ( (bare function name)"): 27/33 help-corpus lines now match; `Incomplete
+      expression` and `No Matching )` are covered by the pass-1 scan items below.
+- [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
+- [ ] All loggers: `%s already defined as an internal function.` for a `Public`/global `Dim`
+      named like a built-in function (oracle: `Public X, exp` on CR6)
 - [x] Echo quirk: trailing newline in echoed statements (closing `.` on the next line) --
       `Alias`/`Units`'s own "target parsed, `=` runs off the end of the line" sub-case
       (`docs/checker.md` "Echo quirk", oracle-confirmed with two fresh Wine probes plus

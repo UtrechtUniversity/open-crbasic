@@ -2093,3 +2093,27 @@ Not done: a function name without `(` (`Sin`, `Sin bar`, `X = Sin bar`: `Express
 parentheses at statement start (`Pi(1) bar` fallback, `Pi(1 = 2` -> `Invalid assignment in
 expression: %s.`, both pass 1); an unclosed call statement (`Sin(1` pass-1 `No Matching )`);
 `Scan bar` (`Invalid symbol in expression: bar.`); `Exit bar` (`Illegal END or EXIT bar.`).
+
+## Expression expects ( (bare function name)
+
+A built-in function that takes arguments, written without an argument list, is the pass-1
+`Expression expects ( : %s.` (`checker/expressions.py` `check_function_arity`,
+`_is_bare_reference_problem`, `tests/test_expression_expects_paren.py`). Oracle, 2026-09-27
+(`Public X, Y` / Scan body):
+
+| Line | CR6 (CR1000X same) | CR300 (CR350 same) |
+|---|---|---|
+| `X = Sin` | `Expression expects ( :     X = Sin.` | same, closing `.` on the next line |
+| `X = Exp + 1` | `Expression expects ( :     X = Exp + 1.` | same, `.` on the next line |
+| `X = EmailRelay` (table `nargs` 0, `argspec` non-zero) | flagged | flagged |
+| `X = Rnd` (`nargs` 0, `argspec` 0) | compiles | compiles |
+| `Timer` (a whole statement) | `Expression expects ( :     Timer.` | same, `.` on the next line |
+| `Randomize(Sin)` | `Expression expects ( : Sin.` (the argument only) | same, single line |
+
+Echo: the whole statement for an assignment or call statement, the argument's own text for an
+instruction argument. A `Dim` local to a `Function` may shadow a function name (`examples/
+embracer.cr6`: `Dim ... exp As Long` then `(exp << 13)` compiles), so declared variables are
+exempt; a `Public exp` is itself rejected, `exp already defined as an internal function.` (not
+implemented). Help corpus: 27 of the 33 `Expression expects (` lines now match on every logger;
+the files keep other differences, so chm exact is unchanged. Not covered: statements our parser
+leaves `Unparsed`, e.g. `Sin bar`, `X = Sin bar` (`docs/checker.md` "The scan").
