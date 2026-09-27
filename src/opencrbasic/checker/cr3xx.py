@@ -146,7 +146,7 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 # Declaration errors taint the same way (oracle, CR300 and CR350, 2026-09-27: each of these
 # followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
 _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
-                         "illegal, starts with a number.",
+                         "illegal, starts with a number.", "not yet declared.",
                          "not supported")
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration")
 
@@ -189,11 +189,16 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     isinstance(stmt, S.Unparsed)
                     and stmt.text.lstrip().upper().startswith(("PUBLIC ", "DIM "))):
                 # A tainted declaration's own error is dropped (oracle: `Public A As StringX * 50`
-                # then `Dim Z banana` prints no `Invalid Variable declaration banana.`).
+                # then `Dim Z banana` prints no `Invalid Variable declaration banana.`); one with
+                # two or more variables reads like an instruction (`Dim A(), B` -> `Too many
+                # parameters:  B.`).
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                if isinstance(stmt, S.Declaration) and len(stmt.vars) >= 2:
+                    diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
-                    and stmt.args[1] is not None and stmt.keyword.upper() != "UNITS"):
+                    and stmt.args[1] is not None
+                    and stmt.keyword.upper() not in ("UNITS", "READONLY")):
                 # (`Units X = m` is never rewritten: repository libraries, oracle.)
                 text = expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]

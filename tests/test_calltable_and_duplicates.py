@@ -61,3 +61,27 @@ def test_redeclaration(decls, expected, logger):
                                    "Public A\nSub S\n  Dim A\nEndSub\n"])
 def test_sub_scope_may_shadow(decls):
     assert messages(decls + BODY) == []
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
+@pytest.mark.parametrize("decls,expected", [
+    ("Const K = 1\nConst K = 2\n", ["K is already declared as a CONST."]),
+    ("Public X\nReadOnly Nope\n", ["Nope not yet declared."]),
+    ("Public X\nReadOnly X, Nope2\n", ["Nope2 not yet declared."]),
+    ("Public A() As Long\n", ["Invalid symbol in expression:  As."]),
+    ("Public A() As String * 10\n", ["Invalid symbol in expression:  As."]),
+    ("Public A()\n", []),
+])
+def test_more_declaration_rules(decls, expected, logger):
+    assert messages(decls + BODY, logger) == expected
+
+
+def test_readonly_inside_structure_names_members():
+    text = ("StructureType ST\n  a As Float\n  ReadOnly a\nEndStructureType\nPublic V As ST\n" + BODY)
+    assert messages(text) == []
+
+
+@pytest.mark.parametrize("logger", ["cr300", "cr350"])
+def test_cr300_empty_dims_as(logger):
+    assert messages("Public A() As Long\n" + BODY, logger) == [
+        "As is not defined.", "Variable illegal in Parameter:  As.", "Too many parameters:  Sec."]

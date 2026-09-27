@@ -2298,3 +2298,11 @@ on line 7 then `Battery((1+2))` on line 8 prints only the `Battery` error).
 CR300 differs (`Illegal destination variable type, expecting Float.`; no `Illegal Reps` before
 its other errors) and is not modelled. `Public Q("fuzz")` -> `Illegally dimension: Public
 Q("fuzz")` (pass 1, all four loggers). Replay: 647 of 1469 exact, no false rejects.
+
+More declaration rules (pass 1, oracle 2026-09-27, all four loggers unless noted): a second `Const
+K` -> `K is already declared as a CONST.`; `ReadOnly Nope` -> `Nope not yet declared.` (outside a
+`StructureType`, where `ReadOnly` names members); `Public A() As Long` -> `Invalid symbol in
+expression:  As.` (CR300/CR350: `As is not defined.`, `Variable illegal in Parameter:  As.`),
+while a plain `Public A()` compiles. On CR300/CR350 these start the `Too many parameters`
+cascade; a tainted `ReadOnly` keeps its own message and a tainted multi-variable declaration
+reads `Too many parameters:  <second variable>.` (`Dim A(), B` -> `B`).

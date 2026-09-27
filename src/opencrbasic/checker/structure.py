@@ -206,6 +206,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     known: set[str] | None = None
     operands: set[str] = set()
     in_sub = False
+    in_struct = False
     declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
@@ -226,7 +227,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
-        if not in_sub:
+        if kw in ("STRUCTURETYPE", "OBJECTTYPE"):
+            in_struct = True
+        elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
+            in_struct = False
+        if not in_sub and not in_struct:  # a structure body names its own members
             _check_duplicate_declaration(stmt, declared_kinds, diags)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
@@ -1149,8 +1154,15 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
         prior = declared.get(stmt.name.upper())
         if prior == "VAR":
             diags.error(stmt.line, f"{stmt.name} already declared as a variable.", stmt.file)
-        elif prior is None:
+        elif prior == "CONST":
+            diags.error(stmt.line, f"{stmt.name} is already declared as a CONST.", stmt.file)
+        else:
             declared[stmt.name.upper()] = "CONST"
+    elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "READONLY":
+        # `ReadOnly Nope` -> `Nope not yet declared.`, pass 1, all four loggers (oracle)
+        for a in stmt.args:
+            if isinstance(a, S.Name) and declared.get(a.name.upper()) != "VAR":
+                diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
         for a in stmt.args[1:]:
             if isinstance(a, S.Name):
@@ -1265,6 +1277,7 @@ def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], pro
 # `Integer` and `ULong` all give `Variable Type %s not supported` (no period) although the
 # binaries know them as table data types.
 _VARIABLE_TYPES = frozenset({"FLOAT", "LONG", "BOOLEAN", "STRING", "DOUBLE", "UINT1"})
+_EMPTY_DIMS_AS_RE = re.compile(r"(?i)\s*\(\s*\)(\s*As)\b")
 _AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
 
 
@@ -1283,6 +1296,19 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     for v, seg in zip(stmt.vars, segments):
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
+            continue
+        empty_as = _EMPTY_DIMS_AS_RE.match(seg[name_at + len(v.name):])
+        if empty_as:
+            # `Public A() As Long` -> `Invalid symbol in expression:  As.` (CR300/CR350: `As is not
+            # defined.` then `Variable illegal in Parameter:  As.`); plain `Public A()` compiles
+            # (oracle, 2026-09-27).
+            echo = empty_as.group(1)
+            if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+                diags.error(stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file)
+            else:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=echo.strip()),
+                            stmt.file)
+                diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
             continue
         if (stmt.kind in ("PUBLIC", "DIM") and v.type and v.type not in _VARIABLE_TYPES
                 and v.type not in struct_types):
