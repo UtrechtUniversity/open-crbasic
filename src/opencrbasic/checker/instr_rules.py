@@ -62,6 +62,42 @@ _UNTERMINATED_STRING_KINDS = frozenset({"expr_or_name"})
 
 _LEADING_IDENT_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)")
 
+# --- Required parameter missing, `identifier`/`deferred_text` kind: `Too few parameters in
+# instruction.` instead of `Invalid or missing parameter.` -------------------------------------
+
+# `docs/type-codes.md` section 4 left the trigger for this, the loop-level "b4" guard in
+# `FUN_004baf00`, as an open question ("every multi-parameter instruction tried instead hit a more
+# specific check inside the parameter's own handler first"); pinned down this round by the same
+# oracle method, four minimal probes plus corpus cross-checks (`docs/checker.md` has the full
+# evidence table):
+#
+# - `Battery` bare (code 8, `variable_or_array`) -> `Invalid or missing parameter.`
+# - `Average` bare (code 1, `const_expr`) -> `Invalid or missing parameter.` (also the CHM
+#   corpus's own `average_1.CR6`, cross-line continuation, oracle-confirmed same session)
+# - `CallTable` bare (code 6, `identifier`) -> `Too few parameters in instruction.`
+# - `Histogram` bare (code 11, `deferred_text`) -> `Too few parameters in instruction.`
+#
+# and confirmed against the CHM corpus's own `openinterval_1.CR6` (`DataTable` bare, code 6) and
+# `etsz_1.CR6` (`ETsz` bare, code 11), both `Too few parameters in instruction.`, and
+# `writeio_1.CR6` (`CallTable` bare, code 6) the same. The generic per-code expression/constant
+# resolver (`FUN_004b5c50`/`FUN_004b8700`, every other kind) has its own "nothing here" message and
+# never falls through to the loop-level guard; `identifier` and `deferred_text` are instead
+# captured via a raw `strtok` copy (`docs/type-codes.md` codes 6/11's own "Accepted forms" column)
+# with no such per-code "missing" check of its own, so an empty token there reaches the top-of-loop
+# guard uncaught by anything more specific -- the two kinds share this one property (a bare
+# `strtok`, no dedicated handler) that every other kind lacks, which is why exactly these two, and
+# not e.g. `raw_line_text` (18, `MenuPick`) or `type_name` (45, `StructureType`/`ObjectType`, also
+# raw-`strtok`-captured per the same column) are included here: no oracle evidence covers those
+# two, and AGENTS.md rules out extending the guess to them.
+#
+# Does **not** explain every CHM corpus row with this message (`tablenamerecord_1.CR6`'s
+# `Main.record(1,1)`, `realtime_1.CR6`'s later lines): those sit downstream of an earlier,
+# already-diverging recovery this project's own parser takes differently from the real compiler
+# for unrelated reasons (confirmed by isolating `RecData = Main.record(1,1)` alone, which compiles
+# clean here -- the corpus file's own divergence starts earlier), not a second, distinct trigger
+# for this message; those files stay `verdict`, not claimed fixed.
+_TOO_FEW_PARAMS_KINDS = frozenset({"identifier", "deferred_text"})
+
 
 def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
     kinds = _type_code_kinds()
@@ -124,6 +160,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     supports flagging that shape, and AGENTS.md's priority (never reject an accepted program) rules
     out guessing.
 
+    The message itself depends on the missing parameter's own `kind` -- see
+    `_TOO_FEW_PARAMS_KINDS`'s docstring above for the oracle evidence: `identifier` (6) and
+    `deferred_text` (11) report `Too few parameters in instruction.`, every other kind the
+    original `Invalid or missing parameter.`.
+
     This is pass-1 work (`checker/__init__.py`'s docstring): it fires regardless of what other
     errors the file already has. It does *not* need to separately suppress
     `checker/instructions.py`'s own per-instruction checks (channel ranges etc.) for the statement
@@ -143,7 +184,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         missing_code = params[len(stmt.args)]
         if missing_code in _TOLERANT_CODES:
             continue
-        diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+        kind = _type_code_kinds().get(missing_code - 100 if missing_code >= 100 else missing_code)
+        if kind in _TOO_FEW_PARAMS_KINDS:
+            diags.error(stmt.line, "Too few parameters in instruction.", stmt.file)
+        else:
+            diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
     _check_unterminated_string_param(program, profile, diags)
 
 

@@ -243,13 +243,13 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
 
 def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger, and on a file with no `S.Unparsed`
-    statement at all. **Not yet called from anywhere** -- this project's `checker/structure.py`/
-    `checker/__init__.py` are owned by a concurrent session this round (`PLAN.md`); wiring this in
-    needs one line there, after whichever pass can emit `checker/structure.py`'s own generic
-    `Invalid, or out of place expression: %s.` fallback for an `S.Unparsed` statement (currently
-    its own `else` branch, `checker/structure.py`, `_check_stop_condition`-style pass-2 loop):
-
-        cr3xx.check_unknown_line_words(program, profile, diags)
+    statement at all. Called from `checker/__init__.py`, right after `check_expr_cascade`, once
+    `structure.check_pass2` (and `expressions.check`) have had a chance to emit the generic
+    `Invalid, or out of place expression: %s.` fallback for an `S.Unparsed` statement -- see
+    `checker/structure.py`'s own `S.Unparsed`-`else` branch, whose before-`BeginProg` follow-up/
+    stop is separately carved out for CR300/CR350 there (`profile.undefined_call_message`, mirroring
+    `_check_call_pass2`'s identical carve-out; `docs/loggers.md` "Round 8" Finding 2), so a file with
+    several such statements gets every one of them reacted to here, not just the first.
 
     Deliberately reacts only to diagnostics already sitting in `diags.items` (the same
     after-the-fact pattern `check_expr_cascade` above already uses) rather than re-deriving *why*

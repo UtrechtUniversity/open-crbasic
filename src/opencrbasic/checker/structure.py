@@ -453,6 +453,16 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             else:
                 diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
                             show_file=False)
+                if profile.undefined_call_message:
+                    # CR300/CR350 only (`profiles.py`'s own field, reused here from
+                    # `_check_call_pass2`'s identical carve-out below): no before-`BeginProg`
+                    # follow-up/stop for the generic fallback either -- oracle-confirmed,
+                    # `docs/loggers.md` "Round 8" Finding 2 (`foo bar` before `BeginProg` gets only
+                    # the leading-word/generic lines, then compilation continues to later
+                    # statements). Scoped to this `else` shape alone, matching what was oracle-
+                    # tested -- the `_UNCLOSED_PAREN_EXPR`/`_EXTRA_CLOSE_PAREN` branches above keep
+                    # the ordinary follow-up/stop below, unprobed this round.
+                    continue
             if not in_body_block and (beginprog_line is None or stmt.line < beginprog_line):
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line

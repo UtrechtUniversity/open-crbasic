@@ -1,9 +1,9 @@
 """Unit tests for `opencrbasic.checker.cr3xx`. Oracle evidence: `docs/loggers.md` "Round 8".
 
-`check_unknown_line_words` is not yet wired into the shared checker pipeline (`checker/
-structure.py`/`checker/__init__.py` are owned by a concurrent workstream this round, `PLAN.md`;
-see `check_unknown_line_words`'s own docstring for the one-line hook it needs), so it is tested
-directly here rather than through `checker.check`.
+`check_unknown_line_words` is now wired into the shared checker pipeline (`checker/__init__.py`,
+right after `cr3xx.check_expr_cascade`); the tests below still call it directly (via `apply_hook`)
+after running the ordinary `checker.check` pipeline, which is equivalent and keeps each test
+focused on this one hook's own effect.
 """
 
 from __future__ import annotations
@@ -23,11 +23,9 @@ def compile_result(text: str) -> CompileResult:
 
 
 def apply_hook(text: str) -> list[str]:
-    """Run the ordinary checker, then apply the not-yet-wired hook, returning the resulting
-    error message list -- what a caller would see once `check_unknown_line_words` is called from
-    `checker/structure.py`'s own pass (see its docstring)."""
-    program, diags, _ = compile_result(text)
-    cr3xx.check_unknown_line_words(program, PROFILE, diags)
+    """Run the ordinary checker (which now applies `check_unknown_line_words` itself, from
+    `checker/__init__.py`) and return the resulting error message list."""
+    _, diags, _ = compile_result(text)
     return [d.message for d in diags.errors]
 
 
@@ -93,12 +91,15 @@ def test_empty_text():
 
 
 def test_hook_prepends_one_line_per_word_before_the_generic_fallback():
+    # No trailing "Expr illegally occurs before BeginProg." here: `checker/structure.py`'s own
+    # `S.Unparsed`-`else` branch carves that follow-up/stop out for CR300/CR350 (`docs/loggers.md`
+    # "Round 8" Finding 2, oracle-confirmed) -- the statement is before `BeginProg`, but the real
+    # compilers do not stop for this shape.
     messages = apply_hook("foo bar baz qux\n\nBeginProg\nEndProg\n")
     assert messages == [
         "foo is not defined.",
         "bar is not defined.",
         "Invalid, or out of place expression: foo bar baz qux.",
-        "Expr illegally occurs before BeginProg.",
     ]
 
 

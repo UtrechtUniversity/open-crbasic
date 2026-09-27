@@ -56,7 +56,9 @@ If, and only if, steps 1-5 found nothing:
    (deliberately narrow; see that module's docstring). `instr_data.check_unclosed_calltable` and
    `cr3xx.check_expr_cascade` (CR300/CR350 only, a spurious `Too many parameters:  %s.` on the next
    otherwise-clean two-argument bare call once any of these three has fired, `docs/loggers.md`
-   "Round 7b") run alongside it, in that order.
+   "Round 7b") run alongside it, in that order, then `cr3xx.check_unknown_line_words` (CR300/CR350
+   only, one leading-word `%s is not defined.` line per `S.Unparsed` statement's own generic
+   fallback, `docs/loggers.md` "Round 8").
 8. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
    parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
@@ -177,6 +179,14 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Run last, ahead of the cutoff truncation below, so a cascade line past a placement
         # error's own cutoff line is truncated the same as every other tier-B finding.
         _run_pass(cr3xx.check_expr_cascade, program, profile, diags)
+        # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one leading-word
+        # `%s is not defined.` line per bare word of an `S.Unparsed` statement's own source text,
+        # spliced in immediately ahead of `structure.check_pass2`'s generic "Invalid, or out of
+        # place expression" fallback for it (`docs/loggers.md` "Round 8"). Reacts to `diags.items`
+        # already emitted above, the same after-the-fact pattern as `check_expr_cascade` just
+        # above; run after it so a cascade line it may have added is not itself mistaken for
+        # another fallback to react to.
+        _run_pass(cr3xx.check_unknown_line_words, program, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing

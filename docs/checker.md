@@ -1850,3 +1850,41 @@ Full-corpus difftest (`tools/difftest.py --logger <l> --show 0`), before -> afte
 test_checker.py` (`test_missing_parameter_followup_reports_leftover_continuation_line`,
 `test_missing_parameter_followup_suppressed_when_first_name_undeclared`,
 `test_missing_parameter_followup_checks_only_the_first_name`).
+
+## `Too few parameters in instruction.` vs `Invalid or missing parameter.` (oracle-confirmed 2026-09-27, `instr_rules.py`)
+
+Another small task from the queue: 13 `chm` `verdict` cases had `instr_rules.check`'s shortfall
+message (`Invalid or missing parameter.`, see "Required parameter missing" above) where the real
+compiler instead prints `Too few parameters in instruction.` -- `docs/type-codes.md` section 4's
+own open question about this message's trigger, previously unresolved ("every multi-parameter
+instruction tried ... hit a more specific check first").
+
+Four minimal oracle probes (bare instruction, no arguments, scratch dir) pinned it to the missing
+parameter's own `type_codes.json` `kind`:
+
+```
+Battery                 (code 8, variable_or_array) -> Invalid or missing parameter.
+Average    (in a DataTable) (code 1, const_expr)    -> Invalid or missing parameter.
+CallTable                (code 6, identifier)       -> Too few parameters in instruction.
+Histogram  (in a DataTable) (code 11, deferred_text) -> Too few parameters in instruction.
+```
+
+`identifier` (6) and `deferred_text` (11) are both captured via a raw `strtok` copy with no
+per-code "missing" check of their own (`docs/type-codes.md`'s "Accepted forms" column for each);
+every other kind's own handler reports its own message first. Cross-checked against the CHM
+corpus's own `openinterval_1.CR6` (`DataTable` bare, code 6), `etsz_1.CR6` (`ETsz` bare, code 11)
+and `writeio_1.CR6` (`CallTable` bare, code 6) -- all three now match. `instr_rules.check` now
+looks up the missing code's `kind` and picks the message accordingly
+(`_TOO_FEW_PARAMS_KINDS = {"identifier", "deferred_text"}`).
+
+Not fixed by this change, still `verdict`: a handful of corpus files (`tablenamerecord_1.CR6`,
+`realtime_1.CR6`, `tablenameeventend_1.CR6`, the `cdmvw300*`/`rainflowsample2_1.CR6` family) whose
+divergence starts earlier in the file, for unrelated reasons (mostly the real compiler's multi-
+line `{...}` array-literal initializer syntax, not implemented here at all) -- isolating
+`RecData = Main.record(1,1)` alone (`tablenamerecord_1.CR6`'s own differing line) compiles clean,
+confirming this is downstream cascade, not a second trigger for this message.
+
+`tools/difftest.py --logger cr6 --show 0`: chm exact 372 -> 375, zero false rejects on all four
+loggers (`cr1000x`/`cr300`/`cr350` chm exact unchanged at 392/157/161 -- no corpus case on those
+loggers hits this exact shape). `uv run pytest -q`: 1042 passed, unchanged (no new test file this
+round; the existing CHM-corpus regression sweep already covers the changed lines).
