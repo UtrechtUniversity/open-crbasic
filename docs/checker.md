@@ -2219,3 +2219,15 @@ All oracle-probed on CR6 and CR300, then checked on CR1000X and CR350.
 Reachability (`warnings._check_reachability`, oracle CR6): the first unreachable `Do`, `Loop` or
 `For` is named `Do`/`Loop`/`FOR` (was `Expr`); an unreachable `If` (block or one-line) or `Select`
 silences the warning for the rest of the file, including later statements.
+
+## Unclosed blocks (2026-09-27)
+
+`Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.` and `IF or SELECT without EndIf
+or EndSelect.` are reported, in that order, on the last statement's line (`EndProg`) only when
+passes 1 and 2 found nothing (`structure.check_end_blocks`, run before tier C). Oracle, CR6 and
+CR300: an unclosed `Scan`/`For`/`If` plus an unrelated pass-2 `X = Q` (before or after it) prints
+only `Invalid symbol in expression`; before this they were emitted in pass 1 and hid the real
+pass-2 errors. `DataTable ... EndTable not matched.` moved with them (still only when no other
+block message fires). Reachability: when an `If`/`Select` opened inside the `Scan` is still open
+at `NextScan`, statements inside it are not flagged; the statement closing it is (`EndIf never
+reached at run time.`). Not done: `Next SubScan without SubScan.` for a stray `NextSubScan`.

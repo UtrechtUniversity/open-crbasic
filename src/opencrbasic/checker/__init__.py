@@ -212,6 +212,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             ]
 
     if not diags.errors:
+        # After passes 1 and 2 are clean: unclosed `Scan`/`For`/`Do`/`If` at end of program.
+        _run_pass(structure.check_end_blocks, program, diags)
+    if not diags.errors:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the
         # file -- oracle-confirmed, `docs/checker.md` "Two-pass compilation"/"Pass model":

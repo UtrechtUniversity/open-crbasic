@@ -114,6 +114,21 @@ def _display_name(stmt: S.Stmt, profile: Profile) -> str:
     return "Expr"
 
 
+def _open_conditional(statements: list[S.Stmt], start: int, end: int) -> int:
+    """How many `If`/`Select` blocks opened inside `statements[start:end]` are still open at its
+    end. Statements after `NextScan` inside them are not flagged; the one that closes the last of
+    them is (oracle, CR6: `If X Then` / `NextScan` / `X = Q` gives no warning, `If X Then` /
+    `NextScan` / `EndIf` gives `EndIf never reached at run time.`)."""
+    depth = 0
+    for stmt in statements[start:end]:
+        kw = _kw(stmt)
+        if (kw == "IF" and getattr(stmt, "inline", None) is None) or kw == "SELECT":
+            depth += 1
+        elif kw in ("ENDIF", "ENDSELECT") and depth:
+            depth -= 1
+    return depth
+
+
 def _scan_span(statements: list[S.Stmt], start: int) -> tuple[int, bool]:
     """`statements[start]` is a top-level `SCAN`. Returns (index right after its matching
     `NEXTSCAN`, whether an `EXITSCAN` appears anywhere in between). `SubScan`'s own block uses the
@@ -165,6 +180,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
     statements = program.statements
     n = len(statements)
     dead = False
+    open_depth = 0
     sub_depth = 0
     i = 0
     while i < n:
@@ -203,9 +219,18 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             j, has_exit = _scan_span(statements, i)
             count_is_zero = _scan_count_is_zero(stmt, env)
             dead = bool(count_is_zero) and not has_exit
+            open_depth = _open_conditional(statements, i, j)
             i = j
             continue
 
+        if dead and open_depth:
+            if kw in ("ENDIF", "ENDSELECT"):
+                open_depth -= 1
+            elif (isinstance(stmt, S.If) and stmt.inline is None) or kw == "SELECT":
+                open_depth += 1
+            if open_depth:
+                i += 1
+                continue
         if dead and (isinstance(stmt, S.If) or kw == "SELECT"):
             # An unreachable `If`/`Select` (block or one-line) silences the check for the rest of
             # the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no

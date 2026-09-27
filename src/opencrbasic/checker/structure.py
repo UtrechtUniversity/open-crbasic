@@ -334,10 +334,57 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     if not seen_beginprog:
         diags.error(last_line, "No BeginProg in Program.")
         return
-    if scan_depth > 0:
-        diags.error(last_line, "Scan without NextScan.")
-    if cond_depth > 0:
-        diags.error(last_line, "IF or SELECT without EndIf or EndSelect.")
+    # `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
+    # EndIf or EndSelect.` and `DataTable ... EndTable not matched.` come after pass 2:
+    # `check_end_blocks` below.
+
+
+def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
+    """End-of-program block balance, run only when passes 1 and 2 found nothing (oracle, CR6 and
+    CR300, 2026-09-27: an unclosed `Scan`/`For`/`If` plus an unrelated pass-2 `X = Q` prints only
+    `Invalid symbol in expression`). Reported on the last statement's line (`EndProg`) in the
+    order `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
+    EndIf or EndSelect.` (`docs/checker.md` "Unclosed blocks")."""
+    if not program.statements:
+        return
+    last_line = program.statements[-1].line
+    depth = {"SCAN": 0, "FOR": 0, "DO": 0, "IF": 0}
+    in_table = False
+    table_name: str | None = None
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        args = getattr(stmt, "args", []) or []
+        word = _block_word(args) if kw in ("END", "NEXT") else None
+        if kw == "SCAN":
+            depth["SCAN"] += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
+            depth["SCAN"] = max(0, depth["SCAN"] - 1)
+        elif kw == "FOR":
+            depth["FOR"] += 1
+        elif kw == "NEXT" and word not in ("SCAN", "SUBSCAN"):
+            depth["FOR"] = max(0, depth["FOR"] - 1)
+        elif kw == "DO":
+            depth["DO"] += 1
+        elif kw == "LOOP":
+            depth["DO"] = max(0, depth["DO"] - 1)
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            depth["IF"] += 1
+        elif kw in ("ENDSELECT", "ENDIF") or (kw == "END" and word in ("SELECT", "IF")):
+            depth["IF"] = max(0, depth["IF"] - 1)
+        elif kw == "DATATABLE" and not in_table:
+            in_table = True
+            table_name = args[0].name if args and isinstance(args[0], S.Name) else None
+        elif kw == "ENDTABLE":
+            in_table = False
+    messages = {"SCAN": "Scan without NextScan.", "FOR": "FOR without NEXT.",
+                "DO": "DO without LOOP.", "IF": "IF or SELECT without EndIf or EndSelect."}
+    reported = False
+    for kind, message in messages.items():
+        if depth[kind] > 0:
+            diags.error(last_line, message)
+            reported = True
+    if reported:
+        return
     # `DataTable ... EndTable not matched.` -- no line number at all (oracle-confirmed verbatim,
     # `docs/checker.md` "Round 6"), the lowest-priority of these four summary checks (oracle: a
     # co-occurring `Scan without NextScan.` reports only that, never this too) and, unlike the
@@ -347,7 +394,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # check`/`structure.check_pass2` finding, unlike this bare message, which pass-1 errors alone
     # suppress), the real compiler instead reports `Could not find DataTable %s.` there
     # (`checker/instr_data.py`'s `check_unclosed_calltable`, tier B) and says nothing here at all.
-    if not diags.errors and in_table and table_name is not None:
+    if in_table and table_name is not None:
         if table_name.upper() not in instr_data.calltable_targets(program):
             diags.error(0, "DataTable ... EndTable not matched.")
 

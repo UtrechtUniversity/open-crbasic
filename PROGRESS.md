@@ -673,6 +673,9 @@ coordinator commits it. Tick items here as they land.
       in the next commit; cr300 17 (was 18); cr350 17 (was 22). Reproducer replay after the fix:
       215 of 1469 now exact, 154 former false accepts now rejected, no false rejects.
 - [x] Reachability warning: `Do`/`Loop`/`FOR` names; an unreachable `If`/`Select` silences it.
+- [x] Unclosed blocks at end of program move after pass 2; `FOR without NEXT.`/`DO without LOOP.`
+      added (`docs/checker.md` "Unclosed blocks"). chm exact cr6 426, cr1000x 435, cr300 251,
+      cr350 261; replay 239 of 1469 exact, no false rejects.
 - [ ] All loggers: `%s already defined as an internal function.` for a `Public`/global `Dim`
       named like a built-in function (oracle: `Public X, exp` on CR6)
 - [x] Echo quirk: trailing newline in echoed statements (closing `.` on the next line) --
