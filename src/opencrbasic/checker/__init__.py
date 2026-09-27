@@ -127,6 +127,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
+    # `AddPrecise`/`MovePrecise`'s own `PrecisionVariable` argument (`instr_rules.py`'s own
+    # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
+    # unconditional -- oracle-confirmed the same way as the two calls just above.
+    _run_pass(instr_rules.check_precision_variable, program, profile, diags)
     # Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-

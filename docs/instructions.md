@@ -194,6 +194,48 @@ differently-interval'd `Scan`, a table called from outside any `Scan` at all (e.
 destination-table exception. None of these gaps risk a false reject (they only mean the check
 silently doesn't fire), consistent with AGENTS.md's priority order.
 
+## `Invalid Variable or Array: %s.` (`AddPrecise`/`MovePrecise`'s `PrecisionVariable`, CR6/CR1000X only)
+
+`AddPrecise`/`MovePrecise`'s own first argument (`PrecisionVariable`) is a `variable_or_array`
+(type code 8) position on every logger that has these two instructions at all -- present in
+`data/instructions.json`/`data/cr1000x/instructions.json`, **absent entirely from
+`data/cr300/instructions.json` and `data/cr350/instructions.json`**, so `checker/instr_rules.py`'s
+`check_precision_variable` gates on `profile.instructions` and is a no-op on those two loggers.
+
+Oracle-confirmed (scratch probes, `CR6Comp.exe` and `cr1000xcomp.exe`, byte-identical on both):
+this position rejects with `Invalid Variable or Array: <echo>.` whenever the argument has no
+genuine variable reference anywhere in it -- a bare literal (`AddPrecise(1, .1)` -> `... 1.`), a
+parenthesised or unary-negated constant expression (`(1+2)` -> `... (1+2).`, `-1` -> `... -1.`), a
+declared `Const` name (`K` -> `... K.`), and the special float literal `NAN` (`... NAN.`) all
+reject this way. A declared `Public`/`Dim` variable compiles clean regardless of how it appears --
+bare, negated, parenthesised, indexed, or mixed into a larger expression with literals (`Precise`,
+`-Precise`, `(Precise)`, `d(1)`, `Precise+1`, `1+2+Precise`) -- and so does an *undeclared* name
+(`AddPrecise(UndeclaredFuzzName123, .1)`, the pre-existing saved fuzz false-reject reproducer,
+`tests/corpus/fuzz/cr6/false_reject/fac2798b6778.CR6`; this position also never runs the ordinary
+undefined-symbol check, `checker/expressions.py`'s own `_UNDEFINED_CHECK_EXEMPT_POSITIONS`). No
+type restriction was found: a `String` variable is accepted here exactly like a numeric one.
+
+The trigger is "does the argument's own name(s), if any, fail to resolve as a fixed compile-time
+symbol" -- reusing `checker/expressions.py`'s existing `_undefined_names`/`_variable_refs` walk
+(`not (_undefined_names(...) or _variable_refs(...))`) rather than a fresh `consteval.is_constant`
+check: `NAN` is *not* `consteval`-constant (`_EXTRA_PREDEFINED_SYMBOLS` is a separate, untraced
+resolution path) yet still rejects here, so plain constant-foldability alone is not what the real
+compiler is testing. `X` (the second argument, a plain `expr` position) has no such restriction --
+`AddPrecise(Precise, (1+2))` compiles clean.
+
+**Pass 1, unconditional** (`checker/__init__.py`, alongside `instr_rules.check`/`check_too_many`):
+oracle-confirmed to accumulate with an unrelated, earlier pass-1 declaration error in the same
+file, and, run alone with no other error in the file, to itself suppress a later, otherwise-live
+pass-2 finding elsewhere in the file -- the same "pass 1 found something anywhere in the file, pass
+2 does not run at all" architecture this document's "Pass model" (`docs/checker.md`) already
+describes for this module's other unconditional checks.
+
+**Deliberately scoped to just these two instructions' own position 0**, not generalised to every
+`variable_or_array` position: `checker/expressions.py`'s `_VARIABLE_REQUIRED_KINDS` docstring
+documents a real regression at the same type code (`Move`'s third argument, `ModBusClient`'s last
+argument, both oracle-confirmed to accept a literal there on CR1000X) this session has no evidence
+either way for, so this stays narrow rather than guessing.
+
 ## Data tables and output processing (`checker/instr_data.py`)
 
 New module, `checker/instr_data.py`, alongside this workstream's other files (`PLAN.md`: "data

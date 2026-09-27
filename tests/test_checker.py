@@ -65,6 +65,61 @@ def test_well_formed_program_has_no_structural_errors():
     assert result.diagnostics.errors == []
 
 
+# ---- nested/unclosed `DataTable` (docs/checker.md "DataTable/EndTable pairing", oracle-confirmed
+# identical on CR6/CR1000X/CR300) -----------------------------------------------------------------
+
+
+def test_nested_datatable_reports_datatable_without_endtable():
+    # A second `DataTable` opened while the first is still open is a pass-1 error at the *second*
+    # `DataTable`'s own line (4), regardless of how many `EndTable`s eventually follow -- both are
+    # properly referenced here, yet the nesting itself is still rejected.
+    text = (
+        "Public X As Float\n"
+        "DataTable (A,True,-1)\n"
+        "  Sample (1,X,FP2)\n"
+        "DataTable (B,True,-1)\n"
+        "  Sample (1,X,FP2)\n"
+        "EndTable\n"
+        "EndTable\n"
+    ) + wrapped("    CallTable A\n    CallTable B\n")
+    result = compile_text(text)
+    assert messages_of(result) == ["DataTable without EndTable."]
+    assert result.diagnostics.errors[0].line == 4
+
+
+def test_nested_datatable_extra_endtable_reports_only_one_error():
+    # An extra, third `EndTable` beyond the nested pair adds no second diagnostic -- the nesting
+    # error alone is reported, same as the balanced-closure shape above.
+    text = (
+        "Public X As Float\n"
+        "DataTable (A,True,-1)\n"
+        "  Sample (1,X,FP2)\n"
+        "DataTable (B,True,-1)\n"
+        "  Sample (1,X,FP2)\n"
+        "EndTable\n"
+        "EndTable\n"
+        "EndTable\n"
+    ) + wrapped("    CallTable A\n    CallTable B\n")
+    result = compile_text(text)
+    assert messages_of(result) == ["DataTable without EndTable."]
+
+
+def test_orphan_endtable_with_no_datatable_at_all():
+    text = "Public X As Float\nEndTable\n" + wrapped("")
+    result = compile_text(text)
+    assert messages_of(result) == ["EndTable without DataTable."]
+    assert result.diagnostics.errors[0].line == 2
+
+
+def test_extra_endtable_after_a_properly_closed_table():
+    text = (
+        "DataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nEndTable\n"
+        + wrapped("    CallTable T\n")
+    )
+    result = compile_text(text)
+    assert messages_of(result) == ["EndTable without DataTable."]
+
+
 def test_explicit_call_to_undefined_sub():
     result = compile_text(wrapped("    Call NoSuchSub\n"))
     assert "Sub NoSuchSub not defined." in messages_of(result)

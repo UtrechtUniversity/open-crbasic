@@ -1681,3 +1681,48 @@ bad-arity call (both an outer and an inner call wrong in the same argument) is n
 either way, left as this rule's own documented "outer first" order; `Const`'s own value expression
 is not checked for this (mirroring `check_consts`'s own narrow scope, no corpus signal either way);
 an `Assignment`'s *target* is not checked (a function call is never a valid assignment target).
+
+## DataTable/EndTable pairing (oracle-confirmed 2026-09-27)
+
+A small task from `PROGRESS.md`'s "Small-task queue": which shapes give `DataTable without
+EndTable.` and `EndTable without DataTable.` (`docs/messages.tsv` also lists a third string from
+the same decompiled function, `EndTable without DataTable or nested DataTables.` -- no probe below
+reproduced it; see "not reached" below). All probes: a scratch dir, `WINEPREFIX=$HOME/.wine-cr6
+WINEDEBUG=-all wine <CR6Comp.exe|cr1000xcomp.exe|cr300comp.exe> t.cr6`, no option flags. Every shape
+below is byte-identical (message text and line) on CR6, CR1000X and CR300.
+
+- **A second `DataTable` opened while the first is still open** (`DataTable (A,...)` /
+  `DataTable (B,...)` with no `EndTable` between them): `DataTable without EndTable.`, no `%s`, at
+  the *second* `DataTable`'s own line -- fires unconditionally at the moment of nesting, regardless
+  of what follows. Confirmed with two variants that differ only after that line: exactly two
+  matching `EndTable`s (both tables fully, correctly closed and `CallTable`d) and three `EndTable`s
+  (one extra beyond the pair) give the *identical* single-line result -- the extra `EndTable` adds
+  no second diagnostic, so the compiler stops at the nesting error rather than continuing to track
+  a stack of still-open tables.
+- **A bare/orphan `EndTable`, no open `DataTable`**: `EndTable without DataTable.`, at the
+  `EndTable`'s own line. Confirmed with two variants: no `DataTable` anywhere in the file at all
+  (line 2, the file's first statement), and an extra `EndTable` immediately after a single,
+  properly closed and `CallTable`d table (line 5) -- both give this same message, matching
+  `checker/instr_data.py`'s `check_table_structure` docstring, which already implements and
+  oracle-confirmed this shape in an earlier round.
+- **Not reached**: `EndTable without DataTable or nested DataTables.` -- every shape probed above,
+  including the nested-then-extra-`EndTable` variant (a natural place to expect the "nested"
+  wording), reports the plain `EndTable without DataTable.` text instead. No further shape (`#If`-
+  conditional `DataTable` declarations, deeper nesting) was probed this round; left as this item's
+  own boundary rather than guessed at. `docs/messages.tsv`'s two `EndTable`-family strings share one
+  decompiled function (`FUN_004f1af0`), so this may be dead text from an unreachable branch rather
+  than a distinct oracle-visible shape.
+
+Implementation: `structure.py`'s `check_pass1` already tracked a single (non-nesting) `in_table`/
+`table_name` flag plus `nested_table_line` from an earlier, undocumented round (git history:
+"Round 7 (partial, cut off by quota)"); this item re-confirmed both messages with the fresh probes
+above and added the missing unit tests
+(`tests/test_checker.py::test_nested_datatable_reports_datatable_without_endtable`,
+`test_nested_datatable_extra_endtable_reports_only_one_error`,
+`test_orphan_endtable_with_no_datatable_at_all`,
+`test_extra_endtable_after_a_properly_closed_table`) and this write-up; no production code changed.
+
+Full-corpus difftest (`tools/difftest.py --logger <l> --show 0`), unaffected by this session (no
+production code changed, tests and docs only): cr6 exact 336, cr1000x 352, cr300 157, cr350 161;
+zero false rejects on all four loggers. `uv run pytest -q`: all green, including the four new cases
+above.

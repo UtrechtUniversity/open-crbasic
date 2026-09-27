@@ -13,7 +13,8 @@ from __future__ import annotations
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
-from .expressions import _type_code_kinds
+from . import symbols
+from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
 
 # `type_codes.json` codes exempt from the "missing required parameter" error: when the
 # statement's own physical line runs out of tokens right at one of these, `FUN_004baf00` silently
@@ -475,3 +476,81 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
                 f"scan interval {int(scan_interval_us)} uSec.",
                 stmt.file,
             )
+
+
+# `AddPrecise`/`MovePrecise`'s own first argument (`PrecisionVariable`, `params=[8, 2]`, a
+# `variable_or_array` kind-8 position on every logger that has these two instructions at all --
+# `data/instructions.json`/`data/cr1000x/instructions.json`; **absent from `data/cr300/
+# instructions.json` and `data/cr350/instructions.json` entirely**, so this never applies there):
+# oracle-confirmed (scratch probes this round, `CR6Comp.exe` and `cr1000xcomp.exe`, byte-identical
+# on both) to reject with `Invalid Variable or Array: <echo>.` whenever the argument has no genuine
+# variable reference anywhere in it -- a bare literal (`AddPrecise(1, .1)` -> `... 1.`), a
+# parenthesised or unary-negated constant expression (`(1+2)` -> `... (1+2).`, `-1` -> `... -1.`),
+# a declared `Const` name (`AddPrecise(K, .1)`, `K` a `Const` -> `... K.`), and the special float
+# literal `NAN` (`AddPrecise(NAN, .1)` -> `... NAN.`) all reject this way. A declared `Public`/
+# `Dim` variable compiles clean regardless of how it appears -- bare, negated, parenthesised,
+# indexed, or mixed into a larger expression with literals (`Precise`, `-Precise`, `(Precise)`,
+# `d(1)`, `Precise+1`, `1+2+Precise` all oracle-confirmed accepted) -- and so does an *undeclared*
+# name (`AddPrecise(UndeclaredFuzzName123, .1)`, the existing saved fuzz false-reject reproducer,
+# `tests/corpus/fuzz/cr6/false_reject/fac2798b6778.CR6`, and `expressions.py`'s own
+# `_UNDEFINED_CHECK_EXEMPT_POSITIONS` docstring, which documents that this position never runs the
+# separate undefined-symbol check either). Reusing that same "any genuine variable reference,
+# declared or undeclared, anywhere in the expression" test here (`_undefined_names` OR
+# `_variable_refs`, both already written for the undefined-symbol/const-only-family checks in
+# `expressions.py`) rather than a fresh `consteval.is_constant` check: `NAN` is *not*
+# `consteval`-constant (it fails `value_of`, `_EXTRA_PREDEFINED_SYMBOLS` is a separate, untraced
+# resolution path -- `expressions.py`'s own docstring) yet still rejects here, so plain constant-
+# foldability is not what the real compiler is testing; "does the expression's own name(s), if any,
+# fail to resolve as a fixed compile-time symbol" is the trigger the oracle evidence above actually
+# supports, and this is exactly `not (_undefined_names(...) or _variable_refs(...))`.
+#
+# `X` (the second argument, `params[1]` code 2, a plain `expr` position) has no such restriction --
+# oracle-confirmed separately (`AddPrecise(Precise, (1+2))` compiles clean) -- so only position 0
+# is listed.
+#
+# Deliberately scoped to just these two instructions' own position 0, not generalised to every
+# `variable_or_array` position: `expressions.py`'s `_VARIABLE_REQUIRED_KINDS` docstring documents a
+# real regression at the same type code (`Move`'s third argument, `ModBusClient`'s last argument,
+# both oracle-confirmed to accept a literal there on CR1000X) that this session has no evidence
+# either way for, so this stays narrow rather than guessing.
+#
+# Pass 1, unconditional (`checker/__init__.py`, alongside this module's own `check`/
+# `check_too_many`): oracle-confirmed (a scratch probe combining a genuine, earlier pass-1
+# declaration error -- `Public x / foo bar baz` -- with `AddPrecise(1, .1)` on a later line)
+# to accumulate with that earlier pass-1 error rather than being suppressed by it, and, run alone
+# with no other error in the file, to itself suppress a later, otherwise-live pass-2 finding
+# elsewhere in the file (an undefined name inside a following `Randomize(...)`) -- the same "pass 1
+# found something anywhere in the file, pass 2 does not run at all" architecture `docs/checker.md`
+# ("Pass model") already documents for this module's other unconditional checks.
+_PRECISION_VARIABLE_POSITIONS: dict[str, frozenset[int]] = {
+    "ADDPRECISE": frozenset({0}),
+    "MOVEPRECISE": frozenset({0}),
+}
+
+
+def check_precision_variable(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Invalid Variable or Array: %s.` for `AddPrecise`/`MovePrecise`'s own `PrecisionVariable`
+    argument when it has no genuine variable reference (declared or undeclared) anywhere in it.
+    See `_PRECISION_VARIABLE_POSITIONS`'s own docstring above for the oracle evidence and the exact
+    rule. Gated per-`profile.instructions` (not just the keyword spelling) so this is a no-op on
+    CR300/CR350, which do not have either instruction at all.
+    """
+    known: set[str] | None = None
+    variable_names: set[str] | None = None
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        positions = _PRECISION_VARIABLE_POSITIONS.get(kw)
+        if not positions or kw not in profile.instructions:
+            continue
+        if known is None:
+            known = _known_names(program, profile)
+            variable_names = symbols.declared_variable_names(program)
+        for i in sorted(positions):
+            if i >= len(stmt.args) or stmt.args[i] is None:
+                continue
+            arg = stmt.args[i]
+            if _undefined_names(arg, known) or _variable_refs(arg, variable_names):
+                continue
+            diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i)}.", stmt.file)

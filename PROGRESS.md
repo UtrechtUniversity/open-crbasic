@@ -624,8 +624,14 @@ coordinator commits it. Tick items here as they land.
       expression: %s.` for an unclosed paren in the general expression grammar, `%s is missing the
       ) character.` for an unclosed `Public`/`Dim`/`Static` dimension list, `Incomplete expression:
       %s.` for an extra/unmatched `)` -- all identical on CR6/CR1000X, `parser.py`/`structure.py`)
-- [ ] CR6/CR1000X: `DataTable without EndTable.` (nested tables)
-- [ ] CR6/CR1000X: `AddPrecise` argument rules
+- [x] CR6/CR1000X: `DataTable without EndTable.` (nested tables) -- oracle-confirmed identical on
+      CR6/CR1000X/CR300 (`docs/checker.md` "DataTable/EndTable pairing"); already implemented from
+      an earlier undocumented round, this item re-confirmed it with fresh probes and added the
+      missing unit tests. `EndTable without DataTable or nested DataTables.` (`docs/messages.tsv`'s
+      third string from the same function) was probed for but not reproduced by any shape tried.
+- [x] CR6/CR1000X: `AddPrecise` argument rules -- `PrecisionVariable` rejects with `Invalid
+  Variable or Array: %s.` when it has no genuine variable reference in it (literal/paren-constant/
+  `Const`/`NAN`); shared by `MovePrecise`; absent on CR300/CR350 (`docs/instructions.md`).
 - [ ] All loggers: Sub/Function call argument count/type checks
 - [x] All loggers: builtin function argument counts/types (`data/functions.json` argtypes) --
       oracle-confirmed `docs/checker.md` "Built-in function call arity": too few/too many arguments
