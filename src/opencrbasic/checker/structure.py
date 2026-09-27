@@ -6,6 +6,8 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import lexer
 from .. import parser
@@ -203,6 +205,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     seen_alias_sources: dict[str, set[tuple]] = {}
     known: set[str] | None = None
     operands: set[str] = set()
+    struct_types = frozenset(
+        st.args[0].name.upper() for st in program.statements
+        if isinstance(st, S.Instruction) and st.keyword.upper() in ("STRUCTURETYPE", "OBJECTTYPE")
+        and st.args and isinstance(st.args[0], S.Name))
+    decl_variables = {v.name.upper() for st in program.statements
+                      if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
+                      for v in st.vars}
 
     for stmt in program.statements:
         kw = _keyword(stmt)
@@ -216,6 +225,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 suppress_line = _check_declaration(stmt, diags)
             else:
                 _check_array_dims(stmt, diags, env)
+                if known is None:
+                    known = expressions._known_names(program, profile)
+                    operands = pass1_operands(program, profile)
+                _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
         elif fire_suppress:
             pass
         elif isinstance(stmt, S.Unparsed):
@@ -241,8 +254,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                             show_file=False)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
-            _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
-                               seen_alias_sources)
+            if known is None:
+                known = expressions._known_names(program, profile)
+                operands = pass1_operands(program, profile)
+            if not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
+                _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
+                                   seen_alias_sources)
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
@@ -995,6 +1012,143 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
             if not (1 <= val <= _MAX_DIM_VALUE):
                 diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
 
+
+
+def _split_top(text: str, sep: str = ",") -> list[str]:
+    """`text` split on `sep` outside parentheses, braces and strings."""
+    items, depth, in_str, start = [], 0, False, 0
+    for i, ch in enumerate(text):
+        if ch == '"':
+            in_str = not in_str
+        elif in_str:
+            continue
+        elif ch in "({":
+            depth += 1
+        elif ch in ")}":
+            depth -= 1
+        elif ch == sep and depth == 0:
+            items.append(text[start:i])
+            start = i + 1
+    items.append(text[start:])
+    return items
+
+
+def _group_items(text: str, open_at: int) -> list[str] | None:
+    """Raw comma-separated items of the `(`/`{` group opening at `text[open_at]`."""
+    close = {"(": ")", "{": "}"}[text[open_at]]
+    depth, in_str = 0, False
+    for i in range(open_at, len(text)):
+        ch = text[i]
+        if ch == '"':
+            in_str = not in_str
+        elif in_str:
+            continue
+        elif ch in "({":
+            depth += 1
+        elif ch in ")}":
+            depth -= 1
+            if depth == 0:
+                return _split_top(text[open_at + 1:i]) if ch == close else None
+    return None
+
+
+def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], profile,
+                      stmt: S.Stmt, diags: Diagnostics, allow_variable: bool = False) -> bool:
+    """An undefined name (`Invalid symbol in expression: %s.`; CR300/CR350: `%s is not defined.`
+    per name, then `Variable illegal in Parameter: %s.`) or a live variable (`Variable illegal in
+    Parameter: %s.`) inside a declaration's constant expression (`docs/checker.md` "Declaration
+    expressions"). Returns whether anything was reported."""
+    names = expressions._undefined_names(expr, known)
+    if names:
+        if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file)
+        else:
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+        return True
+    if not allow_variable and expressions._variable_refs(expr, variables):
+        diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+        return True
+    return False
+
+
+# `As` types a `Public`/`Dim` variable may have besides a declared `StructureType` (oracle, all four
+# loggers, 2026-09-27): `UInt2`, `UInt4`, `Bool8`, `NSec`, `IEEE4`, `IEEE8`, `FP2`, `Int4`,
+# `Integer` and `ULong` all give `Variable Type %s not supported` (no period) although the
+# binaries know them as table data types.
+_VARIABLE_TYPES = frozenset({"FLOAT", "LONG", "BOOLEAN", "STRING", "DOUBLE", "UINT1"})
+_AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
+
+
+def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
+                      diags: Diagnostics, struct_types: frozenset[str] = frozenset()) -> None:
+    """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers.
+    Oracle, all four loggers (`docs/checker.md` "Declaration expressions"): `Public A(3, Nope)` ->
+    `Invalid symbol in expression: Nope.` (each bad dimension, echo left-trimmed); `Dim A(Y)`, `Y`
+    a variable -> `Variable illegal in Parameter: Y.`; `Public B As Long = Nope * 2` -> `Invalid
+    symbol in expression: Nope * 2.` then `Variable initialization of B has bad syntax.`"""
+    body = stmt.text.lstrip()
+    body = body[len(body.split(None, 1)[0]):] if body else ""
+    segments = _split_top(body)
+    if len(segments) != len(stmt.vars):
+        return
+    for v, seg in zip(stmt.vars, segments):
+        name_at = seg.upper().find(v.name.upper())
+        if name_at < 0:
+            continue
+        if (stmt.kind in ("PUBLIC", "DIM") and v.type and v.type not in _VARIABLE_TYPES
+                and v.type not in struct_types):
+            m = _AS_TYPE_RE.search(seg)
+            if m and m.group(1).upper() == v.type:
+                diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
+        rest_at = name_at + len(v.name)
+        rest = seg[rest_at:]
+        if v.dims and rest.lstrip().startswith("("):
+            items = _group_items(seg, rest_at + len(rest) - len(rest.lstrip()))
+            if items is not None and len(items) == len(v.dims):
+                for d, text in zip(v.dims, items):
+                    _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
+        if v.init:
+            eq = _split_top(seg, "=")
+            if len(eq) != 2:
+                continue
+            init_text = eq[1]
+            stripped = init_text.lstrip()
+            if stripped.startswith("{"):
+                items = _group_items(init_text, len(init_text) - len(stripped))
+            else:
+                items = [init_text]
+            if items is None or len(items) != len(v.init):
+                continue
+            bad = False
+            for e, text in zip(v.init, items):
+                bad |= _report_decl_expr(e, text.lstrip(), known, variables, profile, stmt,
+                                         diags, allow_variable=True)
+            if bad:
+                diags.error(stmt.line, f"Variable initialization of {v.name} has bad syntax.",
+                            stmt.file)
+
+
+def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: set[str],
+                             profile, diags: Diagnostics) -> bool:
+    """`Alias X( Nope ) = Q` -> `Invalid symbol in expression:  Nope .` (raw index text) then
+    `Alias is illegally dimensioned.`, all loggers (CR300/CR350 with their own undefined-name
+    pair). Returns whether it reported, so `_check_alias_dims` is skipped."""
+    target = stmt.args[0] if stmt.args else None
+    if not isinstance(target, S.Index) or target.name.upper() not in variables:
+        return False
+    open_at = stmt.text.find("(")
+    items = _group_items(stmt.text, open_at) if open_at >= 0 else None
+    if items is None or len(items) != len(target.args):
+        return False
+    bad = False
+    for a, text in zip(target.args, items):
+        if a is not None and expressions._undefined_names(a, known):
+            bad |= _report_decl_expr(a, text, known, variables, profile, stmt, diags)
+    if bad:
+        diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+    return bad
 
 def _alias_flat_offset(index: tuple[int, ...], dims: tuple[int, ...]) -> int:
     """The 1-based row-major flat offset of `index` into an array declared with dimension sizes

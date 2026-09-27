@@ -659,6 +659,9 @@ coordinator commits it. Tick items here as they land.
 - [x] CR6/CR1000X: constant-family instruction arguments resolve in pass 1; failed `Const`s are
       undeclared (all loggers); diagnostics print in expanded-source order (`docs/checker.md`
       "Pass-1 instruction arguments"). CR1000X `crbasic/` 9 -> 16/16 exact; CR6 chm 408 -> 422.
+- [x] Declaration expressions: undefined names / variables in array dimensions, `Alias` indices and
+      initializers; `Variable Type %s not supported` (`docs/checker.md` "Declaration
+      expressions"). Fuzz replay: 105 saved false accepts now rejected.
 - [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
 - [ ] All loggers: `%s already defined as an internal function.` for a `Public`/global `Dim`
       named like a built-in function (oracle: `Public X, exp` on CR6)

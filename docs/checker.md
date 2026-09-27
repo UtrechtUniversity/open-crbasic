@@ -2154,3 +2154,23 @@ the statement: `WriteIO(Round(X),Round(Y))` reports only the arity error.
 main file's line 45 (`TDR_tester.CR6` on CR1000X; a `Lib.crb` probe matches byte for byte).
 Together these make all 16 `crbasic/` programs exact on CR1000X (was 9) and CR6 chm exact
 408 -> 422.
+
+## Declaration expressions (2026-09-27)
+
+Pass 1, `structure.py` `_check_decl_exprs`/`_check_alias_index_names`. Oracle, identical on
+CR6/CR1000X; CR300/CR350 print `%s is not defined.` per name followed by `Variable illegal in
+Parameter: <echo>.` instead of the `Invalid symbol` line:
+
+| Declaration | Messages |
+|---|---|
+| `Public A(3, Nope)`, `Dim A( Nope )` | `Invalid symbol in expression: Nope.` / `... Nope .` (each bad dimension, echo left-trimmed) |
+| `Dim A(Y)`, `Y` a variable | `Variable illegal in Parameter: Y.` (all four) |
+| `Alias X( Nope ) = Q` | `Invalid symbol in expression:  Nope .` (raw), `Alias is illegally dimensioned.` |
+| `Public B As Long = Nope * 2`, `Public B(2) = {1, Nope}` | `Invalid symbol in expression: <init>.`, `Variable initialization of B has bad syntax.` |
+| `Public A As StringX * 50` | `Variable Type StringX not supported` (as written, no period) |
+
+`Public`/`Dim` accept only `Float`, `Long`, `Boolean`, `String`, `Double`, `UInt1` or a declared
+`StructureType` (case-insensitive); `UInt2`, `UInt4`, `Bool8`, `NSec`, `IEEE4`, `IEEE8`, `FP2`,
+`Int4`, `Integer` and `ULong` are rejected on all four loggers. Not done: `Public C() As Boolean`
+(`Invalid symbol in expression:  As.`). Fuzz replay: 105 saved false accepts now rejected, no
+new false rejects.
