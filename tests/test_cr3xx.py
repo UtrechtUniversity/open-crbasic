@@ -99,7 +99,9 @@ def test_hook_prepends_one_line_per_word_before_the_generic_fallback():
     assert messages == [
         "foo is not defined.",
         "bar is not defined.",
-        "Invalid, or out of place expression: foo bar baz qux.",
+        # CR300/CR350 echo the raw line terminator before the closing `.`
+        # (`Profile.fallback_echo_newline`).
+        "Invalid, or out of place expression: foo bar baz qux\n.",
     ]
 
 

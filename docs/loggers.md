@@ -849,3 +849,12 @@ this section) but has no *measurable* corpus effect until Finding 2 also lands. 
 -q`: 1039 passed, 311 skipped (16 new, all passing, `tests/test_cr3xx.py`); zero false rejects on
 all four loggers (`their_exit==0 and our_exit!=0`, checked after this round's change, empty on all
 four, unaffected since the change is a no-op addition pending both hooks).
+
+## Generic fallback echo on CR300/CR350 (2026-09-27)
+
+`Invalid, or out of place expression: %s.` on CR300/CR350 echoes the raw line including its
+terminator, so the closing `.` is printed on the next output line (CR6/CR1000X print it on the
+same line). Seen in 144 help examples, e.g. `acpower_1.CR6` on cr300comp.exe:
+`line 34: Invalid, or out of place expression:     ACPower (...,15,1)` then `.`.
+Implemented as `Profile.fallback_echo_newline`; chm exact CR300 157 -> 180, CR350 161 -> 184.
+The assignment-statement variant of the fallback is not switched yet (no evidence either way).
