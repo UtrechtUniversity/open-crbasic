@@ -10,6 +10,8 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -28,6 +30,58 @@ from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_n
 # passage, but never reach this check in practice: `_real_params` below already drops them (they
 # are `none`-kind, not real argument slots at all).
 _TOLERANT_CODES = frozenset({4, 16, 17, 36, 37, 45, 46})
+
+# --- Required parameter cut off by an unterminated string: also `Invalid or missing parameter.` -
+
+# A required argument that *starts* (a `"` was seen) but never closes before the physical line
+# ends never reaches `check` above at all: the frontend's own lexer raises `LexError("unterminated
+# string")` on that whole line before a statement can be built, so `parser.py` records it as
+# `S.Unparsed(reason="lex error: unterminated string")`, not an `S.Instruction` -- `check` above
+# only walks `S.Instruction` nodes and silently skips it. Oracle-confirmed (`httpout_1.CR6`/
+# `webpagebeginwebpageend_1.CR6`, both CHM corpus, and a standalone scratch probe reproducing the
+# same shape byte-for-byte): `HTTPOut("<title>CR1000X` (opening quote, no closing quote before the
+# newline) reports `Invalid or missing parameter.` at that statement's own line, nothing else --
+# not the continuation line the unterminated string spills onto (`Datalogger</title>")`, which the
+# real compiler reports nothing for at all (consistent with the already-implemented pass-1/pass-2
+# gate in `checker/__init__.py`: this is itself a pass-1 error, so pass 2's generic `Unparsed`-
+# >`Expr` fallback -- the source of this project's own previous, wrong `Invalid, or out of place
+# expression: HTTPOut(...` -- never runs for the rest of the file, silencing the continuation line
+# for free, the same way the count-shortfall check above already relies on that gate).
+#
+# **Deliberately narrow, keyed to the argument's type-code `kind`, not "any known instruction"**:
+# a same-shaped probe against `If <cond> Then Test = "TEMP` (`call_1.CR6`, also in the CHM corpus)
+# gave a *different* real message (`String without end quote`) for its own unterminated string,
+# even though `IF` is a `profile.instructions` entry too (`params=[7]`, kind `bool_expr`) -- so
+# "known instruction" alone is not the trigger. `docs/type-codes.md` documents `bool_expr` (7) and
+# `expr_or_name` (26, `HTTPOut`'s own single param) as reaching the shared per-code parameter
+# resolver through two *different* switch cases (`_caseD_7` vs `_caseD_19`); this check fires only
+# when the statement's first declared parameter is `expr_or_name` (the confirmed case), not
+# generalised to every `kind` the shared resolver accepts -- no oracle evidence covers the others,
+# and AGENTS.md rules out guessing at the rest.
+_UNTERMINATED_STRING_KINDS = frozenset({"expr_or_name"})
+
+_LEADING_IDENT_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)")
+
+
+def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
+    kinds = _type_code_kinds()
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed) or stmt.reason != "lex error: unterminated string":
+            continue
+        m = _LEADING_IDENT_RE.match(stmt.text)
+        if not m:
+            continue
+        record = profile.instructions.get(m.group(1).upper())
+        if not record:
+            continue
+        params = _real_params(record["params"])
+        if not params:
+            continue
+        first = params[0]
+        kind = kinds.get(first - 100 if first >= 100 else first)
+        if kind not in _UNTERMINATED_STRING_KINDS:
+            continue
+        diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
 
 
 def _real_params(params: list[int]) -> list[int]:
@@ -90,6 +144,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         if missing_code in _TOLERANT_CODES:
             continue
         diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+    _check_unterminated_string_param(program, profile, diags)
 
 
 # --- Too many parameters: `Too many parameters:  %s.` (round 5, new this round) -----------------

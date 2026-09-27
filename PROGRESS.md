@@ -641,10 +641,31 @@ coordinator commits it. Tick items here as they land.
       functions' real min/max diverges from `nargs`, and diverges again per logger for a few names).
       Argument-*kind* checks are not implemented: the oracle accepts every swapped-kind literal
       tried, so there is no "wrong kind" rejection to reproduce.
-- [ ] CR6 help-corpus wording: pass-1 specific messages vs generic out-of-place (one message per item:
-      `Invalid or missing parameter.`, `Expression expects (`, `Need '=' in units definition`,
-      `Incomplete expression`, `No Matching, or out of place ) in expression`)
-- [ ] Echo quirk: trailing newline in echoed statements (closing `.` on the next line)
+- [x] CR6 help-corpus wording: pass-1 specific messages vs generic out-of-place, `Invalid or
+      missing parameter.` slice only (`docs/checker.md` "A required argument cut off by an
+      unterminated string"): a required `expr_or_name` (type code 26) argument whose opening `"`
+      never closes before the physical line ends -- `HTTPOut`'s own shape, oracle-confirmed
+      (`httpout_1.CR6`/`webpagebeginwebpageend_1.CR6`, CHM corpus, plus a scratch probe) --
+      `instr_rules._check_unterminated_string_param`, deliberately keyed to the type-code `kind`
+      (`bool_expr`, code 7, e.g. `IF`'s condition, gets a *different* real message, `String without
+      end quote`, unimplemented, out of scope). CR6 CHM exact 336 -> 338 (+2 on CR1000X too,
+      CR300/CR350 unaffected). The other four message kinds in this item's title (`Expression
+      expects (`, `Need '=' in units definition`, `Incomplete expression`, `No Matching, or out of
+      place ) in expression`) are not attempted this round -- re-queued below.
+- [ ] CR6 help-corpus wording, remaining message kinds: `Expression expects (`, `Need '=' in units
+      definition`, `Incomplete expression`, `No Matching, or out of place ) in expression`
+- [x] Echo quirk: trailing newline in echoed statements (closing `.` on the next line) --
+      `Alias`/`Units`'s own "target parsed, `=` runs off the end of the line" sub-case
+      (`docs/checker.md` "Echo quirk", oracle-confirmed with two fresh Wine probes plus
+      `realtime_1.CR6`): the echo is the target's own source text plus a literal embedded `\n`
+      before the closing `.` (`Need '=' in alias definition: rTime(1)\n.`), distinguished in
+      `parser.py` from the fully-empty-target case by a separate `Unparsed` reason.
+      `realtime_1.CR6`'s own first diagnostic now matches the oracle exactly, but the file stays
+      `verdict` (later lines depend on unimplemented, unrelated messages) -- this fix alone moves
+      no `chm` file `verdict -> exact` by itself (cr6/cr1000x's 336 -> 338 / 352 -> 354 this round
+      is the concurrent `instr_rules.py` item above, measured on the same shared tree). Other
+      "ran off the end of the line" quirks (`Data`-keyword/prose collision, `docs/checker.md`
+      "Open questions") remain unreproduced. New tests: `tests/test_echo_quirk.py`.
 - [ ] CR300/CR350: next largest fuzz false-accept group (repeat)
 - [ ] Re-measure fuzz false-accept rates (cr6 seeds 42-46, cr1000x/cr300/cr350 seed 42)
 

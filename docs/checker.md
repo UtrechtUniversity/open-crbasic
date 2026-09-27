@@ -347,14 +347,45 @@ instead of letting the exception propagate to the generic catch-all in `_parse_s
 message-text refinement with no acceptance-behaviour change, since every path that used to raise
 still produces a rejection, just with more specific text.
 
-**Known imprecise sub-case, not claimed exact**: when `Alias`'s target *is* present but the `=`
-that should follow it is what's missing (`realtime_1.CR6`: `Alias rTime(1)` / `= Year`), the real
-compiler's echo is `rTime(1)` followed by a literal embedded newline character before the closing
-`.` (`Need '=' in alias definition: rTime(1)\n.`) -- the same odd embedded-`\n` shape this session
-also saw on an unrelated message from a `Data`-keyword/prose collision (`totalize_1.CR6` etc., see
-"Open questions"). No mechanism for it was found, so `_parse_alias` only reproduces the simpler,
-fully-empty-target case exactly; the partially-parsed-target case still gets the right message but
-an empty (rather than the real, newline-suffixed) echo.
+### Echo quirk: target parsed but `=` runs off the end of the line (fixed 2026-09-27)
+
+`Alias`/`Units` both have a second, distinct "ran off the end of the line" shape from the fully-
+empty one above: the target itself parses fine as a valid lvalue, but the `=` that should follow
+it is on the *next* physical line (`realtime_1.CR6`: `Alias rTime(1)` / `= Year`, no `_`
+continuation). Oracle-confirmed (two fresh scratch probes under Wine, `t.cr6`/`t2.cr6`, plus
+`realtime_1.CR6` itself):
+
+```
+Public x / foo bar baz / Units x / BeginProg / EndProg
+  -> line 3: Need '=' in units definition: x
+     .                                            (closing '.' on its own output line)
+
+Public rTime(9) / Alias rTime(1) / = Year / BeginProg / EndProg
+  -> line 2: Need '=' in alias definition: rTime(1)
+     .
+```
+
+The echo is the target's own source text followed by a **literal embedded `\n`** before the
+closing `.` -- the same odd shape this session also saw on an unrelated message from a
+`Data`-keyword/prose collision (`totalize_1.CR6` etc., see "Open questions", still unresolved).
+Distinguished from the fully-empty case by a separate parser reason (`parser.py`'s `_parse_alias`
+splits its `_parse_atom`/`expect_op("=")` calls into two `try` blocks instead of one; the `eq ==
+-1` branch of `_parse_units_segment` tries to tokenise and parse an atom from the trailing text
+before falling back to the plain reason): `"Alias target with no '='"`/`"Units target with no
+'='"` vs the existing `"Alias without '='"`/`"Units without '='"`. `checker/structure.py`'s
+`_check_unparsed_pass1` echoes the new reasons with an explicit `\n` before the final `.`. A
+target that fails to parse (not attempted in the corpus or an oracle probe) falls back to the
+plain, un-suffixed reason -- not claimed exact, no evidence either way.
+
+Effect (`tools/difftest.py --logger <l> --show 0`, `chm`, before -> after this fix alone measured
+against a tree that also had a concurrent, unrelated `instr_rules.py` change land mid-session, so
+the deltas below are not attributable to this fix in isolation): `realtime_1.CR6`'s own first
+diagnostic now matches the oracle exactly (`Need '=' in alias definition: rTime(1)\n.`); it stays
+`verdict` rather than `exact` overall because its later lines depend on unrelated, unimplemented
+messages (`Invalid, or out of place expression: = Year .`, `Too few parameters in instruction.`).
+cr6 `chm` exact 336 -> 338, cr1000x 352 -> 354 (cr300/cr350 unaffected -- neither hits this shape
+in the corpus); zero false rejects on all four loggers throughout, `python3 -m pytest -q` green
+(1019 passed, 311 skipped). New tests: `tests/test_echo_quirk.py`.
 
 ### Required parameter missing: `Invalid or missing parameter.` (`instr_rules.py`, new this session)
 
@@ -402,6 +433,34 @@ Deliberately checks only a *shortfall in count* (`len(stmt.args) < required`), n
 from a skipped comma in the middle of an otherwise-complete list -- no oracle evidence this session
 found supports flagging that shape, and AGENTS.md's priority (never reject an accepted program)
 rules out guessing at it.
+
+#### A required argument cut off by an unterminated string (`_check_unterminated_string_param`)
+
+Same message, a different pass-1 shape the count-shortfall check above cannot see: a required
+argument that *opens* a string (`"`) but never closes it before the physical line ends never
+becomes an `S.Instruction` at all -- `lexer.tokenize` raises `LexError("unterminated string")` on
+the whole line first, so `parser.py` records it as `S.Unparsed(reason="lex error: unterminated
+string")`, invisible to a check that only walks `S.Instruction` nodes. Oracle-confirmed
+(`httpout_1.CR6`/`webpagebeginwebpageend_1.CR6`, CHM corpus, plus an unwrapped scratch probe --
+`Public Commands As String * 10` / `BeginProg` / `HTTPOut("<title>CR1000X` / `Datalogger</title>")`
+/ `EndProg` byte-for-byte): `Invalid or missing parameter.` at the statement's own opening line,
+nothing at all for the continuation line the string spills onto -- for free, from the same pass-1/
+pass-2 file-wide gate the count-shortfall check above already relies on (once this fires anywhere,
+pass 2's generic `Unparsed`->`Expr` fallback, this project's own previous wrong output here, never
+runs for the rest of the file).
+
+**Deliberately keyed to the type-code `kind`, not "any known instruction"**: a same-shaped probe
+against `IF X <= 29 Then X = "TEMP` / `WATCH"` (`call_1.CR6`, CHM corpus) gets a *different* real
+message (`String without end quote`) for its own unterminated string, even though `IF` is a
+`profile.instructions` entry too (`params=[7]`, kind `bool_expr`) -- so "known instruction" alone
+is not the trigger. `docs/type-codes.md` documents `bool_expr` (7) and `expr_or_name` (26,
+`HTTPOut`'s own single param) reaching the shared per-code parameter resolver through two
+*different* switch cases (`_caseD_7` vs `_caseD_19`); `_UNTERMINATED_STRING_KINDS` fires only when
+the statement's first declared parameter is `expr_or_name`, the confirmed case -- not generalised
+to every other `kind` the shared resolver accepts (no oracle evidence covers them, and `String
+without end quote` itself is unimplemented, out of scope here). CR6 CHM exact: 336 -> 338 (also
++2 on CR1000X, which shares `HTTPOut`; CR300/CR350 unaffected, no regression either way). Tests:
+`tests/test_instr_rules_unterminated_string.py`.
 
 ### Malformed `As` clause: `Invalid Variable declaration %s.` (round 3, `parser.py`/`structure.py`)
 
@@ -708,11 +767,13 @@ arguments are exactly that shape, not a bespoke `MQttPublishMeta` check after al
   handled by the generic fallback). A correct fix needs a way to tell a real callable function from
   these table entries (not investigated -- `extra`/some other table field, or a curated list) before
   this can be implemented without risking a regression.
-- The embedded-literal-`\n`-before-the-closing-period echo shape seen on two unrelated messages
-  this session (`Need '=' in alias definition: rTime(1)\n.`, `realtime_1.CR6`; `Invalid symbol in
-  expression: Tables and Store Data\n.` / `Illegal Data parameter Tables and Store Data\n.`, a
-  `Data`-keyword/prose collision seen in `brfull_1.CR6`/`brhalf_1.CR6`/`totalize_1.CR6` and others)
-  -- not reproduced, no mechanism found; low value; see the `Alias` subsection above.
+- The `Alias`/`Units` half of the embedded-literal-`\n`-before-the-closing-period echo shape is
+  now fixed -- see "Echo quirk" above. The *other* occurrence, an unrelated `Data`-keyword/prose
+  collision (`Invalid symbol in expression: Tables and Store Data\n.` / `Illegal Data parameter
+  Tables and Store Data\n.`, seen in `brfull_1.CR6`/`brhalf_1.CR6`/`totalize_1.CR6` and others),
+  is a different message pair entirely (`expressions.py`'s undefined-symbol/Data-table checks, not
+  `structure.py`'s declaration parsing) and is still not reproduced -- no mechanism found, low
+  value.
 
 ## Pass model (authoritative, oracle-confirmed 2026-09-26)
 

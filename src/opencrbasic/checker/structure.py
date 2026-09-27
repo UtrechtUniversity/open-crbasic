@@ -42,10 +42,20 @@ _UNITS_WITHOUT_EQ = "Units without '='"
 # `parser.py`'s `_parse_const`/`_parse_alias` reasons for the same CHM line-wrap shape applied to
 # `Const`/`Alias` (`docs/checker.md`): `Const` never echoes any trailing text (`Const with no
 # assignment.` is a fixed string, oracle-confirmed on both a fully empty `Const` and one truncated
-# partway through its own grammar, `rectpolar_1.CR6`/`sprintf_4.CR6`); `Alias` echoes an (always
-# empty, in this session's evidence) trailing target, like `Units`.
+# partway through its own grammar, `rectpolar_1.CR6`/`sprintf_4.CR6`); `Alias` echoes an (empty
+# when no target at all was parsed) trailing target, like `Units`.
 _CONST_WITHOUT_EQ = "Const without '='"
 _ALIAS_WITHOUT_EQ = "Alias without '='"
+
+# `parser.py`'s `_parse_alias`/`_parse_units_segment` reason for the *other* line-wrap shape: a
+# target *is* present and parses as a valid lvalue, but the `=` itself is what's missing from this
+# physical line (`realtime_1.CR6`: `Alias rTime(1)` / `= Year` on the next line, no `_`
+# continuation). Oracle-confirmed (`docs/checker.md` "Echo quirk"): the echo embeds this line's own
+# trailing newline before the closing `.` -- `Need '=' in alias definition: rTime(1)\n.` -- because
+# the real parser's own line-buffer read includes it. Distinct from `_ALIAS_WITHOUT_EQ`/
+# `_UNITS_WITHOUT_EQ` above (no target parsed at all: plain empty echo, no newline).
+_ALIAS_TARGET_NO_EQ = "Alias target with no '='"
+_UNITS_TARGET_NO_EQ = "Units target with no '='"
 
 # `parser.py`'s `_parse_vardecl` reason for a `Public`/`Dim` variable whose own type clause is
 # malformed -- a token right after the name/dims that is neither `As`, `=`, a comma nor end of
@@ -797,13 +807,26 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         # shape.
         diags.error(stmt.line, f"Need '=' in units definition: {_after_keyword(stmt)}.", stmt.file)
         return
+    if stmt.reason == _UNITS_TARGET_NO_EQ:
+        # Target parsed, no `=` on this physical line: oracle-confirmed echo embeds a literal `\n`
+        # before the closing `.` (`docs/checker.md` "Echo quirk"). `stmt.text` here is already just
+        # the target's own source text (set by `_parse_units_segment`, not overwritten the way
+        # `Alias`'s is -- see that branch below).
+        diags.error(stmt.line, f"Need '=' in units definition: {stmt.text}\n.", stmt.file)
+        return
     if stmt.reason == _CONST_WITHOUT_EQ:
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
         return
     if stmt.reason == _ALIAS_WITHOUT_EQ:
-        # See `parser.py`'s `_parse_alias` for the one known-imprecise sub-case (a target present
-        # but no `=`) this doesn't try to echo exactly.
         diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}.", stmt.file)
+        return
+    if stmt.reason == _ALIAS_TARGET_NO_EQ:
+        # Same "target parsed, no '=' on this line" shape as `_UNITS_TARGET_NO_EQ` above
+        # (`realtime_1.CR6`: `Alias rTime(1)` / `= Year`), oracle-confirmed identical echo quirk.
+        # `stmt.text` here *is* overwritten to the full raw line by `parser.py`'s `_parse_segment`
+        # (unlike `Units`, `Alias` goes through the general statement path), so `_after_keyword`
+        # still does the keyword-stripping work.
+        diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}\n.", stmt.file)
         return
     if stmt.reason.startswith(_INVALID_AS_CLAUSE):
         bad_token = stmt.reason[len(_INVALID_AS_CLAUSE):]

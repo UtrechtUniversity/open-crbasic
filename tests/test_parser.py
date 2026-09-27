@@ -406,10 +406,14 @@ def test_alias_with_nothing_following_is_unparsed_with_specific_reason():
     assert isinstance(s, S.Unparsed) and s.reason == "Alias without '='"
 
 
-def test_alias_target_present_but_no_eq_is_the_same_reason():
+def test_alias_target_present_but_no_eq_is_a_distinct_reason():
+    # `realtime_1.CR6`: `Alias rTime(1)` / `= Year` on the next line, no `_` continuation -- a
+    # target *is* present and parses fine, unlike the fully-empty case above. Distinguished so
+    # `checker/structure.py` can echo the oracle-confirmed embedded-newline shape (see
+    # `test_checker.py`'s echo test), not the plain empty one. See `docs/checker.md` "Echo quirk".
     prog, diags = parse("Alias rTime(1)\n")
     (s,) = prog.statements
-    assert isinstance(s, S.Unparsed) and s.reason == "Alias without '='"
+    assert isinstance(s, S.Unparsed) and s.reason == "Alias target with no '='"
 
 
 # ------------------------------------------------------------------ conditional compilation

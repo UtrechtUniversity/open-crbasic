@@ -839,17 +839,20 @@ class _Parser:
         p.next()
         try:
             lhs = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
-            p.expect_op("=")
         except _ParseError:
             # `Alias` with no `Target = Name` on its own physical line -- the same CHM line-wrap
             # shape as `Const`/`Units`/`Public` above (`rectpolar_1.CR6`: `Alias` entirely alone,
-            # then `XY(1)=X`). Oracle-confirmed message: `docs/checker.md`. A partially-parsed
-            # target (present but no `=`, e.g. `realtime_1.CR6`'s `Alias rTime(1)` / `= Year`) gets
-            # the same reason with an empty echo rather than reconstructing the target's source
-            # text -- no oracle evidence pinned down that echo's exact shape (it embeds a literal
-            # newline the empty-target case does not), so this only claims the simpler, verified
-            # case.
+            # then `XY(1)=X`). Oracle-confirmed message: `docs/checker.md`.
             return S.Unparsed(line, file, text="", reason="Alias without '='")
+        try:
+            p.expect_op("=")
+        except _ParseError:
+            # Target parsed fine (present, valid lvalue), but the `=` itself is what runs off the
+            # end of this physical line (`realtime_1.CR6`: `Alias rTime(1)` / `= Year` on the next
+            # line, no `_` continuation) -- a distinct reason from the fully-empty case above so
+            # `checker/structure.py` can echo the oracle-confirmed embedded-newline shape
+            # (`docs/checker.md` "Echo quirk"): `Need '=' in alias definition: rTime(1)\n.`.
+            return S.Unparsed(line, file, text="", reason="Alias target with no '='")
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
             p.next()
@@ -865,6 +868,24 @@ class _Parser:
         """
         eq = seg_text.find("=")
         if eq == -1:
+            # No `=` anywhere on this physical line. If there's a target after the keyword and it
+            # parses as a valid lvalue by itself (`Units x` alone, the next line starting a new
+            # statement with no `_` continuation), the real compiler's echo embeds this line's own
+            # trailing newline before the closing `.` (oracle probe, `docs/checker.md` "Echo
+            # quirk"): `Need '=' in units definition: x\n.`. A fully empty target (`Units` alone)
+            # or one that fails to parse gets the plain, un-suffixed reason instead -- no oracle
+            # evidence for the latter shape.
+            target_text = seg_text.strip()[len("UNITS"):].strip()
+            if target_text:
+                try:
+                    target_tokens = lexer.tokenize(target_text, line)
+                    tp = _TokStream(target_tokens)
+                    self._parse_atom(tp, line, file)
+                    if tp.at_end():
+                        return S.Unparsed(line, file, text=target_text,
+                                           reason="Units target with no '='")
+                except (lexer.LexError, _ParseError):
+                    pass
             return S.Unparsed(line, file, text=seg_text.strip(), reason="Units without '='")
         lhs_text, label = seg_text[:eq], seg_text[eq + 1:].strip()
         try:
