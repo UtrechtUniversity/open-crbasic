@@ -32,7 +32,11 @@ Runs, in order:
 4. `instr_rules.check` -- a required-parameter position with no value at all ("Invalid or missing
    parameter.", `checker/instr_rules.py`, owned alongside this package). Also pass 1 (oracle
    evidence, `docs/checker.md`: a file with several earlier "Variable not named." errors still
-   gets its own, later "Invalid or missing parameter." reported). `instr_rules.check_too_many` --
+   gets its own, later "Invalid or missing parameter." reported). `structure.
+   check_missing_param_followup` runs right after it, also ungated: the physical line the
+   shortfall's own wrapped argument list spills onto gets its own "Invalid, or out of place
+   expression: %s." when every name it references resolves (`docs/checker.md` "Missing-parameter
+   followup"). `instr_rules.check_too_many` --
    the mirror image, an argument list running past the declared count ("Too many parameters:  %s.",
    round 5, `docs/checker.md`) -- runs alongside it, also pass 1 (oracle-confirmed the same way).
    `expressions.check_function_arity` -- the same shortfall/overflow shape, but for a *built-in
@@ -126,6 +130,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # (oracle-confirmed, `docs/loggers.md`).
     _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
+    # The leftover line a required-parameter shortfall's own wrapped argument list spills onto
+    # (`checker/structure.py`'s `check_missing_param_followup` docstring for the oracle evidence):
+    # also ungated, since it fires precisely because the call just above already found something.
+    _run_pass(structure.check_missing_param_followup, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
     # `AddPrecise`/`MovePrecise`'s own `PrecisionVariable` argument (`instr_rules.py`'s own
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,

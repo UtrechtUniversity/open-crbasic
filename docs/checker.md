@@ -1787,3 +1787,66 @@ Full-corpus difftest (`tools/difftest.py --logger <l> --show 0`), unaffected by 
 production code changed, tests and docs only): cr6 exact 336, cr1000x 352, cr300 157, cr350 161;
 zero false rejects on all four loggers. `uv run pytest -q`: all green, including the four new cases
 above.
+
+## Missing-parameter followup (oracle-confirmed 2026-09-27, `checker/structure.py`)
+
+A small task from `PROGRESS.md`'s "Small-task queue": 34 `chm` `verdict` cases (`tools/
+difftest.py --logger cr6 --show 0`) had the real compiler print one further line past our own
+output's own last line, always `Invalid, or out of place expression: %s.`. Every one is the same
+shape: an instruction's required-parameter prefix runs past the end of its own physical line with
+no `_` continuation (`instr_rules.check`'s existing `Invalid or missing parameter.`, e.g.
+`average_1.CR6`: `Average` alone, `(1,TCTemp,FP2,False)` on the next line) -- and the physical line
+the wrapped arguments spill onto, which our parser already records as its own `S.Unparsed`
+statement (it starts mid-argument-list: `(...)`/a bare `,...)`), gets its own `Invalid, or out of
+place expression: %s.` line in the real compiler, `%s` the leftover's own verbatim text.
+
+The surprise: this specific diagnostic is **not gated** the way `structure.check_pass2`'s generic
+bare-statement fallback is (`checker/__init__.py`'s `if not diags.errors:`) -- two scratch probes
+under Wine (`t.cr6`: nameless `Public` + unrelated `foo bar baz`; `t2.cr6`: same nameless `Public`
++ `Scan` / `(1,Sec,3,0)`) show the *generic* fallback fully suppressed by an earlier, unrelated
+`Variable not named.` (`foo bar baz` reported nothing), while *this* leftover-continuation
+diagnostic still fires right alongside it (`t2.cr6`: `Variable not named.` + `Invalid or missing
+parameter.` + `Invalid, or out of place expression: (1,Sec,3,0).`, all three), matching
+`cdmresistance_1.CR6`'s own real-compiler output (a `Variable not named.` earlier in the file does
+not suppress it either).
+
+A first version keyed only to "instruction shortfall, next statement `Unparsed`" over-fired: a
+full-corpus difftest sweep (not just the 34 target files) found `getdatarecord_3.CR6` -- already
+`exact`, no follow-up in the real output -- shares the identical shape (`GetDataRecord` / a fully
+self-contained `(ResultTD,...)` leftover) with `getdatarecord_1.CR6`, which *does* get one. Bisection
+under Wine (`tG`..`tK.cr6`, this session's own scratch dir) isolated the difference to a single
+name: `getdatarecord_3.CR6`'s `ResultTD` is only ever the stranded name after an earlier nameless
+`Public` (`Variable not named.`'s own shape, `_check_declaration` below) and was never actually
+registered as declared; adding a real `Public ResultTD` to an otherwise-identical, otherwise-still-
+undeclared probe flips the followup on, while adding an unrelated `Public Foo` (declaring a name
+the leftover never references) does not. `cdmresistance_1.CR6`'s own two leftovers then narrowed
+this further, from "every name in the leftover must resolve" to "only its first identifier": its
+first leftover (`Tref,1 ,1,60)`, `Tref` undeclared and leading) gets no followup, but its second
+(`Tblk1, 1,mV5000,1,TypeT,Tref,0,0,60,1.8,32 )`, `Tblk1` declared and leading, the same undeclared
+`Tref` appearing later) does -- oracle-confirmed real output, both in the corpus file itself and
+reproduced standalone.
+
+Implemented as `structure.check_missing_param_followup` (new), called unconditionally from
+`checker/__init__.py` right after `instr_rules.check` (same ungated tier, since it fires *because*
+that call found something): re-walks `program.statements` for the same shortfall shape
+`instr_rules.check` detects (reusing its `_real_params`/`_required_count`/`_TOLERANT_CODES`), and
+for the immediately-following `S.Unparsed` statement, tokenises its own text and checks only the
+first `IDENT` token found (`_leftover_first_name_known`) against `expressions._known_names` --
+`True` (fires) when there is no identifier at all (`cosh_1.CR6`'s leftover is pure literals/
+punctuation). Skips the same `Unparsed.reason` classes `check_pass2` already special-cases (a known
+parser gap, an empty statement, or one `check_pass1` already reported for) so the two paths never
+double-report the same line.
+
+Full-corpus difftest (`tools/difftest.py --logger <l> --show 0`), before -> after this session:
+
+| Logger | chm exact before | chm exact after | false rejects |
+|---|---|---|---|
+| cr6 | 338 | 372 | 0 -> 0 |
+| cr1000x | 354 | 388 | 0 -> 0 (pre-existing `structuretype_3.CR6` false reject unrelated to this change, unaffected) |
+| cr300 | 157 | 157 | 0 -> 0 (unaffected -- no corpus case hits this shape on CR300) |
+| cr350 | 161 | 161 | 0 -> 0 (unaffected, same reason) |
+
+`uv run pytest -q`: 1042 passed (0 failed), up from 1039 -- three new cases in `tests/
+test_checker.py` (`test_missing_parameter_followup_reports_leftover_continuation_line`,
+`test_missing_parameter_followup_suppressed_when_first_name_undeclared`,
+`test_missing_parameter_followup_checks_only_the_first_name`).

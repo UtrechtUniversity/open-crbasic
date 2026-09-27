@@ -7,8 +7,10 @@ evidence: `docs/loggers.md`.
 
 from __future__ import annotations
 
+import re
+
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from . import expressions, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
@@ -150,4 +152,139 @@ def check_expr_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         text = expressions._arg_text(stmt, 1)
         diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
+        return
+
+
+# `check_unknown_line_words` (this round): a line that parses as nothing recognisable at all --
+# every corpus instance found this round is CHM example prose left uncommented, e.g. `To force
+# double-precision arithmetic, declare ...` -- becomes an `S.Unparsed` statement and hits
+# `checker/structure.py`'s own generic `Invalid, or out of place expression: %s.` fallback on
+# every logger. CR300/CR350 additionally print one `%s is not defined.` line (`profile.
+# unresolved_symbol_message`) per *leading* bare word of that statement's own source text, ahead of
+# the generic line, following a "resolve one syntactic chain, plus one trailing word" shape --
+# oracle-confirmed this round (`docs/loggers.md` "Round 8", scratch probes, `t.cr6`, both
+# `cr300comp.exe`/`cr350comp.exe`, identical): starting at the statement's first word,
+#   1. A run of bare words joined only by a single connecting *operator* character (any of
+#      `+-*/^&<>=`, immediately adjacent, no surrounding space -- `alpha-beta-gamma delta` flags
+#      `alpha`, `beta`, `gamma`, all three, i.e. the chain is not capped) all get checked, in
+#      order, as if each were a real value reference.
+#   2. Once that chain stops (the next thing is *not* one more `<op><word>` link), exactly one more
+#      bare word is checked if -- and only if -- it is separated from the chain by plain
+#      whitespace and nothing else (`foo bar baz qux` flags only `foo`, `bar`; `foo, bar` flags
+#      only `foo`, no peek at `bar` -- a comma is not "plain whitespace"; `Part 1.` flags only
+#      `Part` -- the peek must itself be a bare word, not a number). This one word is checked
+#      whether or not it was actually reachable as valid syntax; it, too, only reports if
+#      unresolved.
+#   3. Whatever is or is not flagged, scanning stops there for good -- nothing further along the
+#      line is ever checked (`foo bar baz` never touches `baz`; `This is not defined test` never
+#      touches `not`/`defined`/`test`, because `is` is one of this project's own extracted
+#      `functions.json` names -- see below -- and already terminates the one-word peek).
+# "Resolved" here is `expressions._known_names(program, profile)`, the *same* set every other
+# CR300/CR350 undefined-name check in this project already uses -- confirmed sufficient with no
+# separate reserved-word list needed, because this project's own extracted per-logger tables
+# already carry CRBasic's syntax keywords alongside its predefined symbols (`Double`/`Long`/
+# `String`/`Boolean` in `symbols.json`, `To`/`Is` in `functions.json`, `Public` in
+# `instructions.json` -- confirmed present for CR300; not re-checked for CR350 individually, but
+# both loggers' own tables come from the same `extract_tables.py` process and every shape probed
+# above (`Double foo`, `This is not defined test`, ...) came back byte-identical on both compilers
+# this round, so the same table shape is assumed, not re-verified name-by-name).
+#
+# What this deliberately does *not* attempt, for lack of oracle coverage this round (documented
+# rather than guessed at, `AGENTS.md`): a connecting operator with surrounding *whitespace*
+# (`alpha - beta`, untested -- only the no-space `alpha-beta` form was probed); any operator other
+# than the eight tested characters; and a leading word that is itself the very first token of the
+# *whole statement* and already resolves (`Double foo` was probed and *does* still flag `foo` --
+# handled correctly by this algorithm, since resolution is checked only when deciding whether to
+# *report* a word, never when deciding whether to keep walking -- but no case where the walk
+# itself needs to treat a resolved word differently from an unresolved one was found, so none is
+# implemented).
+_GENERIC_FALLBACK_PREFIX = "Invalid, or out of place expression: "
+_LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_LINE_OP_RUN_RE = re.compile(r"[-+*/^&<>=]+")
+_LINE_WS_RE = re.compile(r"[ \t]+")
+
+
+def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
+    """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
+    would report as `%s is not defined.` ahead of the generic fallback for it -- see this
+    module's `check_unknown_line_words` comment above for the oracle evidence and the exact walk
+    this implements. `known` is the same upper-cased name set `expressions._known_names` builds;
+    a word already in it is walked over (it can still be part of the chain) but never returned.
+    """
+    # Only leading whitespace is skipped to find the statement's own first token; if that token
+    # is not itself a bare word (a number, punctuation, ...), no walk is attempted at all -- an
+    # inferred, deliberately conservative default (`AGENTS.md`: no oracle probe this round covered
+    # a statement starting with anything other than a bare word).
+    pos = len(text) - len(text.lstrip(" \t"))
+    if not _LINE_WORD_RE.match(text, pos):
+        return []
+    words: list[str] = []
+    extending = True  # False once we're consuming the single trailing "peek" word.
+    while True:
+        word_match = _LINE_WORD_RE.match(text, pos)
+        if not word_match:
+            break
+        words.append(word_match.group(0))
+        pos = word_match.end()
+        if not extending:
+            break
+        op_match = _LINE_OP_RUN_RE.match(text, pos)
+        if op_match:
+            pos = op_match.end()
+            continue
+        ws_match = _LINE_WS_RE.match(text, pos)
+        if ws_match and _LINE_WORD_RE.match(text, ws_match.end()):
+            pos = ws_match.end()
+            extending = False
+            continue
+        break
+    return [w for w in words if w.upper() not in known]
+
+
+def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350 only; a no-op on every other logger, and on a file with no `S.Unparsed`
+    statement at all. **Not yet called from anywhere** -- this project's `checker/structure.py`/
+    `checker/__init__.py` are owned by a concurrent session this round (`PLAN.md`); wiring this in
+    needs one line there, after whichever pass can emit `checker/structure.py`'s own generic
+    `Invalid, or out of place expression: %s.` fallback for an `S.Unparsed` statement (currently
+    its own `else` branch, `checker/structure.py`, `_check_stop_condition`-style pass-2 loop):
+
+        cr3xx.check_unknown_line_words(program, profile, diags)
+
+    Deliberately reacts only to diagnostics already sitting in `diags.items` (the same
+    after-the-fact pattern `check_expr_cascade` above already uses) rather than re-deriving *why*
+    `structure.py` chose to emit the fallback for a given statement, so it stays correct however
+    that gating logic is refactored, and is restricted to lines that `program.statements` itself
+    marks `S.Unparsed` -- deliberately **not** every statement shape that can reach the same
+    generic message (`checker/structure.py`'s own docstrings: a bare unresolved call already gets
+    its own, already-implemented, single-name CR300/CR350 line via `profile.
+    undefined_call_message` above, in `_check_call_pass2`; an assignment with an unresolved target
+    was not oracle-tested this round for this same leading-word behaviour, so is left alone here
+    rather than guessed at).
+    """
+    if profile.name not in ("cr300", "cr350"):
+        return
+    if not diags.items:
+        return
+    unparsed_lines = {(s.line, s.file) for s in program.statements if isinstance(s, S.Unparsed)}
+    if not unparsed_lines:
+        return
+    known: set[str] | None = None
+    new_items: list[Diagnostic] = []
+    changed = False
+    for d in diags.items:
+        if (d.severity == "error" and d.message.endswith(".")
+                and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
+                and (d.line, d.file) in unparsed_lines):
+            if known is None:
+                known = expressions._known_names(program, profile)
+            text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
+            for word in _leading_unknown_words(text, known):
+                new_items.append(Diagnostic(
+                    "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,
+                    True))
+                changed = True
+        new_items.append(d)
+    if changed:
+        diags.items[:] = new_items
         return

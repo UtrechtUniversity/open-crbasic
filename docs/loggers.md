@@ -762,3 +762,90 @@ runs of identical seeds with no code change in between), consistent with this pr
 documented worker-contention flakiness (`docs/fuzz-findings.md`), not a regression; the `chm`-corpus
 exact-count jump above (+19 on each logger) is the more representative measure of this round's own
 impact, the same conclusion Round 6b drew for its own two fixes.
+
+## Round 8 (2026-09-27): leading-word `%s is not defined.` scan for the generic fallback
+
+Motivation: many `chm` corpus `verdict` cases (CR300/CR350) are CHM help-page prose accidentally
+left uncommented (e.g. `To force double-precision arithmetic, declare ...`), which parses as
+`S.Unparsed` and hits `checker/structure.py`'s generic `Invalid, or out of place expression: %s.`
+fallback on every logger. CR300/CR350 additionally print one `%s is not defined.` line per leading
+bare word of the statement's own source text, ahead of the generic line -- this project did not
+model that at all (it printed only the generic line).
+
+### Finding 1: the leading-word walk itself
+
+Oracle-probed this round (scratch `t.cr6`, `WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all wine
+../compiler/<cr300comp.exe|cr350comp.exe> t.cr6`, no option flags; both compilers gave
+byte-identical results on every probe below, so only one is shown):
+
+| Probe | Result |
+|---|---|
+| `foo` | `foo is not defined.` |
+| `foo bar` | `foo is not defined.` / `bar is not defined.` |
+| `foo bar baz`, `foo bar baz qux` | `foo`/`bar` only -- `baz`/`qux` never checked |
+| `alpha-beta-gamma delta` | all four flagged (`alpha`/`beta`/`gamma`/`delta`) |
+| `foo, bar` | `foo` only -- a comma grants no further check |
+| `Part 1.` | `Part` only -- the next token must be a bare word, not a number |
+| `NOTE.` | `NOTE` only |
+| `This is not defined test` | `This` only -- `Is` is a real CR300 token (`functions.json`) |
+| `Double foo` | `foo` only -- `Double` is a real CR300 token (`symbols.json`) |
+| `foo Double bar` | `foo` only -- `bar` never reached |
+| `BattV foo`, `foo BattV bar baz` | both words flagged in each (plain, undeclared identifiers) |
+
+Model (implemented as `checker/cr3xx.py::_leading_unknown_words`, unit-tested in
+`tests/test_cr3xx.py`): from the statement's own first bare word, walk a chain of words joined only
+by an immediately-adjacent operator run (`+-*/^&<>=`, no surrounding space -- checking every
+operand, uncapped); once that chain can no longer continue via an operator, check exactly one more
+bare word if it is separated from the chain by plain whitespace only (not a comma or other
+punctuation, and it must itself be a word, not a number); either way, stop for good once that
+one-word "peek" has been checked. "Resolved" reuses `expressions._known_names(program, profile)` --
+already sufficient, since this project's own extracted per-logger tables carry CRBasic's syntax
+keywords alongside its predefined symbols (`Double`/`Is`/`Public`/... all present in `symbols.json`/
+`functions.json`/`instructions.json`), so no separate reserved-word list was needed. Untested and
+not implemented: an operator with surrounding whitespace (`alpha - beta`), any operator outside the
+eight characters above, and a statement whose first token is not a bare word at all (conservatively
+treated as zero leading words, `_leading_unknown_words`'s own docstring).
+
+Implemented as `checker/cr3xx.py::check_unknown_line_words(program, profile, diags)`: CR300/CR350
+only, reacts to `diags.items` already containing the generic fallback message for a statement
+`program.statements` marks `S.Unparsed` (not any other statement shape -- a bare unresolved *call*
+already gets its own, already-implemented, single-name line via `profile.undefined_call_message`;
+an unresolved *assignment target* was not probed this round for this same leading-word behaviour,
+so is deliberately left alone), and splices in one `profile.unresolved_symbol_message` line per
+returned word, immediately before it. **Not yet wired in** -- `checker/structure.py`/`checker/
+__init__.py` are owned by a concurrent workstream this round; the one line needed, right after
+whichever pass can emit `structure.py`'s own generic fallback for an `S.Unparsed` statement:
+
+    cr3xx.check_unknown_line_words(program, profile, diags)
+
+### Finding 2 (newly observed this round, not yet implemented anywhere): no placement stop either
+
+The same scratch probes and the CHM transcripts above also show CR300/CR350 do **not** apply
+`structure.py`'s "before `BeginProg`" follow-up (`Expr illegally occurs before BeginProg.` plus a
+pass-2 stop) to the generic `S.Unparsed` fallback either -- e.g. `foo bar` before `BeginProg` gets
+only the two `is not defined.` lines and the generic line, then compilation continues on to later
+statements (`docs/loggers.md` above already documents the identical carve-out for the *Call*-shaped
+"resolves to nothing" branch, `profile.undefined_call_message`; this is the same carve-out for the
+`S.Unparsed` branch, oracle-confirmed independently this round). This one is **not implementable as
+a `cr3xx.py` reaction to `diags.items`**, unlike Finding 1: the missing behaviour is that
+`structure.py`'s own pass-2 loop returns early and never even evaluates the statements after the
+stop, so there is nothing in `diags` afterward to react to. It needs a small conditional directly in
+`structure.py`'s own `S.Unparsed`-`else` branch, gating the existing `if not in_body_block and
+(...): diags.error("Expr illegally occurs before BeginProg."); return stmt.line` behind `profile.
+name not in ("cr300", "cr350")` (mirroring the existing `if profile.undefined_call_message:` early
+`return None` a few lines above in `_check_call_pass2`).
+
+### Measured impact
+
+Neither hook above is wired in this round (both live in files owned by a concurrent workstream, per
+this round's own scope). `chm` `exact` is therefore **unchanged**: cr300 157, cr350 161 (cr6 338,
+cr1000x 354, also unaffected -- this work is CR300/CR350-only). Simulated in-process (calling
+`check_unknown_line_words` manually right after `checker.check`, Finding 1 alone, Finding 2 not
+simulated): 0 of the 507 `chm` files flip to `exact`, because essentially every corpus instance of
+this shape is a `S.Unparsed` statement before `BeginProg` (CHM examples put their prose near the top
+of the file) and so is already blocked from becoming exact by Finding 2's still-missing stop
+suppression -- Finding 1 is real and oracle-tested (verified line-for-line against every probe in
+this section) but has no *measurable* corpus effect until Finding 2 also lands. `python3 -m pytest
+-q`: 1039 passed, 311 skipped (16 new, all passing, `tests/test_cr3xx.py`); zero false rejects on
+all four loggers (`their_exit==0 and our_exit!=0`, checked after this round's change, empty on all
+four, unaffected since the change is a no-op addition pending both hooks).

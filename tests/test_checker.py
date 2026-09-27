@@ -424,6 +424,40 @@ def test_bare_endsub_is_not_flagged_as_missing_parameter():
     assert result.diagnostics.errors == []
 
 
+# ---------------------------------------- structure.py: missing-parameter followup (docs/checker.md)
+
+
+def test_missing_parameter_followup_reports_leftover_continuation_line():
+    # `average_1.CR6` (`docs/checker.md` "Missing-parameter followup"): `Average` alone on one
+    # line (required-parameter shortfall), its own wrapped argument list on the next -- the real
+    # compiler reports both, oracle-confirmed.
+    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+            "    Average\n(1,TCTemp,FP2,False)\n  NextScan\nEndProg\n")
+    assert messages_of(compile_text(text)) == [
+        "Invalid or missing parameter.",
+        "Invalid, or out of place expression: (1,TCTemp,FP2,False).",
+    ]
+
+
+def test_missing_parameter_followup_suppressed_when_first_name_undeclared():
+    # `getdatarecord_3.CR6` vs `getdatarecord_1.CR6` (`docs/checker.md`): the real compiler stays
+    # silent about the leftover line when its own first identifier never resolves.
+    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+            "    Average\n(1,Undeclared,FP2,False)\n  NextScan\nEndProg\n")
+    assert messages_of(compile_text(text)) == ["Invalid or missing parameter."]
+
+
+def test_missing_parameter_followup_checks_only_the_first_name():
+    # `cdmresistance_1.CR6` (`docs/checker.md`): a *later* undeclared name in the same leftover
+    # does not suppress the followup -- only the first one gates it.
+    text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
+            "    Average\n(1,TCTemp,FP2,Undeclared)\n  NextScan\nEndProg\n")
+    assert messages_of(compile_text(text)) == [
+        "Invalid or missing parameter.",
+        "Invalid, or out of place expression: (1,TCTemp,FP2,Undeclared).",
+    ]
+
+
 def test_channel_check_suppressed_when_file_has_an_earlier_pass1_error():
     # `docs/checker.md` "Two-pass compilation": pass 2 (the channel-range check) never runs once
     # pass 1 recorded any error anywhere in the file.

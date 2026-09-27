@@ -7,10 +7,11 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 from __future__ import annotations
 
 from .. import consteval
+from .. import lexer
 from .. import parser
 from .. import syntax as S
 from ..diagnostics import Diagnostics
-from . import expressions, instr_data, symbols
+from . import expressions, instr_data, instr_rules, symbols
 
 # Array-dimension limits on a `Public`/`Dim` declaration (oracle-confirmed, `docs/checker.md`
 # "Array dimension limits"): at most 3 dimensions, and each one's constant value must be in
@@ -456,6 +457,112 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
     return None
+
+
+def _leftover_first_name_known(text: str, known: set[str]) -> bool:
+    """Only the *first* identifier tokenisable out of `text` (skipping any leading punctuation --
+    `(`/`,` -- and numeric/string literals) needs to be in `known` (`expressions._known_names`);
+    a later identifier in the same leftover is not checked. `True` when the leftover has no
+    identifier at all (all literals/punctuation, e.g. `,200,15000,1.0,0)`).
+
+    Narrower than "every referenced name must resolve" -- that broader version was tried first and
+    reverted after `cdmresistance_1.CR6` (`docs/checker.md` "Missing-parameter followup") showed it
+    was wrong: that file's *second* leftover (`Tblk1, 1,mV5000,1,TypeT,Tref,0,0,60,1.8,32 )`) gets
+    the follow-up in the real compiler even though it references `Tref`, undeclared throughout the
+    file (the stranded name after an earlier nameless `Dim`, never truly registered) -- the same
+    undeclared `Tref` that correctly suppresses the *first* leftover (`Tref,1 ,1,60)`, oracle-
+    confirmed absent) in the same file. The only difference between the two is which name comes
+    *first*: `Tblk1` (genuinely declared, `Dim Tblk1`) leads the second, `Tref` itself leads the
+    first. Every other corpus/scratch-probe case this session checked is consistent with checking
+    only the first identifier (`getdatarecord_1.CR6` vs `getdatarecord_3.CR6`'s `Result`/`ResultTD`
+    both lead their own leftover text, `average_1.CR6`/`cosh_1.CR6` have no leading identifier to
+    fail at all). A genuinely unlexable leftover (an unterminated string, say) is conservatively
+    treated as "not known" (no oracle evidence either way for that shape, and this only ever
+    *suppresses* the diagnostic, never adds a wrong one, so the safe default costs at most a
+    missed "exact")."""
+    try:
+        tokens = lexer.tokenize(text, 0)
+    except lexer.LexError:
+        return False
+    for t in tokens:
+        if t.kind == "IDENT":
+            return t.upper in known
+    return True
+
+
+def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
+    """When `instr_rules.check`'s required-parameter-shortfall message (`Invalid or missing
+    parameter.`) fires for an instruction whose argument list was wrapped across two physical
+    lines with no `_` continuation, the physical line the wrapped arguments spill onto is itself
+    an unrecognisable statement (it starts mid-argument-list -- `(...)`/a bare `,...)` -- our
+    parser records as `S.Unparsed`). Oracle-confirmed (`docs/checker.md` "Missing-parameter
+    followup"), this specific leftover statement can get its own `Invalid, or out of place
+    expression: %s.` line even though `check_pass2`'s own generic fallback for *every other* bare
+    statement in the file is fully suppressed once pass 1 found anything wrong anywhere
+    (`checker/__init__.py`'s `if not diags.errors:` gate) -- a scratch probe confirms an unrelated
+    `foo bar baz` elsewhere in a file that also has an earlier `Variable not named.` stays fully
+    silent, while this specific leftover-line diagnostic does not.
+
+    **Gated on whether the leftover text's own first identifier is itself a genuinely resolvable
+    symbol** (`_leftover_first_name_known`, reusing `expressions._known_names` -- see its own
+    docstring for the full oracle evidence, including the `cdmresistance_1.CR6` case that narrowed
+    this from an earlier, broader "every referenced name" version down to "only the first") --
+    found by a corpus regression, not guessed: `getdatarecord_3.CR6` has this exact shape
+    (`GetDataRecord` / `(ResultTD,COMC1,0,8,0000,0,2,1,TempDat,1)`) and is already `exact` with
+    *no* follow-up line, unlike `getdatarecord_1.CR6`'s byte-for-byte-identical shape, which *does*
+    get one. The only difference: `getdatarecord_3.CR6`'s `ResultTD` was never actually declared
+    (it is the stranded name after a nameless `Public`, `_check_declaration`'s own "diagnostic
+    suppressed, but the name itself was never registered" gap below) -- a from-scratch scratch
+    probe confirms the effect directly: adding a real `Public ResultTD` declaration alongside the
+    otherwise-identical, otherwise-still-undeclared program flips the follow-up on, while adding
+    an unrelated `Public Foo` (declaring a name the leftover text never references) does not.
+
+    Deliberately keyed to the *very next* statement in program order (every corpus case has them
+    adjacent), and skips exactly the same `Unparsed.reason` classes `check_pass2` above already
+    special-cases (a known parser gap, an empty statement, or one already reported by
+    `check_pass1`'s own `Units`/`Const`/`Alias`/array-dimension checks) so the two paths can never
+    double-report the same statement. Called unconditionally from `checker/__init__.py`, alongside
+    `instr_rules.check` itself, not gated behind "pass 1 found nothing" -- it fires precisely
+    *because* `instr_rules.check` found something on the immediately preceding statement.
+    """
+    known: set[str] | None = None
+    statements = program.statements
+    for i in range(len(statements) - 1):
+        stmt = statements[i]
+        if not isinstance(stmt, S.Instruction):
+            continue
+        record = profile.instructions.get(stmt.keyword.upper())
+        if not record:
+            continue
+        params = instr_rules._real_params(record["params"])
+        required = instr_rules._required_count(params)
+        if len(stmt.args) >= required:
+            continue
+        missing_code = params[len(stmt.args)] if len(stmt.args) < len(params) else None
+        if missing_code in instr_rules._TOLERANT_CODES:
+            continue
+        nxt = statements[i + 1]
+        if not isinstance(nxt, S.Unparsed):
+            continue
+        if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
+            continue
+        if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
+                nxt.reason.startswith(_INVALID_AS_CLAUSE) or \
+                nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
+            continue  # already reported by `check_pass1`
+        if known is None:
+            known = expressions._known_names(program, profile)
+        if not _leftover_first_name_known(nxt.text, known):
+            continue
+        if nxt.reason == _UNCLOSED_PAREN_EXPR:
+            diags.error(nxt.line, f"No Matching, or out of place ) in expression: {nxt.text}.",
+                        nxt.file, show_file=False)
+        elif nxt.reason == _EXTRA_CLOSE_PAREN:
+            diags.error(nxt.line, f"Incomplete expression: {nxt.text}.", nxt.file,
+                        show_file=False)
+        else:
+            diags.error(nxt.line, f"Invalid, or out of place expression: {nxt.text}.", nxt.file,
+                        show_file=False)
 
 
 def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
