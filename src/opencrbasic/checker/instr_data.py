@@ -431,6 +431,19 @@ def check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env)
     """
     if profile.name not in ("cr6", "cr1000x"):
         return False
+    return _check_stage2a(program, profile, diags, env, destinations=True)
+
+
+def check_table_reps_late(program: S.Program, profile: Profile, diags: Diagnostics, env) -> None:
+    """CR300/CR350: the same `Illegal Reps` / `Variable %s out of bounds.` table checks, reported
+    only when nothing else failed and stopping at the first (oracle, 2026-09-27: `Sample (0,X,FP2)`
+    plus an unrelated `X = Q` prints only `Q is not defined.`)."""
+    if profile.name in ("cr300", "cr350"):
+        _check_stage2a(program, profile, diags, env, destinations=False)
+
+
+def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
+                   destinations: bool) -> bool:
     from . import expressions
     reported = False
     dims = symbols.declared_all_dims(program, env)
@@ -441,7 +454,7 @@ def check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env)
         record = profile.instructions.get(kw)
         if not record:
             continue
-        if kw not in _OWN_VARIABLE_CHECK:
+        if destinations and kw not in _OWN_VARIABLE_CHECK:
             for i, code in enumerate(record["params"][:len(st.args)]):
                 arg = st.args[i]
                 if code == 8 and arg is not None and not isinstance(arg, S.String) \

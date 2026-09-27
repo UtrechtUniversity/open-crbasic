@@ -11,7 +11,7 @@ import re
 
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import expressions, symbols
+from . import expressions, instr_rules, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
 # `Serial*` function on CR300/CR350 whose compile-time validator additionally requires a genuine
@@ -148,7 +148,8 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
                          "illegal, starts with a number.", "not yet declared.",
                          "not supported")
-_DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration")
+_DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
+                                 "EndSelect w/o Select")
 
 
 def _is_cascade_trigger(diag) -> bool:
@@ -200,7 +201,10 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     and stmt.args[1] is not None
                     and stmt.keyword.upper() not in ("UNITS", "READONLY")):
                 # (`Units X = m` is never rewritten: repository libraries, oracle.)
-                text = expressions._arg_text(stmt, 1)
+                # the next simple token, like a genuine overflow (oracle: `MainScanSecs * 4` ->
+                # `MainScanSecs`, `SearchString()` -> `SearchString`)
+                text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
+                    expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
             continue

@@ -182,8 +182,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # where (if anywhere) tier B should be considered cut off, matching the real compiler's own
         # "stop entirely at the first placement error" behaviour.
         pass2_start = len(diags.items)
-        cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
+        # Block-closer messages come before a same-line placement error (`EndIf illegally
+        # occurs before BeginProg.` follows `END IF without IF...`).
         _run_pass(structure.check_block_closers, program, profile, diags)
+        cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
         _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
         _run_pass(expressions.check, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
@@ -217,7 +219,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             ]
 
     if not diags.errors:
-        # After passes 1 and 2 are clean: unclosed `Scan`/`For`/`Do`/`If` at end of program.
+        # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
+        # `Scan`/`For`/`Do`/`If` at end of program.
+        _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
+    if not diags.errors:
         _run_pass(structure.check_end_blocks, program, diags)
     if not diags.errors:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/

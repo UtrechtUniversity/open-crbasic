@@ -2306,3 +2306,5 @@ expression:  As.` (CR300/CR350: `As is not defined.`, `Variable illegal in Param
 while a plain `Public A()` compiles. On CR300/CR350 these start the `Too many parameters`
 cascade; a tainted `ReadOnly` keeps its own message and a tainted multi-variable declaration
 reads `Too many parameters:  <second variable>.` (`Dim A(), B` -> `B`).
+CR300/CR350 print the same `Illegal Reps` / out-of-bounds messages, but only when nothing else
+failed, stopping at the first (`instr_data.check_table_reps_late`).

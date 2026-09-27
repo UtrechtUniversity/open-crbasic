@@ -149,6 +149,23 @@ _FORBIDDEN_BEFORE_BEGINPROG = frozenset({"SCAN", "DELAY"})
 
 
 
+
+def _control_keyword(stmt: S.Stmt) -> str | None:
+    """The instruction-table keyword of a control statement that may not precede `BeginProg`."""
+    if isinstance(stmt, S.If):
+        return "IF"
+    if isinstance(stmt, S.For):
+        return "FOR"
+    if isinstance(stmt, S.DoLoop):
+        return stmt.keyword.upper()
+    if isinstance(stmt, S.Instruction):
+        kw = stmt.keyword.upper()
+        if kw in ("SELECT", "ENDIF"):
+            return kw
+        if kw == "NEXT" and _block_word(stmt.args or []) not in ("SCAN", "SUBSCAN"):
+            return kw
+    return None
+
 def _out_of_place(profile, text: str, at_eol: bool = True) -> str:
     """The generic `Invalid, or out of place expression: %s.` text. CR300/CR350 echo the raw
     line including its line terminator, so their closing `.` is printed on the next output line
@@ -525,6 +542,16 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                                             profile)
             if stop is not None:
                 return stop
+        elif _control_keyword(stmt) and not in_body_block and not in_table and \
+                (beginprog_line is None or stmt.line < beginprog_line):
+            # Control statements before `BeginProg` (oracle, all four loggers, 2026-09-27):
+            # `If X Then` -> `If illegally occurs before BeginProg.`, likewise `FOR`, `Do`,
+            # `SELECT`, and a stray `EndIf`/`Loop`/`NEXT` after its own block message.
+            kw_ctrl = _control_keyword(stmt)
+            record = profile.instructions.get(kw_ctrl)
+            display = record["name"] if record else kw_ctrl
+            diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
         elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _FORBIDDEN_BEFORE_BEGINPROG:
             if not in_body_block and not in_table and (beginprog_line is None or stmt.line < beginprog_line):
                 record = profile.instructions.get(stmt.keyword.upper())
@@ -1089,6 +1116,9 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
             for name in expressions._undefined_names(stmt.value, known):
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                             stmt.file)
+            if expressions._has_undefined_index(stmt.value, known):
+                diags.error(stmt.line, expressions.dimensions_message(stmt.text, profile, True,
+                                                                      stmt.at_eol), stmt.file)
         return None
     if target_names:
         diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,

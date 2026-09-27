@@ -1008,3 +1008,13 @@ reported even after a pass-1 error (`Dim Z banana` then `X = Q` / `foo bar` / `X
 of them; `profiles.single_pass`). An undeclared assignment target gives `%s is not defined.` for
 it, then the right-hand side's own undefined names (`Nope = Q`), or the generic fallback for an
 indexed target (`Nope(2) = X`); no placement follow-up. chm exact cr300 256, cr350 266.
+
+`Dimensions not declared` (CR300/CR350, oracle 2026-09-27): an undefined name used with
+parentheses adds `Dimensions not declared: <echo>` after the per-name lines -- the argument text
+for an instruction argument, after which the rest of the argument list collapses into `Too many
+parameters:  <next simple token>.` (`SplitStr(ResultString(1),SearchString(),...)`); the whole
+statement, newline-terminated, for an assignment (`Store = Fmt(Num(1))`); the condition text for
+an `If`. The `Too many parameters` cascade also echoes the next simple token (`MainScanSecs * 4`
+-> `MainScanSecs`). Control statements before `BeginProg` (`If`, `FOR`, `Do`, `SELECT`, stray
+`EndIf`/`Loop`/`NEXT`) get `%s illegally occurs before BeginProg.` on all four loggers. chm exact
+cr300 268, cr350 278; `crbasic/` 5/16 exact on both.

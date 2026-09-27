@@ -681,6 +681,9 @@ coordinator commits it. Tick items here as they land.
       morning), seed 46 17; cr1000x seed 46 26 with 1 false reject (`Alias` trailing text, fixed
       next); cr300 22; cr350 16. Reproducer replay after the fixes: 619 of 1469 exact, no false
       rejects.
+- [x] CR300/CR350 `Dimensions not declared`, cascade token echo, late table checks; control
+      statements before `BeginProg` (all loggers). CR300/CR350 `crbasic/` 0 -> 5/16 exact, chm
+      exact cr300 268, cr350 278; replay 732 of 1469 exact, no false rejects.
 - [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
 - [x] Fuzz re-measurement at `e0a92cc` (300 mutants each): cr6 seed 42 false_accept 25 (was 30),
       seed 45 31; cr1000x seed 42 21 (was 27) with 1 false reject, `If`/`NextScan`/`EndIf`, fixed

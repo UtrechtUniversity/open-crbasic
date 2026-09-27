@@ -49,3 +49,15 @@ def test_no_pass_gate(logger):
 def test_undeclared_assignment_target(line, expected, logger):
     text = f"Public X\n{line}\nBeginProg\n  X = 1\n  Y2 = 3\nEndProg\n"
     assert messages(text, logger) == expected + ["Y2 is not defined."]
+
+
+@pytest.mark.parametrize("logger", ["cr300", "cr350"])
+def test_dimensions_not_declared(logger):
+    text = ("Public X, SearchString As String * 20\nBeginProg\n  Scan (1,Sec,0,0)\n"
+            "    SplitStr(ResultString(1),SearchString(),\",\",5,7)\n    Store = Fmt(Num(1))\n"
+            "  NextScan\nEndProg\n")
+    got = messages(text, logger)
+    assert got[:3] == ["ResultString is not defined.", "Dimensions not declared: ResultString(1).",
+                       "Too many parameters:  SearchString."]
+    assert got[3:6] == ["Store is not defined.", "Fmt is not defined.", "Num is not defined."]
+    assert got[6] == "Dimensions not declared:     Store = Fmt(Num(1))\n."

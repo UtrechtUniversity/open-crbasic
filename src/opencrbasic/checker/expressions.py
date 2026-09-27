@@ -361,6 +361,27 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
     return []  # Number, String: nothing to resolve
 
 
+
+def _has_undefined_index(expr: S.Expr | None, known: set[str]) -> bool:
+    """Whether `expr` uses an undefined name with parentheses (`Foo(1)`), which CR300/CR350 follow
+    with `Dimensions not declared: %s` (oracle, 2026-09-27)."""
+    if expr is None:
+        return False
+    if isinstance(expr, S.Index):
+        return expr.name.upper() not in known or any(_has_undefined_index(a, known) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _has_undefined_index(expr.operand, known)
+    if isinstance(expr, S.Binary):
+        return _has_undefined_index(expr.left, known) or _has_undefined_index(expr.right, known)
+    if isinstance(expr, S.Member):
+        return _has_undefined_index(expr.base, known)
+    return False
+
+
+def dimensions_message(text: str, profile, whole_statement: bool, at_eol: bool = True) -> str:
+    sep = "\n" if whole_statement and profile.fallback_echo_newline and at_eol else ""
+    return f"Dimensions not declared: {text}{sep}."
+
 def _arg_text(stmt: S.Instruction, i: int) -> str:
     """The argument's own verbatim source text (`Instruction.arg_spans`, `parser.py`), for the
     messages below that echo a whole expression rather than a single name (oracle-confirmed,
@@ -501,6 +522,17 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
                 return True
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            if _has_undefined_index(arg, known):
+                # CR300/CR350: `SplitStr(ResultString(1),SearchString,...)` -> `Dimensions not
+                # declared: ResultString(1).` and the rest of the list collapses into `Too many
+                # parameters:  SearchString.`
+                diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
+                            stmt.file)
+                if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
+                    from .instr_rules import _next_simple_token
+                    token = _next_simple_token(_arg_text(stmt, i + 1))
+                    diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+                return True
             if not is_const_family:
                 return True
             # CR300/CR350 const-family position: fall through to also run the
@@ -646,12 +678,22 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     # 2026-09-27): `If Nope Then` -> `Invalid symbol in expression: Nope .`, `If Foo(X) > 20 Then
     # X = 1` -> `... Foo(X) > 20 .`; suppressed by a pass-1 error. CR300/CR350 print per-name
     # `%s is not defined.` lines instead (not modelled).
-    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-        for stmt in program.statements:
-            if isinstance(stmt, S.If) and _undefined_names(stmt.cond, known):
-                text = _if_condition_text(stmt)
-                if text is not None:
-                    diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.If):
+            continue
+        names = _undefined_names(stmt.cond, known)
+        text = _if_condition_text(stmt)
+        if not names or text is None:
+            continue
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+        else:
+            # CR300/CR350: `If Foo(X) > 20 Then` -> `Foo is not defined.`, `Dimensions not
+            # declared: Foo(X) > 20 .`; `If Nope Then` -> `Nope is not defined.` (oracle)
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            if _has_undefined_index(stmt.cond, known):
+                diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
@@ -666,6 +708,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         else:
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+            if _has_undefined_index(stmt.value, known):
+                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
+                            stmt.file)
 
 
 def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:

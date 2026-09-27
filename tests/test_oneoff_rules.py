@@ -90,3 +90,23 @@ def test_no_beginprog_on_the_last_physical_line(text, line):
 def test_no_beginprog_does_not_hide_pass2_errors():
     assert messages("Public X\nY=EXP()\n") == [
         "Invalid, or out of place expression: Y=EXP().", "Expr illegally occurs before BeginProg."]
+
+
+TAIL = "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n"
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr300"])
+@pytest.mark.parametrize("pre,expected", [
+    ("If X Then\nEndIf\n", ["If illegally occurs before BeginProg."]),
+    ("If X Then X = 1\n", ["If illegally occurs before BeginProg."]),
+    ("For I = 1 To 2\nNext\n", ["FOR illegally occurs before BeginProg."]),
+    ("Do\nLoop\n", ["Do illegally occurs before BeginProg."]),
+    ("Select Case X\nCase 1\nEndSelect\n", ["SELECT illegally occurs before BeginProg."]),
+    ("EndIf\n", ["END IF without IF or END SELECT without SELECT.",
+                 "EndIf illegally occurs before BeginProg."]),
+    ("Loop\n", ["LOOP without DO.", "Loop illegally occurs before BeginProg."]),
+    ("Next\n", ["NEXT without FOR.", "NEXT illegally occurs before BeginProg."]),
+    ("Sub S\n  If X Then\n  EndIf\nEndSub\n", []),
+])
+def test_control_statements_before_beginprog(pre, expected, logger):
+    assert messages(f"Public X, I\n{pre}{TAIL}", logger) == expected

@@ -56,3 +56,11 @@ def test_stage2a_is_suppressed_by_pass1_errors():
 def test_string_array_dimension(logger):
     text = prog("  Sample (1,X,FP2)").replace("Public X, Y, A(5)", 'Public X, Y, A(5)\nPublic Q("fuzz")')
     assert messages(text, logger)[0] == 'Illegally dimension: Public Q("fuzz")'
+
+
+@pytest.mark.parametrize("logger", ["cr300", "cr350"])
+def test_cr300_table_checks_run_late(logger):
+    assert messages(prog("  Sample (0,X,FP2)\n  Sample (3,A(4),FP2)"), logger) == ["Illegal Reps 0"]
+    assert messages(prog("  Sample (3,A(4),FP2)"), logger) == [
+        "Variable A out of bounds.", "Variable A, index 4, reps 3, out of bounds."]
+    assert messages(prog("  Sample (0,X,FP2)", "    X = Q\n"), logger) == ["Q is not defined."]
