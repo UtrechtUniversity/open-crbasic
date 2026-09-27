@@ -2382,3 +2382,31 @@ CR300: `Foo(1)` with the wrong argument count gets both its own error and the pl
 
 Replay: 790 of 1469 exact, no false rejects. chm exact CR300 269, CR350 279 (the other two
 unchanged).
+
+## Stray control statements (2026-09-27)
+
+Oracle, all four loggers (`structure.stray_controls`, `tests/test_stray_controls.py`).
+
+| Statement | Error when | Message | CR6/CR1000X |
+|---|---|---|---|
+| `Else`, `Case Else` | no `If` or `Select` open | `Else with no If.` | pass 2, stops |
+| `ElseIf` | no `If` or `Select` open | `Case with no Select.` | pass 2, stops |
+| second `Else`/`Case Else` | in the same `If` or `Select` | `If statement with duplicate Else.` | pass 2 |
+| `Exit Do`, `Exit For` | no `Do`/`For` open | `Exit Do without DO.`, `Exit For without FOR.` | pass 2 |
+| `Exit Sub`, `Exit Function` | outside any `Sub`/`Function` | `Exit Sub without Sub or nested subs.` | pass 2 |
+| `ExitScan`, `ContinueScan` | no `Scan` open (also in a `Sub`) | `ExitScan not within a Scan.` | pass 2 |
+| `Case` | no `Select` open | `Case outside Select.` | pass 1 |
+| `EndSelect` | no `Select` open | `EndSelect w/o Select` | pass 1 |
+
+- "Open" means anywhere on the stack. `Else` inside a `Do` inside an `If` is fine, and so is
+  `Else` inside a `Select`. `Case` inside an `If` inside a `Select` is fine too.
+- `Case Else` is matched as a prefix, so `Case Else = 3` and `Case Elsewhere` count.
+- `ExitScan` outside a `Scan` gets no reachability warning. `ContinueScan` does.
+- The two pass-1 messages come from the parser (decompiled `FUN_0049ce10`). The others come from
+  pass 2 (`FUN_005089c0`).
+- CR300/CR350 report the pass-2 ones in the late walk (`check_scan_placement_late`), so an
+  unrelated `Q is not defined.` hides them. `Case outside Select.` prints next to it.
+
+Not modelled: an unresolved name earlier in the same `Scan` (`X = Q`, `Battery(Q)`) hides the
+parser's `EndSelect w/o Select`. Pass 2 then reports the generic `IF or SELECT statement
+illegally has SCAN...` and `END IF without IF...` lines.

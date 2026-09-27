@@ -207,7 +207,12 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     scans = 0
     tables: dict = {}
     subs = symbols.declared_subs(program)
+    stray = stray_controls(program)
     for stmt in program.statements:
+        if id(stmt) in stray:
+            diags.error(stmt.line, stray[id(stmt)][0], stmt.file)
+            if stray[id(stmt)][1]:
+                return stmt.file, stmt.line
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         if isinstance(stmt, S.SubDef):
             in_body = True
@@ -239,6 +244,82 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
             if display:
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.file, stmt.line
+    return None
+
+
+def _is_case_else(stmt: S.Case) -> bool:
+    """`Case Else`, matched as a prefix: `Case Else = 3` and `Case Elsewhere` count too (oracle,
+    2026-09-27: `Else with no If.` outside a `Select`, a duplicate `Else` after `Case Else`)."""
+    return stmt.is_else or re.match(r"\s*case\s+else", getattr(stmt, "text", ""), re.I) is not None
+
+
+def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
+    """`id(stmt) -> (message, stops)` for control statements outside their block (oracle,
+    2026-09-27, `docs/checker.md` "Stray control statements"). `Else`/`Case Else` need an open
+    `If` or `Select`, `ElseIf` too (`Case with no Select.`); both stop. A second `Else` in one `If`
+    or `Select`, `Exit Do`/`Exit For` with no open loop, `Exit Sub`/`Exit Function` outside a `Sub`
+    or `Function`, and `ExitScan`/`ContinueScan` with no open `Scan` do not stop."""
+    found: dict[int, tuple[str, bool]] = {}
+    elses: list[bool] = []
+    loops = {"DO": 0, "FOR": 0}
+    scans = 0
+    in_sub = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        args = getattr(stmt, "args", []) or []
+        word = _block_word(args) if kw in ("END", "NEXT", "EXIT") else None
+        message, stops = None, False
+        if isinstance(stmt, S.SubDef):
+            in_sub = True
+        elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and word in ("SUB", "FUNCTION")):
+            in_sub = False
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            elses.append(False)
+        elif kw in ("ENDIF", "ENDSELECT") or (kw == "END" and word in ("IF", "SELECT")):
+            if elses:
+                elses.pop()
+        elif kw == "ELSE" or isinstance(stmt, S.Case) and _is_case_else(stmt):
+            if not elses:
+                message, stops = "Else with no If.", True
+            elif elses[-1]:
+                message = "If statement with duplicate Else."
+            else:
+                elses[-1] = True
+        elif kw == "ELSEIF" and not elses:
+            message, stops = "Case with no Select.", True
+        elif kw in ("DO", "FOR"):
+            loops[kw] += 1
+        elif kw == "LOOP":
+            loops["DO"] = max(0, loops["DO"] - 1)
+        elif kw == "NEXT" and word not in ("SCAN", "SUBSCAN"):
+            loops["FOR"] = max(0, loops["FOR"] - 1)
+        elif kw == "SCAN":
+            scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
+            scans = max(0, scans - 1)
+        elif kw == "EXIT" and word in ("DO", "FOR") and loops[word] == 0:
+            message = f"Exit {word.capitalize()} without {word}."
+        elif kw == "EXIT" and word in ("SUB", "FUNCTION") and not in_sub:
+            message = "Exit Sub without Sub or nested subs."
+        elif kw in ("EXITSCAN", "CONTINUESCAN") and scans == 0:
+            message = f"{'ExitScan' if kw == 'EXITSCAN' else 'ContinueScan'} not within a Scan."
+        if message:
+            found[id(stmt)] = (message, stops)
+    return found
+
+
+def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int | None:
+    """CR6/CR1000X pass 2 (`stray_controls`); returns the line pass 2 stops at, if any. CR300/CR350
+    report these in `check_scan_placement_late`."""
+    if profile.single_pass:
+        return None
+    found = stray_controls(program)
+    for stmt in program.statements:
+        if id(stmt) in found:
+            message, stops = found[id(stmt)]
+            diags.error(stmt.line, message, stmt.file)
+            if stops:
+                return stmt.line
     return None
 
 
@@ -324,6 +405,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     seen_beginprog = False
     scan_depth = 0
     cond_depth = 0
+    select_depth = 0
     in_table = False
     table_name: str | None = None
     nested_table_line: int | None = None
@@ -424,8 +506,16 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 scan_depth -= 1
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
             cond_depth += 1
+            select_depth += kw == "SELECT"
         elif kw == "ENDSELECT" or (kw == "END" and _block_word(args) == "SELECT"):
             cond_depth = max(0, cond_depth - 1)
+            if select_depth == 0:
+                # Parser errors (decompiled `FUN_0049fe50`, `FUN_0049ce10`), all four loggers:
+                # a later `X = Q` or an earlier stray `Else`/`Exit Do` is not reported on CR6.
+                diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
+            select_depth = max(0, select_depth - 1)
+        elif isinstance(stmt, S.Case) and not _is_case_else(stmt) and select_depth == 0:
+            diags.error(stmt.line, "Case outside Select.", stmt.file)
         elif kw == "ENDIF" or (kw == "END" and _block_word(args) == "IF"):
             cond_depth = max(0, cond_depth - 1)
         # `DataTable ... EndTable not matched.` (round 6, below): a single "currently open" flag,
@@ -797,8 +887,7 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
         elif kw in ("ENDIF", "ENDSELECT", "NEXT", "LOOP") or (kw == "END" and word in ("IF", "SELECT")):
             is_select = kw == "ENDSELECT" or (kw == "END" and word == "SELECT")
             if is_select and selects == 0:
-                diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
-                return
+                return  # `EndSelect w/o Select` is a pass-1 error (`check_pass1`)
             kind = {"NEXT": "FOR", "LOOP": "DO"}.get(kw, "IF")
             illegal_scan, without = _CLOSER_MESSAGES[kind]
             if stack and stack.pop() == "SCAN":

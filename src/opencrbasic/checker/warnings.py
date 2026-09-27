@@ -238,9 +238,11 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             # warning at all; `docs/instructions.md`).
             return
         if dead:
+            # An `ExitScan` outside any `Scan` compiles to nothing (oracle: `ExitScan not within a
+            # Scan.` and no warning), unlike `ContinueScan`.
             is_declaration = (
                 isinstance(stmt, (S.Declaration, S.ConstDecl, S.Label))
-                or kw in _NON_EXECUTABLE_KEYWORDS
+                or kw in _NON_EXECUTABLE_KEYWORDS or kw == "EXITSCAN"
             )
             if not is_declaration:
                 diags.warning(stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file)

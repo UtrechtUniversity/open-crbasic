@@ -762,6 +762,11 @@ coordinator commits it. Tick items here as they land.
       seconds for tables of 3601 s or more (decompiled `FUN_004f6540`); `Maximum Scan interval is
       1 Day.`; intervals past `INT32_MAX` are not checked. Replay 792 of 1469 exact.
 
+- [x] Stray control statements (all loggers, `docs/checker.md` "Stray control statements",
+      `tests/test_stray_controls.py`): `Else`/`ElseIf`/`Case`/duplicate `Else`, `Exit Do/For/Sub`,
+      `ExitScan`/`ContinueScan` outside their blocks; `EndSelect w/o Select` moved to pass 1
+      (parser, per the decompilation). Replay 803 of 1469 exact, zero false rejects.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

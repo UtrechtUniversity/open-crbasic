@@ -186,6 +186,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # occurs before BeginProg.` follows `END IF without IF...`).
         _run_pass(structure.check_block_closers, program, profile, diags)
         cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
+        stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
+        if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
+            cutoff = stray_stop
         _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
         _run_pass(expressions.check, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
