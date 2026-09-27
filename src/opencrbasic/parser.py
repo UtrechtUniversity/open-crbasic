@@ -328,7 +328,9 @@ class _Parser:
         except lexer.LexError as e:
             return S.Unparsed(line, file, text=seg_text_raw.strip(), reason=f"lex error: {e.message}")
         real = [t for t in tokens if t.kind != "EOF"]
-        if not real:
+        if not real or all(t.kind == "OP" and t.text in "()," for t in real):
+            # A segment of only `(`, `)` and `,` compiles silently on all four loggers
+            # (`docs/checker.md` "Pass-1 fallback: statements that start with a known word").
             return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
         seg_text = self._segment_text(seg_text_raw, real)
         return self._parse_segment(tokens, line, file, seg_text)

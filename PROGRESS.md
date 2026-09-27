@@ -672,8 +672,9 @@ coordinator commits it. Tick items here as they land.
       word"). Implementation split into the four items below.
 - [ ] CR6/CR1000X: fallback for a statement whose first token is known (declared name, number,
       function, reserved word) is pass 1 and suppresses pass 2 (`structure.py`)
-- [ ] All loggers?: a line of only `(`, `)`, `,` compiles silently (ours: false reject; probe
-      CR300/CR350 first)
+- [x] All loggers: a line of only `(`, `)`, `,` compiles silently (was a false reject; oracle-
+      confirmed on all four; `parser.py`, `tests/test_paren_only_line.py`). chm exact cr6 378 ->
+      380, cr1000x 400 -> 402, cr300/cr350 unchanged.
 - [ ] CR6/CR1000X: `No Matching, or out of place ) in expression` is pass 1
 - [ ] CR6/CR1000X: `Could not find %s.` for `name.`/`name.x` (pass 2, before the fallback)
 - [x] Re-measure fuzz false-accept rates (2026-09-27, tree at `69b05f3`, `tools/fuzz.py --count
