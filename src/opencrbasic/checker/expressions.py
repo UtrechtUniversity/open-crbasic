@@ -383,7 +383,7 @@ def _known_names(program: S.Program, profile) -> set[str]:
     the program declares `ESSVariables`, whichever `ess`-prefixed names it actually references
     (`symbols.ess_variable_names` -- round 5, `docs/checker.md`).
     """
-    return (
+    known = (
         symbols.declared_names(program)
         | set(profile.symbols)
         | set(profile.functions)
@@ -392,10 +392,32 @@ def _known_names(program: S.Program, profile) -> set[str]:
         | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
+    return known - _failed_consts(program, known)
+
+
+def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
+    """`Const` names whose value does not resolve, directly or through another failed `Const`:
+    the real compilers never declare them, so every later use is itself unresolved (oracle, all
+    four loggers: `Const P = Nope` / `Const R = P + 1` / `PortSet(R,1)` reports `Nope`, then `P + 1`
+    on CR6 (`P is not defined.` on CR300), then `R`; `crbasic/AcclimaTDRLib.crb`'s `Const
+    TDRComPort = U5` on CR1000X, which has no `U5`; `docs/checker.md` "Pass-1 instruction
+    arguments")."""
+    consts = [s for s in program.statements if isinstance(s, S.ConstDecl) and s.value is not None]
+    failed: set[str] = set()
+    changed = True
+    while changed:
+        changed = False
+        for c in consts:
+            name = c.name.upper()
+            if name not in failed and _undefined_names(c.value, known - failed):
+                failed.add(name)
+                changed = True
+    return failed
 
 
 def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
-                       variable_names: set[str], profile, diags: Diagnostics) -> None:
+                       variable_names: set[str], profile, diags: Diagnostics,
+                       families: str = "all") -> bool:
     """One statement's own undefined-symbol and constant-only-family checks, at every position
     `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
     expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
@@ -482,14 +504,46 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         return bool(names)
 
     if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-        order = sorted(i for i, k in positions.items() if k in _CONST_FAMILY_KINDS)
-        order += sorted(i for i, k in positions.items() if k not in _CONST_FAMILY_KINDS)
+        order = []
+        if families in ("all", "const"):
+            order += sorted(i for i, k in positions.items() if k in _CONST_FAMILY_KINDS)
+        if families in ("all", "general"):
+            order += sorted(i for i, k in positions.items() if k not in _CONST_FAMILY_KINDS)
     else:
         order = sorted(positions)
 
     for i in order:
         if _check_position(i):
-            return
+            return True
+    return False
+
+
+def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X pass 1: the constant-family instruction positions (`_CONST_FAMILY_KINDS`) are
+    folded while the statement is parsed, so an unresolved name there (`Invalid symbol in
+    expression: %s.`) or a live variable (`Variable illegal in Parameter: %s.`) is reported next
+    to other pass-1 errors, while general positions stay pass 2 (`check`). Oracle, CR6, with a
+    pass-1 `Dim Z banana` in the file: `PortSet(X,1)`, `PanelTemp(X, Nope)`, `VoltSe(X,1,Nope,...)`
+    and `SDI12Recorder(X, Nope, ...)` are all still reported; `VoltSe(Nope,...)`, `Randomize(Nope)`
+    and `Delay(0,Nope,mSec)` are not (`docs/checker.md` "Pass-1 instruction arguments")."""
+    if profile.name not in _WHOLE_EXPR_ECHO_LOGGERS:
+        return
+    known = _known_names(program, profile)
+    variable_names = symbols.declared_variable_names(program)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        record = profile.instructions.get(stmt.keyword.upper())
+        if not record:
+            continue
+        if any(_find_arity_problem(a, profile) or
+               _find_bare_function_ref(a, profile, frozenset(variable_names))
+               for a in stmt.args if a is not None):
+            continue  # a parse error inside an argument owns the statement (`check_function_arity`)
+        positions = _position_kinds(record["params"], stmt.keyword)
+        if positions:
+            _report_statement(stmt, positions, known, variable_names, profile, diags,
+                              families="const")
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -522,7 +576,9 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         positions = _position_kinds(record["params"], stmt.keyword)
         if positions:
-            _report_statement(stmt, positions, known, variable_names, profile, diags)
+            # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
+            _report_statement(stmt, positions, known, variable_names, profile, diags,
+                              families="general")
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions

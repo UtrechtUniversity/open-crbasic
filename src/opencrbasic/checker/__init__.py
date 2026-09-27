@@ -136,6 +136,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # reported alongside pass-1's other declaration errors, not deferred to pass 2's gated
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
+    # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
+    _run_pass(expressions.check_const_family_args, program, profile, diags)
     # `Data`/`DataLong` parameter constant-only checking (`expressions.py`'s own docstring for the
     # oracle evidence). Also ungated pass 1, same reasoning as `check_consts` just above.
     _run_pass(expressions.check_data_params, program, profile, diags)

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import bisect
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -53,6 +54,20 @@ class CompileResult:
     signature: int | None = None
     file_order: dict = field(default_factory=dict)  # file name -> its rank in expansion order
     # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
+    stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
+
+    def _position(self, d) -> tuple:
+        """Where diagnostic `d` falls in the expanded source: the expansion index of the first
+        statement of its file at or after its line (the exe prints in one top-to-bottom pass over
+        the expanded program, so an included file's messages come where its `Include` is, not
+        grouped by file -- oracle: `TDR_tester.CR6` on CR1000X prints `AcclimaTDRLib.crb`'s lines
+        2 and 58 before the main file's line 45)."""
+        lines = self.stmt_lines.get(d.file)
+        if not lines:
+            return (self.file_order.get(d.file, 0), d.line)
+        i = bisect.bisect_left(lines, (d.line, -1))
+        index = lines[i][1] if i < len(lines) else lines[-1][1] + 1
+        return (index, d.line)
 
     @property
     def ok(self) -> bool:
@@ -98,7 +113,7 @@ class CompileResult:
         # without `checker/warnings.py` (a concurrently-owned module) needing to tag its own
         # diagnostics; a stable sort keeps each kind's own relative (insertion) order within itself.
         ordered = sorted(self.diagnostics.items,
-                          key=lambda d: (d.line == 0, self.file_order.get(d.file, 0), d.line)
+                          key=lambda d: (False, self._position(d))
                           if d.line else (True, _no_line_kind(d), 0))
         if not self.ok:
             rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in ordered])
@@ -135,9 +150,14 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         diags.error(0, "Internal error: unable to parse program.")
         return CompileResult(name, profile, diags)
     file_order: dict[str, int] = {}
-    for stmt in program.statements:
-        file_order.setdefault(getattr(stmt, "file", "") or name, len(file_order))
-    result = CompileResult(name, profile, diags, file_order=file_order)
+    stmt_lines: dict[str, list[tuple[int, int]]] = {}
+    for index, stmt in enumerate(program.statements):
+        file = getattr(stmt, "file", "") or name
+        file_order.setdefault(file, len(file_order))
+        stmt_lines.setdefault(file, []).append((stmt.line, index))
+    for lines in stmt_lines.values():
+        lines.sort()
+    result = CompileResult(name, profile, diags, file_order=file_order, stmt_lines=stmt_lines)
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     try:

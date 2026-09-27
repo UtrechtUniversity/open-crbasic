@@ -2123,3 +2123,34 @@ exempt; a `Public exp` is itself rejected, `exp already defined as an internal f
 implemented). Help corpus: 27 of the 33 `Expression expects (` lines now match on every logger;
 the files keep other differences, so chm exact is unchanged. Not covered: statements our parser
 leaves `Unparsed`, e.g. `Sin bar`, `X = Sin bar` (`docs/checker.md` "The scan").
+
+## Pass-1 instruction arguments (2026-09-27)
+
+Constant-family instruction parameters (`docs/type-codes.md` codes 1/39 `const_expr`, 5/38
+`const_expr_only`, 20 `datatype_kw`) are folded while pass 1 parses the statement, so their
+`Invalid symbol in expression: %s.` and `Variable illegal in Parameter: %s.` are pass-1 errors on
+CR6/CR1000X (`expressions.check_const_family_args`); general positions stay pass 2
+(`expressions.check`). Oracle, CR6, with a pass-1 `Dim Z banana` in the file:
+
+| Statement | Reported? |
+|---|---|
+| `SDI12Recorder(X, Nope, "0", "M!", 1, 0)` (port, code 1) | yes |
+| `PanelTemp(X, Nope)` (fnotch, code 20) | yes |
+| `VoltSe(X,1,Nope,...)` (range), `VoltSe(X,1,mV5000,Nope,...)` (channel) | yes |
+| `VoltSe(Nope2,1,mV5000,Nope,...)` | yes, `Nope` only (constant positions first) |
+| `PortSet(X,1)` | yes, `Variable illegal in Parameter: X.` |
+| `VoltSe(Nope,...)` (dest, code 8), `VoltSe(...,Nope,0)` (mult, code 2), `Randomize(Nope)`, `Delay(0,Nope,mSec)` (code 28) | no |
+
+A parse error inside an argument (`Expression expects , :` arity, `Expression expects (`) owns
+the statement: `WriteIO(Round(X),Round(Y))` reports only the arity error.
+
+**Failed constants are undeclared** (all four loggers): `Const P = Nope` / `Const R = P + 1` /
+`PortSet(R,1)` / `PanelTemp(X, P)` reports `Nope`, `P + 1` (CR300/CR350: `P is not defined.`),
+`R`, then `P` (`expressions._failed_consts`, a fixpoint over the `Const` declarations).
+`crbasic/AcclimaTDRLib.crb`'s `Const TDRComPort = U5` on CR1000X (no `U5` there) is this case.
+
+**Messages print in expanded-source order**, not grouped by file (`compiler.py`
+`CompileResult._position`): a library `Include`d above line 45 prints its own lines before the
+main file's line 45 (`TDR_tester.CR6` on CR1000X; a `Lib.crb` probe matches byte for byte).
+Together these make all 16 `crbasic/` programs exact on CR1000X (was 9) and CR6 chm exact
+408 -> 422.
