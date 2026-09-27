@@ -441,6 +441,34 @@ def check_scan_min_interval(program: S.Program, profile, diags: Diagnostics, env
             diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
 
 
+def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Maximum Scan interval is 1 Day.` on a `Scan` longer than 86400 s, all four loggers (oracle,
+    2026-09-27: `Scan(86401,Sec,...)`, `Scan(1441,Min,...)`, `Scan(2,Day,...)`; `Scan(1,Day,...)`
+    is accepted). An interval past `INT32_MAX` gets no such message."""
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SCAN":
+            raw = _scan_raw(stmt, env)
+            if raw is not None and raw[0] * _US_PER_UNIT[raw[1]] > 86_400_000_000:
+                diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
+
+
+def _scan_raw(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:
+    """`(int(interval), units)` of a constant `Scan` interval that fits `INT32_MAX`, else `None`."""
+    args = stmt.args
+    if len(args) < 2 or args[0] is None or args[1] is None or \
+            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
+        return None
+    try:
+        value = consteval.value_of(args[0], env)
+        unit = consteval.value_of(args[1], env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or unit not in _US_PER_UNIT \
+            or not 0 <= int(value) <= 2147483647:
+        return None
+    return int(value), unit
+
+
 def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: consteval.Env) -> float | None:
     if interval_arg is None or units_arg is None:
         return None
@@ -558,7 +586,7 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             args = stmt.args
             scan_interval_us = _divisible_interval_us(
                 args[0] if args else None, args[1] if len(args) > 1 else None, env
-            )
+            ) if _scan_raw(stmt, env) else None
             continue
         if kw == "NEXTSCAN":
             scan_interval_us = None
@@ -571,14 +599,34 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
         entry = declared_interval_us.get(name_arg.name.upper())
         if entry is None:
             continue
-        dt_us, _ = entry
-        if dt_us and int(dt_us) % int(scan_interval_us) != 0:
-            diags.error(
-                stmt.line,
-                f"DataTable interval {int(dt_us)} uSec not integrally divisible by "
-                f"scan interval {int(scan_interval_us)} uSec.",
-                stmt.file,
-            )
+        message = _divisibility_message(int(entry[0]), int(scan_interval_us))
+        if message:
+            diags.error(stmt.line, message, stmt.file)
+
+
+def _divisibility_message(dt_us: int, scan_us: int) -> str | None:
+    """Decompiled `FUN_004f6540`: a table interval under 3601 s is compared in 100 uSec units
+    (printed `%d00 uSec`), a longer one in whole seconds (oracle, 2026-09-27: `Scan(2,Hr)` against
+    a 3-hour table -> `DataTable interval 10800 Sec not integrally divisible by scan interval 7200
+    Sec.`; `Scan(1,Day)` against a 1-hour table -> `3600000000 uSec ... 86400000000 uSec.`)."""
+    dt_sec, dt_sub = divmod(dt_us, 1_000_000)
+    scan_sec, scan_sub = divmod(scan_us, 1_000_000)
+    scan_units = scan_sec * 10000 + scan_sub // 100
+    if scan_units == 0:
+        return None
+    if dt_sec < 3601:
+        dt_units = dt_sec * 10000 + dt_sub // 100
+        if dt_units > 0 and dt_units % scan_units:
+            return (f"DataTable interval {dt_units}00 uSec not integrally divisible by "
+                    f"scan interval {scan_units}00 uSec.")
+    elif scan_sub == 0:
+        if dt_sec % scan_sec:
+            return (f"DataTable interval {dt_sec} Sec not integrally divisible by "
+                    f"scan interval {scan_sec} Sec.")
+    elif scan_sec or 10000 % scan_units:
+        return ("DataTable with interval > 1 hour cannot be called by scan whose interval is not "
+                "an integral second is not divisible into a second.")
+    return None
 
 
 # `AddPrecise`/`MovePrecise`'s own first argument (`PrecisionVariable`, `params=[8, 2]`, a

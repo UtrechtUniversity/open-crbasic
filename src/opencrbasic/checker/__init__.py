@@ -227,7 +227,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # placement and the unclosed-block checks (oracle: `Illegal Reps 0` hides an fnotch
         # warning; `DO without LOOP.` and a `CallTable` placement error do not).
         _run_pass(warnings.check_early, program, profile, diags, env)
-        _run_pass(structure.check_scan_placement_late, program, profile, diags)
+        stop = _run_pass_capture(structure.check_scan_placement_late, program, profile, diags)
+        if stop is not None:
+            # The walk ends there, so later warnings are never printed (oracle: `SetSetting`
+            # before `BeginProg` hides an fnotch warning further down).
+            diags.items = [d for d in diags.items if d.severity != "warning" or
+                           d.file != stop[0] or d.line <= stop[1]]
     if not diags.errors:
         _run_pass(structure.check_end_blocks, program, diags)
     if not diags.errors:

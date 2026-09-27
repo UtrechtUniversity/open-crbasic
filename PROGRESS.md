@@ -746,7 +746,21 @@ coordinator commits it. Tick items here as they land.
       unchanged, zero false rejects; replay 732 -> 773 of 1469 exact, no false rejects.
 - [x] Fuzz seed 47 (tree at `b36d911` plus the pass-2 half of the item above, `--count 300`,
       false_reject 0): cr6 false_accept 13 (exact 250, message_diff 34), cr1000x 12 (265/22).
-      cr300/cr350 pending.
+      cr300/cr350 in the row below.
+
+- [x] Instructions before `BeginProg` (all loggers, `docs/checker.md` "Instructions before
+      BeginProg", `tests/test_before_beginprog.py`): per-logger lists measured with
+      `tools/probe_before_beginprog.py` (from the decompiled placement loop); explicit `Call`;
+      statement order instead of line numbers (an included file inside `Scan` was at risk); CR300/
+      CR350 report all of it in the late walk. Replay 773 -> 790 of 1469 exact, chm exact cr300
+      268 -> 269, cr350 278 -> 279, zero false rejects.
+- [x] Fuzz seed 47, cr300 and cr350 (same tree as the cr6/cr1000x row above): cr300
+      false_accept 12 (exact 250, message_diff 38); cr350 12 (238/49) and 1 false reject
+      (`Scan(999999999999,Sec)` against a daily table), fixed in the row below.
+- [x] Scan and table interval limits (all loggers, `docs/instructions.md` "Scan and table interval
+      limits", `tests/test_scan_interval_limits.py`): the divisibility message switches to whole
+      seconds for tables of 3601 s or more (decompiled `FUN_004f6540`); `Maximum Scan interval is
+      1 Day.`; intervals past `INT32_MAX` are not checked. Replay 792 of 1469 exact.
 
 ## Next steps
 

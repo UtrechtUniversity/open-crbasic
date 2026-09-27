@@ -69,6 +69,7 @@ def check_early(program: S.Program, profile: Profile, diags: Diagnostics, env: c
     # required-parameter check since they are instruction-argument-shaped, not warnings.
     instr_rules.check_scan_params(program, profile, diags, env)
     instr_rules.check_scan_min_interval(program, profile, diags, env)
+    instr_rules.check_scan_max_interval(program, profile, diags, env)
     instr_rules.check_data_interval(program, profile, diags, env)
 
 

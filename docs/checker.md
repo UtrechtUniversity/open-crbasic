@@ -2339,3 +2339,46 @@ When the two checks run:
 After a stray `NextScan`, no statement gets a reachability warning.
 
 Replay: 771 of 1469 exact, no false rejects.
+
+## Instructions before BeginProg (2026-09-27)
+
+Decompiled placement loop (`FUN_00424160`, `docs/binary.md`): it walks the code records in order.
+The first code-generating instruction outside a declaration block (`DataTable`, `Sub`,
+`Function`, `DialSequence`, `WebPageBegin`, `ShutdownBegin`, ...) before `BeginProg` gets `%s
+illegally occurs before BeginProg.` (`%s` = the table name, e.g. `Sw12`), and the walk stops. The
+instruction's own errors on that line come first (`Variable Y out of bounds.`, `Table with
+DataInterval must be called within Scan..NextScan.`). Instructions that generate no code are
+accepted, for example `SetStatus`, `StationName`, `TimedControl`, and `SetSetting` with a
+constant value. `SequentialMode`, `CH400Status` and `PreserveVariables` are exempt by index.
+
+Which instructions generate code depends on each compile function, so the lists are measured.
+`tools/probe_before_beginprog.py` copies lines from accepted chm examples to just before
+`BeginProg`. It lists an instruction in `data/**/before_beginprog.json` only when every probe of
+it is rejected. Counts: CR6 90 of 115 probed, CR1000X 132 of 162, CR300 38 of 50, CR350 40 of 52.
+`ModbusServer` is rejected on CR6 but accepted on CR300. Unprobed instructions are not checked.
+
+- `Call Foo` and `Foo` for a defined Sub -> `Call illegally occurs before BeginProg.`; a function
+  call or assignment -> `Expr ...`. A `CallTable` of a table not yet declared and closed gets
+  `Could not find DataTable %s.` instead.
+- The comparison uses statement order, not line numbers, so an included file inside `Scan` is not
+  flagged.
+- CR6/CR1000X: pass 2 (`structure.check_pass2`); a later `X = Q` is not reported.
+- CR300/CR350: the late walk (`check_scan_placement_late`), so an unrelated `Q is not defined.`
+  hides it. Warnings after it are dropped (an fnotch warning further down is not printed). A
+  stray `EndIf`/`NEXT` still gets its placement error right after its block message.
+
+Other messages the probes found (not implemented):
+
+- `PulseCount`/`Quadrature`/`TimerInput must be used within a Scan...NextScan.`
+- `SDM instruction must be in Scan..NextScan, unless SequentialMode is used.` (`SDMCD16Mask`,
+  `SDMTrigger`, `CSAT3B`)
+- `%s not allowed outside of Scan..NextScan in PipeLine Mode.` (`CDM_*`, `AVW200`)
+- `ContinueScan`/`ExitScan not within a Scan.`, `Exit Do without DO.`, `Else with no If.`
+- `SPIOpen must precede SPIRead.`
+- `BEGINPROG illegally occurs after EndSequence.`
+
+CR300: `Foo(1)` with the wrong argument count gets both its own error and the placement error
+(not modelled).
+
+Replay: 790 of 1469 exact, no false rejects. chm exact CR300 269, CR350 279 (the other two
+unchanged).

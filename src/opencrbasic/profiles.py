@@ -119,6 +119,14 @@ class Profile:
         return json.loads(path.read_text()) if path.is_file() else {}
 
     @cached_property
+    def before_beginprog(self) -> frozenset[str]:
+        """Instructions rejected with `%s illegally occurs before BeginProg.` when they are the
+        first executable statement before `BeginProg` (`checker/structure.py`, `docs/checker.md`
+        "Instructions before BeginProg"). Only oracle-probed keywords are listed."""
+        path = self.data_dir / "before_beginprog.json"
+        return frozenset(json.loads(path.read_text())["instructions"]) if path.is_file() else frozenset()
+
+    @cached_property
     def background_calibration(self) -> dict:
         """`Scan` interval threshold, in whole milliseconds, below which the "background
         calibration will be disabled" warning fires (CR6/CR1000X only, `checker/warnings.py`,

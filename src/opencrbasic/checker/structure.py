@@ -126,29 +126,37 @@ _BODY_BLOCK_ENDS = frozenset({
     "ENDAPPLYANDRESTARTSEQUENCE", "ENDPROCHIPRI",
 })
 
-# Ordinary, recognised `Instruction`s that are oracle- *and* corpus-confirmed illegal at the
-# top level before `BeginProg` (round 5, `docs/checker.md`): unlike the generic "Expr"/`Call`
-# fallback above, these are real, declared instructions our parser resolves normally, so they
-# would otherwise never reach any placement check at all. Found by fuzzing (`Scan`/`Delay`, both
-# oracle-confirmed single-line messages, `%s illegally occurs before BeginProg.` with `%s` = the
-# instruction's own proper-cased `data/<logger>/instructions.json` name, no preceding "Invalid, or
-# out of place expression" line -- the statement itself compiles fine, only its position is
-# illegal, the same shape a resolved bare function call or a resolved `Assignment` already gets).
-# Deliberately **not** generalised to "every instruction with runtime behaviour" or any other
-# broad rule: a 740-accepted-file corpus safety scan this round (`docs/checker.md` "Round 5") found
-# dozens of instructions that legitimately *do* appear before `BeginProg` (everything inside a
-# `DataTable`/`ConstTable`/`StructureType` body, plus program-wide directives such as
-# `PipeLineMode`/`SequentialMode`/`ReadOnly`/`StationName`/`TimedControl`/`CH400Status`/
-# `SDMBeginPort`), including two (`CH400Status`, `SDMBeginPort`) that share `Scan`/`Delay`'s own
-# non-null `runtime_fn` marker in the extracted instruction table -- ruling out that marker as a
-# safe discriminator. Only instructions with **both** a real oracle transcript *and* zero
-# counter-examples in that same scan are included here; every other instruction is left alone
-# (AGENTS.md: never guess into a false reject) rather than risk misclassifying one of the many
-# still-unverified entries in `data/cr6/instructions.json`.
+# Instructions rejected with `%s illegally occurs before BeginProg.` (`%s` = the table name), which
+# ends pass 2. The compiler's placement loop (decompiled `FUN_00424160`) flags the first
+# code-generating instruction outside a declaration block (`DataTable`, `Sub`, `WebPageBegin`, ...)
+# before `BeginProg`. Whether an instruction generates code depends on its own compile function
+# (`SetStatus`, and `SetSetting` with a constant value, do not), so beyond `Scan`/`Delay` only
+# oracle-probed keywords are listed, per logger, in `profile.before_beginprog` (`docs/checker.md`
+# "Instructions before BeginProg").
 _FORBIDDEN_BEFORE_BEGINPROG = frozenset({"SCAN", "DELAY"})
+# Declaration blocks for that check besides `DataTable` and `Sub` bodies.
+_DECL_BLOCK_BOUNDS = {"WEBPAGEBEGIN": True, "WEBPAGEEND": False,
+                      "SHUTDOWNBEGIN": True, "SHUTDOWNEND": False}
 
 
 
+
+
+def _track_tables(stmt: S.Stmt, kw: str, state: dict) -> None:
+    """Closed `DataTable` names so far, in walk order (`state["closed"]`): a `CallTable` of a table
+    not yet declared and closed gets `Could not find DataTable %s.` instead of the placement
+    checks (oracle, 2026-09-27)."""
+    args = getattr(stmt, "args", []) or []
+    if kw == "DATATABLE":
+        state["open"] = args[0].name.upper() if args and isinstance(args[0], S.Name) else None
+    elif kw == "ENDTABLE" and state.get("open"):
+        state.setdefault("closed", set()).add(state.pop("open"))
+
+
+def _calltable_known(stmt: S.Stmt, state: dict) -> bool:
+    args = getattr(stmt, "args", []) or []
+    return bool(args) and isinstance(args[0], S.Name) and \
+        args[0].name.upper() in state.get("closed", set())
 
 
 def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
@@ -186,20 +194,27 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
         diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
                     "called outside of Scan, e.g., called by Sub.", stmt.file)
 
-def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR300/CR350: `CallTable` outside `Scan` and the first extra `NextScan`, after the table
-    `Reps` checks and before the unclosed-block checks (oracle, 2026-09-27: an unrelated `X = Q` or
-    `Sample (0,X,FP2)` hides both; both print together; an unclosed `Do` is then not reported).
-    CR6/CR1000X report the same messages in `check_pass2`."""
+def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
+    """CR300/CR350: `CallTable` outside `Scan`, the first extra `NextScan` and the before-`BeginProg`
+    placement errors, in statement order, after the table `Reps` checks and before the
+    unclosed-block checks (oracle, 2026-09-27: an unrelated `X = Q` or `Sample (0,X,FP2)` hides
+    them; a `CallTable` error and a stray `NextScan` print together; an unclosed `Do` is then not
+    reported). A stray `NextScan` or a placement error ends the walk; its `(file, line)` is
+    returned so the caller can drop later warnings. CR6/CR1000X report these in `check_pass2`."""
     if not profile.single_pass:
-        return
-    in_table = in_body = False
+        return None
+    in_table = in_body = in_decl = seen_beginprog = False
     scans = 0
+    tables: dict = {}
+    subs = symbols.declared_subs(program)
     for stmt in program.statements:
+        seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         if isinstance(stmt, S.SubDef):
             in_body = True
             continue
         kw = _keyword(stmt)
+        in_decl = _DECL_BLOCK_BOUNDS.get(kw, in_decl)
+        _track_tables(stmt, kw, tables)
         if kw == "DATATABLE":
             in_table = True
         elif kw == "ENDTABLE":
@@ -209,14 +224,45 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if not scans:
                 diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
-                return
+                return stmt.file, stmt.line
             scans -= 1
-        elif kw == "CALLTABLE" and not in_table and (scans == 0 or in_body):
+        elif kw == "CALLTABLE" and not in_table and (scans == 0 or in_body) and \
+                _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body)
         if kw in _BODY_BLOCK_STARTS:
             in_body = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
             in_body = False
+        elif not (seen_beginprog or in_body or in_table or in_decl) and \
+                (kw != "CALLTABLE" or _calltable_known(stmt, tables)):
+            display = _before_beginprog_name(stmt, kw, profile, subs)
+            if display:
+                diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
+                return stmt.file, stmt.line
+    return None
+
+
+def _has_error_on(stmt: S.Stmt, diags: Diagnostics) -> bool:
+    """CR300/CR350: a stray `EndIf`/`Loop`/`NEXT` before `BeginProg` gets its placement error right
+    after its block message, not in the late walk (oracle, 2026-09-27)."""
+    return any(d.severity == "error" and d.line == stmt.line and d.file == stmt.file
+               for d in diags.items)
+
+
+def _before_beginprog_name(stmt: S.Stmt, kw: str, profile, subs: set[str]) -> str | None:
+    """The name in `%s illegally occurs before BeginProg.` for a statement outside any block before
+    `BeginProg`, or `None` when it may appear there."""
+    control = _control_keyword(stmt)
+    if control or isinstance(stmt, S.Instruction) and \
+            (kw in _FORBIDDEN_BEFORE_BEGINPROG or kw in profile.before_beginprog):
+        record = profile.instructions.get(control or kw)
+        return record["name"] if record else (control or stmt.keyword)
+    if isinstance(stmt, S.Assignment):
+        return "Expr"
+    if isinstance(stmt, S.Call):
+        return "Call" if stmt.name.upper() in subs else \
+            "Expr" if stmt.name.upper() in profile.functions else None
+    return None
 
 
 def _control_keyword(stmt: S.Stmt) -> str | None:
@@ -544,7 +590,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     subs = symbols.declared_subs(program)
     sub_params = {st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef)}
     known = expressions._known_names(program, profile)
-    beginprog_line = next((s.line for s in program.statements if _keyword(s) == "BEGINPROG"), None)
+    # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
+    seen_beginprog = False
 
     in_body_block = False
     # Narrower than `in_body_block` and used *only* by `_FORBIDDEN_BEFORE_BEGINPROG` below -- kept
@@ -557,6 +604,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # `solarposition_1.CR6` -- the two container kinds genuinely behave differently for these two
     # different checks, so one shared flag cannot correctly cover both).
     in_table = False
+    in_decl_block = False
+    tables: dict = {}
     # `Multiple BeginProgs.` (round 6, `docs/checker.md`): a genuine nesting-depth check, not "has
     # `BeginProg` appeared more than once in the file" -- oracle-confirmed, a dozen probes: a
     # *second*, complete `BeginProg...EndProg` pair (the first one properly closed first) compiles
@@ -570,10 +619,16 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     pass2_scans = 0
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for stmt in program.statements:
+        seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
+        # CR300/CR350 report these placement errors late (`check_scan_placement_late`).
+        before_bp = not seen_beginprog and not profile.single_pass
         if isinstance(stmt, S.SubDef):
             in_body_block = True
             continue
         kw = _keyword(stmt)
+        if kw in _DECL_BLOCK_BOUNDS:
+            in_decl_block = _DECL_BLOCK_BOUNDS[kw]
+        _track_tables(stmt, kw, tables)
         if kw == "DATATABLE":
             in_table = True
         elif kw == "ENDTABLE":
@@ -604,7 +659,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
                 return stmt.line
         elif kw == "CALLTABLE" and not profile.single_pass and not in_table and \
-                (pass2_scans == 0 or in_body_block):
+                (pass2_scans == 0 or in_body_block) and _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body_block)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
@@ -614,17 +669,17 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             continue
 
         if isinstance(stmt, S.Call):
-            stop = _check_call_pass2(stmt, subs, profile, diags, beginprog_line, in_body_block,
+            stop = _check_call_pass2(stmt, subs, profile, diags, before_bp, in_body_block,
                                      sub_params)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
-            stop = _check_assignment_pass2(stmt, known, diags, beginprog_line, in_body_block,
+            stop = _check_assignment_pass2(stmt, known, diags, before_bp, in_body_block,
                                             profile)
             if stop is not None:
                 return stop
-        elif _control_keyword(stmt) and not in_body_block and not in_table and \
-                (beginprog_line is None or stmt.line < beginprog_line):
+        elif _control_keyword(stmt) and not in_body_block and not in_table and not seen_beginprog \
+                and (not profile.single_pass or _has_error_on(stmt, diags)):
             # Control statements before `BeginProg` (oracle, all four loggers, 2026-09-27):
             # `If X Then` -> `If illegally occurs before BeginProg.`, likewise `FOR`, `Do`,
             # `SELECT`, and a stray `EndIf`/`Loop`/`NEXT` after its own block message.
@@ -633,8 +688,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             display = record["name"] if record else kw_ctrl
             diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
             return stmt.line
-        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _FORBIDDEN_BEFORE_BEGINPROG:
-            if not in_body_block and not in_table and (beginprog_line is None or stmt.line < beginprog_line):
+        elif isinstance(stmt, S.Instruction) and (kw in _FORBIDDEN_BEFORE_BEGINPROG
+                                                  or kw in profile.before_beginprog):
+            if not in_body_block and not in_table and not in_decl_block and before_bp and \
+                    (kw != "CALLTABLE" or _calltable_known(stmt, tables)):
                 record = profile.instructions.get(stmt.keyword.upper())
                 display = record["name"] if record else stmt.keyword
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
@@ -687,7 +744,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     # tested -- the `_UNCLOSED_PAREN_EXPR`/`_EXTRA_CLOSE_PAREN` branches above keep
                     # the ordinary follow-up/stop below, unprobed this round.
                     continue
-            if not in_body_block and (beginprog_line is None or stmt.line < beginprog_line):
+            if not in_body_block and before_bp:
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
     return None
@@ -1090,7 +1147,7 @@ def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
 
 
 def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
-                       beginprog_line: int | None, in_body_block: bool,
+                       before_bp: bool, in_body_block: bool,
                        sub_params: dict | None = None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
@@ -1118,13 +1175,13 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
       `Sub`/function) are unaffected, oracle-confirmed identical on all four loggers.
     """
     name = stmt.name.upper()
-    before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
+    before_beginprog = not in_body_block and before_bp
     if sub_params and name in sub_params:
         _check_call_args(stmt, sub_params[name], diags)
     if stmt.explicit:
         if name not in subs:
             diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
-        return None
+            return None
     if name in subs:
         if before_beginprog:
             diags.error(stmt.line, "Call illegally occurs before BeginProg.", stmt.file)
@@ -1152,7 +1209,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
 
 
 def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnostics,
-                             beginprog_line: int | None, in_body_block: bool,
+                             before_bp: bool, in_body_block: bool,
                              profile=None) -> int | None:
     """One `Assignment` (`target = value`) statement's pass-2 check. Returns the line to stop pass 2
     at, or `None` to keep going. Oracle-confirmed shapes (`docs/checker.md` "Round 5", a scratch
@@ -1182,7 +1239,7 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
       -- the assignment itself compiles fine, only its position is illegal, same shape as a bare
       built-in-function call) and a stop when it precedes `BeginProg`.
     """
-    before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
+    before_beginprog = not in_body_block and before_bp
     target_names = expressions._undefined_names(stmt.target, known)
     if target_names and profile is not None and profile.single_pass:
         # CR300/CR350 (oracle, 2026-09-27): `Nope = Q` -> `Nope is not defined.`, `Q is not

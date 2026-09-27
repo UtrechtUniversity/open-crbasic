@@ -194,6 +194,30 @@ differently-interval'd `Scan`, a table called from outside any `Scan` at all (e.
 destination-table exception. None of these gaps risk a false reject (they only mean the check
 silently doesn't fire), consistent with AGENTS.md's priority order.
 
+## Scan and table interval limits (2026-09-27, all four loggers)
+
+Decompiled `FUN_004f6540` (the `CallTable` compile helper) keeps each interval as whole seconds
+plus microseconds. The divisibility check depends on the table interval:
+
+- Under 3601 s: compared in 100 uSec units and printed as `%d00 uSec`. The scan interval may be
+  up to a day (`Scan(1,Day)` against a 1-hour table -> `DataTable interval 3600000000 uSec not
+  integrally divisible by scan interval 86400000000 uSec.`).
+- 3601 s or more, with a whole-second scan: compared in seconds, `DataTable interval %d Sec not
+  integrally divisible by scan interval %d Sec.` (`Scan(2,Hr)` against a 3-hour table -> `10800
+  Sec ... 7200 Sec.`).
+- 3601 s or more with a fractional-second scan: `DataTable with interval > 1 hour cannot be called
+  by scan whose interval is not an integral second is not divisible into a second.` (from the
+  decompilation; not probed).
+- Monthly table intervals are not checked.
+
+`Maximum Scan interval is 1 Day.` fires on the `Scan` line when the interval truncated in its own
+unit is over 86400 s (`Scan(86401,Sec)`, `Scan(1441,Min)`, `Scan(25,Hr)`, `Scan(2,Day)`). It
+prints before a divisibility error. `Scan(1,Day)` is accepted.
+
+An interval above `INT32_MAX` gets neither message. CR6/CR1000X report `Scan Interval parameter
+must be a non-negative integer`, and CR350 accepts `Scan(999999999999,Sec,...)` (a fuzz-found
+false reject before this). Oracle probes and `tests/test_scan_interval_limits.py`.
+
 ## `Invalid Variable or Array: %s.` (`AddPrecise`/`MovePrecise`'s `PrecisionVariable`, CR6/CR1000X only)
 
 `AddPrecise`/`MovePrecise`'s own first argument (`PrecisionVariable`) is a `variable_or_array`
@@ -438,13 +462,8 @@ exact)"; no reproducer of any class newly reports `false_reject`.
   precision subtlety at all -- the declared `Interval` truncates toward zero *in its own declared
   unit* before multiplying by that unit's microsecond factor, which reproduces the `7999uSec`-fails/
   `7.9mSec`-compiles asymmetry exactly, with one rule and no per-unit branch.
-- **`Maximum Scan interval is 1 Day.`** -- still not implemented. The same truncate-then-multiply
-  model that resolved the two messages above also fits this round's own *re-derivation* of the two
-  data points this project already had (`1.0001 Day` -> `int(1.0001)*86_400_000_000 = 86_400_000_000`
-  us, at the boundary, accepted; `25 Hr` -> `int(25)*3_600_000_000 = 90_000_000_000` us, over the
-  boundary, rejected -- no float-precision artifact needed under this model either), but this round
-  did not re-run fresh oracle probes to confirm it, so it stays a documented hypothesis, not a
-  verified rule -- a future session should re-sweep it the same way before implementing.
+- **`Maximum Scan interval is 1 Day.`** -- implemented 2026-09-27; see "Scan and table interval
+  limits" below.
 - **`ExChan must be U1-U12.`** (`BrHalf`/`BrHalf3W`/`BrHalf4W`/`BrFull`/`BrFull6W`'s own
   `ExChan`/`SEChan` positions, `FUN_005147a0`/`FUN_005177a0`) -- already noted as not implemented
   in `docs/checker.md`; not picked up this round either (no corpus mismatch currently needs it).
