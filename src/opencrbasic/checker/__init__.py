@@ -25,7 +25,11 @@ Runs, in order:
    (`<name> is not defined.`/`Invalid symbol in expression: %s.`, per-logger). Also pass 1 (oracle
    evidence, `docs/loggers.md`: `Const` folding happens eagerly at declaration time, so this
    accumulates alongside an unrelated, earlier `Variable not named.` rather than being suppressed
-   by it the way the *rest* of `expressions.py`'s pass-2 checks would be).
+   by it the way the *rest* of `expressions.py`'s pass-2 checks would be). `expressions.
+   check_data_params` -- `Data`/`DataLong`'s own parameters, each required to be a constant
+   expression with no name reference at all, defined or not (`Invalid symbol in expression: %s.`/
+   `Illegal Data parameter %s.`, `docs/checker.md`) -- runs right after it, also ungated pass 1,
+   the same way.
 3. `cr3xx.check` -- CR300/CR350 only (a no-op on every other logger): `SerialOpen`'s own `ComPort`
    argument and every other `Serial*` function's own first argument (`docs/loggers.md`). Also
    ungated, oracle-confirmed the same way as step 2.
@@ -53,11 +57,9 @@ If, and only if, steps 1-5 found nothing:
    placement check (returns the cutoff line, if any).
 7. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
    position that resolves nowhere, and the constant-only-family "rejects a variable" check
-   (deliberately narrow; see that module's docstring). `instr_data.check_unclosed_calltable` and
-   `cr3xx.check_expr_cascade` (CR300/CR350 only, a spurious `Too many parameters:  %s.` on the next
-   otherwise-clean two-argument bare call once any of these three has fired, `docs/loggers.md`
-   "Round 7b") run alongside it, in that order, then `cr3xx.check_unknown_line_words` (CR300/CR350
-   only, one leading-word `%s is not defined.` line per `S.Unparsed` statement's own generic
+   (deliberately narrow; see that module's docstring). `instr_data.check_unclosed_calltable` runs
+   alongside it, then `cr3xx.check_unknown_line_words` (CR300/CR350 only, one leading-word `%s is
+   not defined.` line per `S.Unparsed` statement's own generic
    fallback, `docs/loggers.md` "Round 8").
 8. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
    parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
@@ -68,6 +70,13 @@ If, and only if, steps 1-5 found nothing:
 
 Then, regardless of errors so far:
 
+9b. `cr3xx.check_too_many_cascade` (CR300/CR350 only, a no-op on every other logger): once any
+    undefined-name-class or genuine `Too many parameters:` finding has fired anywhere above, in
+    any tier, every following two-plus-argument recognised instruction to end of file gets its own
+    spurious `Too many parameters:  %s.` in place of whatever it would otherwise have found
+    (`checker/cr3xx.py`'s own module comment for the oracle evidence). Run here, unconditionally,
+    rather than inside step 7's own tier-B block, because the taint can originate from a tier-A
+    finding that skips tier B/C entirely (`docs/loggers.md`).
 10. `mode.decide` -- Sequential/PipelineMode (`mode.py`, reusing the parser's own folded `Const`
     values via `consteval.Env`, as the previous placeholder checker did).
 11. When the compile has no errors so far: `warnings.check_background_calibration` (round 6, see
@@ -127,6 +136,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # reported alongside pass-1's other declaration errors, not deferred to pass 2's gated
     # `expressions.check` below.
     _run_pass(expressions.check_consts, program, profile, diags)
+    # `Data`/`DataLong` parameter constant-only checking (`expressions.py`'s own docstring for the
+    # oracle evidence). Also ungated pass 1, same reasoning as `check_consts` just above.
+    _run_pass(expressions.check_data_params, program, profile, diags)
     # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): `SerialOpen`'s own
     # `ComPort` argument, and every other `Serial*` function's own first argument. Also ungated
     # (oracle-confirmed, `docs/loggers.md`).
@@ -172,20 +184,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # the other two calls just above (accumulates with an unrelated `expressions.check` finding
         # rather than being suppressed by it).
         _run_pass(instr_data.check_unclosed_calltable, program, diags)
-        # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any of the
-        # three tier-B calls just above has recorded an undefined-name-class error, the next
-        # otherwise-clean, two-or-more-argument bare instruction call gets a further, spurious
-        # `Too many parameters:  %s.` of its own (oracle-confirmed, `docs/loggers.md` "Round 7b").
-        # Run last, ahead of the cutoff truncation below, so a cascade line past a placement
-        # error's own cutoff line is truncated the same as every other tier-B finding.
-        _run_pass(cr3xx.check_expr_cascade, program, profile, diags)
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one leading-word
         # `%s is not defined.` line per bare word of an `S.Unparsed` statement's own source text,
         # spliced in immediately ahead of `structure.check_pass2`'s generic "Invalid, or out of
         # place expression" fallback for it (`docs/loggers.md` "Round 8"). Reacts to `diags.items`
-        # already emitted above, the same after-the-fact pattern as `check_expr_cascade` just
-        # above; run after it so a cascade line it may have added is not itself mistaken for
-        # another fallback to react to.
+        # already emitted above, the same after-the-fact pattern `check_too_many_cascade` below
+        # also uses.
         _run_pass(cr3xx.check_unknown_line_words, program, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
@@ -216,6 +220,16 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
+
+    # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any undefined-
+    # name-class or genuine-`Too many parameters:` finding has fired anywhere above -- tier A
+    # (ungated: `cr3xx.check`'s own `SerialOpen`/`ComPort` finding, `instr_rules.check_too_many`'s
+    # own genuine finding), tier B, or tier C -- every following two-plus-argument recognised
+    # instruction, to end of file, gets its own spurious `Too many parameters:  %s.` in place of
+    # whatever it would otherwise have found (`checker/cr3xx.py`'s own module-level comment for the
+    # oracle evidence). Run unconditionally, after every other diagnostic-producing pass, since the
+    # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
+    _run_pass(cr3xx.check_too_many_cascade, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)

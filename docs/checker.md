@@ -1888,3 +1888,91 @@ confirming this is downstream cascade, not a second trigger for this message.
 loggers (`cr1000x`/`cr300`/`cr350` chm exact unchanged at 392/157/161 -- no corpus case on those
 loggers hits this exact shape). `uv run pytest -q`: 1042 passed, unchanged (no new test file this
 round; the existing CHM-corpus regression sweep already covers the changed lines).
+
+## `Data`/`DataLong` parameters (oracle-confirmed 2026-09-27, `checker/expressions.py`)
+
+Another small task from the queue: ~20 `chm` `verdict` cases whose real-compiler diff starts with
+`Invalid symbol in expression: ...` where this checker printed the generic `Invalid, or out of
+place expression: ...` fallback or nothing at all. Diffing four (`am25t_1.CR6`, `brfull6w_1.CR6`,
+`cdmbrfull_1.CR6`, `voltse_1.CR6`) found two unrelated causes bundled in the same difftest bucket:
+
+1. Several (`am25t_1.CR6`'s own `VX1`, `brfull6w_1.CR6`'s own `Vx1`, `brhalf_1.CR6`'s own `P1`, ...)
+   are an undefined symbol used as an *argument to a known instruction whose argument-position
+   table this session did not extend* (`AM25T`, `BrFull6W`, `Totalize`, ... -- `instr_rules.py`'s
+   own domain, out of this session's file scope, `checker/instr_rules.py`/`checker/cr3xx.py` are a
+   concurrent workstream's files this round). Not fixed here.
+2. A `Data`/`DataLong` instruction (`data/instructions.json`: both share one `compile_fn`,
+   `0x406a32`) whose parameter is not a constant -- the actual "missing rule" this task's own
+   wording pointed at, and the one implemented below. This is the single largest concrete win in
+   the bucket: `cdmbrfull_1.CR6`, `cdmbrhalf4w_1.CR6` and `cdmbrhalf_1.CR6`'s *entire* remaining
+   diff from this checker was exactly this shape, so fixing it alone flips all three straight to
+   `exact`.
+
+Oracle (a from-scratch scratch probe set, `/tmp/claude-0/oct/*.cr6`, no corpus siblings):
+
+```
+Data SomeVar          (SomeVar undeclared)     -> Invalid symbol in expression: SomeVar
+                                                    .
+                                                   Illegal Data parameter SomeVar
+                                                    .
+Data Batt_Volt        (Batt_Volt declared)     -> Illegal Data parameter Batt_Volt
+                                                    .                          (no "Invalid symbol" line)
+Data 1,2,3            (pure literals)          -> Compiled OK
+Data 1,SomeVar,3      (undefined, not last)    -> Invalid symbol in expression: SomeVar.
+                                                   Illegal Data parameter SomeVar.          (no embedded newline)
+DataLong SomeVar                               -> byte-identical to Data's own (same compile_fn)
+```
+
+So: every `Data`/`DataLong` parameter must be a constant expression referencing **no name at all**
+(defined or not -- a declared variable is just as illegal as an undefined one, only the first
+line differs). The embedded raw `\n` in `SomeVar\n.`/`Tables and Store Data\n.` is a literal byte
+in the real compiler's own message, not a rendering artifact: it appears only when the bad
+parameter is the last one on its physical line (the compiler's own source buffer still holds the
+line's terminating newline; a parameter followed by a comma stops before it instead). Implemented
+as `expressions.check_data_params`, wired in as an ungated pass-1 step right after
+`check_consts` (`checker/__init__.py`) -- same reasoning: `cdmbrfull_1.CR6` shows it firing
+alongside an earlier, unrelated `Need '=' in units definition:` pass-1 error, not suppressed by
+it, the same non-suppression `check_consts` already established.
+
+A second, separate shape needed its own handling: the common CHM-corpus case is not a clean
+`Data <args>` parse at all. `Data Tables and Store Data` (a `'`-less comment-continuation line,
+the actual corpus artifact) has no comma anywhere in it, so `parser.py`'s `_parse_bare_arglist`
+parses only `Tables` as parameter 0 and leaves `and Store Data` as trailing input, which turns the
+*whole statement* into `S.Unparsed` (`Instruction.args` never populated at all) -- yet the oracle
+still reports the same two-line shape, spanning from right after the keyword to end of line
+(`Invalid symbol in expression: Tables and Store Data\n.`, not `Tables\n.` alone). Handled by
+reconstructing that span textually from `S.Unparsed.text` (strip the leading `DATA`/`DATALONG`
+keyword and its following whitespace) rather than teaching the parser to recover a partial
+argument list for this one shape.
+
+**CR300/CR350 are a real behavioural difference for this second shape, not just a message-template
+swap** -- oracle-confirmed, cross-checked against `cr300comp.exe`/`cr350comp.exe`: the clean-parse
+shape above (`check_data_instruction`) is identical to CR6/CR1000X except for the already-existing
+per-logger `unresolved_symbol_message` split (`SomeVar is not defined.` in place of `Invalid symbol
+in expression: SomeVar.`, `Illegal Data parameter`'s own line unchanged either way), reused as-is.
+But the *unparsed* shape genuinely re-parses differently there: `and` is tokenised as the real
+logical `AND` operator on CR300/CR350 (a reserved word this shape happens to expose), so `Data
+Tables and Store Data` becomes a compound `Tables AND (Store Data)` parse attempt -- three separate
+`%s is not defined.` lines (`Tables`, `Store`, `Data`, each its own undefined name) and `Incomplete
+expression: %s.` (not `Invalid symbol in expression`) as the wrapper, before the same `Illegal Data
+parameter %s.` line. Reproducing this needs a compound-expression walk this session did not build,
+so it is deliberately not attempted (AGENTS.md: under-report rather than guess a false reject) --
+the unparsed-shape reconstruction is scoped to `_WHOLE_EXPR_ECHO_LOGGERS` (CR6/CR1000X) only; CR300/
+CR350 fall through unchanged to whatever later pass already handled that `S.Unparsed` statement.
+
+`tools/difftest.py --logger <l> --show 0`, chm group, before -> after this round: cr6 375 -> 378,
+cr1000x 392 -> 400, cr300 180 -> 219, cr350 184 -> 228 (cr300/cr350's larger jump is almost
+entirely the clean-parse shape's per-logger message fix, which the existing corpus has many more
+instances of than the unparsed/trailing-garbage shape) -- zero false rejects on all four loggers,
+re-verified with `their_exit == 0 and our_exit != 0` after every change this round. `uv run
+pytest -q`: 1052 passed (6 new, `tests/test_checker.py`'s own new "`Data`/`DataLong` parameters"
+section), 311 skipped, unchanged otherwise.
+
+Not fixed: the `AM25T`/`BrFull6W`/`Totalize`/... undefined-instruction-argument gap above (needs
+`instr_rules.py`'s own argument-position tables, a concurrent workstream's file this round); the
+before-`BeginProg` false positive some of these same files also showed (`brfull6w_1.CR6`'s own
+line 2, a `'`-less comment continuation before `BeginProg`) turned out to be this session's own
+gating working as designed -- `structure.check_pass2` is gated behind "no pass-1 error anywhere in
+the file", and once `check_data_params` supplies that file's actual pass-1 error, `check_pass2`
+(and its own false "Expr illegally occurs before BeginProg" line) no longer runs at all, with no
+separate fix needed.

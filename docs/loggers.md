@@ -858,3 +858,66 @@ same line). Seen in 144 help examples, e.g. `acpower_1.CR6` on cr300comp.exe:
 `line 34: Invalid, or out of place expression:     ACPower (...,15,1)` then `.`.
 Implemented as `Profile.fallback_echo_newline`; chm exact CR300 157 -> 180, CR350 161 -> 184.
 The assignment-statement variant of the fallback is not switched yet (no evidence either way).
+
+## Too many parameters cascade, widened (2026-09-27)
+
+Round 7b's `check_expr_cascade` (above) modelled the CR300/CR350 "undefined name taints the next
+statement" quirk as a single, one-shot event: the *next* qualifying statement after the last
+trigger gets one spurious `Too many parameters:  %s.`, then the chain stops. Four scratch probes
+this round (`t.cr6`..`t4.cr6`, `WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all wine
+../compiler/cr300comp.exe|cr350comp.exe t.cr6`, no option flags, both compilers byte-identical)
+against the corpus's own multi-line instances (`dewpoint_1.CR6`, 3 in a row; `runprogram_1.CR6`/
+`filemanage_1.CR6`/`goesdata_1.CR6`, 2 in a row) show this is too narrow -- Round 7b's own sample
+never happened to have more than one qualifying follow-up statement, so "stops after one" was
+indistinguishable from "keeps going" until now. Corrected model, all four points oracle-confirmed:
+
+- **The taint never clears.** Once any undefined-name-class finding (`%s is not defined.`/
+  `Variable illegal in Parameter: %s.`) *or* a genuine `Too many parameters:  %s.` finding has
+  fired anywhere in the file, **every** later statement that is a recognised `S.Instruction` with
+  two or more arguments gets its own spurious `Too many parameters:  <its own second argument's
+  verbatim text>.`, all the way to end of file -- not just the next one (`t.cr6`: an undefined name
+  followed by three `PortSet`s and a `Delay`, all four flagged).
+- **It replaces, not just fills a gap.** A tainted statement's *own* checks never run at all on the
+  real compiler: `t2.cr6`'s `PortSet(C1,BadVar2)` (itself referencing an undefined name) gets only
+  `Too many parameters:  BadVar2.`, never a second `BadVar2 is not defined.`; `t3.cr6`'s tainted
+  `PortSet(C1,1,2,3)` (a genuine 2-declared/4-given overflow) still echoes its own second argument
+  (`1`), never the true excess position (`2`) `instr_rules.check_too_many` computes for it
+  standalone.
+- **A genuine overflow finding itself taints too**, with no preceding undefined name needed
+  (`t4.cr6`: a standalone `PortSet(C1,1,2,3)` keeps its own correct, position-based `Too many
+  parameters:  2.`, but a clean `Delay(0,10,mSec)` right after it still gets swallowed into
+  `Too many parameters:  10.`).
+- The taint's own first statement is left untouched (matches Round 7b: `dewpoint_1.CR6`'s first
+  `VoltSE` keeps its real `mv5000C is not defined.` pair; only the *second*, identically-shaped
+  `VoltSE` is swallowed) -- only statements *strictly after* the one that first goes trigger-shaped
+  are rewritten. A statement that is not a recognised instruction at all (an unresolved bare call
+  such as `routes_1.CR6`'s `Move(...)`/`Routes(...)`, naming instructions this project's own table
+  has no record of on CR300/CR350) is unaffected by the taint either way -- its own undefined-name
+  detection fires normally, because it never reaches the generic per-instruction argument checking
+  the taint corrupts.
+
+Implemented as `checker/cr3xx.check_too_many_cascade` (replaces `check_expr_cascade`): a single
+left-to-right sweep over `program.statements`, not a "find the last trigger line, then walk
+forward" re-scan the way `check_expr_cascade` was -- the re-scan shape gets `t2.cr6` backwards
+(a tainted statement is itself trigger-shaped from its own now-superseded diagnostic, so a re-scan
+picks it as a fresh anchor and leaves its stale diagnostic standing instead of rewriting it).
+Because the taint can originate from a pass-1/ungated finding that would otherwise skip tier B
+entirely (`acceptdatarecords_1.CR6`: `SerialOpen (COMC1,...)`'s `COMC1 is not defined.`, from
+`cr3xx.check`'s own separately-ungated `ComPort` finding, still taints `Scan`'s `Sec` and
+`AcceptDataRecords`'s `32769` even though tier B never runs for this file), `checker/__init__.py`
+now calls this once, unconditionally, after every other diagnostic-producing pass, instead of from
+inside the tier-B `if not diags.errors:` block.
+
+**Known gap, not fixed this round** (a synthetic case, not observed in the corpus): when a genuine
+overflow on an *earlier* statement would itself be the first taint, but a *later* statement in the
+same file has the real first undefined name, this project's own pass-1/tier-B split reports the
+genuine overflow first (since `instr_rules.check_too_many` is unconditional pass 1, run before tier
+B) and the file order the real compiler needs (earliest statement's error first, whichever kind)
+is lost -- an existing architectural gap in the tier split, not new to this round, and out of this
+round's own scope (`instr_rules.py`/`cr3xx.py` only).
+
+Measured impact (`tools/difftest.py --logger <l> --show 0`, `chm` group): cr300 exact 180 -> 219,
+cr350 exact 184 -> 228; zero false rejects on all four loggers (`their_exit==0 and our_exit!=0`,
+checked after this round's change, empty on all four; cr6/cr1000x untouched, `check_too_many_cascade`
+no-ops immediately on every other logger). `uv run pytest -q`: 1057 passed, 311 skipped (11 new,
+`tests/test_cr3xx.py`).

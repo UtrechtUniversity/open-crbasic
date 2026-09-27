@@ -637,6 +637,122 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
 
 
+# `Data`/`DataLong` share one `compile_fn` in `data/instructions.json` (`0x406a32`) and were
+# oracle-confirmed identical this round (`DataLong Tables and Store Data`, same two-line message
+# below, byte-identical to `Data`'s own).
+_DATA_KEYWORDS = frozenset({"DATA", "DATALONG"})
+
+
+def check_data_params(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Data`/`DataLong`'s own parameters (`docs/checker.md` "Data parameters"): each must be a
+    constant expression referencing **no name at all**, defined or not -- oracle-confirmed with a
+    from-scratch scratch probe set (`t.cr6` under Wine, no siblings/corpus file, `docs/checker.md`
+    "Data parameters" records the transcript):
+
+    - `Data SomeVar` (`SomeVar` undeclared): two lines on CR6/CR1000X, `Invalid symbol in
+      expression: SomeVar\\n.` then `Illegal Data parameter SomeVar\\n.`; CR300/CR350 give
+      `SomeVar is not defined.` (the existing per-logger `unresolved_symbol_message` split,
+      `_WHOLE_EXPR_ECHO_LOGGERS`, reused as-is) in place of the first line, same second line --
+      the embedded raw `\\n` (not a formatting artifact here, a literal newline byte in the real
+      compiler's own message, present in `Illegal Data parameter`'s own text on *every* logger,
+      `docs/checker.md` "Data parameters") only appears when the bad parameter is the *last* one
+      on its physical line (`Data 1,SomeVar,3` echoes plain `SomeVar.`, no embedded newline,
+      since a comma follows it on the same line) -- the real compiler's own internal source
+      buffer keeps the terminating newline; ours (`stmt.text`) does not, so `_data_param_text`
+      below adds it back only for that one shape.
+    - `Data Batt_Volt` (`Batt_Volt` declared `Public`): only `Illegal Data parameter Batt_Volt\\n.`
+      -- no undefined-symbol line at all, on any logger, since the name itself resolves fine; it
+      is simply not a constant. This is why the check below cannot reuse `_undefined_names` alone
+      the way every other rule in this module does: a Data parameter is illegal whether or not the
+      name it references is defined, `_variable_refs(arg, known)` (reusing `known`, the full
+      resolvable-name universe, in place of its usual `variable_names` argument) doubling as "does
+      this expression contain any name that *does* resolve" for exactly that reason.
+    - `Data 1,2,3` / `Data 1+2`: no error (a pure literal/arithmetic constant).
+
+    Stops at the first bad parameter in a statement (no oracle evidence for two bad parameters in
+    the same `Data`, and every other per-position check in this module already stops at the first
+    problem the same way).
+
+    Ungated pass 1, same as `check_consts` above (`cdmbrfull_1.CR6`: this fires alongside an
+    earlier, unrelated `Need '=' in units definition:` pass-1 error, not suppressed by it).
+
+    A `Data`/`DataLong` line the parser could not resolve into a clean argument list at all --
+    the common CHM corpus shape, a `'`-less comment-continuation line the statement's own bare-
+    argument-list grammar absorbs (`brfull6w_1.CR6`'s `Data Tables and Store Data`, no comma
+    anywhere in it) -- never reaches the loop below as an `Instruction` at all: `parser.py`'s
+    `_parse_bare_arglist` parses only the first word (`Tables`) as `Data`'s own first parameter,
+    and the rest (`and Store Data`) is left as trailing input that turns the *whole statement*
+    into an `S.Unparsed` (`Instruction.args`/`arg_spans` never populated). On CR6/CR1000X the
+    oracle shows the real compiler still reports exactly this module's own two-line shape for it,
+    spanning from right after the keyword to end of line (`Invalid symbol in expression: Tables
+    and Store Data\\n.` / `Illegal Data parameter Tables and Store Data\\n.` -- not `Tables\\n.`
+    alone, the substring our own parser would have captured as parameter 0's span had it not given
+    up) -- `_check_unparsed_data` below reconstructs that same span textually (the whole line minus
+    the keyword and its following whitespace) rather than trying to make the parser itself recover
+    a partial argument list for this one shape. **CR300/CR350 are genuinely different here, not
+    just a message-template swap**: oracle-confirmed (`docs/checker.md` "Data parameters"),
+    `Data Tables and Store Data` there tokenises `and` as the real logical `AND` operator (a
+    reserved word on those two loggers this shape happens to expose), so it becomes a compound
+    `Tables AND (Store Data)` parse attempt -- three separate `%s is not defined.` lines (`Tables`,
+    `Store`, `Data`, each its own undefined name) and `Incomplete expression: %s.` (not `Invalid
+    symbol in expression`) as the wrapper, before the same `Illegal Data parameter %s.` line. Not
+    implemented: reproducing it needs its own compound-expression walk this session did not build
+    (AGENTS.md: under-report rather than guess), so `_check_unparsed_data` is scoped to
+    `_WHOLE_EXPR_ECHO_LOGGERS` only and CR300/CR350 fall through unchanged to whatever later,
+    already-existing pass would otherwise handle this `S.Unparsed` statement.
+    """
+    known = _known_names(program, profile)
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _DATA_KEYWORDS:
+            _check_data_instruction(stmt, known, profile, diags)
+        elif isinstance(stmt, S.Unparsed) and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            _check_unparsed_data(stmt, diags)
+
+
+def _data_param_text(stmt: S.Instruction, i: int) -> str:
+    text = _arg_text(stmt, i)
+    if i == len(stmt.args) - 1:
+        text += "\n"  # last parameter on the line: oracle-confirmed embedded newline, see above.
+    return text
+
+
+def _check_data_instruction(stmt: S.Instruction, known: set[str], profile,
+                             diags: Diagnostics) -> None:
+    for i, arg in enumerate(stmt.args):
+        if arg is None:
+            continue
+        undefined = _undefined_names(arg, known)
+        resolved_refs = _variable_refs(arg, known)
+        if not undefined and not resolved_refs:
+            continue  # a pure constant expression: legal.
+        text = _data_param_text(stmt, i)
+        if undefined:
+            if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=text),
+                            stmt.file)
+            else:
+                for name in undefined:
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                                stmt.file)
+        diags.error(stmt.line, f"Illegal Data parameter {text}.", stmt.file)
+        return  # stop at the first bad parameter, see docstring above.
+
+
+def _check_unparsed_data(stmt: S.Unparsed, diags: Diagnostics) -> None:
+    # CR6/CR1000X only (`_WHOLE_EXPR_ECHO_LOGGERS`, enforced by the caller) -- see this module's
+    # `check_data_params` docstring for why CR300/CR350 are not reproduced here.
+    if not stmt.reason.startswith("unexpected trailing input starting at"):
+        return
+    stripped = stmt.text.lstrip()
+    upper = stripped.upper()
+    for kw in ("DATALONG", "DATA"):  # longer name first: "DATALONG" also starts with "DATA".
+        if upper.startswith(kw) and len(stripped) > len(kw) and stripped[len(kw)].isspace():
+            text = stripped[len(kw):].lstrip() + "\n"
+            diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+            diags.error(stmt.line, f"Illegal Data parameter {text}.", stmt.file)
+            return
+
+
 def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | None:
     """`"few"`/`"many"`/`None` for one call's own argument count against `data/functions.json`'s
     `nargs`, restricted to `_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE` (the oracle-verified-safe subset,

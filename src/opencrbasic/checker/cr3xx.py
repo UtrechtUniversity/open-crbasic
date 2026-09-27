@@ -86,73 +86,103 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                         stmt.file)
 
 
-# `check_expr_cascade` (Round 7b): once any undefined-name-class error has fired anywhere in tier
-# B (an instruction-argument or assignment-RHS name `expressions.check`/`check_consts` could not
-# resolve, or the const-family "rejects a variable" `Variable illegal in Parameter: %s.` finding),
-# CR300/CR350's own parser leaves some shared state pointing one argument further along than it
-# should -- oracle-confirmed (`docs/loggers.md`): the *next* statement that both (a) is a bare
-# instruction call written with two or more arguments and (b) is not itself already erroring gets
-# a spurious extra `Too many parameters:  <its own second argument's verbatim text>.` on its own
-# line, `checker/instr_rules.py`'s own real message reused for a shape that instruction's own
+# `check_too_many_cascade` (Round 7b, broadened this round -- see `docs/loggers.md` "Too many
+# parameters cascade, widened" for the oracle transcript): once any undefined-name-class error
+# fires anywhere in the file (an instruction-argument or assignment-RHS name `expressions.check`/
+# `check_consts` could not resolve, the const-family "rejects a variable" `Variable illegal in
+# Parameter: %s.` finding, **or now also a genuine `Too many parameters:  %s.` finding from
+# `instr_rules.check_too_many` itself** -- oracle-confirmed self-chaining, scratch probe `t3.cr6`/
+# `t4.cr6`: a real `PortSet(C1,1,2,3)` excess taints the *next* statement the same way an undefined
+# name does), CR300/CR350's own parser leaves some shared state corrupted for the **rest of the
+# file, not just the next statement** (widened from Round 7b's own single-shot model, which a
+# three-and-four-statement scratch chain, `t.cr6`/`t3.cr6`, and the corpus's own `dewpoint_1.CR6`
+# (3 in a row), `runprogram_1.CR6`/`filemanage_1.CR6`/`goesdata_1.CR6` (2 in a row) all show is too
+# narrow -- Round 7b's own corpus sample never happened to have more than one qualifying follow-up
+# statement, so "stops after one" was indistinguishable from "keeps going" until this round):
+# **every** subsequent statement that is a recognised `S.Instruction` written with two or more
+# arguments gets its own spurious `Too many parameters:  <its own second argument's verbatim
+# text>.`, `checker/instr_rules.py`'s own real message reused for a shape that instruction's own
 # argument count never earns on its own (`WriteIO(1,2)`, `PortSet(1,2)`, ... all compile clean
+# standalone) -- oracle-confirmed (scratch `t.cr6`: an undefined name followed by three `PortSet`s
+# and a `Delay`, all four flagged, each echoing its own second argument, not the first one skipped
+# over). This **replaces** whatever that tainted statement's own checks would otherwise have found
+# for it, rather than merely filling a silent gap -- oracle-confirmed (`t2.cr6`: `PortSet(C1,
+# BadVar2)` after an earlier undefined name gets only `Too many parameters:  BadVar2.`, never a
+# second `BadVar2 is not defined.` of its own; `t3.cr6`: a tainted `PortSet(C1,1,2,3)`, which would
+# genuinely overflow on its own (2 declared params, 4 given), still echoes its own second argument
+# (`1`), never the true excess position (`2`) `instr_rules.check_too_many` would compute for it
 # standalone). Confirmed **not** anchored to the *specific* failing statement -- when several
 # statements in a row each have their own undefined-name error, only the search from the *last* one
-# produces a cascade line, and the search itself skips forward over any statement that already has
-# a diagnostic of its own (whether or not it has two-plus arguments) as well as any clean statement
-# that does not qualify (fewer than two arguments, or not an instruction at all -- a plain
-# assignment or a one-argument call such as `Battery(BattV)` is silently passed over, not itself
-# flagged and not a stopping point) -- confirmed with two chained failures each searching past the
-# other, a bare assignment and a one-argument call each skipped in the middle, and a `'comment`
-# line skipped for free (comments are never `program.statements` entries at all). **CR6/CR1000X do
-# not share this at all** (oracle-confirmed with the same shape, an undefined const-family name
-# immediately followed by a two-argument instruction: no extra line). Not yet confirmed beyond this
-# narrow, oracle-tested trigger set (`docs/loggers.md` "Round 7b" has the full transcript and the
-# open questions this round did not chase): whether a placement error or an unclosed-`DataTable`
-# finding (this project's other two tier-B error sources) triggers the same cascade, and whether
-# `cr3xx.check`'s own, separately-ungated `SerialOpen`/`ComPort` finding above ever interacts with
-# it (oracle-confirmed it cannot in *this* checker's own pass model: that finding fires ungated,
-# before tier B's `if not diags.errors` gate is even evaluated, so tier B -- and this function, only
-# ever called from inside it -- never runs at all once it has fired).
+# starts the cascade (untouched from Round 7b) -- and the search itself skips forward, without
+# breaking the chain, over any clean statement that does not itself qualify (fewer than two
+# arguments, or not a recognised instruction at all -- a plain assignment or a one-argument call
+# such as `Battery(BattV)` is silently passed over, not itself flagged and not a stopping point, and
+# neither is an *unresolved* bare call such as `Move(...)`/`Routes(...)` naming an instruction this
+# project's own table has no record of on this logger -- corpus: `routes_1.CR6`, where `MyRoute is
+# not defined.` keeps firing normally on those two lines, untouched by the taint, because neither
+# parses to a recognised `S.Instruction` at all) -- confirmed with a bare assignment and a
+# one-argument call each skipped in the middle, and a `'comment` line skipped for free (comments are
+# never `program.statements` entries at all). **CR6/CR1000X do not share this at all**
+# (oracle-confirmed with the same shape, an undefined const-family name immediately followed by a
+# two-argument instruction: no extra line).
+#
+# Because the taint can originate from a pass-1/ungated finding (`cr3xx.check`'s own `SerialOpen`/
+# `ComPort` finding, or `instr_rules.check_too_many`'s own genuine finding -- corpus:
+# `acceptdatarecords_1.CR6`, `SerialOpen (COMC1,...)`'s `COMC1 is not defined.` taints every
+# following two-plus-argument instruction to end of file, `Scan`'s own `Sec` and
+# `AcceptDataRecords`'s own `32769`, despite that finding being **ungated** and thus, in this
+# project's own pass model, skipping tier B -- where the *previous*, narrower version of this
+# function lived -- entirely), this is no longer called from inside the `if not diags.errors:`
+# tier-B block the way `check_expr_cascade` was: `checker/__init__.py` now calls it once,
+# unconditionally, after every other diagnostic-producing pass has run, so it can see -- and rewrite
+# -- the complete, final diagnostic list regardless of which tier first tainted the file. It is
+# still a no-op when nothing in the file ever taints (no `_is_cascade_trigger` match and no
+# `Too many parameters:` message already present).
 _UNRESOLVED_SUFFIX = " is not defined."
 _VARIABLE_ILLEGAL_PREFIX = "Variable illegal in Parameter:"
+_TOO_MANY_PREFIX = "Too many parameters:"
 
 
 def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and (
         diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+        or diag.message.startswith(_TOO_MANY_PREFIX)
     )
 
 
-def check_expr_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR300/CR350 only; a no-op on every other logger and when tier B recorded no undefined-name-
-    class error. Called from `checker/__init__.py` immediately after `expressions.check`/
-    `instr_data.check_unclosed_calltable`, inside the same `if not diags.errors:` tier-B block, so
-    it sees every diagnostic tier B has recorded so far (and only those -- see this module's
-    comment above for why `cr3xx.check`'s own earlier, ungated finding can never coexist with it).
+def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350 only; a no-op on every other logger and when nothing in the file ever taints
+    (see this module's comment above for the oracle evidence and the exact shape implemented).
+    Called from `checker/__init__.py` once, unconditionally, after every other pass -- see that
+    comment for why this can no longer be tier-B-only the way `check_expr_cascade` was.
     """
     if profile.name not in ("cr300", "cr350"):
         return
-    trigger_lines = {(d.line, d.file) for d in diags.items if _is_cascade_trigger(d)}
-    if not trigger_lines:
-        return
-    statements = program.statements
-    anchor_index = None
-    for i, stmt in enumerate(statements):
-        if (stmt.line, stmt.file) in trigger_lines:
-            anchor_index = i
-    if anchor_index is None:
-        return
-    existing_lines = {(d.line, d.file) for d in diags.items}
-    for stmt in statements[anchor_index + 1:]:
-        if (stmt.line, stmt.file) in existing_lines:
+    # A single left-to-right sweep, **not** "find the last trigger line, then walk forward from
+    # it": `tainted` latches on the first qualifying statement whose own (pre-existing, untouched)
+    # diagnostics are trigger-shaped, and then stays on for every remaining statement, rewriting
+    # each qualifying one in turn -- oracle-confirmed this is the right shape, not a re-scan, by
+    # `t2.cr6` (`docs/loggers.md`): a tainted `PortSet(C1,BadVar2)` is *itself* trigger-shaped (its
+    # own, pre-taint `BadVar2 is not defined.`), but must still be **rewritten**, not treated as a
+    # fresh anchor that leaves it untouched and only starts the chain after it -- a "find the last
+    # trigger" re-scan gets this backwards (picks that statement as the new anchor and leaves its
+    # own stale diagnostic standing). A statement is only ever left as the untouched anchor when
+    # `tainted` was still `False` on entry to it (the *first* trigger in the file, matching
+    # `dewpoint_1.CR6`'s own first `VoltSE` keeping its real `mv5000C is not defined.` pair while
+    # its identical-shaped successor is swallowed).
+    tainted = False
+    for stmt in program.statements:
+        key = (stmt.line, stmt.file)
+        existing = [d for d in diags.items if (d.line, d.file) == key]
+        if tainted:
+            if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
+                    and stmt.args[1] is not None):
+                text = expressions._arg_text(stmt, 1)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
             continue
-        if not isinstance(stmt, S.Instruction):
-            continue
-        if len(stmt.args) < 2 or stmt.args[1] is None:
-            continue
-        text = expressions._arg_text(stmt, 1)
-        diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
-        return
+        if any(_is_cascade_trigger(d) for d in existing):
+            tainted = True
 
 
 # `check_unknown_line_words` (this round): a line that parses as nothing recognisable at all --

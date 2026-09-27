@@ -503,6 +503,54 @@ def test_structuretype_name_used_as_datatype_is_not_flagged():
     assert result.diagnostics.errors == []
 
 
+# ---- `Data`/`DataLong` parameters (docs/checker.md "Data parameters", oracle-confirmed CR6) -----
+
+
+def test_data_param_undefined_symbol_reports_both_lines():
+    result = compile_text(wrapped("    Data SomeVar\n"))
+    msgs = messages_of(result)
+    assert "Invalid symbol in expression: SomeVar\n." in msgs
+    assert "Illegal Data parameter SomeVar\n." in msgs
+
+
+def test_data_param_defined_variable_is_illegal_but_not_undefined():
+    # `X` is declared (`PROG`'s own `Public X As Float`): illegal as a `Data` parameter (it is not
+    # a constant), but with no undefined-symbol line -- the name itself resolves fine.
+    result = compile_text(wrapped("    Data X\n"))
+    msgs = messages_of(result)
+    assert "Illegal Data parameter X\n." in msgs
+    assert not any(m.startswith("Invalid symbol in expression") for m in msgs)
+
+
+def test_data_param_literal_constants_are_legal():
+    result = compile_text(wrapped("    Data 1,2,3\n"))
+    assert result.diagnostics.errors == []
+
+
+def test_data_param_not_last_on_line_has_no_embedded_newline():
+    result = compile_text(wrapped("    Data 1,SomeVar,3\n"))
+    msgs = messages_of(result)
+    assert "Invalid symbol in expression: SomeVar." in msgs
+    assert "Illegal Data parameter SomeVar." in msgs
+
+
+def test_datalong_param_undefined_symbol_same_as_data():
+    result = compile_text(wrapped("    DataLong SomeVar\n"))
+    msgs = messages_of(result)
+    assert "Invalid symbol in expression: SomeVar\n." in msgs
+    assert "Illegal Data parameter SomeVar\n." in msgs
+
+
+def test_data_unparsed_multiword_line_reports_illegal_data_parameter():
+    # The common CHM-corpus shape (`brfull6w_1.CR6` etc.): a `'`-less comment-continuation line
+    # the parser can only partially consume as `Data`'s own bare argument list, so the whole
+    # statement becomes `S.Unparsed` rather than a clean `Instruction`.
+    result = compile_text(wrapped("    Data Tables and Store Data\n"))
+    msgs = messages_of(result)
+    assert "Invalid symbol in expression: Tables and Store Data\n." in msgs
+    assert "Illegal Data parameter Tables and Store Data\n." in msgs
+
+
 # ------------------------------------------------------------------ instructions.py
 
 

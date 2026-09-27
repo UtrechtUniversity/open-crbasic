@@ -1,9 +1,10 @@
-"""Unit tests for `opencrbasic.checker.cr3xx`. Oracle evidence: `docs/loggers.md` "Round 8".
+"""Unit tests for `opencrbasic.checker.cr3xx`. Oracle evidence: `docs/loggers.md` "Round 8" and
+"Too many parameters cascade, widened".
 
-`check_unknown_line_words` is now wired into the shared checker pipeline (`checker/__init__.py`,
-right after `cr3xx.check_expr_cascade`); the tests below still call it directly (via `apply_hook`)
-after running the ordinary `checker.check` pipeline, which is equivalent and keeps each test
-focused on this one hook's own effect.
+`check_unknown_line_words` and `check_too_many_cascade` are both wired into the shared checker
+pipeline (`checker/__init__.py`); the tests below call the ordinary `checker.check` pipeline (via
+`apply_hook`/`compile_result_for_profile`), which is equivalent and keeps each test focused on one
+hook's own effect.
 """
 
 from __future__ import annotations
@@ -132,3 +133,78 @@ def test_hook_does_not_double_up_the_already_handled_bare_call_shape():
 def test_hook_is_noop_with_no_unparsed_statements():
     messages = apply_hook("Public X As Float\n\nBeginProg\nEndProg\n")
     assert messages == []
+
+
+# ------------------------------------------------------------------ `check_too_many_cascade`
+# Oracle evidence: scratch probes `t.cr6`/`t2.cr6`/`t3.cr6`/`t4.cr6` against `cr300comp.exe` and
+# `cr350comp.exe` (identical on both), plus the corpus's own `dewpoint_1.CR6`/`runprogram_1.CR6`/
+# `filemanage_1.CR6`/`goesdata_1.CR6`/`acceptdatarecords_1.CR6` (`checker/cr3xx.py`'s own module
+# comment above `check_too_many_cascade` has the full transcript).
+
+_CASCADE_PROGRAM = """\
+Public A, B, C
+
+BeginProg
+  Scan(1,Sec,3,0)
+    Battery(BadVar)
+    PortSet(C1,1)
+    PortSet(C1,2)
+    PortSet(C1,3)
+    Delay(0,10,mSec)
+  NextScan
+EndProg
+"""
+
+
+def test_cascade_chains_to_every_qualifying_statement_not_just_the_first():
+    messages = apply_hook(_CASCADE_PROGRAM)
+    assert messages == [
+        "BadVar is not defined.",
+        "Too many parameters:  1.",
+        "Too many parameters:  2.",
+        "Too many parameters:  3.",
+        "Too many parameters:  10.",
+    ]
+
+
+def test_cascade_replaces_a_tainted_statements_own_undefined_name_line():
+    # `PortSet(C1,BadVar2)`: BadVar2 is itself undefined, but once tainted a statement's own
+    # checks never run at all on CR300/CR350 -- oracle: only the cascade line, never a second
+    # `BadVar2 is not defined.` of its own (`t2.cr6`).
+    text = ("Public A\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
+            "    PortSet(C1,BadVar2)\n    PortSet(C1,2)\n  NextScan\nEndProg\n")
+    messages = apply_hook(text)
+    assert messages == [
+        "BadVar is not defined.",
+        "Too many parameters:  BadVar2.",
+        "Too many parameters:  2.",
+    ]
+
+
+def test_cascade_does_not_touch_the_first_tainting_statement_itself():
+    # The statement that *first* goes trigger-shaped keeps its own real diagnostic untouched;
+    # only statements strictly after it are swallowed by the chain (`dewpoint_1.CR6`: the first of
+    # two identically-shaped `VoltSE` calls keeps its real `mv5000C is not defined.` pair).
+    messages = apply_hook(_CASCADE_PROGRAM)
+    assert "Too many parameters:  BadVar." not in messages
+
+
+def test_cascade_is_a_noop_on_cr6():
+    # CR6 has no cascade at all (`checker/cr3xx.py`'s own module comment): only `BadVar`'s own,
+    # ordinary undefined-name finding, never a "Too many parameters" line for anything after it.
+    program, diags, _ = compile_result_for_profile(_CASCADE_PROGRAM, profiles.get("cr6"), "t.cr6")
+    messages = [d.message for d in diags.errors]
+    assert len(messages) == 1
+    assert "BadVar" in messages[0]
+    assert not any(m.startswith("Too many parameters:") for m in messages)
+
+
+def test_cascade_skips_statements_with_fewer_than_two_arguments():
+    # `Battery(BattV)` (one argument) is passed over -- not itself flagged, and not a stop.
+    text = ("Public A, BattV\n\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(BadVar)\n"
+            "    Battery(BattV)\n    PortSet(C1,2)\n  NextScan\nEndProg\n")
+    messages = apply_hook(text)
+    assert messages == [
+        "BadVar is not defined.",
+        "Too many parameters:  2.",
+    ]
