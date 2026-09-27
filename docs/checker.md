@@ -1373,3 +1373,40 @@ general expression-tree `Invalid symbol in expression` gaps nested inside argume
 without EndTable.` (item 7's own explicitly-not-attempted nested-table shape), function
 argument-count/type checks from `data/functions.json`'s own `argtypes`, and `Sub`/`Function` call
 argument-count checks (neither attempted this round).
+
+## Duplicate Alias (oracle-confirmed 2026-09-27)
+
+`_check_alias_dims`'s checks 3 (`Duplicate Alias`) and 4 (`Duplicate Alias Name: %s.`) --
+`structure.py`'s own docstring above has the full account of both, from the "Round 7" session that
+implemented them -- are re-confirmed here with fresh scratch probes (a small task queued in
+`PROGRESS.md`'s "Small-task queue"), since that round's own write-up of this item was never landed
+(`git log` shows its commit as "Round 7 (partial, cut off by quota)"). Probes: `<logger>.exe t.cr6`
+under Wine (`CR6Comp.exe`/`cr1000xcomp.exe`/`cr300comp.exe`/`cr350comp.exe`, no option flags), a
+scratch dir, not committed.
+
+- **Same source, two target names** (`Public X As Float` then `Alias X = Foo` / `Alias X = Bar`):
+  plain `Duplicate Alias` (no name, no trailing period), at the *second* `Alias` statement's own
+  line (3 here) -- identical wording and line on all four loggers.
+- **Two sources, one reused target name** (`Public X`/`Public Y`, `Alias X = Foo` / `Alias Y =
+  Foo`): `Duplicate Alias Name: Foo.`, again at the second statement's own line (4) -- identical on
+  all four loggers.
+- Both are **pass 1**: CR300/CR350, run against the same probe files (whose bodies also trip an
+  unrelated `Too many parameters:  Sec.` on the `Scan` line, a pre-existing CR300/CR350 `Scan`-
+  grammar difference, not part of this item), print the duplicate-alias line *and* that later line
+  together -- confirming the two accumulate with other pass-1 errors rather than one suppressing
+  the other, matching every other `_check_alias_dims` check's own already-documented pass-1 shape.
+- **Boundary, deliberately not implemented**: aliasing to a name that is already a declared
+  `Public`/`Dim` variable is oracle-confirmed to give a *third*, distinct message (`Y already
+  declared as a variable.`), and aliasing to a declared `Const` a *fourth* (`K is already declared
+  as a CONST.`) -- both real `FUN_004b8e70` rows neighbouring `Duplicate Alias Name: %s.` in
+  `docs/messages.tsv`, but not `Duplicate Alias`/`Duplicate Alias Name` themselves, so out of this
+  item's scope. This checker stays silent on both (under-reports, no false reject) rather than
+  misreporting either as one of the two implemented checks
+  (`tests/test_checker.py::test_alias_name_equal_to_declared_variable_is_a_different_message`).
+
+Full-corpus difftest (`tools/difftest.py --logger <l> --show 0`, unaffected by this session -- no
+production code changed, verification and tests only): cr6 exact 336 (chm) + 16 (repo) + 2
+(examples); cr1000x 352 + 9 + 3; cr300 157 + 0 + 2; cr350 161 + 0 + 2; zero false rejects on all
+four (`{r['file'] for r in json.load(open(f'difftest-{l}.json')) if r['their_exit'] == 0 and
+r['our_exit'] != 0}` empty for every `l`). `python3 -m pytest -q`: all green, including two new
+`tests/test_checker.py` cases for the two messages above and one boundary case.

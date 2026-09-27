@@ -18,6 +18,8 @@ import argparse
 import concurrent.futures
 import json
 import sys
+import tempfile
+from collections import Counter
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -44,7 +46,7 @@ def find_reproducers(logger: str | None, paths: list[Path]) -> list[Path]:
     return out
 
 
-def replay_one(cr6_path: Path) -> dict:
+def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
     cr6_path = cr6_path.resolve()
     meta_path = cr6_path.with_suffix(".json")
     meta = json.loads(meta_path.read_text()) if meta_path.is_file() else {}
@@ -58,7 +60,17 @@ def replay_one(cr6_path: Path) -> dict:
     siblings = fuzz.CRBASIC_DIR if needs_siblings else None
     seed = fuzz.Seed("replay", cr6_path, siblings)
 
-    our_exit, our_out, their_exit, their_out = fuzz.run_mutant(seed, lines, profile, name=cr6_path.name)
+    # --prune-fixed trusts the recorded real-compiler verdict instead of re-invoking Wine: it
+    # only needs to know whether *our* output still matches that recorded verdict, and re-running
+    # a program through Wine ~1840 times just to re-derive text that is already on disk is pure
+    # overhead this mode is meant to avoid.
+    if use_recorded_theirs and "their_exit" in meta and "theirs" in meta:
+        with tempfile.TemporaryDirectory(prefix="fuzz-replay-") as tmp:
+            path = fuzz.materialise(seed, lines, Path(tmp), cr6_path.name)
+            our_exit, our_out = fuzz.run_ours(path, profile)
+        their_exit, their_out = meta["their_exit"], meta["theirs"]
+    else:
+        our_exit, our_out, their_exit, their_out = fuzz.run_mutant(seed, lines, profile, name=cr6_path.name)
     now_class = fuzz.classify(our_exit, our_out, their_exit, their_out)
 
     if now_class is None:
@@ -81,10 +93,42 @@ def replay_one(cr6_path: Path) -> dict:
     }
 
 
+def prune_fixed(files: list[Path], workers: int) -> int:
+    """Delete each reproducer's .CR6/.json pair once opencrbasic now matches the *recorded*
+    real-compiler output exactly, without re-invoking the real compiler (see `replay_one`'s
+    `use_recorded_theirs`)."""
+    before = Counter((f.parent.parent.name, f.parent.name) for f in files)
+
+    with concurrent.futures.ThreadPoolExecutor(workers) as pool:
+        results = list(pool.map(lambda p: replay_one(p, use_recorded_theirs=True), files))
+
+    after = Counter(before)
+    removed = 0
+    for r in results:
+        print(f"{r['status']:<32} {r['file']}")
+        if r["now_class"] is None:
+            cr6_path = ROOT / r["file"]
+            cr6_path.unlink(missing_ok=True)
+            cr6_path.with_suffix(".json").unlink(missing_ok=True)
+            after[(r["logger"], r["recorded_class"])] -= 1
+            removed += 1
+
+    kept = len(results) - removed
+    print(f"\n{len(results)} reproducers checked: {removed} now exact and pruned, {kept} kept")
+    print(f"\n{'logger/class':<28} {'before':>7} {'after':>7}")
+    for key in sorted(before):
+        print(f"{key[0] + '/' + key[1]:<28} {before[key]:>7} {after[key]:>7}")
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--logger", default=None, help="restrict to one logger's reproducers")
     ap.add_argument("--workers", type=int, default=4)
+    ap.add_argument("--prune-fixed", action="store_true",
+                     help="delete each reproducer's .CR6/.json pair once opencrbasic now matches "
+                          "the recorded real-compiler output exactly, without re-invoking the "
+                          "real compiler")
     ap.add_argument("paths", nargs="*", type=Path)
     args = ap.parse_args()
 
@@ -92,6 +136,9 @@ def main() -> int:
     if not files:
         print("no reproducers found", file=sys.stderr)
         return 1
+
+    if args.prune_fixed:
+        return prune_fixed(files, args.workers)
 
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
         results = list(pool.map(replay_one, files))

@@ -132,6 +132,42 @@ def test_alias_without_eq():
     assert "Need '=' in alias definition: ." in messages_of(result)
 
 
+# `docs/checker.md` "Duplicate Alias": two independent oracle-confirmed duplicate checks, both
+# pass 1 (`_check_alias_dims`, `structure.py`), keyed on opposite sides of the same `Alias
+# <source> = <name>` statement.
+
+
+def test_duplicate_alias_name_two_sources_same_target():
+    # The target name `Foo` is reused by a second, unrelated `Alias` (a different declared
+    # source, `Y`) -- oracle-confirmed `Duplicate Alias Name: <name>.` on the *second* statement's
+    # own line, all four loggers (`t.cr6` probes, `CR6Comp.exe`/`cr1000xcomp.exe`/`cr300comp.exe`/
+    # `cr350comp.exe`).
+    result = compile_text(
+        "Public X As Float\nPublic Y As Float\nAlias X = Foo\nAlias Y = Foo\n" + wrapped(""))
+    assert messages_of(result) == ["Duplicate Alias Name: Foo."]
+    assert result.diagnostics.errors[0].line == 4
+
+
+def test_duplicate_alias_same_source_two_names():
+    # The *source* `X` is aliased twice under two different names -- oracle-confirmed plain
+    # `Duplicate Alias` (no name, no trailing period) on the second statement's own line, same on
+    # all four loggers.
+    result = compile_text("Public X As Float\nAlias X = Foo\nAlias X = Bar\n" + wrapped(""))
+    assert messages_of(result) == ["Duplicate Alias"]
+    assert result.diagnostics.errors[0].line == 3
+
+
+def test_alias_name_equal_to_declared_variable_is_a_different_message():
+    # Aliasing to a name that is *itself* already a declared variable is oracle-confirmed to give
+    # a third, distinct message (`%s already declared as a variable.`, not in this project's
+    # scope -- `docs/messages.tsv`'s neighbouring `FUN_004b8e70` row) rather than either duplicate-
+    # alias check above; this checker does not implement that third message (under-reports, no
+    # false reject), so it must not misreport one of the two implemented ones here either.
+    result = compile_text("Public X As Float\nPublic Y As Float\nAlias X = Y\n" + wrapped(""))
+    assert "Duplicate Alias Name: Y." not in messages_of(result)
+    assert "Duplicate Alias" not in messages_of(result)
+
+
 # ------------------------------------------------------------------ malformed `As` clause
 #
 # `docs/checker.md` "Invalid Variable declaration", `docs/fuzz-findings.md` "5. Message diff":

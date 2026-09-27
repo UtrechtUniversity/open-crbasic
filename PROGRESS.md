@@ -606,6 +606,30 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
   quirks and the oracle evidence for each: `docs/frontend.md`. Test results and open gaps: see the
   phase-2 row above.
 
+## Small-task queue (work method since 2026-09-27)
+
+Rounds are now one small, verifiable item per agent (quota cut-offs lost work in long rounds).
+Each item: oracle-probe the rule, implement with a unit test, then the acceptance gate — pytest
+green, difftest zero false rejects on all four loggers, exact counts not lower — and the
+coordinator commits it. Tick items here as they land.
+
+- [x] Prune fixed fuzz reproducers (`fuzz_replay.py --prune-fixed`)
+- [x] CR6/CR1000X: `Duplicate Alias` / `Duplicate Alias Name: %s.` (already implemented in
+      `structure.py`'s `_check_alias_dims` from the prior "Round 7 (partial)" session; this item
+      re-confirmed it with fresh oracle probes on all four loggers, added the two missing unit
+      tests, and wrote up `docs/checker.md`'s "Duplicate Alias" section that round never landed)
+- [ ] CR6/CR1000X: `Need closing )` shapes
+- [ ] CR6/CR1000X: `DataTable without EndTable.` (nested tables)
+- [ ] CR6/CR1000X: `AddPrecise` argument rules
+- [ ] All loggers: Sub/Function call argument count/type checks
+- [ ] All loggers: builtin function argument counts/types (`data/functions.json` argtypes)
+- [ ] CR6 help-corpus wording: pass-1 specific messages vs generic out-of-place (one message per item:
+      `Invalid or missing parameter.`, `Expression expects (`, `Need '=' in units definition`,
+      `Incomplete expression`, `No Matching, or out of place ) in expression`)
+- [ ] Echo quirk: trailing newline in echoed statements (closing `.` on the next line)
+- [ ] CR300/CR350: next largest fuzz false-accept group (repeat)
+- [ ] Re-measure fuzz false-accept rates (cr6 seeds 42-46, cr1000x/cr300/cr350 seed 42)
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

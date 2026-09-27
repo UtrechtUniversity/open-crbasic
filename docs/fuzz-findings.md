@@ -3,7 +3,9 @@
 `tools/fuzz.py` mutates programs the real compiler accepts (`crbasic/*.CR6` with their `.crb`
 siblings, and the oracle-accepted subset of `tests/corpus/chm/`) and compiles each mutant with
 both opencrbasic and the real compiler (`tools/oracle.py`, cached). `tools/fuzz_replay.py`
-re-checks a saved reproducer or the whole saved corpus without re-fuzzing. Both are re-runnable:
+re-checks a saved reproducer or the whole saved corpus without re-fuzzing; its `--prune-fixed`
+deletes each reproducer's `.CR6`/`.json` pair once opencrbasic now matches the *recorded*
+real-compiler output exactly, without re-invoking Wine. Both are re-runnable:
 
 ```
 python3 tools/fuzz.py --logger cr6 --count 1500 --seed 1
