@@ -2187,6 +2187,35 @@ without IF or END SELECT without SELECT.` / `NEXT without FOR.` / `LOOP without 
 `For I = 1 To 2` / `EndIf` / `Next` inside a Scan -> `END IF without IF...` on the `EndIf` (the
 `For` is popped) and `FOR NEXT statement illegally has SCAN...` on the `Next`; two stray `EndIf`s
 -> both messages on the first, only `END IF without IF...` on the second (the `Scan` was popped).
-Programs with `While`/`Wend` are skipped. On one line the "never reached at run time" warning
+`NextScan` removes the innermost `Scan` wherever it is on the stack, so `If X Then` / `NextScan` /
+`EndIf` compiles (a fuzz-found false reject in the first version, which popped the top). This
+check replaces round 6's `If`/`Select` scan-depth comparison in `check_pass2`. Programs with
+`While`/`Wend` are skipped. On one line the "never reached at run time" warning
 prints after that line's errors (15 of 15 transcripts); other warnings keep their order.
 Fuzz replay: 122 saved false accepts now rejected in total, 168 reproducers exact.
+
+## Units targets, CallTable targets, redeclarations (2026-09-27)
+
+All oracle-probed on CR6 and CR300, then checked on CR1000X and CR350.
+
+- **`Units`** (`instr_data.check_units_targets`, after pass 2 with the table checks): the target's
+  base name must be a `Public`/`Dim` variable of a plain type or an `Alias` name, declared
+  anywhere; otherwise `Can't assign units to %s, it must be declared Public or referenced as a
+  source in a Data Table.` (as written). A `Dim` no table uses is fine; a `Const`, an undeclared
+  name, a `Sub` parameter, a `StructureType` variable and a table field (`P_Avg`) are rejected.
+  `Units` inside a `StructureType` names a member and is skipped (`structuretype_1.CR6`).
+- **`CallTable`** (`instr_data.check_unclosed_calltable`, tier B): any target that is not a
+  closed `DataTable` (case-insensitive, quoted `DataTable ("HIST4D",...)` names included) gives
+  `Could not find DataTable %s.`: `CallTable Nope`, a variable, `Status`, `CallTable("fuzz")` ->
+  `fuzz`, `CallTable((1+2))` -> `1+2`.
+- **Redeclaration** (`structure._check_duplicate_declaration`, pass 1, global scope only): a
+  `Public`/`Dim`/`Const` name already declared as a variable or `Alias` name -> `%s already
+  declared as a variable.`; a `Public`/`Dim` after a `Const` of that name -> `%s is already
+  declared as a CONST.`. `Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow.
+  CR300/CR350 then print their `Too many parameters:  Sec.` cascade on `Scan` (not modelled for
+  these messages). Several unit tests had programs declaring `X` twice; they now use
+  `wrapped_bare`.
+
+Reachability (`warnings._check_reachability`, oracle CR6): the first unreachable `Do`, `Loop` or
+`For` is named `Do`/`Loop`/`FOR` (was `Expr`); an unreachable `If` (block or one-line) or `Select`
+silences the warning for the rest of the file, including later statements.

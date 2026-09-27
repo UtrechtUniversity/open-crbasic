@@ -226,6 +226,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
         _run_pass(instr_data.check_table_structure, program, profile, diags)
+        _run_pass(instr_data.check_units_targets, program, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)

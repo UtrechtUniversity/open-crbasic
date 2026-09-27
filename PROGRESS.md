@@ -664,7 +664,15 @@ coordinator commits it. Tick items here as they land.
       expressions"). Fuzz replay: 105 saved false accepts now rejected.
 - [x] Unmatched `EndIf`/`EndSelect`/`Next`/`Loop` (all loggers, `docs/checker.md` "Unmatched block
       ends").
+- [x] `Units` targets, unknown `CallTable` targets, global redeclarations; `NextScan` block-stack fix
+      (fuzz-found false reject) (`docs/checker.md` "Units targets, CallTable targets,
+      redeclarations"). chm exact cr6 425, cr1000x 433.
 - [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
+- [x] Fuzz re-measurement at `e0a92cc` (300 mutants each): cr6 seed 42 false_accept 25 (was 30),
+      seed 45 31; cr1000x seed 42 21 (was 27) with 1 false reject, `If`/`NextScan`/`EndIf`, fixed
+      in the next commit; cr300 17 (was 18); cr350 17 (was 22). Reproducer replay after the fix:
+      215 of 1469 now exact, 154 former false accepts now rejected, no false rejects.
+- [x] Reachability warning: `Do`/`Loop`/`FOR` names; an unreachable `If`/`Select` silences it.
 - [ ] All loggers: `%s already defined as an internal function.` for a `Public`/global `Dim`
       named like a built-in function (oracle: `Public X, exp` on CR6)
 - [x] Echo quirk: trailing newline in echoed statements (closing `.` on the next line) --

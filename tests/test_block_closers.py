@@ -55,3 +55,19 @@ def test_balanced_blocks_are_silent():
     body = ("    If X Then\n      For I = 1 To 2\n        Do\n        Loop Until X\n      Next\n"
             "    EndIf\n    Select Case X\n      Case 1\n    EndSelect\n")
     assert messages(scan(body)) == []
+
+
+@pytest.mark.parametrize("body", [
+    "  Scan (1,Sec,0,0)\n    If X Then\n  NextScan\n    EndIf\n",
+    "  Scan (1,Sec,0,0)\n    For I = 1 To 2\n  NextScan\n    Next\n",
+    "  Scan (1,Sec,0,0)\n    Do\n  NextScan\n    Loop\n",
+])
+def test_nextscan_leaves_inner_blocks_open(body):
+    # Oracle: compiles (with a "never reached" warning); fuzz-found false reject, 2026-09-27.
+    assert messages(f"Public X, I\nBeginProg\n{body}EndProg\n") == []
+
+
+def test_scan_opened_inside_if_is_popped_by_endif():
+    text = ("Public X\nBeginProg\n  If X Then\n  Scan (1,Sec,0,0)\n  EndIf\n  NextScan\n"
+            "EndProg\n")
+    assert messages(text) == [(5, ILLEGAL_IF)]

@@ -106,6 +106,11 @@ def _display_name(stmt: S.Stmt, profile: Profile) -> str:
     if isinstance(stmt, S.Instruction):
         record = profile.instructions.get(stmt.keyword.upper())
         return record["name"] if record else stmt.keyword
+    if isinstance(stmt, (S.DoLoop, S.For)):
+        # oracle: `Do never reached`, `Loop never reached`, `FOR never reached` (table spelling)
+        keyword = stmt.keyword.upper() if isinstance(stmt, S.DoLoop) else "FOR"
+        record = profile.instructions.get(keyword)
+        return record["name"] if record else keyword
     return "Expr"
 
 
@@ -201,6 +206,11 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             i = j
             continue
 
+        if dead and (isinstance(stmt, S.If) or kw == "SELECT"):
+            # An unreachable `If`/`Select` (block or one-line) silences the check for the rest of
+            # the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no
+            # warning at all; `docs/instructions.md`).
+            return
         if dead:
             is_declaration = (
                 isinstance(stmt, (S.Declaration, S.ConstDecl, S.Label))

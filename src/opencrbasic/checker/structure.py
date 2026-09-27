@@ -205,6 +205,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     seen_alias_sources: dict[str, set[tuple]] = {}
     known: set[str] | None = None
     operands: set[str] = set()
+    in_sub = False
+    declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
         if isinstance(st, S.Instruction) and st.keyword.upper() in ("STRUCTURETYPE", "OBJECTTYPE")
@@ -219,6 +221,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
 
         fire_suppress = suppress_line is not None and stmt.line == suppress_line
         suppress_line = None
+
+        if isinstance(stmt, S.SubDef):
+            in_sub = True
+        elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
+            in_sub = False
+        if not in_sub:
+            _check_duplicate_declaration(stmt, declared_kinds, diags)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
             if not stmt.vars:
@@ -415,25 +424,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # *third* `BeginProg` nested inside the second gets its own second `Multiple BeginProgs.` line
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
-    # `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (round 6, `docs/checker.md`):
-    # not "an `If`/`Select` contains a `Scan`" by itself (a `Scan...NextScan` pair fully closed
-    # *inside* the same `If`/`Select` block, textually, compiles clean, oracle-confirmed) but "a
-    # `Scan` opened while this block was open is still open (no matching `NextScan` yet) when the
-    # block's own `EndIf`/`EndSelect` is reached" -- a genuine nesting-depth comparison, not a
-    # syntactic "contains" check. Modelled the same way `check_pass1` tracks `scan_depth`/
-    # `cond_depth` for its own, coarser file-wide balance checks, but as a stack here: each open
-    # `If`/`Select` remembers `scan_depth`'s own value at the moment it opened, and its own
-    # `EndIf`/`EndSelect` compares the *current* `scan_depth` against that remembered value --
-    # greater means an unclosed `Scan` from inside this block. Reported at the `EndIf`/`EndSelect`
-    # line itself, oracle-confirmed regardless of how many `ElseIf`/`Else` segments sit in between
-    # (`docs/checker.md` "Round 6": both fire at the same line as a plain `If...EndIf`). Pass 2
-    # (oracle-confirmed: suppressed by an earlier pass-1 `Variable not named.`, but accumulates
-    # freely with an unrelated pass-2 `Invalid symbol in expression` either side of it) -- tracked
-    # unconditionally here, in the same top-of-loop bookkeeping section as `in_table`/
-    # `in_beginprog` above, independent of `in_body_block`/`in_table` (no oracle evidence either
-    # suppresses this specific check the way they do the "before `BeginProg`" ones).
-    scan_depth = 0
-    cond_stack: list[int] = []
+    # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
             in_body_block = True
@@ -449,18 +440,6 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_beginprog = True
         elif kw == "ENDPROG":
             in_beginprog = False
-        elif kw == "SCAN":
-            scan_depth += 1
-        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
-            scan_depth = max(0, scan_depth - 1)
-        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
-            cond_stack.append(scan_depth)
-        elif kw == "ENDSELECT" or (kw == "END" and _block_word(getattr(stmt, "args", []) or []) == "SELECT"):
-            if cond_stack and scan_depth > cond_stack.pop():
-                diags.error(stmt.line, "IF or SELECT statement illegally has SCAN without NEXT SCAN.", stmt.file)
-        elif kw == "ENDIF" or (kw == "END" and _block_word(getattr(stmt, "args", []) or []) == "IF"):
-            if cond_stack and scan_depth > cond_stack.pop():
-                diags.error(stmt.line, "IF or SELECT statement illegally has SCAN without NEXT SCAN.", stmt.file)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue
@@ -546,8 +525,8 @@ _CLOSER_MESSAGES = {
 
 
 def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None:
-    """Pass 2, all four loggers: a closing `EndIf`/`EndSelect`/`Next`/`Loop` pops whatever block
-    is innermost; if that was a `Scan`/`SubScan` it reports `<kind> statement illegally has SCAN
+    """Pass 2, all four loggers: `NextScan` removes the innermost `Scan` from the stack wherever
+    it is; a closing `EndIf`/`EndSelect`/`Next`/`Loop` pops whatever block is innermost; if that was a `Scan`/`SubScan` it reports `<kind> statement illegally has SCAN
     without NEXT SCAN.`, and with no block of its own kind open it reports `END IF without IF or
     END SELECT without SELECT.`/`NEXT without FOR.`/`LOOP without DO.`; an `EndSelect` with no
     `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends").
@@ -571,8 +550,10 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
         elif kw in ("SCAN", "SUBSCAN"):
             stack.append("SCAN")
         elif kw in ("NEXTSCAN", "NEXTSUBSCAN") or (kw == "NEXT" and word in ("SCAN", "SUBSCAN")):
-            if stack:
-                stack.pop()
+            # Removes the innermost `Scan` wherever it is; blocks opened inside it stay open
+            # (oracle: `If X Then` / `NextScan` / `EndIf` compiles, a fuzz-found false reject).
+            if "SCAN" in stack:
+                del stack[len(stack) - 1 - stack[::-1].index("SCAN")]
         elif kw in ("ENDIF", "ENDSELECT", "NEXT", "LOOP") or (kw == "END" and word in ("IF", "SELECT")):
             is_select = kw == "ENDSELECT" or (kw == "END" and word == "SELECT")
             if is_select and selects == 0:
@@ -1024,6 +1005,34 @@ def _first_dim_text(stmt_text: str, v: S.VarDecl) -> str:
     start, end = v.dim0_span
     return stmt_text[start:end]
 
+
+
+def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics) -> None:
+    """Global-scope redeclaration, pass 1, all four loggers (oracle, 2026-09-27, `docs/checker.md`
+    "Duplicate declarations"): a `Public`/`Dim` or `Const` name already declared as a variable
+    (`Public`/`Dim`, or an `Alias` name) -> `%s already declared as a variable.`; a `Public`/`Dim`
+    name already declared as a `Const` -> `%s is already declared as a CONST.` (`%s` as written in
+    the later declaration). `Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow a
+    global (the caller skips those bodies)."""
+    if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM"):
+        for v in stmt.vars:
+            prior = declared.get(v.name.upper())
+            if prior == "VAR":
+                diags.error(stmt.line, f"{v.name} already declared as a variable.", stmt.file)
+            elif prior == "CONST":
+                diags.error(stmt.line, f"{v.name} is already declared as a CONST.", stmt.file)
+            else:
+                declared[v.name.upper()] = "VAR"
+    elif isinstance(stmt, S.ConstDecl):
+        prior = declared.get(stmt.name.upper())
+        if prior == "VAR":
+            diags.error(stmt.line, f"{stmt.name} already declared as a variable.", stmt.file)
+        elif prior is None:
+            declared[stmt.name.upper()] = "CONST"
+    elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
+        for a in stmt.args[1:]:
+            if isinstance(a, S.Name):
+                declared.setdefault(a.name.upper(), "VAR")
 
 def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env) -> None:
     """`Public`/`Dim` array-dimension limits (oracle-confirmed, `docs/checker.md` "Array

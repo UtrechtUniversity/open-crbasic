@@ -172,6 +172,8 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
         kw = stmt.keyword.upper()
         if kw == "DATATABLE":
             name = _table_name(stmt)
+            if not name and stmt.args and isinstance(stmt.args[0], S.String):
+                name = stmt.args[0].value  # `DataTable ("HIST4D",1,100)`, histogram4d_1.CR6
             if name:
                 opened.add(name.upper())
                 pending = name.upper()
@@ -179,15 +181,26 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
             if pending is not None:
                 closed.add(pending)
             pending = None
-    unclosed = opened - closed
-    if not unclosed:
-        return
+    # Any other target that is not a closed table fails the same way (oracle, all four loggers,
+    # 2026-09-27): `CallTable Nope`, a variable `CallTable X`, `CallTable Status`, `CallTable
+    # ("fuzz")` -> `fuzz`, `CallTable((1+2))` -> `1+2` (quotes and parentheses dropped).
     for stmt in program.statements:
         if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE"):
             continue
         target = stmt.args[0] if stmt.args else None
-        if isinstance(target, S.Name) and target.name.upper() in unclosed:
-            diags.error(stmt.line, f"Could not find DataTable {target.name}.", stmt.file)
+        if isinstance(target, S.Name):
+            name = target.name
+        elif isinstance(target, S.String):
+            name = target.value
+        elif isinstance(target, S.Binary) and stmt.arg_spans and stmt.arg_spans[0]:
+            start, end = stmt.arg_spans[0]
+            name = stmt.text[start:end].strip()
+            while name.startswith("(") and name.endswith(")"):
+                name = name[1:-1].strip()
+        else:
+            continue
+        if name.upper() not in closed:
+            diags.error(stmt.line, f"Could not find DataTable {name}.", stmt.file)
 
 
 def check_table_structure(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
@@ -304,3 +317,35 @@ def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> No
                 diags.error(0, f"Duplicate field name {f.name} in DataTable {table.name}.")
             else:
                 seen.add(f.name)
+
+
+def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
+    """`Can't assign units to %s, it must be declared Public or referenced as a source in a Data
+    Table.` (all four loggers, checked after pass 2 like the table finalisation): a `Units`
+    target whose base name is not a `Public`/`Dim` variable of a plain type or an `Alias` name,
+    wherever declared. Oracle, 2026-09-27 (`docs/checker.md` "Units targets"): `Units D = m` on a
+    `Dim D` that no table uses compiles; `Const`s, undeclared names, `Sub` parameters,
+    `StructureType`-typed variables and table field names (`P_Avg`) are all rejected; the name
+    is echoed as written, the base name for `Units Nope(1)`."""
+    struct_types = {st.args[0].name.upper() for st in program.statements
+                    if isinstance(st, S.Instruction)
+                    and st.keyword.upper() in ("STRUCTURETYPE", "OBJECTTYPE")
+                    and st.args and isinstance(st.args[0], S.Name)}
+    allowed: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+            allowed |= {v.name.upper() for v in st.vars
+                        if not (v.type and v.type in struct_types)}
+        elif isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS":
+            allowed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Name)}
+    in_struct = False
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if kw in ("STRUCTURETYPE", "OBJECTTYPE", "ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
+            in_struct = not kw.startswith("END")
+        if in_struct or kw != "UNITS" or not st.args:
+            continue  # inside a `StructureType`, `Units` names a member (`structuretype_1.CR6`)
+        target = st.args[0]
+        if isinstance(target, (S.Name, S.Index)) and target.name.upper() not in allowed:
+            diags.error(st.line, f"Can't assign units to {target.name}, it must be declared Public "
+                        "or referenced as a source in a Data Table.", st.file)

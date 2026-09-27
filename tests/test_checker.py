@@ -31,6 +31,12 @@ def wrapped(body: str) -> str:
     return PROG.format(body=body)
 
 
+def wrapped_bare(body: str) -> str:
+    """`wrapped` without its own `Public X` line, for tests that declare `X` themselves (a second
+    `Public X` is itself an error: `X already declared as a variable.`)."""
+    return PROG.split("\n", 1)[1].format(body=body)
+
+
 # ------------------------------------------------------------------ structure.py
 
 
@@ -81,7 +87,7 @@ def test_nested_datatable_reports_datatable_without_endtable():
         "  Sample (1,X,FP2)\n"
         "EndTable\n"
         "EndTable\n"
-    ) + wrapped("    CallTable A\n    CallTable B\n")
+    ) + wrapped_bare("    CallTable A\n    CallTable B\n")
     result = compile_text(text)
     assert messages_of(result) == ["DataTable without EndTable."]
     assert result.diagnostics.errors[0].line == 4
@@ -99,13 +105,13 @@ def test_nested_datatable_extra_endtable_reports_only_one_error():
         "EndTable\n"
         "EndTable\n"
         "EndTable\n"
-    ) + wrapped("    CallTable A\n    CallTable B\n")
+    ) + wrapped_bare("    CallTable A\n    CallTable B\n")
     result = compile_text(text)
     assert messages_of(result) == ["DataTable without EndTable."]
 
 
 def test_orphan_endtable_with_no_datatable_at_all():
-    text = "Public X As Float\nEndTable\n" + wrapped("")
+    text = "Public X As Float\nEndTable\n" + wrapped_bare("")
     result = compile_text(text)
     assert messages_of(result) == ["EndTable without DataTable."]
     assert result.diagnostics.errors[0].line == 2
@@ -127,7 +133,7 @@ def test_explicit_call_to_undefined_sub():
 
 def test_implicit_call_to_declared_sub_is_fine():
     text = ("Public X As Float\nSub MySub(a As Float)\n  X = a\nEndSub\n" +
-            wrapped("    MySub(5)\n"))
+            wrapped_bare("    MySub(5)\n"))
     result = compile_text(text)
     assert result.diagnostics.errors == []
 
@@ -248,7 +254,7 @@ def test_duplicate_alias_name_two_sources_same_target():
     # own line, all four loggers (`t.cr6` probes, `CR6Comp.exe`/`cr1000xcomp.exe`/`cr300comp.exe`/
     # `cr350comp.exe`).
     result = compile_text(
-        "Public X As Float\nPublic Y As Float\nAlias X = Foo\nAlias Y = Foo\n" + wrapped(""))
+        "Public X As Float\nPublic Y As Float\nAlias X = Foo\nAlias Y = Foo\n" + wrapped_bare(""))
     assert messages_of(result) == ["Duplicate Alias Name: Foo."]
     assert result.diagnostics.errors[0].line == 4
 
@@ -257,7 +263,7 @@ def test_duplicate_alias_same_source_two_names():
     # The *source* `X` is aliased twice under two different names -- oracle-confirmed plain
     # `Duplicate Alias` (no name, no trailing period) on the second statement's own line, same on
     # all four loggers.
-    result = compile_text("Public X As Float\nAlias X = Foo\nAlias X = Bar\n" + wrapped(""))
+    result = compile_text("Public X As Float\nAlias X = Foo\nAlias X = Bar\n" + wrapped_bare(""))
     assert messages_of(result) == ["Duplicate Alias"]
     assert result.diagnostics.errors[0].line == 3
 
@@ -301,7 +307,7 @@ def test_trailing_text_after_a_complete_as_clause_is_silently_ignored():
     # before the next comma (or end of line) is discarded, not rejected -- `Y` is still declared
     # normally afterwards.
     result = compile_text(
-        "Public X As Long asX String, Y As Float\n" + wrapped("    Y = 1\n")
+        "Public X As Long asX String, Y As Float\n" + wrapped_bare("    Y = 1\n")
     )
     assert result.diagnostics.errors == []
 
@@ -315,26 +321,26 @@ def test_trailing_text_after_a_complete_as_clause_is_silently_ignored():
 
 def test_oversized_array_dimension_is_rejected():
     # tests/corpus/fuzz/cr6/hang/dd9cc650482d.CR6, minimized: >2147483647 (INT32_MAX).
-    result = compile_text("Public X(999999999999) As Long\n" + wrapped(""))
+    result = compile_text("Public X(999999999999) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == [
         "Illegally dimension: Public X(999999999999) As Long"
     ]
 
 
 def test_zero_array_dimension_is_rejected():
-    result = compile_text("Public X(0) As Long\n" + wrapped(""))
+    result = compile_text("Public X(0) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == ["Illegally dimension: Public X(0) As Long"]
 
 
 def test_negative_array_dimension_is_rejected():
-    result = compile_text("Public X(-5) As Long\n" + wrapped(""))
+    result = compile_text("Public X(-5) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == ["Illegally dimension: Public X(-5) As Long"]
 
 
 def test_max_int32_array_dimension_is_accepted():
     # The boundary itself (INT32_MAX) is not this checker's concern (the real compiler crashes on
     # it, `docs/checker.md`); a comfortably-legal size stays accepted.
-    result = compile_text("Public X(2000000) As Long\n" + wrapped(""))
+    result = compile_text("Public X(2000000) As Long\n" + wrapped_bare(""))
     assert result.diagnostics.errors == []
 
 
@@ -343,7 +349,7 @@ def test_illegally_dimension_echoes_the_whole_declaration_verbatim():
     # offending variable, and even a fully-valid sibling variable on the same line doesn't change
     # that -- `docs/checker.md`.
     result = compile_text(
-        "Public A As Long, X(0) As Long, B As Float\n" + wrapped("")
+        "Public A As Long, X(0) As Long, B As Float\n" + wrapped_bare("")
     )
     assert messages_of(result) == [
         "Illegally dimension: Public A As Long, X(0) As Long, B As Float"
@@ -352,7 +358,7 @@ def test_illegally_dimension_echoes_the_whole_declaration_verbatim():
 
 def test_illegally_dimension_fires_once_per_bad_dimension():
     # oracle-confirmed: two illegal dimensions on the same variable report the message twice.
-    result = compile_text("Public X(0,-1) As Long\n" + wrapped(""))
+    result = compile_text("Public X(0,-1) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == [
         "Illegally dimension: Public X(0,-1) As Long",
         "Illegally dimension: Public X(0,-1) As Long",
@@ -368,20 +374,20 @@ def test_array_dimension_count_over_three_is_rejected():
 
 
 def test_array_dimension_count_echoes_first_dimension_raw_text():
-    result = compile_text("Public X(1 + 1,2,2,2) As Long\n" + wrapped(""))
+    result = compile_text("Public X(1 + 1,2,2,2) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == ["Variable X(1 + 1 dimension exceeds max of 3."]
 
 
 def test_array_dimension_count_checked_before_value():
     # oracle-confirmed: a 4th dimension's own value being illegal doesn't change the message --
     # the dimension-count check runs first and wins.
-    result = compile_text("Public X(1,1,1,2147483648) As Long\n" + wrapped(""))
+    result = compile_text("Public X(1,1,1,2147483648) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == ["Variable X(1 dimension exceeds max of 3."]
 
 
 def test_array_dimension_count_reports_once_per_over_dim_variable():
     result = compile_text(
-        "Public X(1,1,1,1) As Long, Y(2,2,2,2) As Long\n" + wrapped("")
+        "Public X(1,1,1,1) As Long, Y(2,2,2,2) As Long\n" + wrapped_bare("")
     )
     assert messages_of(result) == [
         "Variable X(1 dimension exceeds max of 3.",
@@ -390,7 +396,7 @@ def test_array_dimension_count_reports_once_per_over_dim_variable():
 
 
 def test_array_dimension_named_by_a_const_is_accepted():
-    result = compile_text("Const N = 5\nPublic X(N) As Long\n" + wrapped(""))
+    result = compile_text("Const N = 5\nPublic X(N) As Long\n" + wrapped_bare(""))
     assert result.diagnostics.errors == []
 
 
@@ -419,7 +425,7 @@ def test_bare_do_loop_is_not_flagged_as_missing_parameter():
 
 def test_bare_endsub_is_not_flagged_as_missing_parameter():
     # code 14 (`EndSub`'s own `none`-kind marker) is not a real argument slot: `_real_params`.
-    text = "Public X As Float\nSub MySub()\nEndSub\n" + wrapped("")
+    text = "Public X As Float\nSub MySub()\nEndSub\n" + wrapped_bare("")
     result = compile_text(text)
     assert result.diagnostics.errors == []
 
