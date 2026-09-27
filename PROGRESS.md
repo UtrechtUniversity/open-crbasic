@@ -675,7 +675,12 @@ coordinator commits it. Tick items here as they land.
 - [x] All loggers: a line of only `(`, `)`, `,` compiles silently (was a false reject; oracle-
       confirmed on all four; `parser.py`, `tests/test_paren_only_line.py`). chm exact cr6 378 ->
       380, cr1000x 400 -> 402, cr300/cr350 unchanged.
-- [ ] CR6/CR1000X: `No Matching, or out of place ) in expression` is pass 1
+- [x] CR6/CR1000X: `No Matching, or out of place ) in expression` is pass 1 when the first token
+      is known and every name resolves; otherwise pass 2 as the generic fallback (unknown first
+      token) or `Invalid symbol in expression` (later unknown name) (`structure.py`,
+      `profiles.known_first_word_pass1`, `tests/test_unclosed_paren_pass.py`). chm exact cr6 381,
+      cr1000x 403. Not covered: an unclosed call statement (`Sin(1`, `foo(1`), which our parser
+      accepts as a `Call`; CR300/CR350 (report it on every line, with `x is not defined.` lines).
 - [ ] CR6/CR1000X: `Could not find %s.` for `name.`/`name.x` (pass 2, before the fallback)
 - [x] Re-measure fuzz false-accept rates (2026-09-27, tree at `69b05f3`, `tools/fuzz.py --count
       300`, false_reject 0 in every run): cr6 seed 42 false_accept 30 (exact 235, message_diff

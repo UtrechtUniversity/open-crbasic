@@ -2057,6 +2057,14 @@ the fallback). `) X banana`, `) + 3`, `,x` and `(X)` get the normal fallback. Th
 CR300 prints every line instead (`Q is not defined.`, `foo is not defined.`, fallbacks with the
 newline echo): its pass model differs and is not covered by this section.
 
+Unclosed `(` (probes `Pi = (1`, `foo = 4 * ATN( 1`, `Pi = foo(1`, each with the pass-1 `Dim Z
+banana` and, separately, with a pass-2 `X = Q` on the line before): known first token and every
+name resolves -> pass-1 `No Matching )`; unknown first token -> pass-2 `Invalid, or out of place
+expression: <echo>.`; known first token but a later unknown name -> pass-2 `Invalid symbol in
+expression: <echo>.` (whole statement echo). Implemented (`structure.py` `_unclosed_paren_kind`).
+An unclosed call statement is different: `Sin(1` -> pass-1 `No Matching )`, `foo(1` -> pass-2
+fallback; our parser accepts both as a `Call` (not yet handled).
+
 To implement: in `structure.py`, emit the fallback for known-first-token statements from
 `check_pass1` instead of `check_pass2`; accept paren/comma-only lines; move `No Matching )` to
 pass 1; add `Could not find %s.` for `name.` in pass 2. Gate every step on zero false rejects.

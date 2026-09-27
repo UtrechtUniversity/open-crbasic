@@ -201,6 +201,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     all_dims = symbols.declared_all_dims(program, env)
     seen_alias_names: set[str] = set()
     seen_alias_sources: dict[str, set[tuple]] = {}
+    known: set[str] | None = None
 
     for stmt in program.statements:
         kw = _keyword(stmt)
@@ -218,6 +219,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
+            if stmt.reason == _UNCLOSED_PAREN_EXPR and profile.known_first_word_pass1:
+                if known is None:
+                    known = expressions._known_names(program, profile)
+                if _unclosed_paren_kind(stmt.text, known) == "pass1":
+                    diags.error(stmt.line,
+                                f"No Matching, or out of place ) in expression: {stmt.text}.",
+                                stmt.file, show_file=False)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
             _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
                                seen_alias_sources)
@@ -457,8 +465,18 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 # was implemented for (an assignment's own RHS run off the end of the line); a call
                 # nested inside a bare statement's own arguments echoes a narrower substring the
                 # real compiler doesn't derive from the whole statement text, not attempted.
-                diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.",
-                            stmt.file, show_file=False)
+                kind = (_unclosed_paren_kind(stmt.text, known)
+                        if profile.known_first_word_pass1 else "pass1")
+                if kind == "symbol":
+                    diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file,
+                                show_file=False)
+                elif kind == "fallback":
+                    diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol),
+                                stmt.file, show_file=False)
+                else:
+                    diags.error(stmt.line,
+                                f"No Matching, or out of place ) in expression: {stmt.text}.",
+                                stmt.file, show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
                             show_file=False)
@@ -511,6 +529,24 @@ def _leftover_first_name_known(text: str, known: set[str]) -> bool:
             return t.upper in known
     return True
 
+
+
+def _unclosed_paren_kind(text: str, known: set[str]) -> str:
+    """Which message an unclosed `(` statement gets on CR6/CR1000X (`docs/checker.md` "Pass-1
+    fallback: statements that start with a known word"): `"pass1"` (`No Matching, or out of place
+    ) in expression: %s.`, pass 1) when the first token is a known name and every name resolves;
+    `"fallback"` (the generic pass-2 `Invalid, or out of place expression: %s.`) when the first
+    token is not a known name; `"symbol"` (pass-2 `Invalid symbol in expression: %s.`) when the
+    first name is known but a later one is not."""
+    try:
+        tokens = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return "fallback"
+    if not tokens or tokens[0].kind != "IDENT" or tokens[0].upper not in known:
+        return "fallback"
+    if any(t.kind == "IDENT" and t.upper not in known for t in tokens):
+        return "symbol"
+    return "pass1"
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
     """When `instr_rules.check`'s required-parameter-shortfall message (`Invalid or missing
