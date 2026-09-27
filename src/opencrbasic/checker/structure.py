@@ -1186,6 +1186,10 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
             )
             continue
         for d in v.dims:
+            if isinstance(d, S.String):
+                # `Public Q("fuzz")`, pass 1, all four loggers (oracle, 2026-09-27)
+                diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
+                continue
             try:
                 val = consteval.value_of(d, env)
             except consteval.NotConstant:

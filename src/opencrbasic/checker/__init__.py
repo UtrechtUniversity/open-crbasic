@@ -168,6 +168,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     if not profile.early_warnings_gated:
         _run_pass(warnings.check_early, program, profile, diags, env)
 
+    if not diags.errors:
+        # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
+        # here skips tier B (`instr_data.check_stage2a`).
+        _run_pass(instr_data.check_stage2a, program, profile, diags, env)
     if not diags.errors or profile.single_pass:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
         # fallback (`structure.check_pass2`) and the undefined-symbol/constant-only-family checks

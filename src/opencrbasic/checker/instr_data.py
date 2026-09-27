@@ -19,9 +19,11 @@ section).
 
 from __future__ import annotations
 
+from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
+from . import symbols
 
 # Instructions the real compiler's shared "must be inside a DataTable" validator checks --
 # `%s must be used inside a table declaration.` -- keyed by instruction-table keyword (upper case),
@@ -381,3 +383,95 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile, diags: 
         elif kw in _MENU_CHILDREN and not in_menu and kw in profile.instructions:
             name = profile.instructions[kw]["name"]
             diags.error(st.line, f"{name} must be used within DisplayMenu..EndMenu.", st.file)
+
+
+_TABLE_OUTPUT = ("TOTALIZE", "AVERAGE", "MAXIMUM", "MINIMUM", "SAMPLEMAXMIN", "STDDEV", "MOMENT",
+                 "SAMPLE", "COVARIANCE", "MEDIAN")
+_OWN_VARIABLE_CHECK = ("ADDPRECISE", "MOVEPRECISE")  # `instr_rules.check_precision_variable`
+_INT32_MIN = -2147483648
+
+
+def _has_names(expr) -> bool:
+    """Whether `expr` references any name (variable, constant, function or symbol)."""
+    if isinstance(expr, (S.Name, S.Index, S.Member)):
+        return True
+    if isinstance(expr, S.Unary):
+        return _has_names(expr.operand)
+    if isinstance(expr, S.Binary):
+        return _has_names(expr.left) or _has_names(expr.right)
+    return False
+
+
+def _reps_value(expr, env) -> int | None:
+    """A `Reps` argument's value as the real compiler reads it: a string or a value outside the
+    32-bit range becomes -2147483648 (oracle: `Sample("fuzz",...)`, `Maximum (999999999999,...)`)."""
+    if isinstance(expr, S.String):
+        return _INT32_MIN
+    try:
+        value = consteval.value_of(expr, env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    value = int(value)
+    return value if -2**31 <= value < 2**31 else _INT32_MIN
+
+
+def check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env) -> bool:
+    """CR6/CR1000X instruction checks that run after pass 1 but before pass 2's expression checks
+    (oracle, 2026-09-27: each is suppressed by a pass-1 error, and each suppresses a pass-2
+    `Invalid symbol in expression` elsewhere, even on an earlier line). Returns whether anything
+    was reported (then the caller skips pass 2's expression tier).
+
+    - A constant (no names at all) where a destination variable is required (type code 8):
+      `Battery((1+2))` -> `Invalid Variable or Array: (1+2).`, `PanelTemp(3,15000)` -> `... 3.`.
+    - A table-output `Reps` below 1: `Sample (0,X,FP2)` -> `Illegal Reps 0`; a source running past
+      its array: `Sample (3,A(4),FP2)` with `A(5)` -> `Variable A out of bounds.` and `Variable A,
+      index 4, reps 3, out of bounds.`. The first such table statement ends the stage.
+    """
+    if profile.name not in ("cr6", "cr1000x"):
+        return False
+    from . import expressions
+    reported = False
+    dims = symbols.declared_all_dims(program, env)
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        record = profile.instructions.get(kw)
+        if not record:
+            continue
+        if kw not in _OWN_VARIABLE_CHECK:
+            for i, code in enumerate(record["params"][:len(st.args)]):
+                arg = st.args[i]
+                if code == 8 and arg is not None and not isinstance(arg, S.String) \
+                        and not _has_names(arg):
+                    diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
+                                st.file)
+                    reported = True
+        if kw in _TABLE_OUTPUT and len(st.args) >= 2:
+            reps = _reps_value(st.args[0], env)
+            if reps is not None and reps < 1:
+                diags.error(st.line, f"Illegal Reps {reps}", st.file)
+                return True
+            source = st.args[1]
+            if reps is None or not isinstance(source, (S.Name, S.Index)):
+                continue
+            shape = dims.get(source.name.upper())
+            if shape is None or len(shape) != 1:
+                continue
+            start = 1
+            if isinstance(source, S.Index):
+                if len(source.args) != 1 or source.args[0] is None:
+                    continue
+                start = _reps_value(source.args[0], env)
+                if start is None:
+                    continue
+            if start + reps - 1 > shape[0]:
+                name = next((v.name for d in program.statements if isinstance(d, S.Declaration)
+                             for v in d.vars if v.name.upper() == source.name.upper()), source.name)
+                diags.error(st.line, f"Variable {name} out of bounds.", st.file)
+                diags.error(st.line, f"Variable {name}, index {start}, reps {reps}, out of bounds.",
+                            st.file)
+                return True
+    return reported

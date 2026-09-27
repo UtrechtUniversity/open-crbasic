@@ -2280,3 +2280,21 @@ line 3; `program.last_line`). This alone made several hundred shrunk fuzz reprod
 it up to the next comma is ignored (`= Spare2_1  3`, `= Sp + 1`, `= Sp As Long` compile; in
 `= A1 B1` only `A1` is declared). `Alias X = 3` -> `Variable name 3 illegal, starts with a
 number.` (pass 1, all four loggers). The first form was a fuzz-found CR1000X false reject.
+
+## Stage 2a: instruction checks between pass 1 and pass 2 (2026-09-27)
+
+CR6/CR1000X (`instr_data.check_stage2a`). Oracle: these are suppressed by a pass-1 error, and
+they suppress pass 2's expression errors anywhere in the file, even on an earlier line (`X = Q`
+on line 7 then `Battery((1+2))` on line 8 prints only the `Battery` error).
+
+- A constant with no names where a destination variable is required (type code 8): `Battery(5)`
+  -> `Invalid Variable or Array: 5.`, `Battery((1+2))` -> `... (1+2).`; `Battery(X+1)` is
+  accepted. These accumulate. `AddPrecise`/`MovePrecise` keep their own pass-1 check.
+- Table-output `Reps` below 1: `Sample (0,X,FP2)` -> `Illegal Reps 0` (no period); a string or
+  out-of-range value reads as -2147483648. A source past its 1-D array: `Sample (3,A(4),FP2)`
+  with `A(5)` -> `Variable A out of bounds.` and `Variable A, index 4, reps 3, out of bounds.`
+  (a scalar counts as size 1). The first such table statement ends the stage.
+
+CR300 differs (`Illegal destination variable type, expecting Float.`; no `Illegal Reps` before
+its other errors) and is not modelled. `Public Q("fuzz")` -> `Illegally dimension: Public
+Q("fuzz")` (pass 1, all four loggers). Replay: 647 of 1469 exact, no false rejects.
