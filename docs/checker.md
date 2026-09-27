@@ -2081,15 +2081,21 @@ declared variable/parameter/`Const`/`Alias` name or predefined symbol (`pass1_op
 | extra `)` (`Pi = (1))`) | `Incomplete expression: %s.` |
 | assignment ends with `(` open (`Pi = (1`) | `No Matching, or out of place ) in expression: %s.` |
 | non-assignment ends with `(` open (`1 + (2`) | fallback |
+| `,` outside a call's parentheses (`(-1,Second,Sunday)`, `Pi, 1, 2`, `(1,Undeclared,FP2)`) | fallback; `No Matching )` inside a group in an assignment (`Pi = (1, 2)`) |
+| statement starts with `(` and a complete group is followed by an operand (`(Pi + 1) 2`) | fallback |
+| function name without `(` that takes arguments (`Sin bar`, `X = Sin bar`) | `Expression expects ( : %s.` |
 
 Pass 2 then reports a deferred assignment as `Invalid symbol in expression: %s.` (`Pi = Q bar`,
 `Pi = Not bar`) and a deferred non-assignment as the fallback (`Pi + Q`, `foo bar`). A bare call
 statement whose name is a pass-1 operand (`Pi`, `Pi(1)`) is a pass-1 fallback. Oracle-matched on
 107 of 124 probes on both CR6 and CR1000X; the 17 others are the shapes below, which the scan
-leaves unclassified (old behaviour). chm exact: cr6 381 -> 397, cr1000x 403 -> 419.
+leaves unclassified (old behaviour). chm exact: cr6 381 -> 397, cr1000x 403 -> 419. The comma,
+leading-`(` and function-name rows came second (CR6 134 of 149 probes; chm exact cr6 408,
+cr1000x 430). This subsumes "Missing-parameter followup": a leftover `(args)` line is reported
+exactly when the scan finds a syntax error before an unknown name (`(ResultTD,COMC1,...)`
+silent, `(1,Undeclared,FP2,False)` reported -- oracle; an older unit test assumed silent).
 
-Not done: a function name without `(` (`Sin`, `Sin bar`, `X = Sin bar`: `Expression expects ( :
-%s.`, pass 1); `Could not find %s.` for `Pi.`/`X.Y` (pass 2, before the fallback); index
+Not done: `Could not find %s.` for `Pi.`/`X.Y` (pass 2, before the fallback); index
 parentheses at statement start (`Pi(1) bar` fallback, `Pi(1 = 2` -> `Invalid assignment in
 expression: %s.`, both pass 1); an unclosed call statement (`Sin(1` pass-1 `No Matching )`);
 `Scan bar` (`Invalid symbol in expression: bar.`); `Exit bar` (`Illegal END or EXIT bar.`).

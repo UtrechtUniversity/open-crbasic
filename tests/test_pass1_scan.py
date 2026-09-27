@@ -53,6 +53,14 @@ PASS1 = [
     ("  Pi = (1))", "Incomplete expression:   Pi = (1))."),
     ("  Pi = Sin(1) bar", "Incomplete expression:   Pi = Sin(1) bar."),
     ("  Not 1 2", "Incomplete expression:   Not 1 2."),
+    ("(-1,Second,Sunday)", "Invalid, or out of place expression: (-1,Second,Sunday)."),
+    ("(Pi,1,2)", "Invalid, or out of place expression: (Pi,1,2)."),
+    ("Pi, 1, 2", "Invalid, or out of place expression: Pi, 1, 2."),
+    ("(1)", "Invalid, or out of place expression: (1)."),
+    ("(Pi + 1) 2", "Invalid, or out of place expression: (Pi + 1) 2."),
+    ("Pi = (1, 2)", "No Matching, or out of place ) in expression: Pi = (1, 2)."),
+    ("  Sin bar", "Expression expects ( :   Sin bar."),
+    ("  X = Sin bar", "Expression expects ( :   X = Sin bar."),
 ]
 
 PASS2 = [
@@ -62,6 +70,8 @@ PASS2 = [
     ("  Pi = Not bar", "Invalid symbol in expression:   Pi = Not bar."),
     ("  Pi = Sin(Q) bar", "Invalid symbol in expression:   Pi = Sin(Q) bar."),
     ("  Pi = Q + 1 +", "Invalid symbol in expression:   Pi = Q + 1 +."),
+    ("(Q,1,2)", "Invalid, or out of place expression: (Q,1,2)."),
+    ("Q, 1, 2", "Invalid, or out of place expression: Q, 1, 2."),
 ]
 
 

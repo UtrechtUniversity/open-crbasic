@@ -679,9 +679,11 @@ coordinator commits it. Tick items here as they land.
       pass 2 -- implemented as a left-to-right pass-1 scan (`structure.py` `_pass1_scan`,
       `docs/checker.md` "The scan", `tests/test_pass1_scan.py`). chm exact cr6 381 -> 397,
       cr1000x 403 -> 419 (measured alone in a clean worktree), zero false rejects.
+- [x] Pass-1 scan, second step: commas outside a call, statements starting with `(`, function
+      names without `(` (chm exact cr6 397 -> 408, cr1000x 419 -> 430).
 - [ ] CR6/CR1000X: remaining pass-1 scan shapes (`docs/checker.md` "The scan", "Not done"):
-      function name without `(`, index parentheses at statement start, unclosed call statement,
-      `Scan bar`, `Exit bar`
+      index parentheses at statement start, unclosed call statement (`Sin(1`), `Scan bar`,
+      `Exit bar`, `Could not find %s.`
 - [x] All loggers: a line of only `(`, `)`, `,` compiles silently (was a false reject; oracle-
       confirmed on all four; `parser.py`, `tests/test_paren_only_line.py`). chm exact cr6 378 ->
       380, cr1000x 400 -> 402, cr300/cr350 unchanged.

@@ -433,7 +433,7 @@ def test_missing_parameter_followup_reports_leftover_continuation_line():
     # compiler reports both, oracle-confirmed.
     text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
             "    Average\n(1,TCTemp,FP2,False)\n  NextScan\nEndProg\n")
-    assert messages_of(compile_text(text)) == [
+    assert printed_messages_of(compile_text(text)) == [
         "Invalid or missing parameter.",
         "Invalid, or out of place expression: (1,TCTemp,FP2,False).",
     ]
@@ -441,10 +441,17 @@ def test_missing_parameter_followup_reports_leftover_continuation_line():
 
 def test_missing_parameter_followup_suppressed_when_first_name_undeclared():
     # `getdatarecord_3.CR6` vs `getdatarecord_1.CR6` (`docs/checker.md`): the real compiler stays
-    # silent about the leftover line when its own first identifier never resolves.
+    # silent about the leftover line when an unknown name comes before any syntax error. Oracle,
+    # 2026-09-27: `(Undeclared,1,FP2,False)` silent, but `(1,Undeclared,FP2,False)` is reported
+    # (the comma after `1` is the syntax error; `docs/checker.md` "The scan").
     text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
-            "    Average\n(1,Undeclared,FP2,False)\n  NextScan\nEndProg\n")
+            "    Average\n(Undeclared,1,FP2,False)\n  NextScan\nEndProg\n")
     assert messages_of(compile_text(text)) == ["Invalid or missing parameter."]
+    text = text.replace("(Undeclared,1,", "(1,Undeclared,")
+    assert printed_messages_of(compile_text(text)) == [
+        "Invalid or missing parameter.",
+        "Invalid, or out of place expression: (1,Undeclared,FP2,False).",
+    ]
 
 
 def test_missing_parameter_followup_checks_only_the_first_name():
@@ -452,7 +459,7 @@ def test_missing_parameter_followup_checks_only_the_first_name():
     # does not suppress the followup -- only the first one gates it.
     text = ("Public TCTemp As Float\nBeginProg\n  Scan (1,Sec,3,1)\n"
             "    Average\n(1,TCTemp,FP2,Undeclared)\n  NextScan\nEndProg\n")
-    assert messages_of(compile_text(text)) == [
+    assert printed_messages_of(compile_text(text)) == [
         "Invalid or missing parameter.",
         "Invalid, or out of place expression: (1,TCTemp,FP2,Undeclared).",
     ]
@@ -581,6 +588,11 @@ def test_table_called_is_not_warned():
 
 def messages_of(result) -> list[str]:
     return [d.message for d in result.diagnostics.errors]
+
+
+def printed_messages_of(result) -> list[str]:
+    """Error messages in printed order (by line), as `CompileResult.result_lines` sorts them."""
+    return [d.message for d in sorted(result.diagnostics.errors, key=lambda d: d.line)]
 
 
 # ------------------------------------------------------------------ file-origin prefix (diagnostics.py)

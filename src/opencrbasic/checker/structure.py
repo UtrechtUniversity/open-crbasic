@@ -624,7 +624,14 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             return ("pass1", "fallback")
         if u == "NOT":
             return _scan_expr(toks, 1, operands, functions, assign=False, start_operand=False)
-        if u in functions or u not in operands:
+        if u in functions and u not in operands:
+            if i < len(toks) and toks[i].kind == "OP" and toks[i].text == "(":
+                return _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False,
+                                  unclosed="no_matching")
+            if _bare_function_needs_paren(u, functions):
+                return ("pass1", "expects_paren")
+            return None
+        if u not in operands:
             return None
         if i < len(toks) and toks[i].kind == "OP" and toks[i].text == "(":
             return None
@@ -632,6 +639,9 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         pass
     elif first.kind == "OP" and first.text == "-" and len(toks) > 1 and toks[1].kind == "NUMBER":
         i = 2
+    elif first.kind == "OP" and first.text == "(":
+        verdict = _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False)
+        return ("pass1", "fallback") if verdict == ("pass1", "incomplete") else verdict
     else:
         return None
     if i == len(toks):
@@ -642,14 +652,17 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     if nxt.kind in ("IDENT", "NUMBER", "STRING") and not (nxt.kind == "IDENT"
                                                          and nxt.upper in _BINARY_WORDS):
         return ("pass1", "fallback")
+    if nxt.kind == "OP" and nxt.text == ",":
+        return ("pass1", "fallback")
     if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
         return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
     return None
 
 
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
-               start_operand: bool) -> tuple[str, str] | None:
+               start_operand: bool, unclosed: str | None = None) -> tuple[str, str] | None:
     unknown = ("pass2", "symbol" if assign else "fallback")
+    unclosed = unclosed or ("no_matching" if assign else "fallback")
     parens: list[str] = []          # "call" or "group"
     expect_operand = not start_operand
     while i < len(toks):
@@ -665,11 +678,14 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     pass
                 elif u in _START_ERROR_WORDS:
                     return None
-                elif u in functions:
+                elif u in functions and u not in operands:
                     if not opens:
-                        return None
-                    parens.append("call")
-                    i += 1
+                        if _bare_function_needs_paren(u, functions):
+                            return ("pass1", "expects_paren")
+                        expect_operand = False
+                    else:
+                        parens.append("call")
+                        i += 1
                 elif u in operands:
                     if opens:
                         parens.append("call")
@@ -692,8 +708,10 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return ("pass1", "incomplete")
                 parens.pop()
             elif t.kind == "OP" and t.text == ",":
-                if not parens or parens[-1] != "call":
-                    return None
+                if not parens:
+                    return None if assign else ("pass1", "fallback")
+                if parens[-1] != "call":
+                    return ("pass1", "no_matching" if assign else "fallback")
                 expect_operand = True
             elif t.kind == "OP" and t.text in _BINARY_OPS:
                 expect_operand = True
@@ -707,8 +725,16 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
     if expect_operand:
         return ("pass1", "fallback") if not parens else None
     if parens:
-        return ("pass1", "no_matching") if assign else ("pass1", "fallback")
+        return ("pass1", unclosed)
     return None if assign else ("pass1", "fallback")
+
+
+def _bare_function_needs_paren(name: str, functions: dict) -> bool:
+    """`expressions._is_bare_reference_problem` without its declared-variable exemption (the
+    caller has already excluded pass-1 operands)."""
+    record = functions.get(name)
+    return bool(record) and record.get("nargs") is not None and (
+        record["nargs"] > 0 or bool(record.get("argspec")))
 
 
 def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
@@ -717,6 +743,7 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
         "incomplete": f"Incomplete expression: {stmt.text}.",
         "no_matching": f"No Matching, or out of place ) in expression: {stmt.text}.",
         "symbol": f"Invalid symbol in expression: {stmt.text}.",
+        "expects_paren": f"Expression expects ( : {stmt.text}.",
     }[kind]
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
