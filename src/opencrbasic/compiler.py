@@ -61,10 +61,12 @@ class CompileResult:
         statement of its file at or after its line (the exe prints in one top-to-bottom pass over
         the expanded program, so an included file's messages come where its `Include` is, not
         grouped by file -- oracle: `TDR_tester.CR6` on CR1000X prints `AcclimaTDRLib.crb`'s lines
-        2 and 58 before the main file's line 45)."""
-        lines = self.stmt_lines.get(d.file)
+        2 and 58 before the main file's line 45). A diagnostic without a file is the main file's
+        (`No BeginProg`, the unclosed-block messages)."""
+        file = d.file or self.program
+        lines = self.stmt_lines.get(file)
         if not lines:
-            return (self.file_order.get(d.file, 0), d.line)
+            return (self.file_order.get(file, 0), d.line)
         i = bisect.bisect_left(lines, (d.line, -1))
         index = lines[i][1] if i < len(lines) else lines[-1][1] + 1
         return (index, d.line)

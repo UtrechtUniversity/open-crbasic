@@ -150,6 +150,75 @@ _FORBIDDEN_BEFORE_BEGINPROG = frozenset({"SCAN", "DELAY"})
 
 
 
+
+def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
+                                  in_sub: bool) -> None:
+    """`CallTable` outside any `Scan` (before it, after `NextScan`, or in a `Sub`), pass 2, all four
+    loggers (oracle, 2026-09-27): a table with `DataInterval` -> `Table with DataInterval must be
+    called within Scan..NextScan.`; an auto-sized one (negative size) -> `Cannot autoallocate memory
+    for DataTable %s called outside of Scan, e.g., called by Sub.`; a fixed-size table without
+    `DataInterval` is fine. Inside a `Sub` only the second (probed) message is emitted."""
+    target = stmt.args[0] if stmt.args else None
+    if not isinstance(target, S.Name):
+        return
+    name = target.name.upper()
+    table = None
+    has_interval = False
+    for st in program.statements:
+        kw = _keyword(st)
+        if kw == "DATATABLE":
+            args = getattr(st, "args", []) or []
+            table = st if args and isinstance(args[0], S.Name) and args[0].name.upper() == name else None
+            has_interval = False
+        elif kw == "DATAINTERVAL" and table is not None:
+            has_interval = True
+        elif kw == "ENDTABLE" and table is not None:
+            break
+    if table is None:
+        return
+    size = table.args[2] if len(table.args) > 2 else None
+    auto = isinstance(size, S.Unary) and size.op == "-" or \
+        isinstance(size, S.Number) and size.value < 0
+    if has_interval and not in_sub:
+        diags.error(stmt.line, "Table with DataInterval must be called within Scan..NextScan.",
+                    stmt.file)
+    if auto and not (in_sub and has_interval):
+        diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
+                    "called outside of Scan, e.g., called by Sub.", stmt.file)
+
+def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `CallTable` outside `Scan` and the first extra `NextScan`, after the table
+    `Reps` checks and before the unclosed-block checks (oracle, 2026-09-27: an unrelated `X = Q` or
+    `Sample (0,X,FP2)` hides both; both print together; an unclosed `Do` is then not reported).
+    CR6/CR1000X report the same messages in `check_pass2`."""
+    if not profile.single_pass:
+        return
+    in_table = in_body = False
+    scans = 0
+    for stmt in program.statements:
+        if isinstance(stmt, S.SubDef):
+            in_body = True
+            continue
+        kw = _keyword(stmt)
+        if kw == "DATATABLE":
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "SCAN":
+            scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            if not scans:
+                diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
+                return
+            scans -= 1
+        elif kw == "CALLTABLE" and not in_table and (scans == 0 or in_body):
+            _check_calltable_outside_scan(stmt, program, diags, in_body)
+        if kw in _BODY_BLOCK_STARTS:
+            in_body = True
+        elif kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
+            in_body = False
+
+
 def _control_keyword(stmt: S.Stmt) -> str | None:
     """The instruction-table keyword of a control statement that may not precede `BeginProg`."""
     if isinstance(stmt, S.If):
@@ -305,9 +374,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw == "SCAN":
             scan_depth += 1
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(args) == "SCAN"):
-            if scan_depth == 0:
-                diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
-            else:
+            if scan_depth > 0:  # `NextScan with no Scan.` is later: `check_pass2`/`check_end_blocks`
                 scan_depth -= 1
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
             cond_depth += 1
@@ -500,6 +567,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # *third* `BeginProg` nested inside the second gets its own second `Multiple BeginProgs.` line
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
+    pass2_scans = 0
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for stmt in program.statements:
         if isinstance(stmt, S.SubDef):
@@ -525,6 +593,19 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_beginprog = True
         elif kw == "ENDPROG":
             in_beginprog = False
+        if kw == "SCAN":
+            pass2_scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            if pass2_scans:
+                pass2_scans -= 1
+            elif not profile.single_pass:
+                # CR6/CR1000X: pass 2, and it ends pass 2 (oracle: only the first extra `NextScan`
+                # is reported; a later `X = Q` is not). CR300/CR350: `check_scan_placement_late`.
+                diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
+                return stmt.line
+        elif kw == "CALLTABLE" and not profile.single_pass and not in_table and \
+                (pass2_scans == 0 or in_body_block):
+            _check_calltable_outside_scan(stmt, program, diags, in_body_block)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue

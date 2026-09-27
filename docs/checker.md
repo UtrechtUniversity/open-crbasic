@@ -117,7 +117,8 @@ BeginProg / Scan / X=1 / NextScan               (no EndProg) -> Compiled OK (End
 BeginProg / NextScan / Scan(...) / NextScan / EndProg        -> line 3 (the stray NextScan's own line): NextScan with no Scan.
 ```
 
-Both one-word (`NextScan`) and two-word (`Next Scan`, parsed generically as
+The stray `NextScan` is reported in pass 2 (CR6/CR1000X) or late (CR300/CR350); see "Scan
+placement" below. Both one-word (`NextScan`) and two-word (`Next Scan`, parsed generically as
 `Instruction(keyword="NEXT", args=[Name("SCAN")])` per `docs/frontend.md`) spellings are
 recognised.
 
@@ -2308,3 +2309,33 @@ cascade; a tainted `ReadOnly` keeps its own message and a tainted multi-variable
 reads `Too many parameters:  <second variable>.` (`Dim A(), B` -> `B`).
 CR300/CR350 print the same `Illegal Reps` / out-of-bounds messages, but only when nothing else
 failed, stopping at the first (`instr_data.check_table_reps_late`).
+
+## Scan placement (2026-09-27)
+
+Oracle, all four loggers unless noted. `NextScan with no Scan.` is not a pass-1 error: a pass-1
+error hides it. Only the first extra `NextScan` is reported.
+
+`CallTable` outside `Scan..NextScan` (before `Scan`, after `NextScan`, or in a `Sub`):
+
+- a table with `DataInterval` -> `Table with DataInterval must be called within Scan..NextScan.`
+  (not reported from a `Sub`);
+- a table with a negative size -> `Cannot autoallocate memory for DataTable T called outside of
+  Scan, e.g., called by Sub.`, after the first message when both apply;
+- a fixed-size table without `DataInterval` is accepted.
+
+When the two checks run:
+
+- CR6/CR1000X: both run in the pass-2 walk (`structure.check_pass2`). A stray `NextScan` ends
+  pass 2, so a later `X = Q` is not reported. A `CallTable` error accumulates with other pass-2
+  errors.
+- CR300/CR350: `structure.check_scan_placement_late` runs after the table `Reps` checks and the
+  early warnings, and before the unclosed-block checks. An unrelated `X = Q` or `Sample (0,X,FP2)`
+  hides both messages. Both messages print together. The fnotch and reachability warnings stay
+  (`CallTable never reached at run time.` follows the autoallocate error). An unclosed `Do` is no
+  longer reported. The CR300 early warnings (`profile.early_warnings_gated`) therefore run at
+  that point, not with tier C: `Illegal Reps 0` hides an fnotch warning, but `DO without LOOP.`
+  does not.
+
+After a stray `NextScan`, no statement gets a reachability warning.
+
+Replay: 771 of 1469 exact, no false rejects.

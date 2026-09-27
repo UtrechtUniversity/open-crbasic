@@ -231,9 +231,9 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             if open_depth:
                 i += 1
                 continue
-        if dead and (isinstance(stmt, S.If) or kw == "SELECT"):
-            # An unreachable `If`/`Select` (block or one-line) silences the check for the rest of
-            # the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no
+        if dead and (isinstance(stmt, S.If) or kw in ("SELECT", "NEXTSCAN")):
+            # An unreachable `If`/`Select` (block or one-line), or a stray `NextScan`, silences the
+            # check for the rest of the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no
             # warning at all; `docs/instructions.md`).
             return
         if dead:

@@ -163,8 +163,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
-    # `docs/loggers.md`): there, this same call is deferred to the tier-C gate below instead of
-    # running here unconditionally.
+    # `docs/loggers.md`): there, this same call waits until tier B and the table `Reps` checks are
+    # clean.
     if not profile.early_warnings_gated:
         _run_pass(warnings.check_early, program, profile, diags, env)
 
@@ -222,6 +222,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
+    if not diags.errors and profile.early_warnings_gated:
+        # CR300/CR350: the early warnings follow the table `Reps` checks and precede `CallTable`
+        # placement and the unclosed-block checks (oracle: `Illegal Reps 0` hides an fnotch
+        # warning; `DO without LOOP.` and a `CallTable` placement error do not).
+        _run_pass(warnings.check_early, program, profile, diags, env)
+        _run_pass(structure.check_scan_placement_late, program, profile, diags)
     if not diags.errors:
         _run_pass(structure.check_end_blocks, program, diags)
     if not diags.errors:
@@ -231,10 +237,6 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `ExciteV(Vx1,...)` (an `expressions.check` finding, tier B) on an earlier line suppresses
         # a later, otherwise-invalid `TCDiff` channel argument entirely -- no accumulation across
         # this boundary, unlike within tier B itself above.
-        if profile.early_warnings_gated:
-            # CR300/CR350 only (see the step-4 comment above): `check_early` itself is gated the
-            # same way tier C is, not run unconditionally.
-            _run_pass(warnings.check_early, program, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.

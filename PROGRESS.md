@@ -736,6 +736,18 @@ coordinator commits it. Tick items here as they land.
       seed 42 18 (227/53, 2 hangs); cr350 seed 42 22 (223/55). Seeds 45-46 not run. `fuzz.py
       --out` outside the project now works (it crashed saving reproducers before).
 
+- [x] Scan placement (all loggers, `docs/checker.md` "Scan placement",
+      `tests/test_scan_placement.py`): `CallTable` outside `Scan..NextScan` (`Table with
+      DataInterval must be called within Scan..NextScan.`, `Cannot autoallocate memory for
+      DataTable %s called outside of Scan, e.g., called by Sub.`); `NextScan with no Scan.` moved
+      out of pass 1. CR6/CR1000X: pass 2 (a stray `NextScan` ends it). CR300/CR350: a late stage
+      after the table `Reps` checks, where the early warnings now also run (`DO without LOOP.`
+      keeps an fnotch warning). File-less diagnostics now sort as main-file lines. difftest
+      unchanged, zero false rejects; replay 732 -> 773 of 1469 exact, no false rejects.
+- [x] Fuzz seed 47 (tree at `b36d911` plus the pass-2 half of the item above, `--count 300`,
+      false_reject 0): cr6 false_accept 13 (exact 250, message_diff 34), cr1000x 12 (265/22).
+      cr300/cr350 pending.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
