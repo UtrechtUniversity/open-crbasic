@@ -767,6 +767,11 @@ coordinator commits it. Tick items here as they land.
       `ExitScan`/`ContinueScan` outside their blocks; `EndSelect w/o Select` moved to pass 1
       (parser, per the decompilation). Replay 803 of 1469 exact, zero false rejects.
 
+- [x] `PulseCount`/`Quadrature`/`TimerInput` outside a `Scan` (all loggers, `docs/checker.md`
+      "Measurements that must be inside a Scan"): ends pass 2 / the CR300 late walk, no
+      reachability warning. The SDM and PipeLine-mode variants are conditional on the mode in the
+      decompilation and not done.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

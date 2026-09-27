@@ -114,3 +114,32 @@ def test_calltable_error_with_unrelated_pass2_error(logger, expected):
 def test_calltable_error_and_stray_nextscan_together(logger):
     text = table() + "BeginProg\n  CallTable T\n  Scan (1,Sec,0,0)\n  NextScan\n  NextScan\nEndProg\n"
     assert lines(text, logger) == [f"line 6: {AUTOALLOC}", "line 9: NextScan with no Scan."]
+
+
+MEASURE = {"PulseCount": "PulseCount (R,1,C1,2,0,0.01,0)",
+           "Quadrature": "Quadrature (Q2(1),C1,0,1.0)",
+           "TimerInput": "TimerInput (T(1),C1,0,2,0,usec)"}
+
+
+def measure_program(sub: str = "", body: str = "", after: str = "") -> str:
+    return (f"Public X, R, Q2(2), T(2)\nSub Foo\n{sub}EndSub\nBeginProg\n  Scan (1,Sec,0,0)\n{body}"
+            f"  NextScan\n{after}EndProg\n")
+
+
+@pytest.mark.parametrize("name,loggers", [("PulseCount", LOGGERS), ("Quadrature", LOGGERS),
+                                          ("TimerInput", ["cr6", "cr1000x"])])
+def test_measurement_outside_scan(name, loggers):
+    message = f"{name} must be used within a Scan...NextScan."
+    for logger in loggers:
+        assert lines(measure_program(after=f"  {MEASURE[name]}\n"), logger) == [f"line 7: {message}"]
+        assert lines(measure_program(sub=f"  {MEASURE[name]}\n", body="    Call Foo\n"),
+                     logger) == [f"line 3: {message}"]
+
+
+@pytest.mark.parametrize("logger,expected", [
+    ("cr6", ["line 7: PulseCount must be used within a Scan...NextScan."]),
+    ("cr300", ["line 8: Q is not defined."]),
+])
+def test_measurement_outside_scan_ends_pass2(logger, expected):
+    text = measure_program(after=f"  {MEASURE['PulseCount']}\n  X = Q\n")
+    assert lines(text, logger) == expected

@@ -208,6 +208,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     tables: dict = {}
     subs = symbols.declared_subs(program)
     stray = stray_controls(program)
+    stray.update({k: (m, True) for k, m in scan_only_outside(program).items()})
     for stmt in program.statements:
         if id(stmt) in stray:
             diags.error(stmt.line, stray[id(stmt)][0], stmt.file)
@@ -308,12 +309,38 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
     return found
 
 
+# Measurements whose compile function rejects them outside a `Scan` (including in a `Sub`) and
+# ends pass 2 (decompiled `FUN_0050e960` and `PulseCount`'s own copy; oracle, 2026-09-27).
+SCAN_ONLY = {"PULSECOUNT": "PulseCount", "QUADRATURE": "Quadrature", "TIMERINPUT": "TimerInput"}
+
+
+def scan_only_outside(program: S.Program) -> dict[int, str]:
+    """`id(stmt) -> message` for a `SCAN_ONLY` measurement outside any `Scan`."""
+    found: dict[int, str] = {}
+    scans = 0
+    in_sub = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        if isinstance(stmt, S.SubDef):
+            in_sub = True
+        elif kw in ("ENDSUB", "ENDFUNCTION"):
+            in_sub = False
+        elif kw == "SCAN":
+            scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            scans = max(0, scans - 1)
+        elif kw in SCAN_ONLY and isinstance(stmt, S.Instruction) and (in_sub or scans == 0):
+            found[id(stmt)] = f"{SCAN_ONLY[kw]} must be used within a Scan...NextScan."
+    return found
+
+
 def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int | None:
     """CR6/CR1000X pass 2 (`stray_controls`); returns the line pass 2 stops at, if any. CR300/CR350
     report these in `check_scan_placement_late`."""
     if profile.single_pass:
         return None
     found = stray_controls(program)
+    found.update({k: (m, True) for k, m in scan_only_outside(program).items()})
     for stmt in program.statements:
         if id(stmt) in found:
             message, stops = found[id(stmt)]

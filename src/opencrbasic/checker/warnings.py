@@ -14,7 +14,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
-from . import instr_rules
+from . import instr_rules, structure
 
 
 def _table_arg_name(stmt: S.Instruction) -> str | None:
@@ -232,6 +232,8 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             if open_depth:
                 i += 1
                 continue
+        if dead and kw in structure.SCAN_ONLY:
+            return  # its compile error ends pass 2 before the reachability check (oracle)
         if dead and (isinstance(stmt, S.If) or kw in ("SELECT", "NEXTSCAN")):
             # An unreachable `If`/`Select` (block or one-line), or a stray `NextScan`, silences the
             # check for the rest of the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no

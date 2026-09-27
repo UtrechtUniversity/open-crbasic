@@ -2410,3 +2410,17 @@ Oracle, all four loggers (`structure.stray_controls`, `tests/test_stray_controls
 Not modelled: an unresolved name earlier in the same `Scan` (`X = Q`, `Battery(Q)`) hides the
 parser's `EndSelect w/o Select`. Pass 2 then reports the generic `IF or SELECT statement
 illegally has SCAN...` and `END IF without IF...` lines.
+
+## Measurements that must be inside a Scan (2026-09-27)
+
+`PulseCount`, `Quadrature` and `TimerInput` outside any `Scan` (before `BeginProg`, after
+`NextScan`, or in a `Sub`) get `%s must be used within a Scan...NextScan.` (`PulseCount` spelled
+so, not with the table's `Pulsecount`). Their compile function returns -1 (decompiled
+`FUN_0050e960` and `PulseCount`'s own copy), which ends the placement loop. So CR6/CR1000X stop
+pass 2 there, no reachability warning is printed for them, and CR300/CR350 stop the late walk.
+`TimerInput` does not exist on CR300/CR350. Oracle, all four loggers
+(`tests/test_scan_placement.py`).
+
+Not implemented (conditional on the program's mode in the decompilation):
+`SDM instruction must be in Scan..NextScan, unless SequentialMode is used.` and `%s not allowed
+outside of Scan..NextScan in PipeLine Mode.` (`CDM_*`, `AVW200`), `No Measurements in SubScan.`
