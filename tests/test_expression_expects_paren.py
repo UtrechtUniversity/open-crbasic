@@ -106,12 +106,11 @@ def test_bare_name_as_a_call_statement_alone_on_its_own_line():
     assert messages_of(result) == ["Expression expects ( :     TCPOpen."]
 
 
-def test_call_statement_with_explicit_empty_parens_keeps_old_arity_message():
-    # `TCPOpen()` (real parens, on the same line, zero args) is a genuine arity shortfall, not a
-    # bare reference -- `TCPOpen` (`nargs=3`) is in `_ARITY_MIN_SAFE`, so this keeps the existing
-    # `Expression expects ,` message, unchanged by this session's change.
+def test_call_statement_with_explicit_empty_parens_is_the_generic_fallback():
+    # `TCPOpen()` (real parens, zero args) is not a bare reference; oracle, CR6, 2026-09-27:
+    # `Invalid, or out of place expression:     TCPOpen().` (same for `SerialFlush()`, `X = Sin()`).
     result = compile_text(wrapped("    TCPOpen()\n"))
-    assert messages_of(result) == ["Expression expects , :     TCPOpen()."]
+    assert messages_of(result) == ["Invalid, or out of place expression:     TCPOpen()."]
 
 
 # ------------------------------------------------------------------ Instruction arguments

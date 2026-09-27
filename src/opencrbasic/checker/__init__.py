@@ -168,7 +168,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     if not profile.early_warnings_gated:
         _run_pass(warnings.check_early, program, profile, diags, env)
 
-    if not diags.errors:
+    if not diags.errors or profile.single_pass:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
         # fallback (`structure.check_pass2`) and the undefined-symbol/constant-only-family checks
         # on a *recognised* instruction's own arguments (`expressions.check`) freely accumulate
@@ -180,6 +180,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         pass2_start = len(diags.items)
         cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
         _run_pass(structure.check_block_closers, program, profile, diags)
+        _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
         _run_pass(expressions.check, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was

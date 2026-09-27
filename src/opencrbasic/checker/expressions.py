@@ -850,6 +850,10 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if nargs is None:
         return None
     n = len(args)
+    if n == 0 and (nargs > 0 or record.get("argspec")):
+        # `X = Int()`, `SerialFlush()`: the generic fallback on the whole statement, pass 1, all
+        # four loggers (oracle, 2026-09-27).
+        return "empty"
     if n < nargs and _ARITY_MIN_SAFE.get(name.upper()) == nargs:
         return "few"
     if n > nargs and _ARITY_MAX_SAFE.get(name.upper()) == nargs:
@@ -901,6 +905,9 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
 
 
 def _arity_message(kind: str, text: str, profile) -> str:
+    if kind == "empty":
+        sep = "\n" if profile.fallback_echo_newline else ""
+        return f"Invalid, or out of place expression: {text}{sep}."
     verb = ("Expression expects , : " if kind == "few"
             else "No Matching, or out of place ) in expression: ")
     if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
@@ -1021,6 +1028,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
       alone rather than guessed at).
     """
     declared_variables = frozenset(symbols.declared_variable_names(program))
+    known: set[str] | None = None
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
             for i, arg in enumerate(stmt.args):
@@ -1031,6 +1039,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     diags.error(stmt.line, msg, stmt.file)
                     break
                 problem = _find_arity_problem(arg, profile)
+                if problem == "empty":
+                    break  # an empty call inside an instruction argument: not probed
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
                     break
@@ -1063,11 +1073,17 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             # (the condition echo, no CR300/CR350 newline).
             problem = _find_arity_problem(stmt.cond, profile)
             text = _if_condition_text(stmt)
-            if problem and text is not None:
+            if problem and problem != "empty" and text is not None:
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
         elif isinstance(stmt, S.Assignment):
+            if known is None:
+                known = _known_names(program, profile)
+            if _undefined_names(stmt.target, known):
+                # An undeclared target defers the whole statement to pass 2 (the fallback and
+                # its placement follow-up there; oracle: `Y=EXP()` before `BeginProg`).
+                continue
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
                 continue

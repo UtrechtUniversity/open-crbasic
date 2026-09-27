@@ -349,3 +349,35 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
         if isinstance(target, (S.Name, S.Index)) and target.name.upper() not in allowed:
             diags.error(st.line, f"Can't assign units to {target.name}, it must be declared Public "
                         "or referenced as a source in a Data Table.", st.file)
+
+
+_MENU_CHILDREN = ("MENUPICK", "MENURECOMPILE")
+
+
+def check_table_and_menu_placement(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
+    """Pass 2 (oracle, 2026-09-27, suppressed by a pass-1 error): a second `DataInterval` in one
+    table -> `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers); a
+    `MenuPick`/`MenuRecompile` outside `DisplayMenu`..`EndMenu` -> `%s must be used within
+    DisplayMenu..EndMenu.` (CR6/CR1000X; CR300/CR350 have no menus)."""
+    in_table = in_menu = False
+    intervals = 0
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        if kw == "DATATABLE":
+            in_table, intervals = True, 0
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "DATAINTERVAL" and in_table:
+            intervals += 1
+            if intervals == 2:
+                diags.error(st.line, "Only one DataInterval allowed within DataTable..EndTable.",
+                            st.file)
+        elif kw == "DISPLAYMENU":
+            in_menu = True
+        elif kw == "ENDMENU":
+            in_menu = False
+        elif kw in _MENU_CHILDREN and not in_menu and kw in profile.instructions:
+            name = profile.instructions[kw]["name"]
+            diags.error(st.line, f"{name} must be used within DisplayMenu..EndMenu.", st.file)

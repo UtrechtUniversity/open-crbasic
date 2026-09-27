@@ -21,7 +21,11 @@ errors) rather than guessed at.
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
+
+
+_DRIVE_RE = re.compile(r"^(CPU|USR|CRD|USB):", re.IGNORECASE)
 
 
 @dataclass(frozen=True)
@@ -33,7 +37,7 @@ class Diagnostic:
     show_file: bool = True  # whether an origin outside `main_file` gets a `<file>` prefix; see
     # this module's docstring for the two oracle-confirmed exceptions that set this False.
 
-    def cr6comp(self, main_file: str = "") -> str:
+    def cr6comp(self, main_file: str = "", drive_prefix: bool = False) -> str:
         if self.severity == "warning":
             # A warning with a real line (`checker/warnings.py`'s ungated reachability/background-
             # calibration/fnotch checks) is prefixed `line N: `, same as an error (oracle:
@@ -48,8 +52,14 @@ class Diagnostic:
         if not self.line:
             return self.message
         prefix = ""
-        if self.show_file and self.file and self.file.lower() != main_file.lower():
-            prefix = f"<{self.file}> "
+        name = _DRIVE_RE.sub("", self.file or "")
+        if self.show_file and name and name.lower() != main_file.lower():
+            # An included file prints as written in its `Include`: CR6/CR1000X without the drive
+            # (`<lib.CRB>` for `"cpu:lib.CRB"`), CR300/CR350 with it, `cpu:` added when none was
+            # written (`<cpu:Lib.crb>`) -- oracle, 2026-09-27, `docs/loggers.md`.
+            if drive_prefix:
+                name = self.file if _DRIVE_RE.match(self.file) else f"cpu:{self.file}"
+            prefix = f"<{name}> "
         return f"{prefix}line {self.line}: {self.message}"
 
 

@@ -222,6 +222,7 @@ class Unparsed(Stmt):
 class Program:
     name: str
     statements: list[Stmt] = field(default_factory=list)
+    last_line: int = 0      # `EndProg`'s line, else the main file's last physical line
     consts: dict[str, object] = field(default_factory=dict)   # name (upper) -> resolved value,
     # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
     # this (via `consteval.Env`) instead of re-walking the program to rebuild it.

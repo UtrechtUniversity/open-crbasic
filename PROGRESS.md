@@ -670,6 +670,17 @@ coordinator commits it. Tick items here as they land.
 - [x] `Units` targets, unknown `CallTable` targets, global redeclarations; `NextScan` block-stack fix
       (fuzz-found false reject) (`docs/checker.md` "Units targets, CallTable targets,
       redeclarations"). chm exact cr6 425, cr1000x 433.
+- [x] CR300/CR350: `<CPU:file>` include prefix; declaration errors start the `Too many
+      parameters` cascade (`docs/loggers.md` "Declaration errors taint"). chm exact cr300 254,
+      cr350 264.
+- [x] One-off rules: empty-parentheses calls, `DataTable` too many parameters, duplicate
+      `DataInterval`, menu placement, stray `NextSubScan` (`docs/checker.md` "One-off rules").
+- [x] `No BeginProg in Program.` after pass 2, on the last physical line; `Alias` trailing text
+      (fuzz-found false reject); CR300/CR350 single-pass reporting and undeclared targets.
+- [x] Fuzz re-measurement at `1b4d4fd` (300 mutants each): cr6 seed 42 false_accept 15 (30 this
+      morning), seed 46 17; cr1000x seed 46 26 with 1 false reject (`Alias` trailing text, fixed
+      next); cr300 22; cr350 16. Reproducer replay after the fixes: 619 of 1469 exact, no false
+      rejects.
 - [ ] CR6 help-corpus wording, remaining: `Need '=' in units definition`
 - [x] Fuzz re-measurement at `e0a92cc` (300 mutants each): cr6 seed 42 false_accept 25 (was 30),
       seed 45 31; cr1000x seed 42 21 (was 27) with 1 false reject, `If`/`NextScan`/`EndIf`, fixed

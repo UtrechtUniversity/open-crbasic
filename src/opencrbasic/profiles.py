@@ -67,6 +67,12 @@ class Profile:
     # (`checker/structure.py`, `docs/checker.md` "Pass-1 fallback: statements that start with a
     # known word"). CR300/CR350 report that message on every such line regardless (not modelled).
     known_first_word_pass1: bool = True
+    # CR300/CR350 print an included file's name with its drive (`<CPU:Lib.crb>`, `<cpu:Lib.crb>`
+    # when none was written); CR6/CR1000X without it (`diagnostics.Diagnostic.cr6comp`).
+    include_drive_prefix: bool = False
+    # CR300/CR350 report pass-2 findings (undefined names, the generic fallback) even after a
+    # pass-1 error (oracle: `Dim Z banana` then `X = Q` prints both); CR6/CR1000X do not.
+    single_pass: bool = False
 
     def _load(self, name: str) -> list[dict]:
         return json.loads((self.data_dir / f"{name}.json").read_text())
@@ -129,11 +135,13 @@ PROFILES = {
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
                      "cr300comp.exe", unresolved_symbol_message="{name} is not defined.",
                      early_warnings_gated=True, undefined_call_message=True,
-                     fallback_echo_newline=True, known_first_word_pass1=False),
+                     fallback_echo_newline=True, known_first_word_pass1=False,
+                     include_drive_prefix=True, single_pass=True),
     "cr350": Profile("cr350", "CR350", "CR350.Std.1.07", "02/04/2025", DATA / "cr350", False,
                      "cr350comp.exe", unresolved_symbol_message="{name} is not defined.",
                      early_warnings_gated=True, undefined_call_message=True,
-                     fallback_echo_newline=True, known_first_word_pass1=False),
+                     fallback_echo_newline=True, known_first_word_pass1=False,
+                     include_drive_prefix=True, single_pass=True),
 }
 
 EXTENSIONS = {".cr6": "cr6", ".cr1x": "cr1000x", ".cr300": "cr300", ".cr350": "cr350"}

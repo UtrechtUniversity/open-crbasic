@@ -143,10 +143,20 @@ _VARIABLE_ILLEGAL_PREFIX = "Variable illegal in Parameter:"
 _TOO_MANY_PREFIX = "Too many parameters:"
 
 
+# Declaration errors taint the same way (oracle, CR300 and CR350, 2026-09-27: each of these
+# followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
+_DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
+                         "illegal, starts with a number.",
+                         "not supported")
+_DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration")
+
+
 def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and (
         diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
         or diag.message.startswith(_TOO_MANY_PREFIX)
+        or diag.message.endswith(_DECLARATION_TRIGGERS)
+        or diag.message.startswith(_DECLARATION_TRIGGER_PREFIXES)
     )
 
 
@@ -175,8 +185,16 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         key = (stmt.line, stmt.file)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
+            if isinstance(stmt, S.Declaration) or (
+                    isinstance(stmt, S.Unparsed)
+                    and stmt.text.lstrip().upper().startswith(("PUBLIC ", "DIM "))):
+                # A tainted declaration's own error is dropped (oracle: `Public A As StringX * 50`
+                # then `Dim Z banana` prints no `Invalid Variable declaration banana.`).
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
-                    and stmt.args[1] is not None):
+                    and stmt.args[1] is not None and stmt.keyword.upper() != "UNITS"):
+                # (`Units X = m` is never rewritten: repository libraries, oracle.)
                 text = expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)

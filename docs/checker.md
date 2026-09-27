@@ -2254,3 +2254,29 @@ Oracle probes on all four loggers unless noted (`tests/test_if_sub_table_checks.
   aliased name`.
 
 Reproducer replay: 277 of 1469 exact, no false rejects.
+
+## One-off rules (2026-09-27)
+
+Oracle probes (`tests/test_oneoff_rules.py`), CR6 and CR1000X identical, CR300 where noted:
+
+- A built-in function that takes arguments called with empty parentheses (`X = Int()`,
+  `TCPOpen()`, `SerialFlush()`) is the generic fallback on the whole statement, pass 1, all four
+  loggers (CR300/CR350 with the newline echo). An older unit test expected `Expression expects ,`
+  for `TCPOpen()`; the oracle says otherwise.
+- `DataTable (T,1,-1,"fuzz")` -> `Too many parameters:  "fuzz".`, pass 1.
+- A second `DataInterval` in one table -> `Only one DataInterval allowed within
+  DataTable..EndTable.`, pass 2 (also CR300).
+- `MenuPick`/`MenuRecompile` outside `DisplayMenu`..`EndMenu` -> `%s must be used within
+  DisplayMenu..EndMenu.`, pass 2 (CR300/CR350 have no menus).
+- A stray `NextSubScan` -> `Next SubScan without SubScan.`, pass 2 (also CR300).
+
+`No BeginProg in Program.` also moved after pass 2 (`check_end_blocks`): a program with no
+`BeginProg` reports its pass-1/pass-2 errors instead (`Y=EXP()` -> the fallback and `Expr
+illegally occurs before BeginProg.`), and the message is on `EndProg`'s line or else the main
+file's last physical line, trailing blank lines included (`Public X` plus two blank lines ->
+line 3; `program.last_line`). This alone made several hundred shrunk fuzz reproducers exact.
+
+`Alias Target = Name, Name2`: each comma-separated item is a name (optionally indexed); text after
+it up to the next comma is ignored (`= Spare2_1  3`, `= Sp + 1`, `= Sp As Long` compile; in
+`= A1 B1` only `A1` is declared). `Alias X = 3` -> `Variable name 3 illegal, starts with a
+number.` (pass 1, all four loggers). The first form was a fuzz-found CR1000X false reject.

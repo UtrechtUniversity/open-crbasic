@@ -113,13 +113,17 @@ class _Loader:
         self.diags = diags
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
 
-    def load_file(self, path: Path, *, section: str | None, in_include: bool) -> list[LogicalLine]:
+    def load_file(self, path: Path, *, section: str | None, in_include: bool,
+                  display: str | None = None) -> list[LogicalLine]:
+        """`display` is an included file's name as written in the `Include`, drive included
+        (`CPU:Lib.crb`); `diagnostics.Diagnostic.cr6comp` renders it per logger."""
         try:
             data = path.read_bytes()
         except OSError:
             return []
         self.files.append(data)
-        return self.load_text(data.decode("latin-1"), path.name, section=section, in_include=in_include)
+        return self.load_text(data.decode("latin-1"), display or path.name, section=section,
+                              in_include=in_include)
 
     def load_text(
         self, raw: str, filename: str, *, section: str | None, in_include: bool
@@ -165,7 +169,7 @@ class _Loader:
             if target is None:
                 self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
                 return []
-            return self.load_file(target, section=name, in_include=in_include)
+            return self.load_file(target, section=name, in_include=in_include, display=spec.strip())
         m = _INCLUDE_RE.match(text)
         if m:
             if in_include:
@@ -176,7 +180,7 @@ class _Loader:
             if target is None:
                 self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
                 return []
-            return self.load_file(target, section=None, in_include=True)
+            return self.load_file(target, section=None, in_include=True, display=spec.strip())
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
 
 

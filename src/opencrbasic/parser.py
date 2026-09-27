@@ -861,6 +861,27 @@ class _Parser:
             # `checker/structure.py` can echo the oracle-confirmed embedded-newline shape
             # (`docs/checker.md` "Echo quirk"): `Need '=' in alias definition: rTime(1)\n.`.
             return S.Unparsed(line, file, text="", reason="Alias target with no '='")
+        if p.peek().kind == "IDENT":
+            # Each comma-separated item is one name (optionally indexed); anything after it up to
+            # the next comma is ignored (oracle, all four loggers, 2026-09-27: `= Spare2_1  3`,
+            # `= Sp + 1`, `= Sp As Long` compile; in `= A1, B1` both names are declared, in
+            # `= A1 B1` only `A1`) -- a fuzz-found false reject.
+            rhs = []
+            while not p.at_end() and p.peek().kind == "IDENT":
+                rhs.append(self._parse_atom(p, line, file))
+                depth = 0
+                while not p.at_end() and not (depth == 0 and p.is_op(",")):
+                    tok = p.next()
+                    if tok.kind == "OP" and tok.text == "(":
+                        depth += 1
+                    elif tok.kind == "OP" and tok.text == ")":
+                        depth = max(0, depth - 1)
+                if p.at_end():
+                    break
+                p.next()  # the comma
+            while not p.at_end():
+                p.next()
+            return S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
             p.next()
@@ -1140,7 +1161,19 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     path = Path(path)
     lines, diags = source.load_program(path)
     parser = _Parser(profile or _profile_for(path.name), diags)
-    return parser.run(lines, path.name)
+    program, diags = parser.run(lines, path.name)
+    _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
+    return program, diags
+
+
+def _set_last_line(program: S.Program, parser: "_Parser", main_text: str) -> None:
+    """The line end-of-program messages are reported on: `EndProg`'s, or else the main file's
+    last physical line, trailing blank lines included (oracle, CR6: `Public X` plus two blank
+    lines -> `line 3: No BeginProg in Program.`)."""
+    if parser._done and program.statements:
+        program.last_line = program.statements[-1].line
+    else:
+        program.last_line = max(1, len(main_text.splitlines()))
 
 
 def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = None,
@@ -1148,4 +1181,6 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(text, name, directory)
     parser = _Parser(profile or _profile_for(name), diags)
-    return parser.run(lines, name)
+    program, diags = parser.run(lines, name)
+    _set_last_line(program, parser, text)
+    return program, diags

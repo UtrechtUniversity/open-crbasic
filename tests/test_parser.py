@@ -472,7 +472,7 @@ def test_include_expands_and_reports_own_line_numbers(tmp_path):
     prog, diags = parser.parse_text(text, "t.cr6", directory=tmp_path)
     assign = [s for s in prog.statements if isinstance(s, S.Assignment)][0]
     assert assign.line == 3  # Inc1.CR6's own line 3, not the include site's line
-    assert assign.file == "Inc1.CR6"
+    assert assign.file == "CPU:Inc1.CR6"  # the name as written; diagnostics render it per logger
 
 
 def test_includesection_section_binding(tmp_path):

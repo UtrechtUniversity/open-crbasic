@@ -266,7 +266,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if known is None:
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
-            if not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
+            if len(stmt.args) > 1 and isinstance(stmt.args[1], S.Number):
+                # `Alias CD16(29) = 3`, pass 1, all four loggers (oracle, 2026-09-27)
+                diags.error(stmt.line, f"Variable name {stmt.args[1].text} illegal, starts with a "
+                            "number.", stmt.file)
+            elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
                 _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
                                    seen_alias_sources)
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
@@ -331,9 +335,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     if nested_table_line is not None:
         diags.error(nested_table_line, "DataTable without EndTable.")
         return
-    if not seen_beginprog:
-        diags.error(last_line, "No BeginProg in Program.")
-        return
+    # `No BeginProg in Program.` is also reported after pass 2: `check_end_blocks`.
     # `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
     # EndIf or EndSelect.` and `DataTable ... EndTable not matched.` come after pass 2:
     # `check_end_blocks` below.
@@ -345,9 +347,13 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
     `Invalid symbol in expression`). Reported on the last statement's line (`EndProg`) in the
     order `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
     EndIf or EndSelect.` (`docs/checker.md` "Unclosed blocks")."""
-    if not program.statements:
+    last_line = program.last_line or (program.statements[-1].line if program.statements else 1)
+    if not any(_keyword(st) == "BEGINPROG" for st in program.statements):
+        # Only when passes 1 and 2 are clean (oracle, CR6: a program with no `BeginProg` and a
+        # bad `Y=EXP()` line reports that line's fallback and `Expr illegally occurs before
+        # BeginProg.`, never `No BeginProg in Program.`).
+        diags.error(last_line, "No BeginProg in Program.")
         return
-    last_line = program.statements[-1].line
     depth = {"SCAN": 0, "FOR": 0, "DO": 0, "IF": 0}
     in_table = False
     table_name: str | None = None
@@ -510,7 +516,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
-            stop = _check_assignment_pass2(stmt, known, diags, beginprog_line, in_body_block)
+            stop = _check_assignment_pass2(stmt, known, diags, beginprog_line, in_body_block,
+                                            profile)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _FORBIDDEN_BEFORE_BEGINPROG:
@@ -594,6 +601,7 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
     stack: list[str] = []
     open_count = {"IF": 0, "FOR": 0, "DO": 0, "SCAN": 0}
     selects = 0
+    subscans = 0
     for stmt in program.statements:
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
@@ -607,7 +615,11 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
             open_count[kw] += 1
         elif kw in ("SCAN", "SUBSCAN"):
             stack.append("SCAN")
+            subscans += kw == "SUBSCAN"
+        elif kw == "NEXTSUBSCAN" and subscans == 0:
+            diags.error(stmt.line, "Next SubScan without SubScan.", stmt.file)
         elif kw in ("NEXTSCAN", "NEXTSUBSCAN") or (kw == "NEXT" and word in ("SCAN", "SUBSCAN")):
+            subscans -= kw == "NEXTSUBSCAN" or word == "SUBSCAN"
             # Removes the innermost `Scan` wherever it is; blocks opened inside it stay open
             # (oracle: `If X Then` / `NextScan` / `EndIf` compiles, a fuzz-found false reject).
             if "SCAN" in stack:
@@ -1027,7 +1039,8 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
 
 
 def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnostics,
-                             beginprog_line: int | None, in_body_block: bool) -> int | None:
+                             beginprog_line: int | None, in_body_block: bool,
+                             profile=None) -> int | None:
     """One `Assignment` (`target = value`) statement's pass-2 check. Returns the line to stop pass 2
     at, or `None` to keep going. Oracle-confirmed shapes (`docs/checker.md` "Round 5", a scratch
     probe set alongside `_check_call_pass2`'s own):
@@ -1057,7 +1070,22 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
       built-in-function call) and a stop when it precedes `BeginProg`.
     """
     before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
-    if expressions._undefined_names(stmt.target, known):
+    target_names = expressions._undefined_names(stmt.target, known)
+    if target_names and profile is not None and profile.single_pass:
+        # CR300/CR350 (oracle, 2026-09-27): `Nope = Q` -> `Nope is not defined.`, `Q is not
+        # defined.`; `Nope(2) = X` -> `Nope is not defined.` then the generic fallback. Neither
+        # stops pass 2 or gets the before-`BeginProg` follow-up.
+        for name in target_names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        if isinstance(stmt.target, S.Index):
+            diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
+                        show_file=False)
+        else:
+            for name in expressions._undefined_names(stmt.value, known):
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                            stmt.file)
+        return None
+    if target_names:
         diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
                     show_file=False)
         if before_beginprog:

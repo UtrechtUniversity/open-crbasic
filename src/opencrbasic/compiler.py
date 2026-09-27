@@ -118,8 +118,9 @@ class CompileResult:
                           key=lambda d: (False, self._position(d),
                                          d.message.endswith("never reached at run time."))
                           if d.line else (True, _no_line_kind(d), 0))
+        drive = self.profile.include_drive_prefix
         if not self.ok:
-            rendered = _bounded_by_message_buffer([d.cr6comp(self.program) for d in ordered])
+            rendered = _bounded_by_message_buffer([d.cr6comp(self.program, drive) for d in ordered])
             return [f"{self.program} -- Compile Failed!", ""] + rendered
         if self.profile.reports_mode:
             lines = [f"{self.program} -- Compiled in {self.mode or 'Sequential'}Mode."]
@@ -127,7 +128,7 @@ class CompileResult:
             lines = [f"{self.program} -- Compiled OK."]
         if show_signature and self.signature is not None:
             lines.append(f"ProgSignature =  {self.signature}.")
-        lines += [d.cr6comp(self.program) for d in ordered if d.severity == "warning"]
+        lines += [d.cr6comp(self.program, drive) for d in ordered if d.severity == "warning"]
         return lines
 
 

@@ -990,3 +990,21 @@ checked after this round's change, empty on all four; cr6/cr1000x untouched, exa
 own ~12 `CDM_*` verdict cases this round targeted, 10 are now exact; the remaining 2
 (`cdmbattery_1.CR6`, `cdmexcitei_1.CR6`) keep one residual diff each, the split-continuation-line
 gap above. `uv run pytest -q`: 1060 passed, 311 skipped (3 new, `tests/test_cr3xx.py`).
+
+## Declaration errors taint (2026-09-27)
+
+CR300/CR350 (both identical): `%s already declared as a variable.`, `%s is already declared as a
+CONST.`, `Variable Type %s not supported`, `Illegally dimensioned aliased name` and `Invalid
+Variable declaration %s.` also start the `Too many parameters` cascade (a clean `Scan
+(1,Sec,0,0)` later gets `Too many parameters:  Sec.`), and once tainted, a later `Public`/`Dim`
+declaration's own error is dropped (`Public A As StringX * 50` then `Dim Z banana` prints no
+`Invalid Variable declaration banana.`). `cr3xx._is_cascade_trigger`. Included files print as
+`<CPU:Lib.crb>` as written, or `<cpu:Lib.crb>` when the `Include` names no drive; CR6/CR1000X
+print the name as written without its drive (`diagnostics.Diagnostic.cr6comp`). chm exact cr300
+251 -> 254, cr350 261 -> 264.
+
+CR300/CR350 have no pass gate: undefined names, the generic fallback and other tier-B findings are
+reported even after a pass-1 error (`Dim Z banana` then `X = Q` / `foo bar` / `X = 1 +` prints all
+of them; `profiles.single_pass`). An undeclared assignment target gives `%s is not defined.` for
+it, then the right-hand side's own undefined names (`Nope = Q`), or the generic fallback for an
+indexed target (`Nope(2) = X`); no placement follow-up. chm exact cr300 256, cr350 266.
