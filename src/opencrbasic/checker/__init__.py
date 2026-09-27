@@ -45,7 +45,10 @@ If, and only if, steps 1-5 found nothing:
    placement check (returns the cutoff line, if any).
 7. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
    position that resolves nowhere, and the constant-only-family "rejects a variable" check
-   (deliberately narrow; see that module's docstring).
+   (deliberately narrow; see that module's docstring). `instr_data.check_unclosed_calltable` and
+   `cr3xx.check_expr_cascade` (CR300/CR350 only, a spurious `Too many parameters:  %s.` on the next
+   otherwise-clean two-argument bare call once any of these three has fired, `docs/loggers.md`
+   "Round 7b") run alongside it, in that order.
 8. `instructions.check` -- per-instruction argument checks layered on top of the generic type-code
    parsing (the analog-channel/port terminal range checks, `terminals.py`); `instr_data.
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
@@ -146,6 +149,13 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # the other two calls just above (accumulates with an unrelated `expressions.check` finding
         # rather than being suppressed by it).
         _run_pass(instr_data.check_unclosed_calltable, program, diags)
+        # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any of the
+        # three tier-B calls just above has recorded an undefined-name-class error, the next
+        # otherwise-clean, two-or-more-argument bare instruction call gets a further, spurious
+        # `Too many parameters:  %s.` of its own (oracle-confirmed, `docs/loggers.md` "Round 7b").
+        # Run last, ahead of the cutoff truncation below, so a cascade line past a placement
+        # error's own cutoff line is truncated the same as every other tier-B finding.
+        _run_pass(cr3xx.check_expr_cascade, program, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing

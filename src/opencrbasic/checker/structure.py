@@ -148,11 +148,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     cond_depth = 0
     in_table = False
     table_name: str | None = None
+    nested_table_line: int | None = None
     last_line = program.statements[-1].line if program.statements else 1
     # See `_check_declaration`'s docstring: the physical line right after a nameless `Public`/
     # `Dim` is never itself reported, even though it plainly failed to parse as anything valid.
     suppress_line: int | None = None
     dim0_sizes = symbols.declared_dim0_sizes(program, env)
+    all_dims = symbols.declared_all_dims(program, env)
+    seen_alias_names: set[str] = set()
+    seen_alias_sources: dict[str, set[tuple]] = {}
 
     for stmt in program.statements:
         kw = _keyword(stmt)
@@ -171,7 +175,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
-            _check_alias_dims(stmt, diags, env, dim0_sizes)
+            _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
+                               seen_alias_sources)
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
@@ -195,13 +200,16 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         # `DataTable ... EndTable not matched.` (round 6, below): a single "currently open" flag,
         # not a depth stack -- `DataTable` blocks never nest (`instr_data.py`'s own docstring), so
         # this only tracks the *last*-opened table's own name; a second `DataTable` opened while
-        # one is already unclosed is a different, distinctly-messaged shape (`docs/checker.md`
-        # "Round 6": oracle-confirmed `DataTable without EndTable.`, at the second `DataTable`'s
-        # own line) not implemented here -- left `in_table`/`table_name` unchanged in that shape
-        # rather than guessed at, since it is not this check's own concern either way.
+        # one is already unclosed is `DataTable without EndTable.` instead (round 7, below,
+        # `nested_table_line`) -- `in_table`/`table_name` themselves stay pointed at the *first*
+        # table regardless, since nesting deeper than two levels still reports only the one
+        # violation (oracle-confirmed, `docs/checker.md` "Round 7": a *third* `DataTable` opened
+        # while the second is also still open adds no second diagnostic).
         elif kw == "DATATABLE" and not in_table:
             in_table = True
             table_name = args[0].name if args and isinstance(args[0], S.Name) else None
+        elif kw == "DATATABLE" and in_table and nested_table_line is None:
+            nested_table_line = stmt.line
         elif kw == "ENDTABLE":
             in_table = False
 
@@ -219,6 +227,17 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # runs), so this is safe without threading a separate "did this loop itself find anything"
     # flag through it.
     if diags.errors:
+        return
+    # `DataTable without EndTable.` (round 7, this session, no `%s`/echoed text): the *highest*-
+    # priority summary check of the five in this gated section -- a nested `DataTable` reports
+    # only this, before even `No BeginProg in Program.` (oracle-confirmed, `docs/checker.md`
+    # "Round 7": a file with nested tables and no `BeginProg` anywhere shows only this one line),
+    # and before `Scan without NextScan.`/`IF or SELECT without EndIf or EndSelect.` too (a nested
+    # table plus a separately-unbalanced `Scan` in the same file shows only this one line as well).
+    # Reported at the *second* `DataTable`'s own line (`nested_table_line`, captured above), and,
+    # like the other four checks in this section, stops here rather than falling through to them.
+    if nested_table_line is not None:
+        diags.error(nested_table_line, "DataTable without EndTable.")
         return
     if not seen_beginprog:
         diags.error(last_line, "No BeginProg in Program.")
@@ -567,59 +586,157 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
                 diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
 
 
-def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
-                       dim0_sizes: dict[str, int]) -> None:
-    """`Illegally dimensioned aliased name` (round 6, no trailing period, oracle-confirmed
-    verbatim): an `Alias <name>(<index>) = <target>` whose `<index>` -- only the *first* index,
-    when `<name>` is itself multi-dimensional -- is a compile-time constant outside `[1,
-    dim0_sizes[name]]`. Pass 1, unconditional (oracle-confirmed: accumulates with an unrelated,
-    later `Variable not named.` in the same file, and, being pass 1, suppresses every pass-2 check
-    the same way any other pass-1 error already does -- no special "stop the file" behaviour of
-    its own needed).
+def _alias_flat_offset(index: tuple[int, ...], dims: tuple[int, ...]) -> int:
+    """The 1-based row-major flat offset of `index` into an array declared with dimension sizes
+    `dims` (both same length), last index varying fastest -- the ordinary multi-dimensional-
+    array-as-flat-buffer formula: `flat = i_n + sum_{k=1}^{n-1} (i_k - 1) * prod(dims[k:n-1])`.
+    `docs/checker.md` "Round 7" has the oracle sweep that found this is what `Illegally
+    dimensioned aliased name` actually bounds-checks (`[1, prod(dims)]`), not "only the first
+    index against its own dimension's size" as round 6 originally (and, this round's own sweep
+    found, incorrectly) concluded.
+    """
+    flat = index[-1]
+    mult = 1
+    for k in range(len(dims) - 2, -1, -1):
+        mult *= dims[k + 1]
+        flat += (index[k] - 1) * mult
+    return flat
 
-    A dozen oracle probes (`docs/checker.md` "Round 6") pin down the exact shape: `name` must be a
-    *declared* `Public`/`Dim`/`Static` variable (`dim0_sizes`, built once per `check_pass1` call --
-    an undeclared name here is a different, unimplemented gap, left alone rather than guessed at);
-    the index folds via `int()` (truncating toward zero, matching every other value check in this
-    project) and is compared only against that variable's **first** declared dimension's own size
-    (`wind` declared `Public wind(5)`: index `1`/`5`/`2.5`/`5.9` all compile clean, `0`/`-1`/`6`/
-    `&HFF` (255) all fail) -- a **scalar** (no declared dimensions at all) behaves exactly like a
-    size-1 array (`Public y` / `Alias y(1) = Ts` compiles, `Alias y(2) = Ts` fails), which is why
-    `dim0_sizes` maps every declared variable, not just array ones. **A later dimension's own value
-    is never checked at all**, however far out of range -- oracle-confirmed with a genuine 2D
-    array, `Public grid(3,3)`: `Alias grid(2,4) = Ts` (second index `4` > `3`) compiles clean,
-    while `Alias grid(4,2) = Ts` (first index `4` > `3`) fails -- so this only ever inspects
-    `stmt.args[0].args[0]`, never any later index in the same `Index` node.
+
+def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
+                       dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
+                       seen_alias_names: set[str],
+                       seen_alias_sources: dict[str, set[tuple]]) -> None:
+    """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional (oracle-confirmed
+    each accumulates with an unrelated, later `Variable not named.` in the same file, and, being
+    pass 1, all suppress every pass-2 check the same way any other pass-1 error already does -- no
+    special "stop the file" behaviour of its own needed for any of the four):
+
+    1. **`%s not yet declared so cannot be aliased.`** (round 7, this session; `docs/messages.tsv`
+       `FUN_004b8e70`): `name` -- the source side's own base name, scalar or array, with or without
+       an index -- is not a declared `Public`/`Dim`/`Static` variable at all (`dim0_sizes`, `%s` =
+       `name` in its own written case). Oracle-confirmed to pre-empt every other check below
+       (`docs/checker.md` "Round 7"): an out-of-range or duplicate index on an *undeclared* source
+       never additionally fires "Illegally dimensioned"/"Duplicate Alias" -- only this one line,
+       once per `Alias` statement referencing the undeclared name (not deduplicated the way 3/4
+       below are: three separate `Alias undeclaredvar(N) = ...` lines each get their own copy).
+    2. **`Illegally dimensioned aliased name`** (round 6, no trailing period; **round 7
+       correction** to how the index is checked): the index tuple -- every declared dimension, not
+       only the first -- folds via `int()` (truncating toward zero, matching every other value
+       check in this project) into a single **row-major flat offset** (`_alias_flat_offset`:
+       `flat = i_n + sum_{k<n} (i_k - 1) * prod(d_{k+1..n})`, the ordinary multi-dimensional-array-
+       as-flat-buffer formula, last index varying fastest) that must land in `[1,
+       prod(all declared dims)]`. Round 6's own original account of this check ("only the *first*
+       index is ever checked, however far out of range a later one is") is **superseded**: it was
+       built from two probes (`Public grid(3,3)`: `Alias grid(2,4) = Ts` compiles, `Alias grid(4,2)
+       = Ts` fails) that happen to *also* agree with the flat-offset formula purely by coincidence
+       (`(2-1)*3+4=7` and `(4-1)*3+2=11`, both landing on the correct side of `[1,9]` for unrelated
+       reasons) -- a fresh, wider oracle sweep this round (`docs/checker.md` "Round 7") found the
+       "first index alone" account is wrong in general: `Alias grid(4,-2) = Ts` (first index `4`,
+       out of `[1,3]` by the old account) **compiles clean** (`(4-1)*3+(-2)=7`, in `[1,9]`), while
+       `Alias grid(2,-1) = Ts` (a valid first index, an out-of-range *second* index by the old
+       account, which the old rule never checked at all) also compiles clean
+       (`(2-1)*3+(-1)=2`, in `[1,9]`) -- both correctly predicted by the flat formula, neither by
+       "only check position 0". A **scalar** (no declared dimensions at all) behaves exactly like a
+       size-1 array (`Public y` / `Alias y(1) = Ts` compiles, `Alias y(2) = Ts` fails: flat
+       formula with `dims=(1,)` reduces to `flat=i1`, range `[1,1]`), which is why `declared_all_
+       dims` maps every declared variable, not just array ones, the same convention `dim0_sizes`
+       already used. Skipped (no check at all, under-reporting only) when any declared dimension or
+       any index argument does not fold to a constant (`declared_all_dims`/the tuple-folding loop
+       below, both AGENTS.md-conservative the same way check 3 already was) or when the index
+       tuple's own length does not match the variable's own declared dimension count (no oracle
+       evidence gathered for that shape either way).
+    3. **`Duplicate Alias`** (round 7; no trailing period, no echoed name): the source side's own
+       full index tuple -- every declared dimension, not just the first, each truncated via `int()`
+       like check 2 -- has already been used to alias *some* name (any name; the two are
+       independent, oracle-confirmed: reusing an index with a *different* target name still fires
+       this, `Alias wind(1) = Ux` then `Alias wind(1) = Uy`) earlier in the same program, keyed per
+       declared array/scalar base name (a plain integer index colliding on `wind` never collides
+       with the same index on an unrelated `irga`, and a *different* full tuple on a multi-
+       dimensional array, e.g. `grid(1,1)` vs `grid(1,2)`, never collides either -- oracle-
+       confirmed both ways). A **scalar** source (bare `name`, no parens at all) behaves as if its
+       own index tuple were always the same one value -- re-aliasing the same scalar under any
+       second name collides exactly like reusing an array index. Independent of (and additive
+       with, not exclusive to) check 2: the same out-of-range index reused twice reports "Illegally
+       dimensioned aliased name" on *both* occurrences and *also* "Duplicate Alias" on the second
+       (oracle-confirmed). Only tracked when the index folds to a constant on every dimension
+       (`AGENTS.md`: a non-constant index is left unchecked here rather than guessed at, under-
+       reporting only).
+    4. **`Duplicate Alias Name: %s.`** (round 7; `%s` = the *current* statement's own rhs spelling,
+       not the first occurrence's): the alias target name itself (case-insensitively) has already
+       been used as *some* `Alias`'s own target earlier in the program, independent of the source
+       side entirely (oracle-confirmed: two different scalars each aliased to the same name collide;
+       two different array elements of the *same* array each aliased to the same name collide too).
+       Reported on every repeat occurrence (2nd, 3rd, ...), not just the first repeat. Both this and
+       check 3 require the *current* statement's own source to itself be declared (`dim0_sizes`;
+       check 1's own gate) -- an undeclared source's target name is never added to `seen_alias_
+       names` and never checked against it either (oracle-confirmed, `docs/checker.md` "Round 7":
+       re-aliasing an already-used name via an undeclared source reports only check 1's line).
+       Ordering, when both check 3 and check 4 fire on the same statement (an exact repeat of a
+       prior `Alias` statement, source and target both duplicated): check 3 first, then check 4
+       (oracle-confirmed both orderings are never reversed).
     """
     target = stmt.args[0] if stmt.args else None
-    if not isinstance(target, S.Index):
+    if not isinstance(target, (S.Index, S.Name)):
         return
-    if not target.args:
+    name_upper = target.name.upper()
+    size = dim0_sizes.get(name_upper)
+    if size is None:
+        diags.error(stmt.line, f"{target.name} not yet declared so cannot be aliased.", stmt.file)
+        return
+
+    if isinstance(target, S.Index) and not target.args:
         # `Alias Flag() = WriteMessage` (empty parens, no index at all) -- a distinct shape from
         # an out-of-range index, oracle-confirmed by a saved fuzz reproducer (`docs/checker.md`
         # "Round 6", `tests/corpus/fuzz/cr6/false_accept/2b628e5fb8f1.CR6`, cross-checked with a
         # from-scratch probe): **two** diagnostics together, `Need closing )` then `Alias is
         # illegally dimensioned.` (a different message from the out-of-range one above -- no
-        # trailing period either), both at the `Alias` statement's own line. Only when `name` is a
-        # declared variable (`dim0_sizes`), matching this function's own general scoping decision;
-        # an empty-parens `Index` elsewhere (a plain array reference, `y()`) is ordinary and
-        # legal, oracle-confirmed compiling clean, so this is specific to `Alias`'s own target
-        # grammar, not a general "empty parens" parser gap.
-        if target.name.upper() in dim0_sizes:
-            diags.error(stmt.line, "Need closing )", stmt.file)
-            diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+        # trailing period either), both at the `Alias` statement's own line. An empty-parens
+        # `Index` elsewhere (a plain array reference, `y()`) is ordinary and legal, oracle-confirmed
+        # compiling clean, so this is specific to `Alias`'s own target grammar, not a general
+        # "empty parens" parser gap. Not combined with checks 3/4 below -- no oracle evidence this
+        # session found for what (if anything) this shape contributes to either dedup set.
+        diags.error(stmt.line, "Need closing )", stmt.file)
+        diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
         return
-    size = dim0_sizes.get(target.name.upper())
-    if size is None:
-        return
-    try:
-        value = consteval.value_of(target.args[0], env)
-    except consteval.NotConstant:
-        return
-    if not isinstance(value, (int, float)) or isinstance(value, bool):
-        return
-    if not (1 <= int(value) <= size):
-        diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+
+    index_key: tuple | None = ()  # scalar `name` (bare, no parens): one implicit index position
+    if isinstance(target, S.Index):
+        index_key = ()
+        for a in target.args:
+            try:
+                v = consteval.value_of(a, env)
+            except consteval.NotConstant:
+                index_key = None
+                break
+            if not isinstance(v, (int, float)) or isinstance(v, bool):
+                index_key = None
+                break
+            index_key = (*index_key, int(v))
+
+        dims = all_dims.get(name_upper)
+        if index_key is not None and dims is not None and len(index_key) == len(dims):
+            total = 1
+            for d in dims:
+                total *= d
+            if not (1 <= _alias_flat_offset(index_key, dims) <= total):
+                diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+
+    if index_key is not None:
+        bucket = seen_alias_sources.setdefault(name_upper, set())
+        if index_key in bucket:
+            diags.error(stmt.line, "Duplicate Alias", stmt.file)
+        else:
+            bucket.add(index_key)
+
+    for rhs in stmt.args[1:]:
+        if not isinstance(rhs, S.Name):
+            continue
+        rhs_upper = rhs.name.upper()
+        if rhs_upper in seen_alias_names:
+            diags.error(stmt.line, f"Duplicate Alias Name: {rhs.name}.", stmt.file)
+        else:
+            seen_alias_names.add(rhs_upper)
 
 
 def _after_keyword(stmt: S.Unparsed) -> str:

@@ -82,3 +82,72 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             # directly in the message text since `Diagnostic.cr6comp` does no wrapping of its own.
             diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}\n.",
                         stmt.file)
+
+
+# `check_expr_cascade` (Round 7b): once any undefined-name-class error has fired anywhere in tier
+# B (an instruction-argument or assignment-RHS name `expressions.check`/`check_consts` could not
+# resolve, or the const-family "rejects a variable" `Variable illegal in Parameter: %s.` finding),
+# CR300/CR350's own parser leaves some shared state pointing one argument further along than it
+# should -- oracle-confirmed (`docs/loggers.md`): the *next* statement that both (a) is a bare
+# instruction call written with two or more arguments and (b) is not itself already erroring gets
+# a spurious extra `Too many parameters:  <its own second argument's verbatim text>.` on its own
+# line, `checker/instr_rules.py`'s own real message reused for a shape that instruction's own
+# argument count never earns on its own (`WriteIO(1,2)`, `PortSet(1,2)`, ... all compile clean
+# standalone). Confirmed **not** anchored to the *specific* failing statement -- when several
+# statements in a row each have their own undefined-name error, only the search from the *last* one
+# produces a cascade line, and the search itself skips forward over any statement that already has
+# a diagnostic of its own (whether or not it has two-plus arguments) as well as any clean statement
+# that does not qualify (fewer than two arguments, or not an instruction at all -- a plain
+# assignment or a one-argument call such as `Battery(BattV)` is silently passed over, not itself
+# flagged and not a stopping point) -- confirmed with two chained failures each searching past the
+# other, a bare assignment and a one-argument call each skipped in the middle, and a `'comment`
+# line skipped for free (comments are never `program.statements` entries at all). **CR6/CR1000X do
+# not share this at all** (oracle-confirmed with the same shape, an undefined const-family name
+# immediately followed by a two-argument instruction: no extra line). Not yet confirmed beyond this
+# narrow, oracle-tested trigger set (`docs/loggers.md` "Round 7b" has the full transcript and the
+# open questions this round did not chase): whether a placement error or an unclosed-`DataTable`
+# finding (this project's other two tier-B error sources) triggers the same cascade, and whether
+# `cr3xx.check`'s own, separately-ungated `SerialOpen`/`ComPort` finding above ever interacts with
+# it (oracle-confirmed it cannot in *this* checker's own pass model: that finding fires ungated,
+# before tier B's `if not diags.errors` gate is even evaluated, so tier B -- and this function, only
+# ever called from inside it -- never runs at all once it has fired).
+_UNRESOLVED_SUFFIX = " is not defined."
+_VARIABLE_ILLEGAL_PREFIX = "Variable illegal in Parameter:"
+
+
+def _is_cascade_trigger(diag) -> bool:
+    return diag.severity == "error" and (
+        diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+    )
+
+
+def check_expr_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350 only; a no-op on every other logger and when tier B recorded no undefined-name-
+    class error. Called from `checker/__init__.py` immediately after `expressions.check`/
+    `instr_data.check_unclosed_calltable`, inside the same `if not diags.errors:` tier-B block, so
+    it sees every diagnostic tier B has recorded so far (and only those -- see this module's
+    comment above for why `cr3xx.check`'s own earlier, ungated finding can never coexist with it).
+    """
+    if profile.name not in ("cr300", "cr350"):
+        return
+    trigger_lines = {(d.line, d.file) for d in diags.items if _is_cascade_trigger(d)}
+    if not trigger_lines:
+        return
+    statements = program.statements
+    anchor_index = None
+    for i, stmt in enumerate(statements):
+        if (stmt.line, stmt.file) in trigger_lines:
+            anchor_index = i
+    if anchor_index is None:
+        return
+    existing_lines = {(d.line, d.file) for d in diags.items}
+    for stmt in statements[anchor_index + 1:]:
+        if (stmt.line, stmt.file) in existing_lines:
+            continue
+        if not isinstance(stmt, S.Instruction):
+            continue
+        if len(stmt.args) < 2 or stmt.args[1] is None:
+            continue
+        text = expressions._arg_text(stmt, 1)
+        diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
+        return

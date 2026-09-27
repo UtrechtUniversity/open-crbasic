@@ -173,6 +173,40 @@ def declared_dim0_sizes(program: S.Program, env: consteval.Env) -> dict[str, int
     return sizes
 
 
+def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, ...]]:
+    """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its **full** tuple of
+    declared dimension sizes, `(1,)` for a scalar (matching `declared_dim0_sizes`'s own "behaves
+    like a size-1 array" convention) -- for `structure.py`'s `Illegally dimensioned aliased name`
+    check's own row-major flat-offset computation (round 7, `docs/checker.md`). Unlike
+    `declared_dim0_sizes` (which only needs the *first* dimension to fold), this one needs *every*
+    declared dimension to fold to a positive int/float constant, or the variable is omitted
+    entirely (no entry) -- the caller must then leave that name's own flat-offset check unrun
+    (AGENTS.md: never guess into a false reject; `structure.py`'s own `_check_array_dims` already
+    reports a real error for a declaration whose own dims don't fold this way, so a well-formed
+    declaration this checker reaches at all should already have every dim foldable in practice).
+    """
+    dims: dict[str, tuple[int, ...]] = {}
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC")):
+            continue
+        for v in stmt.vars:
+            if not v.dims:
+                dims[v.name.upper()] = (1,)
+                continue
+            sizes: list[int] = []
+            for d in v.dims:
+                try:
+                    val = consteval.value_of(d, env)
+                except consteval.NotConstant:
+                    break
+                if not isinstance(val, (int, float)) or isinstance(val, bool):
+                    break
+                sizes.append(int(val))
+            else:
+                dims[v.name.upper()] = tuple(sizes)
+    return dims
+
+
 def declared_names(program: S.Program) -> set[str]:
     """Every name a bare `Name` expression may legally reference: declared `Public`/`Dim`/`Const`/
     `ConstTable` variables, `Sub`/`Function` names and their parameters, `DataTable` and

@@ -13,6 +13,31 @@
    "transform": "none",
    "skip_nonpositive": true,
    "message": "Channel {v} exceeds number of valid channels."
+  },
+  "port_1_102": {
+   "min": 1,
+   "max": 102,
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port specified {v}"
+  },
+  "port_le8": {
+   "ranges": [
+    [
+     -Infinity,
+     8
+    ]
+   ],
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port specified {v}"
+  },
+  "sdi_port_1_2": {
+   "min": 1,
+   "max": 2,
+   "transform": "none",
+   "skip_nonpositive": false,
+   "message": "Invalid port {v}, must be 1 or 2"
   }
  },
  "instructions": {
@@ -38,6 +63,24 @@
    [
     4,
     "diff_chan"
+   ]
+  ],
+  "PORTSET": [
+   [
+    1,
+    "port_1_102"
+   ]
+  ],
+  "PORTGET": [
+   [
+    2,
+    "port_le8"
+   ]
+  ],
+  "SDI12RECORDER": [
+   [
+    2,
+    "sdi_port_1_2"
    ]
   ]
  }

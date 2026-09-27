@@ -562,3 +562,203 @@ not chased this round.
   the corpus contains for historical-example reasons, not real programs (`AGENTS.md`: `examples/`
   and, by the same reasoning, the CHM prose-as-code corpus rows are not to be over-fitted).
 - **`SerialOpen`'s own valid `ComPort` numeric range/message** -- see Finding 2 above.
+
+## Round 7b (2026-09-26): `PortSet`/`PortGet`/`SDI12Recorder` port ranges, the undefined-name cascade
+
+Owned files this round: `data/cr300/terminals.json`, `data/cr350/terminals.json` (pure data, no
+code change -- `checker/terminals.py` already generalises via this data for CR6/CR1000X's own
+`port_c1c4_u1u12`/`port_c1c8`/`sdi_port*` kinds), `checker/cr3xx.py` (one new function), one
+additive line plus docstring update in `checker/__init__.py` (a shared module -- see "The
+undefined-name cascade" below for why this needed a wiring line, not just data). Method: `tools/
+fuzz.py --logger cr300/cr350 --count 300 --seed 42/43/44/45` (this round's own fresh baseline, since
+the task brief's own seed42/43 counts did not reproduce exactly on this box -- see "Measured
+impact"), then direct oracle probing (`tools/oracle.py`'s `run_oracle`, scratch programs, no CLI
+flags) for `PortSet`/`PortGet`/`WriteIO`/`SDI12Recorder`/`SerialOpen`'s `BaudRate`/
+`SerialOpenFormat`, plus a `difftest-cr300.json`/`difftest-cr350.json` first-message grouping
+(`(their first diagnostic, our first diagnostic)`, generalising digits/quoted text) to find the
+largest remaining `verdict`/`mismatch` groups.
+
+### Finding 1: `PortSet`/`PortGet`'s `Port` and `SDI12Recorder`'s `SDIPort` have real, oracle-confirmed, per-logger ranges -- and they are not simply "C1..C8"
+
+The generic CHM help page for `PortSet`/`PortGet` lists `C1`..`C8` for every logger, and
+`SDI12Recorder`'s own page lists `C1`,`C3`,`C5`,`C7` (odd control ports) -- neither is what CR300 or
+CR350 actually accept. Oracle swept (binary search + exhaustive small-range sweep, both loggers,
+`PortSet(<v>,1)` / `PortGet(y,<v>)` / `SDI12Recorder(sd(),<v>,"0","M!",1,0)`):
+
+```
+cr300 PortSet  Port:   valid 1..102 (inclusive), invalid 0, negative, 103+        -- "Invalid port specified %d"
+cr300 PortGet  Port:   valid (-inf, 8]     (no lower bound at all, tested to -999999999999), invalid 9+
+                                                                                    -- "Invalid port specified %d"
+cr350 PortSet  Port:   valid {1..7, 9..12} (gap at 8), invalid 0, negative, 8, 13+ -- "Invalid port specified %d"
+cr350 PortGet  Port:   identical set to cr350 PortSet (same message)
+cr300/cr350 SDI12Recorder SDIPort: valid {1, 2} only, invalid everything else      -- "Invalid port %d, must be 1 or 2"
+```
+`PortSet`'s and `PortGet`'s different ranges on the *same* logger (cr300: 1..102 vs. (-inf,8]) is
+real, not a probe error -- reconfirmed with a second, independent sweep. Cross-checked against each
+logger's own extracted `symbols.json`: cr350's gap at 8 lines up exactly with its own named-symbol
+table (`C1`=1..`P_SW`=7, then a *different* symbol `P_LL`=8, then `SW12_1`=9..`VX2`=12 -- 8 is
+genuinely "no port lives there"); cr300 has no such gap in its own symbol table either (`C1`=1
+through `P_SW`=8, `P_LL`=9), so cr300's 1..102 upper bound and cr350's 12 are each real but not
+derivable from the symbol table alone -- both were oracle-pinned by binary search, not guessed
+(AGENTS.md: hardware identity/range is exactly the kind of fact that must be observed, not
+inferred). `SDI12Recorder`'s `{1,2}` (not "odd only", unlike CR6/CR1000X) is likewise oracle-pinned,
+identical on both loggers, with its own distinct message text (no trailing period, unlike CR1000X's
+`sdi_port_cr1000x` message which has one). Implemented as three new `terminals.json` channel kinds
+per logger (`port_1_102`/`port_le8`/`sdi_port_1_2` for cr300, `port_gap8_12`/`sdi_port_1_2` for
+cr350) wired to `PORTSET`/`PORTGET`/`SDI12RECORDER` -- pure data, `checker/terminals.py`'s existing
+`_ranges`/`_in_range` already handles a disjoint `ranges` list and (verified this round) a `-
+Infinity` bound (Python's `json.loads` accepts it by default; `-2147483648` was rejected as a stand-
+in because cr300's own `PortGet` genuinely has no lower bound at all, evidenced past
+`-999999999999`, so a finite floor risks a false reject a real program's own arithmetic expression
+could still reach).
+
+**Not implemented, evidence only**: `SerialOpen`'s own `BaudRate`/`SerialOpenFormat` arguments also
+have real, oracle-confirmed per-logger illegal values (`%d is illegal baud rate.`, cr300 rejects 300
+and 600 baud but accepts 1200 upward including some values absent from the CHM's own documented
+list such as 230400; cr350 accepts 300 but still rejects 600; both reject every *negative* baud
+rate outright, unlike the CHM doc's own "negative enables autobaud" claim -- real corpus evidence,
+`tests/corpus/chm/sendvariables_2.CR6`'s own `-9600 is illegal baud rate.`) -- but this message
+triggers the exact same downstream cascade described in Finding 2 below, and this round did not
+finish mapping the full legal `BaudRate` set (only the documented list plus a few extra probes),
+so it is deliberately left unimplemented rather than guessed into a false reject on a legal baud
+rate this round didn't test.
+
+### Finding 2: the undefined-name cascade -- a spurious `Too many parameters:  %s.` on the *next* statement
+
+The single largest remaining CR300/CR350 `chm` `verdict` group by far (grouped by `(their first
+diagnostic, our first diagnostic)`, generalising digits: e.g. `(mv5000C is not defined. / Variable
+illegal in Parameter: mv5000C., <same>)`, 42-44 files per logger -- more than every other group in
+Finding 1's own earlier round combined): whenever an undefined-name-class error fires anywhere in
+tier B (`docs/checker.md` "Pass model") on CR300/CR350 -- an instruction argument, or (per the
+"CR300/CR350 agreement round" above) a plain `Assignment`'s RHS -- the *next* statement gets a
+spurious extra diagnostic of its own, `Too many parameters:  <its own second argument's verbatim
+source text>.`, *if and only if* that next statement is a bare instruction call written with two or
+more arguments and is not already erroring for some other reason. Corpus example
+(`tests/corpus/chm/SWVX_1.CR6`, real file, both loggers):
+
+```crbasic
+VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)   ' mv5000C undefined
+SWVX(VX1,0,1)                                    ' otherwise completely valid, standalone-clean
+```
+```
+line 23: mv5000C is not defined.
+line 23: Variable illegal in Parameter: mv5000C.
+line 24: Too many parameters:  0.                ' SWVX's own SECOND argument, "0" -- spurious
+```
+Oracle-isolated with a dozen minimal scratch probes (`cr300comp.exe`; not reprobed against
+`cr350comp.exe` beyond the corpus files above and Finding 1's own shared-message confirmation, but
+the corpus evidence covers both loggers identically) to find the exact trigger and search rule,
+each confirming or ruling out one hypothesis:
+
+- `WriteIO(1,2)` compiles clean **standalone** -- the extra line is not that instruction's own
+  argument-count problem; it only appears immediately after an unrelated undefined-name error.
+- The *kind* of preceding error does not matter: a `VoltSe`/`PortSet` *instruction-argument*
+  undefined name and a plain **`Assignment`'s RHS** (`x = FooBarUndefined + 1`) both trigger it
+  identically -- this is not confined to `expressions.check`'s instruction-argument loop, it is
+  shared with its assignment-RHS loop too (both are tier B, `docs/checker.md`).
+- The echoed text is the raw, verbatim second-argument source span (`PortSet(1,y+1)` ->
+  `Too many parameters:  y+1.`), not a re-derived or normalised form -- the same "echo the source
+  span, not the value" convention `checker/expressions.py`'s own `_arg_text` already implements and
+  now reuses.
+- The search **skips forward** over statements that don't qualify -- a clean plain assignment
+  (`x = 5`) or a clean one-argument call (`Battery(BattV)`) in between is neither flagged itself nor
+  a stopping point; the cascade still lands on the next two-argument call after it. A `'comment`
+  line in between is skipped for free (comments are never `program.statements` entries).
+- When **two** statements in a row each have their own undefined-name error, only **one** cascade
+  line appears in total, anchored after the *later* of the two -- not one per failing statement.
+- **Nothing follows** (the failing statement is the last one before `NextScan`) -> no cascade at
+  all; correctly, nothing spurious is invented.
+- **CR6/CR1000X do not share this**: the identical shape (`VoltSe(AirTC,1,BadConstXYZ,...)` then
+  `WriteIO(1,2)`) against `CR6Comp.exe` shows only the expected `Invalid symbol in expression:
+  BadConstXYZ.`, no extra line.
+
+Implemented as `checker/cr3xx.py`'s new `check_expr_cascade` (CR300/CR350 only, a no-op on every
+other logger): finds the *last* statement in `program.statements` whose own line already carries a
+`"... is not defined."` or `"Variable illegal in Parameter: ..."` diagnostic, then scans forward
+from there for the first statement that is (a) an `S.Instruction`, (b) has two or more parsed
+arguments with the second one present, and (c) does not already have a diagnostic on its own line
+-- skipping (never stopping at) anything that fails (a)-(c) -- and appends `Too many parameters:
+<_arg_text(stmt, 1)>.` there. This could not live in `cr3xx.check`'s existing, earlier call site
+(step 3 of the pipeline, which runs *before* `expressions.check` even executes, and ungated, so it
+can never see the diagnostics this new check depends on) -- it needed a new call site inside the
+existing `if not diags.errors:` tier-B block in `checker/__init__.py`, right after `expressions.
+check`/`instr_data.check_unclosed_calltable` and before that block's own placement-error cutoff
+truncation (so a cascade line past a cutoff is truncated the same as every other tier-B finding,
+untested but the conservative default). This is the one shared-module edit this round made outside
+`checker/cr3xx.py`/`data/cr300/`/`data/cr350/`/`profiles.py`: one new `_run_pass` call plus a
+docstring update, no restructuring, gated entirely by `cr3xx.check_expr_cascade`'s own internal
+`profile.name not in ("cr300", "cr350")` guard rather than a new `Profile` field (no per-logger
+*parameter* varies, only whether the function is a no-op, so a boolean field would have added a
+layer of indirection for no benefit).
+
+**Not fully chased this round** (evidence only, safe to leave for a future session since under-
+triggering only costs precision, never a wrong verdict -- both sides already reject every file this
+touches):
+- Whether a placement error (`structure.check_pass2`'s own before-`BeginProg` finding) or an
+  unclosed-`DataTable` finding (`instr_data.check_unclosed_calltable`) also anchors the same
+  cascade the way an undefined-name error does -- not oracle-probed this round.
+- Whether the cascade can anchor on `cr3xx.check`'s own, separately-ungated `SerialOpen`/`ComPort`
+  finding -- oracle-confirmed **impossible** in this checker's own pass model regardless (that
+  finding fires before the `if not diags.errors:` gate is even evaluated, so tier B, and this new
+  function with it, never runs once it has fired) -- but whether the *real* compiler's own cascade
+  mechanism behaves the same way in that specific combination was not independently oracle-checked.
+- The exact legal `BaudRate` set for `SerialOpen` (Finding 1's own "not implemented" note) -- would
+  reuse this same cascade once implemented, since its own trigger (`%d is illegal baud rate.`) was
+  confirmed to cascade identically (`sendvariables_2.CR6`'s own transcript in Finding 1 shows the
+  same `Too many parameters:` chain, four lines deep in that particular file since it echoes
+  through several subsequent statements' own arguments in turn -- consistent with "skip forward to
+  the next qualifying statement" applied repeatedly, but not independently re-verified for a chain
+  longer than two).
+
+### Measured impact
+
+`tools/difftest.py --logger <l> --show 0` (`chm`, exact/verdict/mismatch), before this round's
+start (re-measured fresh, matching the prior "Round 6b" end state) / after both findings (Finding 1
++ Finding 2 together -- Finding 1 alone did not move any of these three counts, since no corpus
+file happened to combine an out-of-range `PortSet`/`PortGet`/`SDI12Recorder` port with an otherwise-
+clean file; its value is fuzz-corpus-representative, not `chm`-corpus-representative, unlike Finding
+2):
+
+| Logger | chm before | chm after |
+|---|---|---|
+| cr300 | 138/358/11 | 157/339/11 |
+| cr350 | 142/355/10 | 161/336/10 |
+| cr6 | 336/162/9 (unaffected, unchanged) | 336/162/9 |
+| cr1000x | 352/149/6 (unaffected, unchanged) | 352/149/6 |
+
+`repo`/`examples` unchanged on all four loggers throughout (cr300/cr350 `0/16/0` and `2/2/0`; cr6
+`16/0/0` and `2/2/0`; cr1000x `9/7/0` and `3/1/0`). Zero false rejects on all four loggers
+throughout (`their_exit==0 and our_exit!=0`, checked after every step, empty every time).
+`python3 -m pytest -q`: 963 passed, 311 skipped throughout (0 failed, no change in count).
+
+Fixed-seed fuzz (`tools/fuzz.py --logger cr300/cr350 --count 300 --seed 42/43/44/45`), this round's
+own fresh before/after (the task brief's own seed42/43 baseline, 27/33 for cr300 and 33/26 for
+cr350, did not reproduce exactly on this box -- plausibly upstream drift between when that baseline
+was taken and this round's own start, since this round made no changes before taking its own first
+measurement; the numbers below are this round's own internally-consistent before/after, both
+measured on the same box back to back):
+
+| Logger | seed | false_accept before | after | false_reject before | after |
+|---|---|---|---|---|---|
+| cr300 | 42 | 21 | 21 | 0 | 0 |
+| cr300 | 43 | 32 | 31 | 0 | 0 |
+| cr300 | 44 | 22 | 21 | 1 (pre-existing, see below) | 1 (unchanged) |
+| cr300 | 45 | 18 | 18 | 1 (pre-existing, see below) | 1 (unchanged) |
+| cr350 | 42 | 30 | 29 | 0 | 0 |
+| cr350 | 43 | 22 | 22 | 1 (pre-existing, `docs/fuzz-findings.md` "4.") | 1 (unchanged) |
+| cr350 | 44 | 26 | 25 | 2 (pre-existing, see below) | 2 (unchanged) |
+| cr350 | 45 | 28 | 28 | 0 | 0 |
+
+Every `false_reject` present is pre-existing and unaffected by this round's changes (identical
+count before/after on the same seed, and traced to files unrelated to `PortSet`/`PortGet`/
+`SDI12Recorder`/the cascade -- e.g. cr300 seeds 44/45's own reproducers are both `ESSInitialize
+("private,<fuzzed-text>)` shapes, a malformed quoted-string-plus-stray-`)` argument the real
+compiler still accepts, a general lexer/parser quirk unrelated to any CR300/CR350-specific rule and
+outside this workstream's owned files). The raw `false_accept` count barely moves per seed (this
+round's own two fixes are each individually low-frequency in any single random 300-mutant sample,
+the same pattern Round 6b's own fuzz measurement documented) -- `exact`/`hang` counts on repeated
+runs of the *same* seed also drift by a few (observed hang counts: 0, 1, 4, 5, 6, 7 across repeated
+runs of identical seeds with no code change in between), consistent with this project's own
+documented worker-contention flakiness (`docs/fuzz-findings.md`), not a regression; the `chm`-corpus
+exact-count jump above (+19 on each logger) is the more representative measure of this round's own
+impact, the same conclusion Round 6b drew for its own two fixes.
