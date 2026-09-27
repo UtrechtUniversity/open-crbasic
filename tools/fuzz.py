@@ -614,6 +614,13 @@ def _signature(cls: str, our_out: str, their_out: str) -> tuple[str, str]:
     return cls, generic
 
 
+def _display_path(path: Path) -> str:
+    """Path relative to the project when inside it (the committed corpus), else absolute
+    (`--out` elsewhere); `fuzz_replay.py` resolves both with `ROOT / file`."""
+    path = path.resolve()
+    return str(path.relative_to(ROOT)) if path.is_relative_to(ROOT) else str(path)
+
+
 def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: list[str],
                      ops: list[str], profile: profiles.Profile) -> dict | None:
     text = "\n".join(lines)
@@ -644,7 +651,7 @@ def save_reproducer(out_dir: Path, logger: str, cls: str, seed: Seed, lines: lis
 
     dest.write_text(full_text, encoding="utf-8")
     meta = {
-        "file": str(dest.relative_to(ROOT)),
+        "file": _display_path(dest),
         "logger": logger,
         "class": final_class,
         "seed": f"{seed.group}/{seed.path.name}",

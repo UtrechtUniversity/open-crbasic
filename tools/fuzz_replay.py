@@ -81,7 +81,7 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
         status = f"changed: {recorded_class} -> {now_class}"
 
     return {
-        "file": str(cr6_path.relative_to(ROOT)),
+        "file": fuzz._display_path(cr6_path),
         "logger": logger,
         "recorded_class": recorded_class,
         "now_class": now_class,

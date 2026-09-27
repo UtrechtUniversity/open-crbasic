@@ -667,7 +667,11 @@ coordinator commits it. Tick items here as they land.
       "ran off the end of the line" quirks (`Data`-keyword/prose collision, `docs/checker.md`
       "Open questions") remain unreproduced. New tests: `tests/test_echo_quirk.py`.
 - [ ] CR300/CR350: next largest fuzz false-accept group (repeat)
-- [ ] Re-measure fuzz false-accept rates (cr6 seeds 42-46, cr1000x/cr300/cr350 seed 42)
+- [x] Re-measure fuzz false-accept rates (2026-09-27, tree at `69b05f3`, `tools/fuzz.py --count
+      300`, false_reject 0 in every run): cr6 seed 42 false_accept 30 (exact 235, message_diff
+      35), seed 43 26 (241/33), seed 44 23 (250/27); cr1000x seed 42 27 (239/33, 1 hang); cr300
+      seed 42 18 (227/53, 2 hangs); cr350 seed 42 22 (223/55). Seeds 45-46 not run. `fuzz.py
+      --out` outside the project now works (it crashed saving reproducers before).
 
 ## Next steps
 
