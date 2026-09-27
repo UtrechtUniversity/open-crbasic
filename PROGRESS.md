@@ -618,11 +618,23 @@ coordinator commits it. Tick items here as they land.
       `structure.py`'s `_check_alias_dims` from the prior "Round 7 (partial)" session; this item
       re-confirmed it with fresh oracle probes on all four loggers, added the two missing unit
       tests, and wrote up `docs/checker.md`'s "Duplicate Alias" section that round never landed)
-- [ ] CR6/CR1000X: `Need closing )` shapes
+- [x] CR6/CR1000X: `Need closing )` shapes (oracle-confirmed `docs/checker.md` "Need closing )
+      shapes": `Need closing )` itself was already fully covered by the prior Alias empty-parens
+      item; this item implements the three sibling messages -- `No Matching, or out of place ) in
+      expression: %s.` for an unclosed paren in the general expression grammar, `%s is missing the
+      ) character.` for an unclosed `Public`/`Dim`/`Static` dimension list, `Incomplete expression:
+      %s.` for an extra/unmatched `)` -- all identical on CR6/CR1000X, `parser.py`/`structure.py`)
 - [ ] CR6/CR1000X: `DataTable without EndTable.` (nested tables)
 - [ ] CR6/CR1000X: `AddPrecise` argument rules
 - [ ] All loggers: Sub/Function call argument count/type checks
-- [ ] All loggers: builtin function argument counts/types (`data/functions.json` argtypes)
+- [x] All loggers: builtin function argument counts/types (`data/functions.json` argtypes) --
+      oracle-confirmed `docs/checker.md` "Built-in function call arity": too few/too many arguments
+      to a built-in function nested in an expression (`Expression expects , : %s.`/`No Matching, or
+      out of place ) in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, an
+      oracle-verified per-function allow-list rather than a blanket `nargs` rule since several
+      functions' real min/max diverges from `nargs`, and diverges again per logger for a few names).
+      Argument-*kind* checks are not implemented: the oracle accepts every swapped-kind literal
+      tried, so there is no "wrong kind" rejection to reproduce.
 - [ ] CR6 help-corpus wording: pass-1 specific messages vs generic out-of-place (one message per item:
       `Invalid or missing parameter.`, `Expression expects (`, `Need '=' in units definition`,
       `Incomplete expression`, `No Matching, or out of place ) in expression`)

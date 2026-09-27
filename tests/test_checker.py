@@ -104,6 +104,56 @@ def test_echo_preserves_leading_indentation_and_is_not_trimmed():
     assert "Invalid, or out of place expression:     ThisIsBogus stuff here." in messages_of(result)
 
 
+# ---- "Need closing )" shapes (docs/checker.md "Need closing ) shapes", oracle-confirmed CR6) --
+
+def test_unclosed_paren_in_assignment_rhs():
+    result = compile_text(wrapped("  x = Sin(1\n"))
+    assert "No Matching, or out of place ) in expression:   x = Sin(1." in messages_of(result)
+
+
+def test_unclosed_bare_grouping_paren_in_assignment_rhs():
+    result = compile_text(wrapped("  x = (1+2\n"))
+    assert "No Matching, or out of place ) in expression:   x = (1+2." in messages_of(result)
+
+
+def test_unclosed_paren_in_instruction_call_still_compiles():
+    # Unlike a general expression, an instruction's own argument list left open to end-of-line is
+    # tolerated (pre-existing `expect_close` behaviour, unchanged) -- oracle-confirmed `PortSet(1,1`
+    # alone fails on `PortSet`'s own channel check, never on the missing `)`.
+    result = compile_text(wrapped("  PortSet(1,1\n"))
+    assert messages_of(result) == ["Invalid port 1, use C1..C4 or U1..U12."]
+
+
+def test_unclosed_paren_in_bare_call_still_compiles():
+    # A bare call (no `Call` keyword) is just as tolerant of its own outermost unclosed paren as
+    # the explicit `Call`/instruction forms -- oracle-confirmed.
+    result = compile_text("Sub Foo(a,b,c)\nEndSub\n" + wrapped("  Foo(1,2,3\n"))
+    assert result.diagnostics.errors == []
+
+
+def test_extra_close_paren_in_assignment():
+    result = compile_text(wrapped("  x = 1+2))\n"))
+    assert "Incomplete expression:   x = 1+2))." in messages_of(result)
+
+
+def test_unclosed_declaration_dimension_reports_missing_close_paren():
+    result = compile_text("Public x(5\n" + wrapped(""))
+    assert messages_of(result) == ["x(5 is missing the ) character."]
+    assert result.diagnostics.errors[0].line == 1
+
+
+def test_unclosed_declaration_dimension_multi_dim():
+    result = compile_text("Dim x(5,3\n" + wrapped(""))
+    assert "x(5,3 is missing the ) character." in messages_of(result)
+
+
+def test_unclosed_sub_param_list_still_compiles():
+    # A `Sub`'s own parameter list, unlike a `Public`/`Dim` dimension list, is oracle-confirmed
+    # still tolerant of running off the end of the line.
+    result = compile_text("Sub Foo(a,b\nEndSub\n" + wrapped(""))
+    assert result.diagnostics.errors == []
+
+
 def test_public_with_no_name_reports_variable_not_named():
     # `docs/checker.md` "`Public`/`Dim` with no name at all": a CHM line-wrap shape (`Public` /
     # `Y, Z` split across two physical lines with no `_` continuation).

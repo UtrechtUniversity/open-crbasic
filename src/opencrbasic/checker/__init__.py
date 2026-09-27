@@ -35,6 +35,10 @@ Runs, in order:
    gets its own, later "Invalid or missing parameter." reported). `instr_rules.check_too_many` --
    the mirror image, an argument list running past the declared count ("Too many parameters:  %s.",
    round 5, `docs/checker.md`) -- runs alongside it, also pass 1 (oracle-confirmed the same way).
+   `expressions.check_function_arity` -- the same shortfall/overflow shape, but for a *built-in
+   function* call inside an expression rather than an instruction's own argument list ("Expression
+   expects , : %s."/"No Matching, or out of place ) in expression: %s.", `docs/checker.md`); also
+   pass 1, oracle-confirmed the same way.
 5. `warnings.check_early` -- reachability/fnotch; ungated, fires even when the file has other
    errors elsewhere (`docs/instructions.md`). `warnings.check_background_calibration` is a
    related but separately-gated check, run at step 11 below instead (round 6, `docs/checker.md`).
@@ -123,6 +127,11 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
+    # Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
+    # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
+    # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
+    # confirmed the same way as the two calls just above (`docs/checker.md`).
+    _run_pass(expressions.check_function_arity, program, profile, diags)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,

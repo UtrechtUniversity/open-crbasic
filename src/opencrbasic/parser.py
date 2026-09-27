@@ -46,17 +46,32 @@ _LEADING_WORD_RE = re.compile(r'^\s*([A-Za-z_][A-Za-z0-9_]*\$?)')
 _RELOPS = {"=", "<>", "<", ">", "<=", ">="}
 _COMPOUND_OPS = {"+=", "-=", "*=", "/=", "\\=", "^=", "&="}
 
+# Distinguishable `Unparsed.reason` markers for a genuinely unclosed parenthesis reached through
+# the *general expression* grammar (an assignment's RHS, a nested call's own arguments -- anything
+# parsed via `_parse_expr`) -- unlike a bare instruction/`Call` statement's own argument list,
+# which stays lenient about running off the end of the line (`expect_close`, unchanged: oracle-
+# confirmed `Call Foo(1,2,3` with nothing further compiles). `checker/structure.py` matches these
+# two literal strings to report the real compiler's own message instead of the generic "Invalid,
+# or out of place expression" fallback. See `docs/checker.md` "Need closing ) shapes".
+UNCLOSED_PAREN_EXPR = "unclosed parenthesized expression"
+UNCLOSED_DIM_PREFIX = "unclosed dim: "
+
 
 class _ParseError(Exception):
     pass
 
 
 class _TokStream:
-    __slots__ = ("toks", "i")
+    __slots__ = ("toks", "i", "seg_text")
 
-    def __init__(self, toks: list[Token]):
+    def __init__(self, toks: list[Token], seg_text: str = ""):
         self.toks = toks
         self.i = 0
+        # The physical line this token stream was lexed from, verbatim (empty for the two call
+        # sites that never need it: directive/`Alias`-lhs sub-token-streams). Column-sliced by
+        # `_parse_vardecl`'s own unclosed-dimension-list check (`Token.col` indexes straight into
+        # this string, oracle-confirmed -- see `docs/checker.md` "Need closing ) shapes").
+        self.seg_text = seg_text
 
     def peek(self, k: int = 0) -> Token:
         j = self.i + k
@@ -325,7 +340,7 @@ class _Parser:
         return line_text
 
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
-        p = _TokStream(seg)
+        p = _TokStream(seg, seg_text)
         try:
             if (self._in_struct and seg and seg[0].kind == "IDENT"
                     and seg[0].upper not in self.profile.instructions):
@@ -411,7 +426,10 @@ class _Parser:
         spans: list[tuple[int, int] | None] = []
         if p.is_op("("):
             p.next()
-            args, spans = self._parse_arglist(p, ")", line, file)
+            # `strict=False`: an instruction's own argument list left open to end-of-line
+            # silently completes right there, oracle-confirmed (`docs/checker.md` "Need closing )
+            # shapes"), unlike a call reached through the general expression grammar.
+            args, spans = self._parse_arglist(p, ")", line, file, strict=False)
         elif p.is_op("="):
             # A handful of instructions (`StationName=Value`) take `=Value` instead of an
             # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
@@ -433,7 +451,7 @@ class _Parser:
         args: list[S.Expr | None] = []
         if p.is_op("("):
             p.next()
-            args, _spans = self._parse_arglist(p, ")", line, file)
+            args, _spans = self._parse_arglist(p, ")", line, file, strict=False)  # see above
         elif not p.at_end():
             args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
@@ -443,7 +461,11 @@ class _Parser:
         # going through `_parse_expr` here would swallow it as an equality test instead of
         # leaving it for the assignment check below (found by corpus testing; see
         # docs/frontend.md).
-        target = self._parse_atom(p, line, file)
+        # `strict=False`: this atom may turn out to be a bare call's own name (`Foo(1,2,3` with
+        # nothing further), which tolerates an unclosed paren at end-of-line just like `Call`/a
+        # recognised instruction (oracle-confirmed) -- but only for *this* atom's own outermost
+        # parens; anything nested inside it is parsed via `_parse_expr` and is strict again.
+        target = self._parse_atom(p, line, file, strict=False)
         t = p.peek()
         if t.kind == "OP" and (t.text == "=" or t.text in _COMPOUND_OPS):
             op_tok = p.next()
@@ -709,6 +731,25 @@ class _Parser:
             vars_.append(self._parse_vardecl(p, line, file))
         return S.Declaration(line, file, kind=kind, vars=vars_)
 
+    def _close_dims_or_raise(self, p: _TokStream, name_tok: Token) -> None:
+        """A `Public`/`Dim`/`Static` dimension list's own closing `)`, unlike an instruction's
+        argument list, is **not** tolerant of running off the end of the physical line: oracle-
+        confirmed (`docs/checker.md` "Need closing ) shapes") that `Public x(5` alone -- or
+        `Public x(5,3`, or with `EndProg`/more statements on later lines, no different -- always
+        fails with `%s is missing the ) character.`, `%s` = the variable's own name plus
+        everything from its own `(` through the end of *this* physical line, verbatim (identical
+        on all four loggers). Only this exact run-off-the-end-of-line shape is handled here,
+        mirroring `expect_close`'s own EOL condition exactly (`Token.col` indexes straight into
+        `p.seg_text`, oracle-confirmed column-exact); any other malformed token in a dimension
+        list (a real, non-EOL mismatch) still falls through to `expect_close`'s ordinary parse
+        error, unchanged -- not attempted, no oracle evidence gathered for that shape's own
+        message text.
+        """
+        if p.at_end():
+            text = p.seg_text[name_tok.col:] if p.seg_text else name_tok.text
+            raise _ParseError(f"{UNCLOSED_DIM_PREFIX}{text}")
+        p.expect_close(")")
+
     def _parse_vardecl(self, p: _TokStream, line: int, file: str) -> S.VarDecl:
         name_tok = p.expect_ident()
         dims: list[S.Expr] = []
@@ -722,7 +763,7 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     dims.append(self._parse_expr(p, line, file))
-            p.expect_close(")")
+            self._close_dims_or_raise(p, name_tok)
         vtype = None
         strsize = None
         init = None
@@ -748,7 +789,7 @@ class _Parser:
                     while p.is_op(","):
                         p.next()
                         dims.append(self._parse_expr(p, line, file))
-                p.expect_close(")")
+                self._close_dims_or_raise(p, name_tok)
             if p.is_op("="):
                 p.next()
                 val = self._parse_expr(p, line, file)
@@ -942,7 +983,15 @@ class _Parser:
             return S.Unary(tok.line, file, tok.text, operand)
         return self._parse_atom(p, line, file)
 
-    def _parse_atom(self, p: _TokStream, line: int, file: str) -> S.Expr:
+    def _parse_atom(self, p: _TokStream, line: int, file: str, strict: bool = True) -> S.Expr:
+        # `strict=False` is passed only from `_parse_assignment_or_call`'s own initial lvalue-or-
+        # bare-call atom parse: a bare `Foo(1,2,3` (no `Call` keyword, nothing further on the
+        # line) is oracle-confirmed to compile just like the explicit-`Call`/instruction-keyword
+        # forms (`expect_close`'s own EOL tolerance) -- but *only* for this atom's own outermost
+        # parens; an argument nested inside it (parsed via `_parse_expr`, not this parameter) is
+        # ordinary and strict again, oracle-confirmed (`docs/checker.md` "Need closing ) shapes",
+        # `Foo(Sin(1` alone: the outer call compiles as far as its own `)`, but the unclosed inner
+        # `Sin(1` still fails). Every other caller leaves this at its default.
         tok = p.peek()
         if tok.kind == "OP" and tok.text in ("!", "@"):
             # Pointer variables: `!x` dereferences (also valid as an assignment target -- `!val1
@@ -961,6 +1010,12 @@ class _Parser:
         if tok.kind == "OP" and tok.text == "(":
             p.next()
             e = self._parse_expr(p, line, file)
+            if strict and p.at_end():
+                # Oracle-confirmed (`docs/checker.md` "Need closing ) shapes"): a bare grouping
+                # paren left open to end-of-line inside a general expression is rejected exactly
+                # like an unclosed call, `No Matching, or out of place ) in expression: %s.`, not
+                # silently completed the way an instruction/`Call` argument list is.
+                raise _ParseError(UNCLOSED_PAREN_EXPR)
             p.expect_close(")")
             return e
         if tok.kind == "OP" and tok.text == "{":
@@ -978,7 +1033,7 @@ class _Parser:
             node: S.Expr = S.Name(tok.line, file, tok.text)
             if p.is_op("("):
                 p.next()
-                args, _spans = self._parse_arglist(p, ")", line, file)
+                args, _spans = self._parse_arglist(p, ")", line, file, strict=strict)
                 node = S.Index(tok.line, file, tok.text, args)
             while p.is_op("."):
                 p.next()
@@ -992,27 +1047,39 @@ class _Parser:
         raise _ParseError(f"expected an expression, found {tok.text or tok.kind!r}")
 
     def _parse_arglist(
-        self, p: _TokStream, close: str, line: int, file: str
+        self, p: _TokStream, close: str, line: int, file: str, strict: bool = True
     ) -> tuple[list[S.Expr | None], list[tuple[int, int] | None]]:
+        # `strict=False` (only `_parse_generic_instruction`/`_parse_call`'s own direct argument
+        # list, plus the one bare-call-detection atom above): an instruction/`Call` argument list
+        # left open to end-of-line silently completes right there (`expect_close`, pre-existing,
+        # oracle-confirmed). `strict=True` (the default -- every other caller, i.e. this argument
+        # list belongs to a call reached through the general expression grammar): the same shape
+        # instead raises, becoming the real compiler's own `No Matching, or out of place ) in
+        # expression: %s.` (`docs/checker.md` "Need closing ) shapes").
         args: list[S.Expr | None] = []
         spans: list[tuple[int, int] | None] = []
         if p.is_op(close):
             p.next()
             return args, spans
-        if p.at_end():
-            return args, spans  # implicit close at end-of-line; see `expect_close`
-        while True:
-            if p.at_end() or (p.peek().kind == "OP" and p.peek().text in (",", close)):
-                args.append(None)
-                spans.append(None)
-            else:
-                start_col = p.peek().col
-                args.append(self._parse_expr(p, line, file))
-                spans.append((start_col, p.peek().col))
-            if p.is_op(","):
-                p.next()
-                continue
-            break
+        if not p.at_end():
+            while True:
+                if p.at_end() or (p.peek().kind == "OP" and p.peek().text in (",", close)):
+                    args.append(None)
+                    spans.append(None)
+                else:
+                    start_col = p.peek().col
+                    args.append(self._parse_expr(p, line, file))
+                    spans.append((start_col, p.peek().col))
+                if p.is_op(","):
+                    p.next()
+                    continue
+                break
+        if strict and p.at_end():
+            # Ran off the end of the line with the call never closed -- lenient callers keep the
+            # pre-existing "implicit close at end-of-line" behaviour via `expect_close` below;
+            # strict callers (any call reached through the general expression grammar) raise
+            # instead, oracle-confirmed (see `_parse_atom`'s own docstring above).
+            raise _ParseError(UNCLOSED_PAREN_EXPR)
         p.expect_close(close)
         return args, spans
 

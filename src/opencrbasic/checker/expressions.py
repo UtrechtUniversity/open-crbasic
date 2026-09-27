@@ -186,6 +186,122 @@ _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
     "MOVEPRECISE": frozenset({0}),
 }
 
+# Built-in function call arity (this session, oracle-confirmed against `CR6Comp.exe`, byte-for-byte
+# re-confirmed on `cr1000xcomp.exe` for the same probe batch -- `docs/checker.md`): a call to a
+# `data/functions.json` built-in inside an expression (a `Name(args)` the parser resolves as
+# `syntax.Index`, or a bare `syntax.Call` when the whole statement is just the call) with fewer
+# arguments than that function's own `nargs` reports `Expression expects , : <echo>.`; more than
+# `nargs` reports `No Matching, or out of place ) in expression: <echo>.`. Both are genuinely
+# **pass 1**: oracle-confirmed to fire alongside an unrelated, earlier pass-1 `Variable not named.`,
+# and themselves to suppress an unrelated *pass-2* `Invalid symbol in expression` finding on a
+# different, otherwise-clean statement elsewhere in the same file -- the same "pass 1 found
+# something anywhere in the file, pass 2 does not run at all" architecture already documented for
+# `instr_rules.py`'s instruction-argument checks (`docs/checker.md` "Pass model").
+#
+# `nargs` is **not** a safe universal minimum or maximum, so neither direction is applied to every
+# function with a decoded `argtypes`: a 92-function oracle sweep (every `data/functions.json` entry
+# with `argtypes is not None`, tried at `nargs-1` and `nargs+1` arguments each) found real
+# exceptions on both sides -- `NetworkTimeProtocol`/`PingIP`/`HttpPost`/`HttpPut`/`Sprintf`/`Date`
+# all accept *fewer* than `nargs` (an undocumented optional trailing argument each); `SerialOpen`
+# accepts `nargs+1` (a 6th, undocumented optional argument -- oracle: `SerialOpen(ComC1,9600,0,0,
+# 1000,1)` compiles clean on CR6/CR1000X; CR350's own extracted table already lists `nargs=6` for
+# it, so this is specifically a CR6/CR1000X table gap, not a real difference in compiler behaviour);
+# `Sprintf` is genuinely variadic (2..9 arguments all compile clean; 10 hits an unrelated
+# `Expression nesting level exceeded, break up expression.`, not an arity rejection). A one-
+# argument-short call to a **zero- or one-argument** function is also excluded from the "too few"
+# side entirely: at `nargs` 0 or 1 the "one too few" case is zero arguments, `NAME()`, which the
+# oracle sweep found is a *different*, inconsistent message family there (most often the ordinary
+# bare-call fallback `Invalid, or out of place expression: %s.`, sometimes a genuinely different
+# pass-1 message, `Incomplete expression: %s.`, and for a handful -- e.g. `Sprintf()` itself,
+# `PppOpen(1)` -- silently accepted) rather than this rule's own two messages, so it is not modelled
+# here (AGENTS.md: implement only the confirmed subset).
+#
+# Both directions are therefore restricted to an explicit, oracle-verified allow-list per direction
+# (`_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE`) -- exactly the functions this sweep found reject `nargs-1`/
+# `nargs+1` with the expected message and nothing else (no unrelated crash, no different message, no
+# silent accept), cross-checked identically on `cr1000xcomp.exe` for the whole probe batch (the only
+# difference found across the two loggers in that re-run was an unrelated port-range message,
+# `CheckPort`'s own `Port must be C1..C4 or U1..U12.` vs `Port must be C1..C8.`, nothing to do with
+# arity). CR300/CR350 were spot-checked on `Round`/`Instr` only (not the full 92-function sweep,
+# `docs/checker.md`); see `_ARITY_TRAILING_NEWLINE_LOGGERS` below for the one real formatting
+# difference found there.
+#
+# Both maps are keyed by name **and** the `nargs` value this session's oracle sweep actually tested
+# (the default/`cr6`/`cr1000x` `data/functions.json`, byte-identical between those two) -- a
+# *value*, not just a name allow-list -- because a full-corpus difftest re-run (`tools/difftest.py
+# --logger cr350`) caught a real false reject this session first got wrong: CR350's own
+# `functions.json` gives `SerialOpen` `nargs=6` (its own table already bakes in the undocumented
+# 6th argument CR6/CR1000X's table omits, see above), so a name-only allow-list applied `SerialOpen`
+# to `_ARITY_MIN_SAFE` using *CR350's* `nargs` (6) and rejected the ordinary 5-argument form
+# (`tests/corpus/chm/serialflush_1.CR6`, `examples/SBD_example_hirise*.CR6`) that CR350 genuinely
+# accepts. `MQTTSubscribe`/`NetworkTimeProtocol` have the same shape on CR300/CR350 (a smaller
+# `nargs` there than CR6/CR1000X, `docs/checker.md`'s own earlier per-logger `functions.json` diff),
+# not yet oracle-tested for whether their *own* true min/max still matches their own smaller
+# `nargs` the way `SerialOpen`'s doesn't -- so rather than assume either way, `_call_arity_problem`
+# only fires when the profile's own `nargs` for that name is **exactly** the value this sweep
+# tested, and silently does not check a name whose profile disagrees (AGENTS.md: under-report
+# rather than guess at an unverified cross-logger transfer). This is why the two maps below are
+# `{name: nargs}`, not plain `frozenset`s.
+#
+# **Argument-*kind* mismatches are not implemented**: the same sweep tried swapping a string literal
+# where `argtypes` says a float/int expression and vice versa (`Round("x",1)`, `Round(1.5,"x")`,
+# `Left(1,2)`, `Mid(1,2,3)`, `Replace(1,"x","y")`, `InStr("x","x","x",1.5)`) and the real compiler
+# compiled every one of them clean -- `argtypes`'s 0/1/2/3 codes evidently only select how the value
+# is *coerced* at the call site, not a compile-time type check, so there is no "wrong kind"
+# diagnostic to reproduce (AGENTS.md: never invent a rejection with no oracle evidence for it).
+_ARITY_MIN_SAFE = {
+    "CHECKSUM": 3, "DAYLIGHTSAVING": 8, "DIALMODEM": 4, "EMAILRECV": 6, "EMAILSEND": 6,
+    "ENCRYPTION": 7, "FILECOPY": 2, "FILELIST": 2, "FILEOPEN": 3, "FILEREAD": 3,
+    "FILEREADLINE": 3, "FILERENAME": 2, "FILEWRITE": 3, "FINDSPA": 4, "FORMATFLOAT": 2,
+    "FORMATLONG": 2, "FTPCLIENT": 6, "HTTPGET": 3, "IIF": 3, "INSTR": 4, "IPINFO": 2, "LEFT": 2,
+    "MID": 3, "MQTTPUBLISH": 4, "MQTTSUBSCRIBE": 4, "REPLACE": 3, "RIGHT": 2, "ROUND": 2,
+    "SECSSINCE1990": 2, "SERIALINBLOCK": 3, "SERIALOPEN": 5, "SERIALOUT": 5, "SMSRECV": 3,
+    "STRCOMP": 2, "TCPOPEN": 3, "TIMEISBETWEEN": 4, "UDPDATAGRAM": 6, "UDPOPEN": 3,
+    "WATCHDOGTIMER": 2, "XMLPARSE": 6,
+    # A second, smaller oracle sweep (this session, `docs/checker.md`) of every `argtypes is None`
+    # entry (the uniform-float-argument math functions, `kind` 295) found the same rule holds for
+    # its own `nargs>=2` members, `TIMER`'s own excepted below:
+    "AVE": 2, "PWR": 2, "ATN2": 2, "IFTIME": 3, "TIMEINTOINTERVAL": 3,
+    # `TIMER(...)` at `nargs-1` gets `Parameter must be a constant integer: %s.` instead (its own
+    # arguments are constant-integer-checked before arity would ever matter) -- deliberately not in
+    # this map.
+}
+_ARITY_MAX_SAFE = {
+    "ARRAYINDEX": 1, "ASCII": 1, "CHECKPORT": 1, "CHR": 1, "CHR$": 1, "COMPORTISACTIVE": 1,
+    "DAYLIGHTSAVING": 8, "DAYLIGHTSAVINGUS": 1, "ENCRYPTION": 7, "FILECLOSE": 1, "FILECOPY": 2,
+    "FILEENCRYPT": 1, "FILELIST": 2, "FILEOPEN": 3, "FILEREAD": 3, "FILEREADLINE": 3,
+    "FILERENAME": 2, "FILESIZE": 1, "FILETIME": 1, "FILEWRITE": 3, "FINDSPA": 4,
+    "FORMATFLOAT": 2, "FORMATLONG": 2, "FORMATLONGLONG": 1, "HEX": 1, "HEXTODEC": 1, "IIF": 3,
+    "INSTR": 4, "IPINFO": 2, "IPTRACE": 1, "LEFT": 2, "LEN": 1, "LOADFIELDCAL": 1,
+    "LOWERCASE": 1, "LTRIM": 1, "MID": 3, "MQTTUNSUBSCRIBE": 1, "NETWORKTIMEPROTOCOL": 5,
+    "NEWFIELDCAL": 0, "PINGIP": 3, "PPPCLOSE": 0, "REPLACE": 3, "RIGHT": 2, "ROUND": 2,
+    "ROUTE": 1, "RTRIM": 1, "SECSSINCE1990": 2, "SERIALCLOSE": 1, "SERIALFLUSH": 1,
+    "SERIALINBLOCK": 3, "SERIALINCHK": 1, "SERIALOUT": 5, "SMSRECV": 3, "STRCOMP": 2,
+    "TCPCLOSE": 1, "TIMEISBETWEEN": 4, "TRIM": 1, "UPPERCASE": 1, "VOICEKEY": 1,
+    "VOICENUMBER": 1, "WATCHDOGTIMER": 2,
+    # Same second sweep, `nargs+1` this time: every plain single-float math function tried rejects
+    # cleanly, plus the three shared with `_ARITY_MIN_SAFE` above and the two zero-argument
+    # functions this specific pair happened to also reject cleanly (`Rnd`/`ClockChange`, unlike the
+    # inconsistent zero-argument functions in the first sweep, `docs/checker.md`'s own top-of-file
+    # comment) -- `Abs`, `Ave` (this direction only) and `Timer` excepted below.
+    "SIN": 1, "COS": 1, "LOG": 1, "LN": 1, "SQR": 1, "EXP": 1, "CSGN": 1, "INT": 1, "FRAC": 1,
+    "SGN": 1, "ATN": 1, "TAN": 1, "FIX": 1, "ASIN": 1, "ACOS": 1, "LOG10": 1, "SINH": 1,
+    "TANH": 1, "COSH": 1, "FLOOR": 1, "CEILING": 1, "RND": 0, "CLOCKCHANGE": 0,
+    "PWR": 2, "ATN2": 2, "IFTIME": 3, "TIMEINTOINTERVAL": 3,
+    # `Abs(x,y)` gets `Incomplete expression: %s.` instead (a different message, not modelled by
+    # this rule); `Ave(x,y,z)` gets `Parameter must be a constant integer: %s.` (its own later
+    # arguments are constant-integer-checked, same shape as `Timer`); `Timer` itself gets that same
+    # constant-integer message on *this* side too. None of the three are in this map.
+}
+
+# CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
+# embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`
+# immediately after the text on one line (oracle, `Round(X)`/`Round(X,1,2)` alone, both directions,
+# `docs/checker.md`). The same split this file already uses for other per-logger message-shape
+# differences (`_WHOLE_EXPR_ECHO_LOGGERS`); reused directly rather than adding a new set, since the
+# two happen to be the same two loggers on each side for this rule too.
+_ARITY_TRAILING_NEWLINE_LOGGERS = frozenset({"cr300", "cr350"})
+
 
 @lru_cache(maxsize=1)
 def _type_code_kinds() -> dict[int, str]:
@@ -519,3 +635,132 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
         else:
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+
+
+def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | None:
+    """`"few"`/`"many"`/`None` for one call's own argument count against `data/functions.json`'s
+    `nargs`, restricted to `_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE` (the oracle-verified-safe subset,
+    this module's own top-of-file comment) -- and, within that, only when *this profile's own*
+    `nargs` for the name still matches the value the oracle sweep tested (`_ARITY_MIN_SAFE[name]`/
+    `_ARITY_MAX_SAFE[name]`): a profile whose own table disagrees (`SerialOpen` on CR350, `docs/
+    checker.md`) is silently left unchecked for that name, rather than trusting an unverified
+    transfer of this session's CR6/CR1000X-only evidence. A name absent from `profile.functions`
+    (not a built-in function at all -- a declared `Sub`/`Function`, or unresolved) is never this
+    rule's concern.
+    """
+    record = profile.functions.get(name.upper())
+    if not record:
+        return None
+    nargs = record.get("nargs")
+    if nargs is None:
+        return None
+    n = len(args)
+    if n < nargs and _ARITY_MIN_SAFE.get(name.upper()) == nargs:
+        return "few"
+    if n > nargs and _ARITY_MAX_SAFE.get(name.upper()) == nargs:
+        return "many"
+    return None
+
+
+def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
+    """The first (left-to-right, outer-before-inner) built-in-function call anywhere inside `expr`
+    with a bad argument count, `_call_arity_problem`'s own `"few"`/`"many"`/`None`. Same recursion
+    shape as `_undefined_names`/`_variable_refs` above (`Unary`/`Binary`/`Index`'s own name and
+    args/`Member.base`/`ArrayLiteral` items); a `Member`'s own `.member` args (`Status.Battery(1)`
+    -- a *field* call, never a built-in function) are deliberately not checked, same reasoning as
+    `_undefined_names` leaving `Member.member` alone.
+
+    Checks an `Index` node itself (a real parser-recognised call, or an array reference that
+    happens to share a built-in function's name -- `_call_arity_problem` only fires when the name is
+    genuinely in `profile.functions`, so an ordinary array reference is never affected) before
+    recursing into its own arguments, matching the outer-call-first order the oracle showed for a
+    single-argument-short outer call around an otherwise-fine inner one (`docs/checker.md`); a
+    *doubly* bad-arity nested call (both the outer and an inner call wrong) is not oracle-tested
+    either way and is left as this function's own documented order (outer first) rather than guessed
+    at further.
+    """
+    if expr is None:
+        return None
+    if isinstance(expr, S.Index):
+        direct = _call_arity_problem(expr.name, expr.args, profile)
+        if direct:
+            return direct
+        for a in expr.args:
+            found = _find_arity_problem(a, profile)
+            if found:
+                return found
+        return None
+    if isinstance(expr, S.Unary):
+        return _find_arity_problem(expr.operand, profile)
+    if isinstance(expr, S.Binary):
+        return _find_arity_problem(expr.left, profile) or _find_arity_problem(expr.right, profile)
+    if isinstance(expr, S.Member):
+        return _find_arity_problem(expr.base, profile)
+    if isinstance(expr, S.ArrayLiteral):
+        for item in expr.items:
+            found = _find_arity_problem(item, profile)
+            if found:
+                return found
+        return None
+    return None  # Number, Name, String: no call to check
+
+
+def _arity_message(kind: str, text: str, profile) -> str:
+    verb = ("Expression expects , : " if kind == "few"
+            else "No Matching, or out of place ) in expression: ")
+    if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
+        return f"{verb}{text}\n."
+    return f"{verb}{text}."
+
+
+def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
+    in expression: %s.`), this module's own top-of-file comment for the oracle evidence, the safe
+    allow-lists, and the pass-1 tier this needs (wired unconditionally in `checker/__init__.py`,
+    alongside `instr_rules.check`/`check_too_many`, not inside the gated `check` above).
+
+    At most one diagnostic per statement, matching the oracle (a second, independent bad-arity call
+    later in the *same* statement is never additionally reported -- confirmed both across two
+    `Instruction` argument positions and, separately, within one `Call`'s own argument list):
+
+    - `Instruction`: the first argument position (ascending, plain textual order -- **not** the
+      constant-family reordering `_report_statement` above uses for a *different* check; arity is a
+      raw parse-time concern, oracle-confirmed unaffected by that semantic reordering, `docs/
+      checker.md`) whose own expression tree contains a bad-arity call, echoed as *that argument's
+      own verbatim text* (`_arg_text`, matching `Randomize(Round(X))` -> echoes `Round(X)`, not the
+      whole statement -- oracle-confirmed, `docs/checker.md`).
+    - `Call` (a bare statement, `Round(Number,1,2)` alone, or a builtin used for its side effect):
+      the call's own arity (if `stmt.name` is itself a built-in function) or any nested call inside
+      its own argument list, echoed as the *whole statement's own verbatim text* (`stmt.text` --
+      oracle-confirmed, `WatchdogTimer(0,Round(X))` -> echoes the whole statement, unlike the
+      `Instruction`-argument case above; `Call` has no per-argument span to prefer, and the oracle
+      shows it uses the whole-statement span here even for a call nested inside one of its own
+      arguments).
+    - `Assignment`: `stmt.value`'s own expression tree, echoed as the whole statement's own verbatim
+      text (`stmt.text`, target and `=` included -- same convention `check` above already uses for
+      this module's other assignment-RHS echo, `docs/checker.md` "Round 5"). The target itself is
+      not checked (a function call is never a valid assignment target; not oracle-tested, left
+      alone rather than guessed at).
+    """
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction):
+            for i, arg in enumerate(stmt.args):
+                if arg is None:
+                    continue
+                problem = _find_arity_problem(arg, profile)
+                if problem:
+                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
+                    break
+        elif isinstance(stmt, S.Call):
+            problem = _call_arity_problem(stmt.name, stmt.args, profile)
+            if not problem:
+                for a in stmt.args:
+                    problem = _find_arity_problem(a, profile)
+                    if problem:
+                        break
+            if problem:
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
+        elif isinstance(stmt, S.Assignment):
+            problem = _find_arity_problem(stmt.value, profile)
+            if problem:
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)

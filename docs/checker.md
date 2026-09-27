@@ -1410,3 +1410,274 @@ production code changed, verification and tests only): cr6 exact 336 (chm) + 16 
 four (`{r['file'] for r in json.load(open(f'difftest-{l}.json')) if r['their_exit'] == 0 and
 r['our_exit'] != 0}` empty for every `l`). `python3 -m pytest -q`: all green, including two new
 `tests/test_checker.py` cases for the two messages above and one boundary case.
+
+## Need closing ) shapes (oracle-confirmed 2026-09-27)
+
+A small task from `PROGRESS.md`'s "Small-task queue": which statement shapes report `Need closing
+)`, `No Matching, or out of place ) in expression: %s.`, `%s is missing the ) character.`, and
+`Incomplete expression: %s.`. All probes below: `WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all wine
+<CR6Comp.exe|cr1000xcomp.exe|cr300comp.exe|cr350comp.exe> t.cr6` in a scratch dir, no option flags.
+
+**`Need closing )` itself** was already fully accounted for before this item started -- Round 6's
+own `Alias name() = target` empty-parens shape (`structure.py`'s `_check_alias_dims`, above). This
+item's own oracle sweep found no *further* shape that reports that exact text; every other
+unbalanced-paren shape probed reports one of the three messages below instead.
+
+**Four distinct shapes, by where the unclosed/extra `)` sits, all identical on CR6 and CR1000X**:
+
+1. **Instruction call, `Call`, or a bare (no-`Call`-keyword) call's own outermost parens**: still
+   tolerant of running off the end of the line, unaffected -- `PortSet(1,1` / `Call Foo(1,2,3` /
+   bare `Foo(1,2,3` (nothing further on the line) all compile, oracle-confirmed, the trailing `)`
+   silently supplied right there (pre-existing `expect_close`, `docs/frontend.md`). This is *only*
+   the outermost parens of that one call: a bare call's own **argument**, parsed through the
+   general expression grammar, is not tolerant (case 2's own nested-call probe below).
+2. **Assignment RHS, or any nested call reached through the general expression grammar (an
+   argument to any call, a bare grouping `(expr)`, `If`'s condition)**, left open to end-of-line:
+   `No Matching, or out of place ) in expression: %s.`, pass 2. `%s` = `stmt.text` (the whole
+   statement's own verbatim source, same echo convention as `Invalid, or out of place expression`)
+   for the shape this item implements (an assignment: `x = Sin(1` -> `  x = Sin(1.`; a bare
+   grouping paren: `x = (1+2` -> `  x = (1+2.`) -- oracle-confirmed exact on CR6/CR1000X. A call
+   nested inside a *bare* statement's own arguments (`Foo(Sin(1` alone, `Foo` undeclared) also
+   fails this way, but the real compiler echoes a narrower substring than `stmt.text` there (just
+   `Sin(1`, not the whole `Foo(Sin(1`) that this item's implementation does not reproduce (a
+   `docs/checker.md`-documented `verdict`, not a false accept -- not attempted; the exact rule the
+   real compiler uses to pick that narrower span was not pinned down). `If`/`Select Case`/`Const`
+   also echo their own narrower value/condition text rather than the whole line (also not
+   reproduced, same reason -- these three additionally interact with pre-existing parser code that
+   already wraps a failure in its own, differently-shaped `Unparsed`, e.g. `Const k = Sin(1`
+   through this session's own change reports `Const with no assignment.` instead, itself a
+   pre-existing, unrelated mismatch, not a new regression). CR300/CR350 report the same message and
+   `%s`, but with the pre-existing, separately-tracked "echo quirk" (`PROGRESS.md`'s own queue
+   item): the raw line's own trailing newline is echoed literally, so the closing `.` lands on its
+   own line (`  x = Sin(1\n.`) -- not reproduced by this item either (out of its own scope).
+3. **`Public`/`Dim`/`Static` dimension list**, left open to end-of-line: `%s is missing the )
+   character.`, pass 1 (same `FUN_004baf00` family as `Illegally dimension: %s`/`Variable not
+   named.`). `%s` = the variable's own name through the rest of the physical line, verbatim,
+   *not* `stmt.text` and *not* including the `Public`/`Dim` keyword -- `Public x(5` ->
+   `x(5 is missing the ) character.`; `Dim y(4` -> `y(4 is missing the ) character.`; multiple
+   dimensions no different, `Public x(5,3` -> `x(5,3 is missing the ) character.` (all four loggers
+   identical). Column-sliced from the segment's own raw text (`Token.col` indexes straight into it,
+   oracle-confirmed exact). Only this exact run-off-the-end-of-line shape: a *non-EOL* malformed
+   dimension list (`Public x(5 Then`) instead reports `x(5 Then is missing the ) character.`
+   *plus* a second, unrelated `Invalid symbol in expression: 5 Then.` -- a different, more involved
+   shape (the real compiler's own dimension-list scanner keeps consuming to end of line rather than
+   stopping at the first bad token) this item leaves alone (pre-existing `expect_op` parse error,
+   unaffected either way, `verdict` not a false accept). A **`Sub`/`Function`'s own parameter
+   list**, unlike a declaration's dimension list, stays tolerant of end-of-line the same way an
+   instruction call does (`Sub Foo(a,b` alone compiles, oracle-confirmed) -- not changed.
+4. **Extra/unmatched `)`** after an otherwise-complete assignment (`x = 1+2))`): `Incomplete
+   expression: %s.`, `%s` = `stmt.text` (the whole statement) -- oracle-confirmed exact on CR6/
+   CR1000X (`  x = 1+2)).`), CR300/CR350 again with the same trailing-newline echo quirk as case 2,
+   not reproduced. The pre-existing parser already turned this shape into `Unparsed(reason=
+   "unexpected trailing input starting at ')'")` (used, unmodified, by a different, older `+=`
+   corpus finding); this item only added the message-text branch for it. An extra `)` after a bare
+   *instruction* call (`PortSet(1,1))`) is a separate, pre-existing mismatch (real: `Invalid port 1,
+   ...`, i.e. the extra paren is itself silently tolerated for an instruction the same way a
+   missing one is) that this item does not fix -- unaffected either way, not a new regression.
+
+**Implementation** (`parser.py`, `structure.py`; `checker/expressions.py` untouched, owned by a
+concurrent session): `_parse_arglist` and `_parse_atom`'s bare-grouping-paren case gained a
+`strict: bool = True` parameter -- `False` only at the three lenient call sites (an instruction's
+own argument list, `Call`'s own argument list, and `_parse_assignment_or_call`'s own initial
+bare-call-or-lvalue atom parse); `strict=True` (every other caller, i.e. anything reached through
+`_parse_expr`) raises a distinguishable `_ParseError` (`parser.UNCLOSED_PAREN_EXPR`) instead of
+silently completing at end-of-line. `_parse_vardecl` gained `_close_dims_or_raise`, a narrower,
+EOL-only check ahead of its own two `expect_close(")")` calls, raising `parser.UNCLOSED_DIM_PREFIX
++ <name-through-eol>` (needs the segment's own raw text, now threaded onto `_TokStream.seg_text`
+at construction). `structure.py` imports these two markers from `parser` (no re-typed string,
+verified no circular import: `parser.py` does not import `checker.*`) and adds three branches:
+`_UNCLOSED_DIM_PREFIX` in `_check_unparsed_pass1` (pass 1, `%s is missing the ) character.`,
+skipped by `check_pass2`'s own Unparsed branch the same way `Units`/`Const`/`Alias`-truncation
+already are); `_UNCLOSED_PAREN_EXPR` and the pre-existing `_EXTRA_CLOSE_PAREN` reason in
+`check_pass2`'s Unparsed branch (pass 2, `No Matching, or out of place )`/`Incomplete expression`
+in place of the generic `Invalid, or out of place expression` fallback).
+
+New tests: `tests/test_checker.py`, eight cases (unclosed assignment RHS, unclosed bare grouping
+paren, unclosed instruction/bare-call still compiling, extra close paren, unclosed declaration
+dimension single/multi-dim, unclosed `Sub` parameter list still compiling).
+
+Full-corpus difftest, before this item / after (`tools/difftest.py --logger <l> --show 0`): no
+change on any of the 507+16+4 `chm`/`repo`/`examples` files per logger (this item's four shapes are
+fuzz-only syntax errors, not naturally occurring in either corpus) -- cr6 336+16+2, cr1000x
+352+9+3, cr300 157+0+2, cr350 161+0+2, all unchanged; zero false rejects on all four throughout.
+`python3 -m pytest -q`: 974 passed (966 before this item's own 8 new cases), 311 skipped, 0 failed.
+One same-session run briefly showed a `cr350`-only false reject on four files (`SerialOpen`'s own
+6th, optional argument, `examples/SBD_example_hirise*.CR6` and two `chm` files); re-running moments
+later (no changes on either side of this item) already showed it gone, and `git stash`-isolating
+this item's own changes at that same moment (concurrent session's `checker/expressions.py`/
+`checker/__init__.py` work left in place) also showed it gone -- both point to a transient state in
+the concurrent session's own in-flight `check_function_arity` work (`SERIALOPEN`'s `nargs=6` vs. a
+5-argument call, oracle-confirmed the real compiler accepts) coinciding with this item's own
+measurement, not an interaction this item's own changes caused; recorded here only so it is not
+mistaken for a regression, and re-confirmed clean (see below) before this item was called done.
+
+## Built-in function call arity (oracle-confirmed 2026-09-27, `checker/expressions.py`)
+
+`Expression expects , : %s.` (too few arguments) and `No Matching, or out of place ) in
+expression: %s.` (too many) for a call to a `data/functions.json` built-in *function* nested
+anywhere inside an expression -- as distinct from an *instruction*'s own required/excess-parameter
+checks (`Invalid or missing parameter.`/`Too many parameters:  %s.`, `instr_rules.py`, already
+implemented) and from a user-declared `Sub`/`Function` call (a separate, not-yet-implemented
+`PROGRESS.md` item, `Call to %s with %d parameters, requires %d arguments.`). All probes via a
+scratch `.CR6` under `/tmp/claude-0/oracle/` against `CR6Comp.exe`/`cr1000xcomp.exe`/
+`cr300comp.exe`/`cr350comp.exe` directly under Wine (no `tools/oracle.py`, to batch dozens of
+independent probes into one compile -- pass 1's own "every error in the file, in line order"
+behaviour makes this safe, confirmed below).
+
+**Pass tier**: genuinely pass 1, not pass 2 despite superficially resembling the undefined-
+symbol/constant-only checks in this same file (both of which are pass 2, gated behind `if not
+diags.errors:` in `checker/__init__.py`). Two oracle probes settle it:
+
+```
+Public              (nameless -- an ordinary pass-1 "Variable not named." on line 1)
+Public X As Float
+BeginProg
+  Scan(1,Sec,0,0)
+    Round(X,1,2)     ' too many
+  NextScan
+EndProg
+-> line 1: Variable not named.
+   line 6: No Matching, or out of place ) in expression:     Round(X,1,2).
+   (fires alongside an unrelated, earlier pass-1 error -- not suppressed)
+
+Public X As Float
+BeginProg
+  Scan(1,Sec,0,0)
+    Randomize(BazQux)   ' an ordinary pass-2 "Invalid symbol in expression", on its own
+    X = Round(X)         ' too few
+  NextScan
+EndProg
+-> line 5: Expression expects , :     X = Round(X).
+   (line 4's own undefined-symbol finding is completely suppressed -- pass 1 found something
+   anywhere in the file, so pass 2 never runs at all, same architecture as `instr_rules.py`)
+```
+
+Wired into `checker/__init__.py` as `expressions.check_function_arity`, unconditional, alongside
+`instr_rules.check`/`check_too_many` (not inside the gated `expressions.check` in this same file).
+
+**Echo shape depends on the containing statement**, matching this file's own existing echo
+conventions rather than a new one:
+
+- An `Instruction`'s own argument (`Randomize(Round(X))`, `Randomize` a real instruction): the
+  *argument's own verbatim span* (`_arg_text`, already used by `_report_statement` above) --
+  `Randomize(Round(X))` -> echoes `Round(X)`, not the whole statement, even though `Round(X)` is
+  `Randomize`'s only argument. Nesting deeper doesn't change this: `Randomize(1 + Round(X))` ->
+  echoes `1 + Round(X)`, the whole argument, not just the inner call.
+- A bare `Call` (a built-in function used for its own side effect, or the whole statement being
+  the call itself, `Round(Number,1,2)` alone) or a call *nested inside one of a `Call`'s own
+  arguments* (`WatchdogTimer(0,Round(X))`, `WatchdogTimer` itself fine, `Round(X)` nested inside its
+  2nd argument): the *whole statement's own verbatim text* (`stmt.text`) either way -- `Call` has no
+  per-argument span to prefer, and the oracle uses the whole-statement span even for the
+  nested-inside-an-argument case, unlike the `Instruction` case above.
+- An `Assignment`'s RHS (`X = Round(X)`): the whole statement's own verbatim text, target and `=`
+  included -- the same convention this file's `check` already uses for its own assignment-RHS
+  undefined-symbol echo (`docs/checker.md` "Round 5").
+
+**At most one diagnostic per statement**, oracle-confirmed both across two independent
+`Instruction` argument positions and within one `Call`'s own argument list:
+
+```
+WriteIO(1,Round(X))              -> Expression expects , : Round(X).             (position 1 only)
+WriteIO(Round(X),Round(Y))       -> Expression expects , : Round(X).             (position 0 only;
+                                     position 1's own, independent problem is never additionally
+                                     reported)
+```
+`check_function_arity` models this as "first argument position, ascending, plain textual order"
+for an `Instruction` (**not** `_report_statement`'s own constant-family reordering -- arity is a
+raw parse-time concern, not the semantic-family quirk that check is about; not independently
+oracle-swept for a *textually-later* const-family position racing a *textually-earlier* general
+one, since constructing a probe for that shape crashes the real compiler under Wine on every
+instruction tried, `CardTest`/`CallTable`, "Known remaining gaps" below).
+
+**`nargs` is not a safe universal minimum or maximum** (`checker/expressions.py`'s own
+`_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE` docstring has the full account): a two-part oracle sweep --
+every `data/functions.json` entry with a decoded `argtypes` list (92 functions), then every entry
+with `argtypes: null` (31 more, the uniform-single-float-argument math functions) -- each tried at
+`nargs-1` and `nargs+1` arguments, batched into a handful of scratch `.CR6` files (pass 1
+accumulates every error in one file, so one compile confirms dozens of functions at once) found
+real exceptions on both sides:
+
+- `NetworkTimeProtocol`/`PingIP`/`HttpPost`/`HttpPut`/`Sprintf`/`Date` all accept *fewer* than
+  `nargs` (an undocumented optional trailing argument each).
+- `SerialOpen` accepts `nargs+1` (a genuine, undocumented 6th argument: `SerialOpen(ComC1,9600,0,0,
+  1000,1)` compiles clean on CR6/CR1000X). `Sprintf` is genuinely variadic (2..9 arguments all
+  compile clean; 10 hits `Expression nesting level exceeded, break up expression.`, unrelated to
+  arity).
+- `Abs`/`Ave`/`Timer` get a *different* message at the boundary this rule would otherwise flag
+  (`Incomplete expression: %s.`/`Parameter must be a constant integer: %s.` -- their own later
+  arguments are constant-integer-checked before arity would matter), so neither direction is
+  modelled for them.
+- A one-argument-short call to a zero- or one-argument function (`nargs` 0 or 1) is a *different*,
+  inconsistent message family at zero arguments (most often the ordinary bare-call fallback,
+  `Invalid, or out of place expression: %s.`; sometimes `Incomplete expression: %s.`; a few, e.g.
+  `Sprintf()`/`PppOpen(1)`, silently accepted) -- the "too few" side is not modelled for any
+  `nargs`-0/1 function at all, only "too many" where directly confirmed clean (most single-float
+  math functions, plus `Rnd`/`ClockChange` at `nargs=0`).
+- Argument-*kind* mismatches are **not implemented**: swapping a string literal where `argtypes`
+  says a float/int expression and vice versa (`Round("x",1)`, `Left(1,2)`, `Mid(1,2,3)`,
+  `Replace(1,"x","y")`, `InStr("x","x","x",1.5)`) all compile clean -- `argtypes`'s 0/1/2/3 codes
+  evidently only select run-time coercion, not a compile-time type check, so there is no "wrong
+  kind" diagnostic to reproduce.
+
+Both directions are therefore an explicit, oracle-verified per-function allow-list
+(`_ARITY_MIN_SAFE`/`_ARITY_MAX_SAFE`, `checker/expressions.py`) rather than a blanket rule over
+every function with a decoded `argtypes`.
+
+**Cross-logger data divergence, a false reject caught by the full-corpus gate**: `_ARITY_MIN_SAFE`/
+`_ARITY_MAX_SAFE` were first written as plain name sets, calibrated against the default (`cr6`/
+`cr1000x`, byte-identical) `functions.json`. `tools/difftest.py --logger cr350` immediately caught
+a real false reject: CR350's own `functions.json` gives `SerialOpen` `nargs=6` (its own table
+already bakes in the 6th argument CR6/CR1000X's table omits), so a name-only allow-list applied
+`SerialOpen` to `_ARITY_MIN_SAFE` using *CR350's* `nargs` and rejected the ordinary 5-argument form
+(`tests/corpus/chm/serialflush_1.CR6`, both `examples/SBD_example_hirise*.CR6`). `MqttSubscribe`/
+`NetworkTimeProtocol` have the same shape (a smaller `nargs` on CR300/CR350 than CR6/CR1000X) with
+no oracle evidence either way for whether their own true min/max still tracks it the way
+`SerialOpen`'s doesn't. Fixed generally rather than per-function: both maps are `{name: nargs}`,
+the exact `nargs` value this sweep tested, and `_call_arity_problem` only fires when the profile's
+own `nargs` for that name still equals it -- a profile whose own table disagrees is silently left
+unchecked for that one name, which is why CR300/CR350 lose coverage for those three names without
+needing a special case. Re-verified clean afterward: zero false rejects on all four loggers,
+`tools/difftest.py --logger <l> --show 0`.
+
+**CR1000X**: the same 92-function sweep re-run against `cr1000xcomp.exe` (both the `nargs-1` and
+`nargs+1` batches) matched CR6 byte-for-byte on every one of the 92 functions' own two probes
+except one unrelated line (`CheckPort`'s own port-range message, `Port must be C1..C4 or U1..U12.`
+vs. `Port must be C1..C8.` -- a different, not-yet-implemented check, nothing to do with arity).
+
+**CR300/CR350**: spot-checked on `Round`/`Instr` only (not the full 92-function sweep), both
+directions. Behaviour matches CR6/CR1000X exactly except one formatting difference: the echoed
+text is followed by a literal embedded newline, with the closing `.` alone on the next line,
+where CR6/CR1000X put it immediately after the text on the same line --
+
+```
+CR6/CR1000X: line 6: Expression expects , :     X=Round(X).
+CR300/CR350: line 6: Expression expects , :     X=Round(X)
+             .
+```
+(raw bytes, `cat -A`: `...X=Round(X)^M$` then `.^M^M$` on CR300/CR350; one line, no embedded
+newline, on CR6/CR1000X). Modelled as `_ARITY_TRAILING_NEWLINE_LOGGERS` (`{"cr300","cr350"}`),
+reusing this file's own pre-existing per-logger split (`_WHOLE_EXPR_ECHO_LOGGERS`'s complement) --
+not merged into that set directly since the two sets exist for conceptually different oracle
+findings, even though they happen to be the same two loggers on each side for this rule too.
+
+**Measured impact**: zero effect on `tests/corpus/{repo,examples,chm}` (`tools/difftest.py
+--logger <l> --show 0`, before this item / after, all four loggers): `cr6` 336/162/9 (unchanged),
+`cr1000x` 352/149/6 (unchanged), `cr300` 157/339/11 (unchanged), `cr350` 161/336/10 (unchanged) --
+none of this corpus's own accepted-or-rejected examples happens to call a built-in function with
+the wrong argument count, so this item's own coverage is exercised entirely by
+`tests/test_function_arity.py` (16 new cases: too few/too many in an assignment, a bare call, and
+nested inside a real instruction's own argument; the per-statement-once rule; the pass-1
+tier-interaction probes above as unit tests; the `SerialOpen`/`Sprintf` never-reject guards; the
+CR350/CR1000X message-shape checks) rather than corpus movement. `uv run pytest -q`: 990 passed (16
+more than this item's own starting point), 311 skipped, 0 failed throughout. Zero false rejects on
+all four loggers at every checkpoint, `tools/difftest.py --logger <l> --show 0`.
+
+**Known remaining gaps, not chased further this session**: whether the constant-family reordering
+`_report_statement` uses for a *different* check also applies to this rule when two independent
+bad-arity positions race textually (no safe oracle probe found -- every instruction tried with two
+simultaneously-bad-arity nested calls, `CardTest(Round(X),Round(X))`/`CallTable(Round(X))`, crashes
+the real compiler under Wine instead of producing text, unrelated to this rule); a doubly-nested
+bad-arity call (both an outer and an inner call wrong in the same argument) is not oracle-tested
+either way, left as this rule's own documented "outer first" order; `Const`'s own value expression
+is not checked for this (mirroring `check_consts`'s own narrow scope, no corpus signal either way);
+an `Assignment`'s *target* is not checked (a function call is never a valid assignment target).

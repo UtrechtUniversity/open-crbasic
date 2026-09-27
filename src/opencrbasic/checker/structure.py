@@ -7,6 +7,7 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 from __future__ import annotations
 
 from .. import consteval
+from .. import parser
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from . import expressions, instr_data, symbols
@@ -52,6 +53,26 @@ _ALIAS_WITHOUT_EQ = "Alias without '='"
 # `docs/checker.md` "Invalid Variable declaration"). The reason string carries the offending
 # token's own text after this prefix.
 _INVALID_AS_CLAUSE = "Invalid As clause: "
+
+# `parser.py`'s two "Need closing ) shapes" markers (`UNCLOSED_PAREN_EXPR`/`UNCLOSED_DIM_PREFIX`,
+# oracle evidence in `docs/checker.md`): a genuinely unclosed parenthesis reached through the
+# general expression grammar (`_UNCLOSED_PAREN_EXPR`, pass 2 -- the real compiler's own `No
+# Matching, or out of place ) in expression: %s.`, `%s` = the whole statement's own verbatim
+# source, same echo convention as the generic fallback below) versus one in a `Public`/`Dim`/
+# `Static` dimension list (`_UNCLOSED_DIM_PREFIX`, pass 1 -- `%s is missing the ) character.`, `%s`
+# = the reason's own trailing text, *not* `stmt.text`: just the variable's name through the end of
+# the line, not the `Public`/`Dim` keyword). Matched against `parser.UNCLOSED_PAREN_EXPR`/
+# `parser.UNCLOSED_DIM_PREFIX` themselves (imported, not re-typed) so the two files can never drift.
+_UNCLOSED_PAREN_EXPR = parser.UNCLOSED_PAREN_EXPR
+_UNCLOSED_DIM_PREFIX = parser.UNCLOSED_DIM_PREFIX
+
+# `parser.py`'s pre-existing generic "leftover token after an otherwise-complete statement" reason,
+# specifically an extra/unmatched `)` (`samplemaxmin_1.CR6`-style already-known reasons above cover
+# the *other* leftover-token shapes) -- oracle-confirmed (`docs/checker.md` "Need closing )
+# shapes") the real compiler's own message here is `Incomplete expression: %s.`, not the generic
+# "Invalid, or out of place expression" fallback, `%s` = `stmt.text` (the whole statement, same
+# echo convention).
+_EXTRA_CLOSE_PAREN = "unexpected trailing input starting at ')'"
 
 # Named, `EndXxx`-terminated body blocks conventionally declared before `BeginProg`, alongside
 # `Sub`/`Function` (`S.SubDef`, tracked separately since it is its own AST node type, not a plain
@@ -403,10 +424,24 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
                 continue
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
-                    stmt.reason.startswith(_INVALID_AS_CLAUSE):
+                    stmt.reason.startswith(_INVALID_AS_CLAUSE) or \
+                    stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
-            diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
-                        show_file=False)
+            if stmt.reason == _UNCLOSED_PAREN_EXPR:
+                # `parser.py`'s `UNCLOSED_PAREN_EXPR` marker: a genuinely unclosed parenthesis
+                # inside the general expression grammar (`docs/checker.md` "Need closing )
+                # shapes"). `stmt.text` already matches oracle-confirmed exactly for the shape this
+                # was implemented for (an assignment's own RHS run off the end of the line); a call
+                # nested inside a bare statement's own arguments echoes a narrower substring the
+                # real compiler doesn't derive from the whole statement text, not attempted.
+                diags.error(stmt.line, f"No Matching, or out of place ) in expression: {stmt.text}.",
+                            stmt.file, show_file=False)
+            elif stmt.reason == _EXTRA_CLOSE_PAREN:
+                diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
+                            show_file=False)
+            else:
+                diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
+                            show_file=False)
             if not in_body_block and (beginprog_line is None or stmt.line < beginprog_line):
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
@@ -773,6 +808,14 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
     if stmt.reason.startswith(_INVALID_AS_CLAUSE):
         bad_token = stmt.reason[len(_INVALID_AS_CLAUSE):]
         diags.error(stmt.line, f"Invalid Variable declaration {bad_token}.", stmt.file)
+        return
+    if stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
+        # `parser.py`'s `_close_dims_or_raise`: a `Public`/`Dim`/`Static` dimension list left open
+        # to the end of the physical line. `%s` here is *not* `stmt.text` -- the real compiler
+        # echoes just the variable's own name through end of line, not the `Public`/`Dim` keyword
+        # (oracle-confirmed, `docs/checker.md` "Need closing ) shapes").
+        text = stmt.reason[len(_UNCLOSED_DIM_PREFIX):]
+        diags.error(stmt.line, f"{text} is missing the ) character.", stmt.file)
         return
     # Any other reason (including the generic "not a valid statement" shape) is `check_pass2`'s
     # job, not this pass's -- deliberately does nothing further here.
