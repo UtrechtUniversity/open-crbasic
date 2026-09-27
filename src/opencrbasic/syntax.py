@@ -82,6 +82,11 @@ class Binary(Expr):
 @dataclass
 class Stmt(Node):
     text: str = ""              # the logical line as written (for diagnostics that echo it)
+    at_eol: bool = True         # `text` (this statement's own `:`-separated segment) reaches the
+    # true end of its physical source line -- no `'` comment and no further `:`-segment cut it
+    # short. Set by `parser.py`'s `_parse_line`; used only by `checker/structure.py`'s
+    # `_out_of_place` to decide whether CR300/CR350 print the fallback's closing `.` on its own
+    # output line (`docs/loggers.md` "Generic fallback echo on CR300/CR350").
 
 
 @dataclass

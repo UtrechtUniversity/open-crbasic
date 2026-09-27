@@ -48,6 +48,12 @@ class LogicalLine:
     line: int                 # physical line to report (see module docstring)
     file: str                 # originating file's name, for our own richer diagnostics
     section: str | None = None  # the Name argument of the enclosing IncludeSection(), if any
+    had_trailing_comment: bool = False  # the *last* physical line contributing to `text` had a
+    # `'` comment stripped off it -- so `text` stops short of that physical line's real end, rather
+    # than reaching it. Lets the generic "Invalid, or out of place expression" fallback's own
+    # CR300/CR350 newline quirk (`checker/structure.py`'s `_out_of_place`) tell a statement that
+    # truly runs to the physical end of line from one a trailing comment cut short (oracle-
+    # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -124,7 +130,9 @@ class _Loader:
         n = len(physical)
         while i < n:
             start_line = i + 1
-            text = _strip_comment(physical[i])
+            raw_line = physical[i]
+            text = _strip_comment(raw_line)
+            had_comment = len(text) != len(raw_line)
             last_line = start_line
             while True:
                 cont, prefix = _is_continuation(text)
@@ -133,18 +141,22 @@ class _Loader:
                     break
                 i += 1
                 last_line = i + 1
-                text = prefix + " " + _strip_comment(physical[i]).lstrip(" \t")
+                raw_line = physical[i]
+                stripped = _strip_comment(raw_line)
+                had_comment = len(stripped) != len(raw_line)
+                text = prefix + " " + stripped.lstrip(" \t")
             if text.strip() == "":
                 i += 1
                 continue
             out.extend(
-                self._expand_or_keep(text, last_line, filename, section, in_include)
+                self._expand_or_keep(text, last_line, filename, section, in_include, had_comment)
             )
             i += 1
         return out
 
     def _expand_or_keep(
-        self, text: str, line: int, filename: str, section: str | None, in_include: bool
+        self, text: str, line: int, filename: str, section: str | None, in_include: bool,
+        had_comment: bool = False,
     ) -> list[LogicalLine]:
         m = _INCLUDE_SECTION_RE.match(text)
         if m:
@@ -165,7 +177,7 @@ class _Loader:
                 self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
                 return []
             return self.load_file(target, section=None, in_include=True)
-        return [LogicalLine(text, line, filename, section)]
+        return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
 
 
 def load_program(path: Path) -> tuple[list[LogicalLine], Diagnostics]:

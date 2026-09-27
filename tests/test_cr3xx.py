@@ -115,6 +115,39 @@ def test_hook_is_a_noop_on_cr6():
     assert before == after
 
 
+# ------------------------------------------ CR300/CR350 fallback echo newline (docs/loggers.md
+# "Generic fallback echo on CR300/CR350"): the closing `.` moves to its own output line only when
+# the echoed text truly reaches the physical end of its source line. Oracle-confirmed (scratch
+# probes on cr300comp.exe, no option flags): `Zzq1(1,2)` alone on a line -> newline before `.`;
+# `Zzq2(3,4) 'comment` -> no newline, `.` right after the trailing space a stripped comment left
+# behind; `Zzq3(5,6):` (trailing `:`, nothing after) -> no newline either, `.` right after the
+# text a `:` split cut short.
+
+
+def test_trailing_comment_suppresses_the_newline():
+    messages = apply_hook("BeginProg\n  Zzq2(3,4) 'comment\nEndProg\n")
+    assert messages == [
+        "Zzq2 is not defined.",
+        "Invalid, or out of place expression:   Zzq2(3,4) .",
+    ]
+
+
+def test_trailing_colon_segment_suppresses_the_newline():
+    messages = apply_hook("BeginProg\n  Zzq3(5,6):\nEndProg\n")
+    assert messages == [
+        "Zzq3 is not defined.",
+        "Invalid, or out of place expression:   Zzq3(5,6).",
+    ]
+
+
+def test_reaching_the_true_end_of_line_still_gets_the_newline():
+    messages = apply_hook("BeginProg\n  Zzq1(1,2)\nEndProg\n")
+    assert messages == [
+        "Zzq1 is not defined.",
+        "Invalid, or out of place expression:   Zzq1(1,2)\n.",
+    ]
+
+
 def compile_result_for_profile(text: str, profile, filename: str):
     program, diags = parser.parse_text(text, filename, profile=profile)
     result = CompileResult(filename, profile, diags)
@@ -208,3 +241,84 @@ def test_cascade_skips_statements_with_fewer_than_two_arguments():
         "BadVar is not defined.",
         "Too many parameters:  2.",
     ]
+
+
+# ------------------------------------------------------------------ `check_undefined_call_args`
+# Oracle evidence: `docs/loggers.md` "CDM_* argument names" -- corpus (`cdmexcitei_1.CR6`,
+# `cdmexcitev_1.CR6`, `cdmbrhalf3w_1.CR6`, `cdmfftfilt_1.CR6`, `cdmmuxselect_1.CR6`, ...) plus
+# scratch probe `t3.cr6` against `cr300comp.exe`/`cr350comp.exe` (identical on both).
+
+
+def test_undefined_call_flags_each_undefined_argument_past_a_skipped_literal():
+    # `FooBar(BadName1,1,BadName2)`: the undefined call's own name, then each undefined bare-name
+    # argument in order, the literal `1` in between silently skipped over (neither flagged nor a
+    # stop) -- `cdmexcitei_1.CR6`'s own `CDM_ExciteI(CDM_A108,1,X1,ExmA,10)` shape.
+    messages = apply_hook("BeginProg\n  FooBar(BadName1,1,BadName2)\nEndProg\n")
+    assert messages == [
+        "FooBar is not defined.",
+        "BadName1 is not defined.",
+        "BadName2 is not defined.",
+        "Invalid, or out of place expression:   FooBar(BadName1,1,BadName2)\n.",
+    ]
+
+
+def test_undefined_call_stops_at_the_first_resolving_argument():
+    # `FooBar(BadName1,1,GoodVar,BadName2)`: `GoodVar` (a declared `Public`) stops the scan for
+    # good -- `BadName2` after it is never reached, even though it is itself undefined
+    # (`cdmbrhalf3w_1.CR6`'s own `CDM_BrHalf3W(CDM_A108,1,HBr3W,1,mv200,1,X1,...)` shape, `t3.cr6`).
+    text = "Public GoodVar\n\nBeginProg\n  FooBar(BadName1,1,GoodVar,BadName2)\nEndProg\n"
+    messages = apply_hook(text)
+    assert messages == [
+        "FooBar is not defined.",
+        "BadName1 is not defined.",
+        "Invalid, or out of place expression:   FooBar(BadName1,1,GoodVar,BadName2)\n.",
+    ]
+
+
+def test_undefined_call_stops_past_two_skipped_literals():
+    # `t3.cr6`: two literals (`1`, `2`) in a row between the two undefined names are both skipped
+    # over without breaking the chain, and a resolving argument after the second undefined name
+    # still stops the scan before the final, otherwise-undefined `BadName3`.
+    text = ("Public GoodKnownVar\n\nBeginProg\n"
+            "  FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\nEndProg\n")
+    messages = apply_hook(text)
+    assert messages == [
+        "FooBar is not defined.",
+        "BadName1 is not defined.",
+        "BadName2 is not defined.",
+        "Invalid, or out of place expression:   "
+        "FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\n.",
+    ]
+
+
+def test_undefined_call_index_head_resolving_stops_the_scan():
+    # `Meas(i)`: only the `Index`'s own head name (`Meas`) is checked, not its own sub-argument
+    # (`i`) -- `cdmmuxselect_1.CR6`'s own `CDM_VoltDiff(CDM_A108,1,Meas(i),1,mV5000,...)` shape,
+    # where a resolving `Meas` stops the scan before the genuinely-undefined `mV5000` is reached.
+    text = "Public Meas(5), i\n\nBeginProg\n  FooBar(BadName1,Meas(i),BadName2)\nEndProg\n"
+    messages = apply_hook(text)
+    assert messages == [
+        "FooBar is not defined.",
+        "BadName1 is not defined.",
+        "Invalid, or out of place expression:   FooBar(BadName1,Meas(i),BadName2)\n.",
+    ]
+
+
+def test_undefined_call_with_no_undefined_arguments_adds_no_lines():
+    # `CDM_MuxSelect(CDM_A108,1,1,2,10,4,1)`-shaped: a single undefined name at argument 0, every
+    # other argument a literal -- nothing left to flag past it.
+    messages = apply_hook("BeginProg\n  FooBar(BadName1,1,2,3)\nEndProg\n")
+    assert messages == [
+        "FooBar is not defined.",
+        "BadName1 is not defined.",
+        "Invalid, or out of place expression:   FooBar(BadName1,1,2,3)\n.",
+    ]
+
+
+def test_undefined_call_args_is_a_noop_on_cr6():
+    program, diags, _ = compile_result_for_profile(
+        "BeginProg\n  FooBar(BadName1,1,BadName2)\nEndProg\n", profiles.get("cr6"), "t.cr6")
+    before = [d.message for d in diags.errors]
+    cr3xx.check_undefined_call_args(program, profiles.get("cr6"), diags)
+    after = [d.message for d in diags.errors]
+    assert before == after

@@ -147,11 +147,15 @@ _FORBIDDEN_BEFORE_BEGINPROG = frozenset({"SCAN", "DELAY"})
 
 
 
-def _out_of_place(profile, text: str) -> str:
+def _out_of_place(profile, text: str, at_eol: bool = True) -> str:
     """The generic `Invalid, or out of place expression: %s.` text. CR300/CR350 echo the raw
-    line including its line terminator, so their closing `.` is printed on the next line
-    (`Profile.fallback_echo_newline`, docs/loggers.md)."""
-    sep = "\n" if getattr(profile, "fallback_echo_newline", False) else ""
+    line including its line terminator, so their closing `.` is printed on the next output line
+    -- but only when `text` truly reaches the physical end of its source line (`at_eol`,
+    `Stmt.at_eol`): a trailing `'` comment or a further `:`-separated segment on the same line
+    cuts `text` short instead, and then the `.` follows immediately on the same line, same as
+    CR6/CR1000X (`Profile.fallback_echo_newline`, docs/loggers.md, oracle-confirmed with `Zzq1(1,2)`
+    / `Zzq2(3,4) 'comment` / `Zzq3(5,6):` probes on cr300comp.exe)."""
+    sep = "\n" if getattr(profile, "fallback_echo_newline", False) and at_eol else ""
     return f"Invalid, or out of place expression: {text}{sep}."
 
 def _keyword(stmt: S.Stmt) -> str:
@@ -459,7 +463,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
                             show_file=False)
             else:
-                diags.error(stmt.line, _out_of_place(profile, stmt.text), stmt.file,
+                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                             show_file=False)
                 if profile.undefined_call_message:
                     # CR300/CR350 only (`profiles.py`'s own field, reused here from
@@ -579,7 +583,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             diags.error(nxt.line, f"Incomplete expression: {nxt.text}.", nxt.file,
                         show_file=False)
         else:
-            diags.error(nxt.line, _out_of_place(profile, nxt.text), nxt.file,
+            diags.error(nxt.line, _out_of_place(profile, nxt.text, nxt.at_eol), nxt.file,
                         show_file=False)
 
 
@@ -631,10 +635,10 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         # `{name} is not defined.` line right before the generic fallback below, and no
         # before-`BeginProg` follow-up/stop for this branch (unlike the two branches above).
         diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name), stmt.file)
-        diags.error(stmt.line, _out_of_place(profile, stmt.text), stmt.file,
+        diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                     show_file=False)
         return None
-    diags.error(stmt.line, _out_of_place(profile, stmt.text), stmt.file,
+    diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                 show_file=False)
     if before_beginprog:
         diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)

@@ -1976,3 +1976,46 @@ gating working as designed -- `structure.check_pass2` is gated behind "no pass-1
 the file", and once `check_data_params` supplies that file's actual pass-1 error, `check_pass2`
 (and its own false "Expr illegally occurs before BeginProg" line) no longer runs at all, with no
 separate fix needed.
+
+## Generic fallback echo newline: per-statement, not per-profile (2026-09-27)
+
+`docs/loggers.md`'s "Generic fallback echo on CR300/CR350" implemented the closing `.` moving to
+its own output line as a flat `Profile.fallback_echo_newline` switch, applied to every
+`Invalid, or out of place expression: %s.` unconditionally on CR300/CR350. `difftest`'s own
+first-differing-line showed this over-firing on corpus files where the echoed statement's segment
+does *not* reach the true physical end of line -- a trailing `'` comment or a further
+`:`-separated segment on the same line cuts it short first, and then CR300/CR350 print the `.`
+right after, same as CR6/CR1000X, no newline. Oracle-confirmed (scratch probes, no option flags,
+`cr300comp.exe t.cr6`): `Zzq1(1,2)` alone on its line -> `Zzq1(1,2)` then `.` on the next output
+line; `Zzq2(3,4) 'comment` -> `Zzq2(3,4) .` (trailing space the stripped comment left behind,
+`.` same line); `Zzq3(5,6):` -> `Zzq3(5,6).` (colon-truncated, `.` same line) -- all three
+byte-identical to `checker/structure.py`'s new output.
+
+Implemented as `syntax.Stmt.at_eol` (default `True`), set by `parser.py`'s `_parse_line` per
+`:`-split segment (`True` only for the segment that is both last on its physical line and not
+followed by a stripped comment -- `source.LogicalLine.had_trailing_comment`, new, tracks the
+comment-strip on the *last* physical line a logical line's continuation-joining reached).
+`checker/structure.py`'s `_out_of_place(profile, text, at_eol)` now emits the newline only when
+`fallback_echo_newline and at_eol`; its 4 call sites pass `stmt.at_eol`/`nxt.at_eol`. The
+assignment-statement variant (`check_pass2`'s target-undefined branch, `structure.py`) is
+unaffected -- oracle-confirmed CR300 does not reach this generic fallback for that shape at all (a
+bare `Zzq4 = 1` before `BeginProg` gives only `Zzq4 is not defined.`, no follow-up line), so it is
+left untouched, matching this file's own pre-existing "not switched yet" note.
+
+`tools/difftest.py --logger <l> --show 0`, chm group: cr6 378 -> 378, cr1000x 400 -> 400 (both
+profiles have `fallback_echo_newline` unset, unaffected), cr300 219 -> 247, cr350 228 -> 256; zero
+false rejects on all four loggers, re-verified after the change. `uv run pytest -q`: adds 3 tests
+to `tests/test_cr3xx.py` (comment-truncated, colon-truncated, and true-end-of-line control), all
+passing; full suite unchanged otherwise.
+
+Not fixed, found in the same corpus scan but a different root cause (left alone, out of this
+round's scope): (1) a CR300/CR350-only quirk where a bare parenthesised statement's own
+echo drops its enclosing `(`/`)` (`average_1.CR6`: real compiler echoes `1,TCTemp,FP2,False.`, not
+`(1,TCTemp,FP2,False).`); (2) 16 `chm` files on *both* CR6 and CR1000X (`calibrate_1.CR6`,
+`cdmacpower_1.CR6`, `clockreport_1.CR6`, `fieldnames_1.CR6`, `fieldorigin_1.CR6`, `filemark_1.CR6`,
+...) where the real compiler's first diagnostic lands on a *different* line and echoes different
+text than ours entirely -- these files open with an unquoted documentation paragraph (no leading
+`'`) that happens to contain a real keyword (`Calibrate`, `SlowSequence`, `DataTable`, ...)
+mid-sentence; the real compiler evidently resynchronizes on that keyword without ever flagging the
+preceding run of bare words, which our checker does not model. Needs its own oracle investigation,
+not attempted here.

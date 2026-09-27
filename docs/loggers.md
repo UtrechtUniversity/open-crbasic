@@ -921,3 +921,72 @@ cr350 exact 184 -> 228; zero false rejects on all four loggers (`their_exit==0 a
 checked after this round's change, empty on all four; cr6/cr1000x untouched, `check_too_many_cascade`
 no-ops immediately on every other logger). `uv run pytest -q`: 1057 passed, 311 skipped (11 new,
 `tests/test_cr3xx.py`).
+
+## CDM_* argument names
+
+An `S.Call`-shaped statement whose own name never resolves to a `Sub`, a built-in function or an
+instruction (`docs/checker.md` "Pass model": `structure._check_call_pass2`'s "resolving to
+nothing" branch) already gets, on CR300/CR350, `{name} is not defined.` for the call's own name
+(`profile.undefined_call_message`) ahead of the generic `Invalid, or out of place expression: %s.`
+fallback -- but this project's own checker printed nothing else for the call's *arguments*,
+undefined or not, until this round. Corpus: every `CDM_*` instruction this project's own tables
+have no record of on CR300/CR350 (`cdmbrfull6w_1.CR6`, `cdmexcitev_1.CR6`, `cdmdelay_1.CR6`,
+`cdmmuxselect_1.CR6`, `cdmfftfilt_1.CR6`, ... -- CDM support needs hardware these two loggers'
+smaller product line never carries), plus scratch probe `t3.cr6`
+(`FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)`, `WINEPREFIX=$HOME/.wine-cr6
+WINEDEBUG=-all wine ../compiler/cr300comp.exe|cr350comp.exe t3.cr6`, no option flags, both
+compilers byte-identical).
+
+**The rule** (walking the call's own arguments left to right):
+
+- A literal, or any argument that is not a bare `Name` or an `Index` (`Name(args)`, e.g. `Meas(i)`
+  -- only its own head name is checked, not its sub-arguments, not oracle-tested either way this
+  round), is silently skipped over: neither flagged nor a stop, whatever it contains (every `CDM_*`
+  call's own numeric gain/range/multiplier arguments pass over this way).
+- A bare `Name`, or an `Index`'s own head name: **undefined** -> flag it and keep scanning the
+  arguments after it the same way (`cdmexcitei_1.CR6`/`cdmexcitev_1.CR6`: `CDM_A108` (argument 0)
+  and `X1` (argument 2, past the literal `1` at argument 1) both flagged in the same call; `t3.cr6`
+  flags both `BadName1` and `BadName2`, past *two* skipped literals). **Resolves** (a declared
+  variable, a predefined symbol, a `Const`, ...) -> scanning **stops there for good**, whether or
+  not a later argument is itself undefined (`t3.cr6`: `GoodKnownVar` stops the scan before ever
+  reaching `BadName3`; `cdmbrhalf3w_1.CR6`'s `CDM_BrHalf3W(CDM_A108,1,HBr3W,1,mv200,1,X1,...)` stops
+  at its own declared `HBr3W` (argument 2), silently skipping the genuinely-undefined
+  `mv200`/`X1` after it; `cdmfftfilt_1.CR6` stops at its own declared `Const ADDR` (argument 1);
+  `cdmmuxselect_1.CR6`'s `CDM_VoltDiff(CDM_A108,1,Meas(i),...)` stops at `Meas(i)` itself (argument
+  2, its own head resolving)).
+
+**Known gap, not fixed this round**: a `Binary`/`Unary`/`ArrayLiteral` argument (an operator
+expression, `UnknownA+UnknownB`) is treated as an opaque, skipped-over argument like a literal --
+two scratch probes for this shape specifically gave **different** results for the identical
+`UnknownB+UnknownC` text depending on which argument position it sat in (`t.cr6`,
+`FooBar(UnknownA,1,KnownVar,UnknownB+UnknownC,5)`, flags only the first name of it, `UnknownB`,
+never `UnknownC`; `t2.cr6`, the same text one argument earlier, flags both names of *every*
+operator-expression argument instead) -- a sign this project does not yet understand the real
+trigger, not a fluke, so this deliberately leaves the shape unimplemented (AGENTS.md: under-report
+rather than guess at a rule two probes already contradict each other on). No corpus file this round
+exercises an operator-expression argument on an unresolved call.
+
+Also **not fixed this round**, a distinct and narrower shape (`cdmbattery_1.CR6`/
+`cdmexcitei_1.CR6`, e.g. `CDM_Battery` and its own `(CDM_A116,1,CDM_BattV)` argument list wrapped
+onto the *next* physical line with no `_` continuation): this is an `S.Unparsed` statement, not an
+`S.Call` at all (a leading `(` fails `Call`'s own grammar), so it is untouched by the rule above.
+The real compiler still flags the first undefined name inside it (`CDM_A116 is not defined.`) and
+echoes the generic fallback with the outer parens stripped, no leading whitespace, and no trailing-
+newline quirk -- all three oracle-confirmed different from every other `S.Unparsed` echo this
+project already models (`check_unknown_line_words`'s own leading-bare-word case). Implementing this
+needs a hook into `checker/structure.py`'s own `S.Unparsed`-`else` echo (out of this round's own
+file ownership); left as a follow-up.
+
+Implemented as `checker/cr3xx.check_undefined_call_args`, wired into `checker/__init__.py` right
+after `check_unknown_line_words`, in the same tier-B block; reacts to `diags.items` already
+emitted by `structure.check_pass2` (the same after-the-fact pattern `check_unknown_line_words`
+already uses), splicing the new lines in between a matched call's own `{name} is not defined.` and
+its generic fallback.
+
+Measured impact (`tools/difftest.py --logger <l> --show 0`, `chm` group): cr300 exact 219 -> 250,
+cr350 exact 228 -> 259; zero false rejects on all four loggers (`their_exit==0 and our_exit!=0`,
+checked after this round's change, empty on all four; cr6/cr1000x untouched, exact unchanged at
+378/400 -- `check_undefined_call_args` no-ops immediately on every other logger). Of the corpus's
+own ~12 `CDM_*` verdict cases this round targeted, 10 are now exact; the remaining 2
+(`cdmbattery_1.CR6`, `cdmexcitei_1.CR6`) keep one residual diff each, the split-continuation-line
+gap above. `uv run pytest -q`: 1060 passed, 311 skipped (3 new, `tests/test_cr3xx.py`).

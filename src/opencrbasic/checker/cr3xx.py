@@ -271,6 +271,143 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
     return [w for w in words if w.upper() not in known]
 
 
+# `check_undefined_call_args` (this round): a `Name(args)`/`Name args` call whose own name never
+# resolves to a `Sub`, a built-in function or an instruction gets, on CR6/CR1000X, only the generic
+# `Invalid, or out of place expression: %s.` fallback (`structure._check_call_pass2`'s "resolving
+# to nothing" branch); CR300/CR350 additionally print `{name} is not defined.` for the call's own
+# name first (`profile.undefined_call_message`, already implemented in `structure.py`) -- but, not
+# yet modelled anywhere until this round, they *also* print one `%s is not defined.` line per
+# undefined argument name the call was written with, spliced in between that first line and the
+# generic fallback -- oracle-confirmed this round (`docs/loggers.md` "CDM_* argument names", both
+# `cr300comp.exe`/`cr350comp.exe`, identical), corpus: every `CDM_*` instruction this project's own
+# tables have no record of on CR300/CR350 (`cdmbrfull6w_1.CR6`, `cdmexcitev_1.CR6`, `cdmdelay_1.CR6`,
+# ... -- CDM support requires hardware these two loggers' own smaller product line never carries),
+# plus scratch probe `t3.cr6`.
+#
+# The rule, as far as this round's evidence pins it down -- walking the call's own arguments in
+# left-to-right order:
+#   - A literal (a number, a string, `True`/`False`, ...) or any argument that is not a bare `Name`
+#     or an `Index` (`Name(args)`, e.g. `Meas(i)`) is silently skipped over: neither flagged nor
+#     itself a stop, whatever it contains (corpus: every `CDM_*` call's own numeric gain/range/
+#     multiplier arguments are passed over this way, e.g. the `1`s in `CDM_SW12(VOLT116,1,1,1,0)`).
+#   - A bare `Name`, or an `Index`'s own head name (its own sub-arguments are not themselves
+#     examined -- not oracle-tested either way this round, `cdmmuxselect_1.CR6`'s own `Meas(i)`
+#     resolves at the head, `Meas` itself declared `Public`, before its index `i` would ever need
+#     checking): if it is undefined, **flag it and keep scanning** the arguments after it the same
+#     way (`cdmexcitei_1.CR6`/`cdmexcitev_1.CR6`: `CDM_A108` (argument 0) and `X1` (argument 2, past
+#     the literal `1` at argument 1) both flagged in the same call; scratch probe `t3.cr6`,
+#     `FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)`, flags both `BadName1` and `BadName2`
+#     the same way, past *two* skipped literals). If it **resolves** (a declared variable, a
+#     predefined symbol, a `Const`, ...), **scanning stops there for good** -- nothing after it is
+#     ever examined, whether or not a later argument is itself undefined (the same `t3.cr6` probe:
+#     `GoodKnownVar` stops the scan before ever reaching `BadName3`; corpus, repeatedly: `cdmdelay_1.
+#     CR6`'s undefined `VOLT116` argument 0 is the *only* name-shaped argument in a call with no
+#     other names to reach at all, but `cdmbrhalf3w_1.CR6`'s `CDM_BrHalf3W(CDM_A108,1,HBr3W,1,
+#     mv200,1,X1,...)` stops at its own declared `HBr3W` (argument 2), silently skipping the
+#     genuinely-undefined `mv200`/`X1` *after* it; `cdmfftfilt_1.CR6`'s `CDM_FFTFilt(SPECTRUM103,
+#     ADDR,Dest,NUM_REPS,mv5000,...)` stops at its own declared `Const ADDR` (argument 1),
+#     `cdmmuxselect_1.CR6`'s `CDM_VoltDiff(CDM_A108,1,Meas(i),...)` stops at `Meas(i)` itself
+#     (argument 2, its own head resolving) -- silently skipping `mv5000`/`mV5000` after each).
+#   - Deliberately **not** implemented for a `Binary`/`Unary`/`ArrayLiteral` argument (an operator
+#     expression, `UnknownA+UnknownB`) -- treated as an opaque, skipped-over argument like a literal
+#     above, never itself examined for names or as a stop: scratch probes this round found the real
+#     compiler's own behaviour for *this* shape is not a simple rule -- `t.cr6`
+#     (`FooBar(UnknownA,1,KnownVar,UnknownB+UnknownC,5)`) flags only `UnknownB`, the first name of
+#     that argument's own operator chain, never reaching `UnknownC`; `t2.cr6`
+#     (`FooBar(UnknownA+UnknownD,KnownVar,UnknownB+UnknownC,5)`, the identical `UnknownB+UnknownC`
+#     shape one argument earlier) flags **both** names of *every* operator-expression argument
+#     instead -- two structurally similar probes giving genuinely different shapes for the same
+#     argument text is a sign this project does not yet understand the real trigger, not that
+#     either result is a fluke, so no corpus file this round exercises an operator-expression
+#     argument on an unresolved call (every one is a bare name, a literal, or an `Index` with a
+#     resolving head), and this deliberately leaves the shape unimplemented (AGENTS.md: under-report
+#     rather than guess at a rule two probes already contradict each other on) rather than risk
+#     emitting a line the real compiler would not, or omitting one it would, for a shape this
+#     project cannot yet characterise.
+def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> list[str]:
+    """The unresolved call's own leading chain of undefined argument names, in source order -- see
+    `check_undefined_call_args`'s module comment above for the oracle evidence and the exact rule
+    (and its deliberate limits: a `Binary`/`Unary`/`ArrayLiteral` argument is silently skipped over
+    like a literal, never itself examined or a stop)."""
+    names: list[str] = []
+    for arg in args:
+        if isinstance(arg, S.Name):
+            head = arg.name
+        elif isinstance(arg, S.Index):
+            head = arg.name
+        else:
+            continue  # empty slot, a literal, or an unmodelled compound expression: skip over
+        if head.upper() in known:
+            break  # first *resolving* name-shaped argument stops the scan for good
+        names.append(head)
+    return names
+
+
+def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350 only; a no-op on every other logger. Called from `checker/__init__.py`, right
+    after `check_unknown_line_words`, in the same tier-B block -- see this module's
+    `check_undefined_call_args` module comment above for the oracle evidence and the exact rule
+    implemented (and its deliberate limits).
+
+    Reacts to `diags.items` already emitted above (the same after-the-fact pattern
+    `check_unknown_line_words` already uses) rather than re-deriving *why* `structure.py` chose to
+    report a given `S.Call` as unresolved: finds each `S.Call` this program's own `program.
+    statements` shows was written without the `Call` keyword and never resolves to a declared
+    `Sub` (`symbols.declared_subs`) or a built-in function (`profile.functions`) -- the same
+    "resolves to nothing" condition `structure._check_call_pass2` itself gates its own
+    `{name} is not defined.` + generic-fallback pair on -- then, only where that exact two-line
+    pair is already sitting in `diags.items` at that statement's own `(line, file)` (confirming
+    `structure.py` actually reported it there, not truncated by an earlier placement cutoff or
+    left unreported for some other reason this module does not re-derive), splices in this
+    statement's own undefined-argument-name lines between them.
+    """
+    if profile.name not in ("cr300", "cr350"):
+        return
+    if not diags.items:
+        return
+    subs = symbols.declared_subs(program)
+    calls_by_key: dict[tuple[int, str], S.Call] = {}
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Call) or stmt.explicit:
+            continue
+        name = stmt.name.upper()
+        if name in subs or name in profile.functions:
+            continue
+        calls_by_key[(stmt.line, stmt.file)] = stmt
+    if not calls_by_key:
+        return
+    known: set[str] | None = None
+    items = diags.items
+    new_items: list[Diagnostic] = []
+    changed = False
+    i = 0
+    n = len(items)
+    while i < n:
+        d = items[i]
+        stmt = calls_by_key.get((d.line, d.file))
+        nxt = items[i + 1] if i + 1 < n else None
+        if (stmt is not None and d.severity == "error"
+                and d.message == profile.unresolved_symbol_message.format(name=stmt.name)
+                and nxt is not None and nxt.severity == "error"
+                and (nxt.line, nxt.file) == (d.line, d.file)
+                and nxt.message.startswith(_GENERIC_FALLBACK_PREFIX)):
+            if known is None:
+                known = expressions._known_names(program, profile)
+            names = _call_arg_undefined_names(stmt.args, known)
+            new_items.append(d)
+            for undefined_name in names:
+                new_items.append(Diagnostic(
+                    "error", d.line, profile.unresolved_symbol_message.format(name=undefined_name),
+                    d.file, True))
+                changed = True
+            i += 1
+            continue
+        new_items.append(d)
+        i += 1
+    if changed:
+        diags.items[:] = new_items
+
+
 def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger, and on a file with no `S.Unparsed`
     statement at all. Called from `checker/__init__.py`, right after `check_expr_cascade`, once

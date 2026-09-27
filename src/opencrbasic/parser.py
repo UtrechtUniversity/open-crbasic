@@ -300,16 +300,22 @@ class _Parser:
         # byte, ...), so a top-level (outside `(...)`/strings) `:` split happens at the character
         # level first, and only a segment that isn't a `Units` statement gets tokenised at all
         # (found by corpus testing -- `Public TC(120) : Units TC = C` -- see docs/frontend.md).
-        for seg_text_raw in _split_text_segments(ll.text):
+        segments = _split_text_segments(ll.text)
+        last_idx = len(segments) - 1
+        for idx, seg_text_raw in enumerate(segments):
             if not seg_text_raw.strip():
                 continue
+            # Only the segment that is both last on its physical line (nothing after it split off
+            # by a top-level `:`) and not followed by a stripped `'` comment truly reaches that
+            # line's real end -- see `Stmt.at_eol`'s docstring.
+            at_eol = idx == last_idx and not ll.had_trailing_comment
             word = _LEADING_WORD_RE.match(seg_text_raw)
             if word and word.group(1).upper() == "UNITS":
                 stmt = self._parse_units_segment(seg_text_raw, ll.line, ll.file)
-                self.program.statements.append(stmt)
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
-                self.program.statements.append(stmt)
+            stmt.at_eol = at_eol
+            self.program.statements.append(stmt)
             # A `Const` just parsed is folded into `self.env` inside `_parse_const` itself, so
             # later statements/#If on the same or a later line see it.
             if isinstance(stmt, S.Instruction) and stmt.keyword == "ENDPROG":

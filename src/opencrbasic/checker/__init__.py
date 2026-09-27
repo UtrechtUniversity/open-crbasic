@@ -191,6 +191,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # already emitted above, the same after-the-fact pattern `check_too_many_cascade` below
         # also uses.
         _run_pass(cr3xx.check_unknown_line_words, program, profile, diags)
+        # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one `%s is not
+        # defined.` line per undefined bare-name argument of an `S.Call` that itself resolved to
+        # nothing, spliced in between that call's own `{name} is not defined.` line (`structure.
+        # _check_call_pass2`) and the generic fallback for it (`docs/loggers.md` "CDM_* argument
+        # names"). Same after-the-fact `diags.items` pattern as `check_unknown_line_words` above.
+        _run_pass(cr3xx.check_undefined_call_args, program, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing
