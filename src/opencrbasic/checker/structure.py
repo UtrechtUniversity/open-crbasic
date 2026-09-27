@@ -447,6 +447,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
     subs = symbols.declared_subs(program)
+    sub_params = {st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef)}
     known = expressions._known_names(program, profile)
     beginprog_line = next((s.line for s in program.statements if _keyword(s) == "BEGINPROG"), None)
 
@@ -481,6 +482,15 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             in_table = True
         elif kw == "ENDTABLE":
             in_table = False
+        elif in_table and isinstance(stmt, S.Instruction) and \
+                profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            bad = _undefined_table_source(stmt, profile, known)
+            if bad is not None:
+                # CR6/CR1000X: an unresolved table-output source (`Sample (1,Nope,FP2)`) is
+                # `Invalid symbol in expression: Nope.` and ends pass 2 (oracle: a later `X = Q`
+                # and a second bad source in the same table are not reported).
+                diags.error(stmt.line, f"Invalid symbol in expression: {bad}.", stmt.file)
+                return stmt.line
         elif kw == "BEGINPROG":
             if in_beginprog:
                 diags.error(stmt.line, "Multiple BeginProgs.", stmt.file)
@@ -495,7 +505,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             continue
 
         if isinstance(stmt, S.Call):
-            stop = _check_call_pass2(stmt, subs, profile, diags, beginprog_line, in_body_block)
+            stop = _check_call_pass2(stmt, subs, profile, diags, beginprog_line, in_body_block,
+                                     sub_params)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
@@ -615,6 +626,23 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
             else:
                 open_count[kind] -= 1
                 selects -= is_select
+
+
+def _undefined_table_source(stmt: S.Instruction, profile, known: set[str]) -> str | None:
+    """The echo text of the first `deferred_text` (type code 11, table-output source) argument
+    of `stmt` that names something undefined, or `None`."""
+    record = profile.instructions.get(stmt.keyword.upper())
+    if not record:
+        return None
+    kinds = expressions._type_code_kinds()
+    params = [c for c in record["params"]]
+    for i, code in enumerate(params[:len(stmt.args)]):
+        arg = stmt.args[i]
+        if kinds.get(code % 100 if code >= 100 else code) != "deferred_text" or arg is None:
+            continue
+        if expressions._undefined_names(arg, known):
+            return expressions._arg_text(stmt, i).strip()
+    return None
 
 def _leftover_first_name_known(text: str, known: set[str]) -> bool:
     """Only the *first* identifier tokenisable out of `text` (skipping any leading punctuation --
@@ -920,8 +948,25 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
                         show_file=False)
 
 
+def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
+    """`Sub` call argument counts, pass 2, all four loggers (oracle, 2026-09-27): fewer arguments
+    than the `Sub` has parameters without a default (including none: `Log1`, `Log1()`) -> `Call
+    argument required.`; more than it has parameters -> `Call to Log1 with 2 parameters, requires
+    1 arguments.` (`%s` = the `Sub`'s declared name)."""
+    if sub.keyword.upper() != "SUB":
+        return
+    given = len(stmt.args)
+    required = sum(1 for p in sub.params if p.default is None)
+    if given > len(sub.params):
+        diags.error(stmt.line, f"Call to {sub.name} with {given} parameters, requires "
+                    f"{len(sub.params)} arguments.", stmt.file)
+    elif given < required:
+        diags.error(stmt.line, "Call argument required.", stmt.file)
+
+
 def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
-                       beginprog_line: int | None, in_body_block: bool) -> int | None:
+                       beginprog_line: int | None, in_body_block: bool,
+                       sub_params: dict | None = None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
     verified this round:
@@ -949,6 +994,8 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
     """
     name = stmt.name.upper()
     before_beginprog = not in_body_block and (beginprog_line is None or stmt.line < beginprog_line)
+    if sub_params and name in sub_params:
+        _check_call_args(stmt, sub_params[name], diags)
     if stmt.explicit:
         if name not in subs:
             diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
@@ -1246,6 +1293,10 @@ def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: se
     target = stmt.args[0] if stmt.args else None
     if not isinstance(target, S.Index) or target.name.upper() not in variables:
         return False
+    if any(isinstance(a, S.String) for a in target.args):
+        # `Alias W("fuzz") = WF`, all four loggers (oracle, 2026-09-27)
+        diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+        return True
     open_at = stmt.text.find("(")
     items = _group_items(stmt.text, open_at) if open_at >= 0 else None
     if items is None or len(items) != len(target.args):

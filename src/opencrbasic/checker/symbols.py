@@ -27,7 +27,7 @@ def declared_subs(program: S.Program) -> set[str]:
 # argument for a structured measurement, oracle-confirmed regression this session found,
 # `structuretype_1.CR6`/`structuretype_2.CR6`: `Sample(3,Piezometer,VWSensor)` where `VWSensor` is
 # the `StructureType` declared just above, not a fixed `data/symbols.json` `DataType` constant).
-_NAME_DECLARING_INSTRUCTIONS = ("DATATABLE", "STRUCTURETYPE", "OBJECTTYPE")
+_NAME_DECLARING_INSTRUCTIONS = ("DATATABLE", "STRUCTURETYPE", "OBJECTTYPE", "CONSTTABLE")
 
 
 # System tables always addressable as `Table.Field` (`Status.SerialNumber`, `Public.X`,

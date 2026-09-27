@@ -632,7 +632,10 @@ coordinator commits it. Tick items here as they land.
 - [x] CR6/CR1000X: `AddPrecise` argument rules -- `PrecisionVariable` rejects with `Invalid
   Variable or Array: %s.` when it has no genuine variable reference in it (literal/paren-constant/
   `Const`/`NAN`); shared by `MovePrecise`; absent on CR300/CR350 (`docs/instructions.md`).
-- [ ] All loggers: Sub/Function call argument count/type checks
+- [x] All loggers: `Sub` call argument counts (`Call argument required.`, `Call to %s with %d
+      parameters, requires %d arguments.`); `If`-condition names and arity; table sources; string
+      `Alias` indices (`docs/checker.md` "If conditions, Sub arguments, table sources").
+      `Function` call arity inside expressions is not checked yet.
 - [x] All loggers: builtin function argument counts/types (`data/functions.json` argtypes) --
       oracle-confirmed `docs/checker.md` "Built-in function call arity": too few/too many arguments
       to a built-in function nested in an expression (`Expression expects , : %s.`/`No Matching, or

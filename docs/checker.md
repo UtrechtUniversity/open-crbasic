@@ -2231,3 +2231,26 @@ pass-2 errors. `DataTable ... EndTable not matched.` moved with them (still only
 block message fires). Reachability: when an `If`/`Select` opened inside the `Scan` is still open
 at `NextScan`, statements inside it are not flagged; the statement closing it is (`EndIf never
 reached at run time.`). Not done: `Next SubScan without SubScan.` for a stray `NextSubScan`.
+
+## If conditions, Sub arguments, table sources (2026-09-27)
+
+Oracle probes on all four loggers unless noted (`tests/test_if_sub_table_checks.py`):
+
+- **`If` condition, undefined name** (CR6/CR1000X, pass 2, `expressions.check`): `Invalid
+  symbol in expression: <condition> .`, the echo being the text between `If ` and `Then`
+  (`If Nope Then` -> `Nope .`, `If Foo(X) > 20 Then X = 1` -> `Foo(X) > 20 .`). CR300/CR350 print
+  per-name `%s is not defined.` lines (not modelled). `ConstTable` names now count as declared
+  (`ScanConstTable.ScanConst` in `applyandrestartsequence_1.CR6`).
+- **`If` condition, built-in arity** (all four, pass 1, `check_function_arity`): `No Matching,
+  or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`, same echo, no CR300 newline.
+- **`Sub` call argument count** (all four, pass 2, `structure._check_call_args`): fewer than the
+  parameters without a default, including `Log1` and `Log1()` -> `Call argument required.`;
+  more than the parameters -> `Call to Log1 with 2 parameters, requires 1 arguments.`
+- **Table source** (CR6/CR1000X, pass 2, `structure.check_pass2`): an undefined name in a
+  `deferred_text` (code 11) argument, e.g. `Sample (1,Nope,FP2)` -> `Invalid symbol in
+  expression: Nope.`; it ends pass 2 (a later `X = Q` and a second bad source are not reported).
+  CR300 differs (not modelled).
+- **String `Alias` index** (all four, pass 1): `Alias W("fuzz") = WF` -> `Illegally dimensioned
+  aliased name`.
+
+Reproducer replay: 277 of 1469 exact, no false rejects.

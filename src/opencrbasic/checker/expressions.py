@@ -4,6 +4,8 @@ evidence: `docs/checker.md`.
 
 from __future__ import annotations
 
+import re
+
 import json
 from functools import lru_cache
 from pathlib import Path
@@ -374,6 +376,16 @@ def _arg_text(stmt: S.Instruction, i: int) -> str:
     return arg.name if isinstance(arg, S.Name) else ""
 
 
+
+_IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If\s(.*?)\bThen\b")
+
+
+def _if_condition_text(stmt: S.Stmt) -> str | None:
+    """The echo the real compilers use for an `If` condition: the text between `If ` and `Then`,
+    trailing space included (oracle: `If X > 1 And Nope Then` -> `X > 1 And Nope .`)."""
+    m = _IF_COND_RE.match(stmt.text or "")
+    return m.group(1) if m else None
+
 def _known_names(program: S.Program, profile) -> set[str]:
     """Every name a checked expression position may legally reference: this program's own
     declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
@@ -630,6 +642,17 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     # expression" bucket, `structure.py`'s job, not checked again here). Skipping these statements
     # entirely (rather than still checking the RHS) is what reproduces the oracle's "one message,
     # not two" behaviour without `structure.py` needing to know this module's own diagnostics.
+    # An `If` condition (block or one-line) with an unresolved name, CR6/CR1000X, pass 2 (oracle,
+    # 2026-09-27): `If Nope Then` -> `Invalid symbol in expression: Nope .`, `If Foo(X) > 20 Then
+    # X = 1` -> `... Foo(X) > 20 .`; suppressed by a pass-1 error. CR300/CR350 print per-name
+    # `%s is not defined.` lines instead (not modelled).
+    if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+        for stmt in program.statements:
+            if isinstance(stmt, S.If) and _undefined_names(stmt.cond, known):
+                text = _if_condition_text(stmt)
+                if text is not None:
+                    diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
             continue
@@ -1034,6 +1057,16 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                         break
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
+        elif isinstance(stmt, S.If):
+            # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
+            # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
+            # (the condition echo, no CR300/CR350 newline).
+            problem = _find_arity_problem(stmt.cond, profile)
+            text = _if_condition_text(stmt)
+            if problem and text is not None:
+                verb = ("Expression expects , : " if problem == "few"
+                        else "No Matching, or out of place ) in expression: ")
+                diags.error(stmt.line, f"{verb}{text}.", stmt.file)
         elif isinstance(stmt, S.Assignment):
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)

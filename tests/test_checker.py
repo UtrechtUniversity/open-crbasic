@@ -509,7 +509,7 @@ def test_datatable_name_position_is_not_checked():
 def test_structuretype_name_used_as_datatype_is_not_flagged():
     # regression: `Sample`'s `DataType` argument may be a user `StructureType` name.
     text = (
-        "StructureType VWSensor\n  Frequency As Float\nEndStructureType\n"
+        "StructureType VWSensor\n  Frequency As Float\nEndStructureType\nPublic S As VWSensor\n"
         "DataTable (T,True,-1)\n  Sample (1,S,VWSensor)\nEndTable\n" + wrapped("")
     )
     result = compile_text(text)
