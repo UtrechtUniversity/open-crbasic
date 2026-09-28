@@ -1018,3 +1018,16 @@ an `If`. The `Too many parameters` cascade also echoes the next simple token (`M
 -> `MainScanSecs`). Control statements before `BeginProg` (`If`, `FOR`, `Do`, `SELECT`, stray
 `EndIf`/`Loop`/`NEXT`) get `%s illegally occurs before BeginProg.` on all four loggers. chm exact
 cr300 268, cr350 278; `crbasic/` 5/16 exact on both.
+
+## Undefined table sources (2026-09-27)
+
+CR300/CR350 report an undefined name in a table-output source (`Sample (1,Nope,FP2)`) as `Nope
+is not defined.`. `Nope(2)` adds `Dimensions not declared: Nope(2).`. Only the first such
+statement is reported. The check is late, with the table `Reps` checks
+(`instr_data.check_table_reps_late`), so an unrelated `X = Q` hides it. CR6/CR1000X report
+`Invalid symbol in expression: Nope.` in pass 2 instead (`docs/checker.md`).
+
+Errors from the CR300/CR350 late stages (table checks, the late walk, unclosed blocks) do not
+start the `Too many parameters` cascade (`Diagnostic.cascade`). Oracle: `Sample (1,Nope,FP2)`
+before a `Scan (1,Sec,0,0)` gives no `Too many parameters:  Sec.`. Tests:
+`tests/test_cr3xx_table_source.py`. Replay: 812 of 1469 exact.

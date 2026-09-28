@@ -442,11 +442,35 @@ def check_table_reps_late(program: S.Program, profile: Profile, diags: Diagnosti
         _check_stage2a(program, profile, diags, env, destinations=False)
 
 
+def _report_undefined_source(st: S.Instruction, record: dict, known: set[str], profile: Profile,
+                             diags: Diagnostics) -> bool:
+    """CR300/CR350: an undefined name in a table-output source (`Sample (1,Nope,FP2)` -> `Nope is
+    not defined.`, and `Dimensions not declared: Nope(2).` for `Nope(2)`), late and only the first
+    (oracle, 2026-09-27; CR6/CR1000X: `structure._undefined_table_source`)."""
+    from . import expressions
+    kinds = expressions._type_code_kinds()
+    for i, code in enumerate(record["params"][:len(st.args)]):
+        arg = st.args[i]
+        if arg is None or kinds.get(code % 100 if code >= 100 else code) != "deferred_text":
+            continue
+        names = expressions._undefined_names(arg, known)
+        if not names:
+            continue
+        for name in names:
+            diags.error(st.line, profile.unresolved_symbol_message.format(name=name), st.file)
+        if expressions._has_undefined_index(arg, known):
+            diags.error(st.line, expressions.dimensions_message(
+                expressions._arg_text(st, i).strip(), profile, False), st.file)
+        return True
+    return False
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
     reported = False
     dims = symbols.declared_all_dims(program, env)
+    known = expressions._known_names(program, profile) if not destinations else set()
     for st in program.statements:
         if not isinstance(st, S.Instruction):
             continue
@@ -466,6 +490,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             reps = _reps_value(st.args[0], env)
             if reps is not None and reps < 1:
                 diags.error(st.line, f"Illegal Reps {reps}", st.file)
+                return True
+            if not destinations and _report_undefined_source(st, record, known, profile, diags):
                 return True
             source = st.args[1]
             if reps is None or not isinstance(source, (S.Name, S.Index)):

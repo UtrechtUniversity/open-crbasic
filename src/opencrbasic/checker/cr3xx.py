@@ -153,7 +153,7 @@ _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid 
 
 
 def _is_cascade_trigger(diag) -> bool:
-    return diag.severity == "error" and (
+    return diag.severity == "error" and diag.cascade and (
         diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
         or diag.message.startswith(_TOO_MANY_PREFIX)
         or diag.message.endswith(_DECLARATION_TRIGGERS)

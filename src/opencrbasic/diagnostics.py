@@ -36,6 +36,7 @@ class Diagnostic:
     file: str = ""          # originating file, for our own richer output
     show_file: bool = True  # whether an origin outside `main_file` gets a `<file>` prefix; see
     # this module's docstring for the two oracle-confirmed exceptions that set this False.
+    cascade: bool = True    # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
 
     def cr6comp(self, main_file: str = "", drive_prefix: bool = False) -> str:
         if self.severity == "warning":

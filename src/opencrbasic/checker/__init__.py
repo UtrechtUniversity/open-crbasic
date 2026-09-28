@@ -93,6 +93,8 @@ name/type resolution (the rest of `expressions.py`) are future work; see `docs/c
 
 from __future__ import annotations
 
+import dataclasses
+
 from .. import consteval, mode
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -221,6 +223,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
                 if d.severity != "error" or not d.line or d.line <= cutoff
             ]
 
+    late_start = len(diags.items)
     if not diags.errors:
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
@@ -238,6 +241,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
                            d.file != stop[0] or d.line <= stop[1]]
     if not diags.errors:
         _run_pass(structure.check_end_blocks, program, diags)
+    # CR300/CR350: these late errors do not start the `Too many parameters` cascade (oracle:
+    # `Sample (1,Nope,FP2)` gives only `Nope is not defined.`).
+    diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
     if not diags.errors:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the

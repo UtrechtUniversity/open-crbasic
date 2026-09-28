@@ -772,6 +772,9 @@ coordinator commits it. Tick items here as they land.
       reachability warning. The SDM and PipeLine-mode variants are conditional on the mode in the
       decompilation and not done.
 
+- [x] CR300/CR350 undefined table-output source, late (`docs/loggers.md` "Undefined table
+      sources"); late-stage errors no longer start the cascade. Replay 812 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
