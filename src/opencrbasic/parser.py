@@ -28,6 +28,8 @@ handling.
 
 from __future__ import annotations
 
+import dataclasses
+
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -1175,10 +1177,23 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path)
+    _include_warning_drives(diags, profile or _profile_for(path.name))
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags
+
+
+_MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR|CRD|USB):", re.I)
+
+
+def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> None:
+    """CR6/CR1000X print a missing include without its drive (`Cannot open include file
+    NoSuch.crb.` for `"CPU:NoSuch.crb"`); CR300/CR350 keep it (oracle, 2026-09-28)."""
+    if profile.include_drive_prefix:
+        return
+    diags.items[:] = [dataclasses.replace(d, message=_MISSING_INCLUDE_DRIVE_RE.sub(r"\1", d.message))
+                      if d.severity == "warning" else d for d in diags.items]
 
 
 def _set_last_line(program: S.Program, parser: "_Parser", main_text: str) -> None:
@@ -1195,6 +1210,7 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
                profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(text, name, directory)
+    _include_warning_drives(diags, profile or _profile_for(name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
     _set_last_line(program, parser, text)

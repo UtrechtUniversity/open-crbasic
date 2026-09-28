@@ -46,3 +46,19 @@ def test_calibrate(logger):
 @pytest.mark.parametrize("logger", ["cr300", "cr350"])
 def test_swvx(logger):
     assert lines("    SwVx(1,1,1,Nope)\n", logger) == [illegal("Nope")]
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr1000x"])
+@pytest.mark.parametrize("arg,echo", [
+    ("1+2", "1+2"), ("(1+2)", "1+2"), ("K+1", "K+1"), ("1.0", "1.0"), ("1E0", "1E0"), ("- 1", "-"),
+    ("K", None), ("(1)", None), ("-1", None), ("True", None), ("&H1", None), ("2", None),
+])
+def test_integer_token_forms(arg, echo, logger):
+    text = (f"Public X, S\nConst K = 1\nBeginProg\n  Scan (1,Sec,0,0)\n    PortSet(C1,1,{arg})\n"
+            "  NextScan\nEndProg\n")
+    profile = profiles.get(logger)
+    program, diags = parser.parse_text(text, "t.CR6", profile=profile)
+    result = CompileResult("t.CR6", profile, diags)
+    checker.check(program, profile, diags, result)
+    got = result.result_lines()[2:] if not result.ok else result.result_lines()[1:]
+    assert got == ([illegal(echo, 5)] if echo else [])

@@ -2491,3 +2491,19 @@ loggers):
   Nope(1).` for an indexed use.
 
 Only calls written with parentheses are checked. Replay: 829 of 1469 exact.
+
+## Duplicate Units, missing includes (2026-09-28)
+
+Oracle, all four loggers (`tests/test_units_and_includes.py`):
+
+- Each of a variable's n `Units` statements gets n-1 copies of `%s already assigned Units %s.`,
+  echoing that statement's own name spelling and units text. Three `Units X` lines give two
+  lines each. It is a late check, hidden by an unrelated `X = Q` (`instr_data.check_units_targets`).
+  Indexed targets (`Units X(1) = ...`) were not probed and are not counted.
+- A missing include warns `Cannot open include file  NoSuch.crb.` on CR6/CR1000X, without the
+  `CPU:`/`USR:` drive. CR300/CR350 keep the drive (`parser._include_warning_drives`).
+
+Code-4 arguments (`docs/type-codes.md`) accept only one integer token: `2`, `-1`, `&H1`, `(1)`,
+or an integer constant name (`K`, `True`). `1+2` (echoed without its parentheses), `K+1`, `1.0`,
+`1E0` and `- 1` (echoed `-`) are rejected. Replay: 836 of 1469 exact; chm exact CR6 429,
+CR1000X 438.

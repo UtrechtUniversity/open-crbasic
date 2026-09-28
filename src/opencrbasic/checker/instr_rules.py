@@ -757,17 +757,41 @@ def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: c
             continue
         for i, code in enumerate(record["params"][:len(stmt.args)]):
             arg = stmt.args[i]
-            if code not in (4, 104) or arg is None or _is_integer_constant(arg, env):
+            if code not in (4, 104) or arg is None:
                 continue
             from . import expressions
-            text = expressions._arg_text(stmt, i).strip()
-            if text:
-                diags.error(stmt.line, f"Illegal parameter {text}, expecting constant integer.",
-                            stmt.file)
+            text = _strip_parens(expressions._arg_text(stmt, i).strip())
+            if not text or _is_integer_token(text, arg, env):
+                continue
+            echo = "-" if re.match(r"-\s", text) else text
+            diags.error(stmt.line, f"Illegal parameter {echo}, expecting constant integer.",
+                        stmt.file)
 
 
-def _is_integer_constant(arg: S.Expr, env: consteval.Env) -> bool:
-    if not consteval.is_constant(arg, env):
+def _strip_parens(text: str) -> str:
+    """`text` without enclosing parentheses (`(1+2)` is echoed as `1+2`, oracle 2026-09-28)."""
+    while text.startswith("(") and text.endswith(")") and \
+            _paren_depth_ok(text[1:-1]):
+        text = text[1:-1].strip()
+    return text
+
+
+def _paren_depth_ok(text: str) -> bool:
+    depth = 0
+    for ch in text:
+        depth += (ch == "(") - (ch == ")")
+        if depth < 0:
+            return False
+    return depth == 0
+
+
+def _is_integer_token(text: str, arg: S.Expr, env: consteval.Env) -> bool:
+    """One integer token (after `_strip_parens`): `2`, `-1`, `&H1`, `(1)`, or a name whose constant
+    value is an integer (`Const K = 1`, `True`). `1+2`, `K+1`, `1.0`, `1E0` and `- 1` are not
+    (oracle, 2026-09-28)."""
+    if re.fullmatch(r"-?(?:\d+|&[Hh][0-9A-Fa-f]+|&[Bb][01]+)", text):
+        return True
+    if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", text) or not consteval.is_constant(arg, env):
         return False
     try:
         value = consteval.value_of(arg, env)

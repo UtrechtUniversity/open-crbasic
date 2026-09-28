@@ -341,6 +341,8 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
         elif isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS":
             allowed |= {a.name.upper() for a in st.args[1:] if isinstance(a, S.Name)}
     in_struct = False
+    assigned: dict[str, list[S.Instruction]] = {}
+    indexed: set[str] = set()
     for st in program.statements:
         kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
         if kw in ("STRUCTURETYPE", "OBJECTTYPE", "ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
@@ -351,6 +353,22 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
         if isinstance(target, (S.Name, S.Index)) and target.name.upper() not in allowed:
             diags.error(st.line, f"Can't assign units to {target.name}, it must be declared Public "
                         "or referenced as a source in a Data Table.", st.file)
+        elif isinstance(target, S.Name):
+            assigned.setdefault(target.name.upper(), []).append(st)
+        elif isinstance(target, S.Index):
+            indexed.add(target.name.upper())
+    # Each of a variable's n `Units` statements gets n-1 copies of `%s already assigned Units %s.`,
+    # echoing its own spelling (oracle, all four loggers, 2026-09-28: three `Units X` lines give two
+    # lines each). Indexed targets are not probed.
+    for name, statements in assigned.items():
+        if len(statements) < 2 or name in indexed:
+            continue
+        for st in statements:
+            units = st.args[1].value if len(st.args) > 1 and isinstance(st.args[1], S.String) else None
+            if units is None:
+                continue
+            for _ in range(len(statements) - 1):
+                diags.error(st.line, f"{st.args[0].name} already assigned Units {units}.", st.file)
 
 
 _MENU_CHILDREN = ("MENUPICK", "MENURECOMPILE")

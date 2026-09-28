@@ -793,6 +793,11 @@ coordinator commits it. Tick items here as they land.
 - [x] Code-4 (`const_int_kw`) instruction arguments (`docs/type-codes.md` "Code 4 arguments in
       instructions"). Replay 833 of 1469 exact.
 
+- [x] Duplicate `Units`, missing-include drive prefix, code-4 integer-token rule
+      (`docs/checker.md` "Duplicate Units, missing includes"). Replay 836 of 1469 exact.
+- [x] Fuzz seed 48 (tree at `420e351`, `--count 300`, false_reject 0): cr6 false_accept 16
+      (exact 264), cr1000x 12 (270), cr300 7 (253).
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
