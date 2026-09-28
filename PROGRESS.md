@@ -798,6 +798,8 @@ coordinator commits it. Tick items here as they land.
 - [x] Fuzz seed 48 (tree at `420e351`, `--count 300`, false_reject 0): cr6 false_accept 16
       (exact 264), cr1000x 12 (270), cr300 7 (253).
 
+- [x] Display menu structure (`docs/checker.md` "Display menus"). Replay 841 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

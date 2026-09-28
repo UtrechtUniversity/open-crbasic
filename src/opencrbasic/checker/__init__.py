@@ -209,7 +209,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
-        _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
+        menu_stop = _run_pass_capture(instr_data.check_table_and_menu_placement, program, profile,
+                                      diags)
+        if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
+            cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s

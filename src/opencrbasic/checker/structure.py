@@ -644,6 +644,16 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
             reported = True
     if reported:
         return
+    menus = 0
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DISPLAYMENU":
+            menus += 1
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDMENU":
+            menus = max(0, menus - 1)
+    if menus:
+        # oracle, CR6/CR1000X, 2026-09-28: hidden by an unrelated `X = Q`
+        diags.error(last_line, "DisplayMenu without EndMenu.")
+        return
     # `DataTable ... EndTable not matched.` -- no line number at all (oracle-confirmed verbatim,
     # `docs/checker.md` "Round 6"), the lowest-priority of these four summary checks (oracle: a
     # co-occurring `Scan without NextScan.` reports only that, never this too) and, unlike the

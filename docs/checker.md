@@ -2507,3 +2507,26 @@ Code-4 arguments (`docs/type-codes.md`) accept only one integer token: `2`, `-1`
 or an integer constant name (`K`, `True`). `1+2` (echoed without its parentheses), `K+1`, `1.0`,
 `1E0` and `- 1` (echoed `-`) are rejected. Replay: 836 of 1469 exact; chm exact CR6 429,
 CR1000X 438.
+
+## Display menus (2026-09-28)
+
+CR6/CR1000X, following the decompiled menu builder (`FUN_004309c0`, `FUN_00430aa0`,
+`FUN_00430b50`) and oracle probes (`instr_data.check_table_and_menu_placement`,
+`tests/test_display_menus.py`). Pass 2 unless noted.
+
+- `MenuItem`, `DisplayValue`, `DisplayLine`, `MenuRecompile`, `SubMenu`, `MenuPick`,
+  `EndSubMenu` and `EndMenu` outside an open `DisplayMenu` -> `%s must be used within
+  DisplayMenu..EndMenu.`.
+- An empty `SubMenu` -> `Empty SubMenu ... EndSubMenu.`. It also closes the builder's insertion
+  point, so the rest of that menu reports `must be used within` too.
+- An empty menu -> `Empty DisplayMenu .. EndMenu.`. `EndMenu` with a `SubMenu` still open -> `SubMenu
+  with no EndSubMenu.`.
+- `EndSubMenu` with no `SubMenu` -> `EndSubMenu without SubMenu.`, which ends pass 2.
+- `MenuPick` whose menu level's last item is not a `MenuItem` or `MenuRecompile` -> `MenuPick must
+  follow a MenuItem instruction.`. Not modelled: a second `MenuPick` for the same item is
+  sometimes rejected too.
+- A second `DisplayMenu` before `EndMenu` -> `DisplayMenu without EndMenu.` on its line. A menu
+  still open at the end gets the same message on the last line, late like the unclosed-block
+  messages.
+
+Replay: 841 of 1469 exact.

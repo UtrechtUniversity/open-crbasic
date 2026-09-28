@@ -371,16 +371,26 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
                 diags.error(st.line, f"{st.args[0].name} already assigned Units {units}.", st.file)
 
 
-_MENU_CHILDREN = ("MENUPICK", "MENURECOMPILE")
-
-
-def check_table_and_menu_placement(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
-    """Pass 2 (oracle, 2026-09-27, suppressed by a pass-1 error): a second `DataInterval` in one
-    table -> `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers); a
-    `MenuPick`/`MenuRecompile` outside `DisplayMenu`..`EndMenu` -> `%s must be used within
-    DisplayMenu..EndMenu.` (CR6/CR1000X; CR300/CR350 have no menus)."""
-    in_table = in_menu = False
+def check_table_and_menu_placement(program: S.Program, profile: Profile,
+                                   diags: Diagnostics) -> int | None:
+    """Pass 2 (oracle, suppressed by a pass-1 error): a second `DataInterval` in one table ->
+    `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers), and the display
+    menu structure (CR6/CR1000X; CR300/CR350 have no menus), following the decompiled menu builder
+    (`FUN_004309c0`, `FUN_00430aa0`, `FUN_00430b50`; oracle, 2026-09-28, `docs/checker.md`
+    "Display menus"). Returns the line pass 2 stops at (`EndSubMenu without SubMenu.`), if any."""
+    in_table = False
     intervals = 0
+    menus = submenus = 0
+    open_list = False      # the builder's insertion point; an empty `SubMenu` clears it
+    levels: list[list[str]] = []
+
+    def within(st: S.Instruction, kw: str) -> bool:
+        if menus and open_list:
+            return True
+        diags.error(st.line, f"{profile.instructions[kw]['name']} must be used within "
+                    "DisplayMenu..EndMenu.", st.file)
+        return False
+
     for st in program.statements:
         if not isinstance(st, S.Instruction):
             continue
@@ -394,13 +404,46 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile, diags: 
             if intervals == 2:
                 diags.error(st.line, "Only one DataInterval allowed within DataTable..EndTable.",
                             st.file)
+        elif kw not in profile.instructions:
+            continue
+        elif kw == "DISPLAYMENU" and menus:
+            # a second `DisplayMenu` before `EndMenu` (the first stays open; fuzz-found, oracle)
+            diags.error(st.line, "DisplayMenu without EndMenu.", st.file)
         elif kw == "DISPLAYMENU":
-            in_menu = True
+            menus += 1
+            levels.append([])
+            open_list = True
+        elif kw in _MENU_ITEMS:
+            if within(st, kw):
+                levels[-1].append(kw)
+                if kw == "SUBMENU":
+                    levels.append([])
+                    submenus += 1
+        elif kw == "MENUPICK":
+            # After a `MenuItem` or `MenuRecompile` it is accepted (chm `menuitem_2.CR6`); a
+            # second pick list for the same item is sometimes rejected too (not modelled).
+            if within(st, kw) and (not levels[-1] or
+                                   levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE")):
+                diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
+        elif kw == "ENDSUBMENU":
+            if not submenus:
+                diags.error(st.line, "EndSubMenu without SubMenu.", st.file)
+                return st.line
+            submenus -= 1
+            if within(st, kw) and not levels.pop():
+                diags.error(st.line, "Empty SubMenu ... EndSubMenu.", st.file)
+                open_list = False
         elif kw == "ENDMENU":
-            in_menu = False
-        elif kw in _MENU_CHILDREN and not in_menu and kw in profile.instructions:
-            name = profile.instructions[kw]["name"]
-            diags.error(st.line, f"{name} must be used within DisplayMenu..EndMenu.", st.file)
+            if within(st, kw):
+                menus -= 1
+                if not levels.pop():
+                    diags.error(st.line, "Empty DisplayMenu .. EndMenu.", st.file)
+                if submenus:
+                    diags.error(st.line, "SubMenu with no EndSubMenu.", st.file)
+    return None
+
+
+_MENU_ITEMS = ("SUBMENU", "MENUITEM", "DISPLAYVALUE", "MENURECOMPILE", "DISPLAYLINE")
 
 
 _TABLE_OUTPUT = ("TOTALIZE", "AVERAGE", "MAXIMUM", "MINIMUM", "SAMPLEMAXMIN", "STDDEV", "MOMENT",
