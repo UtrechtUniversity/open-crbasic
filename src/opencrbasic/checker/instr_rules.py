@@ -740,3 +740,37 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
         address = int(value) & 0xFF
         if address >= 15:
             diags.error(stmt.line, f"Invalid SDM Address: {address}, must be 0 - 14.", stmt.file)
+
+
+def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Illegal parameter %s, expecting constant integer.` at a type-code-4 position (`SW12`'s third
+    argument, `PortSet`, `PortGet`, `Calibrate`, `CDM_SW12`, CR300 `SwVx`) holding anything but an
+    integer constant: a variable, an undefined name, `Nope+1`, `0.5`, `"a"` (echoed verbatim).
+    Pass 1, all four loggers (oracle, 2026-09-28; `docs/type-codes.md`). `Do`/`Loop`/`Else` read
+    `While`/`Until` there and are left to the parser."""
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        record = profile.instructions.get(kw)
+        if not record or kw in ("DO", "LOOP", "ELSE"):
+            continue
+        for i, code in enumerate(record["params"][:len(stmt.args)]):
+            arg = stmt.args[i]
+            if code not in (4, 104) or arg is None or _is_integer_constant(arg, env):
+                continue
+            from . import expressions
+            text = expressions._arg_text(stmt, i).strip()
+            if text:
+                diags.error(stmt.line, f"Illegal parameter {text}, expecting constant integer.",
+                            stmt.file)
+
+
+def _is_integer_constant(arg: S.Expr, env: consteval.Env) -> bool:
+    if not consteval.is_constant(arg, env):
+        return False
+    try:
+        value = consteval.value_of(arg, env)
+    except consteval.NotConstant:
+        return False
+    return not isinstance(value, str) and isinstance(value, (int, float)) and value == int(value)

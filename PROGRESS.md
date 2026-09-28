@@ -790,6 +790,9 @@ coordinator commits it. Tick items here as they land.
 - [x] Undefined names in `Sub` call arguments (`docs/checker.md` "Sub call arguments").
       Replay 829 of 1469 exact.
 
+- [x] Code-4 (`const_int_kw`) instruction arguments (`docs/type-codes.md` "Code 4 arguments in
+      instructions"). Replay 833 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

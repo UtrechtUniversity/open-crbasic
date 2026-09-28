@@ -366,3 +366,13 @@ Dim Arr(2,2,2,2)                 -> line 1: Variable Arr(2 dimension exceeds max
 - `thunk_FUN_00523010` (code 20's per-instruction legal-value check) and `thunk_FUN_004f8090`
   (code 6/45's name-registration helper, shared with `DataTable`) were not traced beyond
   confirming they exist and are called; their own error catalogues are not enumerated here.
+
+### Code 4 arguments in instructions (2026-09-28)
+
+`instr_rules.check_const_int_args` reports `Illegal parameter %s, expecting constant integer.` for
+a code-4 argument of `SW12`, `PortSet`, `PortGet`, `Calibrate`, `CDM_SW12`/`CDM_SW5`/
+`CDM_SWPower` and CR300/CR350 `SwVx` that is not an integer constant. That covers a variable, an
+undefined name, `Nope+1`, `0.5` and `"a"`, each echoed verbatim. It is a pass-1 error: a later
+`X = Q` is not reported on CR6, and an earlier one is not either. Oracle on all four loggers
+(`tests/test_const_int_args.py`). `Do`/`Loop`/`Else` keep their keyword parsing. Replay: 833 of
+1469 exact.
