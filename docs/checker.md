@@ -2569,3 +2569,22 @@ Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_cou
   already have their own error.
 
 Replay: 893 of 1785 exact, no false rejects.
+
+## Function argument counts (2026-09-28)
+
+A user `Function` called in an expression with fewer arguments than its non-`Optional` parameters
+gets `Call argument required.` and then `Invalid, or out of place expression: %s.`. With more
+arguments than parameters it gets `No Matching, or out of place ) in expression: %s.`. The echo
+is the whole assignment (with the CR300/CR350 newline), the `If` condition (`One() > 1 `), or the
+instruction argument (`One()`). Pass 1 on CR6/CR1000X: a later `X = Q` is not reported. Oracle
+on all four loggers (`expressions.check_function_call_counts`,
+`tests/test_function_calls_and_loops.py`). CR6 crashes on `Battery(One())`.
+
+On CR300/CR350, `Call argument required.` starts the `Too many parameters` cascade. The cascade
+rewrites a tainted `Sub`/`Function` header to the second token after its name: `Sub Foo (A, B)`
+-> `B`, `Function F (x) As Long` -> `As`. Not modelled: the tainted function's parameters are then
+undefined in its body.
+
+`Do While`/`Loop Until` conditions are resolved like `If` conditions. CR6 echoes the text after
+`While`/`Until`, trailing spaces included (`Invalid symbol in expression: (Nope <> 1)   .`), and
+CR300 names each undefined name. Replay: 904 of 1785 exact.

@@ -155,6 +155,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
     _run_pass(intervals.check, program, profile, diags, env)
     _run_pass(instr_rules.check_const_int_args, program, profile, diags, env)
+    _run_pass(expressions.check_function_call_counts, program, profile, diags)
     # `Data`/`DataLong` parameter constant-only checking (`expressions.py`'s own docstring for the
     # oracle evidence). Also ungated pass 1, same reasoning as `check_consts` just above.
     _run_pass(expressions.check_data_params, program, profile, diags)

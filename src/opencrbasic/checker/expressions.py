@@ -727,6 +727,22 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if _has_undefined_index(stmt.cond, known):
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
 
+    # `Do While Nope` / `Loop Until (Nope <> 1)`: the condition after `While`/`Until`, like an
+    # `If` condition (oracle, 2026-09-28: CR6 `Invalid symbol in expression: (Nope <> 1).`,
+    # CR300 `Nope is not defined.`).
+    for stmt in program.statements:
+        if not isinstance(stmt, S.DoLoop) or stmt.cond is None:
+            continue
+        names = _undefined_names(stmt.cond, known)
+        m = re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
+        if not names or not m:
+            continue
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {m.group(1)}.", stmt.file)
+        else:
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+
     dim_counts = symbols.declared_dim_counts(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
@@ -1179,3 +1195,78 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             problem = _find_arity_problem(stmt.value, profile)
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
+
+
+def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:
+    """A user `Function` called with too few arguments -> `Call argument required.` then the
+    fallback; with too many -> `No Matching, or out of place ) in expression: %s.`. The echo is the
+    assignment, the `If` condition, or the instruction argument holding the call. Pass 1 on
+    CR6/CR1000X (a later `X = Q` is not reported), all four loggers (oracle, 2026-09-28,
+    `docs/checker.md` "Function argument counts")."""
+    from . import structure
+    functions = {st.name.upper(): st for st in program.statements
+                 if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
+    if not functions:
+        return
+
+    def problem(expr: S.Expr | None) -> str | None:
+        for node in _index_nodes(expr):
+            fn = functions.get(node.name.upper())
+            if fn is None:
+                continue
+            required = sum(1 for p in fn.params if p.default is None)
+            if len(node.args) < required:
+                return "few"
+            if len(node.args) > len(fn.params):
+                return "many"
+        return None
+
+    def report(stmt: S.Stmt, kind: str, echo: str, whole: bool) -> None:
+        if kind == "few":
+            diags.error(stmt.line, "Call argument required.", stmt.file)
+            text = structure._out_of_place(profile, echo, stmt.at_eol) if whole else \
+                f"Invalid, or out of place expression: {echo}."
+        else:
+            sep = "\n" if whole and profile.fallback_echo_newline and stmt.at_eol else ""
+            text = f"No Matching, or out of place ) in expression: {echo}{sep}."
+        diags.error(stmt.line, text, stmt.file, show_file=False)
+
+    def visit(stmt: S.Stmt) -> None:
+        if isinstance(stmt, S.Assignment):
+            kind = problem(stmt.target) or problem(stmt.value)
+            if kind:
+                report(stmt, kind, stmt.text, True)
+        elif isinstance(stmt, S.If):
+            kind = problem(stmt.cond)
+            echo = _if_condition_text(stmt)
+            if kind and echo is not None:
+                report(stmt, kind, echo, False)
+            for inner in (stmt.inline or []) + (stmt.inline_else or []):
+                visit(inner)
+        elif isinstance(stmt, S.Instruction):
+            for i, arg in enumerate(stmt.args):
+                kind = problem(arg)
+                if kind:
+                    report(stmt, kind, _arg_text(stmt, i).strip(), False)
+                    break
+
+    for stmt in program.statements:
+        visit(stmt)
+
+
+def _index_nodes(expr: S.Expr | None):
+    """Every `Index` (call or subscript) inside `expr`, outermost first."""
+    if expr is None:
+        return
+    if isinstance(expr, S.Index):
+        yield expr
+        for a in expr.args:
+            yield from _index_nodes(a)
+    elif isinstance(expr, S.Unary):
+        yield from _index_nodes(expr.operand)
+    elif isinstance(expr, S.Binary):
+        yield from _index_nodes(expr.left)
+        yield from _index_nodes(expr.right)
+    elif isinstance(expr, S.Member):
+        for a in expr.args or []:
+            yield from _index_nodes(a)

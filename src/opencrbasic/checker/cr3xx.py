@@ -149,7 +149,8 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "illegal, starts with a number.", "not yet declared.",
                          "not supported")
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
-                                 "EndSelect w/o Select", "String without end quote")
+                                 "EndSelect w/o Select", "String without end quote",
+                                 "Call argument required")
 
 
 def _is_cascade_trigger(diag) -> bool:
@@ -197,10 +198,14 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 if isinstance(stmt, S.Declaration) and len(stmt.vars) >= 2:
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
                 continue
-            if isinstance(stmt, S.SubDef) and stmt.keyword == "SUB" and len(stmt.params) >= 2:
-                # `Sub Foo (A, B)` -> `Too many parameters:  B.` (oracle, 2026-09-28)
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-                diags.error(stmt.line, f"Too many parameters:  {stmt.params[1].name}.", stmt.file)
+            if isinstance(stmt, S.SubDef):
+                # `Sub Foo (A, B)` -> `Too many parameters:  B.`, `Function F (x) As Long` ->
+                # `... As.`: the second token after the name (oracle, 2026-09-28)
+                m = re.search(r"\((.*)$", stmt.text or "")  # `(x) As Long` -> x, As
+                tokens = [t for t in re.split(r"[\s,()=]+", m.group(1)) if t] if m else []
+                if len(tokens) >= 2:
+                    diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                    diags.error(stmt.line, f"Too many parameters:  {tokens[1]}.", stmt.file)
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None

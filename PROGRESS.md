@@ -820,6 +820,9 @@ Tick items here as they land.
       `Totalize`, `StdDev`, `Median`) and `SendTableDef` (`instr_rules._TOO_MANY_EXTRA`,
       `tests/test_table_too_many.py`). Replay 900 of 1785 exact.
 
+- [x] User `Function` argument counts, `Do`/`Loop` conditions, CR300 cascade on `Function`
+      headers (`docs/checker.md` "Function argument counts"). Replay 904 of 1785 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
