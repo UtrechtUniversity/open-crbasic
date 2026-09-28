@@ -183,7 +183,11 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     # `dewpoint_1.CR6`'s own first `VoltSE` keeping its real `mv5000C is not defined.` pair while
     # its identical-shaped successor is swallowed).
     tainted = False
-    for stmt in program.statements:
+    taint_at = 0
+    dropped: set[int] = set()      # tainted declarations: their names are never registered
+    tainted_subs: set[int] = set()  # tainted `Sub`/`Function` headers: parameters dropped
+    rewritten: set[int] = set()
+    for index, stmt in enumerate(program.statements):
         key = (stmt.line, stmt.file)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
@@ -197,8 +201,11 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 if isinstance(stmt, S.Declaration) and len(stmt.vars) >= 2:
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
+                if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
+                    dropped.add(id(stmt))
                 continue
             if isinstance(stmt, S.SubDef):
+                tainted_subs.add(id(stmt))
                 # `Sub Foo (A, B)` -> `Too many parameters:  B.`, `Function F (x) As Long` ->
                 # `... As.`: the second token after the name (oracle, 2026-09-28)
                 m = re.search(r"\((.*)$", stmt.text or "")  # `(x) As Long` -> x, As
@@ -217,9 +224,58 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
+                rewritten.add(id(stmt))
             continue
         if any(_is_cascade_trigger(d) for d in existing):
             tainted = True
+            taint_at = index
+    if dropped or tainted_subs:
+        _report_unregistered(program, profile, diags, taint_at, dropped, tainted_subs, rewritten)
+
+
+def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_at: int,
+                         dropped: set[int], tainted_subs: set[int], rewritten: set[int]) -> None:
+    """Names a tainted declaration would have registered are undefined afterwards: `Public A`
+    after `Dim Z banana` makes a later `X = A` print `A is not defined.`, and a tainted `Function
+    F (x)` loses its parameters (`F(1)` -> `No Matching, or out of place ) ...`; `X = a` in a
+    tainted `Sub S (a)` -> `a is not defined.`). A `Const` is still registered (oracle, CR300,
+    2026-09-28, `docs/loggers.md` "Tainted declarations"). The tier-B name checks are re-run on
+    a copy of the program without those declarations, keeping only their findings on statements
+    after the taint that use an unregistered name or a tainted `Function`."""
+    import dataclasses
+    from .. import consteval
+    from . import structure, unused
+    statements = []
+    for st in program.statements:
+        if id(st) in dropped:
+            continue
+        statements.append(dataclasses.replace(st, params=[]) if id(st) in tainted_subs else st)
+    modified = dataclasses.replace(program, statements=statements)
+    unregistered = expressions._known_names(program, profile) - \
+        expressions._known_names(modified, profile)
+    functions = {st.name.upper() for st in program.statements
+                 if id(st) in tainted_subs and st.keyword == "FUNCTION"}
+    affected: set[tuple[int, str]] = set()
+    for st in program.statements[taint_at + 1:]:
+        if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef) or \
+                (isinstance(st, S.Instruction) and st.keyword.upper() == "RETURN"):
+            continue
+        names: set[str] = set()
+        unused._walk_stmt(st, names)
+        if names & unregistered or (not isinstance(st, S.Call) and names & functions):
+            affected.add((st.line, st.file))
+    if not affected:
+        return
+    scratch = Diagnostics()
+    env = consteval.Env(profile, dict(program.consts))
+    structure.check_pass2(modified, profile, scratch, env)
+    expressions.check(modified, profile, scratch, env)
+    expressions.check_function_call_counts(modified, profile, scratch)
+    for d in scratch.items:
+        key = (d.line, d.file)
+        if key in affected and d.severity == "error" and not any(
+                (e.line, e.file, e.message) == (d.line, d.file, d.message) for e in diags.items):
+            diags.items.append(d)
 
 
 # `check_unknown_line_words` (this round): a line that parses as nothing recognisable at all --

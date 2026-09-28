@@ -1031,3 +1031,19 @@ Errors from the CR300/CR350 late stages (table checks, the late walk, unclosed b
 start the `Too many parameters` cascade (`Diagnostic.cascade`). Oracle: `Sample (1,Nope,FP2)`
 before a `Scan (1,Sec,0,0)` gives no `Too many parameters:  Sec.`. Tests:
 `tests/test_cr3xx_table_source.py`. Replay: 812 of 1469 exact.
+
+## Tainted declarations (2026-09-28)
+
+Once the CR300/CR350 `Too many parameters` cascade has started, later `Public`/`Dim`/`Static`
+declarations are not registered, and neither are the parameters of a later `Sub`/`Function`. A
+`Const` still is. Uses after that point report as undefined, in the usual CR300 shapes: `X = A`
+-> `A is not defined.`, and `A(1) = 2` -> `A is not defined.` plus the fallback. `X = F(1)` for a
+tainted `Function F (x)` -> `No Matching, or out of place ) in expression:     X = F(1)`.
+`X = a` inside a tainted `Sub S (a)` -> `a is not defined.`. `Return x + 1` and `Call S(1)` are
+not reported (oracle, `tests/test_cr3xx_tainted_declarations.py`).
+
+`cr3xx._report_unregistered` re-runs the tier-B name checks on a copy of the program without
+those declarations (and with the tainted headers' parameters removed). It keeps only the
+findings on later statements that use an unregistered name or a tainted `Function`. This only
+adds errors to programs that already fail. chm exact CR300 269 -> 273, CR350 279 -> 283; replay
+915 of 1785 exact.

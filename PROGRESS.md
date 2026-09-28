@@ -823,6 +823,9 @@ Tick items here as they land.
 - [x] User `Function` argument counts, `Do`/`Loop` conditions, CR300 cascade on `Function`
       headers (`docs/checker.md` "Function argument counts"). Replay 904 of 1785 exact.
 
+- [x] CR300/CR350 tainted declarations are unregistered (`docs/loggers.md` "Tainted
+      declarations"). chm exact cr300 273, cr350 283; replay 915 of 1785 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
