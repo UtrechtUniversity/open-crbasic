@@ -2552,3 +2552,20 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
 
 Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
 Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.
+
+## Subscript counts (2026-09-28)
+
+Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_counts.py`):
+
+- CR300/CR350 reject more subscripts than a variable's declared dimensions (a scalar has none).
+  An assignment target, `R(2,1) = 1` for `Public R(5)`, gets the fallback `Invalid, or out of
+  place expression:     R(2,1) = 1` (accumulating). In an assignment value, `X = R(2,1)` gives
+  `Dimensions not declared:     X = R(2,1)`. In an instruction argument, `Battery(R(2,1))` gives
+  `Dimensions not declared: R(2,1).`. Fewer subscripts (`M(2)` for `M(5,5)`) are accepted.
+- CR6/CR1000X accept up to three subscripts on any array. A fourth on an assignment target gets
+  the fallback.
+- String variables are not counted, because `Buf(1,1,I)` addresses a character
+  (`SbdPayload_tester.CR6`). Neither are names declared with empty parentheses (`Dim A()`), which
+  already have their own error.
+
+Replay: 893 of 1785 exact, no false rejects.

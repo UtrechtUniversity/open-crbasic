@@ -813,6 +813,9 @@ Tick items here as they land.
       `SNMPVariable(MyTemp, ...)` declaring `MyTemp` the last (`checker/symbols.py`). Replay 885
       of 1785 exact, no false rejects.
 
+- [x] Subscript counts beyond the declared dimensions (`docs/checker.md` "Subscript counts").
+      Replay 893 of 1785 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

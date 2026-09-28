@@ -175,6 +175,24 @@ def declared_dim0_sizes(program: S.Program, env: consteval.Env) -> dict[str, int
     return sizes
 
 
+def declared_dim_counts(program: S.Program) -> dict[str, int]:
+    """Every `Public`/`Dim`/`Static` variable's upper-case name -> its number of declared
+    dimensions (0 for a scalar). A name declared twice with different counts is left out."""
+    counts: dict[str, int] = {}
+    ambiguous: set[str] = set()
+    for stmt in program.statements:
+        if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
+            for v in stmt.vars:
+                name = v.name.upper()
+                if (v.type or "").upper() == "STRING" or \
+                        re.search(r"(?i)\b" + re.escape(v.name) + r"\s*\(\s*\)", stmt.text):
+                    # a String takes a character subscript (`Buf(1,1,I)`); `A()` is its own error
+                    ambiguous.add(name)
+                elif counts.setdefault(name, len(v.dims)) != len(v.dims):
+                    ambiguous.add(name)
+    return {k: v for k, v in counts.items() if k not in ambiguous}
+
+
 def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, ...]]:
     """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its **full** tuple of
     declared dimension sizes, `(1,)` for a scalar (matching `declared_dim0_sizes`'s own "behaves

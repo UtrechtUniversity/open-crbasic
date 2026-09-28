@@ -366,6 +366,27 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
 
 
 
+def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | None = None) -> bool:
+    """Whether `expr` indexes a declared variable with more subscripts than it has dimensions
+    (`limit`: more than `limit` subscripts instead). CR300/CR350 reject `R(2,1)` for `Public R(5)`
+    and `X(1)` for a scalar; CR6/CR1000X only more than 3 (oracle, 2026-09-28)."""
+    if expr is None:
+        return False
+    if isinstance(expr, S.Index):
+        count = dim_counts.get(expr.name.upper())
+        if count is not None and len(expr.args) > (count if limit is None else limit):
+            return True
+        return any(_over_indexed(a, dim_counts, limit) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _over_indexed(expr.operand, dim_counts, limit)
+    if isinstance(expr, S.Binary):
+        return _over_indexed(expr.left, dim_counts, limit) or \
+            _over_indexed(expr.right, dim_counts, limit)
+    if isinstance(expr, S.Member):
+        return any(_over_indexed(a, dim_counts, limit) for a in (expr.args or []))
+    return False
+
+
 def _has_undefined_index(expr: S.Expr | None, known: set[str]) -> bool:
     """Whether `expr` uses an undefined name with parentheses (`Foo(1)`), which CR300/CR350 follow
     with `Dimensions not declared: %s` (oracle, 2026-09-27)."""
@@ -454,7 +475,7 @@ def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
 
 def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
                        variable_names: set[str], profile, diags: Diagnostics,
-                       families: str = "all") -> bool:
+                       families: str = "all", dim_counts: dict[str, int] | None = None) -> bool:
     """One statement's own undefined-symbol and constant-only-family checks, at every position
     `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
     expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
@@ -543,6 +564,12 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             # "Variable illegal in Parameter" check below, independent of the undefined-name
             # report just made (oracle-confirmed; see this method's own docstring).
 
+        if not whole_echo and dim_counts and _over_indexed(arg, dim_counts):
+            # CR300/CR350: `Battery(R(2,1))` for `Public R(5)` (oracle, 2026-09-28)
+            diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
+                        stmt.file)
+            return True
+
         if is_const_family:
             var_refs = _variable_refs(arg, variable_names)
             if names or var_refs:
@@ -615,6 +642,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
+    dim_counts = symbols.declared_dim_counts(program)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -626,7 +654,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             _report_statement(stmt, positions, known, variable_names, profile, diags,
-                              families="general")
+                              families="general", dim_counts=dim_counts)
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions
@@ -699,13 +727,25 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if _has_undefined_index(stmt.cond, known):
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
 
+    dim_counts = symbols.declared_dim_counts(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
             continue
         if _undefined_names(stmt.target, known):
             continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
         names = _undefined_names(stmt.value, known)
+        whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        if _over_indexed(stmt.target, dim_counts, 3 if whole_echo else None):
+            # `R(2,1) = 1` for `Public R(5)`: the fallback (CR6/CR1000X only past 3 subscripts)
+            from . import structure
+            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
+                        stmt.file, show_file=False)
+            continue
         if not names:
+            if not whole_echo and _over_indexed(stmt.value, dim_counts):
+                # CR300/CR350: `X = R(2,1)` -> `Dimensions not declared:     X = R(2,1)` (oracle)
+                diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
+                            stmt.file)
             continue
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file)
