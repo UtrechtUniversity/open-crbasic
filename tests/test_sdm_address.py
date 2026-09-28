@@ -26,7 +26,7 @@ def lines(body: str, logger: str) -> list[str]:
     ("    SDMX50 (-1,4)\n", ["line 4: Invalid SDM Address: 255, must be 0 - 14."]),
     ("    SDMX50 (14,4)\n", []),
     ("    SDMX50 (256,4)\n", []),
-    ("    SDMX50 (X,4)\n", []),
+    ("    SDMX50 (X,4)\n", ["line 4: Variable illegal in Parameter: X."]),
     ("    SDMX50 (99,4)\n    SDMX50 (98,4)\n",
      ["line 4: Invalid SDM Address: 99, must be 0 - 14.",
       "line 5: Invalid SDM Address: 98, must be 0 - 14."]),
