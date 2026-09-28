@@ -610,8 +610,10 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 
 Rounds are now one small, verifiable item per agent (quota cut-offs lost work in long rounds).
 Each item: oracle-probe the rule, implement with a unit test, then the acceptance gate — pytest
-green, difftest zero false rejects on all four loggers, exact counts not lower — and the
-coordinator commits it. Tick items here as they land.
+green, difftest zero false rejects on all four loggers, exact counts not lower, and no
+`false_reject` line in `fuzz_replay.py` output other than `FIXED`/`changed: false_reject -> ...`
+(grep for `still false_reject` too, not only `-> false_reject`) — and the coordinator commits it.
+Tick items here as they land.
 
 - [x] Prune fixed fuzz reproducers (`fuzz_replay.py --prune-fixed`)
 - [x] CR6/CR1000X: `Duplicate Alias` / `Duplicate Alias Name: %s.` (already implemented in
@@ -804,6 +806,12 @@ coordinator commits it. Tick items here as they land.
       false reject) (`docs/checker.md` "Unterminated strings"). Replay 847 of 1469 exact.
 - [x] Fuzz seed 48, cr350 (tree at `420e351`): false_accept 17 (exact 247), 1 false reject
       (`ESSInitialize(public")`), fixed in the row above.
+
+- [x] Seed-47/48 reproducers added to `tests/corpus/fuzz` (316 files, 1785 reproducers in all).
+      The replay had shown 6 `still false_reject` reproducers from the original corpus, missed
+      because the gate only grepped `-> false_reject`; `ESSInitialize`'s raw argument fixed 5 and
+      `SNMPVariable(MyTemp, ...)` declaring `MyTemp` the last (`checker/symbols.py`). Replay 885
+      of 1785 exact, no false rejects.
 
 ## Next steps
 

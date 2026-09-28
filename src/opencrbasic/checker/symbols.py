@@ -4,6 +4,8 @@ bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import syntax as S
 
@@ -240,4 +242,12 @@ def declared_names(program: S.Program) -> set[str]:
                 for arg in stmt.args[1:]:
                     if isinstance(arg, S.Name):
                         names.add(arg.name.upper())
+        # `SNMPVariable(MyTemp, 1.3.6.1..., Float, RONLY)` declares `MyTemp` (oracle, all four
+        # loggers, 2026-09-28; a CR350 fuzz false reject). Its dotted OID does not parse here.
+        m = _SNMP_VARIABLE_RE.match(getattr(stmt, "text", "") or "")
+        if m:
+            names.add(m.group(1).upper())
     return names
+
+
+_SNMP_VARIABLE_RE = re.compile(r"(?i)\s*SNMPVariable\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)")
