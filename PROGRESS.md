@@ -778,6 +778,10 @@ coordinator commits it. Tick items here as they land.
 - [x] One-line `If` statements checked like ordinary statements (`docs/checker.md` "One-line
       If statements"). Replay 818 of 1469 exact, chm exact cr6 428, cr1000x 437.
 
+- [x] Typed dimensions, member index names, initializer-bounds warning, `CallTable` excess
+      arguments, CR300 `Sub` cascade rewrite (`docs/checker.md` "Declaration details and
+      CallTable arguments"). Replay 822 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

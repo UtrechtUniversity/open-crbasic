@@ -352,7 +352,11 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
             head += _undefined_names(a, known)
         return head
     if isinstance(expr, S.Member):
-        return _undefined_names(expr.base, known)
+        # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28)
+        out = _undefined_names(expr.base, known)
+        for a in getattr(expr, "args", None) or []:
+            out += _undefined_names(a, known)
+        return out
     if isinstance(expr, S.ArrayLiteral):
         out: list[str] = []
         for item in expr.items:

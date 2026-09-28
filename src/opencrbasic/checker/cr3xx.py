@@ -197,6 +197,11 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 if isinstance(stmt, S.Declaration) and len(stmt.vars) >= 2:
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
                 continue
+            if isinstance(stmt, S.SubDef) and stmt.keyword == "SUB" and len(stmt.params) >= 2:
+                # `Sub Foo (A, B)` -> `Too many parameters:  B.` (oracle, 2026-09-28)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                diags.error(stmt.line, f"Too many parameters:  {stmt.params[1].name}.", stmt.file)
+                continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
                     and stmt.keyword.upper() not in ("UNITS", "READONLY")):

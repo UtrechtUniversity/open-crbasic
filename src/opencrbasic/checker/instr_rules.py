@@ -284,9 +284,10 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         record = profile.instructions.get(stmt.keyword.upper())
         # `DataTable (T,1,-1,"fuzz")` -> `Too many parameters:  "fuzz".`, pass 1, all four
-        # loggers (oracle, 2026-09-27), although its name parameter is not an eligible kind.
+        # loggers (oracle, 2026-09-27), although its name parameter is not an eligible kind; so is
+        # `CallTable` (`CallTable(T,X,Y)` -> `Too many parameters:  Y.`, 2026-09-28).
         if not record or not (_too_many_eligible(record["params"])
-                              or stmt.keyword.upper() == "DATATABLE"):
+                              or stmt.keyword.upper() in ("DATATABLE", "CALLTABLE")):
             continue
         max_count = len(_real_params(record["params"]))
         if len(stmt.args) <= max_count:

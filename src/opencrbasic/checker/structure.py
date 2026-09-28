@@ -484,6 +484,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
                 _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
+                _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
             pass
         elif isinstance(stmt, S.Unparsed):
@@ -1563,6 +1564,28 @@ def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], pro
 _VARIABLE_TYPES = frozenset({"FLOAT", "LONG", "BOOLEAN", "STRING", "DOUBLE", "UINT1"})
 _EMPTY_DIMS_AS_RE = re.compile(r"(?i)\s*\(\s*\)(\s*As)\b")
 _AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
+_TYPED_DIMS_RE = re.compile(r"(?i)\s*As\s+[A-Za-z_][A-Za-z0-9_]*\s*(?=\()")
+
+
+def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnostics) -> None:
+    """`Warning: Attempt to initialize variable out of bounds.`, once per variable with more
+    initializer values than elements, all four loggers (oracle, 2026-09-28: `Public A(2) = {1,2,3}`,
+    `Public A = {1,2}`, `Dim A(2,2) = {1,2,3,4,5}`; an unresolved dimension counts as 1)."""
+    for v in stmt.vars:
+        if not v.init:
+            continue
+        size = 1
+        for d in v.dims:
+            try:
+                n = consteval.value_of(d, env)
+            except consteval.NotConstant:
+                continue
+            if isinstance(n, bool) or not isinstance(n, (int, float)) or int(n) < 1:
+                size = None
+                break
+            size *= int(n)
+        if size is not None and len(v.init) > size:
+            diags.warning(stmt.line, "Attempt to initialize variable out of bounds.", stmt.file)
 
 
 def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
@@ -1601,8 +1624,11 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                 diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
         rest_at = name_at + len(v.name)
         rest = seg[rest_at:]
-        if v.dims and rest.lstrip().startswith("("):
-            items = _group_items(seg, rest_at + len(rest) - len(rest.lstrip()))
+        typed_dims = _TYPED_DIMS_RE.match(rest)
+        if v.dims and (rest.lstrip().startswith("(") or typed_dims):
+            # `Public A(Nope)` and `Public A As Float(Nope)` alike (oracle, 2026-09-28)
+            open_at = rest_at + (typed_dims.end() if typed_dims else len(rest) - len(rest.lstrip()))
+            items = _group_items(seg, open_at)
             if items is not None and len(items) == len(v.dims):
                 for d, text in zip(v.dims, items):
                     _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)

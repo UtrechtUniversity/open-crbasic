@@ -2441,3 +2441,21 @@ newline (`parser.py` `_parse_stmt_list`, which also re-bases `arg_spans`). The e
 with later pass-2 errors.
 
 Replay: 818 of 1469 exact, no false rejects. chm exact CR6 428, CR1000X 437.
+
+## Declaration details and CallTable arguments (2026-09-28)
+
+Oracle, all four loggers (`tests/test_decl_and_calltable_args.py`):
+
+- Dimensions written after the type, `Public A As Float(Nope)` and `Dim A As Long(2,Nope)`, are
+  resolved like `Public A(Nope)` (pass 1).
+- Index names inside a member reference are resolved: `X = Status.TimeStamp(Nope,1)` -> `Invalid
+  symbol in expression:     X = Status.TimeStamp(Nope,1).` (CR300/CR350: `Nope is not
+  defined.`). The member name itself is still not checked.
+- `Warning: Attempt to initialize variable out of bounds.` is printed once per variable with more
+  initializer values than elements (`Public A = {1,2}`, `Public A(2) = {1,2,3}`, `Dim A(2,2) =
+  {1,2,3,4,5}`). An unresolved dimension counts as 1. Pass 1, next to other errors.
+- `CallTable` gets the excess-argument check: `CallTable(T,X,Y)` -> `Too many parameters:  Y.`.
+  CR350's `CallTable` takes one argument, so there `CallTable(T,X)` -> `... X.`.
+- CR300/CR350 cascade: a tainted `Sub Foo (A, B)` line becomes `Too many parameters:  B.`.
+
+Replay: 822 of 1469 exact, no false rejects.
