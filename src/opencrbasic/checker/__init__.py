@@ -210,6 +210,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             cutoff = stray_stop
         _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
         _run_pass(expressions.check, flat, profile, diags, env)
+        _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
         # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as

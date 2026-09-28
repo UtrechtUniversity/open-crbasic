@@ -644,3 +644,15 @@ CR1000X/CR300/CR350 at all (`docs/loggers.md`), so it is moot there regardless.
 - **`Resistance`/`PeriodAvg`/`Pulsecount`'s own excitation/gain/reps checks** -- not reached this
   round (time budget); `Pulsecount`'s low-level-AC-pulse "even U channel only" restriction and its
   own reps range are both real (`messages.tsv`, `FUN_00510250`) but not oracle-probed yet.
+
+## SDM addresses (2026-09-28, CR6/CR1000X)
+
+`Invalid SDM Address: %d, must be 0 - 14.` (decompiled `FUN_0043c680`) for a constant address
+whose low byte is 15 or more: `SDMX50 (-1,4)` prints `255`, and `SDMX50 (256,4)` is accepted. It
+is a pass-2 error that accumulates with others (`instr_rules.check_sdm_address`,
+`tests/test_sdm_address.py`). The address position was measured per instruction by setting each
+numeric argument of a chm example to 99: 0 for `SDMX50`; 1 for `EC100`, `EC100Configure`,
+`SDMGeneric`, `TDR100` and `TDR200`; 2 for `CS7500`, `CSAT3`, `CSAT3B`, `CSAT3BMonitor`, `LI7200`,
+`LI7700`, `SDMCD16AC`, `SDMCD16Mask`, `SDMIO16`, `SDMSIO4` and `SDMSW8A`. Not measured: `SDMAO4`,
+`SDMAO4A`, `SDMCVO4`, `SDMINT8`, `SDMCAN`. `SerialInRecord`/`SerialOutBlock` reach the same
+check only for SDM ports.

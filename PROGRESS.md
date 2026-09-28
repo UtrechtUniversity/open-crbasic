@@ -785,6 +785,8 @@ coordinator commits it. Tick items here as they land.
 - [x] `TimeIntoInterval`/`IfTime` argument checks (`checker/intervals.py`, `docs/checker.md`
       "TimeIntoInterval arguments"). Replay 825 of 1469 exact.
 
+- [x] SDM address range (`docs/instructions.md` "SDM addresses"). Replay 826 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

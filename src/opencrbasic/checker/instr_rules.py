@@ -706,3 +706,37 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             if _undefined_names(arg, known) or _variable_refs(arg, variable_names):
                 continue
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i)}.", stmt.file)
+
+
+# SDM address argument position, measured by setting each numeric argument of a chm example to 99
+# (oracle, CR6, 2026-09-28; `docs/instructions.md` "SDM addresses").
+_SDM_ADDRESS_ARG = {
+    "CS7500": 2, "CSAT3": 2, "CSAT3B": 2, "CSAT3BMONITOR": 2, "EC100": 1, "EC100CONFIGURE": 1,
+    "LI7200": 2, "LI7700": 2, "SDMCD16AC": 2, "SDMCD16MASK": 2, "SDMGENERIC": 1, "SDMIO16": 2,
+    "SDMSIO4": 2, "SDMSW8A": 2, "SDMX50": 0, "TDR100": 1, "TDR200": 1,
+}
+
+
+def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """`Invalid SDM Address: %d, must be 0 - 14.` (decompiled `FUN_0043c680`) for a constant
+    address whose low byte is 15 or more (`-1` -> `255`; `256` is accepted), pass 2, accumulating
+    with other pass-2 errors (oracle, CR6/CR1000X, 2026-09-28)."""
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        pos = _SDM_ADDRESS_ARG.get(kw)
+        if pos is None or kw not in profile.instructions or pos >= len(stmt.args):
+            continue
+        arg = stmt.args[pos]
+        if arg is None or not consteval.is_constant(arg, env):
+            continue
+        try:
+            value = consteval.value_of(arg, env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            continue
+        address = int(value) & 0xFF
+        if address >= 15:
+            diags.error(stmt.line, f"Invalid SDM Address: {address}, must be 0 - 14.", stmt.file)
