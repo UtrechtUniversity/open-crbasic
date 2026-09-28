@@ -245,6 +245,13 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 #   reached via a plain `S.Instruction`'s `args` list at all (`Call` parses to `S.Call`, `Sub`/
 #   `Function` to `S.SubDef`, `FOR` to `S.For` -- `checker/structure.py`'s own AST node types), so
 #   excluding them here is defensive rather than corpus-evidenced.
+# Instructions checked although a parameter kind above excludes them, each oracle-probed on all
+# four loggers (2026-09-27/28): `DataTable (T,1,-1,"fuzz")`, `CallTable(T,X,Y)`, and table output
+# with its `deferred_text` source, `Minimum (1,X,FP2,False,False,"fuzz")` -> `Too many parameters:
+# "fuzz".`, `SendTableDef(ComRS232,0,4094,T,(1+2))` -> `... 1+2.`.
+_TOO_MANY_EXTRA = frozenset({"DATATABLE", "CALLTABLE", "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM",
+                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF"})
+
 _TOO_MANY_SAFE_KINDS = frozenset({
     "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
     "expr_typed", "expr_special", "expr_pair", "datatype_kw", "const_int_kw", "next_kw",
@@ -317,7 +324,7 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         # loggers (oracle, 2026-09-27), although its name parameter is not an eligible kind; so is
         # `CallTable` (`CallTable(T,X,Y)` -> `Too many parameters:  Y.`, 2026-09-28).
         if not record or not (_too_many_eligible(record["params"])
-                              or stmt.keyword.upper() in ("DATATABLE", "CALLTABLE")):
+                              or stmt.keyword.upper() in _TOO_MANY_EXTRA):
             continue
         max_count = len(_real_params(record["params"]))
         if len(stmt.args) <= max_count:

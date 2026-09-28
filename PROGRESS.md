@@ -816,6 +816,10 @@ Tick items here as they land.
 - [x] Subscript counts beyond the declared dimensions (`docs/checker.md` "Subscript counts").
       Replay 893 of 1785 exact.
 
+- [x] `Too many parameters` for table output (`Sample`, `Average`, `Maximum`, `Minimum`,
+      `Totalize`, `StdDev`, `Median`) and `SendTableDef` (`instr_rules._TOO_MANY_EXTRA`,
+      `tests/test_table_too_many.py`). Replay 900 of 1785 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
