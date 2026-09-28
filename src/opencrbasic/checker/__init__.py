@@ -100,7 +100,8 @@ from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
 from . import (
-    cr3xx, expressions, instr_data, instr_measure, instr_rules, instructions, structure, warnings,
+    cr3xx, expressions, instr_data, instr_measure, instr_rules, instructions, intervals, structure,
+    warnings,
 )
 
 
@@ -151,6 +152,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     _run_pass(expressions.check_consts, program, profile, diags)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
     _run_pass(expressions.check_const_family_args, program, profile, diags)
+    # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
+    _run_pass(intervals.check, program, profile, diags, env)
     # `Data`/`DataLong` parameter constant-only checking (`expressions.py`'s own docstring for the
     # oracle evidence). Also ungated pass 1, same reasoning as `check_consts` just above.
     _run_pass(expressions.check_data_params, program, profile, diags)

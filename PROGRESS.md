@@ -782,6 +782,9 @@ coordinator commits it. Tick items here as they land.
       arguments, CR300 `Sub` cascade rewrite (`docs/checker.md` "Declaration details and
       CallTable arguments"). Replay 822 of 1469 exact.
 
+- [x] `TimeIntoInterval`/`IfTime` argument checks (`checker/intervals.py`, `docs/checker.md`
+      "TimeIntoInterval arguments"). Replay 825 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

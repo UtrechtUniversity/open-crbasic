@@ -2459,3 +2459,21 @@ Oracle, all four loggers (`tests/test_decl_and_calltable_args.py`):
 - CR300/CR350 cascade: a tainted `Sub Foo (A, B)` line becomes `Too many parameters:  B.`.
 
 Replay: 822 of 1469 exact, no false rejects.
+
+## TimeIntoInterval arguments (2026-09-28)
+
+`TimeIntoInterval`/`IfTime` with constant arguments are checked by the parser (pass 1, all four
+loggers, `checker/intervals.py`, decompiled `FUN_00494780`). Both values are converted to whole
+seconds plus microseconds in the given units. A negative `TintoInt` wraps into the interval.
+Monthly intervals are not checked.
+
+- `Interval (%d) must be > 0 and TimeInto Interval (%d) must be < Interval.` echoes the raw values
+  unless `0 <= TintoInt < Interval`: `(3,1,Min)`, `(0,0,Min)`, `(-500,1,Sec)`.
+- Inside a `Scan`: `Scan interval must be integrally divisible into interval.` unless both values
+  are multiples of the scan interval. `Scan(7,Sec)` with `(0,15,Sec)`, `Scan(2,Sec)` with
+  `(1,10,Sec)`, and `Scan(300,mSec)` with `(0,1,Sec)` all fail. The comparison is in 100 uSec
+  units; for an interval of 3601 s or more it is in whole seconds, and a sub-second part gives
+  `Illegal sub seconds in time into and/or interval when interval > 3600 secs.`.
+
+Not done: a variable argument gives `Warning: Parameter will truncate to the nearest integer.`
+twice. Replay: 825 of 1469 exact, no false rejects.
