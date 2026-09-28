@@ -2530,3 +2530,25 @@ CR6/CR1000X, following the decompiled menu builder (`FUN_004309c0`, `FUN_00430aa
   messages.
 
 Replay: 841 of 1469 exact.
+
+## Unterminated strings (2026-09-28)
+
+A line cut short by an unterminated string is reported by its shape, in pass 1 on CR6/CR1000X.
+Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
+`tests/test_unterminated_strings.py`):
+
+| Shape | Messages |
+|---|---|
+| instruction, `Battery("abc`, `HTTPOut("<title>...` | `Invalid or missing parameter.` |
+| `Sub` call, `Foo("abc`, `Call Foo("abc` | `Invalid or malformed function argument.` |
+| assignment whose value starts with a quote, `S = "abc`, `S = "abc" + "def` | `String without end quote`, then `Invalid, or out of place expression: <raw line>.` with indentation and trailing spaces kept |
+| one-line `If`, `If X Then S = "abc` | `String without end quote`, then `Invalid, or out of place expression: S = "abc:endif.` (the compiler's block-form rewrite) |
+
+- A line starting with a declaration word (`Public</a></li></ul>")`, a wrapped `HTTPOut` string in
+  `httpout_1.CR6`) is not reported.
+- On CR300/CR350, `String without end quote` starts the `Too many parameters` cascade.
+- `ESSInitialize` reads its argument raw: `ESSInitialize(public")` and `ESSInitialize("public)`
+  compile on all four loggers (a fuzz-found CR350 false reject before this).
+
+Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
+Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.

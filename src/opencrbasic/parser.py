@@ -328,7 +328,14 @@ class _Parser:
         try:
             tokens = lexer.tokenize(seg_text_raw, line)
         except lexer.LexError as e:
-            return S.Unparsed(line, file, text=seg_text_raw.strip(), reason=f"lex error: {e.message}")
+            if re.match(r"\s*ESSInitialize\b", seg_text_raw, re.I):
+                # Its argument is read raw: `ESSInitialize(public")` and `ESSInitialize("public)`
+                # compile on all four loggers (oracle, 2026-09-28; a fuzz-found false reject).
+                return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
+            # An unterminated string is echoed verbatim, indentation and trailing spaces included
+            # (oracle, 2026-09-28: `    S = "abc   .`).
+            text = seg_text_raw if e.message == "unterminated string" else seg_text_raw.strip()
+            return S.Unparsed(line, file, text=text, reason=f"lex error: {e.message}")
         real = [t for t in tokens if t.kind != "EOF"]
         if not real or all(t.kind == "OP" and t.text in "()," for t in real):
             # A segment of only `(`, `)` and `,` compiles silently on all four loggers

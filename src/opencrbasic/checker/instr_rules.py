@@ -58,7 +58,6 @@ _TOLERANT_CODES = frozenset({4, 16, 17, 36, 37, 45, 46})
 # when the statement's first declared parameter is `expr_or_name` (the confirmed case), not
 # generalised to every `kind` the shared resolver accepts -- no oracle evidence covers the others,
 # and AGENTS.md rules out guessing at the rest.
-_UNTERMINATED_STRING_KINDS = frozenset({"expr_or_name"})
 
 _LEADING_IDENT_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)")
 
@@ -99,25 +98,56 @@ _LEADING_IDENT_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)")
 _TOO_FEW_PARAMS_KINDS = frozenset({"identifier", "deferred_text"})
 
 
-def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
-    kinds = _type_code_kinds()
-    for stmt in program.statements:
-        if not isinstance(stmt, S.Unparsed) or stmt.reason != "lex error: unterminated string":
-            continue
-        m = _LEADING_IDENT_RE.match(stmt.text)
-        if not m:
-            continue
-        record = profile.instructions.get(m.group(1).upper())
-        if not record:
-            continue
+_DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UNITS", "READONLY",
+                                "SUB", "FUNCTION"})
+
+
+def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str]) -> str | None:
+    """How a line cut short by an unterminated string is reported (oracle, all four loggers,
+    2026-09-28, `docs/checker.md` "Unterminated strings"): `"if"` (a one-line `If`), `"call"` (a
+    `Sub` call), `"instruction"`, `"assignment"`, or `None` (left to the generic fallback)."""
+    if not isinstance(stmt, S.Unparsed) or stmt.reason != "lex error: unterminated string":
+        return None
+    m = _LEADING_IDENT_RE.match(stmt.text)
+    word = m.group(1).upper() if m else ""
+    if word == "IF":
+        return "if" if re.search(r"(?i)\bThen\b\s*\S", stmt.text) else None
+    if word == "CALL" or word in subs:
+        return "call"
+    record = profile.instructions.get(word)
+    if word in _DECLARATION_WORDS:
+        return None  # `Public</a></li></ul>")` in `httpout_1.CR6` is not reported
+    if record:
         params = _real_params(record["params"])
-        if not params:
-            continue
-        first = params[0]
-        kind = kinds.get(first - 100 if first >= 100 else first)
-        if kind not in _UNTERMINATED_STRING_KINDS:
-            continue
-        diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+        kind = _type_code_kinds().get(params[0] % 100) if params else None
+        return "instruction" if params and kind != "bool_expr" else None
+    if re.match(r"\s*[A-Za-z_][A-Za-z0-9_]*\s*(?:\([^\"]*\))?\s*=\s*\"", stmt.text):
+        return "assignment"
+    return None
+
+
+def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Pass 1: `HTTPOut("<title>CR1000X` / `Battery("abc` -> `Invalid or missing parameter.`;
+    `Foo("abc` -> `Invalid or malformed function argument.`; `S = "abc` -> `String without end
+    quote` then the fallback echoing the raw line; `If X Then S = "abc` -> `String without end
+    quote` then the fallback for `S = "abc:endif` (the compiler's block-form rewrite)."""
+    from . import structure, symbols
+    subs = symbols.declared_subs(program)
+    for stmt in program.statements:
+        shape = unterminated_string_shape(stmt, profile, subs)
+        if shape == "instruction":
+            diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+        elif shape == "call":
+            diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
+        elif shape == "assignment":
+            diags.error(stmt.line, "String without end quote", stmt.file)
+            diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
+                        stmt.file, show_file=False)
+        elif shape == "if":
+            rest = re.search(r"(?i)\bThen\b\s*(.*)$", stmt.text).group(1)
+            diags.error(stmt.line, "String without end quote", stmt.file)
+            diags.error(stmt.line, f"Invalid, or out of place expression: {rest}:endif.",
+                        stmt.file, show_file=False)
 
 
 def _real_params(params: list[int]) -> list[int]:

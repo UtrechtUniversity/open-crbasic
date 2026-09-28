@@ -149,7 +149,7 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "illegal, starts with a number.", "not yet declared.",
                          "not supported")
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
-                                 "EndSelect w/o Select")
+                                 "EndSelect w/o Select", "String without end quote")
 
 
 def _is_cascade_trigger(diag) -> bool:

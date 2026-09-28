@@ -827,6 +827,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
                 continue
+            if instr_rules.unterminated_string_shape(stmt, profile, subs):
+                continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
                     stmt.reason.startswith(_INVALID_AS_CLAUSE) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):

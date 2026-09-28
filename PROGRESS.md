@@ -800,6 +800,11 @@ coordinator commits it. Tick items here as they land.
 
 - [x] Display menu structure (`docs/checker.md` "Display menus"). Replay 841 of 1469 exact.
 
+- [x] Unterminated strings by line shape; `ESSInitialize` raw argument (fixes the seed-48 CR350
+      false reject) (`docs/checker.md` "Unterminated strings"). Replay 847 of 1469 exact.
+- [x] Fuzz seed 48, cr350 (tree at `420e351`): false_accept 17 (exact 247), 1 false reject
+      (`ESSInitialize(public")`), fixed in the row above.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression
