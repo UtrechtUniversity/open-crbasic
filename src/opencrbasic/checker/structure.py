@@ -788,7 +788,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
 
         if isinstance(stmt, S.Call):
             stop = _check_call_pass2(stmt, subs, profile, diags, before_bp, in_body_block,
-                                     sub_params)
+                                     sub_params, known)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
@@ -1263,9 +1263,34 @@ def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
         diags.error(stmt.line, "Call argument required.", stmt.file)
 
 
+def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagnostics) -> None:
+    """Undefined names in a `Sub` call's arguments, every argument (oracle, 2026-09-28: `Two(Q,
+    Q2)` reports both). CR6/CR1000X echo the argument (`Invalid symbol in expression: Q+1.`);
+    CR300/CR350 name each undefined name, plus `Dimensions not declared: Nope(1).`."""
+    m = re.match(r"\s*(?:call\s+)?" + re.escape(stmt.name) + r"\s*", stmt.text, re.I)
+    if not m or not stmt.text[m.end():].startswith("("):
+        return
+    items = _group_items(stmt.text, m.end())
+    if items is None or len(items) != len(stmt.args):
+        return
+    for arg, raw in zip(stmt.args, items):
+        names = expressions._undefined_names(arg, known)
+        if not names:
+            continue
+        echo = raw.strip()
+        if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file)
+            continue
+        for name in names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        if expressions._has_undefined_index(arg, known):
+            diags.error(stmt.line, expressions.dimensions_message(echo, profile, False), stmt.file)
+
+
 def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
                        before_bp: bool, in_body_block: bool,
-                       sub_params: dict | None = None) -> int | None:
+                       sub_params: dict | None = None,
+                       known: set[str] | None = None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
     verified this round:
@@ -1295,6 +1320,8 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
     before_beginprog = not in_body_block and before_bp
     if sub_params and name in sub_params:
         _check_call_args(stmt, sub_params[name], diags)
+        if known is not None:
+            _report_call_arg_names(stmt, known, profile, diags)
     if stmt.explicit:
         if name not in subs:
             diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)

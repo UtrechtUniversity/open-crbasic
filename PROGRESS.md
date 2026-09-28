@@ -787,6 +787,9 @@ coordinator commits it. Tick items here as they land.
 
 - [x] SDM address range (`docs/instructions.md` "SDM addresses"). Replay 826 of 1469 exact.
 
+- [x] Undefined names in `Sub` call arguments (`docs/checker.md` "Sub call arguments").
+      Replay 829 of 1469 exact.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

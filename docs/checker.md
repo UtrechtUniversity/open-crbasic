@@ -2477,3 +2477,17 @@ Monthly intervals are not checked.
 
 Not done: a variable argument gives `Warning: Parameter will truncate to the nearest integer.`
 twice. Replay: 825 of 1469 exact, no false rejects.
+
+## Sub call arguments (2026-09-28)
+
+Undefined names in the arguments of a call to a declared `Sub` are reported for every argument,
+unlike instruction arguments, where only the first bad position is reported. Pass 2, accumulating
+(`structure._report_call_arg_names`, `tests/test_sub_call_args.py`, oracle on all four
+loggers):
+
+- CR6/CR1000X echo the argument's verbatim text: `Foo(Q+1)` -> `Invalid symbol in expression:
+  Q+1.`, `Msg("a" + Nope)` -> `... "a" + Nope.`, `Two(Q, Q2)` -> one line each.
+- CR300/CR350 name each undefined name (`Q is not defined.`), plus `Dimensions not declared:
+  Nope(1).` for an indexed use.
+
+Only calls written with parentheses are checked. Replay: 829 of 1469 exact.
