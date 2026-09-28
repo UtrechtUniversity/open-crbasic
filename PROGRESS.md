@@ -775,6 +775,9 @@ coordinator commits it. Tick items here as they land.
 - [x] CR300/CR350 undefined table-output source, late (`docs/loggers.md` "Undefined table
       sources"); late-stage errors no longer start the cascade. Replay 812 of 1469 exact.
 
+- [x] One-line `If` statements checked like ordinary statements (`docs/checker.md` "One-line
+      If statements"). Replay 818 of 1469 exact, chm exact cr6 428, cr1000x 437.
+
 ## Next steps
 
 1. False accepts (largest gap): per-argument checks from the type codes and general expression

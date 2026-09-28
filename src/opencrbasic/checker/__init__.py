@@ -119,6 +119,17 @@ def _run_pass(fn, *args) -> None:
         pass
 
 
+def _with_inline(program: S.Program) -> S.Program:
+    """A copy of `program` whose statement list also holds each one-line `If`'s statements, right
+    after the `If`."""
+    statements: list[S.Stmt] = []
+    for stmt in program.statements:
+        statements.append(stmt)
+        if isinstance(stmt, S.If):
+            statements.extend((stmt.inline or []) + (stmt.inline_else or []))
+    return dataclasses.replace(program, statements=statements)
+
+
 def _run_pass_capture(fn, *args):
     """Like `_run_pass`, but returns `fn`'s own return value (or `None` on an exception) -- for
     `structure.check_pass2`, whose return value (the placement-error cutoff line) the caller needs.
@@ -187,12 +198,15 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Block-closer messages come before a same-line placement error (`EndIf illegally
         # occurs before BeginProg.` follows `END IF without IF...`).
         _run_pass(structure.check_block_closers, program, profile, diags)
-        cutoff = _run_pass_capture(structure.check_pass2, program, profile, diags, env)
+        # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
+        # `Invalid, or out of place expression: Y = 1.`).
+        flat = _with_inline(program)
+        cutoff = _run_pass_capture(structure.check_pass2, flat, profile, diags, env)
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
         _run_pass(instr_data.check_table_and_menu_placement, program, profile, diags)
-        _run_pass(expressions.check, program, profile, diags, env)
+        _run_pass(expressions.check, flat, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
         # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as
@@ -205,13 +219,13 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # place expression" fallback for it (`docs/loggers.md` "Round 8"). Reacts to `diags.items`
         # already emitted above, the same after-the-fact pattern `check_too_many_cascade` below
         # also uses.
-        _run_pass(cr3xx.check_unknown_line_words, program, profile, diags)
+        _run_pass(cr3xx.check_unknown_line_words, flat, profile, diags)
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one `%s is not
         # defined.` line per undefined bare-name argument of an `S.Call` that itself resolved to
         # nothing, spliced in between that call's own `{name} is not defined.` line (`structure.
         # _check_call_pass2`) and the generic fallback for it (`docs/loggers.md` "CDM_* argument
         # names"). Same after-the-fact `diags.items` pattern as `check_unknown_line_words` above.
-        _run_pass(cr3xx.check_undefined_call_args, program, profile, diags)
+        _run_pass(cr3xx.check_undefined_call_args, flat, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing

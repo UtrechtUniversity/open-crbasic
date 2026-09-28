@@ -535,19 +535,34 @@ class _Parser:
             then_toks, else_toks = rest, None
         else:
             then_toks, else_toks = rest[:else_idx], rest[else_idx + 1:]
-        then_stmts = self._parse_stmt_list(then_toks, line, file)
-        inline_else = self._parse_stmt_list(else_toks, line, file) if else_toks is not None else None
+        then_stmts = self._parse_stmt_list(then_toks, line, file, p.seg_text)
+        inline_else = self._parse_stmt_list(else_toks, line, file, p.seg_text) \
+            if else_toks is not None else None
         return S.If(line, file, cond=cond, inline=then_stmts, inline_else=inline_else)
 
-    def _parse_stmt_list(self, toks: list[Token], line: int, file: str) -> list[S.Stmt]:
+    def _parse_stmt_list(self, toks: list[Token], line: int, file: str,
+                         outer: str = "") -> list[S.Stmt]:
+        """Statements of a one-line `If`. Each gets its verbatim source slice as `text` (the real
+        compiler echoes `X=Q+1`, oracle 2026-09-27) with `arg_spans` re-based onto it, and
+        `at_eol` False (no newline in the CR300/CR350 echo)."""
         segs = _split_colon_segments(toks + [_eof_like(line)])
         out = []
         for seg in segs:
             real = [t for t in seg if t.kind != "EOF"]
             if not real:
                 continue
-            seg_text = " ".join(t.text for t in real)
-            out.append(self._parse_segment(seg, line, file, seg_text))
+            start, end = real[0].col, real[-1].col + len(real[-1].text)
+            verbatim = outer[start:end] if outer and len(outer) >= end else ""
+            stmt = self._parse_segment(seg, line, file, verbatim or " ".join(t.text for t in real))
+            if verbatim:
+                if hasattr(stmt, "text"):
+                    stmt.text = verbatim
+                spans = getattr(stmt, "arg_spans", None)
+                if spans:
+                    stmt.arg_spans = [None if sp is None else (sp[0] - start, sp[1] - start)
+                                      for sp in spans]
+            stmt.at_eol = False
+            out.append(stmt)
         return out
 
     def _parse_elseif(self, p: _TokStream, line: int, file: str) -> S.Stmt:

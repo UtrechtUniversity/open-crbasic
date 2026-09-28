@@ -2424,3 +2424,20 @@ pass 2 there, no reachability warning is printed for them, and CR300/CR350 stop 
 Not implemented (conditional on the program's mode in the decompilation):
 `SDM instruction must be in Scan..NextScan, unless SequentialMode is used.` and `%s not allowed
 outside of Scan..NextScan in PipeLine Mode.` (`CDM_*`, `AVW200`), `No Measurements in SubScan.`
+
+## One-line If statements (2026-09-28)
+
+The statements after `Then` and `Else` in a one-line `If` get the same tier-B checks as ordinary
+statements (`checker/__init__.py` `_with_inline`). Oracle, all four loggers
+(`tests/test_inline_if.py`):
+
+- `If X Then Y = 1` -> `Invalid, or out of place expression: Y = 1.` (CR300/CR350: `Y is not
+  defined.`)
+- `If X > 1 Then X=Q+1` -> `Invalid symbol in expression: X=Q+1.`
+- `If X Then Battery(Q) Else Battery(Q2)` -> one line for `Q`, one for `Q2`.
+
+The echo is the sub-statement's verbatim source text, with no leading space and no CR300
+newline (`parser.py` `_parse_stmt_list`, which also re-bases `arg_spans`). The errors accumulate
+with later pass-2 errors.
+
+Replay: 818 of 1469 exact, no false rejects. chm exact CR6 428, CR1000X 437.
