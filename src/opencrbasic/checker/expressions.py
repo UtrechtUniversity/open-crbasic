@@ -418,6 +418,10 @@ def _arg_text(stmt: S.Instruction, i: int) -> str:
     Falls back to the bare name (still correct for the common single-name case) if a span was
     somehow not captured.
     """
+    if i == 0 and getattr(stmt, "keyword", "").upper() == "SELECT":
+        m = re.match(r"(?i)\s*Select\s+Case(.*)$", stmt.text or "")
+        if m:
+            return m.group(1)  # every space after `Case` kept (oracle: `Select Case  X+Nope`)
     spans = getattr(stmt, "arg_spans", None)
     if spans and i < len(spans) and spans[i] is not None:
         start, end = spans[i]
@@ -766,6 +770,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
 
     _check_for_headers(program, profile, diags, known)
+    _check_elseif_and_case(program, profile, diags, known)
 
     dim_counts = symbols.declared_dim_counts(program)
     for stmt in program.statements:
@@ -1339,3 +1344,69 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
                 if i == 0 and text is not None and _has_undefined_index(expr, known):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
         pending.append((stmt, var_text))
+
+
+def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, known) -> None:
+    """`ElseIf` conditions and `Case` values (oracle, 2026-10-01). An `ElseIf` is reported like an
+    `If`. A `Case` echoes the text after `Case ` on CR6/CR1000X, preceded by one `Case outside
+    Select.` per item up to the first item whose value (or `To` lower bound) is undefined (none
+    when an `Is` comparison or an upper bound fails first): `Case 1, 2, Nope` -> three.
+    CR300/CR350 print each undefined name; there a `Select Case` with an undefined name opens no
+    block, so its `Case`s give `Case outside Select.` and its end `EndSelect w/o Select`."""
+    whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+    orphans: list[bool] = []  # per open Select: True when CR300 did not open it
+    for stmt in program.statements:
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        if kw == "SELECT":
+            orphans.append(not whole_echo and bool(stmt.args) and
+                           bool(_undefined_names(stmt.args[0], known)))
+            continue
+        if kw == "ENDSELECT" or (kw == "END" and re.match(r"(?i)\s*End\s+Select\b", stmt.text or "")):
+            if orphans and orphans.pop():
+                diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
+            continue
+        if isinstance(stmt, S.ElseIf):
+            names = _undefined_names(stmt.cond, known)
+            text = _if_condition_text(stmt)
+            if not names or text is None:
+                continue
+            if whole_echo:
+                diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+            else:
+                for name in names:
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                                stmt.file)
+                if _has_undefined_index(stmt.cond, known):
+                    diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
+            continue
+        if not isinstance(stmt, S.Case) or stmt.is_else or \
+                re.match(r"(?i)\s*Case\s+Else", stmt.text or ""):
+            continue  # (`Case Elsewhere` is a `Case Else`, `checker/structure.py`)
+        if orphans and orphans[-1]:
+            diags.error(stmt.line, "Case outside Select.", stmt.file)
+        names: list[str] = []
+        outside = 0
+        for index, item in enumerate(stmt.items, 1):
+            if item[0] == "value":
+                lower, upper = item[1], None
+            elif item[0] == "range":
+                lower, upper = item[1], item[2]
+            else:
+                lower, upper = None, item[2]
+            low, high = _undefined_names(lower, known), _undefined_names(upper, known)
+            if low and not outside and not names:
+                outside = index
+            names += low + high
+        if not names:
+            continue
+        if whole_echo:
+            m = re.match(r"(?i)\s*Case\s(.*)$", stmt.text or "")
+            if not m:
+                continue
+            for _ in range(outside):
+                diags.error(stmt.line, "Case outside Select.", stmt.file)
+            diags.error(stmt.line, f"Invalid symbol in expression: {m.group(1)}.", stmt.file)
+        else:
+            for name in names:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                            stmt.file)
