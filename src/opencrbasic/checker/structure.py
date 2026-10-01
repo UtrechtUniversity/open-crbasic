@@ -865,7 +865,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _no_matching(profile, stmt.text, stmt.at_eol),
                                 stmt.file, show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
-                diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
+                sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
+                diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file,
                             show_file=False)
             else:
                 verdict = (_pass1_scan(stmt.text, pass1_operands(program, profile), profile)
@@ -1720,6 +1721,15 @@ def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: se
     items = _group_items(stmt.text, open_at) if open_at >= 0 else None
     if items is None or len(items) != len(target.args):
         return False
+    for text in items:
+        item = text.strip()
+        if item.startswith("(") and item.endswith(")"):
+            # `Alias V((1+2)) = W` -> `No Matching, or out of place ) in expression: (1+2.`, all
+            # four loggers (oracle, 2026-10-01): the item's own `)` closes the index list
+            diags.error(stmt.line, f"No Matching, or out of place ) in expression: {item[:-1]}.",
+                        stmt.file)
+            diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+            return True
     bad = False
     for a, text in zip(target.args, items):
         if a is not None and expressions._undefined_names(a, known):

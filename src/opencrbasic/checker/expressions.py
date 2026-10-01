@@ -1215,6 +1215,15 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
+        elif isinstance(stmt, S.ConstDecl) and stmt.value_span:
+            # `Const CRLF = CHR(13,1) + CHR(10)` -> `No Matching, or out of place ) in expression:
+            # CHR(13,1) + CHR(10).`, the value echoed, all four loggers (oracle, 2026-10-01)
+            problem = _find_arity_problem(stmt.value, profile)
+            text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
+            if problem and problem != "empty":
+                verb = ("Expression expects , : " if problem == "few"
+                        else "No Matching, or out of place ) in expression: ")
+                diags.error(stmt.line, f"{verb}{text}.", stmt.file)
         elif isinstance(stmt, S.Assignment):
             if known is None:
                 known = _known_names(program, profile)
