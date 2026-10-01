@@ -235,3 +235,17 @@ def test_serialopen_baud_rate_on_comrs232(baud, cr6_ok, cr300_ok):
     bad = f"line 3: {baud} is illegal baud rate."
     assert (bad not in lines(text, "cr6")) == cr6_ok
     assert (bad not in lines(text, "cr300")) == cr300_ok
+
+
+@pytest.mark.parametrize("stmt,cr300_extra", [
+    ("Erase(5)", []), ("Read(5)", []), ("Move(5,1,X,1)", ["line 8: Too many parameters:  1."]),
+    ("MoveBytes(5,0,X,0,4)", ["line 8: Too many parameters:  0."]),
+    ("GetRecord(5,Tb,1)", ["line 8: Too many parameters:  Tb."]),
+])
+def test_code27_literal_destination(stmt, cr300_extra):
+    # oracle, 2026-10-01: a literal where a variable or array is required (code 27)
+    text = ("Public X, R(4)\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+            f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {stmt}\n    X = Nope\n  NextScan\nEndProg\n")
+    assert lines(text, "cr6") == ["line 8: Invalid Variable or Array: 5."]
+    assert lines(text, "cr300") == (["line 8: Invalid Variable or Array: 5."] + cr300_extra
+                                    + ["line 9: Nope is not defined."])

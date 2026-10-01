@@ -326,18 +326,22 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 or per_line[(stmt.line, stmt.file)] > 1:
             continue
         info = profile.instructions.get(stmt.keyword.upper())
-        if info and info["params"] and info["params"][0] == 29 and \
-                per_line[(stmt.line, stmt.file)] == 1 and \
-                not isinstance(stmt.args[0], S.String) and not _expr_names(stmt.args[0]):
-            # `RealTime(5)` -> `Invalid Variable or Array: 5.`, then the argument list ends
-            # (oracle, CR300, 2026-10-01: `ReadIO((1+2),&B1)` -> `Too many parameters:  &B1.`)
+        literal = next((i for i, (code, a) in enumerate(zip(info["params"], stmt.args))
+                        if code in (27, 29) and a is not None and not isinstance(a, S.String)
+                        and not _expr_names(a)), None) if info and info["params"] else None
+        if literal is not None and per_line[(stmt.line, stmt.file)] == 1 and not any(
+                (d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors):
+            # `RealTime(5)`, `Erase(5)`, `Matrix(5,(1+2),0,R)` -> `Invalid Variable or Array:
+            # 5.`, then the argument list ends (oracle, CR300, 2026-10-01: `Move(5,1,X,1)` ->
+            # `Too many parameters:  1.`)
             at = next((i for i, d in enumerate(diags.items) if d.file == stmt.file
                        and d.line > stmt.line), len(diags.items))
             new = [Diagnostic("error", stmt.line, "Invalid Variable or Array: "
-                              f"{expressions._arg_text(stmt, 0).strip()}.", stmt.file)]
-            if len(stmt.args) >= 2 and stmt.args[1] is not None:
-                text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
-                    expressions._arg_text(stmt, 1)
+                              f"{expressions._arg_text(stmt, literal).strip()}.", stmt.file)]
+            if len(stmt.args) > literal + 1 and stmt.args[literal + 1] is not None:
+                text = instr_rules._next_simple_token(
+                    expressions._arg_text(stmt, literal + 1)) or \
+                    expressions._arg_text(stmt, literal + 1)
                 new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
                                       stmt.file))
             diags.items[at:at] = new

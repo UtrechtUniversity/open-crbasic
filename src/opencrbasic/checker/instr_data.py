@@ -568,8 +568,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if destinations and kw not in _OWN_VARIABLE_CHECK:
             for i, code in enumerate(record["params"][:len(st.args)]):
                 arg = st.args[i]
-                if code in (8, 29) and arg is not None and not isinstance(arg, S.String) \
-                        and not _has_names(arg):  # (29: `RealTime(5)`, oracle 2026-10-01)
+                if code in (8, 27, 29) and arg is not None and not isinstance(arg, S.String) \
+                        and not _has_names(arg):  # (27/29: `Erase(5)`, `RealTime(5)`, 2026-10-01)
                     diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
                                 st.file)
                     reported = True
