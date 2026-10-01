@@ -556,3 +556,16 @@ def test_bare_declaration_starts_the_cascade(text, expected):
     # Oracle, CR300, 2026-10-01; a tainted bare `Public` keeps its own message (`asin_1.CR6`).
     _, diags, _ = compile_result(text)
     assert [(d.line, d.message) for d in diags.errors] == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("    Y = 2 * ASin( 1", [(4, "Y is not defined."),
+                            (4, "No Matching, or out of place ) in expression:     Y = 2 * ASin( 1\n.")]),
+    ("    X = 2 * ASin( 1", [(4, "No Matching, or out of place ) in expression:     X = 2 * ASin( 1\n.")]),
+    ("    Y = (1", [(4, "Y is not defined."),
+                   (4, "No Matching, or out of place ) in expression:     Y = (1\n.")]),
+])
+def test_unclosed_paren_assignment(stmt, expected):
+    # Oracle, CR300, 2026-10-01: end-of-line echo newline; an undefined target is reported first.
+    _, diags, _ = compile_result(f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n")
+    assert [(d.line, d.message) for d in diags.errors] == expected

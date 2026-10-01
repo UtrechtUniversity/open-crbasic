@@ -389,6 +389,13 @@ def _control_keyword(stmt: S.Stmt) -> str | None:
             return kw
     return None
 
+def _no_matching(profile, text: str, at_eol: bool = True) -> str:
+    """`No Matching, or out of place ) in expression: %s.`, with the same CR300/CR350 end-of-line
+    newline as `_out_of_place` (oracle, 2026-10-01: `X = 2 * ASin( 1`)."""
+    sep = "\n" if getattr(profile, "fallback_echo_newline", False) and at_eol else ""
+    return f"No Matching, or out of place ) in expression: {text}{sep}."
+
+
 def _out_of_place(profile, text: str, at_eol: bool = True) -> str:
     """The generic `Invalid, or out of place expression: %s.` text. CR300/CR350 echo the raw
     line including its line terminator, so their closing `.` is printed on the next output line
@@ -849,8 +856,13 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol),
                                 stmt.file, show_file=False)
                 else:
-                    diags.error(stmt.line,
-                                f"No Matching, or out of place ) in expression: {stmt.text}.",
+                    target = re.match(r"\s*([A-Za-z_]\w*)\s*=", stmt.text)
+                    if profile.fallback_echo_newline and target and \
+                            target.group(1).upper() not in expressions._known_names(program, profile):
+                        # CR300/CR350: `Y = (1` -> `Y is not defined.` first (oracle, 2026-10-01)
+                        diags.error(stmt.line, profile.unresolved_symbol_message.format(
+                            name=target.group(1)), stmt.file, show_file=False)
+                    diags.error(stmt.line, _no_matching(profile, stmt.text, stmt.at_eol),
                                 stmt.file, show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}.", stmt.file,
