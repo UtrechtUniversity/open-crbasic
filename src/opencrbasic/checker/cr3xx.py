@@ -276,6 +276,25 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
         if key in affected and d.severity == "error" and not any(
                 (e.line, e.file, e.message) == (d.line, d.file, d.message) for e in diags.items):
             diags.items.append(d)
+    _respliced_call_args(modified, profile, diags, scratch, affected)
+
+
+def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scratch: Diagnostics,
+                         affected: set[tuple[int, str]]) -> None:
+    """An unresolved call's argument names, rechecked without the unregistered declarations
+    (`CDM_Battery(CDM_A108,1,Batt_Volt)` after the taint also reports `Batt_Volt`)."""
+    check_undefined_call_args(modified, profile, scratch)
+    calls = {(st.line, st.file) for st in modified.statements
+             if isinstance(st, S.Call) and not st.explicit}
+    for key in affected & calls:
+        fresh = [d for d in scratch.items if (d.line, d.file) == key and d.severity == "error"]
+        at = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+        if not at or at != list(range(at[0], at[0] + len(at))) or len(fresh) <= len(at):
+            continue
+        if [d.message for d in diags.items[at[0]:at[-1] + 1]] != \
+                [d.message for d in fresh if d.message in {e.message for e in diags.items[at[0]:at[-1] + 1]}]:
+            continue
+        diags.items[at[0]:at[-1] + 1] = fresh
 
 
 # `check_unknown_line_words` (this round): a line that parses as nothing recognisable at all --
@@ -377,62 +396,56 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
 # ... -- CDM support requires hardware these two loggers' own smaller product line never carries),
 # plus scratch probe `t3.cr6`.
 #
-# The rule, as far as this round's evidence pins it down -- walking the call's own arguments in
-# left-to-right order:
-#   - A literal (a number, a string, `True`/`False`, ...) or any argument that is not a bare `Name`
-#     or an `Index` (`Name(args)`, e.g. `Meas(i)`) is silently skipped over: neither flagged nor
-#     itself a stop, whatever it contains (corpus: every `CDM_*` call's own numeric gain/range/
-#     multiplier arguments are passed over this way, e.g. the `1`s in `CDM_SW12(VOLT116,1,1,1,0)`).
-#   - A bare `Name`, or an `Index`'s own head name (its own sub-arguments are not themselves
-#     examined -- not oracle-tested either way this round, `cdmmuxselect_1.CR6`'s own `Meas(i)`
-#     resolves at the head, `Meas` itself declared `Public`, before its index `i` would ever need
-#     checking): if it is undefined, **flag it and keep scanning** the arguments after it the same
-#     way (`cdmexcitei_1.CR6`/`cdmexcitev_1.CR6`: `CDM_A108` (argument 0) and `X1` (argument 2, past
-#     the literal `1` at argument 1) both flagged in the same call; scratch probe `t3.cr6`,
-#     `FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)`, flags both `BadName1` and `BadName2`
-#     the same way, past *two* skipped literals). If it **resolves** (a declared variable, a
-#     predefined symbol, a `Const`, ...), **scanning stops there for good** -- nothing after it is
-#     ever examined, whether or not a later argument is itself undefined (the same `t3.cr6` probe:
-#     `GoodKnownVar` stops the scan before ever reaching `BadName3`; corpus, repeatedly: `cdmdelay_1.
-#     CR6`'s undefined `VOLT116` argument 0 is the *only* name-shaped argument in a call with no
-#     other names to reach at all, but `cdmbrhalf3w_1.CR6`'s `CDM_BrHalf3W(CDM_A108,1,HBr3W,1,
-#     mv200,1,X1,...)` stops at its own declared `HBr3W` (argument 2), silently skipping the
-#     genuinely-undefined `mv200`/`X1` *after* it; `cdmfftfilt_1.CR6`'s `CDM_FFTFilt(SPECTRUM103,
-#     ADDR,Dest,NUM_REPS,mv5000,...)` stops at its own declared `Const ADDR` (argument 1),
-#     `cdmmuxselect_1.CR6`'s `CDM_VoltDiff(CDM_A108,1,Meas(i),...)` stops at `Meas(i)` itself
-#     (argument 2, its own head resolving) -- silently skipping `mv5000`/`mV5000` after each).
-#   - Deliberately **not** implemented for a `Binary`/`Unary`/`ArrayLiteral` argument (an operator
-#     expression, `UnknownA+UnknownB`) -- treated as an opaque, skipped-over argument like a literal
-#     above, never itself examined for names or as a stop: scratch probes this round found the real
-#     compiler's own behaviour for *this* shape is not a simple rule -- `t.cr6`
-#     (`FooBar(UnknownA,1,KnownVar,UnknownB+UnknownC,5)`) flags only `UnknownB`, the first name of
-#     that argument's own operator chain, never reaching `UnknownC`; `t2.cr6`
-#     (`FooBar(UnknownA+UnknownD,KnownVar,UnknownB+UnknownC,5)`, the identical `UnknownB+UnknownC`
-#     shape one argument earlier) flags **both** names of *every* operator-expression argument
-#     instead -- two structurally similar probes giving genuinely different shapes for the same
-#     argument text is a sign this project does not yet understand the real trigger, not that
-#     either result is a fluke, so no corpus file this round exercises an operator-expression
-#     argument on an unresolved call (every one is a bare name, a literal, or an `Index` with a
-#     resolving head), and this deliberately leaves the shape unimplemented (AGENTS.md: under-report
-#     rather than guess at a rule two probes already contradict each other on) rather than risk
-#     emitting a line the real compiler would not, or omitting one it would, for a shape this
-#     project cannot yet characterise.
+# The rule, walking the call's arguments in source order (oracle probes 2026-10-01):
+#   - Arguments 1-3 are walked fully: bare names, names inside operator expressions (left then
+#     right; unary operands), and names inside index arguments. A declared name is skipped and the
+#     scan continues; a bare DataTable name counts as undefined. Literals and empty slots are skipped.
+#   - An undefined indexed name `B(...)` is reported, then its own arguments are walked, then the
+#     whole scan stops. A defined indexed name `X(...)` has its arguments walked and the scan goes on.
+#   - Argument 4 contributes only its leftmost term; arguments 5+ are never examined.
+# Examples (undefined names B0.., declared array X):
+#   Foo(B0, B1, B2, B3, B4, B5)      -> B0 B1 B2 B3
+#   Foo(1, 2, 3, B3+B4)              -> B3
+#   Foo(B0+B1, B2+B3, B4+B5)         -> all six
+#   Foo(B0(B9), B1)                  -> B0 B9
+#   Foo(B0, X(B1), B2)               -> B0 B1 B2
+#   Foo(X, 0, Bad0, 2, Bad1)         -> Bad0 only (Bad1 is argument 5)
+# Corpus: `cdmbrhalf3w_1.CR6` (`mv200` is argument 5, never reported).
 def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> list[str]:
-    """The unresolved call's own leading chain of undefined argument names, in source order -- see
-    `check_undefined_call_args`'s module comment above for the oracle evidence and the exact rule
-    (and its deliberate limits: a `Binary`/`Unary`/`ArrayLiteral` argument is silently skipped over
-    like a literal, never itself examined or a stop)."""
+    """The undefined names among an unresolved call's arguments, in source order -- see
+    `check_undefined_call_args`'s module comment above for the oracle evidence and the rule."""
     names: list[str] = []
-    for arg in args:
-        if isinstance(arg, S.Name):
-            head = arg.name
-        elif isinstance(arg, S.Index):
-            head = arg.name
-        else:
-            continue  # empty slot, a literal, or an unmodelled compound expression: skip over
-        if head.upper() in known:
-            break  # first *resolving* name-shaped argument stops the scan for good
-        names.append(head)
+    tables = getattr(known, "tables", ())
+
+    def undefined(name: str) -> bool:
+        return name.upper() not in known or name.upper() in tables
+
+    def walk(expr: S.Expr | None) -> bool:
+        """Append `expr`'s undefined names; False once an undefined indexed name ends the scan."""
+        if isinstance(expr, S.Name):
+            if undefined(expr.name):
+                names.append(expr.name)
+        elif isinstance(expr, S.Index):
+            bad = undefined(expr.name)
+            if bad:
+                names.append(expr.name)
+            if not all(walk(a) for a in expr.args) or bad:
+                return False
+        elif isinstance(expr, S.Binary):
+            return walk(expr.left) and walk(expr.right)
+        elif isinstance(expr, S.Unary):
+            return walk(expr.operand)
+        return True
+
+    for arg in args[:3]:
+        if not walk(arg):
+            return names
+    if len(args) > 3:
+        first = args[3]
+        while isinstance(first, (S.Binary, S.Unary)):
+            first = first.left if isinstance(first, S.Binary) else first.operand
+        if isinstance(first, (S.Name, S.Index)) and undefined(first.name):
+            names.append(first.name)
     return names
 
 

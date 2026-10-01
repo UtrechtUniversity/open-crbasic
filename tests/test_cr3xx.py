@@ -9,6 +9,8 @@ hook's own effect.
 
 from __future__ import annotations
 
+import pytest
+
 from opencrbasic import checker, parser, profiles
 from opencrbasic.checker import cr3xx
 from opencrbasic.compiler import CompileResult
@@ -262,23 +264,21 @@ def test_undefined_call_flags_each_undefined_argument_past_a_skipped_literal():
     ]
 
 
-def test_undefined_call_stops_at_the_first_resolving_argument():
-    # `FooBar(BadName1,1,GoodVar,BadName2)`: `GoodVar` (a declared `Public`) stops the scan for
-    # good -- `BadName2` after it is never reached, even though it is itself undefined
-    # (`cdmbrhalf3w_1.CR6`'s own `CDM_BrHalf3W(CDM_A108,1,HBr3W,1,mv200,1,X1,...)` shape, `t3.cr6`).
+def test_undefined_call_skips_a_resolving_argument():
+    # `GoodVar` (a declared `Public`) is skipped and `BadName2` (argument 4) is still reported
+    # (oracle, CR300, 2026-10-01).
     text = "Public GoodVar\n\nBeginProg\n  FooBar(BadName1,1,GoodVar,BadName2)\nEndProg\n"
     messages = apply_hook(text)
     assert messages == [
         "FooBar is not defined.",
         "BadName1 is not defined.",
+        "BadName2 is not defined.",
         "Invalid, or out of place expression:   FooBar(BadName1,1,GoodVar,BadName2)\n.",
     ]
 
 
-def test_undefined_call_stops_past_two_skipped_literals():
-    # `t3.cr6`: two literals (`1`, `2`) in a row between the two undefined names are both skipped
-    # over without breaking the chain, and a resolving argument after the second undefined name
-    # still stops the scan before the final, otherwise-undefined `BadName3`.
+def test_undefined_call_examines_only_four_arguments():
+    # `t3.cr6`: literals are skipped, and `BadName3` (argument 7) is past the four examined.
     text = ("Public GoodKnownVar\n\nBeginProg\n"
             "  FooBar(BadName1,1,2,BadName2,3,GoodKnownVar,BadName3)\nEndProg\n")
     messages = apply_hook(text)
@@ -291,15 +291,14 @@ def test_undefined_call_stops_past_two_skipped_literals():
     ]
 
 
-def test_undefined_call_index_head_resolving_stops_the_scan():
-    # `Meas(i)`: only the `Index`'s own head name (`Meas`) is checked, not its own sub-argument
-    # (`i`) -- `cdmmuxselect_1.CR6`'s own `CDM_VoltDiff(CDM_A108,1,Meas(i),1,mV5000,...)` shape,
-    # where a resolving `Meas` stops the scan before the genuinely-undefined `mV5000` is reached.
+def test_undefined_call_resolving_index_continues_the_scan():
+    # A declared `Meas(i)` is walked and skipped (oracle, CR300, 2026-10-01).
     text = "Public Meas(5), i\n\nBeginProg\n  FooBar(BadName1,Meas(i),BadName2)\nEndProg\n"
     messages = apply_hook(text)
     assert messages == [
         "FooBar is not defined.",
         "BadName1 is not defined.",
+        "BadName2 is not defined.",
         "Invalid, or out of place expression:   FooBar(BadName1,Meas(i),BadName2)\n.",
     ]
 
@@ -322,3 +321,39 @@ def test_undefined_call_args_is_a_noop_on_cr6():
     cr3xx.check_undefined_call_args(program, profiles.get("cr6"), diags)
     after = [d.message for d in diags.errors]
     assert before == after
+
+
+_CALL_ARG_PROGRAM = (
+    "Public X(2), I\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+    "  Scan (1,Sec,0,0)\n    CallTable T\n    Foo({args})\n  NextScan\nEndProg\n")
+
+
+@pytest.mark.parametrize("profile_name, args, names", [
+    ("cr300", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
+    ("cr350", "B0, B1, B2, B3, B4, B5", "B0 B1 B2 B3"),
+    ("cr300", "1, 2, 3, 4, B4", ""),
+    ("cr300", "B0(1), B1, B2, B3, B4", "B0"),
+    ("cr300", "X+B0, B1, B2, B3, B4", "B0 B1 B2 B3"),
+    ("cr300", "B0, B1(1), B2", "B0 B1"),
+    ("cr300", "B0(B9), B1", "B0 B9"),
+    ("cr300", "B0+B5+B6, B1", "B0 B5 B6 B1"),
+    ("cr300", "B0, -B1, B2", "B0 B1 B2"),
+    ("cr300", "B0, B1+1, B2", "B0 B1 B2"),
+    ("cr300", "B0, B1, B2, B3+B4, B5", "B0 B1 B2 B3"),
+    ("cr300", "1, 2, 3, B3+B4", "B3"),
+    ("cr300", "B0, 1, X(I), B3", "B0 B3"),
+    ("cr300", "B0+B1, B2+B3, B4+B5", "B0 B1 B2 B3 B4 B5"),
+    ("cr300", "B0, X(B1), B2", "B0 B1 B2"),
+    ("cr300", "X, 0, B0, 2, B1", "B0"),
+    ("cr300", "B0, 1, X, 1, B1", "B0"),
+    ("cr300", "B0, X, B1, 1, B2", "B0 B1"),
+    ("cr300", "T, B1", "T B1"),
+])
+def test_undefined_call_argument_scan_matches_oracle(profile_name, args, names):
+    # Oracle probes 2026-10-01; rule in the comment above `_call_arg_undefined_names`.
+    profile = profiles.get(profile_name)
+    _, diags, _ = compile_result_for_profile(
+        _CALL_ARG_PROGRAM.format(args=args), profile, "t." + profile_name)
+    got = [d.message for d in diags.errors if d.line == 8
+           and d.message.endswith("is not defined.")]
+    assert got == ["Foo is not defined."] + [f"{n} is not defined." for n in names.split()]

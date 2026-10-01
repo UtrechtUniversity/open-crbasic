@@ -341,7 +341,8 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
     if expr is None:
         return []
     if isinstance(expr, S.Name):
-        return [] if expr.name.upper() in known else [expr.name]
+        upper = expr.name.upper()
+        return [] if upper in known and upper not in getattr(known, "tables", ()) else [expr.name]
     if isinstance(expr, S.Unary):
         return _undefined_names(expr.operand, known)
     if isinstance(expr, S.Binary):
@@ -352,8 +353,11 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
             head += _undefined_names(a, known)
         return head
     if isinstance(expr, S.Member):
-        # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28)
-        out = _undefined_names(expr.base, known)
+        # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28). A
+        # table name is fine as the base (`T.Field`).
+        base = expr.base
+        out = [] if isinstance(base, S.Name) and base.name.upper() in known else \
+            _undefined_names(base, known)
         for a in getattr(expr, "args", None) or []:
             out += _undefined_names(a, known)
         return out
@@ -450,7 +454,25 @@ def _known_names(program: S.Program, profile) -> set[str]:
         | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
-    return known - _failed_consts(program, known)
+    return KnownNames(known - _failed_consts(program, known), tables=_value_less_tables(program))
+
+
+class KnownNames(set):
+    """`_known_names`, plus the `DataTable` names that are known only as table references: a bare
+    `T` used as a value is undefined (`X = T`, `Battery(T)`, `Foo(X, T)`; oracle, all four
+    loggers, 2026-09-28) while `T.Field` and `CallTable T` resolve."""
+    def __init__(self, names=(), tables: frozenset = frozenset()):
+        super().__init__(names)
+        self.tables = tables
+
+
+def _value_less_tables(program: S.Program) -> frozenset:
+    tables = {st.args[0].name.upper() for st in program.statements
+              if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
+              and st.args and isinstance(st.args[0], S.Name)}
+    others = symbols.declared_variable_names(program) | {n.upper() for n in program.consts} | \
+        {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)}
+    return frozenset(tables - others)
 
 
 def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
