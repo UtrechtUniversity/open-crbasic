@@ -14,8 +14,6 @@
   "option1_limit": 86400000000
  },
  "cs616_min_reps_pos": 2,
- "timerinput_start_pos": 2,
- "timerinput_start_channels": [101, 201],
  "excite_magnitude_pos": 2,
  "excite_max_mv": 2500
 }

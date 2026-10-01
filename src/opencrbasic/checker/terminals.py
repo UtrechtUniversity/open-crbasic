@@ -27,7 +27,16 @@ A `kind` dict:
   - `odd_only` + `odd_message`: after the range check passes, the (transformed) value must also be
     odd, else `odd_message` fires instead of `message` (`docs/instructions.md`'s "Invalid start
     channel for Differential Measurement..." / "Invalid SDI-12 port..." findings).
+  - `allowed` + `allowed_message`: after the range check passes, the value must also be one of
+    `allowed` (`SPIOpen`'s `C1, U1, U5, or U9`, `TimerInput`'s starting channel).
+  - `secondary_when_invalid`: CR1000X -- an out-of-range value also gets the `odd_message`/
+    `allowed_message` line after `message` (its port converter returns 0 for a bad port, which
+    then fails the instruction's own test; CR6 stops at `message`).
   - `message`: the range-check failure text, `{v}` = the displayed (transformed) value.
+
+CR6 ports go through one converter (decompiled `FUN_00515ff0`): `C1..C16` (101..116) and
+`U1..U12` (201..212) are valid, `C5..C16` being the same terminals as `U1..U12` (oracle,
+2026-10-01: `PortSet(109,1)`, `SPIOpen(105,...)` compile); CR1000X takes `C1..C8`.
 """
 
 from __future__ import annotations
@@ -101,7 +110,12 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         # channel number written where a different range or terminal name was required.
         return
     in_range, odd_ok, shown = _evaluate(value, kind)
+    allowed_ok = "allowed" not in kind or (in_range and shown in kind["allowed"])
     if not in_range:
         diags.error(stmt.line, kind["message"].format(v=shown), stmt.file)
-    elif not odd_ok:
+        if not kind.get("secondary_when_invalid"):
+            return
+    if not odd_ok:
         diags.error(stmt.line, kind["odd_message"].format(v=shown), stmt.file)
+    elif not allowed_ok:
+        diags.error(stmt.line, kind["allowed_message"].format(v=shown), stmt.file)

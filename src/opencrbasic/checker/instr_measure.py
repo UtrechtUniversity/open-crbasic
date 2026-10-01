@@ -34,8 +34,6 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_delay(stmt, measure["delay"], env, diags)
         if kw == "CS616" and "cs616_min_reps_pos" in measure:
             _check_cs616_reps(stmt, measure, env, diags)
-        if kw == "TIMERINPUT" and "timerinput_start_channels" in measure:
-            _check_timerinput_start(stmt, measure, env, diags)
         if kw in ("EXCITEV", "EXCITEI") and "excite_max_mv" in measure:
             _check_excite_magnitude(stmt, measure, env, diags)
 
@@ -155,18 +153,6 @@ def _check_cs616_reps(stmt: S.Instruction, measure: dict, env: consteval.Env, di
     value = _int_value(stmt.args[idx], env)
     if value is not None and value <= 0:
         diags.error(stmt.line, f"Invalid reps {value}, must be > 0", stmt.file)
-
-
-# --- `TimerInput`: `TimerInput starting channel must be C1 or U1.` (CR6 only, oracle-confirmed;
-# `StartChan` must fold to exactly `C1` or `U1`, not any other terminal in either family).
-def _check_timerinput_start(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: Diagnostics) -> None:
-    pos = measure["timerinput_start_pos"]
-    idx = pos - 1
-    if idx >= len(stmt.args):
-        return
-    value = _int_value(stmt.args[idx], env)
-    if value is not None and value not in measure["timerinput_start_channels"]:
-        diags.error(stmt.line, "TimerInput starting channel must be C1 or U1.", stmt.file)
 
 
 # --- `ExciteV`/`ExciteI`: `Excitation exceeds 2500.000000.` when `|ExmV|`/`|ExmI|` > 2500 (CR6
