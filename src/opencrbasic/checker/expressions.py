@@ -564,7 +564,10 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         arg = stmt.args[i]
         names = _undefined_names(arg, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
-        is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS
+        # CR300/CR350: an undefined name at a code-20 keyword slot is also `Variable illegal`
+        # (oracle, 2026-10-01: `PanelTemp(X,Nope)`).
+        is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS or (
+            bool(names) and not whole_echo and positions[i] == "datatype_kw")
 
         if names:
             if whole_echo:

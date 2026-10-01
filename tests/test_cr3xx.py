@@ -569,3 +569,21 @@ def test_unclosed_paren_assignment(stmt, expected):
     # Oracle, CR300, 2026-10-01: end-of-line echo newline; an undefined target is reported first.
     _, diags, _ = compile_result(f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n")
     assert [(d.line, d.message) for d in diags.errors] == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("Delay(0,Nope,Sec)", [(4, "Nope is not defined."), (4, "Too many parameters:  Sec.")]),
+    ("ExciteV(Vx1,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+    ("PulseCount(X,1,P_SW,0,0,Nope,0)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+    ("MoveBytes(A,0,Nope,0,4)", [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+    ("Move(A(1),2,Nope,1)", [(4, "Nope is not defined."), (4, "Too many parameters:  1.")]),
+    ('SDI12Recorder(A(),C1,"0","M!",Nope,0)', [(4, "Nope is not defined."), (4, "Too many parameters:  0.")]),
+    ("WriteIO(&B1,Nope)", [(4, "Nope is not defined.")]),
+    ("PanelTemp(X,Nope)", [(4, "Nope is not defined."), (4, "Variable illegal in Parameter: Nope.")]),
+    ("SW12(SW12_1,1)", [(4, "SW12_1 is not defined."), (4, "Too many parameters:  1.")]),
+])
+def test_undefined_argument_ends_argument_list(stmt, expected):
+    # Oracle, CR300, 2026-10-01: an undefined argument ends the argument list.
+    program = "Public X, A(4)\nBeginProg\n  Scan (1,Sec,0,0)\n    STMT\n  NextScan\nEndProg\n"
+    _, diags, _ = compile_result(program.replace("STMT", stmt))
+    assert [(d.line, d.message) for d in diags.errors] == expected

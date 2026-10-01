@@ -324,6 +324,59 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             d for d in diags.items[at:] if (d.line, d.file) != key or d.severity != "error"]
 
 
+# Parameter codes resolved as a runtime expression or variable: an undefined name there ends the
+# argument list on CR300/CR350 (`docs/type-codes.md`; code 1 constants report `Variable illegal`).
+_ABORTING_PARAMS = frozenset({2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47})
+
+
+def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the first argument with an undefined name, at a runtime-expression parameter,
+    ends the argument list: its `is not defined.` lines are followed by `Too many parameters:
+    <next argument>.` and nothing else on the statement is reported (oracle, CR300, 2026-10-01:
+    `Delay(0,Nope,Sec)` -> `Too many parameters:  Sec.`, `Move(A(1),2,Nope,1)` -> `... 1.`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    known = None
+    per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or per_line[(stmt.line, stmt.file)] > 1:
+            continue
+        info = profile.instructions.get(stmt.keyword.upper())
+        if not info or not info["params"]:
+            continue
+        if known is None:
+            known = expressions._known_names(program, profile)
+        for index, arg in enumerate(stmt.args):
+            names = [n for n in _expr_names(arg) if n.upper() not in known]
+            if not names:
+                continue
+            code = info["params"][index] if index < len(info["params"]) else None
+            if code not in _ABORTING_PARAMS or (index == 0 and code == _FLOAT_DEST) or \
+                    index + 1 >= len(stmt.args) or stmt.args[index + 1] is None:
+                break
+            key = (stmt.line, stmt.file)
+            wanted = {profile.unresolved_symbol_message.format(name=n) for n in names}
+            own = [d for d in diags.items if (d.line, d.file) == key and d.severity == "error"]
+            keep = [d for d in own if d.message in wanted]
+            if not keep or any(d.message.startswith("Dimensions not declared") for d in own):
+                break  # (`expressions._report_statement` already ended an undefined `A(i)`)
+            too_many = [d for d in own if d.message.startswith(_TOO_MANY_PREFIX)]
+            if too_many:
+                # a genuine overflow found earlier still follows the names (`SW12(SW12_1,1)`)
+                rest = [d for d in diags.items if d not in keep]
+                at = rest.index(too_many[0])
+                diags.items[:] = rest[:at] + keep + rest[at:]
+                break
+            text = instr_rules._next_simple_token(expressions._arg_text(stmt, index + 1)) or \
+                expressions._arg_text(stmt, index + 1)
+            at = diags.items.index(keep[-1]) + 1
+            diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
+                                              stmt.file))
+            drop = {id(d) for d in own if d not in keep}
+            diags.items[:] = [d for d in diags.items if id(d) not in drop]
+            break
+
+
 def _expr_names(expr: S.Expr | None) -> list[str]:
     if isinstance(expr, S.Name):
         return [expr.name]
