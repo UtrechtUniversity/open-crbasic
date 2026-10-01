@@ -581,6 +581,10 @@ def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scrat
 # implemented).
 _GENERIC_FALLBACK_PREFIX = "Invalid, or out of place expression: "
 _LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_LINE_OPERAND_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?\b")
+# Keyword operators join the chain like `+` (oracle, CR300, 2026-10-01: `foo and bar baz qux` ->
+# foo, bar, baz; `Is` and `Not` do not).
+_LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-Za-z_0-9])")
 # A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
 # declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
 _TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
@@ -595,26 +599,26 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
     this implements. `known` is the same upper-cased name set `expressions._known_names` builds;
     a word already in it is walked over (it can still be part of the chain) but never returned.
     """
-    # Only leading whitespace is skipped to find the statement's own first token; if that token
-    # is not itself a bare word (a number, punctuation, ...), no walk is attempted at all -- an
-    # inferred, deliberately conservative default (`AGENTS.md`: no oracle probe this round covered
-    # a statement starting with anything other than a bare word).
+    # The chain starts at the first word or number (a leading `2 when the` reports `when`).
     pos = len(text) - len(text.lstrip(" \t"))
-    if not _LINE_WORD_RE.match(text, pos):
+    if not _LINE_OPERAND_RE.match(text, pos):
         return []
     words: list[str] = []
     extending = True  # False once we're consuming the single trailing "peek" word.
     while True:
-        word_match = _LINE_WORD_RE.match(text, pos)
-        if not word_match:
+        operand = _LINE_OPERAND_RE.match(text, pos) if extending else _LINE_WORD_RE.match(text, pos)
+        if not operand:
             break
-        pos = word_match.end()
-        if text.startswith(".", pos):
+        pos = operand.end()
+        if operand.group(0)[0].isdigit():
+            pass  # a number is part of the chain but never reported
+        elif text.startswith(".", pos):
             break  # `word.` is a table field reference, not a name (oracle, 2026-10-01)
-        words.append(word_match.group(0))
+        else:
+            words.append(operand.group(0))
         if not extending:
             break
-        op_match = _LINE_OP_RUN_RE.match(text, pos)
+        op_match = _LINE_OP_RUN_RE.match(text, pos) or _LINE_OP_WORD_RE.match(text, pos)
         if op_match:
             pos = op_match.end()
             continue

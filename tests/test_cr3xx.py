@@ -89,8 +89,22 @@ def test_known_word_mid_chain_still_ends_scanning():
     assert cr3xx._leading_unknown_words("foo Double bar", {"DOUBLE"}) == ["foo"]
 
 
-def test_no_leading_word_at_all():
-    assert cr3xx._leading_unknown_words(" 1.1 will be a value.", set()) == []
+def test_leading_number_then_one_peeked_word():
+    # oracle, CR300, 2026-10-01: ` 1.1 will be a value.` -> `will is not defined.`
+    assert cr3xx._leading_unknown_words(" 1.1 will be a value.", set()) == ["will"]
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("foo and bar baz qux", ["foo", "bar", "baz"]),
+    ("foo to bar baz qux", ["foo", "bar", "baz"]),
+    ("foo AND bar AND baz qux zap", ["foo", "bar", "baz", "qux"]),
+    ("foo and 5 bar baz", ["foo", "bar"]),
+    ("5 foo+bar baz", ["foo"]),
+    ("instruction to measure two differential thermocouples.", ["instruction", "measure", "two"]),
+])
+def test_keyword_operators_join_the_chain(text, expected):
+    # oracle, CR300, 2026-10-01 (`Is`/`Not` do not join it)
+    assert cr3xx._leading_unknown_words(text, set()) == expected
 
 
 def test_empty_text():
