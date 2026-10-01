@@ -1511,3 +1511,33 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 continue
             if bad:
                 diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
+
+
+def check_recursive_functions(program: S.Program, profile, diags: Diagnostics) -> None:
+    """A `Function` called inside its own body (to its `EndFunction`, or the end of the file when
+    there is none) -> `Cannot recursively call functions.`, pass 1, all four loggers (oracle,
+    2026-10-01: `Return F(a)`, `X = F(a) + 1`, `If F(a) > 1 Then`; a `Sub` calling itself and
+    `F = 1` compile)."""
+    current: str | None = None
+    for stmt in program.statements:
+        if isinstance(stmt, S.SubDef):
+            current = stmt.name.upper() if stmt.keyword == "FUNCTION" else None
+            continue
+        if isinstance(stmt, S.Instruction) and (stmt.keyword.upper() in ("ENDFUNCTION", "ENDSUB")
+                                                or re.match(r"(?i)\s*End\s+(Function|Sub)\b",
+                                                            stmt.text or "")):
+            current = None
+            continue
+        if current is None:
+            continue
+        exprs: list[S.Expr | None] = []
+        if isinstance(stmt, S.Assignment):
+            exprs.append(stmt.value)
+        elif isinstance(stmt, (S.If, S.ElseIf, S.DoLoop)):
+            exprs.append(stmt.cond)
+        elif isinstance(stmt, (S.Instruction, S.Call)):
+            exprs += list(stmt.args)
+        elif isinstance(stmt, S.For):
+            exprs += [stmt.start, stmt.end, stmt.step]
+        if any(node.name.upper() == current for e in exprs for node in _index_nodes(e)):
+            diags.error(stmt.line, "Cannot recursively call functions.", stmt.file)

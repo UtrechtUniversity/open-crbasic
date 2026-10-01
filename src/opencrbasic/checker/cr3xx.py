@@ -157,7 +157,8 @@ _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid 
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",
                                  "Invalid or missing parameter.",
                                  "Invalid, or out of place expression:",
-                                 "Illegal destination variable type", "Invalid Variable or Array:")
+                                 "Illegal destination variable type", "Invalid Variable or Array:",
+                                 "Cannot recursively call functions.")
 
 
 def _is_cascade_trigger(diag) -> bool:

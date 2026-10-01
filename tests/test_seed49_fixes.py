@@ -202,3 +202,22 @@ def test_data_table_name_with_a_space_shifts_the_parameters(logger):
     text = ("Public X\nDataTable (Ten Sec,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
             "  Scan (1,Sec,0,0)\n    CallTable Ten\n  NextScan\nEndProg\n")
     assert lines(text, logger)[0] == "line 2: Too many parameters:  -1."
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
+@pytest.mark.parametrize("body", ["  Return F(a)", "  X = F(a) + 1", "  If F(a) > 1 Then X = 1"])
+def test_recursive_function_call(body, logger):
+    # oracle, 2026-10-01 (pass 1)
+    text = (f"Public X\nFunction F(a) As Float\n{body}\nEndFunction\nBeginProg\n"
+            "  Scan (1,Sec,0,0)\n    X = F(1)\n  NextScan\nEndProg\n")
+    assert lines(text, logger)[0] == "line 3: Cannot recursively call functions."
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr300"])
+@pytest.mark.parametrize("text", [
+    "Public X\nSub S\n  Call S\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S\n  NextScan\nEndProg\n",
+    "Public X\nFunction F(a) As Float\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n"
+    "    X = F(1)\n  NextScan\nEndProg\n",
+])
+def test_not_recursive(text, logger):
+    assert lines(text, logger) == []
