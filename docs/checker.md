@@ -2629,3 +2629,21 @@ Oracle-confirmed 2026-10-01.
 - CR300/CR350 argument abort: the first undefined name at a runtime-expression parameter (codes
   2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47) is followed by `Too many parameters:  <next
   argument>.`; an undefined name at a code-20 slot also gives `Variable illegal in Parameter`.
+- Measurement Reps (second argument): CR6/CR1000X `Invalid reps %d, must be > 0` for Reps <= 0
+  and `Variable %s out of bounds.` when the Float destination has fewer elements from its start
+  than Reps (negative Reps always); CR300/CR350 `Invalid reps 0, must be > 0.`; only instructions
+  probed per logger (decompiled shared check `FUN_005163b0`).
+- `SerialOpen` with a string or variable ComPort: `ComPort 0 illegal.` then `Parameter must be a
+  constant integer: <statement>.` (pass 1, all loggers).
+- A literal where a code-29 destination is required (`RealTime(5)`): `Invalid Variable or Array:
+  5.`
+- Table member reference with more than two arguments: `No Matching, or out of place )` with the
+  statement.
+- `Tb.EventCount` on a table without `DataEvent`: `DataTable Tb must have DataEvent() to request
+  EventCount.` (pass 2 on CR6/CR1000X; CR300 only in a clean file).
+- `Const Pi = 4*ATN()`: `Invalid, or out of place expression: 4*ATN().` (value up to any
+  comment).
+- Recursive Function call: `Cannot recursively call functions.` (pass 1).
+- `DataTable (Ten Sec,True,-1)`: the name is read up to whitespace (`Ten`), the rest shifts into
+  later parameters.
+- Background calibration warning also when measurement delays leave under 3 mSec of the scan.

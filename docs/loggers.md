@@ -1074,3 +1074,27 @@ Oracle probes, CR300/CR350. Code: `checker/cr3xx.py` (`_call_arg_undefined_names
   the keyword to the delimiter, trailing whitespace kept (`If X Then Foo(1)   'c` ->
   `Foo(1)   .`); before `Else` one space is kept. On CR300/CR350, colon segments after a one-line
   If have no newline in the echo.
+
+## CR300/CR350 cascade and prose rules (2026-10-01, third round)
+
+Oracle-confirmed, CR300/CR350.
+
+- Cascade triggers now also include: `Invalid or missing parameter.`, the generic `Invalid, or out
+  of place expression:` fallback (not after a `word.` table-shaped prose line), `No Matching, or
+  out of place )`, `Expression expects`, `Incomplete expression:`, `ESS variable`, `Illegal
+  destination variable type`, `Invalid Variable or Array:`, `Cannot recursively call functions.`.
+- A missing-parameter leftover line `(X,1,...)` echoes its content without the parentheses
+  (`X,1,....`); a line starting with `(` does the same.
+- Prose walk: And/Or/Xor/Eqv/Imp/Mod/To join the chain like `+` (Is/Not do not); a number may
+  start the chain and is never reported; instruction-only keywords (`Battery`, `Next`, `Data`) are
+  reported as undefined, functions and symbols are not.
+- `<instruction> <prose>` (`Battery sensor using the`): the prose words, `Incomplete expression:
+  <prose>.`, plus `Variable illegal in Parameter: <prose>.` for a constant-only first parameter.
+  `Data foo bar`: the words, `Incomplete expression`, `Illegal Data parameter`.
+- `Variable illegal in Parameter` ends the argument list (no genuine `Too many parameters` after
+  it); a genuine `Too many parameters` follows the earlier arguments' names. Under the cascade an
+  undefined constant-only first argument gives `Variable illegal in Parameter` instead of `Too
+  many`.
+- An unknown call's argument scan stops at a table member (`Foo(Bad,Tb.X)` -> Foo, Bad, and no
+  fallback line).
+- `Nope += 1` reports `Nope` once.

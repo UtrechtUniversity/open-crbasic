@@ -31,10 +31,12 @@ here; false rejects: none observed in the difftest or replay runs):
 |---|---|---|
 | CR6 | 16 | 429 |
 | CR1000X | 16 | 438 |
-| CR300 | 6 | 331 |
-| CR350 | 5 | 332 |
+| CR300 | 6 | 400 |
+| CR350 | 5 | 401 |
 
-`tools/fuzz_replay.py` (2026-10-01): 1785 reproducers, 1038 now exact, no false rejects.
+`tools/fuzz_replay.py` (2026-10-01): replay corpus 1,948 reproducers, no false rejects. Fuzz seeds
+49 and 50 (800 mutants each): seed 49 no false rejects, 10 false accepts; seed 50 one false reject
+(fixed: a DataTable/ConstTable name is read up to whitespace), 11 false accepts, 734 of 800 exact.
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
@@ -59,6 +61,25 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-10-01 (third round, statement and argument checks and CR300/CR350 prose rules,
+  `docs/checker.md` "Statement and argument checks", `docs/loggers.md` "CR300/CR350 cascade and
+  prose rules"): twelve commits, metrics above.
+  - dcaafaa: background calibration warning when delays leave under 3 mSec
+  - 97c2e9d: CR300 missing-parameter leftovers; Invalid or missing parameter and the generic
+    fallback start the cascade
+  - f34f191: CR300 parenthesised lines echo their content
+  - cc172d3: measurement Reps and destination size
+  - 3fba6f9: SerialOpen string ComPort, code-29 literals, table member arity, EventCount without
+    DataEvent, Const empty built-in call
+  - 084aa4b: CR300 prose: keyword operators join the word chain, numbers start it
+  - 3a4b904: CR300 Data lines with juxtaposed words; instruction keywords in prose; Data never
+    unreachable
+  - 99606b1: false reject fixed: table names read up to whitespace
+  - 183e543: recursive Function calls
+  - 64e8fcb: CR300 Variable illegal ends the argument list; compound targets reported once
+  - d9dab3e: CR300 unknown-call argument scan ends at a table member
+  - 3ff1ddf: CR300 instruction keyword followed by prose; Too many after argument names
 
 - 2026-10-01 (second round, statement and argument checks, `docs/checker.md` "Statement and
   argument checks"): twelve commits, metrics above.
