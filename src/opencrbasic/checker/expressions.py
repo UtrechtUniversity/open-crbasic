@@ -774,6 +774,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
 
     _check_for_headers(program, profile, diags, known)
     _check_elseif_and_case(program, profile, diags, known)
+    _check_function_statements(program, profile, diags, known)
 
     dim_counts = symbols.declared_dim_counts(program)
     for stmt in program.statements:
@@ -1413,3 +1414,24 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                             stmt.file)
+
+
+def _check_function_statements(program: S.Program, profile, diags: Diagnostics, known) -> None:
+    """A built-in function written as a statement (`Timer(Nope,Sec,0)`) with an undefined name in
+    its arguments (oracle, 2026-10-01): CR6/CR1000X `Invalid symbol in expression: <statement>.`
+    (indentation and trailing spaces kept); CR300/CR350 each name, then `Dimensions not declared:
+    <statement>` when an undefined name is indexed."""
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Call) or stmt.explicit or stmt.name.upper() not in profile.functions:
+            continue
+        names = [n for a in stmt.args for n in _undefined_names(a, known)]
+        if not names or any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors):
+            continue  # (`SerialOpen(COMC1,...)` is already reported by `cr3xx.check`)
+        if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
+            continue
+        for name in names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        if any(_has_undefined_index(a, known) for a in stmt.args):
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
+                        stmt.file)

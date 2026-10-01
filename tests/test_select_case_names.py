@@ -66,3 +66,42 @@ def test_select_case_names(body, cr6, cr300):
     assert lines(body, "cr1000x") == cr6
     assert lines(body, "cr300") == cr300
     assert lines(body, "cr350") == cr300
+
+
+STATEMENT_PROGRAM = "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    STMT\n  NextScan\nEndProg\n"
+STATEMENT_ROWS = [
+    ("Timer(Nope,Sec,0)",
+     [f"line 4: {E}     Timer(Nope,Sec,0)."],
+     ["line 4: Nope is not defined."]),
+    ("Sin(Nope)",
+     [f"line 4: {E}     Sin(Nope)."],
+     ["line 4: Nope is not defined."]),
+    ("Timer(1,Sec,0)", [], []),
+    ("Sin(X+Nope)",
+     [f"line 4: {E}     Sin(X+Nope)."],
+     ["line 4: Nope is not defined."]),
+    ("Len(Nope)  'c",
+     [f"line 4: {E}     Len(Nope)  ."],
+     ["line 4: Nope is not defined."]),
+    ("Timer(Nope(1),Sec,0)",
+     [f"line 4: {E}     Timer(Nope(1),Sec,0)."],
+     ["line 4: Nope is not defined.",
+      "line 4: Dimensions not declared:     Timer(Nope(1),Sec,0)\n."]),
+]
+
+
+def statement_lines(stmt: str, logger: str) -> list[str]:
+    text = STATEMENT_PROGRAM.replace("STMT", stmt)
+    profile = profiles.get(logger)
+    program, diags = parser.parse_text(text, "t.CR6", profile=profile)
+    result = CompileResult("t.CR6", profile, diags)
+    checker.check(program, profile, diags, result)
+    return result.result_lines()[2:] if not result.ok else result.result_lines()[1:]
+
+
+@pytest.mark.parametrize("stmt,cr6,cr300", STATEMENT_ROWS)
+def test_function_written_as_statement(stmt, cr6, cr300):
+    assert statement_lines(stmt, "cr6") == cr6
+    assert statement_lines(stmt, "cr1000x") == cr6
+    assert statement_lines(stmt, "cr300") == cr300
+    assert statement_lines(stmt, "cr350") == cr300
