@@ -123,3 +123,27 @@ def test_instruction_keywords_in_prose_are_undefined(stmt, expected):
     text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n"
     got = [line for line in compile_lines(text, "cr300") if "is not defined" in line]
     assert got == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("PortSet(C4,1,1)", ["line 4: C4 is not defined.", "line 4: Variable illegal in Parameter: C4."]),
+    ("PortSet(X,1,1)", ["line 4: Variable illegal in Parameter: X."]),
+    ("Delay(Nope,1,Sec,9)", ["line 4: Nope is not defined.",
+                             "line 4: Variable illegal in Parameter: Nope."]),
+    ("Nope+=1", ["line 4: Nope is not defined."]),
+])
+def test_argument_errors_end_the_list(stmt, expected):
+    # oracle, CR300, 2026-10-01: no genuine `Too many parameters` after `Variable illegal`
+    text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n    {stmt}\n  NextScan\nEndProg\n"
+    assert compile_lines(text, "cr300") == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("PortSet(C4,1)", ["line 5: C4 is not defined.", "line 5: Variable illegal in Parameter: C4."]),
+    ("PortSet(Nope+1,1)", ["line 5: Nope is not defined.",
+                           "line 5: Variable illegal in Parameter: Nope+1."]),
+])
+def test_cascade_constant_first_argument(stmt, expected):
+    # oracle, CR300, 2026-10-01: under the cascade, instead of `Too many parameters`
+    text = f"Dim Z banana\nPublic X\nBeginProg\n  Scan (1,Sec,0,0)\n    {stmt}\n  NextScan\nEndProg\n"
+    assert [l for l in compile_lines(text, "cr300") if l.startswith("line 5")] == expected

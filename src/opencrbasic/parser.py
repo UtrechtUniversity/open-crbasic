@@ -504,7 +504,8 @@ class _Parser:
             if op_tok.text != "=":
                 base_op = op_tok.text[0]
                 value = S.Binary(op_tok.line, file, base_op, target, value)
-            return S.Assignment(line, file, target=target, value=value)
+            return S.Assignment(line, file, target=target, value=value,
+                                compound=op_tok.text != "=")
         if isinstance(target, S.Name) and p.is_ident("AS"):
             # A StructureType member declaration (`Frequency As Float`, no Public/Dim prefix):
             # confirmed valid CRBasic inside StructureType...EndStructureType by corpus testing

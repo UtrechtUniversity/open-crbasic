@@ -248,6 +248,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _run_pass(cr3xx.check_undefined_call_args, flat, profile, diags)
         _run_pass(cr3xx.check_float_destinations, flat, profile, diags)
         _run_pass(cr3xx.check_undefined_arg_aborts, flat, profile, diags)
+        _run_pass(cr3xx.drop_too_many_after_variable_illegal, flat, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing
@@ -312,6 +313,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     # oracle evidence). Run unconditionally, after every other diagnostic-producing pass, since the
     # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
     _run_pass(cr3xx.check_too_many_cascade, program, profile, diags)
+    _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)

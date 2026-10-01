@@ -126,6 +126,7 @@ class ConstDecl(Stmt):
 class Assignment(Stmt):
     target: Expr | None = None  # Name, Index or Member
     value: Expr | None = None
+    compound: bool = False      # `X += 1`, stored as `X = X + 1`
 
 
 @dataclass

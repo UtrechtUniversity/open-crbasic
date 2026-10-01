@@ -351,6 +351,19 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
 _ABORTING_PARAMS = frozenset({2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47})
 
 
+def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `Variable illegal in Parameter` ends the argument list, so the statement's
+    genuine `Too many parameters` is not reached (oracle, 2026-10-01: `PortSet(C4,1,1)`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    bad = {(d.line, d.file) for d in diags.errors
+           if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX) and per_line[(d.line, d.file)] == 1}
+    if bad:
+        diags.items[:] = [d for d in diags.items if not (
+            (d.line, d.file) in bad and d.message.startswith(_TOO_MANY_PREFIX))]
+
+
 def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: the first argument with an undefined name, at a runtime-expression parameter,
     ends the argument list: its `is not defined.` lines are followed by `Too many parameters:
@@ -414,6 +427,7 @@ def _expr_names(expr: S.Expr | None) -> list[str]:
 # Parameter type codes whose argument is resolved as an expression or variable
 # (`docs/type-codes.md`); identifiers, declarations and deferred text are not.
 _RESOLVED_FIRST_PARAM = frozenset({1, 2, 5, 7, 8, 24, 25, 27, 28, 29, 33, 38, 39, 40, 41, 47})
+_CONST_FIRST_PARAM = frozenset({1, 5, 38, 39})  # constant-only (`docs/type-codes.md`)
 
 
 def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
@@ -457,6 +471,18 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
                 walk(expr.operand)
 
         walk(stmt.args[0])
+        if messages and info["params"][0] in _CONST_FIRST_PARAM:
+            # a constant-only parameter ends the list: `PortSet(C4,1)` -> `C4 is not defined.`,
+            # `Variable illegal in Parameter: C4.`, no `Too many` (oracle, CR300, 2026-10-01)
+            messages = [m for m in messages if m.endswith(" is not defined.")]
+            messages.append(f"Variable illegal in Parameter: {expressions._arg_text(stmt, 0).strip()}.")
+            diags.items[:] = [d for d in diags.items if not (
+                (d.line, d.file) == (stmt.line, stmt.file) and d.message.startswith(_TOO_MANY_PREFIX))]
+            at = next((i for i, d in enumerate(diags.items) if d.file == stmt.file
+                       and d.line > stmt.line), len(diags.items))
+            diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, cascade=False)
+                                  for m in messages]
+            continue
         if info["params"][0] == _FLOAT_DEST:
             arg = stmt.args[0]
             names_ok = not messages
@@ -824,3 +850,19 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
     if changed:
         diags.items[:] = new_items
         return
+
+
+def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `Nope += 1` reports `Nope is not defined.` once, though it is stored as
+    `Nope = Nope + 1` (oracle, 2026-10-01; also under the cascade, `i2copen_1.CR6`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Assignment) and stmt.compound
+                and isinstance(stmt.target, (S.Name, S.Index))):
+            continue
+        message = profile.unresolved_symbol_message.format(name=stmt.target.name)
+        same = [i for i, d in enumerate(diags.items)
+                if (d.line, d.file) == (stmt.line, stmt.file) and d.message == message]
+        if len(same) >= 2:
+            del diags.items[same[1]]
