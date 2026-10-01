@@ -52,6 +52,32 @@ _SERIAL_FUNCTIONS_WITH_COMPORT_ARG = frozenset({
 })
 
 
+# Baud rates `SerialOpen` accepts on `ComRS232` (oracle, 2026-10-01; CR6 from the decompiled
+# `FUN_004735b0`, which compares the absolute value: 300 only on ports above ComRS232, 230400 and
+# 460800 only on it). CR300/CR350 also reject 300, 600 and any negative rate.
+_BAUDS = frozenset({0, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800, 115200, 230400,
+                    460800})
+
+
+def _check_baud(stmt: S.Call, profile, diags: Diagnostics) -> None:
+    if len(stmt.args) < 2 or not (isinstance(stmt.args[0], S.Name)
+                                  and stmt.args[0].name.upper() == "COMRS232"):
+        return
+    arg = stmt.args[1]
+    sign = 1
+    if isinstance(arg, S.Unary) and arg.op == "-":
+        sign, arg = -1, arg.operand
+    if not (isinstance(arg, S.Number) and isinstance(arg.value, int)):
+        return
+    baud = sign * arg.value
+    if profile.name in ("cr300", "cr350"):
+        ok = baud in _BAUDS - {600}
+    else:
+        ok = abs(baud) in _BAUDS
+    if not ok:
+        diags.error(stmt.line, f"{baud} is illegal baud rate.", stmt.file)
+
+
 def check(program: S.Program, profile, diags: Diagnostics) -> None:
     """`SerialOpen`'s `ComPort`: a string or variable on all four loggers; on CR300/CR350 also an
     undefined name, and the other `Serial*` functions' undefined first argument. Oracle-confirmed
@@ -79,6 +105,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                         stmt.file)
         if name != _SERIALOPEN:
             continue
+        _check_baud(stmt, profile, diags)
         is_variable = bool(expressions._variable_refs(arg, variable_names))
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
@@ -150,7 +177,7 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 # followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
 _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
                          "illegal, starts with a number.", "not yet declared.",
-                         "not supported", "Variable not named.")
+                         "not supported", "Variable not named.", " is illegal baud rate.")
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",

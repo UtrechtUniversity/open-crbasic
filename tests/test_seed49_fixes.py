@@ -221,3 +221,17 @@ def test_recursive_function_call(body, logger):
 ])
 def test_not_recursive(text, logger):
     assert lines(text, logger) == []
+
+
+@pytest.mark.parametrize("baud,cr6_ok,cr300_ok", [
+    (9600, True, True), (0, True, True), (115200, True, True), (460800, True, True),
+    (600, True, False), (-9600, True, False), (300, False, False), (14400, False, False),
+    (921600, False, False), (-1, False, False),
+])
+def test_serialopen_baud_rate_on_comrs232(baud, cr6_ok, cr300_ok):
+    # oracle, 2026-10-01 (pass 1; CR6 rule from the decompiled FUN_004735b0)
+    text = (f"Public X\nBeginProg\n  SerialOpen (ComRS232,{baud},3,0,10000)\n  Scan (1,Sec,0,0)\n"
+            "  NextScan\nEndProg\n")
+    bad = f"line 3: {baud} is illegal baud rate."
+    assert (bad not in lines(text, "cr6")) == cr6_ok
+    assert (bad not in lines(text, "cr300")) == cr300_ok
