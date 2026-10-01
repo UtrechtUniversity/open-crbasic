@@ -896,8 +896,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _pass1_message(profile, stmt, "symbol"), stmt.file,
                                 show_file=False)
                 else:
-                    diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol),
-                                stmt.file, show_file=False)
+                    diags.error(stmt.line, _leftover_message(profile, stmt), stmt.file,
+                                show_file=False)
                 if profile.undefined_call_message:
                     # CR300/CR350 only (`profiles.py`'s own field, reused here from
                     # `_check_call_pass2`'s identical carve-out below): no before-`BeginProg`

@@ -76,3 +76,16 @@ def test_program_b(stmt, expected):
     text = program_b(stmt)
     assert compile_lines(text, "cr300") == expected
     assert compile_lines(text, "cr350") == expected
+
+
+@pytest.mark.parametrize("logger", ["cr300", "cr350"])
+@pytest.mark.parametrize("body,expected", [
+    ("    (X,Y)", ["line 4: Invalid, or out of place expression: X,Y."]),
+    ("    (X+1)", ["line 4: Invalid, or out of place expression: X+1."]),
+    ("    (Nope,Y)", ["line 4: Nope is not defined.",
+                      "line 4: Invalid, or out of place expression: Nope,Y."]),
+])
+def test_parenthesised_line_echoes_its_content(body, expected, logger):
+    # oracle, CR300, 2026-10-01
+    text = f"Public X, Y\nBeginProg\n  Scan (1,Sec,0,0)\n{body}\n  NextScan\nEndProg\n"
+    assert compile_lines(text, logger) == expected
