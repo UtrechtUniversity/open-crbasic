@@ -383,6 +383,16 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     menus = submenus = 0
     open_list = False      # the builder's insertion point; an empty `SubMenu` clears it
     levels: list[list[str]] = []
+    table_consts: set[str] = set()
+    in_const_table = False
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if kw in ("CONSTTABLE", "ENDCONSTTABLE"):
+            in_const_table = kw == "CONSTTABLE"
+        elif in_const_table and isinstance(st, S.ConstDecl):
+            table_consts.add(st.name.upper())
+    item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
+    variables = symbols.declared_variable_names(program)
 
     def within(st: S.Instruction, kw: str) -> bool:
         if menus and open_list:
@@ -416,15 +426,31 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         elif kw in _MENU_ITEMS:
             if within(st, kw):
                 levels[-1].append(kw)
+                target = st.args[1] if kw == "MENUITEM" and len(st.args) > 1 else None
+                item_const = target.name.upper() if isinstance(target, S.Name) and \
+                    target.name.upper() in table_consts else None
                 if kw == "SUBMENU":
                     levels.append([])
                     submenus += 1
         elif kw == "MENUPICK":
-            # After a `MenuItem` or `MenuRecompile` it is accepted (chm `menuitem_2.CR6`); a
-            # second pick list for the same item is sometimes rejected too (not modelled).
-            if within(st, kw) and (not levels[-1] or
-                                   levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE")):
-                diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
+            # After a `MenuItem` or `MenuRecompile` it is accepted (chm `menuitem_2.CR6`), and
+            # repeated for an ordinary variable; a ConstTable constant's item takes one pick list,
+            # naming the constant first (oracle, 2026-10-01, fuzz `62246db1b167`).
+            if within(st, kw):
+                if not levels[-1] or levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE"):
+                    diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
+                elif levels[-1][-1] == "MENUITEM" and item_const:
+                    first = st.args[0] if st.args else None
+                    if isinstance(first, S.Name) and first.name.upper() in table_consts:
+                        levels[-1].append(kw)
+                    else:
+                        diags.error(st.line, "When using a ConstTable constant in MenuPick, the "
+                                    "constant name must be the first parameter.", st.file)
+                bad = next((a for a in st.args if isinstance(a, S.Name)
+                            and a.name.upper() in variables), None)
+                if bad is not None:
+                    # `MenuPick (Y)` for `Public Y` (oracle, 2026-10-01)
+                    diags.error(st.line, f"{bad.name} must be declared as a Const.", st.file)
         elif kw == "ENDSUBMENU":
             if not submenus:
                 diags.error(st.line, "EndSubMenu without SubMenu.", st.file)

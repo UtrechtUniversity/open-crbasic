@@ -469,9 +469,8 @@ def check_scan_min_interval(program: S.Program, profile, diags: Diagnostics, env
             continue
         if isinstance(value, str) or not isinstance(value, (int, float)):
             continue
-        us_per_unit = _US_PER_UNIT.get(unit)
-        if us_per_unit is None:
-            continue
+        # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01)
+        us_per_unit = _US_PER_UNIT.get(unit, 0) if not isinstance(unit, bool) else 0
         raw_us = int(value) * us_per_unit
         if raw_us < 1000:
             diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
