@@ -164,3 +164,18 @@ def test_instruction_followed_by_prose(stmt, expected):
     # oracle, CR300, 2026-10-01
     text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n"
     assert compile_lines(text, "cr300") == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ('SplitStr(S(1,2),T,",",5,5)', ["line 4: Dimensions not declared: S(1,2).",
+                                    "line 4: Too many parameters:  T."]),
+    ('SplitStr(T(1,2),S,",",5,5)', ["line 4: Dimensions not declared: T(1,2).",
+                                    "line 4: Too many parameters:  S."]),
+    ('SplitStr(S(1,2,3),T,",",5,5)', []),
+    ("T = S(1,2)", ["line 4: Dimensions not declared:     T = S(1,2)\n."]),
+])
+def test_string_arrays_have_no_character_subscript(stmt, expected):
+    # oracle, CR300, 2026-10-01
+    text = ("Public X, S(5) As String * 10, T As String * 20\nBeginProg\n  Scan (1,Sec,0,0)\n"
+            f"    {stmt}\n  NextScan\nEndProg\n")
+    assert compile_lines(text, "cr300") == expected

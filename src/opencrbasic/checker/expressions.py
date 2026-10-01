@@ -378,8 +378,9 @@ def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | 
         return False
     if isinstance(expr, S.Index):
         count = dim_counts.get(expr.name.upper())
-        if count is not None and len(expr.args) > (count if limit is None else limit):
-            return True
+        if count is not None and len(expr.args) > (count if limit is None else limit) and not (
+                len(expr.args) == 3 and expr.name.upper() in getattr(dim_counts, "strings", ())):
+            return True  # (a String takes three subscripts: CR300 accepts `S(1,2,3)`, 2026-10-01)
         return any(_over_indexed(a, dim_counts, limit) for a in expr.args)
     if isinstance(expr, S.Unary):
         return _over_indexed(expr.operand, dim_counts, limit)
@@ -594,9 +595,14 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
             # report just made (oracle-confirmed; see this method's own docstring).
 
         if not whole_echo and dim_counts and _over_indexed(arg, dim_counts):
-            # CR300/CR350: `Battery(R(2,1))` for `Public R(5)` (oracle, 2026-09-28)
+            # CR300/CR350: `Battery(R(2,1))` for `Public R(5)` (oracle, 2026-09-28); the argument
+            # list ends there (`SplitStr(S(1,2),T,...)` -> `Too many parameters:  T.`, 2026-10-01)
             diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
                         stmt.file)
+            if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
+                from .instr_rules import _next_simple_token
+                token = _next_simple_token(_arg_text(stmt, i + 1)) or _arg_text(stmt, i + 1)
+                diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
             return True
 
         if is_const_family:
@@ -671,7 +677,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
-    dim_counts = symbols.declared_dim_counts(program)
+    dim_counts = symbols.declared_dim_counts(
+        program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -776,7 +783,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     _check_elseif_and_case(program, profile, diags, known)
     _check_function_statements(program, profile, diags, known)
 
-    dim_counts = symbols.declared_dim_counts(program)
+    dim_counts = symbols.declared_dim_counts(
+        program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
             continue
