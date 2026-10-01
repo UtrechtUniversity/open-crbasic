@@ -64,8 +64,15 @@ def test_peek_requires_a_bare_word_not_a_number():
     assert cr3xx._leading_unknown_words("Part 1.", set()) == ["Part"]
 
 
-def test_single_word_before_a_period_with_nothing_else():
-    assert cr3xx._leading_unknown_words("NOTE.", set()) == ["NOTE"]
+def test_single_word_with_nothing_else():
+    # `NOTE:` echoes as `NOTE.`; the final `.` is the message's own, not the source's.
+    assert cr3xx._leading_unknown_words("NOTE", set()) == ["NOTE"]
+
+
+def test_word_before_a_period_is_a_table_reference():
+    # `instruction.` and `two words.` (oracle, CR300, 2026-10-01): `word.` is never reported.
+    assert cr3xx._leading_unknown_words("instruction.\n", set()) == []
+    assert cr3xx._leading_unknown_words("two words.\n", set()) == ["two"]
 
 
 def test_known_word_is_walked_but_not_reported():
@@ -477,3 +484,63 @@ def test_float_destination_first_argument_accepts_float():
         body=_float_dest_body("VoltSe(X,1,mV1000,1,0,0,60,1,0)"))
     _, diags, _ = compile_result(text)
     assert _DEST not in [d.message for d in diags.errors]
+
+
+_PROSE_F = "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n"
+_PROSE_END = "  NextScan\nEndProg\n"
+_PROSE_SEC = "Too many parameters:  Sec."
+
+
+@pytest.mark.parametrize("text, expected", [
+    pytest.param(
+        "The program\ninstruction.\n" + _PROSE_F + _PROSE_END,
+        [(1, "The is not defined."), (1, "program is not defined."),
+         (1, "Invalid, or out of place expression: The program."), (5, _PROSE_SEC)],
+        id="the-program-instruction"),
+    pytest.param(
+        "The program\ntwo words.\n" + _PROSE_F + _PROSE_END,
+        [(1, "The is not defined."), (1, "program is not defined."),
+         (1, "Invalid, or out of place expression: The program."),
+         (2, "two is not defined."),
+         (2, "Invalid, or out of place expression: two words.."), (5, _PROSE_SEC)],
+        id="the-program-two-words"),
+    pytest.param(
+        "two words.\n" + _PROSE_F + _PROSE_END,
+        [(1, "two is not defined."),
+         (1, "Invalid, or out of place expression: two words.."), (4, _PROSE_SEC)],
+        id="two-words"),
+    pytest.param(
+        _PROSE_F + "instruction.\n" + _PROSE_END,
+        [(4, "Could not find DataTable instruction."),
+         (4, "Invalid, or out of place expression: instruction..")],
+        id="body-instruction"),
+    pytest.param(
+        _PROSE_F + "X = Nope\ninstruction.\n" + _PROSE_END,
+        [(4, "Nope is not defined.")],
+        id="undefined-then-instruction"),
+    pytest.param(
+        _PROSE_F + "foo.bar\n" + _PROSE_END,
+        [(4, "Could not find DataTable foo."),
+         (4, "Invalid, or out of place expression: foo.bar.")],
+        id="foo-dot-bar"),
+    pytest.param(
+        _PROSE_F + "instruction.\n    PortSet(1,1)\n" + _PROSE_END,
+        [(4, "Could not find DataTable instruction."),
+         (4, "Invalid, or out of place expression: instruction..")],
+        id="instruction-then-call"),
+    pytest.param(
+        _PROSE_F + "foo bar.baz\n" + _PROSE_END,
+        [(4, "foo is not defined."),
+         (4, "Invalid, or out of place expression: foo bar.baz.")],
+        id="foo-bar-dot-baz"),
+    pytest.param(
+        _PROSE_F + "X.\n" + _PROSE_END,
+        [(4, "Could not find DataTable X."),
+         (4, "Invalid, or out of place expression: X..")],
+        id="x-dot"),
+])
+def test_table_shaped_prose_lines(text, expected):
+    # Oracle (CR300) 2026-10-01. The echo ends at end-of-line with "\n" before the final ".";
+    # messages are compared with the newline removed.
+    _, diags, _ = compile_result(text)
+    assert [(d.line, d.message.replace("\n", "")) for d in diags.errors] == expected

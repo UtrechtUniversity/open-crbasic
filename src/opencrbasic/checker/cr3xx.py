@@ -193,6 +193,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         key = (stmt.line, stmt.file)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
+            if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                continue
             if isinstance(stmt, S.Declaration) or (
                     isinstance(stmt, S.Unparsed)
                     and stmt.text.lstrip().upper().startswith(("PUBLIC ", "DIM "))):
@@ -499,6 +502,9 @@ def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scrat
 # implemented).
 _GENERIC_FALLBACK_PREFIX = "Invalid, or out of place expression: "
 _LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+# A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
+# declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
+_TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
 _LINE_OP_RUN_RE = re.compile(r"[-+*/^&<>=]+")
 _LINE_WS_RE = re.compile(r"[ \t]+")
 
@@ -523,8 +529,10 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
         word_match = _LINE_WORD_RE.match(text, pos)
         if not word_match:
             break
-        words.append(word_match.group(0))
         pos = word_match.end()
+        if text.startswith(".", pos):
+            break  # `word.` is a table field reference, not a name (oracle, 2026-10-01)
+        words.append(word_match.group(0))
         if not extending:
             break
         op_match = _LINE_OP_RUN_RE.match(text, pos)
@@ -709,6 +717,11 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             if known is None:
                 known = expressions._known_names(program, profile)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
+            table = _TABLE_LINE_RE.match(text)
+            if table:
+                new_items.append(Diagnostic("error", d.line, f"Could not find DataTable "
+                                            f"{table.group(1)}.", d.file, cascade=False))
+                changed = True
             for word in _leading_unknown_words(text, known):
                 new_items.append(Diagnostic(
                     "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,
