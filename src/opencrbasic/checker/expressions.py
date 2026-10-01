@@ -1032,6 +1032,10 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
     if isinstance(expr, S.Binary):
         return _find_arity_problem(expr.left, profile) or _find_arity_problem(expr.right, profile)
     if isinstance(expr, S.Member):
+        if expr.args is not None and len(expr.args) > 2:
+            # a table field takes at most (index, records back): `Tb.X(1,1,1)`, `Public.V(1,1,1)`
+            # -> `No Matching, or out of place )` (oracle, all four loggers, 2026-10-01)
+            return "many"
         return _find_arity_problem(expr.base, profile)
     if isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
@@ -1220,7 +1224,12 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             # CHR(13,1) + CHR(10).`, the value echoed, all four loggers (oracle, 2026-10-01)
             problem = _find_arity_problem(stmt.value, profile)
             text = stmt.text[stmt.value_span[0]:stmt.value_span[1]]
-            if problem and problem != "empty":
+            if problem == "empty":
+                # `Const Pi = 4*ATN() 'c` -> `Invalid, or out of place expression: 4*ATN() .`,
+                # the value to the comment, no CR300 newline (oracle, 2026-10-01)
+                diags.error(stmt.line, "Invalid, or out of place expression: "
+                            f"{stmt.text[stmt.value_span[0]:]}.", stmt.file)
+            elif problem:
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)

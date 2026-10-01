@@ -568,8 +568,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         if destinations and kw not in _OWN_VARIABLE_CHECK:
             for i, code in enumerate(record["params"][:len(st.args)]):
                 arg = st.args[i]
-                if code == 8 and arg is not None and not isinstance(arg, S.String) \
-                        and not _has_names(arg):
+                if code in (8, 29) and arg is not None and not isinstance(arg, S.String) \
+                        and not _has_names(arg):  # (29: `RealTime(5)`, oracle 2026-10-01)
                     diags.error(st.line, f"Invalid Variable or Array: {expressions._arg_text(st, i).strip()}.",
                                 st.file)
                     reported = True
@@ -601,3 +601,63 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
                             st.file)
                 return True
     return reported
+
+
+def check_eventcount_tables(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
+    """`Tb.EventCount` for a table without `DataEvent` -> `DataTable Tb must have DataEvent() to
+    request EventCount.` (oracle, 2026-10-01: pass 2 on CR6/CR1000X, alongside other pass-2
+    errors; CR300/CR350 only in an otherwise clean file)."""
+    tables: dict[str, bool] = {}
+    current: str | None = None
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if kw == "DATATABLE" and st.args and isinstance(st.args[0], S.Name):
+            current = st.args[0].name.upper()
+            tables.setdefault(current, False)
+        elif kw == "ENDTABLE":
+            current = None
+        elif kw == "DATAEVENT" and current:
+            tables[current] = True
+    if not tables:
+        return
+    for st in program.statements:
+        for expr in _statement_exprs(st):
+            for node in _members(expr):
+                base = node.base
+                if isinstance(base, S.Name) and node.member.upper() == "EVENTCOUNT" and \
+                        tables.get(base.name.upper()) is False:
+                    diags.error(st.line, f"DataTable {base.name} must have DataEvent() to "
+                                "request EventCount.", st.file)
+                    break
+            else:
+                continue
+            break
+
+
+def _statement_exprs(st: S.Stmt) -> list[S.Expr]:
+    out: list[S.Expr | None] = []
+    if isinstance(st, S.Assignment):
+        out += [st.target, st.value]
+    elif isinstance(st, (S.If, S.ElseIf, S.DoLoop)):
+        out.append(st.cond)
+    elif isinstance(st, (S.Instruction, S.Call)):
+        out += list(st.args)
+    elif isinstance(st, S.For):
+        out += [st.start, st.end, st.step]
+    return [e for e in out if e is not None]
+
+
+def _members(expr: S.Expr | None):
+    if isinstance(expr, S.Member):
+        yield expr
+        yield from _members(expr.base)
+        for a in expr.args or []:
+            yield from _members(a)
+    elif isinstance(expr, S.Index):
+        for a in expr.args:
+            yield from _members(a)
+    elif isinstance(expr, S.Binary):
+        yield from _members(expr.left)
+        yield from _members(expr.right)
+    elif isinstance(expr, S.Unary):
+        yield from _members(expr.operand)

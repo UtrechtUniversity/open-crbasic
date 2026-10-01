@@ -216,6 +216,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
             cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)
+        if not profile.single_pass:
+            _run_pass(instr_data.check_eventcount_tables, flat, profile, diags)
         _run_pass(ess.check, flat, profile, diags, env)
         # Collected aside: reported with pass 2 but not hiding the tier-C checks (oracle:
         # `PortSet(1,A(9))` gives both `Invalid port 1 ...` and `Variable A out of bounds.`).
@@ -262,6 +264,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `Scan`/`For`/`Do`/`If` at end of program.
         if profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, program, profile, bounds, env)
+            _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
     if not diags.errors and profile.early_warnings_gated:
         # CR300/CR350: the early warnings follow the table `Reps` checks and precede `CallTable`

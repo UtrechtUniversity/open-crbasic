@@ -53,14 +53,15 @@ _SERIAL_FUNCTIONS_WITH_COMPORT_ARG = frozenset({
 
 
 def check(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR300/CR350 only; a no-op on every other logger. Oracle-confirmed **ungated** (fires
+    """`SerialOpen`'s `ComPort`: a string or variable on all four loggers; on CR300/CR350 also an
+    undefined name, and the other `Serial*` functions' undefined first argument. Oracle-confirmed
+    **ungated** (fires
     alongside unrelated pass-1/pass-2 errors elsewhere in the same file, `docs/loggers.md`:
     `acceptdatarecords_2.CR6`'s own `SerialOpen(COMC1,...)` diagnostic prints together with a
     separate, later `CallTable`-shaped issue in the same file) -- called unconditionally,
     alongside `expressions.check_consts`.
     """
-    if profile.name not in ("cr300", "cr350"):
-        return
+    cr3 = profile.name in ("cr300", "cr350")
     known = expressions._known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
     for stmt in program.statements:
@@ -72,20 +73,19 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         if _COMPORT_ARG_POSITION >= len(stmt.args) or stmt.args[_COMPORT_ARG_POSITION] is None:
             continue
         arg = stmt.args[_COMPORT_ARG_POSITION]
-        names = expressions._undefined_names(arg, known)
+        names = expressions._undefined_names(arg, known) if cr3 else []
         for undefined_name in names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=undefined_name),
                         stmt.file)
         if name != _SERIALOPEN:
             continue
         is_variable = bool(expressions._variable_refs(arg, variable_names))
-        if names or is_variable:
+        if names or is_variable or isinstance(arg, S.String):
+            # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
+            # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).
             diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
-            # The echoed statement text runs to the physical end of line and (oracle-confirmed,
-            # `docs/loggers.md`) includes that line's own trailing newline before the closing
-            # period -- the same quirk `docs/checker.md` documents for `Units`, here embedded
-            # directly in the message text since `Diagnostic.cr6comp` does no wrapping of its own.
-            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}\n.",
+            sep = "\n" if cr3 and stmt.at_eol else ""
+            diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
                         stmt.file)
 
 
@@ -156,7 +156,8 @@ _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid 
                                  "Call argument required", "No Matching, or out of place )",
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",
                                  "Invalid or missing parameter.",
-                                 "Invalid, or out of place expression:")
+                                 "Invalid, or out of place expression:",
+                                 "Illegal destination variable type", "Invalid Variable or Array:")
 
 
 def _is_cascade_trigger(diag) -> bool:
@@ -297,6 +298,22 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
                 or per_line[(stmt.line, stmt.file)] > 1:
             continue
         info = profile.instructions.get(stmt.keyword.upper())
+        if info and info["params"] and info["params"][0] == 29 and \
+                per_line[(stmt.line, stmt.file)] == 1 and \
+                not isinstance(stmt.args[0], S.String) and not _expr_names(stmt.args[0]):
+            # `RealTime(5)` -> `Invalid Variable or Array: 5.`, then the argument list ends
+            # (oracle, CR300, 2026-10-01: `ReadIO((1+2),&B1)` -> `Too many parameters:  &B1.`)
+            at = next((i for i, d in enumerate(diags.items) if d.file == stmt.file
+                       and d.line > stmt.line), len(diags.items))
+            new = [Diagnostic("error", stmt.line, "Invalid Variable or Array: "
+                              f"{expressions._arg_text(stmt, 0).strip()}.", stmt.file)]
+            if len(stmt.args) >= 2 and stmt.args[1] is not None:
+                text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
+                    expressions._arg_text(stmt, 1)
+                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
+                                      stmt.file))
+            diags.items[at:at] = new
+            continue
         if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:
             continue
         if types is None:
