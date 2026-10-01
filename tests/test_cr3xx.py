@@ -373,3 +373,55 @@ def test_cdmvoltse_corpus_declaration_cascade_order():
     assert l23[:3] == ["CDM_Battery is not defined.", "CDM_A108 is not defined.",
                        "Batt_Volt is not defined."]
     assert l23[3].startswith("Invalid, or out of place expression")
+
+
+_CASCADE_HEAD = "Dim Z banana\nPublic PTemp\nBeginProg\n  Scan (1,Sec,0,0)\n    {call}\n  NextScan\nEndProg\n"
+_BANANA = (1, "Invalid Variable declaration banana.")
+_SEC = (4, "Too many parameters:  Sec.")
+
+
+@pytest.mark.parametrize("text, expected", [
+    pytest.param(
+        _CASCADE_HEAD.format(call="PanelTemp(PTemp,15000)"),
+        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
+        id="c1"),
+    pytest.param(
+        _CASCADE_HEAD.format(call="PanelTemp(Nope,15000)"),
+        [_BANANA, _SEC, (5, "Nope is not defined."), (5, "Too many parameters:  15000.")],
+        id="c2"),
+    pytest.param(
+        "Public PTemp\nDim Z banana\nBeginProg\n  Scan (1,Sec,0,0)\n"
+        "    PanelTemp(PTemp,15000)\n  NextScan\nEndProg\n",
+        [(2, "Invalid Variable declaration banana."), _SEC,
+         (5, "Too many parameters:  15000.")],
+        id="c3"),
+    pytest.param(
+        "Dim Z banana\nPublic A(3), I\nBeginProg\n  Scan (1,Sec,0,0)\n"
+        "    PanelTemp(A(I),15000)\n  NextScan\nEndProg\n",
+        [_BANANA, (2, "Too many parameters:  I."), _SEC, (5, "A is not defined."),
+         (5, "I is not defined."), (5, "Dimensions not declared: A(I)."),
+         (5, "Too many parameters:  15000.")],
+        id="c4"),
+    pytest.param(
+        _CASCADE_HEAD.format(call="PanelTemp(PTemp(),15000)"),
+        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  15000.")],
+        id="c6"),
+    pytest.param(
+        _CASCADE_HEAD.format(call="VoltSe(PTemp,1,Nope,1,0,0,15000,1,0)"),
+        [_BANANA, _SEC, (5, "PTemp is not defined."), (5, "Too many parameters:  1.")],
+        id="c7"),
+])
+def test_cascade_rewrite_checks_first_argument(text, expected):
+    # Oracle (CR300) 2026-10-01: after an invalid declaration, the first argument of the
+    # cascade-rewritten call is checked for definition, in order with the other findings.
+    _, diags, _ = compile_result(text)
+    assert [(d.line, d.message) for d in diags.errors] == expected
+
+
+def test_cascade_rewrite_skips_first_argument_that_declares_a_name():
+    text = ("Dim Z banana\nPublic X\nDataTable (Table1,True,-1)\n  Sample (1,X,FP2)\nEndTable\n"
+            "BeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n")
+    _, diags, _ = compile_result(text)
+    line3 = [d.message for d in diags.errors if d.line == 3]
+    assert not any("is not defined" in m for m in line3)
+    assert "Too many parameters:  True." in line3

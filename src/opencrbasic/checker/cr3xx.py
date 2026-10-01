@@ -231,8 +231,63 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if any(_is_cascade_trigger(d) for d in existing):
             tainted = True
             taint_at = index
+    if rewritten:
+        _report_rewritten_first_arg(program, profile, diags, dropped, rewritten)
     if dropped or tainted_subs:
         _report_unregistered(program, profile, diags, taint_at, dropped, tainted_subs, rewritten)
+
+
+# Parameter type codes whose argument is resolved as an expression or variable
+# (`docs/type-codes.md`); identifiers, declarations and deferred text are not.
+_RESOLVED_FIRST_PARAM = frozenset({1, 2, 5, 7, 8, 24, 25, 27, 28, 29, 33, 38, 39, 40, 41, 47})
+
+
+def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
+                                dropped: set[int], rewritten: set[int]) -> None:
+    """A rewritten instruction's first argument is still checked before its `Too many
+    parameters` line: each undefined name (unregistered ones included), then `Dimensions not
+    declared: A(I).` for an undefined indexed name (oracle, CR300, 2026-10-01: `PanelTemp(PTemp,
+    15000)` after `Dim Z banana` then `Public PTemp`)."""
+    import dataclasses
+    known = expressions._known_names(dataclasses.replace(
+        program, statements=[st for st in program.statements if id(st) not in dropped]), profile)
+    tables = getattr(known, "tables", ())
+
+    def undefined(name: str) -> bool:
+        return name.upper() not in known or name.upper() in tables
+
+    for stmt in program.statements:
+        if id(stmt) not in rewritten or not stmt.args or stmt.args[0] is None:
+            continue
+        info = profile.instructions.get(stmt.keyword.upper())
+        if not info or not info["params"] or info["params"][0] not in _RESOLVED_FIRST_PARAM:
+            continue
+        messages: list[str] = []
+
+        def walk(expr: S.Expr | None) -> None:
+            if isinstance(expr, S.Name):
+                if undefined(expr.name):
+                    messages.append(profile.unresolved_symbol_message.format(name=expr.name))
+            elif isinstance(expr, S.Index):
+                bad = undefined(expr.name)
+                if bad:
+                    messages.append(profile.unresolved_symbol_message.format(name=expr.name))
+                for a in expr.args:
+                    walk(a)
+                if bad and any(a is not None for a in expr.args):
+                    messages.append(f"Dimensions not declared: {expressions._arg_text(stmt, 0)}.")
+            elif isinstance(expr, S.Binary):
+                walk(expr.left)
+                walk(expr.right)
+            elif isinstance(expr, S.Unary):
+                walk(expr.operand)
+
+        walk(stmt.args[0])
+        if not messages:
+            continue
+        at = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)
+                  and d.message.startswith(_TOO_MANY_PREFIX))
+        diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, False) for m in messages]
 
 
 def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_at: int,
