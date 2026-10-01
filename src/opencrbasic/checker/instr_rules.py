@@ -778,6 +778,59 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
             diags.error(stmt.line, f"Invalid SDM Address: {address}, must be 0 - 14.", stmt.file)
 
 
+_AVGRUN_TYPE_ERROR = frozenset({"FLOAT", "STRING"})
+
+
+def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
+                         env: consteval.Env) -> None:
+    """`AvgRun`'s optional arguments after `ResetVar` (decompiled AvgRun compile function; oracle,
+    2026-10-01): a Float or String variable as `Count` -> `Optional Count parameter must be type
+    long.` (all four loggers; a Long/Boolean variable, a literal or an expression compile). On
+    CR6/CR1000X a variable or `0` as the number of distinct instances -> `Optional number of
+    distinct instances must be a constant of type long.`, and any instances argument without the
+    instance number after it -> `Missing instance number`. A constant `Reps` or `Number` below 1
+    -> `number of averages %d and reps %d in RunningAvg must be > 0.` (all four). Reported with
+    pass 2 without hiding the tier-C checks on CR6/CR1000X, only in an otherwise clean file on
+    CR300/CR350. A negative instance count gives `Out of memory.`, which ends the compile (not
+    modelled)."""
+    if "AVGRUN" not in profile.instructions:
+        return
+    types = symbols.declared_variable_types(program)
+
+    def variable_type(arg: S.Expr | None) -> str | None:
+        return types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
+
+    def number(arg: S.Expr | None) -> int | None:
+        try:
+            value = consteval.value_of(arg, env) if arg is not None else None
+        except consteval.NotConstant:
+            return None
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
+            return None
+        return int(value)
+
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "AVGRUN":
+            continue
+        args = list(stmt.args) + [None] * (8 - len(stmt.args))
+        if args[4] is not None:
+            if variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
+                diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
+            if args[6] is not None and len(profile.instructions["AVGRUN"]["params"]) >= 8:
+                instances = number(args[6])
+                if instances is not None and instances < 0:
+                    continue  # (`-1` -> `Out of memory.`, not modelled)
+                if variable_type(args[6]) is not None or instances == 0:
+                    diags.error(stmt.line, "Optional number of distinct instances must be a "
+                                "constant of type long.", stmt.file)
+                if args[7] is None:
+                    diags.error(stmt.line, "Missing instance number", stmt.file)
+        reps, count = number(args[1]), number(args[3])
+        if reps is not None and count is not None and (reps < 1 or count < 1):
+            diags.error(stmt.line, f"number of averages {count} and reps {reps} in RunningAvg "
+                        "must be > 0.", stmt.file)
+
+
 def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`Illegal parameter %s, expecting constant integer.` at a type-code-4 position (`SW12`'s third
     argument, `PortSet`, `PortGet`, `Calibrate`, `CDM_SW12`, CR300 `SwVx`) holding anything but an

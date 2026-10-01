@@ -123,6 +123,22 @@ def ess_variable_names(program: S.Program) -> set[str]:
     return names
 
 
+def declared_variable_types(program: S.Program) -> dict[str, str]:
+    """Upper-case name -> declared type (`FLOAT` when none) of every Public/Dim/Static variable;
+    a name declared with two different types is left out."""
+    types: dict[str, str] = {}
+    clash: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+            for v in st.vars:
+                name, kind = v.name.upper(), (v.type or "FLOAT").upper()
+                if types.setdefault(name, kind) != kind:
+                    clash.add(name)
+    for name in clash:
+        del types[name]
+    return types
+
+
 def declared_variable_names(program: S.Program) -> set[str]:
     """Names that are genuine runtime storage: `Public`/`Dim`/`Static` variables and `Sub`/
     `Function` parameters -- deliberately excluding `Const`/`ConstTable`, `DataTable`/

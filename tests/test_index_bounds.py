@@ -88,3 +88,46 @@ def test_pass_placement_full(logger):
 @pytest.mark.parametrize("logger", SMALL)
 def test_pass_placement_small(logger):
     assert lines("Battery(A(9)) / X = Nope", logger) == ["line 5: Nope is not defined."]
+
+
+@pytest.mark.parametrize("logger", FULL)
+@pytest.mark.parametrize("body", [
+    "Battery(A(1,2))",
+    "Battery(X(2))",
+    "Battery(X(0))",
+    "Battery(B(1,1,2))",
+    "Battery(A(1,0))",
+])
+def test_extra_subscripts_are_size_one_dimensions_full(body, logger):
+    # a subscript beyond the declared rank counts as a size-1 dimension; a scalar is shape (1,)
+    name = body.split("(")[1]
+    assert lines(body, logger) == [f"line 4: Variable {name} out of bounds."]
+
+
+@pytest.mark.parametrize("logger", FULL)
+def test_scalar_destination_out_of_bounds_full(logger):
+    assert lines("PanelTemp(X(1,2),60)", logger) == ["line 4: Variable X out of bounds."]
+
+
+@pytest.mark.parametrize("logger", FULL)
+@pytest.mark.parametrize("body", [
+    "Battery(A(2,1))",
+    "Battery(A(5,1))",
+    "Battery(X(1))",
+    "Battery(X(1,1))",
+    "Battery(B(1,1,1))",
+    "Battery(A(1,1,1))",
+])
+def test_extra_subscripts_in_bounds_full(body, logger):
+    assert lines(body, logger) == []
+
+
+@pytest.mark.parametrize("logger", SMALL)
+@pytest.mark.parametrize("body,name", [
+    ("Battery(X(2))", "X(2)"),
+    ("Battery(A(1,2))", "A(1,2)"),
+    ("Battery(L(1,2))", "L(1,2)"),
+])
+def test_over_indexing_is_dimensions_not_declared_small(body, name, logger):
+    # a Long destination must not also report "Illegal destination variable type"
+    assert lines(body, logger) == [f"line 4: Dimensions not declared: {name}."]

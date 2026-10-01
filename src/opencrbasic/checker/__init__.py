@@ -224,6 +224,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `PortSet(1,A(9))` gives both `Invalid port 1 ...` and `Variable A out of bounds.`).
         if not profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, flat, profile, bounds, env)
+            _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
         if cutoff is not None:
             bounds.items = [d for d in bounds.items if d.line <= cutoff]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
@@ -266,6 +267,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `Scan`/`For`/`Do`/`If` at end of program.
         if profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, program, profile, bounds, env)
+            _run_pass(instr_rules.check_avgrun_options, program, profile, bounds, env)
             _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
     if not diags.errors and profile.early_warnings_gated:

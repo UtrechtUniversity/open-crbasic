@@ -285,20 +285,7 @@ _FLOAT_DEST = 8  # `variable_or_array` "Dest" parameter (`docs/type-codes.md`)
 _DEST_MESSAGE = "Illegal destination variable type, expecting Float."
 
 
-def _variable_types(program: S.Program) -> dict[str, str]:
-    """Upper-case name -> declared type (`FLOAT` when none) of every Public/Dim/Static variable;
-    a name declared with two different types is left out."""
-    types: dict[str, str] = {}
-    clash: set[str] = set()
-    for st in program.statements:
-        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
-            for v in st.vars:
-                name, kind = v.name.upper(), (v.type or "FLOAT").upper()
-                if types.setdefault(name, kind) != kind:
-                    clash.add(name)
-    for name in clash:
-        del types[name]
-    return types
+_variable_types = symbols.declared_variable_types
 
 
 def _is_bad_destination(expr: S.Expr, types: dict[str, str]) -> bool | None:
@@ -362,6 +349,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
         else:
             continue
         own = [d for d in diags.items if (d.line, d.file) == key and d.severity == "error"]
+        if not keep and any(d.message.startswith("Dimensions not declared") for d in own):
+            continue  # (`Battery(L(2))` for a Long scalar: over-indexing is reported first)
         if keep and [d.message for d in own[:len(keep)]] != keep:
             continue
         at = diags.items.index(own[0]) if own else next(

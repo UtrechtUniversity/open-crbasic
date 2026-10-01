@@ -1481,16 +1481,20 @@ _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
 def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnostics,
                                    env: consteval.Env) -> None:
     """`Battery(A(9))` for `Public A(5)` -> `Variable A out of bounds.` (oracle, 2026-10-01): pass 2
-    on CR6/CR1000X, the late stage on CR300/CR350 (only in a file with no other error). Only an argument that is itself an element of a Float array, indexed by
-    number literals: index 0 or past its dimension (a single index on a multi-dimensional array
-    against the element count). An expression (`A(6)+1`), `A(-1)`, a Long array and an assignment
-    (`X = A(6)`, checked at run time) all compile."""
+    on CR6/CR1000X, the late stage on CR300/CR350 (only in a file with no other error). Only an
+    argument that is itself an element of a Float array, indexed by number literals: index 0 or
+    past its dimension (a single index on a multi-dimensional array against the element count).
+    On CR6/CR1000X a scalar is shape `(1,)` and subscripts beyond the declared dimensions count as
+    size-1 dimensions (`R(1,2)`, `X(2)`, `B(1,1,2)` are out of bounds; `R(4,1)`, `X(1,1)` compile);
+    CR300/CR350 report those as `Dimensions not declared`. An expression (`A(6)+1`), `A(-1)`, a
+    Long array and an assignment (`X = A(6)`, checked at run time) all compile."""
     dims = symbols.declared_all_dims(program, env)
+    padded = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     types: dict[str, str] = {}
     for st in program.statements:
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
             for v in st.vars:
-                if v.dims:  # arrays only (an indexed scalar is not probed)
+                if v.dims or padded:
                     types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() in _BOUNDS_UNCHECKED:
@@ -1513,7 +1517,8 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 for n in shape:
                     total *= n
                 bad = not 1 <= index[0] <= total
-            elif len(index) == len(shape):
+            elif len(index) == len(shape) or (padded and len(index) > len(shape)):
+                shape = shape + (1,) * (len(index) - len(shape))
                 bad = any(not 1 <= k <= n for k, n in zip(index, shape))
             else:
                 continue
