@@ -291,6 +291,12 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     statements = program.statements
     last_line = statements[-1].line if statements else 1
 
+    # Measurement delays leaving under 3 mSec spare also disable it, both loggers (oracle,
+    # 2026-10-01: `Scan(100,mSec)` with `Delay(0,98,mSec)`, not `Delay(0,97,mSec)`).
+    from .instr_measure import scan_delay_totals
+    from .instr_rules import _US_PER_UNIT
+    busy = {id(scan) for scan, _end, (value, unit), total in scan_delay_totals(program, env)
+            if total and value * _US_PER_UNIT[unit] - total < 3000}
     in_slow = False
     main_scan_index = 0
     for stmt in statements:
@@ -302,7 +308,7 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
             continue
         main_scan_index += 1
         interval_ms = _scan_interval_ms(stmt, env)
-        if interval_ms is not None and interval_ms < threshold_ms:
+        if (interval_ms is not None and interval_ms < threshold_ms) or id(stmt) in busy:
             diags.warning(
                 last_line,
                 f"When Main Sequence Scan {main_scan_index} is running, "

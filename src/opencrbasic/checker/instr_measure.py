@@ -194,13 +194,27 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
     interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, in the scan's
     own unit, rounded up past the small per-scan overhead (oracle, 2026-10-01: `Scan(1,Sec)` with
     `Delay(0,1,Sec)` -> `by 1 Sec`, `Scan(50,mSec)` with `Delay(0,1,Sec)` -> `by 951 mSec`; a delay
-    in `SubScan(0,0,5)` counts five times). Delays inside a loop, an `If` block or a `Select` are
-    not counted, so the sum is a lower bound of the real compiler's estimate."""
+    in `SubScan(0,0,5)` counts five times)."""
     if profile.name not in ("cr6", "cr1000x"):
         return
+    from .instr_rules import _US_PER_UNIT
+    for _scan, end, (value, unit), total in scan_delay_totals(program, env):
+        interval = value * _US_PER_UNIT[unit]
+        if interval > 0 and total >= interval:
+            diags.error(end.line, f"Scan interval too short for measurement by "
+                        f"{(total - interval) // _US_PER_UNIT[unit] + 1} {_UNIT_NAMES[unit]}.",
+                        end.file)
+
+
+def scan_delay_totals(program: S.Program, env: consteval.Env):
+    """`(Scan, NextScan, (interval, unit), delay_us)` for each main-sequence `Scan` with a constant
+    mSec/Sec/Min interval: the measurement delays (`Delay(0,...)`) it contains, repeated per
+    `SubScan(0,0,n)` pass. Delays inside a loop, an `If` block or a `Select` are not counted, so
+    the total is a lower bound of the real compiler's estimate."""
     from .instr_rules import _US_PER_UNIT, _scan_raw
     slow = False
-    scan: tuple[int, int] | None = None
+    scan: S.Instruction | None = None
+    raw: tuple[int, int] | None = None
     frames: list[int | None] = []  # per open block: SubScan repeat count, None when not counted
     total = 0
     for stmt in program.statements:
@@ -214,16 +228,13 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
             slow = True
         elif kw == "SCAN" and not slow:
             raw = _scan_raw(stmt, env)
-            scan = raw if raw and raw[1] in _UNIT_NAMES else None
+            scan = stmt if raw and raw[1] in _UNIT_NAMES else None
             frames, total = [], 0
         elif scan is None:
             continue
         elif kw == "NEXTSCAN":
-            interval = scan[0] * _US_PER_UNIT[scan[1]]
-            if not frames and interval > 0 and total >= interval:
-                unit = _US_PER_UNIT[scan[1]]
-                diags.error(stmt.line, f"Scan interval too short for measurement by "
-                            f"{(total - interval) // unit + 1} {_UNIT_NAMES[scan[1]]}.", stmt.file)
+            if not frames:
+                yield scan, stmt, raw, total
             scan = None
         elif kw == "SUBSCAN":
             args = [_value(a, env) for a in stmt.args]
