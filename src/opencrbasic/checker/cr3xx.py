@@ -694,6 +694,9 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
 #   Foo(B0, X(B1), B2)               -> B0 B1 B2
 #   Foo(X, 0, Bad0, 2, Bad1)         -> Bad0 only (Bad1 is argument 5)
 # Corpus: `cdmbrhalf3w_1.CR6` (`mv200` is argument 5, never reported).
+MEMBER_STOP = "\0member"  # (oracle, CR300, 2026-10-01: `Foo(Bad,Tb.X)` -> Foo, Bad, nothing else)
+
+
 def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> list[str]:
     """The undefined names among an unresolved call's arguments, in source order -- see
     `check_undefined_call_args`'s module comment above for the oracle evidence and the rule."""
@@ -704,7 +707,11 @@ def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> lis
         return name.upper() not in known or name.upper() in tables
 
     def walk(expr: S.Expr | None) -> bool:
-        """Append `expr`'s undefined names; False once an undefined indexed name ends the scan."""
+        """Append `expr`'s undefined names; False once an undefined indexed name or a table
+        member (`Tb.X`, then no fallback line either: `MEMBER_STOP`) ends the scan."""
+        if isinstance(expr, S.Member):
+            names.append(MEMBER_STOP)
+            return False
         if isinstance(expr, S.Name):
             if undefined(expr.name):
                 names.append(expr.name)
@@ -785,6 +792,10 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
             names = _call_arg_undefined_names(stmt.args, known)
             new_items.append(d)
             for undefined_name in names:
+                if undefined_name == MEMBER_STOP:
+                    i += 1  # a table member ends the call: no fallback line
+                    changed = True
+                    break
                 new_items.append(Diagnostic(
                     "error", d.line, profile.unresolved_symbol_message.format(name=undefined_name),
                     d.file, True))

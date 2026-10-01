@@ -601,3 +601,18 @@ def test_undefined_argument_ends_argument_list(stmt, expected):
     program = "Public X, A(4)\nBeginProg\n  Scan (1,Sec,0,0)\n    STMT\n  NextScan\nEndProg\n"
     _, diags, _ = compile_result(program.replace("STMT", stmt))
     assert [(d.line, d.message) for d in diags.errors] == expected
+
+
+@pytest.mark.parametrize("call,expected", [
+    ('Foo("a",Tb.X(1,1))', ["Foo is not defined."]),
+    ("Foo(Bad,Tb.X)", ["Foo is not defined.", "Bad is not defined."]),
+    ("Foo(Tb.X,Bad)", ["Foo is not defined."]),
+    ("Foo(X+Tb.X)", ["Foo is not defined."]),
+    ("Foo(Nope.X)", ["Foo is not defined."]),
+])
+def test_unknown_call_stops_at_a_table_member(call, expected):
+    # oracle, CR300, 2026-10-01: no fallback line once a table member is reached
+    text = ("Public X\nDataTable (Tb,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+            f"  Scan (1,Sec,0,0)\n    CallTable Tb\n    {call}\n  NextScan\nEndProg\n")
+    _, diags, _ = compile_result(text)
+    assert [d.message for d in diags.errors] == expected
