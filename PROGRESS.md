@@ -24,12 +24,17 @@ updated later the same day by the agreement round below (`docs/loggers.md`); CR6
 `crbasic/`/`help examples` numbers are that round's *starting* point, re-verified unchanged by it,
 not re-measured independently since.
 
-| Logger | crbasic/ (16) | help examples (507) | false rejects |
-|---|---|---|---|
-| CR6 | 16 / 0 / 0 | 336 / 162 / 9 | 0 |
-| CR1000X | 9 / 7 / 0 | 352 / 149 / 6 | 0 |
-| CR300 | 0 / 16 / 0 | 138 / 358 / 11 | 0 |
-| CR350 | 0 / 16 / 0 | 142 / 355 / 10 | 0 |
+Current exact counts (`tools/difftest.py`, run 2026-10-01; verdict/mismatch split not re-measured
+here; false rejects: none observed in the difftest or replay runs):
+
+| Logger | crbasic/ (16) exact | help examples (507) exact |
+|---|---|---|
+| CR6 | 16 | 429 |
+| CR1000X | 16 | 438 |
+| CR300 | 6 | 306 |
+| CR350 | 5 | 313 |
+
+`tools/fuzz_replay.py` (2026-10-01): 1785 reproducers, 960 now exact, no false rejects.
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
@@ -54,6 +59,14 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-10-01 (CR300/CR350 argument rules, `docs/loggers.md` "CR300/CR350 argument rules"): four
+  commits, metrics above.
+  - 75dd03f: CR300/CR350 unknown-call argument scan covers four arguments; bare DataTable names
+    are not values
+  - 51c1217: inline If echoes keep trailing spaces; tainted-call names not deduplicated
+  - d18eac4: cascade-rewritten instruction still checks its first argument
+  - 99d707d: Float destination check (code 8); argument errors end a Dest parameter list
 
 - 2026-09-26 (checker round 6a: fuzz-driven false-accept reduction, continued): `checker/
   structure.py`, `checker/symbols.py`, `checker/instr_rules.py`, `checker/instr_data.py`,

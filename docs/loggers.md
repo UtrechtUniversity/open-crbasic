@@ -1047,3 +1047,30 @@ those declarations (and with the tainted headers' parameters removed). It keeps 
 findings on later statements that use an unregistered name or a tainted `Function`. This only
 adds errors to programs that already fail. chm exact CR300 269 -> 273, CR350 279 -> 283; replay
 915 of 1785 exact.
+
+## CR300/CR350 argument rules (2026-10-01)
+
+Oracle probes, CR300/CR350. Code: `checker/cr3xx.py` (`_call_arg_undefined_names`,
+`_report_rewritten_first_arg`, `check_float_destinations`), `parser.py` (`_parse_if`,
+`_parse_stmt_list`, `_parse_line`).
+
+- Unknown call `Foo(...)`: arguments 1-3 are name-checked fully (operators, index arguments);
+  argument 4 only its leftmost term; 5+ never. A declared name is skipped; an undefined indexed
+  name `B(...)` is reported, then its arguments, then the scan stops. `Foo(B0, B1, B2, B3+B4, B5)`
+  reports B0 B1 B2 B3.
+- A bare DataTable name used as a value is undefined on all four loggers (CR6: `Invalid symbol in
+  expression`).
+- After the `Too many parameters` cascade starts, a rewritten instruction still checks its first
+  argument when its parameter type code resolves an expression/variable (not code 6 identifiers
+  such as a DataTable name): undefined names, then `Dimensions not declared: A(I).`, then for
+  code 8 a non-variable gives `Illegal destination variable type, expecting Float.`, before
+  `Too many parameters:  <arg 2>.`. `Dim Z banana` / `Public PTemp` / `PanelTemp(PTemp,15000)`
+  gives `PTemp is not defined.`, `Too many parameters:  15000.`
+- Code 8 (Dest) first argument: anything other than a Float variable (Long, Double, String,
+  Boolean variable, literal, expression) gives `Illegal destination variable type, expecting
+  Float.`; an undefined name gives its `is not defined.`. Either way the next argument follows as
+  `Too many parameters:  <token>.` and starts the cascade. `PanelTemp(L,60)` with `L As Long`.
+- Inline `If ... Then` echo: the first statement after Then/Else is echoed from one column past
+  the keyword to the delimiter, trailing whitespace kept (`If X Then Foo(1)   'c` ->
+  `Foo(1)   .`); before `Else` one space is kept. On CR300/CR350, colon segments after a one-line
+  If have no newline in the echo.
