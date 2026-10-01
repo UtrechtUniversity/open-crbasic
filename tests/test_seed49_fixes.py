@@ -187,3 +187,18 @@ def test_eventcount_with_dataevent():
     text = event_program("  DataEvent(0,X>1,X<1,0)", "    X = Tb.EventCount(1,1)")
     for logger in ALL_LOGGERS:
         assert lines(text, logger) == [], logger
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
+def test_constant_table_name_with_a_space_compiles(logger):
+    # fuzz seed 50 false reject (oracle, 2026-10-01): the name is read up to the whitespace
+    text = ("ConstTable (my Tab,0)\n  Const A = 1\nEndConstTable\nPublic X\nBeginProg\n"
+            "  Scan (1,Sec,0,0)\n    X = A\n  NextScan\nEndProg\n")
+    assert lines(text, logger) == []
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr300"])
+def test_data_table_name_with_a_space_shifts_the_parameters(logger):
+    text = ("Public X\nDataTable (Ten Sec,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n"
+            "  Scan (1,Sec,0,0)\n    CallTable Ten\n  NextScan\nEndProg\n")
+    assert lines(text, logger)[0] == "line 2: Too many parameters:  -1."

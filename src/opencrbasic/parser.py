@@ -173,6 +173,9 @@ def _split_text_segments(text: str) -> list[str]:
     return segments
 
 
+_RAW_NAME_FIRST = frozenset({"DATATABLE", "CONSTTABLE"})
+
+
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
     """Split a fully-tokenised logical line on top-level `:` (not inside `(...)`)."""
     segments: list[list[Token]] = []
@@ -361,6 +364,13 @@ class _Parser:
         return line_text
 
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
+        if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper in _RAW_NAME_FIRST
+                and seg[1].kind == "OP" and seg[1].text == "(" and seg[2].kind == "IDENT"
+                and seg[3].kind == "IDENT"):
+            # The table name is read up to whitespace too, so a second word becomes the next
+            # parameter: `DataTable (Ten Sec,True,-1)` names `Ten` and reports `Too many
+            # parameters:  -1.`; `ConstTable (my Tab,0)` compiles (oracle, 2026-10-01)
+            seg = seg[:3] + [lexer.Token("OP", ",", ",", seg[3].col, seg[3].line)] + seg[3:]
         p = _TokStream(seg, seg_text)
         try:
             if (self._in_struct and seg and seg[0].kind == "IDENT"
