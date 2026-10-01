@@ -8,6 +8,7 @@ evidence: `docs/loggers.md`.
 from __future__ import annotations
 
 import collections
+import dataclasses
 
 import re
 
@@ -153,7 +154,9 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",
-                                 "Expression expects ", "Incomplete expression:", "ESS variable ")
+                                 "Expression expects ", "Incomplete expression:", "ESS variable ",
+                                 "Invalid or missing parameter.",
+                                 "Invalid, or out of place expression:")
 
 
 def _is_cascade_trigger(diag) -> bool:
@@ -780,6 +783,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             if table:
                 new_items.append(Diagnostic("error", d.line, f"Could not find DataTable "
                                             f"{table.group(1)}.", d.file, cascade=False))
+                d = dataclasses.replace(d, cascade=False)  # (no cascade: oracle, `r1` probe)
                 changed = True
             for word in _leading_unknown_words(text, known):
                 new_items.append(Diagnostic(

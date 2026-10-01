@@ -389,6 +389,24 @@ def _control_keyword(stmt: S.Stmt) -> str | None:
             return kw
     return None
 
+_FALLBACK_PREFIX = "Invalid, or out of place expression:"
+
+
+def _leftover_message(profile, stmt: S.Stmt) -> str:
+    """The fallback for a missing-parameter leftover line. CR300/CR350 re-read a parenthesised one
+    as an expression and echo what is inside: `(X,1,mV1000)` -> `X,1,mV1000.`, an unclosed
+    `(X,1` -> `X,1` with the end-of-line newline (oracle, 2026-10-01)."""
+    text = stmt.text.strip()
+    if not (profile.fallback_echo_newline and text.startswith("(")):
+        return _out_of_place(profile, stmt.text, stmt.at_eol)
+    depth = 0
+    for i, ch in enumerate(text):
+        depth += (ch == "(") - (ch == ")")
+        if depth == 0:
+            return f"{_FALLBACK_PREFIX} {text[1:i]}."
+    return _out_of_place(profile, text[1:], stmt.at_eol)
+
+
 def _no_matching(profile, text: str, at_eol: bool = True) -> str:
     """`No Matching, or out of place ) in expression: %s.`, with the same CR300/CR350 end-of-line
     newline as `_out_of_place` (oracle, 2026-10-01: `X = 2 * ASin( 1`)."""
@@ -834,6 +852,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
                 continue
+            if any((d.line, d.file) == (stmt.line, stmt.file) and
+                   d.message.startswith(_FALLBACK_PREFIX) for d in diags.errors):
+                continue  # a missing-parameter leftover, already reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
@@ -1268,8 +1289,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             diags.error(nxt.line, f"Incomplete expression: {nxt.text}.", nxt.file,
                         show_file=False)
         else:
-            diags.error(nxt.line, _out_of_place(profile, nxt.text, nxt.at_eol), nxt.file,
-                        show_file=False)
+            diags.error(nxt.line, _leftover_message(profile, nxt), nxt.file, show_file=False)
 
 
 def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
