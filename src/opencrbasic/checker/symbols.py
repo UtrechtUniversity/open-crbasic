@@ -230,8 +230,9 @@ def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple
 def declared_names(program: S.Program) -> set[str]:
     """Every name a bare `Name` expression may legally reference: declared `Public`/`Dim`/`Const`/
     `ConstTable` variables, `Sub`/`Function` names and their parameters, `DataTable` and
-    `StructureType`/`ObjectType` names, `Alias` targets, `For`-loop variables, and `Label`s (goto
-    targets). Deliberately global (not scope- or order-checked): a name declared anywhere in the
+    `StructureType`/`ObjectType` names, `Alias` targets, and `Label`s (goto targets). A `For`
+    loop does not declare its variable (oracle, 2026-10-01: `For j = 1 To 2` -> `j is not
+    defined.`). Deliberately global (not scope- or order-checked): a name declared anywhere in the
     program, including inside a `Sub` it is not used in, is accepted everywhere, matching this
     checker's general stance of preferring under-reporting (AGENTS.md's "never reject an accepted
     program" priority) over a full scope analysis this project has not verified against the real
@@ -250,8 +251,6 @@ def declared_names(program: S.Program) -> set[str]:
                 names.add(p.name.upper())
         elif isinstance(stmt, S.Label):
             names.add(stmt.name.upper())
-        elif isinstance(stmt, S.For) and isinstance(stmt.var, S.Name):
-            names.add(stmt.var.name.upper())
         elif isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             if kw in _NAME_DECLARING_INSTRUCTIONS and stmt.args and isinstance(stmt.args[0], S.Name):

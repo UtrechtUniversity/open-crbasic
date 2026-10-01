@@ -765,6 +765,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
 
+    _check_for_headers(program, profile, diags, known)
+
     dim_counts = symbols.declared_dim_counts(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
@@ -1292,3 +1294,48 @@ def _index_nodes(expr: S.Expr | None):
     elif isinstance(expr, S.Member):
         for a in expr.args or []:
             yield from _index_nodes(a)
+
+
+_FOR_HEADER_RE = re.compile(r"(?i)^\s*For\s(.*?)=(.*?)\sTo\s(.*?)(?:\sStep\s(.*))?$")
+
+
+def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -> None:
+    """Undefined names in a `For` header (oracle, 2026-10-01). CR6/CR1000X: `Invalid symbol in
+    expression: %s.` for the start, end and step text (each echoed raw between its keywords, one
+    separating space dropped either side: `For X = A to 2` -> ` A`), and for the loop variable on
+    its matching `Next` line (`For j = 1 To 2` -> `j .`). CR300/CR350: per-name `%s is not
+    defined.` on the `For` line in source order, plus `Dimensions not declared: j(1) .` for an
+    undefined indexed loop variable."""
+    pending: list[tuple[S.For, str]] = []
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "NEXT" and pending and \
+                not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", stmt.text or ""):
+            loop, var_text = pending.pop()
+            if var_text:
+                diags.error(stmt.line, f"Invalid symbol in expression: {var_text}.", stmt.file)
+            continue
+        if not isinstance(stmt, S.For):
+            continue
+        m = _FOR_HEADER_RE.match(stmt.text or "")
+        parts = [(stmt.var, m.group(1) if m else None), (stmt.start, m.group(2) if m else None),
+                 (stmt.end, m.group(3) if m else None), (stmt.step, m.group(4) if m else None)]
+        whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        var_text = ""
+        for i, (expr, text) in enumerate(parts):
+            names = _undefined_names(expr, known) if expr is not None else []
+            if not names:
+                continue
+            if whole_echo:
+                if text is None:
+                    continue
+                if i == 0:
+                    var_text = text
+                else:
+                    diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+            else:
+                for name in names:
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                                stmt.file)
+                if i == 0 and text is not None and _has_undefined_index(expr, known):
+                    diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
+        pending.append((stmt, var_text))

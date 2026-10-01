@@ -194,7 +194,10 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
             if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
+                    d.message.startswith("Could not find DataTable ") or (
+                        d.message.startswith(_GENERIC_FALLBACK_PREFIX)
+                        and stmt.text.strip() in d.message))]
                 continue
             if isinstance(stmt, S.Declaration) or (
                     isinstance(stmt, S.Unparsed)
