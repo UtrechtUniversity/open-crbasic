@@ -10,6 +10,8 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -179,3 +181,78 @@ def _check_excite_magnitude(stmt: S.Instruction, measure: dict, env: consteval.E
     value = _const_value(stmt.args[idx], env)
     if isinstance(value, (int, float)) and abs(value) > measure["excite_max_mv"]:
         diags.error(stmt.line, f"Excitation exceeds {float(measure['excite_max_mv']):.6f}.", stmt.file)
+
+
+_UNIT_NAMES = {1: "mSec", 2: "Sec", 3: "Min"}
+_OPENERS = frozenset({"SELECT", "WHILE"})
+_CLOSERS = frozenset({"ENDIF", "ENDSELECT", "NEXTSUBSCAN", "WEND"})
+
+
+def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnostics,
+                            env: consteval.Env) -> None:
+    """CR6/CR1000X: measurement delays (`Delay(0,...)`) in the main `Scan` that add up to its
+    interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, in the scan's
+    own unit, rounded up past the small per-scan overhead (oracle, 2026-10-01: `Scan(1,Sec)` with
+    `Delay(0,1,Sec)` -> `by 1 Sec`, `Scan(50,mSec)` with `Delay(0,1,Sec)` -> `by 951 mSec`; a delay
+    in `SubScan(0,0,5)` counts five times). Delays inside a loop, an `If` block or a `Select` are
+    not counted, so the sum is a lower bound of the real compiler's estimate."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    from .instr_rules import _US_PER_UNIT, _scan_raw
+    slow = False
+    scan: tuple[int, int] | None = None
+    frames: list[int | None] = []  # per open block: SubScan repeat count, None when not counted
+    total = 0
+    for stmt in program.statements:
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        text = stmt.text or ""
+        if kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", text):
+            kw = "NEXTSCAN"
+        elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+SubScan\b", text):
+            kw = "NEXTSUBSCAN"
+        if kw == "SLOWSEQUENCE":
+            slow = True
+        elif kw == "SCAN" and not slow:
+            raw = _scan_raw(stmt, env)
+            scan = raw if raw and raw[1] in _UNIT_NAMES else None
+            frames, total = [], 0
+        elif scan is None:
+            continue
+        elif kw == "NEXTSCAN":
+            interval = scan[0] * _US_PER_UNIT[scan[1]]
+            if not frames and interval > 0 and total >= interval:
+                unit = _US_PER_UNIT[scan[1]]
+                diags.error(stmt.line, f"Scan interval too short for measurement by "
+                            f"{(total - interval) // unit + 1} {_UNIT_NAMES[scan[1]]}.", stmt.file)
+            scan = None
+        elif kw == "SUBSCAN":
+            args = [_value(a, env) for a in stmt.args]
+            count = args[2] if len(args) == 3 and args[0] == 0 else None
+            frames.append(count if isinstance(count, int) and not isinstance(count, bool)
+                          and count > 0 else None)
+        elif (isinstance(stmt, S.For) or (isinstance(stmt, S.DoLoop) and stmt.keyword == "DO")
+              or (isinstance(stmt, S.If) and stmt.inline is None) or kw in _OPENERS):
+            frames.append(None)
+        elif (kw == "NEXT" or (isinstance(stmt, S.DoLoop) and stmt.keyword == "LOOP")
+              or kw in _CLOSERS or (kw == "END" and re.match(r"(?i)\s*End\s+(If|Select)\b", text))):
+            if not frames:
+                scan = None
+            else:
+                frames.pop()
+        elif kw == "DELAY" and None not in frames and len(stmt.args) == 3:
+            option, value, unit = (_value(a, env) for a in stmt.args)
+            if option == 0 and isinstance(value, (int, float)) and not isinstance(value, bool) \
+                    and value > 0 and unit in _US_PER_UNIT and not isinstance(unit, bool):
+                repeat = 1
+                for count in frames:
+                    repeat *= count
+                total += int(value * _US_PER_UNIT[unit]) * repeat
+
+
+def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
+    if expr is None or not consteval.is_constant(expr, env):
+        return None
+    try:
+        return consteval.value_of(expr, env)
+    except consteval.NotConstant:
+        return None

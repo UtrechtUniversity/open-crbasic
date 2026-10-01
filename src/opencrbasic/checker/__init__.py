@@ -294,6 +294,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
+        _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
 
     diags.items += bounds.items
 
