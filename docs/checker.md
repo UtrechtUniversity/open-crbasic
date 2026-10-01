@@ -2588,3 +2588,44 @@ undefined in its body.
 `Do While`/`Loop Until` conditions are resolved like `If` conditions. CR6 echoes the text after
 `While`/`Until`, trailing spaces included (`Invalid symbol in expression: (Nope <> 1)   .`), and
 CR300 names each undefined name. Replay: 904 of 1785 exact.
+
+## Statement and argument checks (2026-10-01)
+
+Oracle-confirmed 2026-10-01.
+
+- `For` headers: CR6/CR1000X `Invalid symbol in expression: <text>.` for an undefined start, end
+  or step; the text is the raw text between keywords with one separating space dropped each side
+  (`For X = A to 2` -> ` A`). An undefined loop variable is reported on the matching `Next` line
+  (`j .`). CR300/CR350: per-name `is not defined.` on the `For` line, plus `Dimensions not
+  declared: j(1) .`. A `For` loop does not declare its variable.
+- `ElseIf` conditions are checked like `If`. `Case` values: CR6 echoes the text after `Case `,
+  preceded by one `Case outside Select.` per item up to the first failing value (`Case 1, 2,
+  Nope` -> three); none when an `Is` comparison or a `To` upper bound fails. CR300: per name; a
+  `Select Case` with an undefined name opens no block (`Case outside Select.`, `EndSelect w/o
+  Select`).
+- Built-in function written as a statement (`Timer(Nope,Sec,0)`): CR6 `Invalid symbol in
+  expression: <whole statement>.`; CR300 per name (plus `Dimensions not declared` for an
+  undefined indexed name).
+- Constant index out of bounds in instruction arguments: `Battery(A(9))` for `Public A(5)` ->
+  `Variable A out of bounds.`. Only a plain Float-array element with number-literal indexes at
+  parameter codes 2/8/28/41 (not `AddPrecise`/`MovePrecise`); index 0 or past a dimension.
+  `A(-1)`, `A(6)+1`, Long arrays and assignments are not checked. Pass 2 on CR6/CR1000X;
+  CR300/CR350 only in an otherwise clean file.
+- `ESSVariables`: the table has 217 entries per exe (CR6 `DAT_005fd008`, 20-byte records: type
+  byte 0xb String / 0xff Long count x 16 / else Long, count, name pointer). Messages: `ESS
+  variable %s must be declared as String|Long`, `ESS variable of type string must be of size
+  255`, `ESS variable %s must be dimensioned as %d` (no trailing period). All failing entries
+  are reported at the `ESSVariables` line; the statement declares the remaining names.
+- `MenuPick`: a `MenuItem` on a ConstTable constant takes one `MenuPick` whose first parameter
+  must be a ConstTable constant (`When using a ConstTable constant in MenuPick, the constant name
+  must be the first parameter.`); an ordinary variable's item may repeat `MenuPick`. A `MenuPick`
+  argument naming a variable -> `%s must be declared as a Const.`
+- `Scan` units outside 0..5 (including any string) count as 0 uSec on CR6/CR1000X -> `Scan 0uSec
+  invalid must be at least 1mSec.`
+- Scan budget (CR6/CR1000X): `Delay(0,...)` calls in the main `Scan` (x n inside
+  `SubScan(0,0,n)`) adding up to the interval -> `Scan interval too short for measurement by N
+  <unit>.` at `NextScan`, N = floor((delays - interval)/unit) + 1 in the scan's own unit
+  (`Scan(50,mSec)` + `Delay(0,1,Sec)` -> `by 951 mSec`).
+- CR300/CR350 argument abort: the first undefined name at a runtime-expression parameter (codes
+  2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47) is followed by `Too many parameters:  <next
+  argument>.`; an undefined name at a code-20 slot also gives `Variable illegal in Parameter`.

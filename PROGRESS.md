@@ -31,10 +31,10 @@ here; false rejects: none observed in the difftest or replay runs):
 |---|---|---|
 | CR6 | 16 | 429 |
 | CR1000X | 16 | 438 |
-| CR300 | 6 | 306 |
-| CR350 | 5 | 313 |
+| CR300 | 6 | 331 |
+| CR350 | 5 | 332 |
 
-`tools/fuzz_replay.py` (2026-10-01): 1785 reproducers, 960 now exact, no false rejects.
+`tools/fuzz_replay.py` (2026-10-01): 1785 reproducers, 1038 now exact, no false rejects.
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
@@ -59,6 +59,24 @@ TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§1
 | 6 Simulator | not started |
 
 ## Log
+
+- 2026-10-01 (second round, statement and argument checks, `docs/checker.md` "Statement and
+  argument checks"): twelve commits, metrics above.
+  - 2727ff6: CR300/CR350 prose lines starting `word.` read as table references
+  - aa90650: CR300/CR350 `Variable not named.` starts the cascade
+  - ef0b9fd: CR300/CR350 unclosed-paren assignments echo the line end, report an undefined target
+  - 48b7ea9: For headers checked (loop variable, bounds, step) on all loggers; For does not declare
+    its variable
+  - 08da3b0: ElseIf conditions and Case values checked; Select Case echo spacing
+  - 1ade32a: CR300/CR350 undefined name in a runtime parameter ends the argument list
+  - 50749e3: built-in functions written as statements checked for undefined arguments
+  - d0f1ffc: Const built-in call arity, parenthesized Alias indexes, expression errors start the
+    CR300 cascade
+  - d11b152: ESSVariables checked against the ESS table extracted from each exe
+    (`data/**/ess_variables.json`)
+  - 55e74ea: constant array indexes out of bounds in instruction arguments
+  - 116fbe9: MenuPick rules for ConstTable constants; unknown Scan units count as 0 uSec
+  - a86a63e: CR6/CR1000X scan interval too short for its measurement delays
 
 - 2026-10-01 (CR300/CR350 argument rules, `docs/loggers.md` "CR300/CR350 argument rules"): four
   commits, metrics above.
