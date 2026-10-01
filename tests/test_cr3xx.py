@@ -425,3 +425,55 @@ def test_cascade_rewrite_skips_first_argument_that_declares_a_name():
     line3 = [d.message for d in diags.errors if d.line == 3]
     assert not any("is not defined" in m for m in line3)
     assert "Too many parameters:  True." in line3
+
+
+_DEST = "Illegal destination variable type, expecting Float."
+_FLOAT_DEST_FRAME = ("Public X, L As Long, St As String, D As Double\nBeginProg\n"
+                     "  Scan (1,Sec,0,0)\n{body}\n  NextScan\nEndProg\n")
+
+
+def _float_dest_body(*lines):
+    return "\n".join("    " + line for line in lines)
+
+
+@pytest.mark.parametrize("profile_name,body,expected", [
+    pytest.param("cr300", ("PanelTemp(L,60)",),
+                 [(4, _DEST), (4, "Too many parameters:  60.")], id="long"),
+    pytest.param("cr300", ("PanelTemp(X+1,60)",),
+                 [(4, _DEST), (4, "Too many parameters:  60.")], id="expression"),
+    pytest.param("cr300", ("PanelTemp(D,60)",),
+                 [(4, _DEST), (4, "Too many parameters:  60.")], id="double"),
+    pytest.param("cr300", ("VoltSe(L,1,mV1000,1,0,0,60,1,0)",),
+                 [(4, _DEST), (4, "Too many parameters:  1.")], id="voltse"),
+    pytest.param("cr300", ("X = Nope2", "PanelTemp(L,60)", "X = Nope"),
+                 [(4, "Nope2 is not defined."), (5, _DEST), (5, "Too many parameters:  60."),
+                  (6, "Nope is not defined.")], id="surrounding_lines"),
+    pytest.param("cr300", ("PanelTemp(L,60)", "Battery(L)"),
+                 [(4, _DEST), (4, "Too many parameters:  60."), (5, _DEST)],
+                 id="following_call"),
+    pytest.param("cr300", ("PanelTemp(Nope,60)",),
+                 [(4, "Nope is not defined."), (4, "Too many parameters:  60.")],
+                 id="undefined_name"),
+    pytest.param("cr300", ("PanelTemp(L,60)", "PortSet(1,1)"),
+                 [(4, _DEST), (4, "Too many parameters:  60."),
+                  (5, "Too many parameters:  1.")], id="following_portset"),
+    pytest.param("cr300", ("VoltSe(Nope,1,mV1000,1,0,0,60,1,0)",),
+                 [(4, "Nope is not defined."), (4, "Too many parameters:  1.")],
+                 id="voltse_undefined"),
+    pytest.param("cr350", ("PanelTemp(L,60)",),
+                 [(4, _DEST), (4, "Too many parameters:  60.")], id="cr350"),
+])
+def test_float_destination_first_argument(profile_name, body, expected):
+    # Oracle (CR300) 2026-10-01: the first argument of a cascade-rewritten call is checked
+    # for a Float destination, in order with the other findings.
+    text = _FLOAT_DEST_FRAME.format(body=_float_dest_body(*body))
+    _, diags, _ = compile_result_for_profile(text, profiles.get(profile_name), "t.cr300")
+    assert [(d.line, d.message) for d in diags.errors] == expected
+
+
+def test_float_destination_first_argument_accepts_float():
+    # Oracle (CR300) 2026-10-01: a Float first argument raises no destination error.
+    text = _FLOAT_DEST_FRAME.format(
+        body=_float_dest_body("VoltSe(X,1,mV1000,1,0,0,60,1,0)"))
+    _, diags, _ = compile_result(text)
+    assert _DEST not in [d.message for d in diags.errors]

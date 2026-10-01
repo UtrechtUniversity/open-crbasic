@@ -235,6 +235,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # _check_call_pass2`) and the generic fallback for it (`docs/loggers.md` "CDM_* argument
         # names"). Same after-the-fact `diags.items` pattern as `check_unknown_line_words` above.
         _run_pass(cr3xx.check_undefined_call_args, flat, profile, diags)
+        _run_pass(cr3xx.check_float_destinations, flat, profile, diags)
         if cutoff is not None:
             # Every pass-2 error past the placement-error's own line is dropped, reproducing the
             # real compiler's "stop entirely" behaviour without any of the modules above needing

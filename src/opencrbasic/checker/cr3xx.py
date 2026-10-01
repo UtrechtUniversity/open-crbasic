@@ -225,7 +225,10 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
                     expressions._arg_text(stmt, 1)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
-                diags.error(stmt.line, f"Too many parameters:  {text}.", stmt.file)
+                at = next((i for i, d in enumerate(diags.items)
+                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  f"Too many parameters:  {text}.", stmt.file))
                 rewritten.add(id(stmt))
             continue
         if any(_is_cascade_trigger(d) for d in existing):
@@ -235,6 +238,94 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         _report_rewritten_first_arg(program, profile, diags, dropped, rewritten)
     if dropped or tainted_subs:
         _report_unregistered(program, profile, diags, taint_at, dropped, tainted_subs, rewritten)
+
+
+_FLOAT_DEST = 8  # `variable_or_array` "Dest" parameter (`docs/type-codes.md`)
+_DEST_MESSAGE = "Illegal destination variable type, expecting Float."
+
+
+def _variable_types(program: S.Program) -> dict[str, str]:
+    """Upper-case name -> declared type (`FLOAT` when none) of every Public/Dim/Static variable;
+    a name declared with two different types is left out."""
+    types: dict[str, str] = {}
+    clash: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+            for v in st.vars:
+                name, kind = v.name.upper(), (v.type or "FLOAT").upper()
+                if types.setdefault(name, kind) != kind:
+                    clash.add(name)
+    for name in clash:
+        del types[name]
+    return types
+
+
+def _is_bad_destination(expr: S.Expr, types: dict[str, str]) -> bool | None:
+    """True when a defined first argument is not a Float variable, None when unknown."""
+    if isinstance(expr, (S.Name, S.Index)):
+        kind = types.get(expr.name.upper())
+        return None if kind is None else kind != "FLOAT"
+    return isinstance(expr, (S.Number, S.String, S.Binary, S.Unary))
+
+
+def check_float_destinations(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: a code-8 first argument that fails ends the argument list, so the next
+    argument is reported as `Too many parameters` and nothing else on the statement is: an
+    undefined name keeps its `is not defined.` line, any other non-Float destination (a Long or
+    String variable, a literal, an expression) gives `Illegal destination variable type,
+    expecting Float.` (oracle, CR300, 2026-10-01: `PanelTemp(L,60)`, `PanelTemp(Nope,60)`,
+    `VoltSe(L,1,mV1000,...)`, `Battery(L)`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    types: dict[str, str] | None = None
+    known = None
+    per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or not stmt.args or stmt.args[0] is None \
+                or per_line[(stmt.line, stmt.file)] > 1:
+            continue
+        info = profile.instructions.get(stmt.keyword.upper())
+        if not info or not info["params"] or info["params"][0] != _FLOAT_DEST:
+            continue
+        if types is None:
+            types, known = _variable_types(program), expressions._known_names(program, profile)
+        arg = stmt.args[0]
+        key = (stmt.line, stmt.file)
+        undefined = [n for n in _expr_names(arg) if n.upper() not in known]
+        if undefined:
+            if not isinstance(arg, (S.Name, S.Index)):
+                continue
+            keep = [profile.unresolved_symbol_message.format(name=n) for n in undefined]
+        elif _is_bad_destination(arg, types):
+            keep = []
+        else:
+            continue
+        own = [d for d in diags.items if (d.line, d.file) == key and d.severity == "error"]
+        if keep and [d.message for d in own[:len(keep)]] != keep:
+            continue
+        at = diags.items.index(own[0]) if own else next(
+            (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
+            len(diags.items))
+        new = list(own[:len(keep)]) or [Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file)]
+        if len(stmt.args) >= 2 and stmt.args[1] is not None:
+            text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
+                expressions._arg_text(stmt, 1)
+            new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
+        diags.items[:] = [d for d in diags.items[:at] if (d.line, d.file) != key or
+                          d.severity != "error"] + new + [
+            d for d in diags.items[at:] if (d.line, d.file) != key or d.severity != "error"]
+
+
+def _expr_names(expr: S.Expr | None) -> list[str]:
+    if isinstance(expr, S.Name):
+        return [expr.name]
+    if isinstance(expr, S.Index):
+        return [expr.name] + [n for a in expr.args for n in _expr_names(a)]
+    if isinstance(expr, S.Binary):
+        return _expr_names(expr.left) + _expr_names(expr.right)
+    if isinstance(expr, S.Unary):
+        return _expr_names(expr.operand)
+    return []
 
 
 # Parameter type codes whose argument is resolved as an expression or variable
@@ -283,11 +374,17 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
                 walk(expr.operand)
 
         walk(stmt.args[0])
+        if info["params"][0] == _FLOAT_DEST:
+            arg = stmt.args[0]
+            names_ok = not messages
+            if not isinstance(arg, (S.Name, S.Index)) or (
+                    names_ok and _is_bad_destination(arg, _variable_types(program))):
+                messages.append(_DEST_MESSAGE)
         if not messages:
             continue
         at = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)
                   and d.message.startswith(_TOO_MANY_PREFIX))
-        diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, False) for m in messages]
+        diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, cascade=False) for m in messages]
 
 
 def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_at: int,
