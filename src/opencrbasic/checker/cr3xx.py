@@ -362,6 +362,18 @@ def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Dia
     if bad:
         diags.items[:] = [d for d in diags.items if not (
             (d.line, d.file) in bad and d.message.startswith(_TOO_MANY_PREFIX))]
+    # The excess argument is reached after the earlier ones' names: `Battery(foo, bar)` ->
+    # `foo is not defined.`, then `Too many parameters:  bar.` (oracle, CR300, 2026-10-01).
+    items = diags.items
+    for i in range(len(items) - 1, -1, -1):
+        d = items[i]
+        if d.severity != "error" or not d.message.startswith(_TOO_MANY_PREFIX) or \
+                per_line[(d.line, d.file)] != 1:
+            continue
+        later = [j for j in range(i + 1, len(items)) if (items[j].line, items[j].file) ==
+                 (d.line, d.file) and items[j].message.endswith(_UNRESOLVED_SUFFIX)]
+        if later:
+            items.insert(later[-1], items.pop(i))  # (`later` indices shift by one after the pop)
 
 
 def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -608,6 +620,7 @@ def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scrat
 # implemented).
 _GENERIC_FALLBACK_PREFIX = "Invalid, or out of place expression: "
 _LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+_INSTRUCTION_PROSE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)[ \t]+([A-Za-z_][^(]*)$", re.S)
 _LINE_OPERAND_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?\b")
 # Keyword operators join the chain like `+` (oracle, CR300, 2026-10-01: `foo and bar baz qux` ->
 # foo, bar, baz; `Is` and `Not` do not).
@@ -852,6 +865,24 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                                             f"{table.group(1)}.", d.file, cascade=False))
                 d = dataclasses.replace(d, cascade=False)  # (no cascade: oracle, `r1` probe)
                 changed = True
+            lead = _INSTRUCTION_PROSE_RE.match(text)
+            info = profile.instructions.get(lead.group(1).upper()) if lead else None
+            if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"]:
+                # `Battery sensor using the`: the instruction reads the prose as its argument
+                # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
+                # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
+                rest = lead.group(2).rstrip("\n")
+                for word in _leading_unknown_words(rest, known):
+                    new_items.append(Diagnostic("error", d.line,
+                                                profile.unresolved_symbol_message.format(name=word),
+                                                d.file))
+                new_items.append(Diagnostic("error", d.line, f"Incomplete expression: {rest}.",
+                                            d.file))
+                if info["params"][0] in _CONST_FIRST_PARAM:
+                    new_items.append(Diagnostic("error", d.line,
+                                                f"Variable illegal in Parameter: {rest}.", d.file))
+                changed = True
+                continue
             for word in _leading_unknown_words(text, known):
                 new_items.append(Diagnostic(
                     "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,

@@ -147,3 +147,20 @@ def test_cascade_constant_first_argument(stmt, expected):
     # oracle, CR300, 2026-10-01: under the cascade, instead of `Too many parameters`
     text = f"Dim Z banana\nPublic X\nBeginProg\n  Scan (1,Sec,0,0)\n    {stmt}\n  NextScan\nEndProg\n"
     assert [l for l in compile_lines(text, "cr300") if l.startswith("line 5")] == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("PRT sensor using the", ["line 4: sensor is not defined.", "line 4: using is not defined.",
+                              "line 4: Incomplete expression: sensor using the."]),
+    ("PortSet sensor using the", ["line 4: sensor is not defined.", "line 4: using is not defined.",
+                                  "line 4: Incomplete expression: sensor using the.",
+                                  "line 4: Variable illegal in Parameter: sensor using the."]),
+    ("Battery foo and bar baz", ["line 4: foo is not defined.", "line 4: bar is not defined.",
+                                 "line 4: baz is not defined.",
+                                 "line 4: Incomplete expression: foo and bar baz."]),
+    ("Battery foo, bar", ["line 4: foo is not defined.", "line 4: Too many parameters:  bar."]),
+])
+def test_instruction_followed_by_prose(stmt, expected):
+    # oracle, CR300, 2026-10-01
+    text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n"
+    assert compile_lines(text, "cr300") == expected
