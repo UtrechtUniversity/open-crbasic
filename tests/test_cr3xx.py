@@ -544,3 +544,15 @@ def test_table_shaped_prose_lines(text, expected):
     # messages are compared with the newline removed.
     _, diags, _ = compile_result(text)
     assert [(d.line, d.message.replace("\n", "")) for d in diags.errors] == expected
+
+
+@pytest.mark.parametrize("text,expected", [
+    ("Public\nPublic X\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+     [(1, "Variable not named."), (4, "Too many parameters:  Sec.")]),
+    ("Public X\nPublic\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Y\n  NextScan\nEndProg\n",
+     [(2, "Variable not named."), (4, "Too many parameters:  Sec."), (5, "Y is not defined.")]),
+])
+def test_bare_declaration_starts_the_cascade(text, expected):
+    # Oracle, CR300, 2026-10-01; a tainted bare `Public` keeps its own message (`asin_1.CR6`).
+    _, diags, _ = compile_result(text)
+    assert [(d.line, d.message) for d in diags.errors] == expected

@@ -149,7 +149,7 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 # followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
 _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
                          "illegal, starts with a number.", "not yet declared.",
-                         "not supported")
+                         "not supported", "Variable not named.")
 _DECLARATION_TRIGGER_PREFIXES = ("Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required")
@@ -203,7 +203,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 # then `Dim Z banana` prints no `Invalid Variable declaration banana.`); one with
                 # two or more variables reads like an instruction (`Dim A(), B` -> `Too many
                 # parameters:  B.`).
-                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                if not (isinstance(stmt, S.Declaration) and not stmt.vars):
+                    # (`Public` alone keeps `Variable not named.`: oracle, 2026-10-01, `asin_1`)
+                    diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 if isinstance(stmt, S.Declaration) and len(stmt.vars) >= 2:
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
                 if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
