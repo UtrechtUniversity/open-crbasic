@@ -286,6 +286,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `ExciteV(Vx1,...)` (an `expressions.check` finding, tier B) on an earlier line suppresses
         # a later, otherwise-invalid `TCDiff` channel argument entirely -- no accumulation across
         # this boundary, unlike within tier B itself above.
+        _run_pass(instr_measure.check_reps, program, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.

@@ -14,7 +14,7 @@ import re
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 
 
@@ -267,3 +267,81 @@ def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
         return consteval.value_of(expr, env)
     except consteval.NotConstant:
         return None
+
+
+# `Reps` (the second argument) of measurement instructions, oracle-probed 2026-10-01 (the decompiled
+# CR6 check `FUN_005163b0` is shared by 23 instructions; only the ones probed on a logger are
+# listed). CR6/CR1000X: `Invalid reps %d, must be > 0` (no period) for Reps <= 0, and `Variable %s
+# out of bounds.` when the Float destination has fewer elements from its start than Reps (any
+# negative Reps). CR300/CR350: `Invalid reps 0, must be > 0.` for Reps 0 only.
+_REPS_CHECKED = {
+    "cr6": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "BRHALF"}),
+    "cr1000x": frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
+                          "PULSECOUNT", "BRHALF"}),
+    "cr300": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
+    "cr350": frozenset({"THERM107", "THERM108", "THERM109", "PULSECOUNT"}),
+}
+_REPS_DEST_SIZE = frozenset({"VOLTSE", "VOLTDIFF", "TCDIFF", "TCSE", "CURRENTSE", "PERIODAVG",
+                             "BRHALF"})  # positive overflow probed; PulseCount has its own message
+
+
+def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    checked = _REPS_CHECKED.get(profile.name, frozenset())
+    if not checked:
+        return
+    from . import symbols
+    dims = symbols.declared_all_dims(program, env)
+    floats = {v.name.upper() for st in program.statements
+              if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM")
+              for v in st.vars if (v.type or "FLOAT").upper() == "FLOAT"}
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in checked or \
+                len(stmt.args) < 2:
+            continue
+        reps = _int_value(stmt.args[1], env)
+        if reps is None and profile.single_pass and isinstance(_const_value(stmt.args[1], env), str):
+            reps = 0  # `Therm107(T,"fuzz",...)` (oracle, CR300)
+        if reps is None:
+            continue
+        if profile.single_pass:
+            if reps == 0:
+                # before this line's fnotch warning (oracle, CR300, fuzz `84bd80cc420c`)
+                at = next((i for i, d in enumerate(diags.items)
+                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  "Invalid reps 0, must be > 0.", stmt.file))
+            continue
+        if reps <= 0:
+            diags.error(stmt.line, f"Invalid reps {reps}, must be > 0", stmt.file)
+        dest = stmt.args[0]
+        if reps == 0 or not isinstance(dest, (S.Name, S.Index)) or \
+                dest.name.upper() not in floats or dest.name.upper() not in dims:
+            continue
+        if reps > 0 and stmt.keyword.upper() not in _REPS_DEST_SIZE:
+            continue
+        shape = dims[dest.name.upper()]
+        offset = _flat_offset(dest, shape)
+        if offset is None:
+            continue
+        total = 1
+        for n in shape:
+            total *= n
+        if reps < 0 or reps > total - offset:
+            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+
+
+def _flat_offset(dest: S.Expr, shape: tuple[int, ...]) -> int | None:
+    """0-based row-major offset of the destination's first element, or None if not literal."""
+    if isinstance(dest, S.Name) or not dest.args or all(a is None for a in dest.args):
+        return 0
+    if not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in dest.args):
+        return None
+    index = [a.value for a in dest.args]
+    if len(index) == 1:
+        return index[0] - 1 if 1 <= index[0] else None
+    if len(index) != len(shape) or any(not 1 <= k <= n for k, n in zip(index, shape)):
+        return None
+    offset = 0
+    for k, n in zip(index, shape):
+        offset = offset * n + (k - 1)
+    return offset
