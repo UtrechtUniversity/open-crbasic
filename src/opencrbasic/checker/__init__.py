@@ -100,8 +100,8 @@ from .. import syntax as S
 from ..diagnostics import Diagnostics
 from ..profiles import Profile
 from . import (
-    cr3xx, expressions, instr_data, instr_measure, instr_rules, instructions, intervals, structure,
-    warnings,
+    cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
+    structure, warnings,
 )
 
 
@@ -215,6 +215,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
             cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)
+        _run_pass(ess.check, flat, profile, diags, env)
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was

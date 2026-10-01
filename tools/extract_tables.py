@@ -154,6 +154,28 @@ def symbol_table(img: Image) -> list[dict]:
     return rows
 
 
+def ess_table(img: Image) -> list[dict]:
+    """The `ESSVariables` table (CR6: `DAT_005fd008`, 0xd9 records of 0x14 bytes): type byte (0xb
+    String, 0xff a Long `count x 16` array, otherwise Long), element count (0: not checked) and
+    name pointer at +4. Found from the pointer to its `essTypeofStation` name."""
+    va = img.va(find_string(img, "essTypeofStation"))
+    start = img.d.find(struct.pack("<I", va)) - 4
+
+    def name(off: int) -> str | None:
+        n = img.cstr(img.u32(off + 4)) if off >= 0 else None
+        return n if n and IDENT.match(n.encode()) else None
+
+    while name(start - 20):
+        start -= 20
+    rows = []
+    off = start
+    while (n := name(off)) is not None:
+        kind = {0x0B: "STRING", 0xFF: "LONG_ARRAY16"}.get(img.d[off], "LONG")
+        rows.append({"name": n, "type": kind, "count": img.d[off + 1]})
+        off += 20
+    return rows
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--exe", type=Path, default=Path(os.environ.get("CR6COMP_EXE", DEFAULT_EXE)))
@@ -166,6 +188,7 @@ def main() -> int:
         "instructions.json": instruction_table(img),
         "functions.json": function_table(img),
         "symbols.json": symbol_table(img),
+        "ess_variables.json": ess_table(img),
     }
     for name, rows in outputs.items():
         (out / name).write_text(json.dumps(rows, indent=1) + "\n")

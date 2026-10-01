@@ -480,7 +480,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = False
         if not in_sub and not in_struct:  # a structure body names its own members
-            _check_duplicate_declaration(stmt, declared_kinds, diags)
+            _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
             if not stmt.vars:
@@ -1471,7 +1471,8 @@ def _first_dim_text(stmt_text: str, v: S.VarDecl) -> str:
 
 
 
-def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics) -> None:
+def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics,
+                                 profile=None) -> None:
     """Global-scope redeclaration, pass 1, all four loggers (oracle, 2026-09-27, `docs/checker.md`
     "Duplicate declarations"): a `Public`/`Dim` or `Const` name already declared as a variable
     (`Public`/`Dim`, or an `Alias` name) -> `%s already declared as a variable.`; a `Public`/`Dim`
@@ -1504,6 +1505,13 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
         for a in stmt.args[1:]:
             if isinstance(a, S.Name):
                 declared.setdefault(a.name.upper(), "VAR")
+    elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ESSVARIABLES" and profile:
+        # declares its table's variables: a later `Public essBatteryStatus` -> `already declared
+        # as a variable.` (oracle, 2026-10-01; `checker/ess.py`)
+        from . import ess
+        for row in ess._table(str(profile.data_dir)):
+            if row["count"]:
+                declared.setdefault(row["name"].upper(), "VAR")
 
 def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env) -> None:
     """`Public`/`Dim` array-dimension limits (oracle-confirmed, `docs/checker.md` "Array
