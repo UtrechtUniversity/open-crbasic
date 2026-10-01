@@ -592,6 +592,14 @@ _LINE_OP_RUN_RE = re.compile(r"[-+*/^&<>=]+")
 _LINE_WS_RE = re.compile(r"[ \t]+")
 
 
+def prose_known(program: S.Program, profile) -> set[str]:
+    """Names a prose word resolves to: an instruction keyword that is not also a symbol or function
+    is reported (oracle, CR300, 2026-10-01: `foo Battery` -> `Battery is not defined.`, `foo Sin`
+    and `foo Scan` are not)."""
+    instruction_only = set(profile.instructions) - set(profile.symbols) - set(profile.functions)
+    return expressions._known_names(program, profile) - instruction_only
+
+
 def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
     """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
     would report as `%s is not defined.` ahead of the generic fallback for it -- see this
@@ -798,7 +806,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
                 and (d.line, d.file) in unparsed_lines):
             if known is None:
-                known = expressions._known_names(program, profile)
+                known = prose_known(program, profile)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
             table = _TABLE_LINE_RE.match(text)
             if table:

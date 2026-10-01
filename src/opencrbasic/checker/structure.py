@@ -853,8 +853,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
                 continue
             if any((d.line, d.file) == (stmt.line, stmt.file) and
-                   d.message.startswith(_FALLBACK_PREFIX) for d in diags.errors):
-                continue  # a missing-parameter leftover, already reported in pass 1
+                   d.message.startswith((_FALLBACK_PREFIX, "Illegal Data parameter"))
+                   for d in diags.errors):
+                continue  # a missing-parameter leftover or `Data` line, reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \

@@ -922,8 +922,8 @@ def check_data_params(program: S.Program, profile, diags: Diagnostics) -> None:
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() in _DATA_KEYWORDS:
             _check_data_instruction(stmt, known, profile, diags)
-        elif isinstance(stmt, S.Unparsed) and profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-            _check_unparsed_data(stmt, diags)
+        elif isinstance(stmt, S.Unparsed):
+            _check_unparsed_data(stmt, diags, profile, program)
 
 
 def _data_param_text(stmt: S.Instruction, i: int) -> str:
@@ -955,9 +955,11 @@ def _check_data_instruction(stmt: S.Instruction, known: set[str], profile,
         return  # stop at the first bad parameter, see docstring above.
 
 
-def _check_unparsed_data(stmt: S.Unparsed, diags: Diagnostics) -> None:
-    # CR6/CR1000X only (`_WHOLE_EXPR_ECHO_LOGGERS`, enforced by the caller) -- see this module's
-    # `check_data_params` docstring for why CR300/CR350 are not reproduced here.
+def _check_unparsed_data(stmt: S.Unparsed, diags: Diagnostics, profile, program) -> None:
+    """`Data foo bar`: CR6/CR1000X `Invalid symbol in expression: foo bar` (whole text); CR300/
+    CR350 each leading word as in a prose line (`Data Tables and Store Data` -> Tables, Store,
+    Data), then `Incomplete expression: foo bar` (oracle, 2026-10-01). Both end with `Illegal Data
+    parameter`."""
     if not stmt.reason.startswith("unexpected trailing input starting at"):
         return
     stripped = stmt.text.lstrip()
@@ -965,7 +967,14 @@ def _check_unparsed_data(stmt: S.Unparsed, diags: Diagnostics) -> None:
     for kw in ("DATALONG", "DATA"):  # longer name first: "DATALONG" also starts with "DATA".
         if upper.startswith(kw) and len(stripped) > len(kw) and stripped[len(kw)].isspace():
             text = stripped[len(kw):].lstrip() + "\n"
-            diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+            if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+                diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
+            else:
+                from . import cr3xx
+                for name in cr3xx._leading_unknown_words(text, cr3xx.prose_known(program, profile)):
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                                stmt.file)
+                diags.error(stmt.line, f"Incomplete expression: {text}.", stmt.file)
             diags.error(stmt.line, f"Illegal Data parameter {text}.", stmt.file)
             return
 

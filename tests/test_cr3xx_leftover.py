@@ -89,3 +89,37 @@ def test_parenthesised_line_echoes_its_content(body, expected, logger):
     # oracle, CR300, 2026-10-01
     text = f"Public X, Y\nBeginProg\n  Scan (1,Sec,0,0)\n{body}\n  NextScan\nEndProg\n"
     assert compile_lines(text, logger) == expected
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("Data foo bar", ["line 5: foo is not defined.", "line 5: bar is not defined.",
+                      "line 5: Incomplete expression: foo bar\n.",
+                      "line 5: Illegal Data parameter foo bar\n."]),
+    ("Data Tables and Store Data", ["line 5: Tables is not defined.", "line 5: Store is not defined.",
+                                    "line 5: Data is not defined.",
+                                    "line 5: Incomplete expression: Tables and Store Data\n.",
+                                    "line 5: Illegal Data parameter Tables and Store Data\n."]),
+])
+def test_data_with_juxtaposed_words(stmt, expected):
+    # oracle, CR300, 2026-10-01
+    text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\n{stmt}\nEndProg\n"
+    assert compile_lines(text, "cr300") == expected
+
+
+@pytest.mark.parametrize("logger", ["cr6", "cr300"])
+def test_data_is_never_flagged_unreachable(logger):
+    text = "Public X\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nData 1,2\nEndProg\n"
+    assert compile_lines(text, logger) == []
+
+
+@pytest.mark.parametrize("stmt,expected", [
+    ("foo Battery", ["line 4: foo is not defined.", "line 4: Battery is not defined."]),
+    ("foo Next", ["line 4: foo is not defined.", "line 4: Next is not defined."]),
+    ("foo Sin", ["line 4: foo is not defined."]),
+    ("foo Scan", ["line 4: foo is not defined."]),
+])
+def test_instruction_keywords_in_prose_are_undefined(stmt, expected):
+    # oracle, CR300, 2026-10-01: instruction-only keywords are not values
+    text = f"Public X\nBeginProg\n  Scan (1,Sec,0,0)\n{stmt}\n  NextScan\nEndProg\n"
+    got = [line for line in compile_lines(text, "cr300") if "is not defined" in line]
+    assert got == expected

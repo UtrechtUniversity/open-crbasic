@@ -10,6 +10,8 @@ evidence: `docs/instructions.md`; the pre-existing table-never-called rule's own
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -78,6 +80,10 @@ def _kw(stmt: S.Stmt) -> str:
         return stmt.keyword.upper()
     if isinstance(stmt, S.SubDef):
         return stmt.keyword.upper()  # SUB / FUNCTION
+    if isinstance(stmt, S.Unparsed):
+        word = re.match(r"\s*(DataLong|Data)\s", stmt.text or "", re.I)
+        if word:
+            return word.group(1).upper()  # `Data foo bar`: still a `Data` line
     return type(stmt).__name__.upper()
 
 
@@ -91,6 +97,7 @@ _NON_EXECUTABLE_KEYWORDS = frozenset({
     "BEGINPROG", "ENDPROG", "DATATABLE", "ENDTABLE", "ALIAS", "UNITS",
     "CONSTTABLE", "ENDCONSTTABLE", "STRUCTURE", "ENDSTRUCTURE",
     "STRUCTURETYPE", "ENDSTRUCTURETYPE", "OBJECTTYPE", "ENDOBJECTTYPE",
+    "DATA", "DATALONG",  # (oracle, 2026-10-01: `Data 1,2` after `NextScan` is not flagged)
 })
 
 
