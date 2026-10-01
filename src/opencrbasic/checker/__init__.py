@@ -186,6 +186,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     if not profile.early_warnings_gated:
         _run_pass(warnings.check_early, program, profile, diags, env)
 
+    bounds = Diagnostics()
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
@@ -216,6 +217,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)
         _run_pass(ess.check, flat, profile, diags, env)
+        # Collected aside: reported with pass 2 but not hiding the tier-C checks (oracle:
+        # `PortSet(1,A(9))` gives both `Invalid port 1 ...` and `Variable A out of bounds.`).
+        if not profile.single_pass:
+            _run_pass(expressions.check_instruction_index_bounds, flat, profile, bounds, env)
+        if cutoff is not None:
+            bounds.items = [d for d in bounds.items if d.line <= cutoff]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
@@ -253,6 +260,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     if not diags.errors:
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
+        if profile.single_pass:
+            _run_pass(expressions.check_instruction_index_bounds, program, profile, bounds, env)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
     if not diags.errors and profile.early_warnings_gated:
         # CR300/CR350: the early warnings follow the table `Reps` checks and precede `CallTable`
@@ -285,6 +294,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
+
+    diags.items += bounds.items
 
     # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any undefined-
     # name-class or genuine-`Too many parameters:` finding has fired anywhere above -- tier A

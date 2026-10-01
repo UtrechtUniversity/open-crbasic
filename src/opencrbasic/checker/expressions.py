@@ -1444,3 +1444,52 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
         if any(_has_undefined_index(a, known) for a in stmt.args):
             diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                         stmt.file)
+
+
+# Parameter codes whose plain array-element argument is bounds-checked, and instructions whose own
+# compile function takes that argument over (oracle, 2026-10-01: `AddPrecise(X,A(9))` compiles).
+_BOUNDS_CHECKED_CODES = frozenset({2, 8, 28, 41})
+_BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
+
+
+def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnostics,
+                                   env: consteval.Env) -> None:
+    """`Battery(A(9))` for `Public A(5)` -> `Variable A out of bounds.` (oracle, 2026-10-01): pass 2
+    on CR6/CR1000X, the late stage on CR300/CR350 (only in a file with no other error). Only an argument that is itself an element of a Float array, indexed by
+    number literals: index 0 or past its dimension (a single index on a multi-dimensional array
+    against the element count). An expression (`A(6)+1`), `A(-1)`, a Long array and an assignment
+    (`X = A(6)`, checked at run time) all compile."""
+    dims = symbols.declared_all_dims(program, env)
+    types: dict[str, str] = {}
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
+            for v in st.vars:
+                if v.dims:  # arrays only (an indexed scalar is not probed)
+                    types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() in _BOUNDS_UNCHECKED:
+            continue
+        record = profile.instructions.get(stmt.keyword.upper())
+        if not record:
+            continue
+        for i, arg in enumerate(stmt.args):
+            code = record["params"][i] if i < len(record["params"]) else None
+            if code not in _BOUNDS_CHECKED_CODES or not isinstance(arg, S.Index) or not arg.args:
+                continue
+            name = arg.name.upper()
+            shape = dims.get(name)
+            if not shape or types.get(name) != "FLOAT" or \
+                    not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
+                continue
+            index = [a.value for a in arg.args]
+            if len(index) == 1 and len(shape) > 1:
+                total = 1
+                for n in shape:
+                    total *= n
+                bad = not 1 <= index[0] <= total
+            elif len(index) == len(shape):
+                bad = any(not 1 <= k <= n for k, n in zip(index, shape))
+            else:
+                continue
+            if bad:
+                diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
