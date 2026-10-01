@@ -7,6 +7,8 @@ evidence: `docs/loggers.md`.
 
 from __future__ import annotations
 
+import collections
+
 import re
 
 from .. import syntax as S
@@ -271,11 +273,14 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
     structure.check_pass2(modified, profile, scratch, env)
     expressions.check(modified, profile, scratch, env)
     expressions.check_function_call_counts(modified, profile, scratch)
+    existing = collections.Counter((e.line, e.file, e.message) for e in diags.items)
     for d in scratch.items:
         key = (d.line, d.file)
-        if key in affected and d.severity == "error" and not any(
-                (e.line, e.file, e.message) == (d.line, d.file, d.message) for e in diags.items):
-            diags.items.append(d)
+        if key in affected and d.severity == "error":
+            if existing[(d.line, d.file, d.message)]:
+                existing[(d.line, d.file, d.message)] -= 1
+            else:
+                diags.items.append(d)
     _respliced_call_args(modified, profile, diags, scratch, affected)
 
 

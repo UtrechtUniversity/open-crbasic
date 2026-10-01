@@ -357,3 +357,19 @@ def test_undefined_call_argument_scan_matches_oracle(profile_name, args, names):
     got = [d.message for d in diags.errors if d.line == 8
            and d.message.endswith("is not defined.")]
     assert got == ["Foo is not defined."] + [f"{n} is not defined." for n in names.split()]
+
+
+def test_cdmvoltse_corpus_declaration_cascade_order():
+    from pathlib import Path
+    path = Path(__file__).parent / "corpus" / "chm" / "cdmvoltse_1.CR6"
+    program, diags = parser.parse_text(path.read_text(errors="replace"), path.name, profile=PROFILE)
+    result = CompileResult(path.name, PROFILE, diags)
+    checker.check(program, PROFILE, diags, result)
+    by_line: dict[int, list[str]] = {}
+    for d in diags.errors:
+        by_line.setdefault(d.line, []).append(d.message)
+    assert by_line[29].count("Bar_inHg is not defined.") == 2
+    l23 = by_line[23]
+    assert l23[:3] == ["CDM_Battery is not defined.", "CDM_A108 is not defined.",
+                       "Batt_Volt is not defined."]
+    assert l23[3].startswith("Invalid, or out of place expression")

@@ -62,3 +62,49 @@ def test_inline_if(body, cr6, cr300):
     assert lines(body, "cr1000x") == cr6
     assert lines(body, "cr300") == cr300
     assert lines(body, "cr350") == cr300
+
+
+# Oracle-verified (real compilers, 2026-10-01): echo of a call statement in a one-line `If`.
+# CR6 prints the echo verbatim with the `.` right after it; CR300/CR350 add a newline before the
+# `.` only when the echo ends at the physical end of a plain (non-inline-If) line.
+def _echo6(echo):
+    return [f"line 4: Invalid, or out of place expression: {echo}."]
+
+
+ECHO_ROWS = [
+    ("If X Then Foo(1) 'c", "Foo(1) "),
+    ("If X Then Foo(1)   'c", "Foo(1)   "),
+    ("If X Then Foo(1)   ", "Foo(1)   "),
+    ("If X Then Foo(1) : X = 1", "Foo(1) "),
+    ("If X Then Foo(1)  Else X = 2", "Foo(1) "),
+    ("If X Then X=2 Else Foo(1)   'c", "Foo(1)   "),
+    ("If X Then Foo(1)   :X=1", "Foo(1)   "),
+    ("If X Then  Foo(1)  :  X=1", " Foo(1)  "),
+    ("If X Then Foo(1)", "Foo(1)"),
+]
+
+
+@pytest.mark.parametrize("stmt,echo", ECHO_ROWS)
+def test_inline_if_call_echo_cr6(stmt, echo):
+    assert lines(f"    {stmt}\n", "cr6") == _echo6(echo)
+
+
+CR300_ECHO_ROWS = [
+    ("If X Then X = 1 : Foo(1)", " Foo(1)"),
+    ("If X Then X = 1 : Foo(1)   ", " Foo(1)   "),
+    ("If X Then X = 1 Else X = 2 : Foo(1)", " Foo(1)"),
+]
+
+
+@pytest.mark.parametrize("stmt,echo", CR300_ECHO_ROWS)
+def test_inline_if_call_echo_cr300_no_newline(stmt, echo):
+    expected = ["line 4: Foo is not defined.",
+                f"line 4: Invalid, or out of place expression: {echo}."]
+    assert lines(f"    {stmt}\n", "cr300") == expected
+
+
+def test_plain_colon_call_echo_cr300_has_newline():
+    assert lines("    X = 1 : Foo(1)\n", "cr300") == [
+        "line 4: Foo is not defined.",
+        "line 4: Invalid, or out of place expression:  Foo(1)\n.",
+    ]

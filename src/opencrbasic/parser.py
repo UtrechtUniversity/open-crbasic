@@ -304,19 +304,23 @@ class _Parser:
         # (found by corpus testing -- `Public TC(120) : Units TC = C` -- see docs/frontend.md).
         segments = _split_text_segments(ll.text)
         last_idx = len(segments) - 1
+        in_inline_if = False
         for idx, seg_text_raw in enumerate(segments):
             if not seg_text_raw.strip():
                 continue
             # Only the segment that is both last on its physical line (nothing after it split off
             # by a top-level `:`) and not followed by a stripped `'` comment truly reaches that
             # line's real end -- see `Stmt.at_eol`'s docstring.
-            at_eol = idx == last_idx and not ll.had_trailing_comment
+            at_eol = idx == last_idx and not ll.had_trailing_comment and not in_inline_if
             word = _LEADING_WORD_RE.match(seg_text_raw)
             if word and word.group(1).upper() == "UNITS":
                 stmt = self._parse_units_segment(seg_text_raw, ll.line, ll.file)
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
             stmt.at_eol = at_eol
+            # Segments after a one-line `If` belong to its body: no newline in the echo (oracle,
+            # CR300, 2026-10-01: `If X Then X = 1 : Foo(1)`).
+            in_inline_if = in_inline_if or (isinstance(stmt, S.If) and stmt.inline is not None)
             self.program.statements.append(stmt)
             # A `Const` just parsed is folded into `self.env` inside `_parse_const` itself, so
             # later statements/#If on the same or a later line see it.
@@ -519,8 +523,9 @@ class _Parser:
     def _parse_if(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # IF
         cond = self._parse_expr(p, line, file)
+        then_tok = None
         if p.is_ident("THEN"):
-            p.next()
+            then_tok = p.next()
         elif not p.at_end():
             # Block-form `If` may omit `Then` entirely (confirmed with the oracle: `If Flag` /
             # `EndIf` compiles) -- but inline form (something follows on the line) still needs
@@ -544,13 +549,20 @@ class _Parser:
             then_toks, else_toks = rest, None
         else:
             then_toks, else_toks = rest[:else_idx], rest[else_idx + 1:]
-        then_stmts = self._parse_stmt_list(then_toks, line, file, p.seg_text)
-        inline_else = self._parse_stmt_list(else_toks, line, file, p.seg_text) \
-            if else_toks is not None else None
+        # The first statement after `Then`/`Else` is echoed from one column past the keyword to
+        # one column before `Else` or the segment's end, trailing spaces kept (oracle, 2026-10-01).
+        text_end = len(p.seg_text)
+        else_tok = rest[else_idx] if else_idx is not None else None
+        then_bounds = (then_tok.col + len(then_tok.text) + 1 if then_tok else None,
+                       else_tok.col - 1 if else_tok else text_end)
+        then_stmts = self._parse_stmt_list(then_toks, line, file, p.seg_text, then_bounds)
+        inline_else = self._parse_stmt_list(
+            else_toks, line, file, p.seg_text,
+            (else_tok.col + len(else_tok.text) + 1, text_end)) if else_toks is not None else None
         return S.If(line, file, cond=cond, inline=then_stmts, inline_else=inline_else)
 
-    def _parse_stmt_list(self, toks: list[Token], line: int, file: str,
-                         outer: str = "") -> list[S.Stmt]:
+    def _parse_stmt_list(self, toks: list[Token], line: int, file: str, outer: str = "",
+                         bounds: tuple[int | None, int] | None = None) -> list[S.Stmt]:
         """Statements of a one-line `If`. Each gets its verbatim source slice as `text` (the real
         compiler echoes `X=Q+1`, oracle 2026-09-27) with `arg_spans` re-based onto it, and
         `at_eol` False (no newline in the CR300/CR350 echo)."""
@@ -561,6 +573,10 @@ class _Parser:
             if not real:
                 continue
             start, end = real[0].col, real[-1].col + len(real[-1].text)
+            if bounds and seg is segs[0]:
+                if bounds[0] is not None:
+                    start = min(start, bounds[0])
+                end = max(end, bounds[1])
             verbatim = outer[start:end] if outer and len(outer) >= end else ""
             stmt = self._parse_segment(seg, line, file, verbatim or " ".join(t.text for t in real))
             if verbatim:
