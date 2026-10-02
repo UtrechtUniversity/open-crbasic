@@ -43,6 +43,8 @@ REPO_ROOT = OPENCRBASIC_ROOT.parent
 DEFAULT_COMPILER = REPO_ROOT / "compiler" / "CR6Comp.exe"
 SRC_DIR = OPENCRBASIC_ROOT / "src"
 sys.path.insert(0, str(SRC_DIR))
+sys.path.insert(0, str(TOOLS_DIR))
+import oracle  # noqa: E402
 
 DEFAULT_MACOS_WINE = (
     Path.home() / ".local" / "wine" / "Wine Devel.app" / "Contents" / "Resources" / "wine" / "bin" / "wine"
@@ -63,17 +65,7 @@ def _find_wine() -> str:
 
 
 def _runner_command(exe_path: Path) -> tuple[list[str], dict[str, str]]:
-    env = dict(os.environ)
-    override = os.environ.get("CR6COMP_RUNNER")
-    if override:
-        import shlex
-        return shlex.split(override) + [str(exe_path)], env
-    if sys.platform == "win32":
-        return [str(exe_path)], env
-    wine = _find_wine()
-    env.setdefault("WINEPREFIX", str(DEFAULT_WINEPREFIX))
-    env.setdefault("WINEDEBUG", "-all")
-    return [wine, str(exe_path)], env
+    return oracle._runner_command(exe_path)
 
 
 def main() -> int:
@@ -107,7 +99,7 @@ def main() -> int:
     lst_path = tmpdir / "out.lst"
     argv_prefix, env = _runner_command(args.exe)
     cmd = argv_prefix + ["-z", "out.tdf", "-l", "out.lst", *args.extra, args.name]
-    proc = subprocess.run(cmd, cwd=tmpdir, capture_output=True, text=True, timeout=30)
+    proc = subprocess.run(cmd, cwd=tmpdir, env=env, capture_output=True, text=True, timeout=30)
 
     print("=== stdout ===")
     print(proc.stdout, end="" if proc.stdout.endswith("\n") else "\n")

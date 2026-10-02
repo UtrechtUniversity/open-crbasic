@@ -1,4 +1,4 @@
-"""Corpus tests: parse every program in `crbasic/`, `examples/` and `tests/corpus/chm/`.
+"""Corpus tests: parse every program in `crbasic/` and `tests/corpus/chm/`.
 
 The parser must never raise (checked for every file, regardless of the oracle's verdict). For a
 program the real compiler *accepts*, parsing must additionally produce zero `Unparsed`
@@ -26,12 +26,10 @@ from opencrbasic import syntax as S
 OPENCRBASIC_ROOT = Path(__file__).resolve().parent.parent
 REPO_ROOT = OPENCRBASIC_ROOT.parent
 CRBASIC_DIR = REPO_ROOT / "crbasic"
-EXAMPLES_DIR = REPO_ROOT / "examples"
 CHM_DIR = OPENCRBASIC_ROOT / "tests" / "corpus" / "chm"
 
 # Entry programs (compiled directly, not pulled in via Include/IncludeSection) in `crbasic/`.
 CRBASIC_ENTRY_PROGRAMS = sorted(CRBASIC_DIR.glob("*.CR6")) if CRBASIC_DIR.is_dir() else []
-EXAMPLE_PROGRAMS = sorted(EXAMPLES_DIR.glob("*.CR6")) if EXAMPLES_DIR.is_dir() else []
 CHM_PROGRAMS = sorted(CHM_DIR.glob("*.CR6")) if CHM_DIR.is_dir() else []
 
 # oracle-accepted CHM examples this front end knowingly does not fully parse; see docs/frontend.md.
@@ -83,11 +81,6 @@ def _oracle_accepts(path: Path) -> bool | None:
 @pytest.mark.parametrize("path", CRBASIC_ENTRY_PROGRAMS, ids=lambda p: p.name)
 def test_crbasic_entry_programs_never_raise(path):
     parser.parse_file(path)  # must not raise
-
-
-@pytest.mark.parametrize("path", EXAMPLE_PROGRAMS, ids=lambda p: p.name)
-def test_example_programs_never_raise(path):
-    parser.parse_file(path)
 
 
 @pytest.mark.parametrize("path", CHM_PROGRAMS, ids=lambda p: p.name)

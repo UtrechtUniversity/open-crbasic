@@ -52,6 +52,15 @@ class OracleError(RuntimeError):
     """No working CR6Comp.exe runner could be found."""
 
 
+def _valid_result(record: dict, program_name: str) -> bool:
+    """A runner failure is not a compiler verdict, including in older caches."""
+    return record.get("exit") in (0, 1) and any(
+        line.startswith(f"{program_name} -- ")
+        and ("Compiled" in line or "Compile Failed!" in line)
+        for line in record.get("stdout", "").splitlines()
+    )
+
+
 def _find_wine() -> str:
     override = os.environ.get("CR6_WINE")
     if override:
@@ -79,6 +88,7 @@ def _runner_command(exe_path: Path) -> tuple[list[str], dict[str, str]]:
     wine = _find_wine()
     env.setdefault("WINEPREFIX", str(DEFAULT_WINEPREFIX))
     env.setdefault("WINEDEBUG", "-all")
+    env.setdefault("WINEDLLOVERRIDES", "winemac.drv,winex11.drv,winewayland.drv=d")
     return [wine, str(exe_path)], env
 
 
@@ -148,7 +158,9 @@ def run_oracle(
         CACHE_DIR.mkdir(parents=True, exist_ok=True)
         cache_path = CACHE_DIR / f"{key}.json"
         if cache_path.is_file():
-            return json.loads(cache_path.read_text(encoding="utf-8"))
+            cached = json.loads(cache_path.read_text(encoding="utf-8"))
+            if _valid_result(cached, program_path.name):
+                return cached
 
     with tempfile.TemporaryDirectory(prefix="oracle-") as tmp:
         tmp_dir = Path(tmp)
@@ -159,13 +171,17 @@ def run_oracle(
         shutil.copy2(program_path, dest_program)
 
         argv_prefix, env = _runner_command(compiler_path)
-        result = subprocess.run(
-            argv_prefix + [dest_program.name],
-            cwd=tmp_dir,
-            env=env,
-            capture_output=True,
-            text=False,
-        )
+        try:
+            result = subprocess.run(
+                argv_prefix + [dest_program.name],
+                cwd=tmp_dir,
+                env=env,
+                capture_output=True,
+                text=False,
+                timeout=60,
+            )
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise OracleError(f"reference compiler runner failed: {exc}") from exc
 
         stdout = _strip_trailing_blank_lines(_decode_and_normalise(result.stdout))
 
@@ -179,7 +195,14 @@ def run_oracle(
             "exit": result.returncode,
             "stdout": stdout,
             "cmple": cmple,
+            "stderr": _decode_and_normalise(result.stderr),
         }
+        if not _valid_result(record, program_path.name):
+            detail = record["stderr"].strip() or stdout or "no compiler result line"
+            raise OracleError(
+                f"{compiler_path.name} returned no usable compiler verdict "
+                f"(exit {result.returncode}): {detail[:1000]}"
+            )
 
     if cache_path is not None:
         cache_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")

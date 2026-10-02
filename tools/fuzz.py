@@ -16,7 +16,7 @@ random text-level mutation operators (`OPERATORS` below) to a seed's lines, seed
   crash         opencrbasic raised a Python exception
   hang          opencrbasic did not return at all within a timeout (see below)
 
-`run_ours` calls `compile_file` in a forked child process with a hard wall-clock timeout
+`run_ours` calls `compile_file` in a spawned child process with a hard wall-clock timeout
 (`--hang-timeout`, default 8s) rather than in-process, specifically because a fuzzed mutant found
 exactly this during development: a `Public` array whose declared dimension a mutation blew up to
 ~10^12 makes `tables.py`'s `render_table_list` -> `_explode_indices` enumerate every index with no
@@ -92,15 +92,14 @@ class Seed:
 
 
 def _accepted(path: Path, siblings: Path | None, exe: Path) -> bool:
-    try:
-        r = oracle.run_oracle(path, siblings, compiler_path=exe)
-    except oracle.OracleError as exc:
-        print(f"oracle error on {path}: {exc}", file=sys.stderr)
-        return False
+    # Oracle infrastructure failures must abort the run. Treating them as a rejected seed would
+    # silently turn a broken runner into misleading semantic coverage.
+    r = oracle.run_oracle(path, siblings, compiler_path=exe)
     return r["exit"] == 0
 
 
-def load_seeds(profile: profiles.Profile, exe: Path, workers: int) -> list[Seed]:
+def load_seeds(profile: profiles.Profile, exe: Path, workers: int,
+               oracle_errors: list[dict] | None = None) -> list[Seed]:
     candidates: list[Seed] = []
     if CRBASIC_DIR.is_dir():
         for p in sorted(CRBASIC_DIR.glob("*.CR6")):
@@ -108,9 +107,22 @@ def load_seeds(profile: profiles.Profile, exe: Path, workers: int) -> list[Seed]
     for p in sorted(CHM_DIR.glob("*.CR6")):
         candidates.append(Seed("chm", p, None))
 
+    def check(seed):
+        try:
+            return _accepted(seed.path, seed.siblings, exe), None
+        except oracle.OracleError as exc:
+            if oracle_errors is None:
+                raise
+            return False, {
+                "stage": "seed", "seed": f"{seed.group}/{seed.path.name}",
+                "source": _display_path(seed.path), "message": str(exc),
+            }
+
     with concurrent.futures.ThreadPoolExecutor(workers) as pool:
-        ok = list(pool.map(lambda s: _accepted(s.path, s.siblings, exe), candidates))
-    seeds = [s for s, good in zip(candidates, ok) if good]
+        checked = list(pool.map(check, candidates))
+    if oracle_errors is not None:
+        oracle_errors.extend(error for _, error in checked if error is not None)
+    seeds = [s for s, (good, _) in zip(candidates, checked) if good]
     return seeds
 
 
@@ -464,41 +476,48 @@ def normalise(text: str) -> str:
     return "\n".join(line.rstrip() for line in text.strip().splitlines())
 
 
-def _run_ours_child(path_str: str, logger: str, q: "multiprocessing.Queue") -> None:
-    """Runs in a forked child (see `run_ours`); never raises across the fork boundary."""
+def _run_ours_child(path_str: str, logger: str, result_pipe) -> None:
+    """Runs in a spawned child; sends one result without a Queue feeder thread."""
     try:
         profile = profiles.get(logger)
         result = compile_file(Path(path_str), profile)
-        q.put(((0 if result.ok else 1), "\n".join(result.result_lines())))
+        result_pipe.send(((0 if result.ok else 1), "\n".join(result.result_lines())))
     except Exception as exc:  # a crash is a result, not a harness failure
-        q.put((2, f"CRASH {type(exc).__name__}: {exc}"))
+        result_pipe.send((2, f"CRASH {type(exc).__name__}: {exc}"))
+    finally:
+        result_pipe.close()
 
 
 def run_ours(path: Path, profile: profiles.Profile, timeout: float = HANG_TIMEOUT) -> tuple[int, str]:
-    # compile_file() does not itself print to stdout (checked: no `print` outside cli.py/tdf.py's
-    # own __main__), so unlike difftest.py's single-threaded `ours()` this is not wrapped in
-    # contextlib.redirect_stdout -- that redirect is process-global, not thread-local, and would
-    # race with other worker threads' own output under this module's thread pool.
-    #
-    # Run in a forked child with a hard wall-clock timeout: see the module docstring's "hang"
-    # entry for why this can't just be an in-process try/except -- some mutants make
-    # compile_file() never return at all, and a bare in-process call would wedge the whole run.
-    ctx = multiprocessing.get_context("fork")
-    q: multiprocessing.Queue = ctx.Queue()
-    proc = ctx.Process(target=_run_ours_child, args=(str(path), profile.name, q))
+    # Spawn avoids locks inherited from other worker threads; a pipe avoids Queue feeder-thread
+    # lifetime ambiguity. Concurrent Process.join() returned early on macOS, so result delivery
+    # and the measured deadline decide completion; see docs/fuzz-findings.md#worker-isolation.
+    ctx = multiprocessing.get_context("spawn")
+    receiver, sender = ctx.Pipe(duplex=False)
+    proc = ctx.Process(target=_run_ours_child, args=(str(path), profile.name, sender))
+    deadline = time.monotonic() + timeout
     proc.start()
-    proc.join(timeout)
-    if proc.is_alive():
-        proc.terminate()
-        proc.join(1.0)
-        if proc.is_alive():
-            proc.kill()
-            proc.join()
-        return 3, f"HANG: opencrbasic did not return within {timeout:.0f}s"
+    sender.close()
     try:
-        return q.get_nowait()
-    except Exception:
-        return 2, f"CRASH: worker process exited without a result (code {proc.exitcode})"
+        while True:
+            remaining = max(0.0, deadline - time.monotonic())
+            if receiver.poll(remaining):
+                try:
+                    return receiver.recv()
+                except EOFError:
+                    proc.join(0.1)
+                    return 2, f"CRASH: worker process exited without a result (code {proc.exitcode})"
+            if time.monotonic() >= deadline:
+                return 3, f"HANG: opencrbasic did not return within {timeout:.0f}s"
+    finally:
+        receiver.close()
+        proc.join(0.1)
+        if proc.is_alive():
+            proc.terminate()
+            proc.join(1.0)
+            if proc.is_alive():
+                proc.kill()
+                proc.join()
 
 
 def run_theirs(path: Path, profile: profiles.Profile, siblings: Path | None) -> tuple[int, str]:
@@ -512,7 +531,8 @@ def classify(our_exit: int, our_out: str, their_exit: int, their_out: str) -> st
         return "hang"
     if our_exit == 2:
         return "crash"
-    if normalise(our_out) == normalise(their_out):
+    # A matching diagnostic transcript is not exact parity when the process verdict differs.
+    if our_exit == their_exit and normalise(our_out) == normalise(their_out):
         return None
     if their_exit == 0 and our_exit != 0:
         return "false_reject"
@@ -701,9 +721,16 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
     count = args.count if args.count is not None else DEFAULT_COUNTS.get(logger, 300)
 
     t0 = time.time()
-    seeds = load_seeds(profile, exe, args.workers)
+    oracle_errors: list[dict] = []
+    seeds = load_seeds(profile, exe, args.workers, oracle_errors)
+    summary_path = args.out / f"summary-{logger}.json"
     if not seeds:
         print(f"{logger}: no accepted seeds found", file=sys.stderr)
+        args.out.mkdir(parents=True, exist_ok=True)
+        summary_path.write_text(json.dumps({
+            "logger": logger, "count": 0, "seed": args.seed,
+            "counts": {}, "saved": 0, "oracle_errors": oracle_errors,
+        }, indent=2) + "\n", encoding="utf-8")
         return False
     print(f"{logger}: {len(seeds)} accepted seeds "
           f"({sum(1 for s in seeds if s.group == 'repo')} repo, "
@@ -720,25 +747,35 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
 
     def work(item):
         i, sd, lines, ops = item
-        quad = run_mutant(sd, lines, profile)
-        return i, classify(*quad), quad
+        try:
+            quad = run_mutant(sd, lines, profile)
+            return i, classify(*quad), quad, None
+        except oracle.OracleError as exc:
+            error = {
+                "stage": "mutant", "seed": f"{sd.group}/{sd.path.name}",
+                "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
+            }
+            return i, "oracle_error", None, error
 
-    results: list[tuple[str | None, Quad]] = [None] * count
+    results: list[tuple[str | None, Quad | None, dict | None]] = [None] * count
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
-        for i, cls, quad in pool.map(work, mutants):
-            results[i] = (cls, quad)
+        for i, cls, quad, error in pool.map(work, mutants):
+            results[i] = (cls, quad, error)
+            if error is not None:
+                oracle_errors.append(error)
 
-    counts = Counter(cls or "exact" for cls, _ in results)
+    counts = Counter(cls or "exact" for cls, _, _ in results)
     print(f"{logger}: classified {count} mutants in {time.time() - t0:.0f}s -> "
           + ", ".join(f"{k}={counts.get(k, 0)}" for k in ["exact"] + CLASSES))
 
     seen: Counter = Counter()
     remaining_shrink_budget = args.shrink_budget_total
     saved: list[dict] = []
-    for i, (cls, quad) in enumerate(results):
-        if cls is None:
+    for i, (cls, quad, _) in enumerate(results):
+        if cls is None or cls == "oracle_error":
             continue
         _, sd, lines, ops = mutants[i]
+        assert quad is not None
         our_exit, our_out, their_exit, their_out = quad
         sig = _signature(cls, our_out, their_out)
         cap = SIGNATURE_CAP_OVERRIDE.get(cls, args.max_per_signature)
@@ -748,25 +785,40 @@ def run_logger(logger: str, args: argparse.Namespace) -> bool:
 
         budget = min(args.shrink_budget, remaining_shrink_budget)
         if budget > 0:
-            shrunk_lines, used, quad = shrink(sd, lines, profile, cls, quad, budget)
+            try:
+                shrunk_lines, used, quad = shrink(sd, lines, profile, cls, quad, budget)
+            except oracle.OracleError as exc:
+                oracle_errors.append({
+                    "stage": "shrink", "seed": f"{sd.group}/{sd.path.name}",
+                    "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
+                })
+                continue
             remaining_shrink_budget -= used
         else:
             shrunk_lines = lines
 
-        meta = save_reproducer(args.out, logger, cls, sd, shrunk_lines, ops, profile)
+        try:
+            meta = save_reproducer(args.out, logger, cls, sd, shrunk_lines, ops, profile)
+        except oracle.OracleError as exc:
+            oracle_errors.append({
+                "stage": "save", "seed": f"{sd.group}/{sd.path.name}",
+                "source": f"mutant:{i}:ops={'+'.join(ops)}", "message": str(exc),
+            })
+            continue
         if meta is not None:
             saved.append(meta)
 
     print(f"{logger}: saved {len(saved)} reproducers to {args.out / logger}"
           f" (shrink budget used: {args.shrink_budget_total - remaining_shrink_budget})")
 
-    summary_path = args.out / f"summary-{logger}.json"
     args.out.mkdir(parents=True, exist_ok=True)
     summary_path.write_text(json.dumps({
         "logger": logger, "count": count, "seed": args.seed,
-        "counts": dict(counts), "saved": len(saved),
+        "counts": dict(counts), "saved": len(saved), "oracle_errors": oracle_errors,
     }, indent=2) + "\n", encoding="utf-8")
-    return True
+    if oracle_errors:
+        print(f"{logger}: {len(oracle_errors)} oracle errors; see {summary_path}", file=sys.stderr)
+    return not oracle_errors
 
 
 if __name__ == "__main__":

@@ -42,6 +42,7 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from opencrbasic import parser, profiles, tdf  # noqa: E402
 from opencrbasic.tables import build_tables  # noqa: E402
+import oracle  # noqa: E402
 
 DEFAULT_COMPILER = REPO / "compiler" / "CR6Comp.exe"
 TDF_CACHE_DIR = ROOT / ".oracle-cache" / "tdf"
@@ -71,24 +72,7 @@ def _cache_key(compiler_path: Path, program_path: Path, siblings_dir: Path) -> s
 
 
 def _runner_command(exe_path: Path):
-    import os
-    import shlex
-
-    env = dict(os.environ)
-    override = os.environ.get("CR6COMP_RUNNER")
-    if override:
-        return shlex.split(override) + [str(exe_path)], env
-    if sys.platform == "win32":
-        return [str(exe_path)], env
-    macos_wine = (Path.home() / ".local" / "wine" / "Wine Devel.app" / "Contents" / "Resources"
-                  / "wine" / "bin" / "wine")
-    wine = os.environ.get("CR6_WINE") or (str(macos_wine) if macos_wine.is_file() else None) \
-        or shutil.which("wine")
-    if not wine:
-        raise RuntimeError("no wine runner found")
-    env.setdefault("WINEPREFIX", str(Path.home() / ".wine-cr6"))
-    env.setdefault("WINEDEBUG", "-all")
-    return [wine, str(exe_path)], env
+    return oracle._runner_command(exe_path)
 
 
 class NotCached(RuntimeError):
@@ -104,11 +88,15 @@ def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path =
     cache_path = TDF_CACHE_DIR / f"{key}.json"
     if (use_cache or cache_only) and cache_path.is_file():
         rec = json.loads(cache_path.read_text())
-        return {
-            "ok": rec["ok"], "stdout": rec["stdout"],
-            "tdf": base64.b64decode(rec["tdf"]) if rec["tdf"] else None,
-            "lst": base64.b64decode(rec["lst"]) if rec["lst"] else None,
-        }
+        exit_code = rec.get("exit", 0 if rec.get("ok") else 1)
+        validity = {"exit": exit_code, "stdout": rec.get("stdout", "")}
+        if oracle._valid_result(validity, program_path.name):
+            return {
+                "ok": exit_code == 0, "exit": exit_code, "stdout": rec["stdout"],
+                "stderr": rec.get("stderr", ""),
+                "tdf": base64.b64decode(rec["tdf"]) if rec["tdf"] else None,
+                "lst": base64.b64decode(rec["lst"]) if rec["lst"] else None,
+            }
     if cache_only:
         raise NotCached(str(program_path))
 
@@ -119,21 +107,39 @@ def run_oracle_tdf(program_path: Path, siblings_dir: Path, compiler_path: Path =
         dest = tmp_dir / program_path.name
         shutil.copy2(program_path, dest)
         argv_prefix, env = _runner_command(compiler_path)
-        proc = subprocess.run(argv_prefix + ["-z", "out.tdf", "-l", "out.lst", dest.name],
-                               cwd=tmp_dir, env=env, capture_output=True, text=False, timeout=30)
-        stdout = proc.stdout.decode("utf-8", errors="replace")
+        try:
+            proc = subprocess.run(argv_prefix + ["-z", "out.tdf", "-l", "out.lst", dest.name],
+                                  cwd=tmp_dir, env=env, capture_output=True, text=False, timeout=30)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise oracle.OracleError(f"reference compiler runner failed: {exc}") from exc
+        stdout = oracle._decode_and_normalise(proc.stdout)
+        stderr = oracle._decode_and_normalise(proc.stderr)
         tdf_path, lst_path = tmp_dir / "out.tdf", tmp_dir / "out.lst"
         tdf_bytes = tdf_path.read_bytes() if tdf_path.is_file() and tdf_path.stat().st_size else None
         lst_bytes = lst_path.read_bytes() if lst_path.is_file() and lst_path.stat().st_size else None
         ok = proc.returncode == 0
+        if not oracle._valid_result({"exit": proc.returncode, "stdout": stdout}, program_path.name):
+            detail = stderr.strip() or stdout or "no compiler result line"
+            raise oracle.OracleError(
+                f"{compiler_path.name} returned no usable compiler verdict "
+                f"(exit {proc.returncode}): {detail[:1000]}"
+            )
 
     TDF_CACHE_DIR.mkdir(parents=True, exist_ok=True)
     cache_path.write_text(json.dumps({
-        "ok": ok, "stdout": stdout,
+        "ok": ok, "exit": proc.returncode, "stdout": stdout, "stderr": stderr,
         "tdf": base64.b64encode(tdf_bytes).decode("ascii") if tdf_bytes else None,
         "lst": base64.b64encode(lst_bytes).decode("ascii") if lst_bytes else None,
     }))
-    return {"ok": ok, "stdout": stdout, "tdf": tdf_bytes, "lst": lst_bytes}
+    return {"ok": ok, "exit": proc.returncode, "stdout": stdout, "stderr": stderr,
+            "tdf": tdf_bytes, "lst": lst_bytes}
+
+
+def gate_failed(gate: str, compared: int, mismatches: int, missing_artifacts: int,
+                oracle_errors: int) -> bool:
+    if oracle_errors or compared == 0:
+        return True
+    return gate == "exact" and bool(mismatches or missing_artifacts)
 
 
 def ours_tdf(program_path: Path, profile):
@@ -203,6 +209,7 @@ def main(argv=None) -> int:
     ap.add_argument("--group", choices=["repo", "chm", "all"], default="all")
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-oracle", action="store_true", help="only use cached oracle results")
+    ap.add_argument("--gate", choices=["report", "exact"], default="report")
     ap.add_argument("--write-fixtures", action="store_true")
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args(argv)
@@ -215,6 +222,8 @@ def main(argv=None) -> int:
     lst_match = 0
     mismatches: list[tuple[str, str, str]] = []
     skipped = 0
+    missing_artifacts = 0
+    oracle_errors = 0
 
     not_cached = 0
     for group, path, siblings in programs:
@@ -223,11 +232,15 @@ def main(argv=None) -> int:
         except NotCached:
             not_cached += 1
             continue
-        except RuntimeError as exc:
-            print(f"oracle unavailable: {exc}", file=sys.stderr)
-            return 2
-        if not oracle_result["ok"] or oracle_result["tdf"] is None:
+        except oracle.OracleError as exc:
+            oracle_errors += 1
+            print(f"  [{group}] {path.name}: oracle error: {exc}", file=sys.stderr)
+            continue
+        if not oracle_result["ok"]:
             skipped += 1
+            continue
+        if oracle_result["tdf"] is None or oracle_result["lst"] is None:
+            missing_artifacts += 1
             continue
         compiled_ok += 1
 
@@ -265,16 +278,17 @@ def main(argv=None) -> int:
             }))
 
     total = len(programs)
-    print(f"programs: {total}  compiled by real exe: {compiled_ok}  skipped (real exe rejected "
-          f"or no TDF): {skipped}"
+    print(f"programs: {total}  compared: {compiled_ok}  rejected by real exe: {skipped}"
           + (f"  not yet cached (--no-oracle): {not_cached}" if args.no_oracle else ""))
+    print(f"missing expected artifacts: {missing_artifacts}  oracle errors: {oracle_errors}")
     print(f"TDF byte-identical: {tdf_match}/{compiled_ok}")
     print(f"table-list byte-identical: {lst_match}/{compiled_ok}")
     if mismatches:
         print(f"\n{len(mismatches)} mismatches:")
         for group, name, diff in mismatches:
             print(f"  [{group}] {name}: {diff}")
-    return 0
+    return 1 if gate_failed(args.gate, compiled_ok, len(mismatches), missing_artifacts,
+                            oracle_errors) else 0
 
 
 if __name__ == "__main__":

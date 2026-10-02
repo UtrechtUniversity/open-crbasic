@@ -64,13 +64,29 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
     # only needs to know whether *our* output still matches that recorded verdict, and re-running
     # a program through Wine ~1840 times just to re-derive text that is already on disk is pure
     # overhead this mode is meant to avoid.
-    if use_recorded_theirs and "their_exit" in meta and "theirs" in meta:
-        with tempfile.TemporaryDirectory(prefix="fuzz-replay-") as tmp:
-            path = fuzz.materialise(seed, lines, Path(tmp), cr6_path.name)
-            our_exit, our_out = fuzz.run_ours(path, profile)
-        their_exit, their_out = meta["their_exit"], meta["theirs"]
-    else:
-        our_exit, our_out, their_exit, their_out = fuzz.run_mutant(seed, lines, profile, name=cr6_path.name)
+    try:
+        if use_recorded_theirs and "their_exit" in meta and "theirs" in meta:
+            with tempfile.TemporaryDirectory(prefix="fuzz-replay-") as tmp:
+                path = fuzz.materialise(seed, lines, Path(tmp), cr6_path.name)
+                our_exit, our_out = fuzz.run_ours(path, profile)
+            their_exit, their_out = meta["their_exit"], meta["theirs"]
+        else:
+            our_exit, our_out, their_exit, their_out = fuzz.run_mutant(
+                seed, lines, profile, name=cr6_path.name
+            )
+    except fuzz.oracle.OracleError as exc:
+        return {
+            "file": fuzz._display_path(cr6_path),
+            "logger": logger,
+            "recorded_class": recorded_class,
+            "now_class": "oracle_error",
+            "status": f"oracle error: {exc}",
+            "our_exit": None,
+            "their_exit": None,
+            "ours": "",
+            # Harness failure description retained for triage; this is not compiler diagnostics.
+            "theirs": str(exc),
+        }
     now_class = fuzz.classify(our_exit, our_out, their_exit, their_out)
 
     if now_class is None:
@@ -91,6 +107,25 @@ def replay_one(cr6_path: Path, use_recorded_theirs: bool = False) -> dict:
         "ours": our_out,
         "theirs": their_out,
     }
+
+
+def gate_failed(results: list[dict], gate: str) -> bool:
+    if any(r["now_class"] == "oracle_error" for r in results):
+        return True
+    if gate == "report":
+        return False
+    if gate == "exact":
+        return any(r["now_class"] is not None for r in results)
+    return any(r["now_class"] in {"false_reject", "crash", "hang"} for r in results)
+
+
+def write_json_report(path: Path, results: list[dict]) -> None:
+    counts = Counter(r["now_class"] or "exact" for r in results)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({
+        "summary": {"total": len(results), "counts": dict(sorted(counts.items()))},
+        "rows": results,
+    }, indent=2) + "\n", encoding="utf-8")
 
 
 def prune_fixed(files: list[Path], workers: int) -> int:
@@ -129,6 +164,9 @@ def main() -> int:
                      help="delete each reproducer's .CR6/.json pair once opencrbasic now matches "
                           "the recorded real-compiler output exactly, without re-invoking the "
                           "real compiler")
+    ap.add_argument("--gate", choices=["report", "no-regressions", "exact"], default="report",
+                    help="exit nonzero for regressions or any non-exact result")
+    ap.add_argument("--json", type=Path, help="write summary counts and result rows as JSON")
     ap.add_argument("paths", nargs="*", type=Path)
     args = ap.parse_args()
 
@@ -143,9 +181,14 @@ def main() -> int:
     with concurrent.futures.ThreadPoolExecutor(args.workers) as pool:
         results = list(pool.map(replay_one, files))
 
-    still = fixed = changed = 0
+    if args.json:
+        write_json_report(args.json, results)
+
+    still = fixed = changed = oracle_errors = 0
     for r in results:
-        if r["now_class"] is None:
+        if r["now_class"] == "oracle_error":
+            oracle_errors += 1
+        elif r["now_class"] is None:
             fixed += 1
         elif r["now_class"] == r["recorded_class"]:
             still += 1
@@ -154,8 +197,8 @@ def main() -> int:
         print(f"{r['status']:<32} {r['file']}")
 
     print(f"\n{len(results)} reproducers: {still} still reproduce, {fixed} fixed, "
-          f"{changed} changed class")
-    return 0
+          f"{changed} changed class, {oracle_errors} oracle errors")
+    return 1 if gate_failed(results, args.gate) else 0
 
 
 if __name__ == "__main__":
