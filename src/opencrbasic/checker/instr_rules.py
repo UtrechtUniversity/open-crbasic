@@ -14,7 +14,7 @@ import re
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from . import symbols
 from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
 
@@ -887,3 +887,62 @@ def _is_integer_token(text: str, arg: S.Expr, env: consteval.Env) -> bool:
     except consteval.NotConstant:
         return False
     return not isinstance(value, str) and isinstance(value, (int, float)) and value == int(value)
+
+
+_SERIALIN_DEST_MESSAGE = "A string variable destination is required"
+
+
+def _serialin_types(program: S.Program, profile) -> dict[str, str]:
+    types = symbols.declared_variable_types(program)
+    for stmt in program.statements:
+        if isinstance(stmt, S.ConstDecl):
+            types[stmt.name.upper()] = "CONST"
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \
+                and stmt.args and isinstance(stmt.args[0], (S.Name, S.Index)):
+            kind = types.get(stmt.args[0].name.upper())
+            if kind is not None:
+                for alias in stmt.args[1:]:
+                    if isinstance(alias, S.Name):
+                        types[alias.name.upper()] = kind
+    for name in profile.functions:
+        types.setdefault(name, "FUNCTION")
+    return types
+
+
+def _serialin_bad_destination(arg: S.Expr, types: dict[str, str]) -> bool | None:
+    if isinstance(arg, (S.Name, S.Index)):
+        kind = types.get(arg.name.upper())
+        if kind == "FUNCTION" and isinstance(arg, S.Name):
+            return None
+        return None if kind is None else kind != "STRING"
+    if isinstance(arg, (S.Number, S.String, S.Binary, S.Unary)):
+        return True
+    return None
+
+
+def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Pass-1 SerialIn destination check; docs/instructions.md#serialin-destination.
+
+    Unknown names and structure members remain with the existing name/type checks. This rule
+    deliberately does not generalize code 33 to other receiving instructions.
+    """
+    types = _serialin_types(program, profile)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SERIALIN" \
+                or "SERIALIN" not in profile.instructions or not stmt.args or stmt.args[0] is None:
+            continue
+        if not _serialin_bad_destination(stmt.args[0], types):
+            continue
+        key = (stmt.line, stmt.file)
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
+                  len(diags.items))
+        new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
+        if profile.single_pass:
+            # A failed destination ends this argument list before count checks.
+            diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+            at = min(at, len(diags.items))
+            if len(stmt.args) > 1 and stmt.args[1] is not None:
+                text = _next_simple_token(_arg_text(stmt, 1)) or _arg_text(stmt, 1)
+                new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
+                                      stmt.file))
+        diags.items[at:at] = new

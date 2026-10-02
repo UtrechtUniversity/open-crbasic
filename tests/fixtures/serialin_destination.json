@@ -1,0 +1,1029 @@
+{
+  "observation_date": "2026-10-01",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "source_records": [
+    "scratch/serial-dest-probes.json",
+    "scratch/serial-order-probes.json",
+    "scratch/serial-string-expr-probes.json"
+  ],
+  "cases": [
+    {
+      "id": "cr6-destination-Float",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "Float",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Float\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-Long",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "Long",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-Boolean",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "Boolean",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Boolean\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-String * 100",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "String * 100",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-destination-UINT1",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "UINT1",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT1\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-UINT2",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "UINT2",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT2\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT2 not supported\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-UINT4",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "UINT4",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT4\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT4 not supported\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-string",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "string",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-destination-constant",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "constant",
+      "program_filename": "serial_probe.CR6",
+      "source": "Const Dest = \"s\"\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-alias",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "alias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As Long\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-stralias",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "stralias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As String * 100\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-destination-literal",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "literal",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(\"abc\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-number",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "number",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-expression",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "expression",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-undefined",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "undefined",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Dest."
+    },
+    {
+      "id": "cr6-destination-lateprior",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "lateprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSW12(9,1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr6-destination-parseprior",
+      "logger": "cr6",
+      "batch": "destination",
+      "name": "parseprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nNoSuchInstruction(1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-Float",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "Float",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Float\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-Long",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "Long",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-Boolean",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "Boolean",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Boolean\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-String * 100",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "String * 100",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-destination-UINT1",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "UINT1",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT1\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-UINT2",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "UINT2",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT2\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT2 not supported\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-UINT4",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "UINT4",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT4\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT4 not supported\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-string",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "string",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-destination-constant",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "constant",
+      "program_filename": "serial_probe.CR6",
+      "source": "Const Dest = \"s\"\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-alias",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "alias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As Long\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-stralias",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "stralias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As String * 100\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-destination-literal",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "literal",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(\"abc\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-number",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "number",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-expression",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "expression",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-undefined",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "undefined",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Dest."
+    },
+    {
+      "id": "cr1000x-destination-lateprior",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "lateprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSW12(9,1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-destination-parseprior",
+      "logger": "cr1000x",
+      "batch": "destination",
+      "name": "parseprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nNoSuchInstruction(1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr300-destination-Float",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "Float",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Float\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-Long",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "Long",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-Boolean",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "Boolean",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Boolean\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-String * 100",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "String * 100",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-destination-UINT1",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "UINT1",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT1\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-UINT2",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "UINT2",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT2\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT2 not supported\nline 3: Too many parameters:  Sec.\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-UINT4",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "UINT4",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT4\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT4 not supported\nline 3: Too many parameters:  Sec.\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-string",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "string",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-destination-constant",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "constant",
+      "program_filename": "serial_probe.CR6",
+      "source": "Const Dest = \"s\"\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-alias",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "alias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As Long\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-stralias",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "stralias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As String * 100\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-destination-literal",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "literal",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(\"abc\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-number",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "number",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-expression",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "expression",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-undefined",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "undefined",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: Dest is not defined.\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-lateprior",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "lateprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSW12(9,1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1.\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-destination-parseprior",
+      "logger": "cr300",
+      "batch": "destination",
+      "name": "parseprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nNoSuchInstruction(1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: NoSuchInstruction is not defined.\nline 4: Invalid, or out of place expression: NoSuchInstruction(1)\n.\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-Float",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "Float",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Float\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-Long",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "Long",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-Boolean",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "Boolean",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As Boolean\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-String * 100",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "String * 100",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-destination-UINT1",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "UINT1",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT1\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-UINT2",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "UINT2",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT2\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT2 not supported\nline 3: Too many parameters:  Sec.\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-UINT4",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "UINT4",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest(20) As UINT4\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest(1),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 1: Variable Type UINT4 not supported\nline 3: Too many parameters:  Sec.\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-string",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "string",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As String * 100\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-destination-constant",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "constant",
+      "program_filename": "serial_probe.CR6",
+      "source": "Const Dest = \"s\"\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-alias",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "alias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As Long\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-stralias",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "stralias",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Raw As String * 100\nAlias Raw = Dest\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "serial_probe.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-destination-literal",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "literal",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(\"abc\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-number",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "number",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-expression",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "expression",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+1,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-undefined",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "undefined",
+      "program_filename": "serial_probe.CR6",
+      "source": "BeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 3: Dest is not defined.\nline 3: A string variable destination is required\nline 3: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-lateprior",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "lateprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nSW12(9,1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-destination-parseprior",
+      "logger": "cr350",
+      "batch": "destination",
+      "name": "parseprior",
+      "program_filename": "serial_probe.CR6",
+      "source": "Public Dest As Long\nBeginProg\nScan(1,Sec,0,0)\nNoSuchInstruction(1)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_probe.CR6 -- Compile Failed!\n\nline 4: NoSuchInstruction is not defined.\nline 4: Invalid, or out of place expression: NoSuchInstruction(1)\n.\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr6-order-follow",
+      "logger": "cr6",
+      "batch": "order",
+      "name": "follow",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nPanelTemp(T,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr6-order-repeat",
+      "logger": "cr6",
+      "batch": "order",
+      "name": "repeat",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr6-order-few",
+      "logger": "cr6",
+      "batch": "order",
+      "name": "few",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Invalid or missing parameter."
+    },
+    {
+      "id": "cr6-order-extra",
+      "logger": "cr6",
+      "batch": "order",
+      "name": "extra",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20,99)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  99."
+    },
+    {
+      "id": "cr1000x-order-follow",
+      "logger": "cr1000x",
+      "batch": "order",
+      "name": "follow",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nPanelTemp(T,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-order-repeat",
+      "logger": "cr1000x",
+      "batch": "order",
+      "name": "repeat",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 5: A string variable destination is required"
+    },
+    {
+      "id": "cr1000x-order-few",
+      "logger": "cr1000x",
+      "batch": "order",
+      "name": "few",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Invalid or missing parameter."
+    },
+    {
+      "id": "cr1000x-order-extra",
+      "logger": "cr1000x",
+      "batch": "order",
+      "name": "extra",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20,99)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  99."
+    },
+    {
+      "id": "cr300-order-follow",
+      "logger": "cr300",
+      "batch": "order",
+      "name": "follow",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nPanelTemp(T,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232.\nline 5: Too many parameters:  60."
+    },
+    {
+      "id": "cr300-order-repeat",
+      "logger": "cr300",
+      "batch": "order",
+      "name": "repeat",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232.\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-order-few",
+      "logger": "cr300",
+      "batch": "order",
+      "name": "few",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr300-order-extra",
+      "logger": "cr300",
+      "batch": "order",
+      "name": "extra",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20,99)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-order-follow",
+      "logger": "cr350",
+      "batch": "order",
+      "name": "follow",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nPanelTemp(T,60)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232.\nline 5: Too many parameters:  60."
+    },
+    {
+      "id": "cr350-order-repeat",
+      "logger": "cr350",
+      "batch": "order",
+      "name": "repeat",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20)\nSerialIn(Dest,ComRS232,100,0,20)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232.\nline 5: A string variable destination is required\nline 5: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-order-few",
+      "logger": "cr350",
+      "batch": "order",
+      "name": "few",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+    {
+      "id": "cr350-order-extra",
+      "logger": "cr350",
+      "batch": "order",
+      "name": "extra",
+      "program_filename": "serial_order.CR6",
+      "source": "Public Dest As Long, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest,ComRS232,100,0,20,99)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "serial_order.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+    },
+      {
+        "id": "cr6-string-expr-concat",
+        "logger": "cr6",
+        "batch": "string-expr",
+        "name": "concat",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+\"\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr6-string-expr-paren",
+        "logger": "cr6",
+        "batch": "string-expr",
+        "name": "paren",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn((Dest),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "serial_expr.CR6 -- Compiled in PipelineMode."
+      },
+      {
+        "id": "cr6-string-expr-format",
+        "logger": "cr6",
+        "batch": "string-expr",
+        "name": "format",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(FormatFloat(T,\"%f\"),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr6-string-expr-char",
+        "logger": "cr6",
+        "batch": "string-expr",
+        "name": "char",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(CHR(T),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr1000x-string-expr-concat",
+        "logger": "cr1000x",
+        "batch": "string-expr",
+        "name": "concat",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+\"\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr1000x-string-expr-paren",
+        "logger": "cr1000x",
+        "batch": "string-expr",
+        "name": "paren",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn((Dest),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "serial_expr.CR6 -- Compiled in PipelineMode."
+      },
+      {
+        "id": "cr1000x-string-expr-format",
+        "logger": "cr1000x",
+        "batch": "string-expr",
+        "name": "format",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(FormatFloat(T,\"%f\"),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr1000x-string-expr-char",
+        "logger": "cr1000x",
+        "batch": "string-expr",
+        "name": "char",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(CHR(T),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+      },
+      {
+        "id": "cr300-string-expr-concat",
+        "logger": "cr300",
+        "batch": "string-expr",
+        "name": "concat",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+\"\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      },
+      {
+        "id": "cr300-string-expr-paren",
+        "logger": "cr300",
+        "batch": "string-expr",
+        "name": "paren",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn((Dest),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "serial_expr.CR6 -- Compiled OK."
+      },
+      {
+        "id": "cr300-string-expr-format",
+        "logger": "cr300",
+        "batch": "string-expr",
+        "name": "format",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(FormatFloat(T,\"%f\"),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      },
+      {
+        "id": "cr300-string-expr-char",
+        "logger": "cr300",
+        "batch": "string-expr",
+        "name": "char",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(CHR(T),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      },
+      {
+        "id": "cr350-string-expr-concat",
+        "logger": "cr350",
+        "batch": "string-expr",
+        "name": "concat",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(Dest+\"\",ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      },
+      {
+        "id": "cr350-string-expr-paren",
+        "logger": "cr350",
+        "batch": "string-expr",
+        "name": "paren",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn((Dest),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "serial_expr.CR6 -- Compiled OK."
+      },
+      {
+        "id": "cr350-string-expr-format",
+        "logger": "cr350",
+        "batch": "string-expr",
+        "name": "format",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(FormatFloat(T,\"%f\"),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      },
+      {
+        "id": "cr350-string-expr-char",
+        "logger": "cr350",
+        "batch": "string-expr",
+        "name": "char",
+        "program_filename": "serial_expr.CR6",
+        "source": "Public Dest As String * 100, T\nBeginProg\nScan(1,Sec,0,0)\nSerialIn(CHR(T),ComRS232,100,0,20)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "serial_expr.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Too many parameters:  ComRS232."
+      }
+    
+  ]
+}

@@ -433,11 +433,21 @@ def check_undefined_arg_aborts(program: S.Program, profile, diags: Diagnostics) 
                 # a genuine overflow found earlier still follows the names (`SW12(SW12_1,1)`)
                 rest = [d for d in diags.items if d not in keep]
                 at = rest.index(too_many[0])
-                diags.items[:] = rest[:at] + keep + rest[at:]
+                followup = []
+                if stmt.keyword.upper() == "SERIALIN" and index == 0 \
+                        and isinstance(stmt.args[0], S.Name):
+                    followup.append(Diagnostic("error", stmt.line,
+                                               instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
+                diags.items[:] = rest[:at] + keep + followup + rest[at:]
                 break
             text = instr_rules._next_simple_token(expressions._arg_text(stmt, index + 1)) or \
                 expressions._arg_text(stmt, index + 1)
             at = diags.items.index(keep[-1]) + 1
+            if stmt.keyword.upper() == "SERIALIN" and index == 0 \
+                    and isinstance(stmt.args[0], S.Name):
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  instr_rules._SERIALIN_DEST_MESSAGE, stmt.file))
+                at += 1
             diags.items.insert(at, Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
                                               stmt.file))
             drop = {id(d) for d in own if d not in keep}
@@ -522,6 +532,10 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
             if not isinstance(arg, (S.Name, S.Index)) or (
                     names_ok and _is_bad_destination(arg, _variable_types(program))):
                 messages.append(_DEST_MESSAGE)
+        if stmt.keyword.upper() == "SERIALIN" and (instr_rules._serialin_bad_destination(
+                stmt.args[0], instr_rules._serialin_types(program, profile)) or
+                (messages and isinstance(stmt.args[0], S.Name))):
+            messages.append(instr_rules._SERIALIN_DEST_MESSAGE)
         if not messages:
             continue
         at = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == (stmt.line, stmt.file)
