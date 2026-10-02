@@ -811,6 +811,19 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
 
 
 _AVGRUN_TYPE_ERROR = frozenset({"FLOAT", "STRING"})
+_RUNNING_AVG = frozenset({"AVGRUN", "TOTALRUN", "MINRUN", "MAXRUN", "STDDEVRUN"})
+
+
+def _to_int32(value: float | int | str) -> int:
+    """The C `(long)` conversion the compiler applies to a constant parameter (oracle: `0.5` -> 0,
+    `-1.9` -> -1, `"a"`, NaN and out-of-range values -> -2147483648)."""
+    if isinstance(value, str) or value != value:
+        return -2147483648
+    try:
+        n = int(value)
+    except OverflowError:
+        return -2147483648
+    return n if -2147483648 <= n <= 2147483647 else -2147483648
 
 
 def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
@@ -824,8 +837,12 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
     -> `number of averages %d and reps %d in RunningAvg must be > 0.` (all four). Reported with
     pass 2 without hiding the tier-C checks on CR6/CR1000X, only in an otherwise clean file on
     CR300/CR350. A negative instance count gives `Out of memory.`, which ends the compile (not
-    modelled)."""
-    if "AVGRUN" not in profile.instructions:
+    modelled).
+
+    `Reps` and `Number` of `TotalRun`/`MinRun`/`MaxRun` and, on CR6/CR1000X, `StdDevRun` go through
+    the same message (oracle, 2026-10-02, all four loggers). Values convert as C does: truncated
+    toward zero, a string or anything outside Long range gives `-2147483648`."""
+    if not _RUNNING_AVG & profile.instructions.keys():
         return
     types = symbols.declared_variable_types(program)
 
@@ -837,15 +854,16 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             value = consteval.value_of(arg, env) if arg is not None else None
         except consteval.NotConstant:
             return None
-        if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
+        if isinstance(value, bool) or not isinstance(value, (int, float, str)):
             return None
-        return int(value)
+        return _to_int32(value)
 
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "AVGRUN":
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _RUNNING_AVG:
             continue
+        kw = stmt.keyword.upper()
         args = list(stmt.args) + [None] * (8 - len(stmt.args))
-        if args[4] is not None:
+        if kw == "AVGRUN" and args[4] is not None:
             if variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
                 diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
             if args[6] is not None and len(profile.instructions["AVGRUN"]["params"]) >= 8:

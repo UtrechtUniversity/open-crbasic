@@ -1,0 +1,443 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    },
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr6-avgrun-number-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-string",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-half",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-overflow",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-ok",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-avgrun-reps-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-totalrun-number-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-totalrun-number-string",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-totalrun-number-half",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-totalrun-number-overflow",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-totalrun-number-ok",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-totalrun-reps-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-minrun-number-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-minrun-number-string",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-minrun-number-half",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-minrun-number-overflow",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-minrun-number-ok",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-minrun-reps-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-maxrun-number-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-maxrun-number-string",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-maxrun-number-half",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-maxrun-number-overflow",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-maxrun-number-ok",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-maxrun-reps-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MaxRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-stddevrun-number-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,0,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-stddevrun-number-string",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,\"a\",False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-stddevrun-number-half",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,0.5,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-stddevrun-number-overflow",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,999999999999,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-stddevrun-number-ok",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,1,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-stddevrun-reps-zero",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),0,X,5,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-zero",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-string",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-half",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-overflow",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-ok",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-avgrun-reps-zero",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-stddevrun-number-zero",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,0,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-stddevrun-number-string",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,\"a\",False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-stddevrun-number-half",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,0.5,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-stddevrun-number-overflow",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,999999999999,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-stddevrun-number-ok",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),1,X,1,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-stddevrun-reps-zero",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    StdDevRun(Y(1),0,X,5,False)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-minrun-number-zero",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-minrun-number-string",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-minrun-number-half",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-minrun-number-overflow",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-minrun-number-ok",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-minrun-reps-zero",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    MinRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-zero",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-string",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-half",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-overflow",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-ok",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-avgrun-reps-zero",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-totalrun-number-zero",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-totalrun-number-string",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-totalrun-number-half",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 0 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-totalrun-number-overflow",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-totalrun-number-ok",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),1,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-totalrun-reps-zero",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    }
+  ]
+}

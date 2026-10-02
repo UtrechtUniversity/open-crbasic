@@ -933,3 +933,22 @@ Echo detail found on the way, affecting every arity message on CR300/CR350: the 
 its own line only when the echo is a statement that reaches the end of its line; a trailing `'`
 comment keeps it on the same line (`Stmt.at_eol`), and an echo of an instruction *argument*
 (`Randomize(Round(1.0))`) never has the line break.
+
+## Constant-parameter range checks (2026-10-02, fixture `tests/fixtures/const_ranges.json`)
+
+Observed with the four real compilers (sha256 in the fixture); `tests/test_const_ranges.py` replays
+the verbatim output. Common to every check below: a constant parameter converts as C's `(long)`
+does -- truncated toward zero (`0.5` -> 0, `-0.5` -> 0), `TRUE` is -1, a string constant or a
+value outside Long range becomes `-2147483648`. A variable in the position is the separate
+`Variable illegal in Parameter` error.
+
+### `number of averages %d and reps %d in RunningAvg must be > 0.` (all four loggers)
+
+Not only `AvgRun`: `TotalRun`, `MinRun`, `MaxRun` and (CR6/CR1000X) `StdDevRun` share it, for
+`Reps` (position 2) or `Number` (position 4) below 1. Both values are printed after the
+conversion above (`"fuzz"` -> `-2147483648`, `999999999999` -> `-2147483648`, `0.5` -> `0`).
+Implemented in `check_avgrun_options`, so the gating is the one already recorded for `AvgRun`
+(reported alongside pass 2 without hiding tier C on CR6/CR1000X; only in a clean file on
+CR300/CR350). Not covered: a literal `-2147483648` prints `-2147483647` on CR300/CR350 (observed,
+not modelled); `Variable %s out of bounds.` that accompanies a negative or overflowing `Reps` is a
+separate check.
