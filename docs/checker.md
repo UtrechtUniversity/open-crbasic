@@ -2959,11 +2959,17 @@ not count. Whether earlier non-duplicate diagnostics share the buffer is not obs
 co-occur with duplicates).
 
 Implementation: `tables.py` records every field, including name-only ones, in
-`TdfTable._dup_fields` (`_OutField.renamed`, `.rng`, `.name_only`, `.ch400`);
+`TdfTable._dup_fields` (`_OutField.renamed`, `.rng`, `.name_only`, `.ch400`, `.placeholder`);
 `instr_data.check_duplicate_fields` applies the conflict and buffer rules, and runs before
 `warnings.check`, which is skipped when it reports an error.
 
-Evidence: 350 oracle observations in `tests/fixtures/duplicate_fields.json`
+`Anonymous` is skipped only when `_OutField.placeholder` marks a generated label for a source
+without a variable name. The name itself is not a sentinel: the real compilers report one
+`Duplicate field name Anonymous in DataTable T.` for either two `Sample` outputs sourced from a
+public variable named `Anonymous` or two `FieldNames("Anonymous")` overrides. Observed on all four
+profiles, 2026-10-02; both cases are fixture-backed in `tests/fixtures/duplicate_fields.json`.
+
+Evidence: 358 oracle observations in `tests/fixtures/duplicate_fields.json`
 (`tests/test_duplicate_fields.py`) over all four loggers; the fixture carries the probe
 sources (the originals were in the git-ignored `scratch/dupfield/`). Not covered (not probed or not matched): `SampleMaxMin` without a preceding
 `Maximum`/`Minimum` (the real compiler gives a different pass-2 error), FFT length checks

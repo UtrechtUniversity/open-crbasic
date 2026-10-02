@@ -637,10 +637,12 @@ class _OutField:
     # Duplicate-field-name bookkeeping only (`checker/instr_data.check_duplicate_fields`):
     # `renamed` marks a name set by `FieldNames`; `name_only` fields (FFT, CH400Status source)
     # take part in that check but are never written to the TDF or counted in the record size;
+    # `placeholder` distinguishes a generated Anonymous label from a user field of that name;
     # `rng` is the element range `(lo, hi)` the field covers (`None`: never conflicts by range).
     renamed: bool = False
     name_only: bool = False
     ch400: bool = False
+    placeholder: bool = False
     rng: tuple[int, int] | None = None
 
 
@@ -707,7 +709,8 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
         begin, subdims, units = shaped(src, reps)
-        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, reps, subdims, units)]
+        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, reps, subdims,
+                          units, placeholder=not isinstance(src, (S.Name, S.Index)))]
 
     if kw in ("AVERAGE", "TOTALIZE", "STDDEV"):
         reps = reps_of()
@@ -795,6 +798,7 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         name, _, desc = parts[0].partition(":")
         fields[0].name = name.strip()
         fields[0].renamed = True
+        fields[0].placeholder = False
         if desc:
             fields[0].processing += ":" + desc.strip()
         return fields
@@ -813,18 +817,19 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
             rng = None if base.rng is None else (base.rng[0] + i, base.rng[0] + i)
             out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
                                   base.begin + i, 1, [], base.units, renamed=True,
-                                  name_only=base.name_only, rng=rng))
+                                  name_only=base.name_only, placeholder=False, rng=rng))
         remaining = base.dim - n_named
         if remaining > 0:
             rng = None if base.rng is None else (base.rng[0] + n_named, base.rng[1])
             out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
                                   base.begin + n_named, remaining, base.subdims, base.units,
-                                  name_only=base.name_only, rng=rng))
+                                  name_only=base.name_only, placeholder=base.placeholder, rng=rng))
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")
         f.name = name.strip()
         f.renamed = True
+        f.placeholder = False
         if desc:
             f.processing += ":" + desc.strip()
     return fields
@@ -887,9 +892,12 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             # its `<Source>_FFT` name takes part in the duplicate-field-name check.
             if pending:
                 out_fields.extend(pending)
-            fft_src = _source_name(s.args[0] if s.args else None, var_info)
-            pending = [_OutField("Anonymous" if fft_src == "Anonymous" else fft_src + "_FFT",
+            fft_expr = s.args[0] if s.args else None
+            fft_src = _source_name(fft_expr, var_info)
+            fft_placeholder = not isinstance(fft_expr, (S.Name, S.Index))
+            pending = [_OutField("Anonymous" if fft_placeholder else fft_src + "_FFT",
                                   9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
+                                  placeholder=fft_placeholder,
                                   rng=(1, _FFT_UNBOUNDED))]
     if pending:
         out_fields.extend(pending)

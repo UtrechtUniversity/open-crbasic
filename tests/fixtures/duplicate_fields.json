@@ -19,7 +19,8 @@
   }
  },
  "source_records": [
-  "git-ignored scratch/dupfield/ probe sets"
+  "git-ignored scratch/dupfield/ probe sets",
+  "git-ignored scratch/anon_* probe inputs; real compiler run 2026-10-02"
  ],
  "cases": [
   {
@@ -2471,6 +2472,62 @@
    "source": "Public a,b,c,w(3),x(16),y(18),m(2,2)\nDataTable(T,1,1)\n  Sample(1,a,FP2)\n  Sample(1,a,FP2)\n  FieldNames(\"p\")\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "fieldnames-anonymous-cr6",
+   "logger": "cr6",
+   "source": "Public a,b\nDataTable(T,1,1)\n  Sample(1,a,FP2)\n  FieldNames(\"Anonymous\")\n  Sample(1,b,FP2)\n  FieldNames(\"Anonymous\")\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "fieldnames-anonymous-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public a,b\nDataTable(T,1,1)\n  Sample(1,a,FP2)\n  FieldNames(\"Anonymous\")\n  Sample(1,b,FP2)\n  FieldNames(\"Anonymous\")\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "fieldnames-anonymous-cr300",
+   "logger": "cr300",
+   "source": "Public a,b\nDataTable(T,1,1)\n  Sample(1,a,FP2)\n  FieldNames(\"Anonymous\")\n  Sample(1,b,FP2)\n  FieldNames(\"Anonymous\")\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "fieldnames-anonymous-cr350",
+   "logger": "cr350",
+   "source": "Public a,b\nDataTable(T,1,1)\n  Sample(1,a,FP2)\n  FieldNames(\"Anonymous\")\n  Sample(1,b,FP2)\n  FieldNames(\"Anonymous\")\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "public-anonymous-cr6",
+   "logger": "cr6",
+   "source": "Public Anonymous\nDataTable(T,1,1)\n  Sample(1,Anonymous,FP2)\n  Sample(1,Anonymous,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "public-anonymous-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public Anonymous\nDataTable(T,1,1)\n  Sample(1,Anonymous,FP2)\n  Sample(1,Anonymous,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "public-anonymous-cr300",
+   "logger": "cr300",
+   "source": "Public Anonymous\nDataTable(T,1,1)\n  Sample(1,Anonymous,FP2)\n  Sample(1,Anonymous,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
+  },
+  {
+   "id": "public-anonymous-cr350",
+   "logger": "cr350",
+   "source": "Public Anonymous\nDataTable(T,1,1)\n  Sample(1,Anonymous,FP2)\n  Sample(1,Anonymous,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Anonymous in DataTable T."
   }
  ]
 }

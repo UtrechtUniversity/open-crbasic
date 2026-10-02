@@ -286,15 +286,15 @@ def _dup_entries(table):
     fields = getattr(table, "_dup_fields", None)
     if fields is None:
         for f in table.fields:
-            yield f.name, False, (f.begin_index, f.begin_index + max(f.dimension, 1) - 1)
+            yield f.name, False, (f.begin_index, f.begin_index + max(f.dimension, 1) - 1), False
         return
     for f in fields:
         if f.ch400:
             for _ in range(max(f.dim, 1)):
                 for n in _CH400_FIELDS:
-                    yield n, False, (1, 1)
+                    yield n, False, (1, 1), False
         else:
-            yield f.name, f.renamed, f.rng
+            yield f.name, f.renamed, f.rng, f.placeholder
 
 
 def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> None:
@@ -304,8 +304,9 @@ def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> No
 
     Two fields conflict when their names match case-insensitively and either both were named by
     `FieldNames` or their source-element ranges overlap. Field names are reused from `tables.py`
-    (`TdfTable._dup_fields`), which also supplies name-only FFT and CH400Status fields. A field
-    named exactly `"Anonymous"` (`tables.py`'s placeholder for a non-variable source) is skipped.
+    (`TdfTable._dup_fields`), which also supplies name-only FFT and CH400Status fields. Entries
+    explicitly marked as generated placeholders are skipped; a user field named `Anonymous` is
+    still checked.
     """
     tables = getattr(result, "tables", None)
     if not tables:
@@ -324,10 +325,10 @@ def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> No
             continue
         seen: dict[str, list[tuple[bool, tuple[int, int] | None]]] = {}
         shortest = len(f"Duplicate field name x in DataTable {table.name}.") + 2
-        for name, renamed, rng in _dup_entries(table):
+        for name, renamed, rng, placeholder in _dup_entries(table):
             if remaining < shortest:
                 break
-            if name == "Anonymous":
+            if placeholder:
                 continue
             earlier = seen.setdefault(name.upper(), [])
             text = f"Duplicate field name {name} in DataTable {table.name}."
