@@ -1136,11 +1136,10 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
     return None  # Number, Name, String: no call to check
 
 
-def _arity_message(kind: str, text: str, profile, at_eol: bool = True) -> str:
-
-def _arity_message(kind: str, text: str, profile, whole_statement: bool = False) -> str:
+def _arity_message(kind: str, text: str, profile, at_eol: bool = True,
+                   whole_statement: bool = False) -> str:
     if kind == "empty":
-        sep = "\n" if whole_statement and profile.fallback_echo_newline else ""
+        sep = "\n" if whole_statement and at_eol and profile.fallback_echo_newline else ""
         return f"Invalid, or out of place expression: {text}{sep}."
     verb = ("Expression expects , : " if kind == "few"
             else "No Matching, or out of place ) in expression: ")
@@ -1302,10 +1301,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     if problem:
                         break
             if problem:
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
-
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile,
-                                                       whole_statement=True), stmt.file)
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
+                                                            whole_statement=True), stmt.file)
         elif isinstance(stmt, S.If):
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
@@ -1344,10 +1341,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue
             problem = _find_arity_problem(stmt.value, profile)
             if problem:
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
-
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile,
-                                                       whole_statement=True), stmt.file)
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
+                                                            whole_statement=True), stmt.file)
 
 
 def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:
