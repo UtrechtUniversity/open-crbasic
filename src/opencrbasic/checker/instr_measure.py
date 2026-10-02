@@ -36,6 +36,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_cs616_reps(stmt, measure, env, diags)
         if kw in ("EXCITEV", "EXCITEI") and "excite_max_mv" in measure:
             _check_excite_magnitude(stmt, measure, env, diags)
+        if kw == "GPS" and "gps" in measure:
+            _check_gps_port(stmt, measure["gps"], env, diags)
 
 
 def _const_value(arg: S.Expr | None, env: consteval.Env):
@@ -53,6 +55,20 @@ def _const_value(arg: S.Expr | None, env: consteval.Env):
 def _int_value(arg: S.Expr | None, env: consteval.Env) -> int | None:
     v = _const_value(arg, env)
     return int(v) if isinstance(v, (int, float)) else None
+
+
+def _check_gps_port(stmt: S.Instruction, cfg: dict, env: consteval.Env,
+                    diags: Diagnostics) -> None:
+    """GPS port sign selects PPS or NMEA synchronization; docs/instructions.md#gps-ports."""
+    if len(stmt.args) < 2:
+        return
+    port = _int_value(stmt.args[1], env)
+    if port is None:
+        return
+    if abs(port) not in cfg["ports"]:
+        diags.error(stmt.line, cfg["port_message"], stmt.file)
+    elif port > 0 and port != cfg["pps_port"]:
+        diags.error(stmt.line, cfg["pps_message"], stmt.file)
 
 
 # --- Range codes: `Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.`

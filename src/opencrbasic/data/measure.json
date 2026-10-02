@@ -15,5 +15,11 @@
  },
  "cs616_min_reps_pos": 2,
  "excite_magnitude_pos": 2,
- "excite_max_mv": 2500
+ "excite_max_mv": 2500,
+ "gps": {
+  "ports": [1, 9, 10, 11, 12, 13, 14, 15, 16],
+  "pps_port": 11,
+  "port_message": "Only COMRS232, COMC1, COMC3, or COMU1,COMU3...COMU11 are legal.",
+  "pps_message": "GPS pps synchronization is only available on COMU1."
+ }
 }

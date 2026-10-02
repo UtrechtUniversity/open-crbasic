@@ -1,0 +1,173 @@
+{
+  "observation_date": "2026-10-01",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    }
+  },
+  "source_records": [
+    "scratch/gps-probes.json",
+    "scratch/gps-boundary-probes.json"
+  ],
+  "cases": [
+    {
+      "id": "cr6-comc1-maxtimediff-minus1",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComC1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMU1."
+    },
+    {
+      "id": "cr6-comc1-maxtimediff-1000",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComC1,0,1000)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMU1."
+    },
+    {
+      "id": "cr6-negative-comc1",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-ComC1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-comu1",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComU1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-comu3",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComU3,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMU1."
+    },
+    {
+      "id": "cr6-comrs232",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComRS232,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMU1."
+    },
+    {
+      "id": "cr6-negative-comu3",
+      "logger": "cr6",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-ComU3,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-numeric-minus32",
+      "logger": "cr6",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-32,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only COMRS232, COMC1, COMC3, or COMU1,COMU3...COMU11 are legal."
+    },
+    {
+      "id": "cr6-numeric-minus1",
+      "logger": "cr6",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-numeric-zero",
+      "logger": "cr6",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),0,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only COMRS232, COMC1, COMC3, or COMU1,COMU3...COMU11 are legal."
+    },
+    {
+      "id": "cr6-numeric-15",
+      "logger": "cr6",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),15,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMU1."
+    },
+    {
+      "id": "cr1000x-comc1-maxtimediff-minus1",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComC1,0,-1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-comc1-maxtimediff-1000",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComC1,0,1000)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-comc3",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComC3,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMC1."
+    },
+    {
+      "id": "cr1000x-negative-comc1",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-ComC1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-comu1",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComU1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: ComU1."
+    },
+    {
+      "id": "cr1000x-negative-comu3",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-ComU3,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: -ComU3."
+    },
+    {
+      "id": "cr1000x-comrs232",
+      "logger": "cr1000x",
+      "source": "Public G(15), TimeDifference\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),ComRS232,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: GPS pps synchronization is only available on COMC1."
+    },
+    {
+      "id": "cr1000x-numeric-minus32",
+      "logger": "cr1000x",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-32,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only COMRS232, COMC1, COMC3..COMC7 are legal."
+    },
+    {
+      "id": "cr1000x-numeric-minus1",
+      "logger": "cr1000x",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),-1,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-numeric-zero",
+      "logger": "cr1000x",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),0,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only COMRS232, COMC1, COMC3..COMC7 are legal."
+    },
+    {
+      "id": "cr1000x-numeric-15",
+      "logger": "cr1000x",
+      "source": "Public G(15)\nBeginProg\nScan(1,Sec,0,0)\nGPS(G(),15,0,100)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only COMRS232, COMC1, COMC3..COMC7 are legal."
+    }
+  ]
+}

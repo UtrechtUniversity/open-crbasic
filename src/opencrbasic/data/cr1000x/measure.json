@@ -12,5 +12,11 @@
  "delay": {
   "option0_limit": 3600000000,
   "option1_limit": 86400000000
+ },
+ "gps": {
+  "ports": [1, 9, 10, 11, 12],
+  "pps_port": 9,
+  "port_message": "Only COMRS232, COMC1, COMC3..COMC7 are legal.",
+  "pps_message": "GPS pps synchronization is only available on COMC1."
  }
 }
