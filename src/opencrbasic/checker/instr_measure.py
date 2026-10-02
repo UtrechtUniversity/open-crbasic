@@ -408,6 +408,77 @@ def check_reps(program: S.Program, profile: Profile, diags: Diagnostics, env: co
             diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
 
 
+# Destination size rules (oracle, 2026-10-02; docs/checker.md#destination-bounds): elements the
+# Float destination must hold from its start -> `Variable %s out of bounds.`. `(per_rep,)` scales the
+# Reps argument (index 1); `REALTIME` needs a fixed nine. Therm107-109 check it on CR300/CR350 only
+# (CR6/CR1000X accept an overrun). Only CalFile also rejects negative Reps.
+_DEST_FIXED = {"REALTIME": 9}
+_DEST_PER_REP = {"CALFILE": 1, "AVGRUN": 1, "MOVE": 1, "LI7700": 5,
+                 "THERM107": 1, "THERM108": 1, "THERM109": 1}
+_DEST_SINGLE_PASS_ONLY = frozenset({"THERM107", "THERM108", "THERM109"})
+_DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
+
+
+def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
+                      env: consteval.Env) -> None:
+    from . import symbols
+    dims = symbols.declared_all_dims(program, env)
+    types: dict[str, str] = {}
+    arrays: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
+            for v in st.vars:
+                types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
+                if v.dims:
+                    arrays.add(v.name.upper())
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or not stmt.args or \
+                not isinstance(stmt.args[0], (S.Name, S.Index)):
+            continue
+        kw = stmt.keyword.upper()
+        dest = stmt.args[0]
+        name = dest.name.upper()
+        shape = dims.get(name)
+        if shape is None:
+            continue
+        if kw == "SPLITSTR":  # a scalar destination takes one value (Reps > 1 overruns it)
+            reps = _int_value(stmt.args[3], env) if len(stmt.args) > 3 else None
+            bad = isinstance(dest, S.Name) and name not in arrays and reps is not None and \
+                reps > 1 and types.get(name) in ("FLOAT", "STRING")  # a structure takes Reps 3
+        else:
+            if types.get(name) != "FLOAT" or \
+                    (kw in _DEST_SINGLE_PASS_ONLY and not profile.single_pass):
+                continue
+            negative = False
+            if kw in _DEST_FIXED:
+                need = _DEST_FIXED[kw]
+            elif kw in _DEST_PER_REP and len(stmt.args) > 1:
+                reps = _int_value(stmt.args[1], env)
+                if reps is None or (reps < 0 and kw not in _DEST_NEGATIVE_OOB):
+                    continue
+                negative = reps < 0
+                need = reps * _DEST_PER_REP[kw]
+            else:
+                continue
+            offset = _flat_offset(dest, shape)
+            if offset is None:
+                continue
+            total = 1
+            for n in shape:
+                total *= n
+            if offset >= total:  # an index past the dimension is the index rule's
+                continue
+            bad = negative or need > total - offset
+        if bad:
+            diag = Diagnostic("error", stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+            if profile.single_pass:  # before this line's warnings and channel errors (oracle)
+                at = next((i for i, d in enumerate(diags.items)
+                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                diags.items.insert(at, diag)
+            else:
+                diags.items.append(diag)
+
+
 def _flat_offset(dest: S.Expr, shape: tuple[int, ...]) -> int | None:
     """0-based row-major offset of the destination's first element, or None if not literal."""
     if isinstance(dest, S.Name) or not dest.args or all(a is None for a in dest.args):

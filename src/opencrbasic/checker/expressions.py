@@ -1489,7 +1489,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
 
 # Parameter codes whose plain array-element argument is bounds-checked, and instructions whose own
 # compile function takes that argument over (oracle, 2026-10-01: `AddPrecise(X,A(9))` compiles).
-_BOUNDS_CHECKED_CODES = frozenset({2, 8, 28, 41})
+_BOUNDS_CHECKED_CODES = frozenset({2, 8, 27, 28, 29, 41})
 _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
 
 
@@ -1506,11 +1506,14 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
     dims = symbols.declared_all_dims(program, env)
     padded = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     types: dict[str, str] = {}
+    arrays: set[str] = set()
     for st in program.statements:
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM"):
             for v in st.vars:
                 if v.dims or padded:
                     types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
+                if v.dims:
+                    arrays.add(v.name.upper())
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() in _BOUNDS_UNCHECKED:
             continue
@@ -1523,7 +1526,9 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 continue
             name = arg.name.upper()
             shape = dims.get(name)
-            if not shape or types.get(name) != "FLOAT" or \
+            # Code 27 (Move/Erase/GetRecord/SplitStr destinations) also checks Long and String
+            # arrays (oracle, 2026-10-02); the other codes are only probed for Float.
+            if not shape or (types.get(name) != "FLOAT" and not (code == 27 and name in arrays)) or \
                     not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
                 continue
             index = [a.value for a in arg.args]

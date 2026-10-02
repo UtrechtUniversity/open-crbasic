@@ -2838,3 +2838,45 @@ sources (the originals were in the git-ignored `scratch/dupfield/`). Not covered
 that error), `CH400Status` used without the instruction (oracle: `Invalid symbol in expression`),
 and other table instructions that `tables.py` does not emit (Histogram4D, LevelCrossing, Rainflow,
 ETsz, GOES/MQTT fields).
+
+## Destination bounds (2026-10-02)
+
+`Variable %s out of bounds.` for a destination variable that is too small. Observed against all
+four compilers (CR6Comp f6a6efca..., cr1000xcomp 9c327f8b..., cr300comp 755329ee..., cr350comp
+741ed270...), 2026-10-02; fixture `tests/fixtures/dest_bounds.json`, `tests/test_dest_bounds.py`.
+
+Elements needed from the destination's start (a literal-indexed element, row-major, or the whole
+variable; a bare `X()` or scalar holds one):
+
+| Instruction | Needed | Loggers |
+|---|---|---|
+| `RealTime` | 9 | all |
+| `Move`, `CalFile`, `AvgRun` | Reps (argument 2) | all |
+| `LI7700` | 5 * Reps | CR6, CR1000X |
+| `Therm107/108/109` | Reps | CR300, CR350 only (CR6/CR1000X accept an overrun) |
+| `SplitStr` | Reps > 1 overruns a scalar only | all |
+
+Observed boundaries: an exact fit compiles; Reps 0 compiles; `CalFile` with negative Reps is out of
+bounds (the others were not probed with negative Reps). Float destinations only for the Reps and
+`RealTime` rules (a Long array is accepted by `CalFile(L,11,...)` on CR6/CR1000X, and `CalFile`
+rejects it as a type on CR300/CR350). `SplitStr` accepted an array destination with Reps 20 against
+5 elements, so only the scalar overrun is a rule (Float or String scalar; a structure-typed scalar takes Reps 3, `chm/splitstr_5.CR6`). An `Alias` name as destination was not checked
+(`RealTime(RA)` with `Alias RT10(2) = RA` compiles, an exact fit, but no overrun was probed).
+
+Start-index rule (`expressions.check_instruction_index_bounds`): parameter code 27 (`Move`, `Erase`,
+`GetRecord`, `SplitStr`, ... destinations) now also checks Long and String arrays, and code 29
+(`RealTime`) Float arrays: a literal index of 0 or past the dimension is out of bounds (a negative
+index compiles, as for the other codes). Only `Move`, `Erase`, `GetRecord`, `SplitStr` and
+`RealTime` were probed; other code-27/29 instructions are assumed to share the check.
+
+Order. CR6/CR1000X: appended in tier C after `check_reps`. CR300/CR350: inserted before the other
+diagnostics of the same line (`Variable Temp out of bounds.` precedes the fnotch warning and
+`Channel exceeds number of valid channels.`). Implementation: `instr_measure.check_dest_bounds`
+(tables `_DEST_*`).
+
+Reproducers fixed: `fuzz/cr6/false_accept/{e39c13d64518,f42c834f03b4}` (RealTime into a size-1 or
+size-3 array), `2e18cd532da2` (AvgRun Reps), `6f3c11c5579c` (LI7700 Reps 3 on a 5-element array),
+`fuzz/cr300/false_accept/{547e601c6c26,a71cffb33409}` (`SplitResult(0)`), `6c8fb0434bdb`
+(`Therm109(Temp(),2,...)`), `fuzz/cr1000x/false_accept/49c0752ccf0e` (`CalFile(array2,25,...)`).
+Not covered: negative Reps for instructions other than `CalFile`, CR300/CR350 measurement
+instructions other than `Therm107-109` (not probed), Reps beyond 32 bits.

@@ -1,0 +1,989 @@
+{
+ "observation_date": "2026-10-02",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-realtime-fits-9",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-start-2-of-10",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-start-3-of-10",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr6-realtime-2d-array",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-realtime-2d-offset",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr6-realtime-scalar",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(C)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr6-realtime-empty-parens",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(U())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr6-realtime-index-0",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr6-move-fits",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,5,RT10,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-move-reps-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,6,RT10,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-move-start-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(5),2,RT10,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-move-long-index",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(L(11),1,RT10,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-move-string-index",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(LS(11),1,Y,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr6-erase-index",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(A(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-erase-long-index",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(L(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-calfile-fits-2d",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,9,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-calfile-overrun-2d",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,10,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr6-calfile-zero-reps",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,0,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-calfile-negative-reps",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,-1,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-calfile-empty-parens-dest",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(U,25,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr6-calfile-indexed-fits",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),4,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-calfile-indexed-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),7,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr6-avgrun-fits",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,5,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-avgrun-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,6,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-avgrun-scalar",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(C,2,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr6-splitstr-array-reps-unchecked",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(1),Y,\",\",20,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-splitstr-index-past-end",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(11),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr6-splitstr-index-0",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(0),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr6-splitstr-scalar-one",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-splitstr-scalar-two",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable SU out of bounds."
+  },
+  {
+   "id": "cr6-splitstr-float-scalar-two",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(C,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr6-li7700-fits",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(RT10,2,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-li7700-reps-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(RT10,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr6-li7700-start-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(A(2),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-li7700-one-rep",
+   "logger": "cr6",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(A,1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-fits-9",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-start-2-of-10",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-start-3-of-10",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-2d-array",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-realtime-2d-offset",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-scalar",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(C)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-empty-parens",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(U())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr1000x-realtime-index-0",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr1000x-move-fits",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,5,RT10,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-move-reps-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,6,RT10,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-move-start-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(5),2,RT10,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-move-long-index",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(L(11),1,RT10,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-move-string-index",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(LS(11),1,Y,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr1000x-erase-index",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(A(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-erase-long-index",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(L(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-calfile-fits-2d",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,9,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-calfile-overrun-2d",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,10,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr1000x-calfile-zero-reps",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,0,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-calfile-negative-reps",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,-1,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-calfile-empty-parens-dest",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(U,25,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr1000x-calfile-indexed-fits",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),4,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-calfile-indexed-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),7,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr1000x-avgrun-fits",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,5,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-avgrun-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,6,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-avgrun-scalar",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(C,2,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr1000x-splitstr-array-reps-unchecked",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(1),Y,\",\",20,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-splitstr-index-past-end",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(11),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr1000x-splitstr-index-0",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(0),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr1000x-splitstr-scalar-one",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-splitstr-scalar-two",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable SU out of bounds."
+  },
+  {
+   "id": "cr1000x-splitstr-float-scalar-two",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(C,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr1000x-li7700-fits",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(RT10,2,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-li7700-reps-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(RT10,3,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr1000x-li7700-start-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(A(2),1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-li7700-one-rep",
+   "logger": "cr1000x",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    LI7700(A,1,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-realtime-fits-9",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-start-2-of-10",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-start-3-of-10",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr300-realtime-2d-array",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-realtime-2d-offset",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr300-realtime-scalar",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(C)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr300-realtime-empty-parens",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(U())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr300-realtime-index-0",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr300-move-fits",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,5,RT10,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-move-reps-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,6,RT10,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-move-start-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(5),2,RT10,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-move-long-index",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(L(11),1,RT10,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-move-string-index",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(LS(11),1,Y,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr300-erase-index",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(A(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-erase-long-index",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(L(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-calfile-fits-2d",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,9,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-calfile-overrun-2d",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,10,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr300-calfile-zero-reps",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,0,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-calfile-negative-reps",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,-1,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-calfile-empty-parens-dest",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(U,25,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr300-calfile-indexed-fits",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),4,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-calfile-indexed-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),7,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr300-avgrun-fits",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,5,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-avgrun-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,6,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-avgrun-scalar",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(C,2,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr300-splitstr-array-reps-unchecked",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(1),Y,\",\",20,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-splitstr-index-past-end",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(11),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr300-splitstr-index-0",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(0),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr300-splitstr-scalar-one",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-splitstr-scalar-two",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable SU out of bounds."
+  },
+  {
+   "id": "cr300-splitstr-float-scalar-two",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(C,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr300-therm109-fits",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(A,1,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-therm109-scalar-two-reps",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(C,2,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr300-therm109-index-6",
+   "logger": "cr300",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(A(6),1,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-realtime-fits-9",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-start-2-of-10",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-start-3-of-10",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(3))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr350-realtime-2d-array",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-realtime-2d-offset",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(M(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr350-realtime-scalar",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(C)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr350-realtime-empty-parens",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(U())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr350-realtime-index-0",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    RealTime(RT10(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable RT10 out of bounds."
+  },
+  {
+   "id": "cr350-move-fits",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,5,RT10,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-move-reps-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A,6,RT10,6)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-move-start-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(5),2,RT10,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-move-long-index",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(L(11),1,RT10,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr350-move-string-index",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(LS(11),1,Y,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr350-erase-index",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(A(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-erase-long-index",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Erase(L(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable L out of bounds."
+  },
+  {
+   "id": "cr350-calfile-fits-2d",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,9,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-calfile-overrun-2d",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M,10,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr350-calfile-zero-reps",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,0,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-calfile-negative-reps",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(A,-1,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-calfile-empty-parens-dest",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(U,25,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable U out of bounds."
+  },
+  {
+   "id": "cr350-calfile-indexed-fits",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),4,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-calfile-indexed-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    CalFile(M(2,1),7,\"CPU:c.cal\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable M out of bounds."
+  },
+  {
+   "id": "cr350-avgrun-fits",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,5,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-avgrun-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(A,6,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-avgrun-scalar",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    AvgRun(C,2,A(1),10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr350-splitstr-array-reps-unchecked",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(1),Y,\",\",20,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-splitstr-index-past-end",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(11),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr350-splitstr-index-0",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(LS(0),Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable LS out of bounds."
+  },
+  {
+   "id": "cr350-splitstr-scalar-one",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-splitstr-scalar-two",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(SU,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable SU out of bounds."
+  },
+  {
+   "id": "cr350-splitstr-float-scalar-two",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    SplitStr(C,Y,\",\",2,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr350-therm109-fits",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(A,1,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-therm109-scalar-two-reps",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(C,2,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable C out of bounds."
+  },
+  {
+   "id": "cr350-therm109-index-6",
+   "logger": "cr350",
+   "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(A(6),1,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  }
+ ]
+}
