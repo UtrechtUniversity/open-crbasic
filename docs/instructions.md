@@ -848,3 +848,32 @@ ConstTable field lookup) and are described from the same-day probes only.
 Implementation: `instr_rules.check_settings_fields`, called from `checker/__init__.py`
 (CR6/CR1000X in the tier-B block, CR300/CR350 in the late section), findings collected aside so
 tier C is not hidden.
+
+## Variable data types (`checker/var_types.py`)
+
+Per-instruction type requirements on variable arguments, pass 2 tier C (run after
+`check_dest_bounds`; findings sort by line, so a bounds error on the same statement stays first).
+There is no uniform rule per type code: the "variable-required" codes 27/29 only say a variable is
+needed, and each instruction then applies its own type test. Fixture
+`tests/fixtures/var_types.json` (real-compiler output, compiler SHA-256 and date 2026-10-02 inside),
+replayed by `tests/test_var_types.py`.
+
+- `RoutersNeighbors(Dest)` (all four loggers): the destination must be a `Long` variable or array
+  element, else `Destination variable must be type LONG`. A string literal gives the same message;
+  a number literal is still `Invalid Variable or Array`. Float, String, Boolean and Double all fail.
+- `SortSpaIndexed(Dest,Reps,Source)` (CR6/CR1000X; CR300/CR350 lack the instruction): `Source and
+  Dest types must be the same.` unless the types are equal, with one oddity, a String `Dest` with a
+  Float `Source` is accepted. `Source` is an expression with an inferred type: an integer or `&H`
+  literal, `Const` integer, `TRUE`/`FALSE` and `+ - *` of Longs are Long; a literal with `.` or `E`,
+  `NaN`, a `/` and any mix with a Float are Float; a String literal is String; variables (through
+  `Alias`) have their declared type. Functions, comparisons and other operators are not typed
+  (`Int(3.5)` is Float for the compiler but unknown here, so it stays silent). A scalar `Source`
+  also draws an out-of-bounds error (destination-bounds rule, not here).
+- Parenthesised dimension (all four loggers): a `(` anywhere in a variable's dimension list,
+  `Public A((1+2),5) As Long`, `A(3,2*(1+1))`, `A(Abs(3))`, makes the variable Float whatever its
+  `As` type (seen through `RoutersNeighbors` and `SortSpaIndexed`; String and Boolean too). The
+  parser sets `VarDecl.paren_dim` and `symbols.declared_variable_types` returns FLOAT for it. The
+  dimension following the type (`As Float(5)`) was not probed.
+
+Sample probes not yet implemented: `Median` of a String (`Type must be Float, FP2 or Long`),
+`Sample(...,Bool8)` with Reps 1.

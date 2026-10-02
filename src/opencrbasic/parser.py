@@ -829,8 +829,10 @@ class _Parser:
         name_tok = p.expect_ident()
         dims: list[S.Expr] = []
         dim0_span: tuple[int, int] | None = None
+        paren_dim = False
         if p.is_op("("):
             p.next()
+            first = p.i
             if not p.is_op(")"):
                 start_col = p.peek().col
                 dims.append(self._parse_expr(p, line, file))
@@ -838,6 +840,7 @@ class _Parser:
                 while p.is_op(","):
                     p.next()
                     dims.append(self._parse_expr(p, line, file))
+            paren_dim = any(t.kind == "OP" and t.text == "(" for t in p.toks[first:p.i])
             self._close_dims_or_raise(p, name_tok)
         vtype = None
         strsize = None
@@ -906,7 +909,7 @@ class _Parser:
             bad = p.peek()
             raise _ParseError(f"Invalid As clause: {bad.text}")
         return S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
-                          dim0_span=dim0_span)
+                          dim0_span=dim0_span, paren_dim=paren_dim)
 
     # ---- Alias / Units --------------------------------------------------
 

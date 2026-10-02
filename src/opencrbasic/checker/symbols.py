@@ -133,6 +133,8 @@ def declared_variable_types(program: S.Program) -> dict[str, str]:
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
             for v in st.vars:
                 name, kind = v.name.upper(), (v.type or "FLOAT").upper()
+                if v.paren_dim:  # `Public A((1+2)) As Long` is a Float array (oracle, docs/checker.md)
+                    kind = "FLOAT"
                 if types.setdefault(name, kind) != kind:
                     clash.add(name)
     for name in clash:

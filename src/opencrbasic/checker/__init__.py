@@ -103,7 +103,7 @@ from ..diagnostics import Diagnostics
 from ..profiles import Profile
 from . import (
     cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
-    structure, warnings,
+    structure, var_types, warnings,
 )
 
 
@@ -354,6 +354,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # this boundary, unlike within tier B itself above.
         _run_pass(instr_measure.check_reps, program, profile, diags, env)
         _run_pass(instr_measure.check_dest_bounds, program, profile, diags, env)
+        _run_pass(var_types.check, program, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.

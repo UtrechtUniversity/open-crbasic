@@ -102,6 +102,7 @@ class VarDecl:
     # `checker/structure.py` echo it verbatim for `Variable %s dimension exceeds max of %d.`
     # (oracle-confirmed to always name the *first* dimension, `docs/checker.md`), without the
     # parser needing to reconstruct an expression's source spelling from its AST.
+    paren_dim: bool = False  # a `(` inside the dimension list makes the variable Float whatever its `As` type
 
 
 @dataclass
