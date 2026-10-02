@@ -552,6 +552,90 @@
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
     },
     {
+      "id": "cr6-broadcast-0",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-1",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1"
+    },
+    {
+      "id": "cr6-broadcast-7",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7"
+    },
+    {
+      "id": "cr6-broadcast-12",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-13",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,13)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-14",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-14p9",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-15",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,15)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 15"
+    },
+    {
+      "id": "cr6-broadcast-255",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,255)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 255"
+    },
+    {
+      "id": "cr6-broadcast--1",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -1"
+    },
+    {
+      "id": "cr6-broadcast-qaq",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr6-broadcast-Kplus12",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,K+12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
       "id": "cr1000x-semaphoreget-0",
       "logger": "cr1000x",
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
@@ -592,6 +676,27 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Foo.\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr1000x-broadcast-0",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-broadcast-7",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7"
+    },
+    {
+      "id": "cr1000x-broadcast-14",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
       "id": "cr300-semaphoreget-0",
@@ -706,6 +811,27 @@
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal\nline 6: Illegal Semaphore, 1..3 are legal"
     },
     {
+      "id": "cr300-broadcast-0",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-broadcast-7",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7"
+    },
+    {
+      "id": "cr300-broadcast-14",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
       "id": "cr350-semaphoreget-0",
       "logger": "cr350",
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
@@ -746,6 +872,27 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined."
+    },
+    {
+      "id": "cr350-broadcast-0",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-broadcast-7",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7"
+    },
+    {
+      "id": "cr350-broadcast-14",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
       "id": "cr6-acpower-0",
@@ -851,6 +998,13 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Dim Z banana\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable declaration banana."
+    },
+    {
+      "id": "cr6-broadcast-and-semaphore",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n    SemaphoreGet(7)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
     }
   ]
 }

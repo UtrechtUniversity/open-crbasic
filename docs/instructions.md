@@ -980,3 +980,11 @@ passes). Printed before any channel errors of the same statement. Known gap: on 
 compiler also reports its `Invalid channel N, must use U1..U12.` series for `ACPower` channels
 (and CR1000X `must use 1..16.`) beside it; those are not implemented, so such a file matches only
 when its channels are valid.
+
+### `Broadcast`: `Illegal message type %d` (all four loggers)
+
+The `Message` constant (position 2) must convert to 0, 12, 13 or 14 (0..15 swept on CR6 and CR350;
+others spot-checked on CR1000X/CR300). The converted number is printed (`14.9` is accepted,
+`TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`). Same tier as the other
+`const_ranges` rules. Not modelled: `Broadcast` before `BeginProg`, where the real compilers print
+only this error (no placement error) while we add the placement one.
