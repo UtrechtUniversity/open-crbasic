@@ -634,6 +634,31 @@ class _OutField:
     subdims: list[int]
     units: str = ""
     bytes: int = 0
+    # Duplicate-field-name bookkeeping only (`checker/instr_data.check_duplicate_fields`):
+    # `renamed` marks a name set by `FieldNames`; `name_only` fields (FFT, CH400Status source)
+    # take part in that check but are never written to the TDF or counted in the record size;
+    # `rng` is the element range `(lo, hi)` the field covers (`None`: never conflicts by range).
+    renamed: bool = False
+    name_only: bool = False
+    ch400: bool = False
+    rng: tuple[int, int] | None = None
+
+
+_FFT_UNBOUNDED = 1 << 30
+
+
+def _element_range(src: S.Expr | None, begin: int, dim: int, env: consteval.Env):
+    if isinstance(src, S.Index) and len(src.args) > 1:
+        if dim != 1:
+            return None
+        flat = 0
+        for k, a in enumerate(src.args):
+            v = _fold(a, env, None)
+            if not isinstance(v, (int, float)):
+                return None
+            flat += int(v) << (20 * k)
+        return flat, flat
+    return begin, begin + max(dim, 1) - 1
 
 
 _TYPE_BYTES = {2: 2, 6: 4, 7: 2, 9: 4, 11: 0, 14: 8, 17: 1, 18: 8, 28: 4, 1: 1, 4: 4}
@@ -647,6 +672,20 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
 
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
                          env: consteval.Env) -> list[_OutField]:
+    fields = _emit_output_fields_raw(instr, var_info, by_display, env)
+    src = instr.args[1] if len(instr.args) > 1 else None
+    if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
+            and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
+        for f in fields:
+            f.ch400 = True
+    for f in fields:
+        if f.rng is None and not f.ch400:
+            f.rng = _element_range(src, f.begin, f.dim, env)
+    return fields
+
+
+def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: dict,
+                             env: consteval.Env) -> list[_OutField]:
     kw = instr.keyword.upper()
     a = instr.args
 
@@ -755,6 +794,7 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
     if len(fields) == 1 and len(parts) == 1 and fields[0].dim == 1:
         name, _, desc = parts[0].partition(":")
         fields[0].name = name.strip()
+        fields[0].renamed = True
         if desc:
             fields[0].processing += ":" + desc.strip()
         return fields
@@ -770,16 +810,21 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         for i in range(n_named):
             name, _, desc = parts[i].partition(":")
             proc = base.processing + (":" + desc.strip() if desc else "")
+            rng = None if base.rng is None else (base.rng[0] + i, base.rng[0] + i)
             out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
-                                  base.begin + i, 1, [], base.units))
+                                  base.begin + i, 1, [], base.units, renamed=True,
+                                  name_only=base.name_only, rng=rng))
         remaining = base.dim - n_named
         if remaining > 0:
+            rng = None if base.rng is None else (base.rng[0] + n_named, base.rng[1])
             out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
-                                  base.begin + n_named, remaining, base.subdims, base.units))
+                                  base.begin + n_named, remaining, base.subdims, base.units,
+                                  name_only=base.name_only, rng=rng))
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")
         f.name = name.strip()
+        f.renamed = True
         if desc:
             f.processing += ":" + desc.strip()
     return fields
@@ -837,24 +882,36 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             if pending:
                 out_fields.extend(pending)
             pending = _emit_output_fields(s, var_info, by_display, env)
+        elif kw == "FFT":
+            # Name-only field (`_OutField.name_only`): FFT's TDF layout is not modelled here, but
+            # its `<Source>_FFT` name takes part in the duplicate-field-name check.
+            if pending:
+                out_fields.extend(pending)
+            fft_src = _source_name(s.args[0] if s.args else None, var_info)
+            pending = [_OutField("Anonymous" if fft_src == "Anonymous" else fft_src + "_FFT",
+                                  9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
+                                  rng=(1, _FFT_UNBOUNDED))]
     if pending:
         out_fields.extend(pending)
 
     fields = []
     for of in out_fields:
+        if of.name_only:
+            continue
         fields.append(TdfField(of.type_code, of.read_only, of.name, [], of.processing, of.units,
                                 of.processing, of.begin, of.dim, of.subdims))
 
     size_val = _fold(dt.size_expr, env, -1)
     size_val = _as_int(size_val, -1)
 
-    bytes_per_record = sum(_field_record_bytes(of) for of in out_fields)
+    bytes_per_record = sum(_field_record_bytes(of) for of in out_fields if not of.name_only)
 
     meta = dict(size_val=size_val, bytes_per_record=bytes_per_record,
                 interval_seconds=interval_seconds, has_card=has_card,
                 display_interval=display_interval, called=dt.name.upper() in called)
 
     table = TdfTable(dt.name, 1, 14, into, interval, fields)
+    table._dup_fields = out_fields  # type: ignore[attr-defined]
     if display_interval is not None:
         table._interval_display = display_interval  # type: ignore[attr-defined]
     return table, meta

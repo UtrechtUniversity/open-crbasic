@@ -2776,3 +2776,65 @@ function/predefined collision order. Implementation uses
 checks are integrated per variable into `structure._check_duplicate_declaration`, while routine
 locals use `symbols.check_local_name_collision` for both families.
 `Profile.declarable_predefined_names` holds the two modern profiles' explicit exception set.
+
+## Duplicate field names
+
+`Duplicate field name <name> in DataTable <table>.` has no `line N:` prefix. Observed on all four
+supplied compilers (fixture date 2026-10-02, hashes in `tests/fixtures/duplicate_fields.json`).
+This section supersedes the earlier "one message per repeated name" description in
+`docs/instructions.md`.
+
+Emission. It is a table-finalisation finding, so it appears only when no other error was found:
+with any pass-1 or pass-2 error elsewhere in the file (including CR300/CR350 undefined-name
+cascades) the duplicate messages are absent. Tables are reported in declaration order. It also
+replaces the `Table X, is declared but never called.` warning: a file with any duplicate error
+prints no such warning, for any table. Without a duplicate that warning is unchanged.
+
+Pairing. Messages are per conflicting pair, not per name: a name on n conflicting fields gives
+n(n-1)/2 messages (2 fields: 1, 3: 3, 4: 6, 12: 66). Messages are ordered by the later field of the
+pair, one per earlier conflicting field, and print the later field's spelling (`FieldNames("Xy")`
+then `"xY"` prints `xY`; a source variable prints its declared spelling). Matching is
+case-insensitive.
+
+What conflicts. Field names are the usual defaults (`<src>`, `_Avg`, `_Min`/`_TMn`, ...) or
+`FieldNames` overrides, as derived by `tables.py`. Two fields with the same name conflict when
+either (a) both were named by `FieldNames`, or (b) their source-element ranges overlap. Array
+sources use element ranges: `Sample(1,w(1))` + `Sample(1,w(2))` is accepted; `Sample(3,w())` twice
+gives one message, `Sample(3,w())` + `Sample(1,w(2))` gives one, and `Sample(2,w())` +
+`Sample(2,w(2))` gives one. A rename that leaves a remainder (`Sample(3,w())` + `FieldNames("w")`)
+is accepted: the renamed element covers w(1) and the remainder w(2..3). Two names from one
+`FieldNames("n,n")` do conflict. Distinct 2-D element sources (`m(1,1)`, `m(2,1)`) are accepted.
+
+FFT. `FFT(x,...)` contributes a field `x_FFT` for every option 0-5 (the two reproducers' option 5
+on `y` gives `y_FFT`). `FieldNames` after an FFT renames its leading elements and leaves the
+remainder as `x_FFT` (`FFT` + `FieldNames("p")` twice gives `p`, `x_FFT`; three times gives
+`p,x_FFT,p,p,x_FFT,x_FFT`). A single FFT is accepted. Before this change `FieldNames` following an
+FFT renamed the instruction before it in `tables.py`; FFT now owns it. FFT fields are name-only:
+they are excluded from the TDF and record size, whose FFT layout is still unmodelled.
+
+CH400Status (CR6/CR1000X only; CR300/CR350 reject the instruction). `Sample(n,CH400Status,...)`
+yields n copies of 32 member names (list in `instr_data._CH400_FIELDS`, recovered from message
+order); n=1 is accepted, n>=2 duplicates. This explains `chm/ch400status_2.CR6`.
+
+Error-buffer cap. The message text is truncated by a buffer: output is cumulative messages
+costing `len(message)+2` (CRLF) until 4095 bytes; a message that does not fit is skipped while a
+shorter later one can still fit. Evidence: n=11..14 identical fields give 55..91 messages (all);
+n=16 with table `T` stops at 102 messages (102*40=4080); table name length changes the count
+(78 with a 13-character name, 71 with a long field name); `ch400status_2.CR6` reaches exactly 4095
+and ends with one short `MaxBoardTemp` message after longer ones were skipped. The file name does
+not count. Whether earlier non-duplicate diagnostics share the buffer is not observed (they cannot
+co-occur with duplicates).
+
+Implementation: `tables.py` records every field, including name-only ones, in
+`TdfTable._dup_fields` (`_OutField.renamed`, `.rng`, `.name_only`, `.ch400`);
+`instr_data.check_duplicate_fields` applies the conflict and buffer rules, and runs before
+`warnings.check`, which is skipped when it reports an error.
+
+Evidence: 350 oracle observations in `tests/fixtures/duplicate_fields.json`
+(`tests/test_duplicate_fields.py`) over all four loggers; the fixture carries the probe
+sources (the originals were in the git-ignored `scratch/dupfield/`). Not covered (not probed or not matched): `SampleMaxMin` without a preceding
+`Maximum`/`Minimum` (the real compiler gives a different pass-2 error), FFT length checks
+(`x must be of length >= 16.`, so `FFT(x(1),...)` still prints a duplicate where the oracle prints
+that error), `CH400Status` used without the instruction (oracle: `Invalid symbol in expression`),
+and other table instructions that `tables.py` does not emit (Histogram4D, LevelCrossing, Rainflow,
+ETsz, GOES/MQTT fields).

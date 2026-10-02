@@ -260,65 +260,89 @@ def check_table_structure(program: S.Program, profile: Profile, diags: Diagnosti
             diags.error(stmt.line, f"{display} must be used inside a table declaration.", stmt.file)
 
 
+# `Sample(Reps, CH400Status, ...)` samples the predefined CH400Status table: `Reps` consecutive
+# copies of these 32 field names (oracle-observed through the duplicate-name messages,
+# `docs/checker.md` "Duplicate field names").
+_CH400_FIELDS = (
+    "ChargeAVoltage", "ChargeACurrent", "ChargeBVoltage", "ChargeBCurrent", "InputChargeStatus",
+    "InputCurrentLimit", "BattAVoltage", "BattACurrent", "BattAChargeStatus", "BattASetVoltage",
+    "BattACurrentLimit", "BattADepthofDischarge", "BattBVoltage", "BattBCurrent",
+    "BattBChargeStatus", "BattBSetVoltage", "BattBCurrentLimit", "BattBDepthofDischarge",
+    "SystemVoltage", "SystemCurrent", "AlwaysOn12Voltage", "AlwaysOn12Current",
+    "Switched12Voltage", "Switched12Current", "Switched24Voltage", "Switched24Current",
+    "PowerSwitchState", "MaxBoardTemp", "MinBoardTemp", "PanelTemp", "BattAProbeTemp",
+    "BattBProbeTemp",
+)
+
+# Error-text buffer: messages are appended while they fit in 4095 bytes counting CRLF per line.
+_ERROR_BUFFER_BYTES = 4095
+
+
+def _dup_entries(table):
+    """(name, renamed, range) for each field of `table`, in order (`docs/checker.md` "Duplicate
+    field names"). Falls back to the TDF fields for a table without `tables.py` bookkeeping."""
+    fields = getattr(table, "_dup_fields", None)
+    if fields is None:
+        for f in table.fields:
+            yield f.name, False, (f.begin_index, f.begin_index + max(f.dimension, 1) - 1)
+        return
+    for f in fields:
+        if f.ch400:
+            for _ in range(max(f.dim, 1)):
+                for n in _CH400_FIELDS:
+                    yield n, False, (1, 1)
+        else:
+            yield f.name, f.renamed, f.rng
+
+
 def check_duplicate_fields(program: S.Program, result, diags: Diagnostics) -> None:
-    """`Duplicate field name %s in DataTable %s.` (no line number -- oracle-confirmed, same as the
-    pre-existing "table declared but never called" warning that shares its emitting function,
-    `docs/checker.md`'s `FUN_004eab30`): fires once for every field beyond the first that shares its
-    already-computed output-field name with an earlier field in the same table (oracle-confirmed
-    shape, both from three saved fuzz reproducers -- `0004dc1d7a39.json`/`7076907a77b3.json`/
-    `d4b49fb47507.json`, each a `duplicate_line` mutant that repeats one `Sample`/`Minimum` call
-    verbatim -- and from the CHM corpus's own `ch400status_2.CR6`: exactly one diagnostic per
-    repeated name, not one per pair).
+    """`Duplicate field name %s in DataTable %s.` (no line number), once for every pair of
+    conflicting fields, reported for the later field of the pair in table order. Rule, evidence and
+    the error-buffer cap: `docs/checker.md` "Duplicate field names".
 
-    Deliberately reuses `result.tables` (`tables.py`, a concurrently-owned module, wired in by
-    `tables_hook.attach` earlier in the same pass-2 block) instead of re-deriving each output
-    instruction's own field-naming rule (`_Avg`/`_Min`/`_TMx`/... suffixes, `FieldNames` renaming,
-    reps-array expansion) a second time here -- both for `AGENTS.md`'s "do not copy a fact into
-    several homes" and because it is safely *conservative* for the gap already documented there
-    (an instrument-specific structured measurement `tables.py` does not yet expand per-element,
-    `docs/checker.md`'s open gaps; `ch400status_2.CR6`'s own `CH400Status` reps-cycling shape is
-    exactly this) -- that shows up as a single field, never as several colliding names, so
-    under-reporting is the only risk there.
-
-    **Found as a regression during this round's own development, fixed here**: `tables.py`'s
-    `_source_name` has a *different* gap that is not safely conservative -- it returns the fixed
-    sentinel `"Anonymous"` (never a real field name; not `tables.py`'s concern, since the TDF/`-l`
-    output this project has actually verified byte-identical never exercises this path) for any
-    output-instruction source that is not a plain `Name`/`Index` expression, e.g. a `Table.Field`
-    cross-table reference (`HR_DATA.battery_voltage_Avg`) or a string literal (`Sample(1,"Forced
-    RT: ",String)`, both real CHM corpus shapes, `docs/instructions.md`). Two or more such sources
-    in the same table collide on this one shared sentinel and were flagged as duplicates of *each
-    other* here even though the real compiler accepts the file cleanly (`tests/corpus/chm/
-    goestable_1.CR6`, oracle-confirmed accepted on all four loggers, found as a false reject this
-    round's own difftest run caught before this fix landed) -- so every field named exactly
-    `"Anonymous"` is excluded from this check entirely, on both sides of the comparison: it is
-    never recorded as "seen" and never itself flagged, since a name this project already knows is
-    not a genuine derived name is not evidence of a genuine collision either way.
+    Two fields conflict when their names match case-insensitively and either both were named by
+    `FieldNames` or their source-element ranges overlap. Field names are reused from `tables.py`
+    (`TdfTable._dup_fields`), which also supplies name-only FFT and CH400Status fields. A field
+    named exactly `"Anonymous"` (`tables.py`'s placeholder for a non-variable source) is skipped.
     """
     tables = getattr(result, "tables", None)
     if not tables:
         return
-    user_tables: set[str] = set()
+    user_tables: list[str] = []
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE":
             name = _table_name(stmt)
-            if name:
-                user_tables.add(name.upper())
-    if not user_tables:
-        return
+            if name and name.upper() not in user_tables:
+                user_tables.append(name.upper())
     by_upper = {t.name.upper(): t for t in tables}
+    remaining = _ERROR_BUFFER_BYTES
     for key in user_tables:
         table = by_upper.get(key)
         if table is None:
             continue
-        seen: set[str] = set()
-        for f in table.fields:
-            if f.name == "Anonymous":
+        seen: dict[str, list[tuple[bool, tuple[int, int] | None]]] = {}
+        shortest = len(f"Duplicate field name x in DataTable {table.name}.") + 2
+        for name, renamed, rng in _dup_entries(table):
+            if remaining < shortest:
+                break
+            if name == "Anonymous":
                 continue
-            if f.name in seen:
-                diags.error(0, f"Duplicate field name {f.name} in DataTable {table.name}.")
-            else:
-                seen.add(f.name)
+            earlier = seen.setdefault(name.upper(), [])
+            text = f"Duplicate field name {name} in DataTable {table.name}."
+            cost = len(text) + 2
+            for e_renamed, e_rng in earlier:
+                if renamed and e_renamed:
+                    conflict = True
+                elif rng is None or e_rng is None:
+                    conflict = False
+                else:
+                    conflict = rng[0] <= e_rng[1] and e_rng[0] <= rng[1]
+                if not conflict:
+                    continue
+                if cost <= remaining:
+                    diags.error(0, text)
+                    remaining -= cost
+            earlier.append((renamed, rng))
 
 
 def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics) -> None:

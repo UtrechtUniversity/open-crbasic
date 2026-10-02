@@ -367,7 +367,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             pass
         else:
             _run_pass(tables_hook.attach, program, profile, result)
-            _run_pass(warnings.check, program, result, diags)
             # `Duplicate field name %s in DataTable %s.` -- needs `result.tables`, just attached
-            # above (`checker/instr_data.py`, `docs/instructions.md`).
+            # above (`checker/instr_data.py`, `docs/checker.md` "Duplicate field names"). Its
+            # errors suppress the "declared but never called" warning.
             _run_pass(instr_data.check_duplicate_fields, program, result, diags)
+            if not diags.errors:
+                _run_pass(warnings.check, program, result, diags)
