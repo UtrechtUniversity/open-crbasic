@@ -487,6 +487,272 @@
    "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\nSlowSequence\nScan(9,Sec,0,0)\nx=1\nNextScan\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "pipeline-delay-before-scan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-after-nextscan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nDelay(0,1,Sec)\nx=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "pipeline-delay-in-if-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(5,Sec,0,0)\nIf x=1 Then\nDelay(0,1,Sec)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-option1-ok-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(1,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-delay-sequentialmode-ok-cr6",
+   "logger": "cr6",
+   "source": "SequentialMode\nPipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-delay-no-mode-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-mode-after-delay-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nPipeLineMode\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-delay-in-sub-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nSub S\nDelay(0,1,Sec)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-before-scan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-in-scan-ok-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-paneltemp-inline-if-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nIf x=1 Then PanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-in-for-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nFor v=1 To 2\nPanelTemp(y(1),15000)\nNext\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-after-select-ok-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nSelect Case x\nCase 1\nx=2\nEndSelect\nPanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-delay-and-bad-symbol-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nx=q\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: Invalid symbol in expression: x=q."
+  },
+  {
+   "id": "pipeline-two-tasks-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nBattery(y(2))\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: Battery not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-before-scan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-after-nextscan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nDelay(0,1,Sec)\nx=2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "pipeline-delay-in-if-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(5,Sec,0,0)\nIf x=1 Then\nDelay(0,1,Sec)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-option1-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(1,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-delay-sequentialmode-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "SequentialMode\nPipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-delay-no-mode-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-mode-after-delay-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nPipeLineMode\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "pipeline-delay-in-sub-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nSub S\nDelay(0,1,Sec)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-before-scan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-in-scan-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-paneltemp-inline-if-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nIf x=1 Then PanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-in-for-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nFor v=1 To 2\nPanelTemp(y(1),15000)\nNext\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-after-select-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nScan(1,Sec,0,0)\nSelect Case x\nCase 1\nx=2\nEndSelect\nPanelTemp(y(1),15000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "pipeline-delay-and-bad-symbol-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nx=q\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: Invalid symbol in expression: x=q."
+  },
+  {
+   "id": "pipeline-two-tasks-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nBattery(y(2))\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: Battery not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-cr300-ok",
+   "logger": "cr300",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "pipeline-delay-cr350-ok",
+   "logger": "cr350",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "pipeline-hides-unclosed-scan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-cut-off-by-earlier-nextscan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nNextScan\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "pipeline-then-later-nextscan-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nNextScan\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "pipeline-hides-unclosed-scan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-cut-off-by-earlier-nextscan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nNextScan\nPanelTemp(y(1),15000)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "pipeline-then-later-nextscan-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nNextScan\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: NextScan with no Scan."
   }
  ]
 }

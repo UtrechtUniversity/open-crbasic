@@ -2952,3 +2952,35 @@ reported, and a second `BeginProg` section is not counted separately (5 + 5 give
 fifth). Being pass 1 it hides pass-2 errors (`X = Q`, `NextScan with no Scan.`, unclosed `Do`) and
 prints alongside `Variable not named.`; it starts the CR300/CR350 `Too many parameters:  Sec.`
 cascade (`cr3xx._DECLARATION_TRIGGER_PREFIXES`).
+
+### Task instructions in PipeLine Mode
+
+`structure.pipeline_task_errors` (CR6/CR1000X only; CR300/CR350 accept everything below). After an
+explicit `PipeLineMode` statement earlier in the file, and no `SequentialMode` before it, a
+measurement/task instruction prints at its own line:
+
+- `X not allowed outside of Scan..NextScan in PipeLine Mode.` when it is outside every `Scan`:
+  before the first `Scan`, after `NextScan`, in a `SlowSequence` before its `Scan`, or in a `Sub`
+  body (also when the `Sub` is called inside a `Scan`);
+- `X not allowed inside of a conditional statement in PipeLine Mode.` inside a `Scan` but nested in
+  an `If`, `Select`, `For`, `Do`/`While` (or a one-line `If`). A `Select Case` that is closed
+  before the instruction does not count (unlike the auto-mode decision in `mode.py`, which has a
+  quirk there).
+
+`X` is the instruction's display name (`VoltSe`, `TCSe`). Probed one by one: `Delay` (constant
+option 0 only; option 1 is accepted, option 2 prints `SDM instruction must be in Scan..NextScan,
+unless SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `VoltSE`, `VoltDiff`,
+`PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`,
+`ExciteV` (`_PIPELINE_TASKS`). Not implemented because not probed or different: the other
+`mode.json` task instructions (`CDM_*`, `CS7500`, `EC100`, ...), `SW12`, and
+`SerialOutBlock`/`SerialInRecord` (accepted outside a `Scan`).
+
+The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`
+errors in line order, and is cut off by an earlier placement error. Unlike other tier-B errors it
+does not hide the tier-C checks: it prints alongside the instruction's own `Invalid channel ...`
+and the `Scan interval too short ...` errors, in front of them (except `ExciteV` on CR6 and
+`PortSet` on CR1000X, where the argument error comes first; not reordered). It does hide the
+end-of-program block checks like any pass-2 error. `PipeLineMode` and `SequentialMode` are
+declarations, never `never reached at run time.`. A dead `Delay` that gets this error prints no
+reachability warning of its own, and the walk continues (the next dead statement is flagged); a
+dead `PanelTemp` prints both.

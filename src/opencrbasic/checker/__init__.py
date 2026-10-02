@@ -192,6 +192,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
 
     bounds = Diagnostics()
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
+    # CR6/CR1000X `X not allowed outside of Scan..NextScan in PipeLine Mode.`: pass 2 errors that
+    # do not hide tier C (oracle: printed together with the instruction's own `Invalid channel`
+    # and `Scan interval too short` errors), merged ahead of the tier-C findings below.
+    pipe = Diagnostics()
     links = structure.CallLinks()
     pass1_errors = bool(diags.errors)
     if not diags.errors:
@@ -218,6 +222,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
+        _run_pass(structure.check_pipeline_task_placement, program, profile, pipe)
         menu_stop = _run_pass_capture(instr_data.check_table_and_menu_placement, program, profile,
                                       diags)
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
@@ -233,6 +238,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
         if cutoff is not None:
             bounds.items = [d for d in bounds.items if d.line <= cutoff]
+            pipe.items = [d for d in pipe.items if d.line <= cutoff]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
@@ -303,11 +309,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             # before `BeginProg` hides an fnotch warning further down).
             diags.items = [d for d in diags.items if d.severity != "warning" or
                            d.file != stop[0] or d.line <= stop[1]]
-    if not diags.errors and not fields.items:
+    if not diags.errors and not fields.items and not pipe.items:
         _run_pass(structure.check_end_blocks, program, diags)
     # CR300/CR350: these late errors do not start the `Too many parameters` cascade (oracle:
     # `Sample (1,Nope,FP2)` gives only `Nope is not defined.`).
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
+    tier_c_start = len(diags.items)
     if not diags.errors:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the
@@ -326,6 +333,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
+    diags.items[tier_c_start:tier_c_start] = pipe.items
 
     diags.items += bounds.items + fields.items
     # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message

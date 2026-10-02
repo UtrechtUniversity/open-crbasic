@@ -245,6 +245,78 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
     return None
 
 
+# Measurement/task instructions that print `%s not allowed outside of Scan..NextScan in PipeLine
+# Mode.` / `... inside of a conditional statement ...` after an explicit `PipeLineMode` (oracle,
+# 2026-10-02, probed one by one on CR6 and CR1000X). A subset of `mode.json`'s task instructions:
+# `SW12`, `SerialOutBlock`/`SerialInRecord` (accepted outside a Scan), `PulseCount` (its own
+# message) and the unprobed ones are left out.
+_PIPELINE_TASKS = frozenset({
+    "PANELTEMP", "BATTERY", "VOLTSE", "VOLTDIFF", "PORTGET", "PORTSET", "THERM107", "BRHALF",
+    "BRFULL", "TCSE", "TCDIFF", "PERIODAVG", "CS616", "EXCITEV", "DELAY"})
+
+
+def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]]:
+    """CR6/CR1000X, pass 2, accumulating (it does not end the pass): after `PipeLineMode` (and no
+    `SequentialMode`) earlier in the file, a `_PIPELINE_TASKS` instruction outside any `Scan` (a
+    `Sub` body, before the first `Scan`, a `SlowSequence` header, after `NextScan`) is `X not
+    allowed outside of Scan..NextScan in PipeLine Mode.`; inside a `Scan` but nested in an
+    `If`/`Select`/`For`/`Do`/`While` (or a one-line `If`) it is `X not allowed inside of a
+    conditional statement in PipeLine Mode.`. `Delay` only with a constant option 0. The message
+    comes before the instruction's own argument errors (`Invalid channel ...`), except `ExciteV`
+    on CR6 and `PortSet` on CR1000X; those are not reordered.
+
+    Returns `(statement, message)` pairs in order."""
+    found: list[tuple[S.Stmt, str]] = []
+    if profile.single_pass:
+        return found
+    tasks = _PIPELINE_TASKS & set(profile.mode_rules["task_instructions"])
+    pipeline = sequential = False
+    scans = depth = 0
+
+    def visit(stmt: S.Stmt, inline: bool) -> None:
+        nonlocal pipeline, sequential, scans, depth
+        kw = _keyword(stmt)
+        args = getattr(stmt, "args", []) or []
+        word = _block_word(args) if kw in ("END", "NEXT") else None
+        if kw == "SEQUENTIALMODE":
+            sequential = True
+        elif kw == "PIPELINEMODE":
+            pipeline = True
+        elif kw == "SCAN":
+            scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
+            scans = max(0, scans - 1)
+        elif kw in ("SELECT", "FOR", "DO", "WHILE") or (kw == "IF" and not (
+                isinstance(stmt, S.If) and stmt.inline is not None)):
+            depth += 1
+        elif kw in ("ENDIF", "ENDSELECT", "LOOP", "WEND") or (
+                kw == "NEXT" and word != "SUBSCAN") or (kw == "END" and word in ("IF", "SELECT")):
+            depth = max(0, depth - 1)
+        elif kw in tasks and pipeline and not sequential and isinstance(stmt, S.Instruction):
+            if kw == "DELAY" and not (args and isinstance(args[0], S.Number) and args[0].value == 0):
+                return
+            record = profile.instructions.get(kw)
+            name = record["name"] if record else stmt.keyword
+            if not scans:
+                found.append((stmt, f"{name} not allowed outside of Scan..NextScan in PipeLine "
+                              "Mode."))
+            elif depth or inline:
+                found.append((stmt, f"{name} not allowed inside of a conditional statement in "
+                              "PipeLine Mode."))
+        if isinstance(stmt, S.If) and stmt.inline is not None:
+            for inner in (stmt.inline or []) + (stmt.inline_else or []):
+                visit(inner, True)
+
+    for stmt in program.statements:
+        visit(stmt, False)
+    return found
+
+
+def check_pipeline_task_placement(program: S.Program, profile, diags: Diagnostics) -> None:
+    for stmt, message in pipeline_task_errors(program, profile):
+        diags.error(stmt.line, message, stmt.file)
+
+
 def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
     """CR300/CR350: `CallTable` outside `Scan`, the first extra `NextScan` and the before-`BeginProg`
     placement errors, in statement order, after the table `Reps` checks and before the
