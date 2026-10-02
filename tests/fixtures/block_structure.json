@@ -1,5 +1,5 @@
 {
- "observation_date": "2026-10-02",
+ "observation_date": "2026-10-03",
  "compilers": {
   "cr6": {
    "exe": "CR6Comp.exe",
@@ -1112,11 +1112,25 @@
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: Invalid port 1, use C1..C8."
   },
   {
-   "id": "slowseq-in-do-hides-unclosed-do-cr1000x",
+    "id": "slowseq-in-do-hides-unclosed-do-cr1000x",
    "logger": "cr1000x",
    "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
-   "expected_exit": 1,
-   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+    "expected_exit": 1,
+    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+    "id": "pipeline-excitev-argument-first-cr6",
+    "logger": "cr6",
+    "source": "PipeLineMode\nPublic X\nBeginProg\nExciteV(1,2500,0)\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+    "expected_exit": 1,
+    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: ExciteV not allowed outside of Scan..NextScan in PipeLine Mode.\nline 4: Invalid Excitation channel (must be U1-U12)."
+  },
+  {
+    "id": "pipeline-portset-argument-first-cr1000x",
+    "logger": "cr1000x",
+    "source": "PipeLineMode\nPublic X\nBeginProg\nPortSet(109,1)\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+    "expected_exit": 1,
+    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 109, use C1..C8.\nline 4: PortSet not allowed outside of Scan..NextScan in PipeLine Mode."
   }
  ]
 }

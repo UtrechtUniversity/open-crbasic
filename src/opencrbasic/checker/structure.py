@@ -326,6 +326,11 @@ _PIPELINE_TASKS = frozenset({
     "PANELTEMP", "BATTERY", "VOLTSE", "VOLTDIFF", "PORTGET", "PORTSET", "THERM107", "BRHALF",
     "BRFULL", "TCSE", "TCDIFF", "PERIODAVG", "CS616", "EXCITEV", "DELAY"})
 
+# At one shared source location, tier-C argument diagnostics ordinarily follow the pipeline
+# placement diagnostic. These two oracle-observed profile exceptions put the argument diagnostics
+# first instead.
+_PIPELINE_ARGUMENT_ERROR_FIRST = frozenset({("cr6", "EXCITEV"), ("cr1000x", "PORTSET")})
+
 
 def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]]:
     """CR6/CR1000X, pass 2, accumulating (it does not end the pass): after `PipeLineMode` (and no
@@ -387,6 +392,14 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
 def check_pipeline_task_placement(program: S.Program, profile, diags: Diagnostics) -> None:
     for stmt, message in pipeline_task_errors(program, profile):
         diags.error(stmt.line, message, stmt.file)
+
+
+def pipeline_argument_error_first_locations(program: S.Program, profile) -> set[tuple[str, int]]:
+    return {
+        (stmt.file, stmt.line)
+        for stmt, _message in pipeline_task_errors(program, profile)
+        if (profile.name, _keyword(stmt)) in _PIPELINE_ARGUMENT_ERROR_FIRST
+    }
 
 
 def check_slow_sequence_blocks(program: S.Program, profile, diags: Diagnostics) -> None:

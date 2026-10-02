@@ -3126,8 +3126,12 @@ unless SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `Volt
 The error is pass 2 and accumulating: it does not end the pass, prints together with `x=q`
 errors in line order, and is cut off by an earlier placement error. Unlike other tier-B errors it
 does not hide the tier-C checks: it prints alongside the instruction's own `Invalid channel ...`
-and the `Scan interval too short ...` errors, in front of them (except `ExciteV` on CR6 and
-`PortSet` on CR1000X, where the argument error comes first; not reordered). It does hide the
+and the `Scan interval too short ...` errors, in front of them. Two same-line exceptions are
+profile-specific: CR6 `ExciteV(1,...)` prints its first channel error, then the PipeLine Mode
+error, then its excitation-channel error; CR1000X `PortSet(109,...)` prints the invalid-port error
+before the PipeLine Mode error. Fresh real-compiler fixture cases
+`pipeline-excitev-argument-first-cr6` and `pipeline-portset-argument-first-cr1000x` recorded both
+on 2026-10-03. It does hide the
 end-of-program block checks like any pass-2 error. `PipeLineMode` and `SequentialMode` are
 declarations, never `never reached at run time.`. A dead `Delay` that gets this error prints no
 reachability warning of its own, and the walk continues (the next dead statement is flagged); a

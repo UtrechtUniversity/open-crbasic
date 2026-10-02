@@ -391,7 +391,25 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
-    diags.items[tier_c_start:tier_c_start] = pipe.items
+    argument_error_first = structure.pipeline_argument_error_first_locations(program, profile)
+    ordinary_pipe = []
+    delayed_pipe = []
+    for diagnostic in pipe.items:
+        location = (diagnostic.file, diagnostic.line)
+        if location in argument_error_first and any(
+                item.severity == "error" and (item.file, item.line) == location
+                for item in diags.items[tier_c_start:]):
+            delayed_pipe.append(diagnostic)
+        else:
+            ordinary_pipe.append(diagnostic)
+    diags.items[tier_c_start:tier_c_start] = ordinary_pipe
+    for diagnostic in delayed_pipe:
+        location = (diagnostic.file, diagnostic.line)
+        index = min(
+            i for i, item in enumerate(diags.items)
+            if item.severity == "error" and (item.file, item.line) == location
+        ) + 1
+        diags.items.insert(index, diagnostic)
 
     diags.items += bounds.items + fields.items + ranges.items
     # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message
