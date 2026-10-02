@@ -54,10 +54,11 @@ class LogicalLine:
     # CR300/CR350 newline quirk (`checker/structure.py`'s `_out_of_place`) tell a statement that
     # truly runs to the physical end of line from one a trailing comment cut short (oracle-
     # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
+    kind: str = "code"       # code | overflow | include_begin | include_end
 
 
 def _split_physical_lines(raw: str) -> list[str]:
-    return raw.replace("\r\n", "\n").replace("\r", "\n").split("\n")
+    return raw.replace("\r\n", "\n").split("\n")
 
 
 def _strip_comment(line: str) -> str:
@@ -135,6 +136,11 @@ class _Loader:
         while i < n:
             start_line = i + 1
             raw_line = physical[i]
+            buffer_text = raw_line
+            # The buffer includes an LF when present; see docs/frontend.md#source-line-buffer.
+            if len(buffer_text) + (i < n - 1) > 510:
+                out.append(LogicalLine("", start_line, filename, section, kind="overflow"))
+                break
             text = _strip_comment(raw_line)
             had_comment = len(text) != len(raw_line)
             last_line = start_line
@@ -143,9 +149,14 @@ class _Loader:
                 if not cont or i + 1 >= n:
                     text = prefix if cont else text
                     break
+                buffer_text = _strip_comment(buffer_text).rstrip(" \t")[:-1]
                 i += 1
                 last_line = i + 1
                 raw_line = physical[i]
+                buffer_text += raw_line
+                if len(buffer_text) + (i < n - 1) > 510:
+                    out.append(LogicalLine("", last_line, filename, section, kind="overflow"))
+                    return out
                 stripped = _strip_comment(raw_line)
                 had_comment = len(stripped) != len(raw_line)
                 text = prefix + " " + stripped.lstrip(" \t")
@@ -169,7 +180,9 @@ class _Loader:
             if target is None:
                 self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
                 return []
-            return self.load_file(target, section=name, in_include=in_include, display=spec.strip())
+            included = self.load_file(target, section=name, in_include=in_include,
+                                      display=spec.strip())
+            return self._include_lines(included, line, filename, section)
         m = _INCLUDE_RE.match(text)
         if m:
             if in_include:
@@ -180,8 +193,15 @@ class _Loader:
             if target is None:
                 self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
                 return []
-            return self.load_file(target, section=None, in_include=True, display=spec.strip())
+            included = self.load_file(target, section=None, in_include=True, display=spec.strip())
+            return self._include_lines(included, line, filename, section)
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
+
+    @staticmethod
+    def _include_lines(included: list[LogicalLine], line: int, filename: str,
+                       section: str | None) -> list[LogicalLine]:
+        return [LogicalLine("", line, filename, section, kind="include_begin"), *included,
+                LogicalLine("", line, filename, section, kind="include_end")]
 
 
 def load_program(path: Path) -> tuple[list[LogicalLine], Diagnostics]:

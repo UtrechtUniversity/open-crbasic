@@ -217,7 +217,23 @@ class _Parser:
 
     def run(self, lines: list[source.LogicalLine], name: str) -> tuple[S.Program, Diagnostics]:
         self.program.name = name
+        skipped_include_depth = 0
         for ll in lines:
+            if skipped_include_depth:
+                if ll.kind == "include_begin":
+                    skipped_include_depth += 1
+                elif ll.kind == "include_end":
+                    skipped_include_depth -= 1
+                continue
+            if ll.kind == "include_begin":
+                if not self._active():
+                    skipped_include_depth = 1
+                continue
+            if ll.kind == "include_end":
+                continue
+            if ll.kind == "overflow":
+                self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)
+                break
             m = _DIRECTIVE_RE.match(ll.text)
             if m:
                 kind = m.group(1).upper()
