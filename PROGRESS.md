@@ -37,9 +37,9 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 
 ## Status by phase
 
-Measured 2026-10-02 on `claude/laughing-franklin-08z9vo`, after the oracle/harness reliability
-chunk, GPS port check, source-buffer check, SerialIn destination check, and function/predefined
-declaration namespace checks. Exact means equal exit codes and normalized ordered stdout; it does not mean byte
+Measured 2026-10-02 (evening) on `claude/laughing-franklin-08z9vo` at `94b64c6`, after the
+statement-form Function arity, SetSetting/SetStatus field names, fN1 minimum, unresolved
+`Call` link-step, and duplicate field name chunks (see Log). Exact means equal exit codes and normalized ordered stdout; it does not mean byte
 parity. "False reject" means the real compiler accepts and opencrbasic rejects.
 No false rejects were observed in these valid differential or replay results.
 
@@ -47,10 +47,10 @@ No false rejects were observed in these valid differential or replay results.
 
 | Logger | crbasic/ (16) exact | help (507) exact | help verdict/message differs | help verdict mismatch | help oracle errors |
 |---|---|---|---|---|---|
-| CR6 | 16 | 434 | 68 | 4 | 1 |
-| CR1000X | 16 | 441 | 61 | 4 | 1 |
-| CR300 | 6 | 404 | 92 | 9 | 2 |
-| CR350 | 5 | 405 | 92 | 8 | 2 |
+| CR6 | 16 | 436 | 68 | 2 | 1 |
+| CR1000X | 16 | 443 | 61 | 2 | 1 |
+| CR300 | 6 | 405 | 93 | 7 | 2 |
+| CR350 | 5 | 406 | 93 | 6 | 2 |
 
 Reference failures are now separated from compiler verdicts: `pointervariable_2.CR6` crashes
 the supplied compiler on all four profiles; `strcomp_3.CR6` also crashes CR300/CR350. These make
@@ -108,6 +108,21 @@ lists for all 16 repository programs.
 | 6 Complete parity gate | incomplete: known diagnostics, acceptance, option/artifact gaps remain on all four profiles |
 
 ## Log
+
+- 2026-10-02 (evening, Opus orchestrating Sonnet/Haiku agents in per-chunk git worktrees):
+  - 9dba35f bare-statement user Function arity; a5124fa SetSetting/SetStatus field names
+    (`docs/instructions.md`); 1a111ff CR6/CR1000X fN1 minimum + pass-1 Range code + variable in
+    fN1; 574eb12 unresolved `Call` (`docs/checker.md` "Unresolved `Call`s"); 94b64c6 duplicate
+    field names (pairwise, FFT/CH400Status, 4095-byte buffer cap).
+  - After all five: pytest 4,270 passed / 311 skipped; difftest table above; repo TDF and table
+    list 16/16 byte-identical. Replay on the subcall branch alone: 1,121 exact / 107 false
+    accepts (from 1,108/115); no full replay after all merges yet. No false rejects observed.
+  - Worktree gotcha: the shared uv env's editable install imports the MAIN checkout; inside a
+    worktree export `PYTHONPATH=$PWD/src` (difftest/tdftest insert their own path).
+  - Open: branch `ocb-argvals` (worktree `.claude/worktrees/ocb-argvals`) holds unverified
+    commit 6cd36d5 (MenuPick boolean picklist) from an agent cut off by a network error.
+  - CHM `tdftest --group chm` lists size/order mismatches (e.g. structuretype_2, tablefile_1,
+    tga_1, trim_1); not yet compared against a pre-change baseline.
 
 - 2026-10-02 (predefined-name namespace chunk): 276 fresh observations preserved with executable
   identities in `tests/fixtures/predefined_name_collision.json`. Global/routine declarations and
@@ -991,8 +1006,7 @@ Tick items here as they land.
    declaration but resolve bare uses as the internal function. Pending full observations are
    retained in `tests/fixtures/function_name_collision.json`. Probe other functions and parameter
    uses before changing expression resolution. Predefined-CONST declarations are now checked.
-2. Remaining false accepts: current replay has 115, led by unmatched-parenthesis/function
-   arity, out-of-bounds destinations/indices, and malformed-expression families. Split each
+2. Remaining false accepts: ~107 in replay, led by out-of-bounds destinations/indices, and malformed-expression families. Split each
    family by actual handler and profile; check accepted boundary cases and diagnostic phase.
 3. Expose swallowed semantic-pass exceptions in validation so implementation failures cannot
    hide behind false accepts or partial diagnostics. Keep the public compiler contract separate
