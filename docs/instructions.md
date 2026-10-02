@@ -875,5 +875,16 @@ replayed by `tests/test_var_types.py`.
   parser sets `VarDecl.paren_dim` and `symbols.declared_variable_types` returns FLOAT for it. The
   dimension following the type (`As Float(5)`) was not probed.
 
-Sample probes not yet implemented: `Median` of a String (`Type must be Float, FP2 or Long`),
+Probed, not implemented: `Median` of a String (`Type must be Float, FP2 or Long`),
 `Sample(...,Bool8)` with Reps 1.
+
+### `Sample` with data type `Nsec`
+
+Same module, all of CR6/CR1000X/CR300/CR350 (fixture cases `*-sample-nsec-*`). `Sample(Reps,Source,
+Nsec)` with a String, Boolean or Double source (variable, element, array, or a String expression
+such as `S+"x"`) gives `Source type must be either LONG or FLOAT or NSEC for data type NSEC`. A
+Float source (variable, literal or expression; an expression counts as one element) needs the
+variable's whole array to hold at least `7*Reps` elements, else `Float to NSEC expects source array
+size >= 7` (`FB(7)` Reps 1 passes, also as `FB(2)`; Reps 2 passes for 14 elements, fails for 13).
+This one is skipped when the statement already has an error (an out-of-bounds finding replaces it).
+Long sources and integer literals pass. Only `Sample` has the rule: `Maximum(1,S,Nsec,...)` compiles.

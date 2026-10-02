@@ -8,6 +8,8 @@ have no type (`None`), and a check that needs a type it does not have stays sile
 
 from __future__ import annotations
 
+import math
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -73,6 +75,8 @@ class _Typer:
                 self.of(expr.operand, depth + 1) in _NUMERIC else None
         if isinstance(expr, S.Binary) and expr.op in ("+", "-", "*", "/"):
             left, right = self.of(expr.left, depth + 1), self.of(expr.right, depth + 1)
+            if left == right == "STRING" and expr.op == "+":
+                return "STRING"
             if left in _NUMERIC and right in _NUMERIC:
                 return "LONG" if left == right == "LONG" and expr.op != "/" else "FLOAT"
         return None
@@ -84,6 +88,7 @@ def _same_type(dest: str, source: str) -> bool:
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
+    dims = None
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -101,6 +106,29 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if typer.variable(args[0]) is not None and dest and source and \
                     not _same_type(dest, source):
                 message = "Source and Dest types must be the same."
+        elif kw == "SAMPLE" and len(args) > 2 and isinstance(args[2], S.Name) and \
+                args[2].name.upper() == "NSEC":
+            source = typer.of(args[1])
+            if source in ("STRING", "BOOLEAN", "DOUBLE"):
+                message = "Source type must be either LONG or FLOAT or NSEC for data type NSEC"
+            elif source == "FLOAT" and not any((d.line, d.file) == (stmt.line, stmt.file)
+                                              for d in diags.errors):
+                if dims is None:
+                    dims = symbols.declared_all_dims(program, env)
+                size = _array_size(typer, dims, args[1])
+                try:
+                    reps = consteval.value_of(args[0], env)
+                except consteval.NotConstant:
+                    reps = None
+                if size is not None and isinstance(reps, int) and reps >= 1 and size < 7 * reps:
+                    message = "Float to NSEC expects source array size >= 7"
         if message:
             diags.error(stmt.line, message, stmt.file)
 
+
+def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | None) -> int | None:
+    """Element count of the variable behind `expr`; 1 for an expression that is no variable."""
+    if isinstance(expr, (S.Name, S.Index)) and typer.variable(expr) is not None:
+        shape = dims.get(typer.variable(expr))
+        return None if shape is None else math.prod(shape)
+    return 1
