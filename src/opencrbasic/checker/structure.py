@@ -529,7 +529,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     operands: set[str] = set()
     in_sub = False
     in_struct = False
-    const_tables = const_open = 0
+    const_tables = const_open = slow_sequences = 0
+    seen_endprog = False
     declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
@@ -573,6 +574,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     const_open -= 1
                 else:
                     diags.error(stmt.line, "EndConstTable with no ConstTable.", stmt.file)
+            elif kw == "ENDPROG":
+                seen_endprog = True
+            elif kw == "SLOWSEQUENCE" and not seen_endprog:
+                # Oracle, all four loggers, 2026-10-02: pass 1; every `SlowSequence` past the
+                # fourth, counted from the start of the file to the first `EndProg` (later ones
+                # are not reported), whether or not it has a `Scan`.
+                slow_sequences += 1
+                if slow_sequences > 4:
+                    diags.error(stmt.line, "Too many Slow Sequences: max = 4.", stmt.file)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
             if not stmt.vars:

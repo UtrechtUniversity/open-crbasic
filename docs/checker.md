@@ -2941,3 +2941,14 @@ the next `ConstTable` is accepted. Both messages start the CR300/CR350 `Too many
 Sec.` cascade (`cr3xx._DECLARATION_TRIGGERS`) and, being pass 1, do not stop the rest of pass 1
 (`Variable not named.` after them still prints). A duplicate `Const` name in the second table
 additionally prints `A is already declared as a CONST.`.
+
+### Slow sequence limit
+
+`structure.check_pass1`, pass 1, all four loggers (CR300/CR350 too). Every `SlowSequence` past the
+fourth prints `Too many Slow Sequences: max = 4.` at its own line, with or without a following
+`Scan` (five bare `SlowSequence` lines give one message at the fifth; six give two). Counting
+runs from the start of the file to the first `EndProg`; `SlowSequence` lines after it are not
+reported, and a second `BeginProg` section is not counted separately (5 + 5 gives only the first
+fifth). Being pass 1 it hides pass-2 errors (`X = Q`, `NextScan with no Scan.`, unclosed `Do`) and
+prints alongside `Variable not named.`; it starts the CR300/CR350 `Too many parameters:  Sec.`
+cascade (`cr3xx._DECLARATION_TRIGGER_PREFIXES`).

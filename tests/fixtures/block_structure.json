@@ -347,6 +347,146 @@
    "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nPublic\nConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable not named.\nline 6: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "slowseq-4-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-5-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-6-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nSlowSequence\nScan(7,Sec,0,0)\nx=5\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 26: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-5-hides-pass2-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-after-endprog-ignored-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\nSlowSequence\nScan(9,Sec,0,0)\nx=1\nNextScan\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-4-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-5-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-6-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nSlowSequence\nScan(7,Sec,0,0)\nx=5\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 26: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-5-hides-pass2-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4."
+  },
+  {
+   "id": "slowseq-after-endprog-ignored-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\nSlowSequence\nScan(9,Sec,0,0)\nx=1\nNextScan\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-4-ok-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-5-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec."
+  },
+  {
+   "id": "slowseq-6-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nSlowSequence\nScan(7,Sec,0,0)\nx=5\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec.\nline 26: Too many Slow Sequences: max = 4.\nline 27: Too many parameters:  Sec."
+  },
+  {
+   "id": "slowseq-5-hides-pass2-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec.\nline 24: q is not defined."
+  },
+  {
+   "id": "slowseq-after-endprog-ignored-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\nSlowSequence\nScan(9,Sec,0,0)\nx=1\nNextScan\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-4-ok-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-5-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec."
+  },
+  {
+   "id": "slowseq-6-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=4\nNextScan\nSlowSequence\nScan(7,Sec,0,0)\nx=5\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec.\nline 26: Too many Slow Sequences: max = 4.\nline 27: Too many parameters:  Sec."
+  },
+  {
+   "id": "slowseq-5-hides-pass2-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nSlowSequence\nScan(6,Sec,0,0)\nx=q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 22: Too many Slow Sequences: max = 4.\nline 23: Too many parameters:  Sec.\nline 24: q is not defined."
+  },
+  {
+   "id": "slowseq-after-endprog-ignored-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(2,Sec,0,0)\nx=0\nNextScan\nSlowSequence\nScan(3,Sec,0,0)\nx=1\nNextScan\nSlowSequence\nScan(4,Sec,0,0)\nx=2\nNextScan\nSlowSequence\nScan(5,Sec,0,0)\nx=3\nNextScan\nEndProg\nSlowSequence\nScan(9,Sec,0,0)\nx=1\nNextScan\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
   }
  ]
 }
