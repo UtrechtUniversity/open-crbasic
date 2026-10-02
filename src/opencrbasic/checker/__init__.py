@@ -192,6 +192,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
 
     bounds = Diagnostics()
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
+    links = structure.CallLinks()
+    pass1_errors = bool(diags.errors)
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
@@ -212,7 +214,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
         # `Invalid, or out of place expression: Y = 1.`).
         flat = _with_inline(program)
-        cutoff = _run_pass_capture(structure.check_pass2, flat, profile, diags, env)
+        cutoff = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
@@ -272,6 +274,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
                 if d.severity != "error" or not d.line or d.line <= cutoff
             ]
 
+    if profile.single_pass:
+        _run_pass(structure.commit_deferred_sub_error, links, profile, diags)
+
     late_start = len(diags.items)
     if profile.single_pass and all(d.message.startswith("Could not find DataTable ")
                                    for d in diags.errors):
@@ -322,6 +327,9 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
 
     diags.items += bounds.items + fields.items
+    # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message
+    # after every other error, so it does not gate the tier-C checks above.
+    _run_pass(structure.finalize_call_links, links, profile, diags, pass1_errors)
 
     # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any undefined-
     # name-class or genuine-`Too many parameters:` finding has fired anywhere above -- tier A

@@ -6,6 +6,7 @@ a statement our parser could not turn into a recognised shape. Rules and oracle 
 
 from __future__ import annotations
 
+import dataclasses
 import re
 
 from .. import consteval
@@ -695,8 +696,21 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
             diags.error(0, "DataTable ... EndTable not matched.")
 
 
+@dataclasses.dataclass
+class CallLinks:
+    """What `check_pass2` learned about `Call`s that name no declared `Sub` (`docs/checker.md`
+    "Unresolved `Call`s"). `calls`: the name of every explicit `Call` (and bare `Sub` statement
+    with trailing text) in source order; `registered`: upper-case names of the `Sub`s the walk
+    reached before it ended (a placement error ends it); `first`: CR300/CR350 only, the deferred
+    `(line, file, message)` of the first no-routines `Sub %s not defined.`.
+    `finalize_call_links` turns these into diagnostics."""
+    calls: list = dataclasses.field(default_factory=list)
+    registered: set = dataclasses.field(default_factory=set)
+    first: tuple | None = None
+
+
 def check_pass2(program: S.Program, profile, diags: Diagnostics,
-                 env: consteval.Env | None = None) -> int | None:
+                 env: consteval.Env | None = None, links: CallLinks | None = None) -> int | None:
     """The generic "Expr"/implicit-`Call` record family: a statement our parser turns into `Call`
     (a bare `Name`/`Name(args)`, with or without the `Call` keyword) or `Unparsed` (it could not
     parse at all) that never got a specific pass-1 diagnosis (`check_pass1`'s
@@ -744,6 +758,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         env = consteval.Env(profile, dict(program.consts))
     subs = symbols.declared_subs(program)
     sub_params = {st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef)}
+    link_ctx = _LinkContext(
+        {st.name.upper() for st in program.statements
+         if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"},
+        bool(subs), links if links is not None else CallLinks())
     known = expressions._known_names(program, profile)
     # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
     seen_beginprog = False
@@ -779,6 +797,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         before_bp = not seen_beginprog and not profile.single_pass
         if isinstance(stmt, S.SubDef):
             in_body_block = True
+            if stmt.keyword.upper() == "SUB":
+                link_ctx.links.registered.add(stmt.name.upper())
             continue
         kw = _keyword(stmt)
         if kw in _DECL_BLOCK_BOUNDS:
@@ -825,7 +845,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
 
         if isinstance(stmt, S.Call):
             stop = _check_call_pass2(stmt, subs, profile, diags, before_bp, in_body_block,
-                                     sub_params, known)
+                                     sub_params, known, link_ctx)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
@@ -853,6 +873,16 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
+                continue
+            bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
+            if bare is not None:
+                link_ctx.links.calls.append(bare)
+                # `S1 1,2` with `S1` a declared Sub: the link step's `S11,2 is not declared as a
+                # Subroutine.` (oracle, 2026-10-02), not the generic fallback.
+                stop = _unlinked_call(stmt, bare, profile, diags, not in_body_block and before_bp,
+                                      link_ctx)
+                if stop is not None:
+                    return stop
                 continue
             if any((d.line, d.file) == (stmt.line, stmt.file) and
                    d.message.startswith((_FALLBACK_PREFIX, "Illegal Data parameter"))
@@ -1335,18 +1365,105 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
             diags.error(stmt.line, expressions.dimensions_message(echo, profile, False), stmt.file)
 
 
+@dataclasses.dataclass
+class _LinkContext:
+    subs: set          # upper-case names of declared `Sub`s (not `Function`s)
+    has_routines: bool  # any `Sub` or `Function` declared
+    links: CallLinks
+
+
+def _call_link_name(text: str) -> str:
+    """The name the link step reports for an explicit `Call`: the statement text after `Call`
+    with all whitespace removed, up to the first `(` (oracle, 2026-10-02, all four loggers:
+    `Call S1 1` -> `S11`, `Call  S2 (1)` -> `S2`)."""
+    text = re.sub(r"^\s*call(?![A-Za-z0-9_])", "", text, flags=re.I)
+    return re.sub(r"\s+", "", text).split("(", 1)[0]
+
+
+def _bare_sub_link_name(text: str, subs: set) -> str | None:
+    """`S1 1,2` -- a bare statement whose first word is a declared `Sub` and whose remainder does
+    not start with `(` -- reports `S11,2` (oracle, 2026-10-02). `None` for any other shape."""
+    m = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)\s*(?=[^\s(=])", text)
+    if not m or m.group(1).upper() not in subs:
+        return None
+    return re.sub(r"\s+", "", text).split("(", 1)[0]
+
+
+def _unlinked_call(stmt, link: str, profile, diags: Diagnostics, before_beginprog: bool,
+                   ctx: _LinkContext) -> int | None:
+    """A `Call` naming no declared `Sub` (oracle, 2026-10-02, all four loggers; `docs/checker.md`
+    "Unresolved `Call`s"). Program with no `Sub`/`Function`: `line N: Sub %s not defined.` at the
+    call, ending the compile there (CR300/CR350: deferred, see `finalize_call_links`). Otherwise
+    the call is only recorded for the link step, which reports `%s is not declared as a
+    Subroutine.` (no line) once per call, last, in reverse source order; the call itself still
+    gets `Call illegally occurs before BeginProg.` and a stop when it precedes `BeginProg`."""
+    if ctx.has_routines:
+        if before_beginprog:
+            diags.error(stmt.line, "Call illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
+        return None
+    if profile.single_pass:
+        if ctx.links.first is None:
+            ctx.links.first = (stmt.line, stmt.file, f"Sub {link} not defined.")
+        return None
+    diags.error(stmt.line, f"Sub {link} not defined.", stmt.file, show_file=False)
+    return stmt.line
+
+
+# CR300/CR350 errors that leave the link step running (oracle, 2026-10-02, each probed beside a
+# `Call Nope` in a program with a `Sub`); every other error there (name resolution, parameter
+# shape, declarations) is a pass-1 error and skips it.
+_LINK_TOLERATED = ("Call argument required", "Call to ", "Call illegally occurs", "Expr illegally occurs",
+                   "Could not find DataTable", "Sample must be used inside", "EndTable without",
+                   "DataTable is declared in the middle", "NextScan with no Scan", "EndSub without",
+                   "IF or SELECT without", "FOR without NEXT", "Excitation exceeds", "Channel ",
+                   "Invalid port")
+
+
+def _link_step_runs(profile, diags: Diagnostics, pass1_errors: bool) -> bool:
+    """The link step is skipped when pass 1 found errors: CR6/CR1000X (`check_pass2` never ran)
+    or, on CR300/CR350 where name resolution is a pass-1 check, any error outside
+    `_LINK_TOLERATED`."""
+    if profile.single_pass:
+        return not any(d.severity == "error" and not d.message.startswith(_LINK_TOLERATED)
+                       for d in diags.items)
+    return not pass1_errors
+
+
+def commit_deferred_sub_error(links: CallLinks, profile, diags: Diagnostics) -> None:
+    """CR300/CR350, called right after pass 2's tier B: the first no-routines `Sub %s not
+    defined.` ends the compile there (later errors go, so the late and tier-C checks are skipped
+    as after any error), unless a pass-1 error (`_link_step_runs`) hides it."""
+    if links.first is None or not _link_step_runs(profile, diags, False):
+        return
+    line, file, message = links.first
+    diags.items[:] = [d for d in diags.items
+                      if d.severity != "error" or not d.line or d.line <= line]
+    diags.error(line, message, file, show_file=False)
+
+
+def finalize_call_links(links: CallLinks, profile, diags: Diagnostics, pass1_errors: bool) -> None:
+    """Emit the link-time `%s is not declared as a Subroutine.` lines `_unlinked_call` recorded:
+    last, one per call, newest first."""
+    unresolved = [n for n in links.calls if n.upper() not in links.registered]
+    if not unresolved or not _link_step_runs(profile, diags, pass1_errors):
+        return
+    for name in reversed(unresolved):
+        diags.error(0, f"{name} is not declared as a Subroutine.")
+
+
 def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
                        before_bp: bool, in_body_block: bool,
                        sub_params: dict | None = None,
-                       known: set[str] | None = None) -> int | None:
+                       known: set[str] | None = None,
+                       link_ctx: "_LinkContext | None" = None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
     verified this round:
 
-    - `Call NoSuchSub` (explicit keyword, undefined): `Sub %s not defined.`, **no** placement
-      follow-up and **no** stop, before `BeginProg` or not (`show_file=False`: oracle-confirmed,
-      `docs/checker.md` "Errors from an included file" -- this message never gets the `<file>`
-      prefix either).
+    - `Call NoSuchSub` (explicit keyword, naming no declared `Sub`): see `_unlinked_call` and
+      `docs/checker.md` "Unresolved `Call`s" (2026-10-02: `Sub %s not defined.` and a stop in a
+      program without any `Sub`/`Function`, a deferred link-time message otherwise).
     - A bare bare `Name`/`Name(args)` (no `Call` keyword) resolving to a declared `Sub`/`Function`:
       valid, silent, *unless* it precedes `BeginProg`, where it is `Call illegally occurs before
       BeginProg.` (`%s` = literally `Call`) -- and then processing stops.
@@ -1366,14 +1483,16 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
     """
     name = stmt.name.upper()
     before_beginprog = not in_body_block and before_bp
+    if stmt.explicit and link_ctx is not None:
+        link = _call_link_name(stmt.text)
+        if link_ctx.has_routines:
+            link_ctx.links.calls.append(link)
+        if link.upper() not in link_ctx.subs:
+            return _unlinked_call(stmt, link, profile, diags, before_beginprog, link_ctx)
     if sub_params and name in sub_params:
         _check_call_args(stmt, sub_params[name], diags)
         if known is not None:
             _report_call_arg_names(stmt, known, profile, diags)
-    if stmt.explicit:
-        if name not in subs:
-            diags.error(stmt.line, f"Sub {stmt.name} not defined.", stmt.file, show_file=False)
-            return None
     if name in subs:
         if before_beginprog:
             diags.error(stmt.line, "Call illegally occurs before BeginProg.", stmt.file)

@@ -1,0 +1,600 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "source_records": [
+    "scratch/subcall/ (probe templates and cases, 2026-10-02)"
+  ],
+  "cases": [
+    {
+      "id": "cr6-no-routines-first-only",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr1000x-no-routines-first-only",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr300-no-routines-first-only",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr350-no-routines-first-only",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr6-no-routines-name-whitespace",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub S11 not defined."
+    },
+    {
+      "id": "cr1000x-no-routines-name-whitespace",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub S11 not defined."
+    },
+    {
+      "id": "cr300-no-routines-name-whitespace",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub S11 not defined."
+    },
+    {
+      "id": "cr350-no-routines-name-whitespace",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub S11 not defined."
+    },
+    {
+      "id": "cr6-no-routines-stops-compile",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nFoo Bar\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr1000x-no-routines-stops-compile",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nFoo Bar\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub Nope not defined."
+    },
+    {
+      "id": "cr300-no-routines-stops-compile",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nFoo Bar\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined.\nline 5: Bar is not defined.\nline 5: Invalid, or out of place expression: Foo Bar\n."
+    },
+    {
+      "id": "cr350-no-routines-stops-compile",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nFoo Bar\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined.\nline 5: Bar is not defined.\nline 5: Invalid, or out of place expression: Foo Bar\n."
+    },
+    {
+      "id": "cr6-no-routines-after-earlier-error",
+      "logger": "cr6",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nX = Q\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Q.\nline 5: Sub Nope not defined."
+    },
+    {
+      "id": "cr1000x-no-routines-after-earlier-error",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nX = Q\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Q.\nline 5: Sub Nope not defined."
+    },
+    {
+      "id": "cr300-no-routines-after-earlier-error",
+      "logger": "cr300",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nX = Q\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined."
+    },
+    {
+      "id": "cr350-no-routines-after-earlier-error",
+      "logger": "cr350",
+      "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nX = Q\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined."
+    },
+    {
+      "id": "cr6-no-routines-before-beginprog",
+      "logger": "cr6",
+      "source": "Public X,Y,V(2)\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub Nope not defined."
+    },
+    {
+      "id": "cr1000x-no-routines-before-beginprog",
+      "logger": "cr1000x",
+      "source": "Public X,Y,V(2)\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub Nope not defined."
+    },
+    {
+      "id": "cr300-no-routines-before-beginprog",
+      "logger": "cr300",
+      "source": "Public X,Y,V(2)\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub Nope not defined."
+    },
+    {
+      "id": "cr350-no-routines-before-beginprog",
+      "logger": "cr350",
+      "source": "Public X,Y,V(2)\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sub Nope not defined."
+    },
+    {
+      "id": "cr6-sub-reverse-order",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope3\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope3 is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-reverse-order",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope3\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope3 is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-reverse-order",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope3\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope3 is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-reverse-order",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope3\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope3 is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-duplicate-names",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-duplicate-names",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-duplicate-names",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-duplicate-names",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall Nope2\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nNope2 is not declared as a Subroutine.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-function-called-with-call",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nCall F1(1)\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nF1 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-function-called-with-call",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nCall F1(1)\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nF1 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-function-called-with-call",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nCall F1(1)\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nF1 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-function-called-with-call",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nCall F1(1)\nCall Nope\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nF1 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-whitespace-name",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-whitespace-name",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-whitespace-name",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-whitespace-name",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall S1 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-spaced-paren-name",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall  S2 (1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-spaced-paren-name",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall  S2 (1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-spaced-paren-name",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall  S2 (1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-spaced-paren-name",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall  S2 (1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-builtin-name",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Battery(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nBattery is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-builtin-name",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Battery(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nBattery is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-builtin-name",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Battery(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nBattery is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-builtin-name",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Battery(X)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nBattery is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-bare-with-trailing-text",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nS1 1,2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11,2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-bare-with-trailing-text",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nS1 1,2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11,2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-bare-with-trailing-text",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nS1 1,2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11,2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-bare-with-trailing-text",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nS1 1,2\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nS11,2 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-bare-undeclared-unchanged",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nNope 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression: Nope 1."
+    },
+    {
+      "id": "cr1000x-sub-bare-undeclared-unchanged",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nNope 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid, or out of place expression: Nope 1."
+    },
+    {
+      "id": "cr300-sub-bare-undeclared-unchanged",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nNope 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Nope is not defined.\nline 10: Invalid, or out of place expression: Nope 1\n."
+    },
+    {
+      "id": "cr350-sub-bare-undeclared-unchanged",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nFunction F1(A)\nF1 = A\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nNope 1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Nope is not defined.\nline 10: Invalid, or out of place expression: Nope 1\n."
+    },
+    {
+      "id": "cr6-sub-after-earlier-pass2-error",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nX = Q\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: X = Q.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-after-earlier-pass2-error",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nX = Q\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: X = Q.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-after-earlier-pass2-error",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nX = Q\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+    },
+    {
+      "id": "cr350-sub-after-earlier-pass2-error",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nX = Q\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+    },
+    {
+      "id": "cr6-sub-after-call-arity-error",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall S1(1,2,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Call to S1 with 3 parameters, requires 1 arguments.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-after-call-arity-error",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall S1(1,2,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Call to S1 with 3 parameters, requires 1 arguments.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-after-call-arity-error",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall S1(1,2,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Call to S1 with 3 parameters, requires 1 arguments.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-after-call-arity-error",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nCall S1(1,2,3)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Call to S1 with 3 parameters, requires 1 arguments.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-hidden-by-pass1-error",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nPublic\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable not named."
+    },
+    {
+      "id": "cr1000x-sub-hidden-by-pass1-error",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nPublic\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable not named."
+    },
+    {
+      "id": "cr300-sub-hidden-by-pass1-error",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nPublic\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable not named."
+    },
+    {
+      "id": "cr350-sub-hidden-by-pass1-error",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nPublic\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable not named."
+    },
+    {
+      "id": "cr6-sub-after-unclosed-if",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nIf X Then\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT without EndIf or EndSelect.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-after-unclosed-if",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nIf X Then\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT without EndIf or EndSelect.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-after-unclosed-if",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nIf X Then\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT without EndIf or EndSelect.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-after-unclosed-if",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall Nope\nIf X Then\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: IF or SELECT without EndIf or EndSelect.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-inside-sub-body",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nCall Nope\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-inside-sub-body",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nCall Nope\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-inside-sub-body",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub S1(A)\nCall Nope\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-inside-sub-body",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub S1(A)\nCall Nope\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-before-beginprog",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nCall Nope\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Call illegally occurs before BeginProg.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-before-beginprog",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nCall Nope\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Call illegally occurs before BeginProg.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-before-beginprog-stops",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Call illegally occurs before BeginProg.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-before-beginprog-stops",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub S1(A)\nX = A\nEndSub\nCall Nope\nCall Nope2\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Call illegally occurs before BeginProg.\nNope is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-declared-after-endprog-is-ignored",
+      "logger": "cr6",
+      "source": "Public X,Y\nSub SA(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall SB(1)\nCall Nope\nNextScan\nEndProg\nSub SB(A)\nX = A\nEndSub\nFunction FB(A)\nFB = A\nEndFunction\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nSB is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-declared-after-endprog-is-ignored",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nSub SA(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall SB(1)\nCall Nope\nNextScan\nEndProg\nSub SB(A)\nX = A\nEndSub\nFunction FB(A)\nFB = A\nEndFunction\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nSB is not declared as a Subroutine."
+    },
+    {
+      "id": "cr300-sub-declared-after-endprog-is-ignored",
+      "logger": "cr300",
+      "source": "Public X,Y\nSub SA(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall SB(1)\nCall Nope\nNextScan\nEndProg\nSub SB(A)\nX = A\nEndSub\nFunction FB(A)\nFB = A\nEndFunction\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nSB is not declared as a Subroutine."
+    },
+    {
+      "id": "cr350-sub-declared-after-endprog-is-ignored",
+      "logger": "cr350",
+      "source": "Public X,Y\nSub SA(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nCall SB(1)\nCall Nope\nNextScan\nEndProg\nSub SB(A)\nX = A\nEndSub\nFunction FB(A)\nFB = A\nEndFunction\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nNope is not declared as a Subroutine.\nSB is not declared as a Subroutine."
+    },
+    {
+      "id": "cr6-sub-call-before-sub-stop",
+      "logger": "cr6",
+      "source": "Public X,Y\nCall S1(1)\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Call illegally occurs before BeginProg.\nS1 is not declared as a Subroutine."
+    },
+    {
+      "id": "cr1000x-sub-call-before-sub-stop",
+      "logger": "cr1000x",
+      "source": "Public X,Y\nCall S1(1)\nSub S1(A)\nX = A\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX=1\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Call illegally occurs before BeginProg.\nS1 is not declared as a Subroutine."
+    }
+  ]
+}

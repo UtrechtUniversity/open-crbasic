@@ -207,10 +207,44 @@ table):
   attempt an "and then stop" behaviour anywhere -- the risk of suppressing a real diagnostic
   outweighs the "verdict" vs "exact" difference it would fix (AGENTS.md's priority order).
 
-- **Explicit `Call name` (with the `Call` keyword), name resolves to nothing declared**:
-  `Sub %s not defined.` (`%s` = the name as written), independent of position. Oracle
-  (`docs/type-codes.md` section 3, re-confirmed): `Call NoSuchSub` -> `line N: Sub NoSuchSub not
-  defined.`
+- **Explicit `Call name`, name resolves to no declared `Sub`**: see "Unresolved `Call`s" below.
+
+### Unresolved `Call`s (oracle, 2026-10-02, all four loggers; `structure._unlinked_call`)
+
+Fixture: `tests/fixtures/call_links.json` (`tests/test_call_links.py`). Two forms, chosen by
+whether the program declares any `Sub` or `Function` before `EndProg` (one is enough, of either
+kind; text after the first `EndProg` is not compiled at all, including an `Include` there; a `Sub` from an
+included file before `BeginProg` counts, CR6 and CR300 probed).
+
+- **No routine declared**: `line N: Sub <name> not defined.` (no `<file>` prefix) at the call,
+  and the compile ends there: only the first such call is printed, and nothing later (a later
+  `X = Q`, `Foo Bar`, `NextScan with no Scan.`, `Could not find DataTable`, unclosed `If`) is.
+  Earlier pass-2 errors on earlier lines still print. Before `BeginProg` the same message replaces
+  the placement error. CR300/CR350 name resolution is a pass-1 check there, so any name-class
+  error anywhere (`Q is not defined.`, `Foo Bar`) hides the message (implemented as a deferred
+  message, `commit_deferred_sub_error`). Pass-1 errors (`Variable not named.`) hide it everywhere.
+- **Any routine declared**: no error at the call. At the end of the compile (the link step) every
+  explicit `Call` whose name is not a declared **Sub** (a variable, built-in, `Function`, or
+  `Sub` that the walk had not reached) prints `<name> is not declared as a Subroutine.` with **no**
+  `line N:` prefix, once per call (duplicates twice), in **reverse** source order, after all
+  line-numbered errors. It does not gate later checks: tier-C instruction errors, unclosed-block
+  errors, `Call to S1 with 2 parameters, requires 1 arguments.` and `Could not find DataTable`
+  are all still printed before it. Pass-1 errors (`Variable not named.`, `Dimension ... missing
+  the ) character`, `Variable Type ... not supported`) hide it. A call before `BeginProg` still
+  gets `Call illegally occurs before BeginProg.` and ends the walk, so a `Sub` defined after that
+  point is unknown to the link step (`Call S1(1)` above `Sub S1` reports `S1`). CR300/CR350:
+  hidden by name-class and parameter-shape errors, not by the pass-2 ones listed in
+  `structure._LINK_TOLERATED`.
+- **Name text**: the statement text after `Call`, all whitespace removed, up to the first `(`,
+  case kept: `Call S1 1` -> `S11`, `Call  S2 (1)` -> `S2`, `Call Nope  Q` -> `NopeQ`. The same
+  text rule applies to the no-routine form (`Sub S11 not defined.`). A bare statement whose first
+  word is a declared `Sub` and whose remainder does not start with `(` uses it too (`S1 1,2` ->
+  `S11,2`); a bare undeclared `Nope 1` is the generic fallback as before.
+
+Known gaps: CR300/CR350 calls before `BeginProg` (the real compiler adds `Call illegally occurs
+before BeginProg.` and stops; ours places that late, so the link line is missing or extra);
+`Call S1(1) 2` / `Call` / `Call (1)` shapes; tier-C errors on lines before a no-routine `Sub ... not
+defined.` (the real compiler prints them, ours skips tier C once an error exists).
 
 ### Known parser gaps stay silent
 
@@ -266,7 +300,7 @@ library error against a main-file error of the same message class side by side).
 
 **Two oracle-confirmed exceptions, both `structure.py`'s own generic "this statement could not be
 resolved as anything valid" fallback**: `Sub %s not defined.` (an explicit `Call` to an undeclared
-name) and `Invalid, or out of place expression: %s.` (a bare unresolved name, or anything our
+name in a program without routines, "Unresolved `Call`s") and `Invalid, or out of place expression: %s.` (a bare unresolved name, or anything our
 parser marks `Unparsed`) never carry the prefix, regardless of which file the statement came from
 -- confirmed with the same side-by-side setup (a library `Call NoSuchLibSub` and a main-file `Call
 NoSuchMainSub` in the same compile: the library one prints as plain `line N: Sub NoSuchLibSub not
