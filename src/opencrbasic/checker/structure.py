@@ -208,19 +208,39 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
     those or inside an open `Scan`, between `BeginProg` and the first `Scan`, or inside a
     `DataTable`. After the first `NextScan`, a `SlowSequence` header and `EndProg` it is accepted.
     The message ends compilation (a placement error, `docs/checker.md` "Pass model")."""
+    global_variables: set[str] = set()
+    in_routine = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        if isinstance(stmt, S.SubDef):
+            in_routine = True
+        elif _ends_sub(stmt, kw):
+            in_routine = False
+        elif not in_routine and isinstance(stmt, S.Declaration):
+            global_variables.update(v.name.upper() for v in stmt.vars)
+
     open_sub = in_table = prescan = False
     cond = scans = 0
+    routines: set[str] = set()
     for stmt in program.statements:
         kw = _keyword(stmt)
         if isinstance(stmt, S.SubDef):
             executing = open_sub or in_table or prescan or scans > 0 or cond > 0
-            if executing:
+            duplicate = stmt.name.upper() in routines
+            variable = stmt.name.upper() in global_variables
+            if executing or duplicate or variable:
                 msgs = ["Sub declared within a Sub."] if open_sub else []
+                if duplicate:
+                    msgs.append(f"Duplicate Sub {stmt.name}")
+                if variable:
+                    msgs.append(f"{stmt.name} already declared as a variable.")
                 if cond > 0:
                     msgs.append("Sub declaration inside If..EndIf.")
-                msgs.append(f"{'Function' if stmt.keyword.upper() == 'FUNCTION' else 'Sub'} "
-                            "is declared in the middle of an executing sequence")
+                if executing:
+                    msgs.append(f"{'Function' if stmt.keyword.upper() == 'FUNCTION' else 'Sub'} "
+                                "is declared in the middle of an executing sequence")
                 return stmt, msgs
+            routines.add(stmt.name.upper())
             open_sub = True
         elif _ends_sub(stmt, kw):
             open_sub, cond = False, 0

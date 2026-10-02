@@ -3062,10 +3062,13 @@ a pass-1 error anywhere hides it. CR300/CR350 report it in the late walk
 (`check_scan_placement_late`); any error elsewhere, including an unrelated `X is not defined.` after
 it, hides it, and with no other error there is no `Too many parameters` cascade.
 
-Not implemented: `Duplicate Sub A` (also at top level, `Sub A` twice), and `x already declared as a
-variable.` for a Sub named like a variable (printed between the If and the "middle" message; on
-CR300/CR350 these make the Sub errors survive a later `X is not defined.`). The two-message output
-for these shapes therefore still differs.
+Routine names share one case-insensitive namespace. A second `Sub` or `Function` is `Duplicate Sub
+<new spelling>` (also at top level); either routine kind sharing a global variable's name is `<new
+spelling> already declared as a variable.`. When a nested declaration has more than one problem,
+these messages follow `Sub declared within a Sub.` and precede `Sub declaration inside If..EndIf.`
+and the executing-sequence message. The real CR300/CR350 compilers suppress the placement group
+when a later undefined-name diagnostic occurs; fresh probes on 2026-10-02 did not reproduce the
+previous wording that the group survived that condition. Fixture: `tests/fixtures/routine_names.json`.
 
 ### ConstTable count
 

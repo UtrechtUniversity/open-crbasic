@@ -1,0 +1,23 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {"exe": "CR6Comp.exe", "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"},
+    "cr1000x": {"exe": "cr1000xcomp.exe", "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"},
+    "cr300": {"exe": "cr300comp.exe", "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"},
+    "cr350": {"exe": "cr350comp.exe", "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"}
+  },
+  "cases": [
+    {"id": "cr6-duplicate-sub", "logger": "cr6", "source": "Public y\nSub A\nEndSub\nSub a\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub a"},
+    {"id": "cr1000x-duplicate-sub", "logger": "cr1000x", "source": "Public y\nSub A\nEndSub\nSub a\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub a"},
+    {"id": "cr300-duplicate-sub", "logger": "cr300", "source": "Public y\nSub A\nEndSub\nSub a\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub a"},
+    {"id": "cr350-duplicate-sub", "logger": "cr350", "source": "Public y\nSub A\nEndSub\nSub a\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub a"},
+    {"id": "cr6-variable-function", "logger": "cr6", "source": "Public x,y\nFunction x\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: x already declared as a variable."},
+    {"id": "cr1000x-variable-function", "logger": "cr1000x", "source": "Public x,y\nFunction x\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: x already declared as a variable."},
+    {"id": "cr300-variable-function", "logger": "cr300", "source": "Public x,y\nFunction x\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: x already declared as a variable."},
+    {"id": "cr350-variable-function", "logger": "cr350", "source": "Public x,y\nFunction x\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: x already declared as a variable."},
+    {"id": "cr6-nested-order", "logger": "cr6", "source": "Public x,y\nSub A\nx=1\nIf x=1 Then\nSub x\nEndSub\nEndIf\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sub declared within a Sub.\nline 5: x already declared as a variable.\nline 5: Sub declaration inside If..EndIf.\nline 5: Sub is declared in the middle of an executing sequence"},
+    {"id": "cr1000x-nested-order", "logger": "cr1000x", "source": "Public x,y\nSub A\nx=1\nIf x=1 Then\nSub x\nEndSub\nEndIf\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sub declared within a Sub.\nline 5: x already declared as a variable.\nline 5: Sub declaration inside If..EndIf.\nline 5: Sub is declared in the middle of an executing sequence"},
+    {"id": "cr300-nested-order", "logger": "cr300", "source": "Public x,y\nSub A\nx=1\nIf x=1 Then\nSub x\nEndSub\nEndIf\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sub declared within a Sub.\nline 5: x already declared as a variable.\nline 5: Sub declaration inside If..EndIf.\nline 5: Sub is declared in the middle of an executing sequence"},
+    {"id": "cr350-nested-order", "logger": "cr350", "source": "Public x,y\nSub A\nx=1\nIf x=1 Then\nSub x\nEndSub\nEndIf\nEndSub\nBeginProg\nScan(1,Sec,0,0)\ny=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Sub declared within a Sub.\nline 5: x already declared as a variable.\nline 5: Sub declaration inside If..EndIf.\nline 5: Sub is declared in the middle of an executing sequence"}
+  ]
+}
