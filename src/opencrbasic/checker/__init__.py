@@ -324,6 +324,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if profile.single_pass:
         _run_pass(structure.commit_deferred_sub_error, links, profile, diags)
 
+    if profile.single_pass and not diags.errors:
+        # CR300/CR350 reject an executable `DataTable` before the table-field checks that would
+        # otherwise diagnose its body (`structure.check_data_table_placement`).
+        _run_pass(structure.check_data_table_placement, program, profile, diags)
+
     late_start = len(diags.items)
     if profile.single_pass and all(d.message.startswith("Could not find ")
                                    for d in diags.errors):

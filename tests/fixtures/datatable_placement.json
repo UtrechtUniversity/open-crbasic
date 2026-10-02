@@ -1,0 +1,23 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {"exe": "CR6Comp.exe", "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"},
+    "cr1000x": {"exe": "cr1000xcomp.exe", "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"},
+    "cr300": {"exe": "cr300comp.exe", "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"},
+    "cr350": {"exe": "cr350comp.exe", "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"}
+  },
+  "cases": [
+    {"id": "cr6-after-beginprog", "logger": "cr6", "source": "Public x\nBeginProg\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr1000x-after-beginprog", "logger": "cr1000x", "source": "Public x\nBeginProg\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr300-after-beginprog", "logger": "cr300", "source": "Public x\nBeginProg\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr350-after-beginprog", "logger": "cr350", "source": "Public x\nBeginProg\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr6-in-scan", "logger": "cr6", "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr1000x-in-scan", "logger": "cr1000x", "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr300-in-scan", "logger": "cr300", "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr350-in-scan", "logger": "cr350", "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nx=1\nNextScan\nEndProg\n", "expected_exit": 1, "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is declared in the middle of an executing sequence"},
+    {"id": "cr6-after-slowsequence", "logger": "cr6", "source": "Public x\nBeginProg\nSlowSequence\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 0, "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."},
+    {"id": "cr1000x-after-slowsequence", "logger": "cr1000x", "source": "Public x\nBeginProg\nSlowSequence\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 0, "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."},
+    {"id": "cr300-after-slowsequence", "logger": "cr300", "source": "Public x\nBeginProg\nSlowSequence\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 0, "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."},
+    {"id": "cr350-after-slowsequence", "logger": "cr350", "source": "Public x\nBeginProg\nSlowSequence\nDataTable(T,True,10)\nSample(1,x,FP2)\nEndTable\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n", "expected_exit": 0, "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."}
+  ]
+}

@@ -3138,9 +3138,19 @@ every later `SlowSequence` in the same open block repeats it. Depth is counted p
 Pass 2, accumulating (prints with `x=q`); a pass-1 error hides it. Like the PipeLine Mode errors it
 does not hide tier C (`Invalid port ...` still prints before and after it) but hides the end-of-
 program block checks (`DO without LOOP.`), so both live in `check()`'s `pipe` list. Not
-implemented: `DataTable is declared in the middle of an executing sequence` for a `DataTable` after
-such a `Do` (seen in the same probe), and on CR300/CR350 the `Too many parameters:  x.` cascade
-into the `Loop While x=1` line after an `x=q` error.
+implemented: on CR300/CR350 the `Too many parameters:  x.` cascade into the `Loop While x=1` line
+after an `x=q` error.
+
+### DataTable placement
+
+`DataTable is declared in the middle of an executing sequence` has no period. It is emitted at the
+`DataTable` line when the declaration is between `BeginProg` and the first sequence, or inside a
+`Scan`, `If`/`Select`, `For`, or `Do`; it stops the relevant placement walk. A table before
+`BeginProg`, after `NextScan`, and directly after a `SlowSequence` header is accepted. On
+CR6/CR1000X, `DO .. LOOP cannot span across sequences.` suppresses this table message after the
+same `SlowSequence`; CR300/CR350 do not report that span error and report the table placement
+instead. The CR300/CR350 check runs before table-body validation so `Sample` does not produce its
+own conditional-placement diagnostic first. Fixture: `tests/fixtures/datatable_placement.json`.
 
 ## Expression-level false accepts (2026-10-02)
 

@@ -265,6 +265,58 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
     return None
 
 
+def first_misplaced_data_table(program: S.Program, profile) -> S.Instruction | None:
+    """First `DataTable` declared in executable code, if any.
+
+    Oracle, all four loggers, 2026-10-02: a table between `BeginProg` and the first sequence,
+    or inside a `Scan`, `If`/`Select`, `For`, or `Do`, is `DataTable is declared in the middle of
+    an executing sequence`. A table before `BeginProg`, after `NextScan`, and directly after a
+    `SlowSequence` header is accepted. CR6/CR1000X's already-reported `DO .. LOOP cannot span
+    across sequences.` suppresses the table placement report for a table after that `SlowSequence`.
+    """
+    prescan = in_table = False
+    scans = blocks = 0
+    slow_block_error = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        args = getattr(stmt, "args", []) or []
+        if kw == "DATATABLE":
+            if not in_table and not slow_block_error and (prescan or scans or blocks):
+                return stmt
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "BEGINPROG":
+            prescan = True
+        elif kw == "ENDPROG":
+            prescan = False
+        elif kw == "SLOWSEQUENCE":
+            if blocks and profile.name in ("cr6", "cr1000x"):
+                slow_block_error = True
+            prescan = False
+        elif kw == "SCAN":
+            scans += 1
+            prescan = False
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(args) == "SCAN"):
+            scans = max(0, scans - 1)
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)) \
+                or kw in ("FOR", "DO", "WHILE"):
+            blocks += 1
+        elif kw in ("ENDIF", "ENDSELECT", "LOOP", "WEND") or \
+                (kw == "END" and _block_word(args) in ("IF", "SELECT")) or \
+                (kw == "NEXT" and _block_word(args) != "SCAN"):
+            blocks = max(0, blocks - 1)
+    return None
+
+
+def check_data_table_placement(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Emit the `DataTable` executable-placement error in the profile's appropriate phase."""
+    stmt = first_misplaced_data_table(program, profile)
+    if stmt is not None:
+        diags.error(stmt.line, "DataTable is declared in the middle of an executing sequence",
+                    stmt.file)
+
+
 # Measurement/task instructions that print `%s not allowed outside of Scan..NextScan in PipeLine
 # Mode.` / `... inside of a conditional statement ...` after an explicit `PipeLineMode` (oracle,
 # 2026-10-02, probed one by one on CR6 and CR1000X). A subset of `mode.json`'s task instructions:
@@ -998,6 +1050,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     in_beginprog = False
     pass2_scans = 0
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
+    misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for stmt in program.statements:
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
@@ -1006,6 +1059,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if misplaced and stmt is misplaced[0]:
             for message in misplaced[1]:
                 diags.error(stmt.line, message, stmt.file)
+            return stmt.line
+        if stmt is misplaced_table:
+            diags.error(stmt.line, "DataTable is declared in the middle of an executing sequence",
+                        stmt.file)
             return stmt.line
         if isinstance(stmt, S.SubDef):
             in_body_block = True
