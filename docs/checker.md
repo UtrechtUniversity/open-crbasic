@@ -3138,3 +3138,28 @@ program block checks (`DO without LOOP.`), so both live in `check()`'s `pipe` li
 implemented: `DataTable is declared in the middle of an executing sequence` for a `DataTable` after
 such a `Do` (seen in the same probe), and on CR300/CR350 the `Too many parameters:  x.` cascade
 into the `Loop While x=1` line after an `x=q` error.
+
+## Expression-level false accepts (2026-10-02)
+
+Fixture: `tests/fixtures/expression_false_accepts.json`, audited against all four real compilers
+on 2026-10-02. The focused probes used `scratch/probe.py` with accepted boundary forms alongside
+the failures.
+
+- An empty call to a one-argument built-in is `Invalid, or out of place expression: %s.` rather
+  than an arity-message when it occurs as an instruction argument or an `If` condition. `CHR()`
+  inside `SplitStr` and `SerialInChk()` inside `If ... Then` have that result on all four loggers;
+  `CHR(65)` and `SerialInChk(ComRS232)` are accepted. The instruction-argument echo is the
+  argument only; the `If` echo is its condition, including the space before `Then`.
+- `ESSInitialize` has one declared argument. A second argument yields `Too many parameters:
+  %s.` on all four loggers. This remains true when its second argument starts an unterminated
+  quote, so the raw `ESSInitialize((1+2),public")` line must be recovered after lexing. CR300 and
+  CR350 then emit their ordinary later `Too many parameters:  Sec.` cascade.
+- CR300 and CR350, but not CR6 or CR1000X, require a string literal, String variable, or String
+  Const for the direct `MQTTPublish` payload argument: a numeric literal, Float variable, or
+  Boolean variable reports `A string or string variable is required`. This checker intentionally
+  leaves composite payload expressions unmodelled.
+- A `ConstTable` member must be a `Const` declared while that table is open; a missing member
+  reports `Could not find <Table>.<Field>(1).`. `SetSetting("<ConstTable>.<Field>",...)` then
+  reports `Cannot find <Field>` for the same absent field. The complete DataTable field-naming
+  grammar is not inferred: the independently observed misspelled `TableBytesX` member is checked,
+  while `TableBytes` is accepted by CR6/CR1000X in the probe.

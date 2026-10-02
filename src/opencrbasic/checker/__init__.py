@@ -198,6 +198,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # also ungated, since it fires precisely because the call just above already found something.
     _run_pass(structure.check_missing_param_followup, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
+    _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
     # `AddPrecise`/`MovePrecise`'s own `PrecisionVariable` argument (`instr_rules.py`'s own
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
@@ -257,6 +258,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
             cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)
+        _run_pass(expressions.check_table_members, flat, profile, diags)
+        _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
         if not profile.single_pass:
             _run_pass(instr_data.check_eventcount_tables, flat, profile, diags)
         _run_pass(ess.check, flat, profile, diags, env)
@@ -314,7 +317,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(structure.commit_deferred_sub_error, links, profile, diags)
 
     late_start = len(diags.items)
-    if profile.single_pass and all(d.message.startswith("Could not find DataTable ")
+    if profile.single_pass and all(d.message.startswith("Could not find ")
                                    for d in diags.errors):
         # CR300/CR350: runs unless an earlier finding other than an unknown `CallTable` table
         # exists (`docs/instructions.md`, SetSetting and SetStatus field names).
@@ -329,7 +332,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_avgrun_options, program, profile, bounds, env)
             _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
-    if not diags.errors and profile.early_warnings_gated:
+    if (not diags.errors or (profile.single_pass and all(
+            d.message.startswith("Could not find ") for d in diags.errors))) and \
+            profile.early_warnings_gated:
         # CR300/CR350: the early warnings follow the table `Reps` checks and precede `CallTable`
         # placement and the unclosed-block checks (oracle: `Illegal Reps 0` hides an fnotch
         # warning; `DO without LOOP.` and a `CallTable` placement error do not).

@@ -632,6 +632,72 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
     return False
 
 
+def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]],
+                          data_tables: set[str]) -> tuple[str, str] | None:
+    if expr is None:
+        return None
+    if isinstance(expr, S.Member):
+        if isinstance(expr.base, S.Name):
+            table = expr.base.name.upper()
+            member = expr.member.upper()
+            if table in const_tables and member not in const_tables[table]:
+                return expr.base.name, expr.member
+            if table in data_tables and member == "TABLEBYTESX":
+                return expr.base.name, expr.member
+        for arg in expr.args or []:
+            found = _table_member_problem(arg, const_tables, data_tables)
+            if found:
+                return found
+        return _table_member_problem(expr.base, const_tables, data_tables)
+    if isinstance(expr, S.Index):
+        for arg in expr.args:
+            found = _table_member_problem(arg, const_tables, data_tables)
+            if found:
+                return found
+    elif isinstance(expr, S.Unary):
+        return _table_member_problem(expr.operand, const_tables, data_tables)
+    elif isinstance(expr, S.Binary):
+        return _table_member_problem(expr.left, const_tables, data_tables) or \
+            _table_member_problem(expr.right, const_tables, data_tables)
+    elif isinstance(expr, S.ArrayLiteral):
+        for item in expr.items:
+            found = _table_member_problem(item, const_tables, data_tables)
+            if found:
+                return found
+    return None
+
+
+def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Resolved ConstTable fields, plus the observed misspelled `TableBytesX` DataTable member.
+
+    The complete DataTable output-field naming grammar is deliberately not inferred here.
+    """
+    const_tables = symbols.const_table_fields(program)
+    data_tables = {
+        stmt.args[0].name.upper() for stmt in program.statements
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE" and stmt.args
+        and isinstance(stmt.args[0], S.Name)
+    }
+    if not const_tables and not data_tables:
+        return
+    for stmt in program.statements:
+        exprs: list[S.Expr | None] = []
+        if isinstance(stmt, S.Assignment):
+            exprs = [stmt.target, stmt.value]
+        elif isinstance(stmt, S.If):
+            exprs = [stmt.cond]
+        elif isinstance(stmt, S.Instruction):
+            exprs = stmt.args
+        elif isinstance(stmt, S.Call):
+            exprs = stmt.args
+        for expr in exprs:
+            found = _table_member_problem(expr, const_tables, data_tables)
+            if found:
+                table, member = found
+                diags.error(stmt.line, f"Could not find {table}.{member}(1).", stmt.file)
+                break
+
+
 def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X pass 1: the constant-family instruction positions (`_CONST_FAMILY_KINDS`) are
     folded while the statement is parsed, so an unresolved name there (`Invalid symbol in
@@ -1071,8 +1137,10 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
 
 
 def _arity_message(kind: str, text: str, profile, at_eol: bool = True) -> str:
+
+def _arity_message(kind: str, text: str, profile, whole_statement: bool = False) -> str:
     if kind == "empty":
-        sep = "\n" if profile.fallback_echo_newline else ""
+        sep = "\n" if whole_statement and profile.fallback_echo_newline else ""
         return f"Invalid, or out of place expression: {text}{sep}."
     verb = ("Expression expects , : " if kind == "few"
             else "No Matching, or out of place ) in expression: ")
@@ -1206,7 +1274,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     break
                 problem = _find_arity_problem(arg, profile)
                 if problem == "empty":
-                    break  # an empty call inside an instruction argument: not probed
+                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile),
+                                stmt.file)
+                    break
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile, False), stmt.file)
                     break
@@ -1233,13 +1303,18 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                         break
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
+
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile,
+                                                       whole_statement=True), stmt.file)
         elif isinstance(stmt, S.If):
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
             # (the condition echo, no CR300/CR350 newline).
             problem = _find_arity_problem(stmt.cond, profile)
             text = _if_condition_text(stmt)
-            if problem and problem != "empty" and text is not None:
+            if problem == "empty" and text is not None:
+                diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
+            elif problem and text is not None:
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
@@ -1270,6 +1345,9 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             problem = _find_arity_problem(stmt.value, profile)
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
+
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile,
+                                                       whole_statement=True), stmt.file)
 
 
 def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:

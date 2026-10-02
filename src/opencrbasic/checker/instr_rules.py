@@ -250,7 +250,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 # with its `deferred_text` source, `Minimum (1,X,FP2,False,False,"fuzz")` -> `Too many parameters:
 # "fuzz".`, `SendTableDef(ComRS232,0,4094,T,(1+2))` -> `... 1+2.`.
 _TOO_MANY_EXTRA = frozenset({"DATATABLE", "CALLTABLE", "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM",
-                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF"})
+                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF", "ESSINITIALIZE"})
 
 _TOO_MANY_SAFE_KINDS = frozenset({
     "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
@@ -337,6 +337,38 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         if not token:
             continue
         diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+
+
+def check_essinitialize_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
+    """An unterminated second `ESSInitialize` argument still reaches its excess-argument
+    diagnostic.  The lexer leaves this exact malformed line as `Unparsed`, so the ordinary
+    `check_too_many` walk cannot see its second argument."""
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed):
+            continue
+        m = re.match(r"(?is)^\s*ESSInitialize\s*\((.*)\)\s*$", stmt.text)
+        if not m:
+            continue
+        body = m.group(1)
+        depth = 0
+        quoted = False
+        split = None
+        for i, char in enumerate(body):
+            if char == '"':
+                quoted = not quoted
+            elif not quoted:
+                if char == "(":
+                    depth += 1
+                elif char == ")":
+                    depth -= 1
+                elif char == "," and depth == 0:
+                    split = i
+                    break
+        if split is None:
+            continue
+        token = _next_simple_token(body[split + 1:])
+        if token:
+            diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
 
 
 # --- Ungated `Scan`/`DataInterval` numeric-value checks (called from `checker/warnings.py`'s
@@ -1002,6 +1034,36 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
         diags.items[at:at] = new
 
 
+def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350 require MQTTPublish's second argument to be string-typed.
+
+    CR6/CR1000X accept the same numeric literals and variables.  This only covers a direct
+    assignment from the function, the observed form; composite expressions are left unchecked.
+    """
+    if profile.name not in {"cr300", "cr350"}:
+        return
+    types = _serialin_types(program, profile)
+    string_consts = {
+        stmt.name.upper() for stmt in program.statements
+        if isinstance(stmt, S.ConstDecl) and isinstance(stmt.value, S.String)
+    }
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Assignment) or not isinstance(stmt.value, S.Index):
+            continue
+        call = stmt.value
+        if call.name.upper() != "MQTTPUBLISH" or len(call.args) < 2:
+            continue
+        payload = call.args[1]
+        if isinstance(payload, S.String):
+            continue
+        if isinstance(payload, S.Name) and (
+                payload.name.upper() in string_consts or
+                types.get(payload.name.upper()) == "STRING"):
+            continue
+        if isinstance(payload, (S.Number, S.Name)):
+            diags.error(stmt.line, "A string or string variable is required", stmt.file)
+
+
 _SETTINGS_FIELD_KEYWORDS = {"SETSETTING": "Settings", "SETSTATUS": "Status or Settings"}
 
 
@@ -1038,14 +1100,7 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
         if d.severity == "error" and d.message.startswith("Could not find DataTable ") and d.line \
                 and (stop is None or d.line < stop[1]):
             stop = (d.file, d.line)
-    const_tables: set[str] = set()
-    for stmt in program.statements:
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDPROG":
-            break
-        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CONSTTABLE" and stmt.args \
-                and isinstance(stmt.args[0], (S.Name, S.String)):
-            arg = stmt.args[0]
-            const_tables.add((arg.name if isinstance(arg, S.Name) else arg.value).strip().upper())
+    const_tables = symbols.const_table_fields(program)
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDPROG":
             break
@@ -1061,9 +1116,14 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
         if name is None:
             continue
         if "." in name:
-            table = name.split(".", 1)[0]
-            if table.strip().upper() not in const_tables:
+            table, field = name.split(".", 1)
+            fields_for_table = const_tables.get(table.strip().upper())
+            if fields_for_table is None:
                 found.error(stmt.line, f"Cannot find {table}", stmt.file)
+            elif field.split("(", 1)[0].strip().upper() not in fields_for_table and not (
+                    field.split("(", 1)[0].strip().upper() == "APPLYANDRESTART" and
+                    fields_for_table):
+                found.error(stmt.line, f"Cannot find {field.split('(', 1)[0].strip()}", stmt.file)
             continue
         if "(" in name:
             # `Name(index)`: only the field name before the first `(` is looked up here; the

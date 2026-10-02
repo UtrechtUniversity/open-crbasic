@@ -142,6 +142,23 @@ def declared_variable_types(program: S.Program) -> dict[str, str]:
     return types
 
 
+def const_table_fields(program: S.Program) -> dict[str, set[str]]:
+    """Closed ConstTable name -> Const names declared in its body."""
+    fields: dict[str, set[str]] = {}
+    current: str | None = None
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CONSTTABLE":
+            current = stmt.args[0].name.upper() if stmt.args and isinstance(stmt.args[0], S.Name) \
+                else None
+            if current is not None:
+                fields.setdefault(current, set())
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDCONSTTABLE":
+            current = None
+        elif current is not None and isinstance(stmt, S.ConstDecl):
+            fields[current].add(stmt.name.upper())
+    return fields
+
+
 def declared_variable_names(program: S.Program) -> set[str]:
     """Names that are genuine runtime storage: `Public`/`Dim`/`Static` variables and `Sub`/
     `Function` parameters -- deliberately excluding `Const`/`ConstTable`, `DataTable`/
