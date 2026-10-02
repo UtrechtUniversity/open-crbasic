@@ -207,6 +207,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # in expression: %s.`, `checker/expressions.py`'s `check_function_arity`, own module docstring
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
     # confirmed the same way as the two calls just above (`docs/checker.md`).
+    _run_pass(var_types.check_ctype, program, profile, diags)
     _run_pass(expressions.check_function_arity, program, profile, diags)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,

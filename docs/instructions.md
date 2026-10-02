@@ -917,3 +917,19 @@ strings (`S` alone in `If S Then` passes). Found in assignments, `If`/`ElseIf` c
 and call arguments, one message per statement. A statement holding two offending operators gets more
 messages than offenders (`(S AND F) OR (F AND S)` printed three), so that shape is left silent. The
 `\` operator is a different family (`Illegal String operand` plus more) and is not modelled.
+
+### `CType` argument forms (`var_types.check_ctype`, `expressions._call_arity_problem`)
+
+Pass 1, all four loggers (fixture cases `*-ctype-*`). `CType(Value,Type)` takes a type keyword `Long`,
+`Double`, `Float` or `String`. Each call written with no type argument, or with `Boolean`, `UINT2`, a
+`Const` name or a constant numeric expression such as `(1+2)` as the type, prints `Illegal type` (once
+per call, so two bad calls print two). A one-argument call also prints the ordinary `Expression
+expects , : <echo>.` after it, a three-argument call only `No Matching, or out of place )` (no `Illegal
+type`). The function table lists `CType` with `nargs` 0, so `_call_arity_problem` special-cases it.
+Not modelled, each prints further messages: a variable, undefined name or string as the type, and
+zero or empty arguments (`Illegal type` plus `Invalid, or out of place expression`).
+
+Echo detail found on the way, affecting every arity message on CR300/CR350: the closing `.` goes on
+its own line only when the echo is a statement that reaches the end of its line; a trailing `'`
+comment keeps it on the same line (`Stmt.at_eol`), and an echo of an instruction *argument*
+(`Randomize(Round(1.0))`) never has the line break.

@@ -1006,10 +1006,12 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     record = profile.functions.get(name.upper())
     if not record:
         return None
+    n = len(args)
+    if name.upper() == "CTYPE":  # table nargs is 0; the call takes (value, type) (oracle, 4 loggers)
+        return None if None in args or n == 2 else "few" if n == 1 else "many" if n > 2 else None
     nargs = record.get("nargs")
     if nargs is None:
         return None
-    n = len(args)
     if n == 0 and (nargs > 0 or record.get("argspec")):
         # `X = Int()`, `SerialFlush()`: the generic fallback on the whole statement, pass 1, all
         # four loggers (oracle, 2026-09-27).
@@ -1068,13 +1070,13 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
     return None  # Number, Name, String: no call to check
 
 
-def _arity_message(kind: str, text: str, profile) -> str:
+def _arity_message(kind: str, text: str, profile, at_eol: bool = True) -> str:
     if kind == "empty":
         sep = "\n" if profile.fallback_echo_newline else ""
         return f"Invalid, or out of place expression: {text}{sep}."
     verb = ("Expression expects , : " if kind == "few"
             else "No Matching, or out of place ) in expression: ")
-    if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
+    if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol:  # not before a `'` comment
         return f"{verb}{text}\n."
     return f"{verb}{text}."
 
@@ -1206,7 +1208,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 if problem == "empty":
                     break  # an empty call inside an instruction argument: not probed
                 if problem:
-                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile), stmt.file)
+                    diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile, False), stmt.file)
                     break
         elif isinstance(stmt, S.Call):
             # A bare call with no argument list at all (`TCPOpen` alone, no trailing `(`
@@ -1230,7 +1232,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     if problem:
                         break
             if problem:
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
         elif isinstance(stmt, S.If):
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
@@ -1267,7 +1269,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue
             problem = _find_arity_problem(stmt.value, profile)
             if problem:
-                diags.error(stmt.line, _arity_message(problem, stmt.text, profile), stmt.file)
+                diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol), stmt.file)
 
 
 def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:

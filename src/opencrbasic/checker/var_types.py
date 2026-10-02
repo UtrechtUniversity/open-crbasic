@@ -220,3 +220,35 @@ def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | 
         shape = dims.get(typer.variable(expr))
         return None if shape is None else math.prod(shape)
     return 1
+
+
+def _ctype_illegal(typer: "_Typer", node: S.Index) -> bool:
+    """`CType(x)` (no type) or `CType(x,Boolean|UINT2|<Const>|<constant number expression>)`:
+    `Illegal type`, a pass-1 finding. Other bad second arguments (a variable, an undefined name, a
+    string) add further messages and are left alone."""
+    args = node.args
+    if None in args:
+        return False
+    if len(args) == 1:
+        return True
+    if len(args) != 2:
+        return False
+    kind = args[1]
+    if isinstance(kind, S.Name):
+        return kind.name.upper() in ("BOOLEAN", "UINT2") or kind.name.upper() in typer.consts
+    if isinstance(kind, (S.Unary, S.Binary)):
+        return typer.of(kind) in _NUMERIC and not any(
+            isinstance(n, (S.Name, S.Index)) for n in _subexpressions(kind))
+    return False
+
+
+def check_ctype(program: S.Program, profile, diags: Diagnostics) -> None:
+    if "CTYPE" not in profile.functions:
+        return
+    typer = _Typer(program)
+    for stmt in program.statements:
+        for top in _statement_expressions(stmt):
+            for node in _subexpressions(top):
+                if isinstance(node, S.Index) and node.name.upper() == "CTYPE" and \
+                        _ctype_illegal(typer, node):
+                    diags.error(stmt.line, "Illegal type", stmt.file)
