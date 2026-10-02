@@ -235,6 +235,13 @@ included file before `BeginProg` counts, CR6 and CR300 probed).
   point is unknown to the link step (`Call S1(1)` above `Sub S1` reports `S1`). CR300/CR350:
   hidden by name-class and parameter-shape errors, not by the pass-2 ones listed in
   `structure._LINK_TOLERATED`.
+- **Included files and cutoff**: the immediate no-routines form and CR300/CR350's late link form
+  use the statement's position in the expanded source stream, not its physical line number. With
+  no earlier pass-1 error, an included `Call Nope` on line 11 that appears before a later main-file
+  statement on line 5 ends the compile at `line 11: Sub Nope not defined.`. The checker records
+  expanded `(file, line)` positions before applying either cutoff, so included-file line numbers
+  cannot retain later diagnostics or discard earlier ones. Fixture:
+  `tests/fixtures/include_deferred_sub.json`.
 - **Name text**: the statement text after `Call`, all whitespace removed, up to the first `(`,
   case kept: `Call S1 1` -> `S11`, `Call  S2 (1)` -> `S2`, `Call Nope  Q` -> `NopeQ`. The same
   text rule applies to the no-routine form (`Sub S11 not defined.`). A bare statement whose first

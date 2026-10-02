@@ -966,6 +966,8 @@ class CallLinks:
     calls: list = dataclasses.field(default_factory=list)
     registered: set = dataclasses.field(default_factory=set)
     first: tuple | None = None
+    positions: dict[tuple[str, int], int] = dataclasses.field(default_factory=dict)
+    cutoff: tuple[str, int] | None = None
 
 
 def check_pass2(program: S.Program, profile, diags: Diagnostics,
@@ -1052,6 +1054,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
+    for position, source_stmt in enumerate(program.statements):
+        link_ctx.links.positions.setdefault((source_stmt.file, source_stmt.line), position)
     for stmt in program.statements:
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         # CR300/CR350 report these placement errors late (`check_scan_placement_late`).
@@ -1676,6 +1680,7 @@ def _unlinked_call(stmt, link: str, profile, diags: Diagnostics, before_beginpro
             ctx.links.first = (stmt.line, stmt.file, f"Sub {link} not defined.")
         return None
     diags.error(stmt.line, f"Sub {link} not defined.", stmt.file, show_file=False)
+    ctx.links.cutoff = (stmt.file, stmt.line)
     return stmt.line
 
 
@@ -1706,8 +1711,10 @@ def commit_deferred_sub_error(links: CallLinks, profile, diags: Diagnostics) -> 
     if links.first is None or not _link_step_runs(profile, diags, False):
         return
     line, file, message = links.first
+    cutoff = links.positions.get((file, line))
     diags.items[:] = [d for d in diags.items
-                      if d.severity != "error" or not d.line or d.line <= line]
+                      if d.severity != "error" or not d.line or cutoff is None or
+                      links.positions.get((d.file, d.line), cutoff) <= cutoff]
     diags.error(line, message, file, show_file=False)
 
 

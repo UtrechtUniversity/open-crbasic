@@ -250,6 +250,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `Invalid, or out of place expression: Y = 1.`).
         flat = _with_inline(program)
         cutoff = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
+        cutoff_position = links.positions.get(links.cutoff) if links.cutoff else None
+
+        def before_cutoff(diagnostic) -> bool:
+            if cutoff_position is None:
+                return diagnostic.line <= cutoff
+            return links.positions.get((diagnostic.file, diagnostic.line), cutoff_position) <= cutoff_position
+
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
@@ -272,8 +279,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
             _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
         if cutoff is not None:
-            bounds.items = [d for d in bounds.items if d.line <= cutoff]
-            pipe.items = [d for d in pipe.items if d.line <= cutoff]
+            bounds.items = [d for d in bounds.items if before_cutoff(d)]
+            pipe.items = [d for d in pipe.items if before_cutoff(d)]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # Collected aside like the index bounds: a finding neither hides tier C (oracle: a bad
         # `SemaphoreGet` beside a bad `VoltDiff` channel reports both) nor is hidden by tier B.
@@ -293,7 +300,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if not profile.single_pass:
             _run_pass(instr_rules.check_settings_fields, flat, profile, diags, fields, env)
             if cutoff is not None:
-                fields.items = [d for d in fields.items if d.line <= cutoff]
+                fields.items = [d for d in fields.items if before_cutoff(d)]
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one leading-word
         # `%s is not defined.` line per bare word of an `S.Unparsed` statement's own source text,
         # spliced in immediately ahead of `structure.check_pass2`'s generic "Invalid, or out of
@@ -318,7 +325,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             # diags.errors` just gated this whole block, but defensive) are left untouched.
             diags.items = diags.items[:pass2_start] + [
                 d for d in diags.items[pass2_start:]
-                if d.severity != "error" or not d.line or d.line <= cutoff
+                if d.severity != "error" or not d.line or before_cutoff(d)
             ]
 
     if profile.single_pass:
