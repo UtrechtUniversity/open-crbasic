@@ -2565,6 +2565,48 @@ does).
 
 Replay: reproducers `c2fa595b2867` (CR1000X), `14387ce6dd56` and `bb5ac63ec5c3` (CR300) now exact.
 
+## Option arguments (2026-10-02)
+
+Oracle on all four loggers; fixture `tests/fixtures/option_args.json` (368 cases, compiler hashes
+and date inside), `tests/test_option_args.py`, `instr_rules.check_option_values` and
+`checker/longconv.py`. Four instructions, found by scanning every instruction parameter of CR6
+(`Delay`'s `Illegal option %d` and `FTPClient`'s `Invalid PutGetOption` were already known):
+
+- `SplitStr` `Options` (fifth argument): below 0 -> `Invalid option %d` (the converted value).
+  Every non-negative value to 2147483647 passes.
+- `IPRoute` `Network` (second argument): outside 0..5 (CR300/CR350 0..4) -> `%d is illegal
+  network`; then the optional third argument outside 0..1 -> `%d is illegal option`. Both bad
+  gives only the network line. A variable in any argument silences both. A string option crashes
+  `CR6Comp.exe` (page fault), so it is not modelled.
+- `CDM_Delay` `Option` (third argument, CR6/CR1000X only): `Illegal option %d` with the value
+  modulo 256 (`-1` -> 255, `K=2` -> 2) unless that is 0 or 1; 0 and 256 give `CDM_Delay
+  instruction not supported by module NULL.` instead (not modelled). Like `Delay`'s option
+  message, but accumulating with tier-B findings.
+- `Matrix` `Option` (first argument): `Illegal option.` (no number) unless `(value & 0x7FFFFFFF)`
+  is 1..5. So `-2147483647..-2147483643` pass, as the sign bit is ignored; on CR300/CR350
+  `-2147483648` saturates to `-2147483647` and passes too. Dimension messages (`Illegal Matrix`,
+  `Illegal Matrix dimensioned`) are separate and not modelled.
+
+Conversion of the constant to a 32-bit `long` (`longconv.long_value`), shared by all three:
+an integer-typed expression wraps (`100000*100000` -> 1410065408, `2147483647+1` and `Const KC =
+2147483647+1` -> -2147483648, `-2147483647-2` -> 2147483647); a float-typed one (decimal point or
+exponent, `/`, `^`, a literal beyond 32 bits, or a `Const` declared from one) truncates toward
+zero. Out of range, a float gives -2147483648 on CR6/CR1000X; on CR300/CR350 it is first rounded to
+a 32-bit float and gives -2147483648 beyond +-2^31 and +-2147483647 otherwise (`2147483776` ->
+2147483647, `-2147483648` -> -2147483647). A string, `NAN` or `INF` gives -2147483648 (`SplitStr`
+and `Matrix`: `"2"` is an error). Hex literals wrap to 32 bits (`&HFFFFFFFF` -> -1); more than 8
+digits is not modelled. Only a plain numeric expression is evaluated; function calls are not.
+`True` is -1.
+
+Gating: reported with pass 2 but not hiding the tier-C checks, like `AvgRun`'s options and the
+index bounds (`bounds` in `checker/__init__.py`). They accumulate with a tier-B finding on CR6/
+CR1000X (`X = Undef1` before or after) and with an unknown `CallTable`; a pass-1 error
+(`Too many parameters`, `Parameter must be integral.`) hides them, and on CR300/CR350 so does an
+undefined name. Two statements each report their own line.
+
+Replay: reproducers `fde20a567f89` (CR350), `ef75644291d6` (CR6), `9b6ed6ff8f9d` (CR1000X) and
+`881ad67a2b3f` (CR350) now exact.
+
 ## Sub call arguments (2026-09-28)
 
 Undefined names in the arguments of a call to a declared `Sub` are reported for every argument,

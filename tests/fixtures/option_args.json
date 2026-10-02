@@ -1,0 +1,2600 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "source_records": [],
+  "cases": [
+    {
+      "id": "cr6-splitstr-neg1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr1000x-splitstr-neg1",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr300-splitstr-neg1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr350-splitstr-neg1",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr6-matrix-neg1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-neg1",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-neg1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-neg1",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-neg1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-neg1",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-neg1",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-zero",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-splitstr-zero",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-zero",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-splitstr-zero",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-zero",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-zero",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-zero",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-zero",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-zero",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-opt-zero",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-opt-zero",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-iproute-opt-zero",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-splitstr-one",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-one",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-one",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-one",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-one",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-opt-one",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-splitstr-five",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-five",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-five",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-five",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-five",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-five",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-six",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-splitstr-six",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-six",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-splitstr-six",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-six",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-six",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-six",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-six",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-six",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-six",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-six",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-six",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-big",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-splitstr-big",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-big",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr350-splitstr-big",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-big",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(999999999999,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-big",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(999999999999,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-big",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(999999999999,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-big",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(999999999999,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-big",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-big",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-big",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-big",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,999999999999)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-splitstr-2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-splitstr-2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483647)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483647)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483647,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483647,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483647)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483647)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-neg2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-splitstr-neg2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-neg2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr350-splitstr-neg2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr6-matrix-neg2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-neg2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-neg2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-matrix-neg2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483648,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-neg2^31",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-neg2^31",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg2^31",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-neg2^31",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-neg2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-neg2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr6-matrix-neg2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483649,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-neg2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483649,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-neg2^31-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg2^31-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483776,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483776,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-f32-over",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483777)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-f32-over",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483777)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-f32-over",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483777,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-f32-over",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483777,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-f32-over",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483777)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-f32-over",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483777)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-neg-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-neg-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr6-matrix-neg-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483776,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-neg-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483776,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-neg-f32-tie",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg-f32-tie",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483776)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-frac",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-splitstr-frac",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-frac",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-splitstr-frac",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-frac",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-matrix-frac",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-frac",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-matrix-frac",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(1.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-frac",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-opt-frac",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-opt-frac",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-iproute-opt-frac",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,1.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-splitstr-frac-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-frac-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-frac-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-0.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-frac-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-0.5,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-frac-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-opt-frac-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-0.5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-splitstr-frac5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,5.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-frac5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,5.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-frac5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(5.9,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-frac5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(5.9,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-frac5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,5.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-frac5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,5.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-frac6",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6.1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-frac6",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,6.1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-frac6",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6.1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-frac6",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(6.1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-frac6",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6.1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-frac6",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,6.1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-two",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-two",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-two",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2.0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-two",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2.0,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-two",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-two",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-hex-ff",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&HFFFFFFFF)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr300-splitstr-hex-ff",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&HFFFFFFFF)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr6-matrix-hex-ff",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&HFFFFFFFF,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-hex-ff",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&HFFFFFFFF,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-hex-ff",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&HFFFFFFFF)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-hex-ff",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&HFFFFFFFF)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-hex-80",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&H80000000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-hex-80",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&H80000000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-hex-80",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&H80000000,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-hex-80",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&H80000000,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-hex-80",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&H80000000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-hex-80",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&H80000000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-hex-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&H1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-hex-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,&H1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-hex-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&H1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-hex-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(&H1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-hex-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&H1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-opt-hex-1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,&H1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-splitstr-const",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-const",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-const",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(K,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-const",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(K,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-const",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-const",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,K)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-const-wrap",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-splitstr-const-wrap",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-const-wrap",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr350-splitstr-const-wrap",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-const-wrap",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KC,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-const-wrap",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KC,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-const-wrap",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KC,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-const-wrap",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KC,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-const-wrap",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-const-wrap",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-const-wrap",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-const-wrap",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KC)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-const-float",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KM)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-const-float",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KM)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr6-matrix-const-float",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KM,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-const-float",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KM,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-const-float",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KM)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-const-float",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KM)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-const-wide",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KB)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-const-wide",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,KB)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-const-wide",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KB,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-const-wide",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(KB,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-const-wide",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KB)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-const-wide",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,KB)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-true",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr1000x-splitstr-true",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr300-splitstr-true",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr350-splitstr-true",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1"
+    },
+    {
+      "id": "cr6-matrix-true",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(True,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-true",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(True,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-true",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(True,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-true",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(True,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-true",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr1000x-iproute-opt-true",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-true",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr350-iproute-opt-true",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,True)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-nan",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,NAN)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-nan",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,NAN)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-nan",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(NAN,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-nan",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(NAN,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-splitstr-wrap-mul",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-wrap-mul",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-wrap-mul",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(100000*100000,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-wrap-mul",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(100000*100000,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-wrap-mul",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 1410065408 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-wrap-mul",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 1410065408 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-wrap-add",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483647+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-wrap-add",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,2147483647+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-wrap-add",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483647+1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-wrap-add",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(2147483647+1,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-wrap-add",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483647+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-wrap-add",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,2147483647+1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-wrap-sub",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483647-2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-wrap-sub",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483647-2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-wrap-sub",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483647-2,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-wrap-sub",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483647-2,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-wrap-sub",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483647-2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-wrap-sub",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483647-2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-sec",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,Sec)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-splitstr-sec",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,Sec)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-matrix-sec",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(Sec,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-sec",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(Sec,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-sec",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,Sec)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-sec",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,Sec)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-string",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,\"2\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-splitstr-string",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,\"2\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-string",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,\"2\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr350-splitstr-string",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,\"2\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-matrix-string",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(\"2\",A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr1000x-matrix-string",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(\"2\",A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-string",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(\"2\",A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr350-matrix-string",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(\"2\",A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-splitstr-neg-small-window",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483645)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483645"
+    },
+    {
+      "id": "cr300-splitstr-neg-small-window",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483645)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483645"
+    },
+    {
+      "id": "cr6-matrix-neg-small-window",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483645,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-matrix-neg-small-window",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483645,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-neg-small-window",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483645)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483645 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg-small-window",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483645)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483645 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-neg-window-end",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483640)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483640"
+    },
+    {
+      "id": "cr300-splitstr-neg-window-end",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-2147483640)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483640"
+    },
+    {
+      "id": "cr6-matrix-neg-window-end",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483640,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-neg-window-end",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-2147483640,A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr6-iproute-opt-neg-window-end",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483640)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483640 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-neg-window-end",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-2147483640)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483640 is illegal option"
+    },
+    {
+      "id": "cr6-splitstr-paren-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-(2147483648))\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-splitstr-paren-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-(2147483648))\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -2147483647"
+    },
+    {
+      "id": "cr6-matrix-paren-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-(2147483648),A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option."
+    },
+    {
+      "id": "cr300-matrix-paren-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(-(2147483648),A,B,C)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-opt-paren-neg",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-(2147483648))\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal option"
+    },
+    {
+      "id": "cr300-iproute-opt-paren-neg",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1,-(2147483648))\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal option"
+    },
+    {
+      "id": "cr6-iproute-net--3",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -3 is illegal network"
+    },
+    {
+      "id": "cr1000x-iproute-net--3",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -3 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net--3",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -3 is illegal network"
+    },
+    {
+      "id": "cr350-iproute-net--3",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -3 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net--1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net--1",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-0",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",0,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-net-0",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",0,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-net-4",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",4,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-net-4",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",4,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-net-5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-net-5",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-net-5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal network"
+    },
+    {
+      "id": "cr350-iproute-net-5",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-6",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr1000x-iproute-net-6",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-6",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr350-iproute-net-6",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-9",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-9",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-2147483647",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",2147483647,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-2147483647",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",2147483647,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-2147483648",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",2147483648,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-2147483648",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",2147483648,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 2147483647 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net--2147483648",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-2147483648,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483648 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net--2147483648",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-2147483648,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -2147483647 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-5.9",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5.9,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-net-5.9",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",5.9,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 5 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-6.5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6.5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-6.5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",6.5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net--0.5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-0.5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-net--0.5",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",-0.5,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-net-K*3",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",K*3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-K*3",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",K*3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 6 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-net-&HFFFFFFFF",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",&HFFFFFFFF,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-net-&HFFFFFFFF",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",&HFFFFFFFF,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: -1 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-both-bad",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr1000x-iproute-both-bad",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr300-iproute-both-bad",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr350-iproute-both-bad",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: 9 is illegal network"
+    },
+    {
+      "id": "cr6-iproute-var-option",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,X)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-var-option",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,X)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-var-option",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,X)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-iproute-var-option",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",9,X)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-var-network",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",X,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-var-network",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",X,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-var-network",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",X,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-iproute-var-network",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",X,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-iproute-no-option",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-iproute-no-option",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-iproute-no-option",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-iproute-no-option",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    IPRoute(\"1.2.3.4\",1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-two-bad",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    SplitStr(R(),Q,\",\",5,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid option -2147483648"
+    },
+    {
+      "id": "cr1000x-two-bad",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    SplitStr(R(),Q,\",\",5,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid option -2147483648"
+    },
+    {
+      "id": "cr300-two-bad",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    SplitStr(R(),Q,\",\",5,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid option -2147483648"
+    },
+    {
+      "id": "cr350-two-bad",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    SplitStr(R(),Q,\",\",5,\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid option -2147483648"
+    },
+    {
+      "id": "cr6-three-kinds",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    SplitStr(R(),Q,\",\",5,-1)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Invalid option -1\nline 10: 9 is illegal network"
+    },
+    {
+      "id": "cr1000x-three-kinds",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    SplitStr(R(),Q,\",\",5,-1)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Invalid option -1\nline 10: 9 is illegal network"
+    },
+    {
+      "id": "cr300-three-kinds",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    SplitStr(R(),Q,\",\",5,-1)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Invalid option -1\nline 10: 9 is illegal network"
+    },
+    {
+      "id": "cr350-three-kinds",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    SplitStr(R(),Q,\",\",5,-1)\n    IPRoute(\"1.2.3.4\",9,2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Invalid option -1\nline 10: 9 is illegal network"
+    },
+    {
+      "id": "cr6-with-undef",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid symbol in expression:     X = Undef1."
+    },
+    {
+      "id": "cr1000x-with-undef",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid symbol in expression:     X = Undef1."
+    },
+    {
+      "id": "cr300-with-undef",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Undef1 is not defined."
+    },
+    {
+      "id": "cr350-with-undef",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Undef1 is not defined."
+    },
+    {
+      "id": "cr6-undef-first",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    X = Undef1\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = Undef1.\nline 9: Invalid option -1"
+    },
+    {
+      "id": "cr1000x-undef-first",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    X = Undef1\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = Undef1.\nline 9: Invalid option -1"
+    },
+    {
+      "id": "cr300-undef-first",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    X = Undef1\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Undef1 is not defined.\nline 9: Too many parameters:  Q."
+    },
+    {
+      "id": "cr350-undef-first",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    X = Undef1\n    SplitStr(R(),Q,\",\",5,-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Undef1 is not defined.\nline 9: Too many parameters:  Q."
+    },
+    {
+      "id": "cr6-with-calltable",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    CallTable Nope\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Could not find DataTable Nope."
+    },
+    {
+      "id": "cr1000x-with-calltable",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    CallTable Nope\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Could not find DataTable Nope."
+    },
+    {
+      "id": "cr300-with-calltable",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    CallTable Nope\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Could not find DataTable Nope."
+    },
+    {
+      "id": "cr350-with-calltable",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    Matrix(0,A,B,C)\n    CallTable Nope\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option.\nline 9: Could not find DataTable Nope."
+    },
+    {
+      "id": "cr6-with-too-many",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    PortSet(C1,1,2,3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  3."
+    },
+    {
+      "id": "cr1000x-with-too-many",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    PortSet(C1,1,2,3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  3."
+    },
+    {
+      "id": "cr300-with-too-many",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    PortSet(C1,1,2,3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  2."
+    },
+    {
+      "id": "cr350-with-too-many",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    PortSet(C1,1,2,3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Too many parameters:  2."
+    },
+    {
+      "id": "cr6-with-integral",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    If IfTime(0,1.5,Sec) Then X=1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+    },
+    {
+      "id": "cr1000x-with-integral",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    If IfTime(0,1.5,Sec) Then X=1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+    },
+    {
+      "id": "cr300-with-integral",
+      "logger": "cr300",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    If IfTime(0,1.5,Sec) Then X=1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+    },
+    {
+      "id": "cr350-with-integral",
+      "logger": "cr350",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    If IfTime(0,1.5,Sec) Then X=1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Parameter must be integral."
+    },
+    {
+      "id": "cr6-with-voltse",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    VoltSe(X,1,mV5000,99,1,0,60,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid channel 99, must use U1..U12."
+    },
+    {
+      "id": "cr1000x-with-voltse",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    SplitStr(R(),Q,\",\",5,-1)\n    VoltSe(X,1,mV5000,99,1,0,60,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid option -1\nline 9: Invalid channel 99, must use 1..16."
+    },
+    {
+      "id": "cr6-cdm-delay--1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,-1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 255"
+    },
+    {
+      "id": "cr1000x-cdm-delay--1",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,-1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 255"
+    },
+    {
+      "id": "cr6-cdm-delay-1",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-cdm-delay-1",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,1,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-cdm-delay-2",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    },
+    {
+      "id": "cr1000x-cdm-delay-2",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    },
+    {
+      "id": "cr6-cdm-delay-3",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,3,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 3"
+    },
+    {
+      "id": "cr1000x-cdm-delay-3",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,3,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 3"
+    },
+    {
+      "id": "cr6-cdm-delay-255",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,255,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 255"
+    },
+    {
+      "id": "cr1000x-cdm-delay-255",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,255,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 255"
+    },
+    {
+      "id": "cr6-cdm-delay-257",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,257,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-cdm-delay-257",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,257,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-cdm-delay-1.5",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,1.5,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-cdm-delay-1.5",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,1.5,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-cdm-delay-K",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,K,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    },
+    {
+      "id": "cr1000x-cdm-delay-K",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,K,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    },
+    {
+      "id": "cr6-cdm-delay-undef",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2\nline 9: Invalid symbol in expression:     X = Undef1."
+    },
+    {
+      "id": "cr1000x-cdm-delay-undef",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n    X = Undef1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2\nline 9: Invalid symbol in expression:     X = Undef1."
+    },
+    {
+      "id": "cr6-cdm-delay-two",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n    CDM_Delay(1,1,3,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2\nline 9: Illegal option 3"
+    },
+    {
+      "id": "cr1000x-cdm-delay-two",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,1,1)\n    CDM_Delay(1,1,3,1,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2\nline 9: Illegal option 3"
+    },
+    {
+      "id": "cr6-cdm-delay-var-interval",
+      "logger": "cr6",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    },
+    {
+      "id": "cr1000x-cdm-delay-var-interval",
+      "logger": "cr1000x",
+      "source": "Public A(3,3), B(3,3), C(3,3), R(5) As String * 20, Q As String * 30, X\nConst K = 2\nConst KC = 2147483647+1\nConst KM = -2147483649\nConst KB = 999999999999\nBeginProg\n  Scan (3,Sec,3,0)\n    CDM_Delay(1,1,2,X,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal option 2"
+    }
+  ]
+}

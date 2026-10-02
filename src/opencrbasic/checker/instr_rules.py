@@ -831,6 +831,60 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                         "must be > 0.", stmt.file)
 
 
+def check_option_values(program: S.Program, profile, diags: Diagnostics,
+                        env: consteval.Env) -> None:
+    """Constant option arguments (oracle, 2026-10-02, `docs/checker.md` "Option arguments"),
+    converted to a 32-bit `long` as in `checker/longconv.py`. Reported with pass 2 without hiding
+    the tier-C checks on CR6/CR1000X, only in an otherwise clean file on CR300/CR350 (like
+    `check_avgrun_options`).
+
+    - `SplitStr` `Options` (fifth argument), all four loggers: below 0 -> `Invalid option %d`.
+    - `IPRoute` `Network` (second argument): outside 0..5 (CR300/CR350: 0..4) -> `%d is illegal
+      network`; otherwise the optional third argument outside 0..1 -> `%d is illegal option`
+      (the first line hides the second); a variable in any argument silences both. A string option crashes the real compiler: not modelled.
+    - `CDM_Delay` `Option` (third argument, CR6/CR1000X): the value modulo 256 other than 0 or 1
+      -> `Illegal option %d` (0 draws a different message about the module, not modelled).
+    - `Matrix` `Option` (first argument): `(value & 0x7FFFFFFF)` outside 1..5 -> `Illegal option.`.
+    """
+    from . import longconv
+    names = longconv.float_names(program)
+    cr3 = profile.name in ("cr300", "cr350")
+    for stmt in program.statements:
+        if not isinstance(stmt, (S.Instruction, S.Call)):
+            continue
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else stmt.name.upper()
+        if kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY") or \
+                kw not in profile.instructions:
+            continue
+        args = list(stmt.args)
+
+        def value(i: int) -> int | None:
+            return longconv.long_value(args[i], env, profile, names) if i < len(args) else None
+
+        if kw == "SPLITSTR":
+            v = value(4)
+            if v is not None and v < 0:
+                diags.error(stmt.line, f"Invalid option {v}", stmt.file)
+        elif kw == "CDM_DELAY":
+            v = value(2)
+            if v is not None and v % 256 not in (0, 1):
+                diags.error(stmt.line, f"Illegal option {v % 256}", stmt.file)
+        elif kw == "MATRIX":
+            v = value(0)
+            if v is not None and not 1 <= v & 0x7FFFFFFF <= 5:
+                diags.error(stmt.line, "Illegal option.", stmt.file)
+        elif all(consteval.is_constant(a, env) for a in args if a is not None):
+            net = value(1)
+            if net is not None and not 0 <= net <= (4 if cr3 else 5):
+                diags.error(stmt.line, f"{net} is illegal network", stmt.file)
+                continue
+            if len(args) > 2 and isinstance(args[2], S.String):
+                continue
+            opt = value(2)
+            if opt is not None and opt not in (0, 1):
+                diags.error(stmt.line, f"{opt} is illegal option", stmt.file)
+
+
 def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`Illegal parameter %s, expecting constant integer.` at a type-code-4 position (`SW12`'s third
     argument, `PortSet`, `PortGet`, `Calibrate`, `CDM_SW12`, CR300 `SwVx`) holding anything but an

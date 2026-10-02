@@ -264,6 +264,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if not profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, flat, profile, bounds, env)
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
+            _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
         if cutoff is not None:
             bounds.items = [d for d in bounds.items if d.line <= cutoff]
             pipe.items = [d for d in pipe.items if d.line <= cutoff]
@@ -318,6 +319,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # exists (`docs/instructions.md`, SetSetting and SetStatus field names).
         _run_pass(instr_rules.check_settings_fields, _with_inline(program), profile, diags,
                   fields, env)
+        _run_pass(instr_rules.check_option_values, _with_inline(program), profile, bounds, env)
     if not diags.errors:
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
