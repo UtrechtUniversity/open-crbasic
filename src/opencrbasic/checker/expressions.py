@@ -1318,6 +1318,16 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                 if kind:
                     report(stmt, kind, _arg_text(stmt, i).strip(), False)
                     break
+        elif isinstance(stmt, S.Call) and not stmt.explicit:
+            # `F1(1,2)` as a statement echoes the whole line like `X = F1(1,2)` (oracle,
+            # 2026-10-02, all four loggers, `docs/checker.md` "Function argument counts").
+            fn = functions.get(stmt.name.upper())
+            if fn is not None:
+                required = sum(1 for p in fn.params if p.default is None)
+                kind = ("few" if len(stmt.args) < required
+                        else "many" if len(stmt.args) > len(fn.params) else None)
+                if kind:
+                    report(stmt, kind, stmt.text, True)
 
     for stmt in program.statements:
         visit(stmt)
