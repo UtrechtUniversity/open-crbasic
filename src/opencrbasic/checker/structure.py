@@ -317,6 +317,40 @@ def check_pipeline_task_placement(program: S.Program, profile, diags: Diagnostic
         diags.error(stmt.line, message, stmt.file)
 
 
+def check_slow_sequence_blocks(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X, pass 2, accumulating (oracle, 2026-10-02; CR300/CR350 accept): a `SlowSequence`
+    inside an open block. At the `SlowSequence` line, one message per kind of open block, in this
+    order: `FOR .. NEXT cannot span across sequences.`, `DO .. LOOP cannot span across
+    sequences.` (`Do` and `While`), `IF or SELECT cannot span sequences.`. Not per nesting level
+    (two open `Do`s give one message), and every later `SlowSequence` repeats it. The depth of each
+    kind is counted separately, so a `Loop` closes a `Do` even with an `If` opened after it. A
+    one-line `If` is not a block."""
+    if profile.single_pass:
+        return
+    fors = dos = ifs = 0
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        word = _block_word(getattr(stmt, "args", []) or []) if kw in ("END", "NEXT") else None
+        if kw == "FOR":
+            fors += 1
+        elif kw == "NEXT" and word not in ("SCAN", "SUBSCAN"):
+            fors = max(0, fors - 1)
+        elif kw in ("DO", "WHILE"):
+            dos += 1
+        elif kw in ("LOOP", "WEND"):
+            dos = max(0, dos - 1)
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            ifs += 1
+        elif kw in ("ENDIF", "ENDSELECT") or (kw == "END" and word in ("IF", "SELECT")):
+            ifs = max(0, ifs - 1)
+        elif kw == "SLOWSEQUENCE":
+            for depth, message in ((fors, "FOR .. NEXT cannot span across sequences."),
+                                   (dos, "DO .. LOOP cannot span across sequences."),
+                                   (ifs, "IF or SELECT cannot span sequences.")):
+                if depth:
+                    diags.error(stmt.line, message, stmt.file)
+
+
 def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
     """CR300/CR350: `CallTable` outside `Scan`, the first extra `NextScan` and the before-`BeginProg`
     placement errors, in statement order, after the table `Reps` checks and before the

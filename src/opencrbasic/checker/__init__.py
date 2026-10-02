@@ -192,9 +192,10 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
 
     bounds = Diagnostics()
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
-    # CR6/CR1000X `X not allowed outside of Scan..NextScan in PipeLine Mode.`: pass 2 errors that
-    # do not hide tier C (oracle: printed together with the instruction's own `Invalid channel`
-    # and `Scan interval too short` errors), merged ahead of the tier-C findings below.
+    # CR6/CR1000X `X not allowed outside of Scan..NextScan in PipeLine Mode.` and `DO .. LOOP
+    # cannot span across sequences.`: pass 2 errors that do not hide tier C (oracle: printed
+    # together with the instruction's own `Invalid channel`/`Invalid port` and `Scan interval too
+    # short` errors), merged ahead of the tier-C findings below.
     pipe = Diagnostics()
     links = structure.CallLinks()
     pass1_errors = bool(diags.errors)
@@ -223,6 +224,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
             cutoff = stray_stop
         _run_pass(structure.check_pipeline_task_placement, program, profile, pipe)
+        _run_pass(structure.check_slow_sequence_blocks, program, profile, pipe)
         menu_stop = _run_pass_capture(instr_data.check_table_and_menu_placement, program, profile,
                                       diags)
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):

@@ -753,6 +753,370 @@
    "source": "PipeLineMode\nPublic x, v\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nNextScan\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "slowseq-in-do-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-do-twice-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-while-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nWhile x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nWend\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-for-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: FOR .. NEXT cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-if-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-select-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nSelect Case x\nCase 1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndSelect\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-do-in-if-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DO .. LOOP cannot span across sequences.\nline 8: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-do-in-for-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FOR .. NEXT cannot span across sequences.\nline 8: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-nested-do-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-after-closed-do-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nx=1\nLoop While x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-after-inline-if-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then x=2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-in-do-with-bad-symbol-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nx=q\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: Invalid symbol in expression: x=q."
+  },
+  {
+   "id": "slowseq-in-do-hidden-by-pass1-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nPublic\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Variable not named."
+  },
+  {
+   "id": "slowseq-in-do-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-do-twice-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-while-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nWhile x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nWend\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-for-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: FOR .. NEXT cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-if-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-select-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nSelect Case x\nCase 1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndSelect\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-do-in-if-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DO .. LOOP cannot span across sequences.\nline 8: IF or SELECT cannot span sequences."
+  },
+  {
+   "id": "slowseq-in-do-in-for-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: FOR .. NEXT cannot span across sequences.\nline 8: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-nested-do-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-after-closed-do-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nx=1\nLoop While x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-after-inline-if-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then x=2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "slowseq-in-do-with-bad-symbol-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nx=q\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: Invalid symbol in expression: x=q."
+  },
+  {
+   "id": "slowseq-in-do-hidden-by-pass1-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nPublic\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Variable not named."
+  },
+  {
+   "id": "slowseq-in-do-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-twice-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-while-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nWhile x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nWend\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-for-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-if-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-select-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nSelect Case x\nCase 1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-in-if-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-in-for-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-nested-do-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-after-closed-do-ok-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nx=1\nLoop While x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-after-inline-if-ok-cr300",
+   "logger": "cr300",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then x=2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-twice-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-while-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nWhile x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nWend\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-for-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-if-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-select-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nSelect Case x\nCase 1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-in-if-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-in-for-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nFor v=1 To 2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nNext\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-nested-do-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nLoop While x=1\nLoop While x=1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-after-closed-do-ok-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nx=1\nLoop While x=1\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-after-inline-if-ok-cr350",
+   "logger": "cr350",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nIf x=1 Then x=2\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "slowseq-in-do-keeps-tier-c-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nPortSet(1,1)\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "slowseq-in-do-hides-unclosed-do-cr6",
+   "logger": "cr6",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
+  },
+  {
+   "id": "slowseq-in-do-keeps-tier-c-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nPortSet(1,1)\nLoop While x=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences.\nline 11: Invalid port 1, use C1..C8."
+  },
+  {
+   "id": "slowseq-in-do-hides-unclosed-do-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, v\nBeginProg\nScan(1,Sec,0,10)\nx=1\nNextScan\nDo\nSlowSequence\nScan(2,Sec,0,10)\nx=2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: DO .. LOOP cannot span across sequences."
   }
  ]
 }

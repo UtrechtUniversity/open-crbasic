@@ -2984,3 +2984,19 @@ end-of-program block checks like any pass-2 error. `PipeLineMode` and `Sequentia
 declarations, never `never reached at run time.`. A dead `Delay` that gets this error prints no
 reachability warning of its own, and the walk continues (the next dead statement is flagged); a
 dead `PanelTemp` prints both.
+
+### SlowSequence inside an open block
+
+`structure.check_slow_sequence_blocks` (CR6/CR1000X; CR300/CR350 accept). At a `SlowSequence`
+line, one message per kind of block still open, in this fixed order (not by nesting): `FOR .. NEXT
+cannot span across sequences.`, `DO .. LOOP cannot span across sequences.` (`Do` and `While`),
+`IF or SELECT cannot span sequences.` (`If` block and `Select`). Two open `Do`s give one message;
+every later `SlowSequence` in the same open block repeats it. Depth is counted per kind, so `Do`,
+`If`, `Loop`, `SlowSequence` reports only the `If`. A one-line `If` is not a block.
+
+Pass 2, accumulating (prints with `x=q`); a pass-1 error hides it. Like the PipeLine Mode errors it
+does not hide tier C (`Invalid port ...` still prints before and after it) but hides the end-of-
+program block checks (`DO without LOOP.`), so both live in `check()`'s `pipe` list. Not
+implemented: `DataTable is declared in the middle of an executing sequence` for a `DataTable` after
+such a `Do` (seen in the same probe), and on CR300/CR350 the `Too many parameters:  x.` cascade
+into the `Loop While x=1` line after an `x=q` error.
