@@ -47,6 +47,34 @@ commands are given so they can be re-run.
   "Foo" .`, not a special "empty string" value. `source.py` models this as a per-logical-line
   `section: str | None` field rather than a `Const`.
 
+## Source line buffer
+
+Measured on all four reference compilers on 2026-10-01. A terminated physical or continued
+logical line accepts at most 509 bytes before LF or CRLF; the same final line at EOF without a
+terminator accepts 510 bytes. Overflow reports `Line exceeds max characters of 512.` at the
+physical line where the buffer overflows and stops source ingestion. Tabs count as single bytes.
+The wording describes the buffer size, not the maximum text length.
+
+Comments, blank lines, and lines in inactive `#If` branches still count. For a continuation,
+remove the marker and its trailing comment, retain preceding and next-line whitespace, and
+concatenate before checking the combined buffer. The parser's comment-stripped text is separate
+from this raw buffer count. An overlong line after `EndProg` is ignored. Earlier diagnostics
+are retained; a second overflowing line or later semantic error is not read.
+
+The source loader now emits an overflow marker instead of immediately adding a diagnostic.
+The parser consumes it in source order. This keeps `EndProg` suppression correct. Include
+boundaries mark expanded files so an include inside an inactive branch is skipped as a whole;
+an inactive line inside an already-opened include still undergoes the buffer check. Include
+overflow messages use the included file's own physical line and the existing per-profile drive
+prefix convention. Bare CR is not a line delimiter for this buffer: long CR-only input overflows
+on line 1. Full short CR-only syntax behavior remains unverified.
+
+Development evidence: 142 usable probe results across named logger profiles, matched exactly
+after implementation; the extremely long trailing-comment continuation probe produced exit 9
+with no usable output on each reference compiler and was excluded from verdict comparisons.
+Representative inputs, expected ordered output, date, and exe hashes are in
+`../tests/fixtures/source_buffer.json`; regression: `../tests/test_source_buffer.py`.
+
 ## `#If`/`#ElseIf`/`#Else`/`#EndIf`
 
 - A skipped branch is never tokenised, let alone parsed: the corpus's `ERROR__STATIC_ASSERT__...`
@@ -159,7 +187,5 @@ fully parse; see `tests/test_corpus.py`'s `KNOWN_GAPS`):
   dotted-OID literal (an SNMP object identifier) as one argument, which is not a general
   expression; `SNMPVariable`-specific, not investigated further.
 
-All other CHM-corpus and repository (`crbasic/*.CR6`, `examples/*.CR6`) programs parse with zero
-`Unparsed` statements when the oracle accepts them (`examples/*.CR6` are not oracle-accepted at
-all, per AGENTS.md's note that they are historical prior art, so they are exercised only for
-"never raises", not "fully parses").
+The active parser corpus covers `crbasic/*.CR6` and CHM examples. Historical root `examples/`
+programs are excluded under the repository instructions.

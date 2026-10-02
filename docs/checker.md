@@ -2118,10 +2118,11 @@ A built-in function that takes arguments, written without an argument list, is t
 | `Randomize(Sin)` | `Expression expects ( : Sin.` (the argument only) | same, single line |
 
 Echo: the whole statement for an assignment or call statement, the argument's own text for an
-instruction argument. A `Dim` local to a `Function` may shadow a function name (`examples/
-embracer.cr6`: `Dim ... exp As Long` then `(exp << 13)` compiles), so declared variables are
-exempt; a `Public exp` is itself rejected, `exp already defined as an internal function.` (not
-implemented). Help corpus: 27 of the 33 `Expression expects (` lines now match on every logger;
+instruction argument. CR6/CR1000X permit a local `Dim` to shadow a function name; the
+fresh local-`exp` arithmetic probe is accepted on these profiles. CR300/CR350 accept the local
+declaration but report `Expression expects (` on those bare uses; that expression-resolution
+difference remains a separate gap. Global function-name declaration collisions are now checked;
+see [Built-in function name collisions](#built-in-function-name-collisions). Help corpus: 27 of the 33 `Expression expects (` lines now match on every logger;
 the files keep other differences, so chm exact is unchanged. Not covered: statements our parser
 leaves `Unparsed`, e.g. `Sin bar`, `X = Sin bar` (`docs/checker.md` "The scan").
 
@@ -2647,3 +2648,93 @@ Oracle-confirmed 2026-10-01.
 - `DataTable (Ten Sec,True,-1)`: the name is read up to whitespace (`Ten`), the rest shifts into
   later parameters.
 - Background calibration warning also when measurement delays leave under 3 mSec of the scan.
+
+
+## Built-in function name collisions
+
+The four supplied compilers reject a global `Public`, `Dim`, or `Const` whose name matches an
+extracted built-in function (case-insensitively), preserving the declared spelling in
+`<name> already defined as an internal function.`. `Public` and `Const` use this namespace even
+inside a Sub/Function body. Local `Dim` and parameter declarations can use those names; this
+does not imply that every profile resolves later bare uses to the local variable.
+
+This is a pass-1 declaration rule: CR6/CR1000X suppress later pass-2 diagnostics after a
+collision; CR300/CR350 start their normal `Too many parameters` cascade. CR6/CR1000X report every
+colliding name in a multi-variable declaration. CR300/CR350 stop after the first collision and,
+if another comma remains after the following name, report the next name: `Public Exp, Sin`
+reports only Exp, whereas `Public Exp, Sin, Cos, Log` reports Exp then `Too many parameters:
+Cos.`. Names that failed this check are not registered as new variables/constants.
+
+Evidence: 78 observed cases in `tests/fixtures/function_name_collision.json`, replayed by
+`tests/test_function_name_collision.py`, include case/spelling, global declarations, routine
+locals and parameters, routine-local Public/Const, declarations after a closed routine, mixed
+and all-colliding declaration lists, and following instructions. The two CR300/CR350 `Float`
+probes exercise the separate [predefined constant rule](#predefined-constant-name-collisions) and
+are explicitly excluded from this rule. The additional local-use probe remains scratch evidence in
+`scratch/builtin-local-shadow-probes.json` rather than part of the 78-case fixture; CR6's accepted
+source is also used by `tests/test_expression_expects_paren.py`.
+
+Implementation: global checks are integrated per variable into
+`structure._check_duplicate_declaration`, which calls
+`symbols.report_function_name_collision` alongside duplicate and predefined-name checks in source
+order. Routine declarations use `symbols.check_local_name_collision`, which checks both collision
+families in source order while retaining the local `Dim`/parameter shadowing exception. Structure
+members are skipped by the surrounding declaration scan.
+
+## Predefined constant name collisions
+
+The extracted `data/<profile>/symbols.json` table defines the reserved predefined-CONST namespace
+for each logger. A declaration whose name is present in that logger's table is rejected,
+case-insensitively, as `<name> is a predefined CONST.` with the source spelling preserved. This is
+profile-specific: a name absent from a logger's extracted table is not rejected merely because a
+different logger defines it. Observed accepted examples include `U1`, `mV5000`, and `ComC1` on the
+CR300/CR350 profiles where those names are absent, and `U1CR1000X` where it is absent. `NAN` is
+also accepted as a declaration name; it is a separately recognised expression constant and is not
+an entry in the extracted symbol tables.
+
+CR6 and CR1000X have an evidenced exception for these numeric type names even though they occur in
+their symbol tables: `FLOAT`, `LONG`, `BOOLEAN`, `IEEE8`, `IEEE4`, `BOOL8`, `UINT1`, `UINT2`, and
+`UINT4` may be declared. `STRING` and `FP2` remain reserved. CR300 and CR350 do not use that
+exception: their per-profile extracted symbols are reserved as listed.
+
+The implemented declaration coverage is:
+
+- global `Public`, `Dim`, and `Const` declarations;
+- `Public`, `Dim`, and `Const` declarations inside a Sub/Function; and
+- Sub/Function parameters.
+
+Members declared inside `StructureType`/`ObjectType` bodies are exempt because they occupy the
+structure's member namespace; the mixed probes specifically confirm that a structure member named
+`Exp` is accepted even though `Exp` is a built-in function. This evidence does not establish
+complete coverage for every other declaration-like instruction or for `Alias`, so those are not
+inferred into the rule.
+
+The collision is a pass-1 finding. On CR6/CR1000X it suppresses later pass-2 diagnostics in the
+usual way. A failed reserved `Public`/`Dim` name is nevertheless registered in the modern
+declaration state, so a later declaration can report the ordinary duplicate-variable error. When
+the same spelling appears in a constant-only instruction argument, the built-in predefined
+constant still wins lookup over that failed variable declaration. A failed reserved `Const`, by
+contrast, is not registered as a program constant.
+
+CR300/CR350 stop a comma-separated declaration at the first predefined collision. If the collision
+is at zero-based position *i* and an item at *i + 2* exists, that item supplies the accompanying
+`Too many parameters:  <name>.` diagnostic; their normal later `Too many parameters` cascade also
+applies. This is the same single-pass profile behavior for global declarations, routine locals,
+and parameters.
+
+Mixed function/predefined declarations follow source order. On CR6/CR1000X, `Public Sec, Exp`
+reports the predefined collision for `Sec` and then the internal-function collision for `Exp`;
+`Public Exp, Sec` reports those same two families in the reversed order. CR300/CR350 retain their
+first-collision stop rule, regardless of which collision family appears first, with the same
+ordinal *i + 2* `Too many parameters` behavior described above.
+
+Evidence is the 276-case `tests/fixtures/predefined_name_collision.json`, drawn from the current
+`scratch/predefined-namespace-probes.json`, `scratch/predefined-boundary-probes.json`, and
+`scratch/predefined-order-probes.json`, plus `scratch/predefined-mixed-probes.json`. It covers the
+four supplied compiler profiles, namespace boundaries, per-profile missing names, ordering,
+duplicate interaction, pass suppression/cascade, constant-argument lookup, and mixed
+function/predefined collision order. Implementation uses
+`symbols.report_predefined_name_collision` and `report_function_name_collision`: global namespace
+checks are integrated per variable into `structure._check_duplicate_declaration`, while routine
+locals use `symbols.check_local_name_collision` for both families.
+`Profile.declarable_predefined_names` holds the two modern profiles' explicit exception set.

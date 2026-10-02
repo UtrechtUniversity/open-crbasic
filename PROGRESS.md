@@ -15,52 +15,159 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
 - Ghidra 11.4.2 headless (optional, RE only): `/opt/re/ghidra_11.4.2_PUBLIC`, script
   `tools/ghidra/DumpAll.java` writes all decompiled functions to one C file.
 
+- Wine crash popups: disabled in the macOS compiler prefix `~/.wine-cr6` on 2026-10-01 at the
+  human's request. `HKCU\Software\Wine\WineDbg\ShowCrashDialog` is DWORD `0` (confirmed by
+  `wine reg query`). The known `pointervariable_2.CR6` crash subsequently returned exit 5 with
+  console crash details, without the previous dialog wait. For a new prefix, run once:
+
+  ```bash
+  WINEPREFIX="$HOME/.wine-cr6" WINEDEBUG=-all \
+    "$HOME/.local/wine/Wine Devel.app/Contents/Resources/wine/bin/wine" \
+    reg add 'HKCU\Software\Wine\WineDbg' /v ShowCrashDialog /t REG_DWORD /d 0 /f
+  ```
+
+  The built-in oracle runner also defaults `WINEDLLOVERRIDES` to
+  `winemac.drv,winex11.drv,winewayland.drv=d`, disabling GUI drivers for compiler subprocesses.
+  This avoids runtime assertion dialogs, which the registry key alone did not suppress. All six
+  previous timeout cases returned promptly with this invocation: four reference faults and two
+  usable verdicts. Explicit environment overrides and `CR6COMP_RUNNER` are preserved.
+
+  This preserves Wine's console crash report. It applies to runners using this prefix, including
+  the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
+
 ## Status by phase
 
-Measured 2026-09-26 with `tools/difftest.py` (exact output / same verdict, different message /
-verdict mismatch) against the real compilers under Wine. "False reject" = the real compiler
-accepts, opencrbasic rejects; it is the failure that matters most and is 0 everywhere. CR300/CR350
-updated later the same day by the agreement round below (`docs/loggers.md`); CR6/CR1000X's own
-`crbasic/`/`help examples` numbers are that round's *starting* point, re-verified unchanged by it,
-not re-measured independently since.
+Measured 2026-10-02 on `claude/laughing-franklin-08z9vo`, after the oracle/harness reliability
+chunk, GPS port check, source-buffer check, SerialIn destination check, and function/predefined
+declaration namespace checks. Exact means equal exit codes and normalized ordered stdout; it does not mean byte
+parity. "False reject" means the real compiler accepts and opencrbasic rejects.
+No false rejects were observed in these valid differential or replay results.
 
-Current exact counts (`tools/difftest.py`, run 2026-10-01; verdict/mismatch split not re-measured
-here; false rejects: none observed in the difftest or replay runs):
+`tools/difftest.py --logger <logger> --group all --show 0` (historical `examples/` excluded):
 
-| Logger | crbasic/ (16) exact | help examples (507) exact |
-|---|---|---|
-| CR6 | 16 | 429 |
-| CR1000X | 16 | 438 |
-| CR300 | 6 | 400 |
-| CR350 | 5 | 401 |
+| Logger | crbasic/ (16) exact | help (507) exact | help verdict/message differs | help verdict mismatch | help oracle errors |
+|---|---|---|---|---|---|
+| CR6 | 16 | 434 | 68 | 4 | 1 |
+| CR1000X | 16 | 441 | 61 | 4 | 1 |
+| CR300 | 6 | 404 | 92 | 9 | 2 |
+| CR350 | 5 | 405 | 92 | 8 | 2 |
 
-`tools/fuzz_replay.py` (2026-10-01): replay corpus 1,948 reproducers, no false rejects. Fuzz seeds
-49 and 50 (800 mutants each): seed 49 no false rejects, 10 false accepts; seed 50 one false reject
-(fixed: a DataTable/ConstTable name is read up to whitespace), 11 false accepts, 734 of 800 exact.
+Reference failures are now separated from compiler verdicts: `pointervariable_2.CR6` crashes
+the supplied compiler on all four profiles; `strcomp_3.CR6` also crashes CR300/CR350. These make
+the full differential gate exit nonzero, even though no false rejects were observed. Invalid
+empty-output cache entries from sandboxed Wine attempts are ignored and were refreshed with
+permitted Wine runs. CR6 baseline before the GPS chunk: 429 exact / 71 verdict / 6 mismatch /
+1 oracle error; GPS closes two false accepts. Source-buffer limits add three exact help cases on
+each profile; no prior exact cases were lost.
+
+`tools/fuzz_replay.py --workers 4 --gate no-regressions --json scratch/replay-predefined-final.json`
+(2026-10-02): 1,949 reproducers, 1,108 exact, 115 false accepts, 693 message differences,
+14 mode/warning differences, 19 oracle errors; no false rejects, implementation crashes, or
+hangs. No previous exact case was lost. The gate exits nonzero for reference compiler faults.
+The earlier measured baseline had 1,100 exact and 21 oracle errors. SerialIn adds five exact
+reproducer matches; predefined-name checks add two exact matches. Worker lifecycle faults are fixed using a pipe and measured deadline;
+see `docs/fuzz-findings.md#worker-isolation` for evidence and regression tests.
+
+Previous fuzz seeds 49 and 50 (800 mutants each): seed 49 no false rejects, 10 false accepts;
+seed 50 one false reject (fixed: a DataTable/ConstTable name is read up to whitespace),
+11 false accepts, 734 of 800 exact. Fresh bounded seeds 51 and 52 after the current chunks
+(100 mutants per profile, no shrinking)
+observed zero false rejects, implementation crashes, or hangs. Both exit nonzero for separate
+reference failures (one CR6, two each CR1000X/CR300/CR350, including seed failures). Seed 52
+results are recorded below; counts include a mutant oracle error where present.
+
+| Seed 52 profile | exact | false accept | message difference | mode difference | mutant oracle error |
+|---|---|---|---|---|---|
+| CR6 | 92 | 2 | 6 | 0 | 0 |
+| CR1000X | 90 | 1 | 7 | 1 | 1 |
+| CR300 | 85 | 1 | 14 | 0 | 0 |
+| CR350 | 92 | 0 | 8 | 0 | 0 |
 
 The crbasic/ programs are CR6 programs; the CR300/CR350 compilers reject them (different
 terminals and instructions), which opencrbasic now reproduces as a verdict for all 16 of them on
 both loggers (0 mismatch, up from 8/8 and 10/6 respectively -- `docs/loggers.md`'s "CR300/CR350
 agreement round").
 
-`scripts/verify.py` with `CR6COMP=opencrbasic`: `BUILD  host tests 44 FAIL | CRBasic 16/16
-compiled, 6 warning(s) | repository pass` (CRBasic side identical to the exe, unaffected by this
-session's own changes, all 16/16 `crbasic/` exact throughout; the host-test failures are pre-
-existing `scripts/` import errors unrelated to `opencrbasic`, not run via `uv` per this project's
-own instructions). Tests: `python3 -m pytest -q` 963 passed, 311 skipped, 0 xfailed (the 8
-TDF-auto-size xfails from `test_tables.py` now pass outright -- see the `-z`/§10 entry below).
+`cd scripts && uv run --no-sync verify.py` using the documented external uv environment and
+the reference compiler: `BUILD  host tests 119 pass | CRBasic 16/16 compiled, 6 warning(s) |
+repository pass`. The older host-import failure report came from running outside that uv
+environment and is superseded. The six expected warnings are owned by `../STATUS.md#build`.
+The same BUILD line was also observed with `CR6COMP=opencrbasic` on 2026-10-02.
+Latest completed full package test run: `uv run --no-sync pytest -q`: 3,213 passed,
+311 skipped. Fresh popup-free CR6 reference compilation retained byte-identical TDF and table
+lists for all 16 repository programs.
 
 | Phase | State |
 |---|---|
 | 0 Oracle + corpus | done: `tools/oracle.py`, `tools/difftest.py`, 507 CHM examples (many invalid on purpose or by extraction; they exercise error paths) |
 | 1 Binary RE | done for current needs: CLI (`docs/cli.md`), exe layout and tables (`docs/binary.md`, `tools/extract_tables.py`), type codes (`docs/type-codes.md`), messages (`docs/messages.tsv`), mode rule (`docs/modes.md`), TDF rules (`docs/tdf-rules.md`), ProgSignature (`signature.py`), per-logger differences (`docs/loggers.md`) |
-| 2 Front end | done: lexer, include expansion, constant folding, `#If`, parser (`docs/frontend.md`) |
+| 2 Front end | implemented; residual parsing/diagnostic gaps remain: lexer, include expansion, constant folding, `#If`, parser (`docs/frontend.md`) |
 | 3 Checker | usable: structure/placement, declarations, Units/Const/Alias, parameter counts, channel ranges per logger, Scan/DataInterval ranges, array limits, warnings (table never called, never reached, background calibration, fnotch), include-file prefixes, 4 KB message buffer, general expression-tree name resolution (`Invalid symbol in expression`/`%s is not defined`, per-logger echo/ordering rules, `NAN`/`INF`/system-table predefined symbols), the constant-only-family "rejects a variable" check, and the two-pass/pass-2-cutoff model (the generic "Expr"/`Call` fallback and before-`BeginProg` placement are now pass 2, not pass 1) (`docs/checker.md`, `docs/instructions.md`). Gaps: variable-required per-argument type checks (three confirmed per-instruction overrides found, no safe uniform rule yet), most instruction-specific pass-2 checks, two placement-error shapes (mid-sequence, after-EndSequence) |
 | 4 Fuzzing | first pass done: `tools/fuzz.py`, `tools/fuzz_replay.py`, 248 reproducers (`docs/fuzz-findings.md`); ~25 fixed since. CR6 mutants: ~29% false accepts before round 3 |
 | 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical **16/16** (`tables.py`'s auto-size formula, §10, fully decompiled and oracle-exact as of 2026-09-26 -- was 8/16, the other 8 within ~3%); `-p`/`-i` preprocessed source byte-identical 16/16 repo + 98/100 CHM sample (`preprocess.py`); `-t` `[Times]` byte-identical on all 16 repo programs, 91/100 CHM sample (narrow, oracle-verified instruction set: `Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(mSec)/`TCDiff`(Reps=1), `timing.py`); `-b` CDM image: "No CDM devices" message implemented and correct for every program in this repository (none use CPI/CDM hardware), binary image format not attempted; `-m` decompiled, confirmed no observable effect; `-u` **implemented** (`checker/unused.py`, wired through `compiler.compile_file`/`cli.py`, not through `checker.check`): `%s declared but not used.` for an unreferenced `Public`/`Dim`/`Sub`-or-`Function`-parameter, and for an unreferenced `Sub` or `Function` itself; oracle-confirmed identical across all four loggers; byte-identical on all 16 `crbasic/` programs with `-u` (`tests/test_unused.py`) |
-| 6 Simulator | not started |
+| 6 Complete parity gate | incomplete: known diagnostics, acceptance, option/artifact gaps remain on all four profiles |
 
 ## Log
+
+- 2026-10-02 (predefined-name namespace chunk): 276 fresh observations preserved with executable
+  identities in `tests/fixtures/predefined_name_collision.json`. Global/routine declarations and
+  parameters reserve extracted constants, with explicit numeric-name exceptions on CR6/CR1000X;
+  structure members remain accepted. Mixed function/constant collisions and redeclarations now
+  emit in source order inside the existing declaration scan. Evidence:
+  `docs/checker.md#predefined-constant-name-collisions`.
+  - Four-profile help/repo differential counts are unchanged; saved replay adds two exact matches,
+    and no prior exact case is lost. Gates still exit nonzero for reference faults.
+  - Fresh fuzz seed 54, 100 mutants/profile: CR6 92 exact/3 false accepts/5 message differences;
+    CR1000X 92/3/5; CR300 89/3/8; CR350 91/0/9. No false rejects, implementation crashes, or hangs.
+    Separate seed reference failures: 1/1/2/2 respectively, causing exit 1.
+  - Full package tests: 3,213 passed, 311 skipped. Native repository verification reports
+    `BUILD  host tests 119 pass | CRBasic 16/16 compiled, 6 warning(s) | repository pass`.
+  - Human requested small commits with single-line messages; recorded in the plan. No hardware
+    tests or flashing performed.
+
+- 2026-10-01 (Codex continuation, first chunks, no commits): reviewed Claude's implementation
+  and replaced stale planning assumptions with the four-profile parity strategy in
+  `PLAN.md#remaining-work-strategy`. Centralised interpretation and kept agents on audits,
+  harness changes, documentation cleanup, and regression fixtures. GPT-5.6-terra is not exposed
+  by the current agent API; short agents use GPT-5.6-sol.
+  - Harness: exact requires matching exit codes; `--gate report|no-regressions|exact` and replay
+    JSON summaries; invalid Wine/cache results and reference crashes are oracle errors, never
+    compiler verdicts; empty differential inputs fail; oracle timeout and stderr capture added.
+    Historical `examples/` removed from differential compilation and active parser tests.
+  - At the human's request, disabled crash dialogs in the compiler Wine prefix; see environment
+    setup above. Reference crashes still produce console diagnostics and nonzero gates.
+  - GPS: one shared handler with CR6/CR1000X configuration, verified against 88 fresh oracle
+    cases. 22 representative observed cases saved with compiler SHA256 identities in
+    `tests/fixtures/gps_ports.json`; focused tests pass. Evidence and boundaries:
+    `docs/instructions.md#gps-ports`. CR300/CR350 GPS signatures remain separate and unchanged.
+  - Source buffer: 142 usable fresh reference observations, 47 representative fixtures,
+    terminated/unterminated line limits, continuation whitespace, and conditional include
+    boundaries. Three help cases improve to exact on each profile; no prior exact match lost.
+    Evidence: `docs/frontend.md#source-line-buffer`.
+  - Fuzz workers: use spawn instead of threaded fork, with parallel compilation and hard-deadline
+    cleanup tests. Reference failures are separately counted during seed selection, mutation,
+    shrinking, and replay, rather than turning them into false accepts. Artifact gates reject
+    unusable cached results and empty comparisons.
+  - SerialIn: pass-1 String destination rule and CR300/CR350 argument-abort/cascade recovery,
+    verified against 100 fresh observations. Fixture provenance includes all four executable
+    hashes. Five saved cases improve to exact, no prior exact match lost; four-profile help/repo
+    differential counts stay unchanged. Evidence: `docs/instructions.md#serialin-destination`.
+  - Worker lifecycle: concurrent `join(8)` returned in 0.064 seconds while its Queue already held
+    the answer. Replaced Queue/join completion with a one-way pipe and an actual monotonic
+    deadline. Four-worker full replay completes with no implementation hangs. Parallel stress,
+    large-result delivery, missing-result exit, and hard-deadline cleanup tests pass.
+  - Built-in-name declarations: a shared symbol helper called inside the existing pass-1 scope
+    scan rejects global function-name collisions, including Public/Const inside routines. Local
+    Dim/parameter declarations remain accepted. 78 observations match all four profiles,
+    including CR300/CR350 declaration-list and following-statement recovery. The full help/repo
+    and saved replay counts are unchanged; no prior exact match is lost. Corrected an older test
+    that labelled a top-level `Dim exp` as local shadowing. Evidence:
+    `docs/checker.md#built-in-function-name-collisions`.
+  - Seed 53 after that rule: 100 mutants/profile; zero implementation crashes, hangs, or false
+    rejects. Exact/false-accept/message-difference counts: CR6 85/3/11 plus 1 mutant oracle error;
+    CR1000X 86/3/11; CR300 89/3/8; CR350 91/3/6. Seed or mutant reference failures still make the
+    run exit nonzero (CR6 2, CR1000X 1, CR300 2, CR350 2).
+  - No hardware tests, flashing, or runtime claims. No commits requested or created.
 
 - 2026-10-01 (third round, statement and argument checks and CR300/CR350 prose rules,
   `docs/checker.md` "Statement and argument checks", `docs/loggers.md` "CR300/CR350 cascade and
@@ -880,15 +987,20 @@ Tick items here as they land.
 
 ## Next steps
 
-1. False accepts (largest gap): per-argument checks from the type codes and general expression
-   name resolution, each gated on zero false rejects over difftest and `fuzz_replay.py`; the
-   backed-out attempt is described in `docs/checker.md` ("Round 3").
-2. Instruction-specific pass-2 checks, highest frequency first (`docs/fuzz-findings.md`,
-   difftest verdict groups); CR300/CR350 terminal and instruction rules.
-3. Auto-allocated table sizes, mixed regime (`docs/tdf-rules.md` §10, §12).
-4. `-p`/`-t`/`-b` done (this row's own outputs entry); remaining: the CDM binary image format
-   itself (`-b`, only matters for a program using CPI/CDM hardware -- none in this repository),
-   `VoltSe`/other `Reps`-dependent `-t` formulas, and `-u`'s `%s declared but not used.` warning
-   (belongs in `checker/symbols.py`, `docs/cli.md` "-u").
-5. Re-run `tools/fuzz.py` after each round; add a CI job running pytest (no Wine needed).
+1. Close the remaining local-function resolution gap: CR300/CR350 accept a local `Dim exp`
+   declaration but resolve bare uses as the internal function. Pending full observations are
+   retained in `tests/fixtures/function_name_collision.json`. Probe other functions and parameter
+   uses before changing expression resolution. Predefined-CONST declarations are now checked.
+2. Remaining false accepts: current replay has 115, led by unmatched-parenthesis/function
+   arity, out-of-bounds destinations/indices, and malformed-expression families. Split each
+   family by actual handler and profile; check accepted boundary cases and diagnostic phase.
+3. Expose swallowed semantic-pass exceptions in validation so implementation failures cannot
+   hide behind false accepts or partial diagnostics. Keep the public compiler contract separate
+   from this validation change and fix each surfaced defect in a bounded chunk.
+4. Auto-allocated table sizes and mixed regimes (`docs/tdf-rules.md` §10, §12), CDM binary image,
+   remaining `Reps`-dependent timing formulas, and option/artifact byte parity on non-CR6
+   profiles. `-u` is implemented; extend its evidence where fixture coverage is narrow.
+5. Keep full pytest, four-profile difftest/replay, fresh bounded fuzz seeds, and the repository
+   build gate after each stable rule. Reference faults remain failures of the gate, separately
+   counted rather than converted to compiler verdicts.
 6. Settle `docs/legal.md` before publishing outside this repository.

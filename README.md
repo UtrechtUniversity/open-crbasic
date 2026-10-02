@@ -1,13 +1,17 @@
 # opencrbasic
 
-An open-source, native re-implementation of Campbell Scientific's CRBasic pre-compilers for the
-CR6, CR1000X, CR300 and CR350 dataloggers (`CR6Comp.exe`, `cr1000xcomp.exe`, `cr300comp.exe`,
-`cr350comp.exe`). It runs on Linux, macOS and Windows with only Python 3.10+, no Wine and no
-Windows binaries. It checks a program the way the logger's own compiler does and writes the same
-messages and artefacts, so it can replace the exe in build scripts and CI, and it gives future
-tooling (linters, simulators, automated tests) a parsed, checked program to work from.
+An incomplete open-source, native re-implementation of Campbell Scientific's CRBasic
+pre-compilers for the CR6, CR1000X, CR300 and CR350 dataloggers (`CR6Comp.exe`,
+`cr1000xcomp.exe`, `cr300comp.exe`, `cr350comp.exe`). It runs on Linux, macOS and Windows with
+only Python 3.10+, no Wine and no Windows binaries. It aims to reproduce the logger compilers'
+checks, diagnostics and output artefacts, but known differences remain. Current differential
+results report normalized diagnostic output agreement; only outputs explicitly identified as
+byte-identical in `PROGRESS.md` have full byte parity. It can already replace the exe for this
+repository's supported build checks and gives future tooling (linters, simulators, automated
+tests) a parsed, checked program to work from.
 
-Status, measured against the real compilers: `PROGRESS.md`. Design and plan: `PLAN.md`.
+Status, measured against the real compilers: `PROGRESS.md`. Design, remaining-work strategy and
+parity exit criteria: [`PLAN.md`](PLAN.md#remaining-work-strategy).
 
 ## Use
 
@@ -37,7 +41,7 @@ crbc [options] program [messagefile]
   --no-message-file   do not write CR6cmple.xxx
 ```
 
-Output matches the exe: `Program.CR6 -- Compiled in SequentialMode.` (CR300/CR350:
+Output follows the exe's format: `Program.CR6 -- Compiled in SequentialMode.` (CR300/CR350:
 `-- Compiled OK.`), `Warning: ...` lines, or `-- Compile Failed!` followed by `line N: message`
 lines; the same text goes to `CR6cmple.xxx` with CRLF line endings; exit status 0 or 1.
 
@@ -69,10 +73,26 @@ everything is checked differentially:
 | Tool | Checks |
 |---|---|
 | `tools/oracle.py` | runs the real exe under Wine (cached) |
-| `tools/difftest.py --logger L` | our output vs the exe over the repo programs, examples, and 507 help-file examples |
+| `tools/difftest.py --logger L` | normalized output vs the exe over repository programs and 507 CHM help examples |
 | `tools/tdftest.py` | `-z` TDF and `-l` table list, byte for byte |
 | `tools/fuzz.py`, `tools/fuzz_replay.py` | mutated programs, differential; reproducers in `tests/corpus/fuzz/` |
 | `uv run pytest -q` | unit tests, corpus parse tests, TDF fixtures |
+
+Differential and replay runs default to reporting differences without failing on known gaps. Use
+the gates when a nonzero exit is required:
+
+```bash
+uv run tools/difftest.py --logger cr6 --gate no-regressions
+uv run tools/difftest.py --logger cr6 --gate exact
+uv run tools/fuzz_replay.py --gate no-regressions --json replay.json
+uv run tools/fuzz_replay.py --gate exact --json replay.json
+```
+
+`no-regressions` fails for a false rejection, opencrbasic crash or hang (and both tools
+fail for an oracle error). `exact` fails for any result that does not match the normalized
+reference output. Replay's `--json FILE` writes summary counts and individual result rows for CI
+and later triage. See [`PLAN.md`](PLAN.md#remaining-work-strategy) for how remaining differences
+are measured and fixed.
 
 Reverse-engineering notes: `docs/binary.md` (exe layout), `docs/cli.md`, `docs/type-codes.md`
 (parameter kinds), `docs/frontend.md` (language quirks), `docs/checker.md` and

@@ -14,15 +14,41 @@ python3 tools/fuzz_replay.py                # re-check every saved reproducer
 python3 tools/fuzz_replay.py --logger cr350 tests/corpus/fuzz/cr350/hang/*.CR6
 ```
 
-All 248 reproducers below were re-verified with `tools/fuzz_replay.py --workers 2` immediately
-before writing this document (`248 reproducers: 248 still reproduce, 0 fixed, 0 changed class`), so
-every citation here is current, not stale. Note the `--workers 2`: at the default `--workers 4` on
-this machine, 2-3 ordinary (sub-100ms in isolation, re-verified individually below) mutants
-occasionally got misclassified as `hang` -- each worker both forks a child to run `compile_file`
-*and* runs a concurrent Wine subprocess, so four workers means up to eight competing processes,
-enough CPU contention on a constrained box to push a fast compile past the 8s timeout. `--workers
-2` (or a larger `--hang-timeout`) removed the flakiness entirely; see "Hang" below for the one
-timeout classification that *is* a genuine, isolation-confirmed non-termination.
+The 248-reproducer result and first-pass counts below are historical observations from the run that
+produced this document. They describe that corpus at that revision and must not be read as current
+parity totals. Use a fresh `tools/fuzz_replay.py` report for current counts and classes.
+
+## Worker isolation
+
+`run_ours` executes each opencrbasic compile in a spawned child process on every platform. Spawn
+starts a fresh interpreter rather than inheriting the parent process's threaded state and locks.
+Python documents the process start methods in the
+[multiprocessing contexts documentation](https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods).
+The original fork measurements below motivated that choice, but they do not establish inherited
+locks as the cause of every false hang.
+
+An earlier implementation used `fork`; a 1,949-case replay then reported nine hangs even though
+direct compilation of all nine completed in 0.000–0.024s. Replaying those nine with spawn produced
+five exact results, one `false_accept`, three `message_diff`, and zero hangs. The completed full
+spawn replay reported 1,101 exact, 117 `false_accept`, 697 `message_diff`, 14 `mode_diff`, 19
+`oracle_error`, and one `hang`: `tests/corpus/fuzz/cr350/false_accept/165684c6e47d.CR6`. That case
+completed in under 0.6s when rerun alone and changed to `message_diff`. These measurements show
+that the timeout was not a deterministic compiler hang.
+
+A separate parent-side lifecycle race was reproduced with spawn and the old Queue protocol. The
+focused eight-call parallel test failed on its tenth repeated pytest run, yet the failing pytest
+process finished in 0.30s. Instrumentation showed `Process.join(8)` return after 0.064s while
+`is_alive()` was still true and the Queue already held the complete correct compiler result. The
+parent therefore labelled a completed compile as an 8s hang without waiting 8s. `run_ours` now
+uses a one-way Pipe, waits for either a result or the actual `time.monotonic()` deadline, and has no
+Queue feeder thread. Its focused validation ran 40 parallel spawns, a worker exiting without a
+result, and a 128 KiB pipe result; all four tests passed in three consecutive focused runs.
+
+A subsequent full replay with `--workers 2` completed all 1,949 cases with 1,101 exact, 117
+`false_accept`, 698 `message_diff`, 14 `mode_diff`, 19 `oracle_error`, and zero `hang`, `crash`, or
+`false_reject` results. A fresh full four-worker replay remains pending. See `PROGRESS.md` for the
+current implementation and verification status; this document retains the evidence and
+interpretation from the fuzzing work.
 
 ## Method notes (read before the counts)
 
@@ -36,15 +62,6 @@ timeout classification that *is* a genuine, isolation-confirmed non-termination.
   keeps up to `--max-per-signature` exemplars (default 3, generous 10-20 for `false_reject`/`crash`/
   `hang`). `tests/corpus/fuzz/summary-<logger>.json` records the true classify-phase counts
   alongside the saved count, and this document's counts table is copied from those files.
-- **A found-mid-session bug in the tool itself, fixed for future runs, described where it matters
-  below**: `render_table_list`'s cartesian-product enumeration (see "Hang" below) blocked
-  `tools/fuzz.py`'s own worker pool indefinitely the first time a mutant declared a huge array,
-  because `run_ours` called `compile_file` in-process with no timeout. Fixed: `run_ours` now runs
-  `compile_file` in a forked child with an 8s wall-clock timeout (`--hang-timeout`) and classifies a
-  timeout as a new `hang` class, so a future run survives the same case automatically. The three
-  `hang` reproducers in this run were still recovered by hand (offline, timeout-guarded) because the
-  live runs had already stalled on the pre-fix code; this is recorded per-logger in
-  `summary-cr350.json`'s `note`.
 - **The `cr6` run's save phase was cut short deliberately.** Deduplication still left several
   hundred distinct `(class, signature)` groups for `cr6`'s 1500-mutant run (`false_accept` alone
   spans most of the corpus's seed files); shrinking and saving all of them was not worth the real-
@@ -58,7 +75,9 @@ timeout classification that *is* a genuine, isolation-confirmed non-termination.
   it produced the `cr350` `false_reject` pair below, which is still a genuine, reproducible
   divergence but arose from an unintended argument split (`"private,public"` -> two "arguments").
 
-## Counts per logger and class
+## Historical first-pass counts per logger and class
+
+These are preserved as evidence from the original fuzz pass, not as a current status report.
 
 | Logger | mutants | exact | false_reject | false_accept | message_diff | mode_diff | crash | hang | saved |
 |---|---|---|---|---|---|---|---|---|---|
@@ -80,14 +99,12 @@ note), against 671 `false_accept` and 344 `message_diff`/`mode_diff` instances t
 reconfirm already-documented incompleteness (`docs/checker.md`). Findings below are grouped by root
 cause, most severe first.
 
-## 1. Hang: an oversized `Public`/`Dim` array dimension makes opencrbasic never return
+## 1. Historical hang: an oversized `Public`/`Dim` array dimension made opencrbasic never return
 
-**Severity: worse than a crash** -- it does not fail, it does not return at all. Any tool that
-calls `compile_file` in-process without its own timeout (this was `tools/fuzz.py` itself, before
-the fix above) hangs indefinitely. Confirmed genuine (not the `--workers 4` contention flakiness
-the intro note describes) by isolated, unloaded single-file timing: still running past 60s wall
-clock alone, no other process competing, versus every other timeout classification in this run
-re-checked at under 0.05s in the same isolated setup.
+This was an observed compiler bug in the original run: the compiler did not fail or return, and
+the case remained running past 60s in an isolated, unloaded single-file test. It has since been
+fixed; the saved oversized-array cases now complete without hanging. The worker timeout remains to
+contain unknown future non-termination rather than because this known case is still open.
 
 Reproducer: `tests/corpus/fuzz/cr350/hang/dd9cc650482d.CR6` (identical copy at
 `tests/corpus/fuzz/cr6/hang/dd9cc650482d.CR6`), minimized by hand to:
@@ -115,12 +132,11 @@ The real compiler rejects the same input immediately and cheaply:
 line 1: Illegally dimension: Public X(999999999999) As Long
 ```
 
-(verified for both `CR6Comp.exe` and `cr350comp.exe`, oracle output above). The fix belongs in two
-places, ideally both: (a) a value-range check on a `Public`/`Dim` array dimension literal before
-anything downstream tries to use it (this would also close a chunk of the `false_accept` volume in
-section 6, e.g. `Scan Interval parameter must be a non-negative integer`-shaped checks are the same
-family of "value never range-checked" gap); (b) `_explode_indices`/`render_table_list` should not
-assume a declared dimension is small enough to enumerate regardless of (a).
+(verified for both `CR6Comp.exe` and `cr350comp.exe`, oracle output above). The historical analysis
+identified two necessary protections: a value-range check on a `Public`/`Dim` array dimension
+before downstream use, and a bound preventing `_explode_indices`/`render_table_list` from blindly
+enumerating an impractically large declaration. The current implementation now completes the saved
+cases; this paragraph records the original failure analysis rather than an open fix request.
 
 ## 2. Crash: a non-numeric `Scan` interval crashes `float()` in `tables.py`
 

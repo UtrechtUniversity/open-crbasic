@@ -433,13 +433,42 @@ exact)"; no reproducer of any class newly reports `false_reject`.
   port" rule. Not implemented: confirming the exact boundary (is it `ComRS232` specifically, or
   every non-hardware/virtual port name?) needs more oracle probing than this round's remaining time
   allowed; left for a future session with this entry as its starting point.
-- **`GPS pps synchronization is only available on COMU1.`**: two CHM corpus mismatches
-  (`gps_2.CR6`, `structuretype_3.CR6`), both a `GPS(Dest,ComC1,...,100,...)` call -- `ComC1` for the
-  `ComPort` argument together with `100` for the `PPSMethod` argument. Plausibly a two-argument
-  interaction (a specific `PPSMethod` value requiring `ComPort = COMU1`), but only two corpus
-  instances exist and both share the same `PPSMethod` value, so the actual triggering set of
-  `PPSMethod` values (is it only `100`, or a range?) is not pinned down; not implemented this round
-  to avoid guessing at a boundary with no evidence either way (AGENTS.md priority order).
+- **GPS ports**: implemented 2026-10-01; the earlier `PPSMethod` interpretation was incorrect.
+  The fourth parameter is `MaxTimeDiff`; synchronization mode is selected by the port sign.
+  See [GPS ports](#gps-ports) for the measured rule and boundaries.
+
+### GPS ports
+
+Oracle evidence: 88 fresh CR6/CR1000X runs on 2026-10-01, including named and numeric ports,
+both port signs, undefined port constants, and `MaxTimeDiff` values -1, 0, 1, 9, 10, 99, 100,
+101, 199, 200, 201, 255, 256, 300, 1000. The local reference
+`../../extracted_chm/Instructions/gps.htm` names the third/fourth arguments `TimeOffset` and
+`MaxTimeDiff`; `../../extracted_chm/parameters/comport5.htm` explains port negation for NMEA
+time synchronization. Its COMC1 PPS description is specific to CR1000X, not CR6.
+
+The shared `instr_measure._check_gps_port` handler runs in the existing instruction-validation
+tier, with profile data in `data/{,cr1000x}/measure.json`:
+
+- CR6: legal absolute port codes are 1 (`ComRS232`) and 9..16 (`ComC1`, `ComC3`, `ComU1` through
+  `ComU11`); a positive port must be 11 (`ComU1`), otherwise
+  `GPS pps synchronization is only available on COMU1.`
+- CR1000X: legal absolute codes are 1 and 9..12 (`ComC1`, `ComC3`, `ComC5`, `ComC7`); a positive
+  port must be 9 (`ComC1`), otherwise `GPS pps synchronization is only available on COMC1.`
+- Legal negative ports compile (NMEA mode), independently of the tested `MaxTimeDiff` values.
+  Illegal absolute ports, including zero, emit only the logger's legal-port list; they do not
+  also emit the PPS message. Undefined names are already pass-1 errors and suppress this tier.
+
+For `Public G(15)` followed by `GPS(G(),ComC1,0,100)` inside a scan, CR6 emits only the COMU1
+message; CR1000X compiles. `GPS(G(),-ComC1,0,100)` compiles on both. Numeric port `0` emits
+`Only COMRS232, COMC1, COMC3, or COMU1,COMU3...COMU11 are legal.` on CR6 and
+`Only COMRS232, COMC1, COMC3..COMC7 are legal.` on CR1000X.
+
+Representative verbatim expected outputs, inputs, observation date, and compiler hashes:
+`../tests/fixtures/gps_ports.json`; regression: `../tests/test_gps_ports.py`. All 88 development
+probes matched ordered diagnostic output after the handler was added. CR6 help cases
+`gps_2.CR6` and `structuretype_3.CR6` now match exactly. CR300/CR350 have a different GPS
+signature and are deliberately not covered by this handler. Optional NMEA string-array
+validation is a separate remaining rule.
 
 ## Investigated, not implemented
 
@@ -656,3 +685,33 @@ numeric argument of a chm example to 99: 0 for `SDMX50`; 1 for `EC100`, `EC100Co
 `LI7700`, `SDMCD16AC`, `SDMCD16Mask`, `SDMIO16`, `SDMSIO4` and `SDMSW8A`. Not measured: `SDMAO4`,
 `SDMAO4A`, `SDMCVO4`, `SDMINT8`, `SDMCAN`. `SerialInRecord`/`SerialOutBlock` reach the same
 check only for SDM ports.
+## SerialIn destination
+
+The supplied four compiler versions require `SerialIn`'s first argument to be a String
+variable or String array element. A Float, Long, Boolean, or UINT1 destination, a numeric or
+string literal, a named constant, and an expression such as `Dest+1` produce
+`A string variable destination is required` (no final period). String destinations and aliases
+of String storage compile; aliases of Long storage fail. Parenthesized String variables compile;
+runtime String concatenation and String-producing `FormatFloat`/`CHR` calls fail. This is specific
+to `SerialIn`, not a
+uniform rule for its parameter type code 33. The local `serialin.htm` reference mentions UINT1
+receivers in newer OS behavior, but the supplied executable probes reject them; this documents
+the observed versions rather than inferring behavior from that note.
+
+This check belongs to pass 1: it survives an earlier unrelated declaration/shape error and
+suppresses CR6/CR1000X pass-2 errors elsewhere in the file. On CR6/CR1000X, missing or excess
+arguments still follow the destination error. An undefined destination instead keeps the
+ordinary `Invalid symbol in expression: Dest.` result. CR300/CR350 additionally report the
+next argument token as `Too many parameters:  ComRS232.`, ending the argument list before any
+ordinary count checks. The same destination check still runs on subsequent `SerialIn` statements
+after this starts the CR300/CR350 cascade. An undefined bare destination on these profiles
+reports the undefined name, then the String-destination error, then the next-token error.
+
+Evidence: 100 fresh observations, recorded with executable SHA256 identities in
+`tests/fixtures/serialin_destination.json` and replayed by `tests/test_serialin_destination.py`.
+They cover all four profiles, scalar/array types, aliases, constants/literals/expressions,
+undefined names, earlier errors, repeated statements, following instructions, and short/excess
+argument lists, and String expression boundaries. Structure-member and scoped parameter type
+resolution remain separate gaps.
+Implementation: `instr_rules.check_serialin_destination` in pass 1, with the existing CR300/CR350
+argument-abort and cascade recovery retaining the String-destination diagnostic.
