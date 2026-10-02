@@ -946,3 +946,79 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
                 new.append(Diagnostic("error", stmt.line, f"Too many parameters:  {text}.",
                                       stmt.file))
         diags.items[at:at] = new
+
+
+_SETTINGS_FIELD_KEYWORDS = {"SETSETTING": "Settings", "SETSTATUS": "Status or Settings"}
+
+
+def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) -> str | None:
+    """The text of a `SetSetting`/`SetStatus` name argument the compiler treats as constant: a
+    string literal, a String `Const`, or `+` of those. A call such as `CHR(9)` is not constant
+    there (oracle), so `consteval`'s own folding is not used. `None` for anything else."""
+    if arg is None or depth > 16:
+        return None
+    if isinstance(arg, S.String):
+        return arg.value
+    if isinstance(arg, S.Name):
+        value = env.consts.get(arg.name.upper())
+        return value if isinstance(value, str) else None
+    if isinstance(arg, S.Binary) and arg.op == "+":
+        left = _constant_name_text(arg.left, env, depth + 1)
+        right = _constant_name_text(arg.right, env, depth + 1)
+        return None if left is None or right is None else left + right
+    return None
+
+
+def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found: Diagnostics,
+                          env: consteval.Env) -> None:
+    """`%s is not a Settings Field Name.` / `%s is not a Status or Settings Field Name.` /
+    `Cannot find %s` for a constant first argument of `SetSetting`/`SetStatus`;
+    docs/instructions.md#setsetting-and-setstatus-field-names. Findings go to `found` (the
+    caller's aside list); `diags` is only read, for the `CallTable` stop line."""
+    fields = profile.settings_fields
+    trim = fields["trim_trailing_blanks"]
+    settings = {n.upper() for n in fields["settings"]}
+    both = settings | {n.upper() for n in fields["status"]}
+    stop: tuple[str, int] | None = None
+    for d in diags.items:
+        if d.severity == "error" and d.message.startswith("Could not find DataTable ") and d.line \
+                and (stop is None or d.line < stop[1]):
+            stop = (d.file, d.line)
+    const_tables: set[str] = set()
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDPROG":
+            break
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CONSTTABLE" and stmt.args \
+                and isinstance(stmt.args[0], (S.Name, S.String)):
+            arg = stmt.args[0]
+            const_tables.add((arg.name if isinstance(arg, S.Name) else arg.value).strip().upper())
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ENDPROG":
+            break
+        if not isinstance(stmt, S.Instruction) or not stmt.args:
+            continue
+        kw = stmt.keyword.upper()
+        label = _SETTINGS_FIELD_KEYWORDS.get(kw)
+        if label is None or kw not in profile.instructions:
+            continue
+        if stop is not None and stmt.file == stop[0] and stmt.line > stop[1]:
+            continue
+        name = _constant_name_text(stmt.args[0], env)
+        if name is None:
+            continue
+        if "." in name:
+            table = name.split(".", 1)[0]
+            if table.strip().upper() not in const_tables:
+                found.error(stmt.line, f"Cannot find {table}", stmt.file)
+            continue
+        if "(" in name:
+            # `Name(index)`: only the field name before the first `(` is looked up here; the
+            # index is validated separately (`Illegal dimension N`, not implemented).
+            name = name.split("(", 1)[0]
+            if not name:
+                continue
+        key = (name.rstrip(" \t") if trim else name).upper()
+        if key in (both if kw == "SETSTATUS" else settings):
+            continue
+        shown = name if name else fields["empty_name"]
+        found.error(stmt.line, f"{shown} is not a {label} Field Name.", stmt.file)

@@ -733,8 +733,7 @@ distinct instances must be a constant of type long.`), `cdmbridgefilt_1.CR6` (`I
 buffers to read EPI data...`), `ch400status_2.CR6` (duplicate `DataTable` field names),
 `cpispeed2_1.CR6` (CPI timing budget check), `gps_2.CR6` (`GPS pps synchronization is only
 available on COMU1.`), `hex_2.CR6` (`Scan Count parameter must be a non-negative integer`),
-`tcpopen_5.CR6` (`DisableTcpDelayedAck is not a Settings Field Name.` -- a `Settings`-style
-keyword-list check), `portbridge_1.CR6` (a name inside a `Public`/`Dim` array initialiser,
+`tcpopen_5.CR6` (implemented since: `docs/instructions.md` "SetSetting and SetStatus field names"), `portbridge_1.CR6` (a name inside a `Public`/`Dim` array initialiser,
 `expressions.py`'s "Not implemented" list above). `pointervariable_2.CR6` is not a checker gap at
 all: the real `CR6Comp.exe` itself crashes (a wow64 page fault) under Wine on this file, so no
 oracle text exists to match. `mqttpublishmeta_1.CR6` (round 2: was in this list, now fixed as a

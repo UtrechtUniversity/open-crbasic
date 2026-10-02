@@ -189,6 +189,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _run_pass(warnings.check_early, program, profile, diags, env)
 
     bounds = Diagnostics()
+    fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
@@ -235,6 +236,13 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         # the other two calls just above (accumulates with an unrelated `expressions.check` finding
         # rather than being suppressed by it).
         _run_pass(instr_data.check_unclosed_calltable, program, diags)
+        # `SetSetting`/`SetStatus` field names: collected aside like the index bounds, so a finding
+        # neither hides tier C nor is hidden by tier-B findings (CR6/CR1000X; CR300/CR350 run it
+        # below, only when nothing else was found). `docs/instructions.md`.
+        if not profile.single_pass:
+            _run_pass(instr_rules.check_settings_fields, flat, profile, diags, fields, env)
+            if cutoff is not None:
+                fields.items = [d for d in fields.items if d.line <= cutoff]
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one leading-word
         # `%s is not defined.` line per bare word of an `S.Unparsed` statement's own source text,
         # spliced in immediately ahead of `structure.check_pass2`'s generic "Invalid, or out of
@@ -263,6 +271,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             ]
 
     late_start = len(diags.items)
+    if profile.single_pass and all(d.message.startswith("Could not find DataTable ")
+                                   for d in diags.errors):
+        # CR300/CR350: runs unless an earlier finding other than an unknown `CallTable` table
+        # exists (`docs/instructions.md`, SetSetting and SetStatus field names).
+        _run_pass(instr_rules.check_settings_fields, _with_inline(program), profile, diags,
+                  fields, env)
     if not diags.errors:
         # After passes 1 and 2 are clean: CR300/CR350 table `Reps`/bounds, then unclosed
         # `Scan`/`For`/`Do`/`If` at end of program.
@@ -282,7 +296,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
             # before `BeginProg` hides an fnotch warning further down).
             diags.items = [d for d in diags.items if d.severity != "warning" or
                            d.file != stop[0] or d.line <= stop[1]]
-    if not diags.errors:
+    if not diags.errors and not fields.items:
         _run_pass(structure.check_end_blocks, program, diags)
     # CR300/CR350: these late errors do not start the `Too many parameters` cascade (oracle:
     # `Sample (1,Nope,FP2)` gives only `Nope is not defined.`).
@@ -305,7 +319,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
 
-    diags.items += bounds.items
+    diags.items += bounds.items + fields.items
 
     # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): once any undefined-
     # name-class or genuine-`Too many parameters:` finding has fired anywhere above -- tier A

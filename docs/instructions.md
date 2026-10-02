@@ -715,3 +715,79 @@ argument lists, and String expression boundaries. Structure-member and scoped pa
 resolution remain separate gaps.
 Implementation: `instr_rules.check_serialin_destination` in pass 1, with the existing CR300/CR350
 argument-abort and cascade recovery retaining the String-destination diagnostic.
+
+## SetSetting and SetStatus field names
+
+`SetSetting("Name", value)` and `SetStatus("Name", value)` look their constant first argument up
+in the logger's field tables (`FUN_004610e0`). A name that is not found gives
+`Name is not a Settings Field Name.` (`SetSetting`) or `Name is not a Status or Settings Field
+Name.` (`SetStatus`). `Name` is printed exactly as written, including any trailing blanks, and an
+empty string prints `NULL` (CR6, CR1000X) or `(null)` (CR300, CR350).
+
+Field tables (`data/**/settings_fields.json`). The Settings table is a pointer array in each exe
+(entry stride 0x4c on CR6/CR1000X, 0x48 on CR300/CR350; the entry's first word points at the name).
+Every candidate name from the four exes' tables plus a few extras was then compiled through
+`SetSetting` and `SetStatus` on each logger, 40 names per program. `SetSetting` accepts exactly
+the Settings table (CR6 257 names, CR1000X 259, CR300 209, CR350 232). `SetStatus` accepts the
+Settings table plus the Status table (additional names: 55, 52, 40, 50). The lists differ per
+logger: `CPUDriveFree` is a Settings name on CR6/CR1000X/CR300 but a Status-only name on CR350,
+`USRDriveSize` is a Settings name on CR6/CR1000X and in neither list on CR300/CR350, and
+`DisableTcpDelayedAck` is in no list. The walked CR300/CR350 Status tables also contain six
+`DataTableName`-style fields that are rejected, so the lists come from the oracle result, not from
+the walk. Status-only names such as `Battery` or `OSVersion` give
+`is not a Settings Field Name.` under `SetSetting`.
+
+Spelling rules, identical on all four loggers unless noted:
+
+- Matching is case-insensitive; the message echoes the source spelling.
+- CR6/CR1000X ignore trailing spaces and tabs when matching (`"PakBusAddress  "` is accepted);
+  CR300/CR350 do not (`PakBusAddress   is not a Settings Field Name.`). Leading blanks are never
+  ignored. Other trailing characters (`\x0b`, `\x0c`, `\xa0`, `\x01`) are not trimmed.
+- The name must be a compile-time constant: a string literal, a String `Const`, or `+` of those
+  (`"Pak"+"BusAddress"` is accepted, `"Pak"+"Foo"` reports `PakFoo`). `CHR(9)`, variables and
+  non-strings give `Status Field name must be constant.` (not implemented, so such arguments are
+  skipped).
+- `Name(index)`: only the text before the first `(` is looked up (`Foo(1)` reports `Foo`,
+  `DNS(1)`, `Security(2)` pass). The index is checked afterwards (`Illegal dimension N`, depends on
+  the field's size, not implemented). An empty name before `(` is skipped.
+- A name containing `.` reports `Cannot find <text before the first dot>` (no final period) for
+  every table name tried, including `Status`, `Settings` and a `DataTable`. A declared
+  `ConstTable` prefix (`ScanConstTable.ScanConst`, as in the repository's `PowerProfile_tester.CR6`)
+  is valid; its field lookup is not modelled (CR300/CR350 print `Cannot find <field>` for an
+  unknown field; CR6/CR1000X crashed under Wine on those probes, so there is no CR6 evidence).
+
+Ordering and gating (CR6/CR1000X versus CR300/CR350):
+
+- It is not a pass-1 check: an earlier or later declaration or pass-1 error (`Variable Type
+  Bogus not supported`, `Too many parameters`, wrong argument count) suppresses it, anywhere in
+  the file.
+- CR6/CR1000X: a tier-B finding (`Invalid symbol in expression`) does not suppress it, and it does
+  not suppress later tier-C findings (`Invalid SW12 port 9.` appears together with it). On one
+  line the argument error comes first (`Invalid symbol in expression: Bar.` then `Foo is not a ...`).
+  It is hidden after a placement stop (`Sw12 illegally occurs before BeginProg.` on an earlier
+  line; CR6 only, the CR1000X compiler crashed under Wine on that probe) and after `Could not find DataTable X.` on an earlier line; before such a line it is
+  reported. The unclosed-block end checks (`IF or SELECT without EndIf or EndSelect.`) do not run
+  once it has fired.
+- CR300/CR350: an undefined name in the same statement prints only `Bar is not defined.`; any
+  earlier or later non-`CallTable` error (undefined name, pass-1 error) hides the field-name
+  error, while the `Invalid port specified 103` tier-C error and `Could not find DataTable` do not.
+  Once a hiding error has started the `Too many parameters` cascade (`checker/cr3xx.py`) the
+  later `SetSetting` line prints `Too many parameters:  5.` instead. A field-name error does not
+  itself start the cascade.
+- Applies inside `Sub`, `Function`, `SlowSequence`, `Scan`, one-line `If` and before `BeginProg`
+  (a constant `SetSetting` before `BeginProg` is accepted when the name is valid). Statements
+  after `EndProg` are not checked.
+
+Not implemented (observed, separate rules): `X is read only.` (valid but read-only fields, for
+example `SetStatus("Battery", 5)` and `SetSetting("CPUDriveFree", 5)`), `Status Field name must
+be constant.`, `Illegal dimension N`, ConstTable field lookup, and the `(1)` name whose message
+prints `1)`.
+
+Evidence: 474 compiled programs plus an eight-part name sweep in `tests/fixtures/settings_fields.json` (compiler SHA-256 values and
+observation date 2026-10-02 inside), replayed by `tests/test_settings_fields.py`. They cover all
+four profiles and the candidate-name acceptance sweep. Probe sources are not kept. The ConstTable
+and `Name(index)` rules above are partly outside the fixture (`Illegal dimension`,
+ConstTable field lookup) and are described from the same-day probes only.
+Implementation: `instr_rules.check_settings_fields`, called from `checker/__init__.py`
+(CR6/CR1000X in the tier-B block, CR300/CR350 in the late section), findings collected aside so
+tier C is not hidden.

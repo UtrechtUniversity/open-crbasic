@@ -122,6 +122,12 @@ class Profile:
         return json.loads(path.read_text()) if path.is_file() else {}
 
     @cached_property
+    def settings_fields(self) -> dict:
+        """`SetSetting`/`SetStatus` field-name lists and spelling rules (`checker/instr_rules.py`'s
+        `check_settings_fields`, `docs/instructions.md` "SetSetting and SetStatus field names")."""
+        return json.loads((self.data_dir / "settings_fields.json").read_text())
+
+    @cached_property
     def before_beginprog(self) -> frozenset[str]:
         """Instructions rejected with `%s illegally occurs before BeginProg.` when they are the
         first executable statement before `BeginProg` (`checker/structure.py`, `docs/checker.md`
