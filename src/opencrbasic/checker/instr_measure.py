@@ -45,7 +45,8 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
     """Data-driven constant-parameter checks (`measure.json` `const_ranges`, `docs/instructions.md`
     "Constant-parameter range checks"): the parameter at `pos` converts as C's `(long)` and must
     lie in `min..max` or in `values`, else `message` (`{value}` is the converted number, or that
-    of the parameter at `show`). A variable or unresolved name is another check's error."""
+    of the parameter at `show`). `wrap16` rules (`StaticRoute` addresses) keep the low 16 bits of
+    the converted number. A variable or unresolved name is another check's error."""
     by_instr: dict[str, list[dict]] = {}
     for rule in profile.measure.get("const_ranges", ()):
         by_instr.setdefault(rule["instr"], []).append(rule)
@@ -70,7 +71,17 @@ def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env) -> 
         stmt.args[pos - 1] is not None else None
     if value is None:
         return None
-    return consteval.to_long(value)
+    if not rule.get("wrap16"):
+        return consteval.to_long(value)
+    # A string or NaN is 0; a number outside Long range is 0 on CR6/CR1000X and unobserved
+    # (`overflow: null`, skipped) on CR300/CR350; infinity is 65535 (not modelled).
+    if isinstance(value, str) or value != value:
+        return 0
+    if abs(value) == float("inf"):
+        return None
+    if abs(value) >= 2 ** 31:
+        return rule["overflow"]
+    return int(value) & 0xFFFF
 
 
 def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,

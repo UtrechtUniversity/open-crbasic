@@ -636,6 +636,118 @@
       "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     },
     {
+      "id": "cr6-staticroute-1-1",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,1,1)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-staticroute-4094-4094",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,4094)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-staticroute-0-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-4095-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4095,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 4095, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-65537-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,65537,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-staticroute-65536-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,65536,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute--1-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,-1,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 65535, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-70000-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,70000,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 4464, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-qxq-3",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,\"x\",3)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-K-Kx1000",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,K,K*1000)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 7, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-5000-6000",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,5000,6000)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 5000, range 1..4095\nline 3: Illegal PakBus address 5000, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-4094-0",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,0)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-4094-4095",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,4095)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-4094-qxq",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,\"x\")\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr6-staticroute-3-1p7",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,3,1.7)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-staticroute-after-dim-error",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 7\nDim Z banana\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana."
+    },
+    {
       "id": "cr1000x-semaphoreget-0",
       "logger": "cr1000x",
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
@@ -697,6 +809,34 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
       "expected_exit": 0,
       "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-staticroute-0-5",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr1000x-staticroute-4094-0",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,0)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr1000x-staticroute-4094-4094",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,4094)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-staticroute-after-dim-error",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 7\nDim Z banana\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana."
     },
     {
       "id": "cr300-semaphoreget-0",
@@ -832,6 +972,34 @@
       "expected_stdout": "t.CR6 -- Compiled OK."
     },
     {
+      "id": "cr300-staticroute-0-5",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr300-staticroute-4094-0",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,0)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr300-staticroute-4094-4094",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,4094)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-staticroute-after-dim-error",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 7\nDim Z banana\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 4: Too many parameters:  0.\nline 6: Too many parameters:  Sec."
+    },
+    {
       "id": "cr350-semaphoreget-0",
       "logger": "cr350",
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
@@ -893,6 +1061,34 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,14)\n  NextScan\nEndProg\n",
       "expected_exit": 0,
       "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-staticroute-0-5",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal neighbor address 0, range 1..4095"
+    },
+    {
+      "id": "cr350-staticroute-4094-0",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,0)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal PakBus address 4094, range 1..4095"
+    },
+    {
+      "id": "cr350-staticroute-4094-4094",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 7\nStaticRoute(ComRS232,4094,4094)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-staticroute-after-dim-error",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 7\nDim Z banana\nStaticRoute(ComRS232,0,5)\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 4: Too many parameters:  0.\nline 6: Too many parameters:  Sec."
     },
     {
       "id": "cr6-acpower-0",

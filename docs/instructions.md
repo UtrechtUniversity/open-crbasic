@@ -988,3 +988,17 @@ others spot-checked on CR1000X/CR300). The converted number is printed (`14.9` i
 `TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`). Same tier as the other
 `const_ranges` rules. Not modelled: `Broadcast` before `BeginProg`, where the real compilers print
 only this error (no placement error) while we add the placement one.
+
+### `StaticRoute`: `Illegal neighbor address %d, range 1..4095` / `Illegal PakBus address %d, range 1..4095` (all four loggers)
+
+`StaticRoute(ComPort, NeighborAddr, PakBusAddr)`: both addresses must be 1..4094 (the message says
+`1..4095`, but 4095 is rejected). Each is reduced to its low 16 bits first (`65537` is accepted as
+1, `-1` prints `65535`, `70000` prints `4464`); a string or NaN is 0. The `PakBus address` message
+prints the *neighbor* value (`StaticRoute(ComRS232,2,"x")` gives `Illegal PakBus address 2`), and
+a statement with both wrong prints both messages, neighbor first. Rule options `wrap16`/`show`/
+`overflow` in `measure.json`. A finite number outside Long range is 0 on CR6/CR1000X; on
+CR300/CR350 it varies (`2147483648` prints 65535, `4294967296` prints 0, a literal `-2147483648`
+is accepted), so those are skipped (`overflow: null`). Infinity (prints 65535) is not modelled.
+Declarations run before `BeginProg`, and the same gating applies as for the other rules: a `Dim`
+error anywhere hides them. Other `PakBus address` parameters (`Route`, `PakBusClock`, `ClockReport`,
+`GetVariables`) have no compile-time range check (0, 4095, -1, 5000 all accepted, CR6 and CR350).
