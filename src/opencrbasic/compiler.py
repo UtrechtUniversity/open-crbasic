@@ -209,6 +209,9 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     from .signature import program_signature
     try:
         result.signature = program_signature(path)
-    except Exception:
+    except Exception as exc:
+        result.record_implementation_failure("signature.program_signature", exc)
         result.signature = None
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
     return result

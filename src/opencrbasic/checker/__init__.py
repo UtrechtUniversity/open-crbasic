@@ -417,8 +417,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
 
     try:
         result.mode = mode.decide(program.statements, profile, is_constant, value_of)
-    except Exception:
+    except Exception as exc:
+        _record_exception(mode.decide, exc)
         result.mode = None
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
 
     if not diags.errors:
         # `When Main Sequence Scan %d is running, background calibration will be disabled.`:
