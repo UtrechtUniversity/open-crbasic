@@ -529,6 +529,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     operands: set[str] = set()
     in_sub = False
     in_struct = False
+    const_tables = const_open = 0
     declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
@@ -557,6 +558,21 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
         elif in_sub and not in_struct:
             symbols.check_local_name_collision(stmt, profile, diags)
+
+        if isinstance(stmt, S.Instruction):
+            # Oracle, all four loggers, 2026-10-02: pass 1, in line order. Every `ConstTable`
+            # after the first (open or not) is `Only one ConstTable allowed.`; the counter of
+            # open ones still rises, so a second `EndConstTable` matches it.
+            if kw == "CONSTTABLE":
+                if const_tables:
+                    diags.error(stmt.line, "Only one ConstTable allowed.", stmt.file)
+                const_tables += 1
+                const_open += 1
+            elif kw == "ENDCONSTTABLE":
+                if const_open:
+                    const_open -= 1
+                else:
+                    diags.error(stmt.line, "EndConstTable with no ConstTable.", stmt.file)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
             if not stmt.vars:

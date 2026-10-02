@@ -2928,3 +2928,16 @@ Not implemented: `Duplicate Sub A` (also at top level, `Sub A` twice), and `x al
 variable.` for a Sub named like a variable (printed between the If and the "middle" message; on
 CR300/CR350 these make the Sub errors survive a later `X is not defined.`). The two-message output
 for these shapes therefore still differs.
+
+### ConstTable count
+
+`structure.check_pass1` (pass 1, line order with the other declaration errors, all four loggers).
+Every `ConstTable` after the first one seen, closed or not, prints `Only one ConstTable allowed.`
+at its line. `EndConstTable` with no open `ConstTable` prints `EndConstTable with no ConstTable.`.
+The open count rises for every `ConstTable`, even the rejected one: `ConstTable`, `ConstTable`,
+`EndConstTable`, `EndConstTable` prints only the first message, and a third `EndConstTable` after
+two opens gets the second message. A leading stray `EndConstTable` does not count as a table, so
+the next `ConstTable` is accepted. Both messages start the CR300/CR350 `Too many parameters:
+Sec.` cascade (`cr3xx._DECLARATION_TRIGGERS`) and, being pass 1, do not stop the rest of pass 1
+(`Variable not named.` after them still prints). A duplicate `Const` name in the second table
+additionally prints `A is already declared as a CONST.`.

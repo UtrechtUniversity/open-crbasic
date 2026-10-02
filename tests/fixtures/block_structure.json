@@ -179,6 +179,174 @@
    "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nSub B\nx=2\nEndSub\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "consttable-single-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\n\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "consttable-second-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nConstTable (T2,0)\nConst B = 1\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Only one ConstTable allowed."
+  },
+  {
+   "id": "consttable-nested-open-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nConstTable\nConst A = 1\nConstTable\nConst B = 1\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only one ConstTable allowed."
+  },
+  {
+   "id": "endconsttable-stray-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndConstTable with no ConstTable."
+  },
+  {
+   "id": "endconsttable-extra-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndConstTable with no ConstTable.\nline 6: EndConstTable with no ConstTable."
+  },
+  {
+   "id": "consttable-unnamed-pass1-order-cr6",
+   "logger": "cr6",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nPublic\nConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable not named.\nline 6: Only one ConstTable allowed."
+  },
+  {
+   "id": "consttable-single-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\n\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "consttable-second-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nConstTable (T2,0)\nConst B = 1\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Only one ConstTable allowed."
+  },
+  {
+   "id": "consttable-nested-open-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConstTable\nConst A = 1\nConstTable\nConst B = 1\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only one ConstTable allowed."
+  },
+  {
+   "id": "endconsttable-stray-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndConstTable with no ConstTable."
+  },
+  {
+   "id": "endconsttable-extra-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndConstTable with no ConstTable.\nline 6: EndConstTable with no ConstTable."
+  },
+  {
+   "id": "consttable-unnamed-pass1-order-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nPublic\nConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable not named.\nline 6: Only one ConstTable allowed."
+  },
+  {
+   "id": "consttable-single-ok-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\n\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "consttable-second-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nConstTable (T2,0)\nConst B = 1\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "consttable-nested-open-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nConstTable\nConst A = 1\nConstTable\nConst B = 1\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "endconsttable-stray-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndConstTable with no ConstTable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "endconsttable-extra-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndConstTable with no ConstTable.\nline 6: EndConstTable with no ConstTable.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "consttable-unnamed-pass1-order-cr300",
+   "logger": "cr300",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nPublic\nConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable not named.\nline 6: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "consttable-single-ok-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\n\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "consttable-second-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nConstTable (T2,0)\nConst B = 1\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "consttable-nested-open-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nConstTable\nConst A = 1\nConstTable\nConst B = 1\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
+  },
+  {
+   "id": "endconsttable-stray-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndConstTable with no ConstTable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "endconsttable-extra-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nEndConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndConstTable with no ConstTable.\nline 6: EndConstTable with no ConstTable.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "consttable-unnamed-pass1-order-cr350",
+   "logger": "cr350",
+   "source": "Public x, y\nConstTable\nConst A = 1\nEndConstTable\nPublic\nConstTable\nEndConstTable\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable not named.\nline 6: Only one ConstTable allowed.\nline 9: Too many parameters:  Sec."
   }
  ]
 }
