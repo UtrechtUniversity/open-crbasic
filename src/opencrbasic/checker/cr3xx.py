@@ -70,6 +70,8 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics) -> None:
     if not (isinstance(arg, S.Number) and isinstance(arg.value, int)):
         return
     baud = sign * arg.value
+    if not -2**31 <= baud < 2**31:
+        return  # `Parameter must be integral.` instead (`checker/intervals.py`)
     if profile.name in ("cr300", "cr350"):
         ok = baud in _BAUDS - {600}
     else:
@@ -187,7 +189,8 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Illegally dimension
                                  "Invalid or missing parameter.",
                                  "Invalid, or out of place expression:",
                                  "Illegal destination variable type", "Invalid Variable or Array:",
-                                 "Cannot recursively call functions.")
+                                 "Cannot recursively call functions.", "Parameter must be integral.",
+                                 "Interval (", "Scan interval must be integrally divisible")
 
 
 def _is_cascade_trigger(diag) -> bool:

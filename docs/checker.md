@@ -2512,6 +2512,59 @@ Monthly intervals are not checked.
 Not done: a variable argument gives `Warning: Parameter will truncate to the nearest integer.`
 twice. Replay: 825 of 1469 exact, no false rejects.
 
+## Integral parameters (2026-10-02)
+
+Oracle on all four loggers; fixture `tests/fixtures/integral_params.json` (188 cases, compiler
+hashes and date inside), `tests/test_integral_params.py`, implemented in `checker/intervals.py`
+(`not_integral`) next to the `TimeIntoInterval` checks. Pass 1, ungated, accumulating (one line per
+bad argument, in source order with the other pass-1 errors; it hides pass 2 as any pass-1 error
+does).
+
+- Integer-typed constant arguments of three functions: `IfTime` and `TimeIntoInterval`, all three
+  arguments (`TintoInt`, `Interval`, `Units`), and `SerialOpen`'s `BaudRate` (second argument).
+  A scan of every `functions.json` entry with an integer or float argument type found no other
+  function (CR6 and CR300), and a scan of every instruction in `instructions.json` found no
+  `Parameter must be integral.` on CR6 (2 values x ~4000 calls). The other `SerialOpen`
+  arguments are different (`Parameter must be a constant integer:`, `docs/loggers.md`).
+- A constant argument draws `Parameter must be integral.` when it is typed as a float: a literal
+  with a decimal point or exponent (`1.5`, `6.0`, `9600.`, `6E1`), any `/` or `^` (`6/2` is
+  rejected, `KI/2` too), a named constant whose value is not whole (`Const KH = 7.5`; then
+  `KH*4`, `KH+0.5` too), or arithmetic with any of those (`5 MOD 2.5`). A named constant with a
+  whole value counts as an integer whatever its spelling (`Const K = 60.0`, `K*2`, `Const KD =
+  KI/2` pass). Hex literals are always integers.
+- Or when it is one numeric literal, optionally negated, outside the converted range: CR6/CR1000X
+  accept `-2147483648..2147483647` and flag `2147483648`, `-2147483649`, `4294967295`; CR300/CR350
+  convert through a 32-bit float, so the limits are `-2^31..2^31` after rounding to float (ties to
+  even): `2147483776` and `-2147483776` pass, `2147483777` and `-2147483777` do not. A `Const`
+  declared as one positive literal beyond that range (`Const KB = 999999999999`) carries the
+  float type into every use (`KB`, `-KB`, `KB-1`); a computed or negated constant does not
+  (`Const KC = 2147483647+1`, `Const KM = -2147483649` pass).
+- Computed values past the range (`100000*100000`, `2147483647+1`, `-2147483647-2`) wrap
+  silently and are never flagged; function calls (`Sqr(4)`) and variables give `Warning:
+  Parameter will truncate to the nearest integer.` instead (not implemented).
+- When any argument is flagged the interval and divisibility checks of that call are skipped.
+  Otherwise, a value of exactly `-2147483648` (or a hex literal wrapping to it) in the first two
+  arguments of `IfTime`/`TimeIntoInterval` is silent, a hex literal of more than 8 digits is
+  silent, and on CR300/CR350 a single literal past `+-2147483647` saturates to it in the
+  `Interval (%d)` echo.
+- A negative `TintoInt` or `Interval` is reported only while no earlier-source error exists
+  (observed: a negative after an integral error, an earlier negative, or a `(7,3)` error is
+  silent; `(0,0)` and `(7,3)` are still reported). Implemented against errors already found at an
+  earlier line; on CR300/CR350 an earlier pass-2-style error (`Undef1 is not defined.`) also
+  silences it, which needs the cross-pass source order and is not modelled.
+- CR300/CR350: the integral error, `Interval (%d) must be ...` and `Scan interval must be
+  integrally divisible ...` all start the `Too many parameters` cascade (`cr3xx` declaration
+  triggers): every later instruction written with two or more arguments gets `Too many
+  parameters:  <its second argument>.` (oracle: `Delay(0,1,Sec)`, `Scan(1,Sec,0,0)` after one).
+  Not modelled: a later `CallTable Nope` on CR300/CR350 is still reported by us but hidden by the
+  real compiler after any earlier error (also true for `Undef1 is not defined.`, so not specific to
+  this family).
+- `SerialOpen`'s own baud message (`N is illegal baud rate.`) is separate: it is skipped when the
+  literal is outside 32 bits, and not modelled for non-`ComRS232` ports or the CR300 saturation
+  (observed `2147483648` -> `2147483647 is illegal baud rate.`).
+
+Replay: reproducers `c2fa595b2867` (CR1000X), `14387ce6dd56` and `bb5ac63ec5c3` (CR300) now exact.
+
 ## Sub call arguments (2026-09-28)
 
 Undefined names in the arguments of a call to a declared `Sub` are reported for every argument,

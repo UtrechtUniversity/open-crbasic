@@ -15,16 +15,24 @@ Oracle probes, 2026-09-28 (`docs/checker.md` "TimeIntoInterval arguments").
 
 from __future__ import annotations
 
+import struct
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
 from . import instr_rules
 
 _FUNCTIONS = frozenset({"TIMEINTOINTERVAL", "IFTIME"})
+# Functions whose integer-typed constant arguments draw `Parameter must be integral.`, with the
+# argument positions checked (`docs/checker.md` "Integral parameters").
+_INTEGRAL_ARGS = {"TIMEINTOINTERVAL": (0, 1, 2), "IFTIME": (0, 1, 2), "SERIALOPEN": (1,)}
 _MONTH = 6
+NOT_INTEGRAL = "Parameter must be integral."
+_INT_MIN, _INT_MAX = -2**31, 2**31 - 1
 
 
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    wide = wide_constants(program, profile)
     scan: tuple[int, int] | None = None
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
@@ -34,15 +42,100 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         if kw in ("NEXTSCAN", "SUBSCAN", "NEXTSUBSCAN") or isinstance(stmt, S.SubDef):
             scan = None
-        for call in _calls(stmt):
-            _check_call(call, scan, stmt, diags, env)
+        for call in _calls(stmt, _INTEGRAL_ARGS):
+            if isinstance(call, S.Call) and call.explicit:
+                continue
+            bad = [i for i in _INTEGRAL_ARGS[call.name.upper()][:len(call.args)]
+                   if not_integral(call.args[i], env, profile, wide)]
+            for _ in bad:
+                diags.error(stmt.line, NOT_INTEGRAL, stmt.file)
+            if not bad and call.name.upper() in _FUNCTIONS:
+                _check_call(call, scan, stmt, diags, env,
+                            any(d.line < stmt.line for d in diags.errors))
 
 
-def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env) -> None:
+def wide_constants(program: S.Program, profile) -> frozenset[str]:
+    """`Const` names declared as one positive numeric literal beyond the converted range: they
+    carry the literal's float type into every expression that uses them (oracle, 2026-10-02:
+    `Const KB = 999999999999` -> `KB`, `-KB` and `KB-1` all draw the error, while the computed
+    `Const KC = 2147483647+1` and `Const KM = -2147483649` wrap silently)."""
+    return frozenset(
+        st.name.upper() for st in program.statements
+        if isinstance(st, S.ConstDecl) and isinstance(st.value, S.Number)
+        and not st.value.text.startswith("&") and _out_of_range(st.value.value, profile))
+
+
+def _out_of_range(value, profile) -> bool:
+    if profile.name in ("cr300", "cr350"):
+        rounded = struct.unpack("<f", struct.pack("<f", float(value)))[0] \
+            if abs(value) < 3.4e38 else float("inf")
+        return not _INT_MIN <= rounded <= 2**31
+    return not _INT_MIN <= value <= _INT_MAX
+
+
+def not_integral(expr: S.Expr | None, env: consteval.Env, profile, wide=frozenset()) -> bool:
+    """Whether a constant argument of an integer-typed function parameter draws `Parameter must be
+    integral.` (oracle, 2026-10-02): the expression is float-typed (a literal with a decimal point
+    or exponent, a `/` or `^`, a named constant whose value is not whole, or arithmetic with any
+    of those) or its value is outside the converted range: a 32-bit integer on CR6/CR1000X, a
+    32-bit float rounded into [-2^31, 2^31] on CR300/CR350. A named constant otherwise counts as
+    an integer (`Const K = 60.0` passes). Hex and binary literals wrap to 32 bits and are never
+    flagged. Variables and function calls are left alone."""
+    if expr is None or not _plain(expr):
+        return False
+    try:
+        value = consteval.value_of(expr, env)
+    except consteval.NotConstant:
+        return False
+    if isinstance(value, (str, bool)) or not isinstance(value, (int, float)):
+        return False
+    if _float_typed(expr, env, wide) or value != int(value):
+        return True
+    literal = expr.operand if isinstance(expr, S.Unary) and expr.op == "-" else expr
+    if not isinstance(literal, S.Number) or literal.text.startswith("&"):
+        return False  # (a computed or named value wraps or saturates silently, rule not fitted)
+    return _out_of_range(value, profile)
+
+
+def _plain(expr: S.Expr | None) -> bool:
+    if isinstance(expr, (S.Number, S.Name)):
+        return True
+    if isinstance(expr, S.Unary):
+        return expr.op in ("-", "+") and _plain(expr.operand)
+    if isinstance(expr, S.Binary):
+        return expr.op in ("+", "-", "*", "/", "^", "\\", "MOD") and _plain(expr.left) and \
+            _plain(expr.right)
+    return False
+
+
+def _float_typed(expr: S.Expr | None, env: consteval.Env, wide) -> bool:
+    if isinstance(expr, S.Number):
+        text = expr.text.upper()
+        return not text.startswith("&") and ("." in text or "E" in text)
+    if isinstance(expr, S.Name):
+        if expr.name.upper() in wide:
+            return True
+        try:
+            value = consteval.value_of(expr, env)
+        except consteval.NotConstant:
+            return False
+        return isinstance(value, float) and value != int(value)
+    if isinstance(expr, S.Unary):
+        return _float_typed(expr.operand, env, wide)
+    if isinstance(expr, S.Binary):
+        return expr.op in ("/", "^") or _float_typed(expr.left, env, wide) or \
+            _float_typed(expr.right, env, wide)
+    return False
+
+
+def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env,
+                after_error: bool = False) -> None:
     values = [_int(a, env) for a in call.args[:3]]
     if len(call.args) != 3 or None in values or values[2] == _MONTH or \
-            values[2] not in instr_rules._US_PER_UNIT:
+            values[2] not in instr_rules._US_PER_UNIT or _INT_MIN in values[:2]:
         return
+    if after_error and min(values[:2]) < 0:
+        return  # a negative argument is only reported while the file is still clean
     tinto_raw, interval_raw, unit = values
     t_sec, t_us = _split(tinto_raw * instr_rules._US_PER_UNIT[unit])
     i_sec, i_us = _split(interval_raw * instr_rules._US_PER_UNIT[unit])
@@ -92,17 +185,27 @@ def _int(expr: S.Expr | None, env: consteval.Env) -> int | None:
         return None
     if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
         return None
-    return int(value)
+    if isinstance(expr, S.Number) and expr.text.startswith("&"):
+        if int(value) > 0xFFFFFFFF:
+            return None  # (real: silent for more than 8 hex digits; rule not fitted)
+        value = int(value) & 0xFFFFFFFF
+        return value - 2**32 if value >= 2**31 else value
+    inner = expr.operand if isinstance(expr, S.Unary) and expr.op == "-" else expr
+    if env.profile.name in ("cr300", "cr350") and isinstance(inner, S.Number):
+        return max(-_INT_MAX, min(_INT_MAX, int(value)))  # a single literal saturates
+    return int(value) if _INT_MIN <= value <= _INT_MAX else None  # computed: wraps, silent
 
 
-def _calls(stmt: S.Stmt):
-    """Every `TimeIntoInterval`/`IfTime` call in `stmt`, including a one-line `If`'s statements."""
+def _calls(stmt: S.Stmt, names=_FUNCTIONS):
+    """Every call of `names` in `stmt`, including a one-line `If`'s statements."""
     exprs: list[S.Expr | None] = []
     if isinstance(stmt, (S.If, S.ElseIf, S.DoLoop)):
         exprs.append(stmt.cond)
+    if isinstance(stmt, S.Call) and stmt.name.upper() in names:
+        yield stmt
     if isinstance(stmt, S.If):
         for inner in (stmt.inline or []) + (stmt.inline_else or []):
-            yield from _calls(inner)
+            yield from _calls(inner, names)
     elif isinstance(stmt, S.Assignment):
         exprs += [stmt.target, stmt.value]
     elif isinstance(stmt, (S.Instruction, S.Call)):
@@ -113,7 +216,7 @@ def _calls(stmt: S.Stmt):
     while stack:
         expr = stack.pop(0)
         if isinstance(expr, S.Index):
-            if expr.name.upper() in _FUNCTIONS:
+            if expr.name.upper() in names:
                 yield expr
             stack += [a for a in expr.args if a is not None]
         elif isinstance(expr, S.Unary):
