@@ -1,0 +1,861 @@
+{
+  "observation_dates": {
+    "scratch/builtin-name-probes.json": "2026-10-01",
+    "scratch/builtin-scope-probes.json": "2026-10-02",
+    "scratch/builtin-local-shadow-probes.json": "2026-10-02"
+  },
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "source_records": [
+    "scratch/builtin-name-probes.json",
+    "scratch/builtin-scope-probes.json",
+    "scratch/builtin-local-shadow-probes.json"
+  ],
+  "excluded_cases": [
+    {
+      "id": "cr300-name-public_float",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.",
+      "reason": "Unrelated predefined-constant collision (`Float is a predefined CONST.`), outside the built-in function-name rule."
+    },
+    {
+      "id": "cr350-name-public_float",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.",
+      "reason": "Unrelated predefined-constant collision (`Float is a predefined CONST.`), outside the built-in function-name rule."
+    }
+  ],
+  "pending_observations": [
+    {
+      "id": "cr300-local-shadow-local_used",
+      "logger": "cr300",
+      "batch": "local-shadow",
+      "name": "local_used",
+      "program_filename": "t.CR6",
+      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec.",
+      "reason": "Local bare-function resolution is not yet implemented."
+    },
+    {
+      "id": "cr350-local-shadow-local_used",
+      "logger": "cr350",
+      "batch": "local-shadow",
+      "name": "local_used",
+      "program_filename": "t.CR6",
+      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec.",
+      "reason": "Local bare-function resolution is not yet implemented."
+    }
+  ]
+  ,
+  "cases": [
+    {
+      "id": "cr6-name-public_exp",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "public_exp",
+      "program_filename": "t.CR6",
+      "source": "Public X, exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-name-dim_exp",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "dim_exp",
+      "program_filename": "t.CR6",
+      "source": "Dim eXp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: eXp already defined as an internal function."
+    },
+    {
+      "id": "cr6-name-const_exp",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "const_exp",
+      "program_filename": "t.CR6",
+      "source": "Const exp = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-name-public_timer",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "public_timer",
+      "program_filename": "t.CR6",
+      "source": "Public Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Timer already defined as an internal function."
+    },
+    {
+      "id": "cr6-name-local_exp",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "local_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-name-param_exp",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "param_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test(exp)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-name-public_float",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-name-public_two",
+      "logger": "cr6",
+      "batch": "name",
+      "name": "public_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function.\nline 1: Cos already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-name-public_exp",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "public_exp",
+      "program_filename": "t.CR6",
+      "source": "Public X, exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-name-dim_exp",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "dim_exp",
+      "program_filename": "t.CR6",
+      "source": "Dim eXp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: eXp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-name-const_exp",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "const_exp",
+      "program_filename": "t.CR6",
+      "source": "Const exp = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-name-public_timer",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "public_timer",
+      "program_filename": "t.CR6",
+      "source": "Public Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Timer already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-name-local_exp",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "local_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-name-param_exp",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "param_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test(exp)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-name-public_float",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-name-public_two",
+      "logger": "cr1000x",
+      "batch": "name",
+      "name": "public_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function.\nline 1: Cos already defined as an internal function."
+    },
+    {
+      "id": "cr300-name-public_exp",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "public_exp",
+      "program_filename": "t.CR6",
+      "source": "Public X, exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-name-dim_exp",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "dim_exp",
+      "program_filename": "t.CR6",
+      "source": "Dim eXp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: eXp already defined as an internal function."
+    },
+    {
+      "id": "cr300-name-const_exp",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "const_exp",
+      "program_filename": "t.CR6",
+      "source": "Const exp = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-name-public_timer",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "public_timer",
+      "program_filename": "t.CR6",
+      "source": "Public Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Timer already defined as an internal function."
+    },
+    {
+      "id": "cr300-name-local_exp",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "local_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-name-param_exp",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "param_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test(exp)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-name-public_two",
+      "logger": "cr300",
+      "batch": "name",
+      "name": "public_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Cos."
+    },
+    {
+      "id": "cr350-name-public_exp",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "public_exp",
+      "program_filename": "t.CR6",
+      "source": "Public X, exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-name-dim_exp",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "dim_exp",
+      "program_filename": "t.CR6",
+      "source": "Dim eXp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: eXp already defined as an internal function."
+    },
+    {
+      "id": "cr350-name-const_exp",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "const_exp",
+      "program_filename": "t.CR6",
+      "source": "Const exp = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-name-public_timer",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "public_timer",
+      "program_filename": "t.CR6",
+      "source": "Public Timer\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Timer already defined as an internal function."
+    },
+    {
+      "id": "cr350-name-local_exp",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "local_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-name-param_exp",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "param_exp",
+      "program_filename": "t.CR6",
+      "source": "Sub Test(exp)\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-name-public_two",
+      "logger": "cr350",
+      "batch": "name",
+      "name": "public_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Cos."
+    },
+    {
+      "id": "cr6-scope-local_public",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "local_public",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nPublic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-local_const",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "local_const",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nConst exp = 2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-global_static",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "global_static",
+      "program_filename": "t.CR6",
+      "source": "Static exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Static exp.\nline 1: Expr illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr6-scope-local_static",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "local_static",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nStatic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Static exp."
+    },
+    {
+      "id": "cr6-scope-function_local",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "function_local",
+      "program_filename": "t.CR6",
+      "source": "Function Test()\nDim exp\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-scope-after_sub",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "after_sub",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nDim exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-follow_scan",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "follow_scan",
+      "program_filename": "t.CR6",
+      "source": "Public Exp\nBeginProg\nScan(1,Sec,0,0)\nDelay(0,1,mSec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-multi_two",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "multi_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-multi_four",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "multi_four",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos, Log\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function.\nline 1: Cos already defined as an internal function.\nline 1: Log already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-mixed_first",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "mixed_first",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, X, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-mixed_second",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "mixed_second",
+      "program_filename": "t.CR6",
+      "source": "Public X, Exp, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr6-scope-mixed_last",
+      "logger": "cr6",
+      "batch": "scope",
+      "name": "mixed_last",
+      "program_filename": "t.CR6",
+      "source": "Public X, Y, Exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-local_public",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "local_public",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nPublic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-local_const",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "local_const",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nConst exp = 2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-global_static",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "global_static",
+      "program_filename": "t.CR6",
+      "source": "Static exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Static exp.\nline 1: Expr illegally occurs before BeginProg."
+    },
+    {
+      "id": "cr1000x-scope-local_static",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "local_static",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nStatic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Static exp."
+    },
+    {
+      "id": "cr1000x-scope-function_local",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "function_local",
+      "program_filename": "t.CR6",
+      "source": "Function Test()\nDim exp\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-scope-after_sub",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "after_sub",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nDim exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-follow_scan",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "follow_scan",
+      "program_filename": "t.CR6",
+      "source": "Public Exp\nBeginProg\nScan(1,Sec,0,0)\nDelay(0,1,mSec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-multi_two",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "multi_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-multi_four",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "multi_four",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos, Log\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sin already defined as an internal function.\nline 1: Cos already defined as an internal function.\nline 1: Log already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-mixed_first",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "mixed_first",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, X, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-mixed_second",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "mixed_second",
+      "program_filename": "t.CR6",
+      "source": "Public X, Exp, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr1000x-scope-mixed_last",
+      "logger": "cr1000x",
+      "batch": "scope",
+      "name": "mixed_last",
+      "program_filename": "t.CR6",
+      "source": "Public X, Y, Exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-local_public",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "local_public",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nPublic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-local_const",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "local_const",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nConst exp = 2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-global_static",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "global_static",
+      "program_filename": "t.CR6",
+      "source": "Static exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Static is not defined.\nline 1: Invalid, or out of place expression: Static exp\n."
+    },
+    {
+      "id": "cr300-scope-local_static",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "local_static",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nStatic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Static is not defined.\nline 2: Invalid, or out of place expression: Static exp\n."
+    },
+    {
+      "id": "cr300-scope-function_local",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "function_local",
+      "program_filename": "t.CR6",
+      "source": "Function Test()\nDim exp\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-scope-after_sub",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "after_sub",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nDim exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-follow_scan",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "follow_scan",
+      "program_filename": "t.CR6",
+      "source": "Public Exp\nBeginProg\nScan(1,Sec,0,0)\nDelay(0,1,mSec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr300-scope-multi_two",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "multi_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-multi_four",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "multi_four",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos, Log\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Cos."
+    },
+    {
+      "id": "cr300-scope-mixed_first",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "mixed_first",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, X, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Y."
+    },
+    {
+      "id": "cr300-scope-mixed_second",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "mixed_second",
+      "program_filename": "t.CR6",
+      "source": "Public X, Exp, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-scope-mixed_last",
+      "logger": "cr300",
+      "batch": "scope",
+      "name": "mixed_last",
+      "program_filename": "t.CR6",
+      "source": "Public X, Y, Exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-local_public",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "local_public",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nPublic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-local_const",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "local_const",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nConst exp = 2\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-global_static",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "global_static",
+      "program_filename": "t.CR6",
+      "source": "Static exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Static is not defined.\nline 1: Invalid, or out of place expression: Static exp\n."
+    },
+    {
+      "id": "cr350-scope-local_static",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "local_static",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nStatic exp\nEndSub\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Static is not defined.\nline 2: Invalid, or out of place expression: Static exp\n."
+    },
+    {
+      "id": "cr350-scope-function_local",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "function_local",
+      "program_filename": "t.CR6",
+      "source": "Function Test()\nDim exp\nEndFunction\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-scope-after_sub",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "after_sub",
+      "program_filename": "t.CR6",
+      "source": "Sub Test\nDim exp\nEndSub\nDim exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-follow_scan",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "follow_scan",
+      "program_filename": "t.CR6",
+      "source": "Public Exp\nBeginProg\nScan(1,Sec,0,0)\nDelay(0,1,mSec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-scope-multi_two",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "multi_two",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-multi_four",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "multi_four",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, Sin, Cos, Log\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Cos."
+    },
+    {
+      "id": "cr350-scope-mixed_first",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "mixed_first",
+      "program_filename": "t.CR6",
+      "source": "Public Exp, X, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Too many parameters:  Y."
+    },
+    {
+      "id": "cr350-scope-mixed_second",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "mixed_second",
+      "program_filename": "t.CR6",
+      "source": "Public X, Exp, Y\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr350-scope-mixed_last",
+      "logger": "cr350",
+      "batch": "scope",
+      "name": "mixed_last",
+      "program_filename": "t.CR6",
+      "source": "Public X, Y, Exp\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    }
+  ]
+}

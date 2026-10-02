@@ -8,6 +8,7 @@ import re
 
 from .. import consteval
 from .. import syntax as S
+from ..diagnostics import Diagnostics
 
 
 def declared_subs(program: S.Program) -> set[str]:
@@ -296,3 +297,48 @@ def declared_names(program: S.Program) -> set[str]:
 
 
 _SNMP_VARIABLE_RE = re.compile(r"(?i)\s*SNMPVariable\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)")
+
+
+def is_reserved_predefined_name(name: str, profile) -> bool:
+    """Declaration namespace, docs/checker.md#predefined-constant-name-collisions."""
+    key = name.upper()
+    return key in profile.symbols and key not in profile.declarable_predefined_names
+
+
+def report_predefined_name_collision(stmt: S.Stmt, name: str, profile,
+                                     diags: Diagnostics) -> bool:
+    if not is_reserved_predefined_name(name, profile):
+        return False
+    diags.error(stmt.line, f"{name} is a predefined CONST.", stmt.file)
+    return True
+
+
+def report_function_name_collision(stmt: S.Stmt, name: str, profile,
+                                    diags: Diagnostics) -> bool:
+    if name.upper() not in profile.functions:
+        return False
+    diags.error(stmt.line, f"{name} already defined as an internal function.", stmt.file)
+    return True
+
+
+def check_local_name_collision(stmt: S.Stmt, profile, diags: Diagnostics) -> None:
+    """Routine namespace checks in declaration order; local Dim/parameters shadow functions."""
+    if isinstance(stmt, S.ConstDecl):
+        names = [stmt.name]
+        shadows_functions = False
+    elif isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM"):
+        names = [v.name for v in stmt.vars]
+        shadows_functions = stmt.kind == "DIM"
+    elif isinstance(stmt, S.SubDef):
+        names = [p.name for p in stmt.params]
+        shadows_functions = True
+    else:
+        return
+    for index, name in enumerate(names):
+        collision = (not shadows_functions and
+                     report_function_name_collision(stmt, name, profile, diags))
+        collision = collision or report_predefined_name_collision(stmt, name, profile, diags)
+        if collision and profile.single_pass:
+            if index + 2 < len(names):
+                diags.error(stmt.line, f"Too many parameters:  {names[index + 2]}.", stmt.file)
+            break

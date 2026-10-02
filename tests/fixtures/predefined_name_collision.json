@@ -1,0 +1,2515 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    },
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "source_records": [
+    "scratch/predefined-namespace-probes.json",
+    "scratch/predefined-boundary-probes.json",
+    "scratch/predefined-order-probes.json",
+    "scratch/predefined-mixed-probes.json"
+  ],
+  "cases": [
+    {
+      "id": "cr6-public_float",
+      "logger": "cr6",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_long",
+      "logger": "cr6",
+      "name": "public_long",
+      "program_filename": "t.CR6",
+      "source": "Public Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_boolean",
+      "logger": "cr6",
+      "name": "public_boolean",
+      "program_filename": "t.CR6",
+      "source": "Public Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_sec",
+      "logger": "cr6",
+      "name": "public_sec",
+      "program_filename": "t.CR6",
+      "source": "Public Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr6-public_nan",
+      "logger": "cr6",
+      "name": "public_nan",
+      "program_filename": "t.CR6",
+      "source": "Public NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-dim_float",
+      "logger": "cr6",
+      "name": "dim_float",
+      "program_filename": "t.CR6",
+      "source": "Dim Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-dim_long",
+      "logger": "cr6",
+      "name": "dim_long",
+      "program_filename": "t.CR6",
+      "source": "Dim Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-dim_boolean",
+      "logger": "cr6",
+      "name": "dim_boolean",
+      "program_filename": "t.CR6",
+      "source": "Dim Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-dim_sec",
+      "logger": "cr6",
+      "name": "dim_sec",
+      "program_filename": "t.CR6",
+      "source": "Dim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr6-dim_nan",
+      "logger": "cr6",
+      "name": "dim_nan",
+      "program_filename": "t.CR6",
+      "source": "Dim NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-const_float",
+      "logger": "cr6",
+      "name": "const_float",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-const_long",
+      "logger": "cr6",
+      "name": "const_long",
+      "program_filename": "t.CR6",
+      "source": "Const Long = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-const_boolean",
+      "logger": "cr6",
+      "name": "const_boolean",
+      "program_filename": "t.CR6",
+      "source": "Const Boolean = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-const_sec",
+      "logger": "cr6",
+      "name": "const_sec",
+      "program_filename": "t.CR6",
+      "source": "Const Sec = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr6-const_nan",
+      "logger": "cr6",
+      "name": "const_nan",
+      "program_filename": "t.CR6",
+      "source": "Const NAN = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-const_float_no_scan",
+      "logger": "cr6",
+      "name": "const_float_no_scan",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-local_dim_float",
+      "logger": "cr6",
+      "name": "local_dim_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe\nDim Float\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-local_parameter_float",
+      "logger": "cr6",
+      "name": "local_parameter_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe(Float)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_list_float_first",
+      "logger": "cr6",
+      "name": "public_list_float_first",
+      "program_filename": "t.CR6",
+      "source": "Public Float, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_list_float_middle",
+      "logger": "cr6",
+      "name": "public_list_float_middle",
+      "program_filename": "t.CR6",
+      "source": "Public X, Float, Y, Z\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-control_normal_variable",
+      "logger": "cr6",
+      "name": "control_normal_variable",
+      "program_filename": "t.CR6",
+      "source": "Public NormalVariable\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_float_lowercase",
+      "logger": "cr6",
+      "name": "public_float_lowercase",
+      "program_filename": "t.CR6",
+      "source": "Public float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-public_float_mixed_case",
+      "logger": "cr6",
+      "name": "public_float_mixed_case",
+      "program_filename": "t.CR6",
+      "source": "Public fLoAt\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_float",
+      "logger": "cr1000x",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_long",
+      "logger": "cr1000x",
+      "name": "public_long",
+      "program_filename": "t.CR6",
+      "source": "Public Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_boolean",
+      "logger": "cr1000x",
+      "name": "public_boolean",
+      "program_filename": "t.CR6",
+      "source": "Public Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_sec",
+      "logger": "cr1000x",
+      "name": "public_sec",
+      "program_filename": "t.CR6",
+      "source": "Public Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr1000x-public_nan",
+      "logger": "cr1000x",
+      "name": "public_nan",
+      "program_filename": "t.CR6",
+      "source": "Public NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-dim_float",
+      "logger": "cr1000x",
+      "name": "dim_float",
+      "program_filename": "t.CR6",
+      "source": "Dim Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-dim_long",
+      "logger": "cr1000x",
+      "name": "dim_long",
+      "program_filename": "t.CR6",
+      "source": "Dim Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-dim_boolean",
+      "logger": "cr1000x",
+      "name": "dim_boolean",
+      "program_filename": "t.CR6",
+      "source": "Dim Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-dim_sec",
+      "logger": "cr1000x",
+      "name": "dim_sec",
+      "program_filename": "t.CR6",
+      "source": "Dim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr1000x-dim_nan",
+      "logger": "cr1000x",
+      "name": "dim_nan",
+      "program_filename": "t.CR6",
+      "source": "Dim NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const_float",
+      "logger": "cr1000x",
+      "name": "const_float",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const_long",
+      "logger": "cr1000x",
+      "name": "const_long",
+      "program_filename": "t.CR6",
+      "source": "Const Long = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const_boolean",
+      "logger": "cr1000x",
+      "name": "const_boolean",
+      "program_filename": "t.CR6",
+      "source": "Const Boolean = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const_sec",
+      "logger": "cr1000x",
+      "name": "const_sec",
+      "program_filename": "t.CR6",
+      "source": "Const Sec = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+      "id": "cr1000x-const_nan",
+      "logger": "cr1000x",
+      "name": "const_nan",
+      "program_filename": "t.CR6",
+      "source": "Const NAN = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-const_float_no_scan",
+      "logger": "cr1000x",
+      "name": "const_float_no_scan",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-local_dim_float",
+      "logger": "cr1000x",
+      "name": "local_dim_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe\nDim Float\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-local_parameter_float",
+      "logger": "cr1000x",
+      "name": "local_parameter_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe(Float)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_list_float_first",
+      "logger": "cr1000x",
+      "name": "public_list_float_first",
+      "program_filename": "t.CR6",
+      "source": "Public Float, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_list_float_middle",
+      "logger": "cr1000x",
+      "name": "public_list_float_middle",
+      "program_filename": "t.CR6",
+      "source": "Public X, Float, Y, Z\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-control_normal_variable",
+      "logger": "cr1000x",
+      "name": "control_normal_variable",
+      "program_filename": "t.CR6",
+      "source": "Public NormalVariable\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_float_lowercase",
+      "logger": "cr1000x",
+      "name": "public_float_lowercase",
+      "program_filename": "t.CR6",
+      "source": "Public float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-public_float_mixed_case",
+      "logger": "cr1000x",
+      "name": "public_float_mixed_case",
+      "program_filename": "t.CR6",
+      "source": "Public fLoAt\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-public_float",
+      "logger": "cr300",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_long",
+      "logger": "cr300",
+      "name": "public_long",
+      "program_filename": "t.CR6",
+      "source": "Public Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_boolean",
+      "logger": "cr300",
+      "name": "public_boolean",
+      "program_filename": "t.CR6",
+      "source": "Public Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_sec",
+      "logger": "cr300",
+      "name": "public_sec",
+      "program_filename": "t.CR6",
+      "source": "Public Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_nan",
+      "logger": "cr300",
+      "name": "public_nan",
+      "program_filename": "t.CR6",
+      "source": "Public NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-dim_float",
+      "logger": "cr300",
+      "name": "dim_float",
+      "program_filename": "t.CR6",
+      "source": "Dim Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-dim_long",
+      "logger": "cr300",
+      "name": "dim_long",
+      "program_filename": "t.CR6",
+      "source": "Dim Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-dim_boolean",
+      "logger": "cr300",
+      "name": "dim_boolean",
+      "program_filename": "t.CR6",
+      "source": "Dim Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-dim_sec",
+      "logger": "cr300",
+      "name": "dim_sec",
+      "program_filename": "t.CR6",
+      "source": "Dim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-dim_nan",
+      "logger": "cr300",
+      "name": "dim_nan",
+      "program_filename": "t.CR6",
+      "source": "Dim NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-const_float",
+      "logger": "cr300",
+      "name": "const_float",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-const_long",
+      "logger": "cr300",
+      "name": "const_long",
+      "program_filename": "t.CR6",
+      "source": "Const Long = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-const_boolean",
+      "logger": "cr300",
+      "name": "const_boolean",
+      "program_filename": "t.CR6",
+      "source": "Const Boolean = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-const_sec",
+      "logger": "cr300",
+      "name": "const_sec",
+      "program_filename": "t.CR6",
+      "source": "Const Sec = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-const_nan",
+      "logger": "cr300",
+      "name": "const_nan",
+      "program_filename": "t.CR6",
+      "source": "Const NAN = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-const_float_no_scan",
+      "logger": "cr300",
+      "name": "const_float_no_scan",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST."
+    },
+    {
+      "id": "cr300-local_dim_float",
+      "logger": "cr300",
+      "name": "local_dim_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe\nDim Float\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Float is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-local_parameter_float",
+      "logger": "cr300",
+      "name": "local_parameter_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe(Float)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_list_float_first",
+      "logger": "cr300",
+      "name": "public_list_float_first",
+      "program_filename": "t.CR6",
+      "source": "Public Float, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_list_float_middle",
+      "logger": "cr300",
+      "name": "public_list_float_middle",
+      "program_filename": "t.CR6",
+      "source": "Public X, Float, Y, Z\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 1: Too many parameters:  Z.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-control_normal_variable",
+      "logger": "cr300",
+      "name": "control_normal_variable",
+      "program_filename": "t.CR6",
+      "source": "Public NormalVariable\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-public_float_lowercase",
+      "logger": "cr300",
+      "name": "public_float_lowercase",
+      "program_filename": "t.CR6",
+      "source": "Public float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-public_float_mixed_case",
+      "logger": "cr300",
+      "name": "public_float_mixed_case",
+      "program_filename": "t.CR6",
+      "source": "Public fLoAt\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: fLoAt is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_float",
+      "logger": "cr350",
+      "name": "public_float",
+      "program_filename": "t.CR6",
+      "source": "Public Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_long",
+      "logger": "cr350",
+      "name": "public_long",
+      "program_filename": "t.CR6",
+      "source": "Public Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_boolean",
+      "logger": "cr350",
+      "name": "public_boolean",
+      "program_filename": "t.CR6",
+      "source": "Public Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_sec",
+      "logger": "cr350",
+      "name": "public_sec",
+      "program_filename": "t.CR6",
+      "source": "Public Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_nan",
+      "logger": "cr350",
+      "name": "public_nan",
+      "program_filename": "t.CR6",
+      "source": "Public NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-dim_float",
+      "logger": "cr350",
+      "name": "dim_float",
+      "program_filename": "t.CR6",
+      "source": "Dim Float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-dim_long",
+      "logger": "cr350",
+      "name": "dim_long",
+      "program_filename": "t.CR6",
+      "source": "Dim Long\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-dim_boolean",
+      "logger": "cr350",
+      "name": "dim_boolean",
+      "program_filename": "t.CR6",
+      "source": "Dim Boolean\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-dim_sec",
+      "logger": "cr350",
+      "name": "dim_sec",
+      "program_filename": "t.CR6",
+      "source": "Dim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-dim_nan",
+      "logger": "cr350",
+      "name": "dim_nan",
+      "program_filename": "t.CR6",
+      "source": "Dim NAN\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const_float",
+      "logger": "cr350",
+      "name": "const_float",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-const_long",
+      "logger": "cr350",
+      "name": "const_long",
+      "program_filename": "t.CR6",
+      "source": "Const Long = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Long is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-const_boolean",
+      "logger": "cr350",
+      "name": "const_boolean",
+      "program_filename": "t.CR6",
+      "source": "Const Boolean = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Boolean is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-const_sec",
+      "logger": "cr350",
+      "name": "const_sec",
+      "program_filename": "t.CR6",
+      "source": "Const Sec = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-const_nan",
+      "logger": "cr350",
+      "name": "const_nan",
+      "program_filename": "t.CR6",
+      "source": "Const NAN = 2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-const_float_no_scan",
+      "logger": "cr350",
+      "name": "const_float_no_scan",
+      "program_filename": "t.CR6",
+      "source": "Const Float = 2\nBeginProg\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST."
+    },
+    {
+      "id": "cr350-local_dim_float",
+      "logger": "cr350",
+      "name": "local_dim_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe\nDim Float\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Float is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-local_parameter_float",
+      "logger": "cr350",
+      "name": "local_parameter_float",
+      "program_filename": "t.CR6",
+      "source": "Sub Probe(Float)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_list_float_first",
+      "logger": "cr350",
+      "name": "public_list_float_first",
+      "program_filename": "t.CR6",
+      "source": "Public Float, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_list_float_middle",
+      "logger": "cr350",
+      "name": "public_list_float_middle",
+      "program_filename": "t.CR6",
+      "source": "Public X, Float, Y, Z\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 1: Too many parameters:  Z.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-control_normal_variable",
+      "logger": "cr350",
+      "name": "control_normal_variable",
+      "program_filename": "t.CR6",
+      "source": "Public NormalVariable\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-public_float_lowercase",
+      "logger": "cr350",
+      "name": "public_float_lowercase",
+      "program_filename": "t.CR6",
+      "source": "Public float\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-public_float_mixed_case",
+      "logger": "cr350",
+      "name": "public_float_mixed_case",
+      "program_filename": "t.CR6",
+      "source": "Public fLoAt\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: fLoAt is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr6-boundary-public_ieee8",
+        "logger": "cr6",
+        "name": "public_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_ieee4",
+        "logger": "cr6",
+        "name": "public_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_bool8",
+        "logger": "cr6",
+        "name": "public_bool8",
+        "program_filename": "t.CR6",
+        "source": "Public BOOL8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_uint2",
+        "logger": "cr6",
+        "name": "public_uint2",
+        "program_filename": "t.CR6",
+        "source": "Public UINT2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_uint4",
+        "logger": "cr6",
+        "name": "public_uint4",
+        "program_filename": "t.CR6",
+        "source": "Public UINT4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_uint1",
+        "logger": "cr6",
+        "name": "public_uint1",
+        "program_filename": "t.CR6",
+        "source": "Public UINT1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-boundary-public_fp2",
+        "logger": "cr6",
+        "name": "public_fp2",
+        "program_filename": "t.CR6",
+        "source": "Public FP2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_string",
+        "logger": "cr6",
+        "name": "public_string",
+        "program_filename": "t.CR6",
+        "source": "Public STRING\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_true",
+        "logger": "cr6",
+        "name": "public_true",
+        "program_filename": "t.CR6",
+        "source": "Public TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: TRUE is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_false",
+        "logger": "cr6",
+        "name": "public_false",
+        "program_filename": "t.CR6",
+        "source": "Public FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FALSE is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_mv5000",
+        "logger": "cr6",
+        "name": "public_mv5000",
+        "program_filename": "t.CR6",
+        "source": "Public mV5000\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: mV5000 is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_u1",
+        "logger": "cr6",
+        "name": "public_u1",
+        "program_filename": "t.CR6",
+        "source": "Public U1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: U1 is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_comc1",
+        "logger": "cr6",
+        "name": "public_comc1",
+        "program_filename": "t.CR6",
+        "source": "Public ComC1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ComC1 is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-local_dim_sec",
+        "logger": "cr6",
+        "name": "local_dim_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-local_parameter_sec",
+        "logger": "cr6",
+        "name": "local_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(Sec)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-local_const_sec",
+        "logger": "cr6",
+        "name": "local_const_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nConst Sec = 2\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-local_public_sec",
+        "logger": "cr6",
+        "name": "local_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_float_sec",
+        "logger": "cr6",
+        "name": "public_float_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Float, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-public_sec_float_normals",
+        "logger": "cr6",
+        "name": "public_sec_float_normals",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Float, Normal1, Normal2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-dim_sec_twice",
+        "logger": "cr6",
+        "name": "dim_sec_twice",
+        "program_filename": "t.CR6",
+        "source": "Dim Sec\nDim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 2: Sec already declared as a variable.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-boundary-const_sec_then_public_sec",
+        "logger": "cr6",
+        "name": "const_sec_then_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Const Sec = 2\nPublic Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_ieee8",
+        "logger": "cr1000x",
+        "name": "public_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_ieee4",
+        "logger": "cr1000x",
+        "name": "public_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_bool8",
+        "logger": "cr1000x",
+        "name": "public_bool8",
+        "program_filename": "t.CR6",
+        "source": "Public BOOL8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_uint2",
+        "logger": "cr1000x",
+        "name": "public_uint2",
+        "program_filename": "t.CR6",
+        "source": "Public UINT2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_uint4",
+        "logger": "cr1000x",
+        "name": "public_uint4",
+        "program_filename": "t.CR6",
+        "source": "Public UINT4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_uint1",
+        "logger": "cr1000x",
+        "name": "public_uint1",
+        "program_filename": "t.CR6",
+        "source": "Public UINT1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_fp2",
+        "logger": "cr1000x",
+        "name": "public_fp2",
+        "program_filename": "t.CR6",
+        "source": "Public FP2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_string",
+        "logger": "cr1000x",
+        "name": "public_string",
+        "program_filename": "t.CR6",
+        "source": "Public STRING\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_true",
+        "logger": "cr1000x",
+        "name": "public_true",
+        "program_filename": "t.CR6",
+        "source": "Public TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: TRUE is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_false",
+        "logger": "cr1000x",
+        "name": "public_false",
+        "program_filename": "t.CR6",
+        "source": "Public FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FALSE is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_mv5000",
+        "logger": "cr1000x",
+        "name": "public_mv5000",
+        "program_filename": "t.CR6",
+        "source": "Public mV5000\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: mV5000 is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_u1",
+        "logger": "cr1000x",
+        "name": "public_u1",
+        "program_filename": "t.CR6",
+        "source": "Public U1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-boundary-public_comc1",
+        "logger": "cr1000x",
+        "name": "public_comc1",
+        "program_filename": "t.CR6",
+        "source": "Public ComC1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: ComC1 is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-local_dim_sec",
+        "logger": "cr1000x",
+        "name": "local_dim_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-local_parameter_sec",
+        "logger": "cr1000x",
+        "name": "local_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(Sec)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-local_const_sec",
+        "logger": "cr1000x",
+        "name": "local_const_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nConst Sec = 2\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-local_public_sec",
+        "logger": "cr1000x",
+        "name": "local_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_float_sec",
+        "logger": "cr1000x",
+        "name": "public_float_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Float, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-public_sec_float_normals",
+        "logger": "cr1000x",
+        "name": "public_sec_float_normals",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Float, Normal1, Normal2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-dim_sec_twice",
+        "logger": "cr1000x",
+        "name": "dim_sec_twice",
+        "program_filename": "t.CR6",
+        "source": "Dim Sec\nDim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 2: Sec already declared as a variable.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-boundary-const_sec_then_public_sec",
+        "logger": "cr1000x",
+        "name": "const_sec_then_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Const Sec = 2\nPublic Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr300-boundary-public_ieee8",
+        "logger": "cr300",
+        "name": "public_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_ieee4",
+        "logger": "cr300",
+        "name": "public_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_bool8",
+        "logger": "cr300",
+        "name": "public_bool8",
+        "program_filename": "t.CR6",
+        "source": "Public BOOL8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: BOOL8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_uint2",
+        "logger": "cr300",
+        "name": "public_uint2",
+        "program_filename": "t.CR6",
+        "source": "Public UINT2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_uint4",
+        "logger": "cr300",
+        "name": "public_uint4",
+        "program_filename": "t.CR6",
+        "source": "Public UINT4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_uint1",
+        "logger": "cr300",
+        "name": "public_uint1",
+        "program_filename": "t.CR6",
+        "source": "Public UINT1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT1 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_fp2",
+        "logger": "cr300",
+        "name": "public_fp2",
+        "program_filename": "t.CR6",
+        "source": "Public FP2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_string",
+        "logger": "cr300",
+        "name": "public_string",
+        "program_filename": "t.CR6",
+        "source": "Public STRING\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_true",
+        "logger": "cr300",
+        "name": "public_true",
+        "program_filename": "t.CR6",
+        "source": "Public TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: TRUE is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_false",
+        "logger": "cr300",
+        "name": "public_false",
+        "program_filename": "t.CR6",
+        "source": "Public FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FALSE is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_mv5000",
+        "logger": "cr300",
+        "name": "public_mv5000",
+        "program_filename": "t.CR6",
+        "source": "Public mV5000\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr300-boundary-public_u1",
+        "logger": "cr300",
+        "name": "public_u1",
+        "program_filename": "t.CR6",
+        "source": "Public U1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr300-boundary-public_comc1",
+        "logger": "cr300",
+        "name": "public_comc1",
+        "program_filename": "t.CR6",
+        "source": "Public ComC1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr300-boundary-local_dim_sec",
+        "logger": "cr300",
+        "name": "local_dim_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-local_parameter_sec",
+        "logger": "cr300",
+        "name": "local_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(Sec)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-local_const_sec",
+        "logger": "cr300",
+        "name": "local_const_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nConst Sec = 2\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-local_public_sec",
+        "logger": "cr300",
+        "name": "local_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_float_sec",
+        "logger": "cr300",
+        "name": "public_float_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Float, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-public_sec_float_normals",
+        "logger": "cr300",
+        "name": "public_sec_float_normals",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Float, Normal1, Normal2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Normal1.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-dim_sec_twice",
+        "logger": "cr300",
+        "name": "dim_sec_twice",
+        "program_filename": "t.CR6",
+        "source": "Dim Sec\nDim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-boundary-const_sec_then_public_sec",
+        "logger": "cr300",
+        "name": "const_sec_then_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Const Sec = 2\nPublic Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_ieee8",
+        "logger": "cr350",
+        "name": "public_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_ieee4",
+        "logger": "cr350",
+        "name": "public_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Public IEEE4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_bool8",
+        "logger": "cr350",
+        "name": "public_bool8",
+        "program_filename": "t.CR6",
+        "source": "Public BOOL8\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: BOOL8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_uint2",
+        "logger": "cr350",
+        "name": "public_uint2",
+        "program_filename": "t.CR6",
+        "source": "Public UINT2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_uint4",
+        "logger": "cr350",
+        "name": "public_uint4",
+        "program_filename": "t.CR6",
+        "source": "Public UINT4\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_uint1",
+        "logger": "cr350",
+        "name": "public_uint1",
+        "program_filename": "t.CR6",
+        "source": "Public UINT1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT1 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_fp2",
+        "logger": "cr350",
+        "name": "public_fp2",
+        "program_filename": "t.CR6",
+        "source": "Public FP2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_string",
+        "logger": "cr350",
+        "name": "public_string",
+        "program_filename": "t.CR6",
+        "source": "Public STRING\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_true",
+        "logger": "cr350",
+        "name": "public_true",
+        "program_filename": "t.CR6",
+        "source": "Public TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: TRUE is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_false",
+        "logger": "cr350",
+        "name": "public_false",
+        "program_filename": "t.CR6",
+        "source": "Public FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FALSE is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_mv5000",
+        "logger": "cr350",
+        "name": "public_mv5000",
+        "program_filename": "t.CR6",
+        "source": "Public mV5000\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr350-boundary-public_u1",
+        "logger": "cr350",
+        "name": "public_u1",
+        "program_filename": "t.CR6",
+        "source": "Public U1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr350-boundary-public_comc1",
+        "logger": "cr350",
+        "name": "public_comc1",
+        "program_filename": "t.CR6",
+        "source": "Public ComC1\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr350-boundary-local_dim_sec",
+        "logger": "cr350",
+        "name": "local_dim_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-local_parameter_sec",
+        "logger": "cr350",
+        "name": "local_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(Sec)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-local_const_sec",
+        "logger": "cr350",
+        "name": "local_const_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nConst Sec = 2\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-local_public_sec",
+        "logger": "cr350",
+        "name": "local_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_float_sec",
+        "logger": "cr350",
+        "name": "public_float_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Float, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Float is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-public_sec_float_normals",
+        "logger": "cr350",
+        "name": "public_sec_float_normals",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Float, Normal1, Normal2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Normal1.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-dim_sec_twice",
+        "logger": "cr350",
+        "name": "dim_sec_twice",
+        "program_filename": "t.CR6",
+        "source": "Dim Sec\nDim Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-boundary-const_sec_then_public_sec",
+        "logger": "cr350",
+        "name": "const_sec_then_public_sec",
+        "program_filename": "t.CR6",
+        "source": "Const Sec = 2\nPublic Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+
+    {
+        "id": "cr6-order-public_sec_repeated",
+        "logger": "cr6",
+        "name": "public_sec_repeated",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Sec already declared as a variable.\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-public_sec_true_false",
+        "logger": "cr6",
+        "name": "public_sec_true_false",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: TRUE is a predefined CONST.\nline 1: FALSE is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-prior_variable_then_sec_list",
+        "logger": "cr6",
+        "name": "prior_variable_then_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: X already declared as a variable."
+    },
+    {
+        "id": "cr6-order-local_parameter_list",
+        "logger": "cr6",
+        "name": "local_parameter_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(X, Sec, Y, Z)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1,2,3,4)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-local_dim_sec_list",
+        "logger": "cr6",
+        "name": "local_dim_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim X, Sec, Y, Z\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-function_parameter_sec",
+        "logger": "cr6",
+        "name": "function_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Function F(Sec) As Long\nF=1\nEndFunction\nBeginProg\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-structure_member_sec",
+        "logger": "cr6",
+        "name": "structure_member_sec",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Sec\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_ieee8",
+        "logger": "cr6",
+        "name": "const_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_ieee4",
+        "logger": "cr6",
+        "name": "const_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_bool8",
+        "logger": "cr6",
+        "name": "const_bool8",
+        "program_filename": "t.CR6",
+        "source": "Const BOOL8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_uint1",
+        "logger": "cr6",
+        "name": "const_uint1",
+        "program_filename": "t.CR6",
+        "source": "Const UINT1=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_uint2",
+        "logger": "cr6",
+        "name": "const_uint2",
+        "program_filename": "t.CR6",
+        "source": "Const UINT2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_uint4",
+        "logger": "cr6",
+        "name": "const_uint4",
+        "program_filename": "t.CR6",
+        "source": "Const UINT4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr6-order-const_string",
+        "logger": "cr6",
+        "name": "const_string",
+        "program_filename": "t.CR6",
+        "source": "Const STRING=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST."
+    },
+    {
+        "id": "cr6-order-const_fp2",
+        "logger": "cr6",
+        "name": "const_fp2",
+        "program_filename": "t.CR6",
+        "source": "Const FP2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-public_sec_repeated",
+        "logger": "cr1000x",
+        "name": "public_sec_repeated",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Sec already declared as a variable.\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-public_sec_true_false",
+        "logger": "cr1000x",
+        "name": "public_sec_true_false",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: TRUE is a predefined CONST.\nline 1: FALSE is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-prior_variable_then_sec_list",
+        "logger": "cr1000x",
+        "name": "prior_variable_then_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: X already declared as a variable."
+    },
+    {
+        "id": "cr1000x-order-local_parameter_list",
+        "logger": "cr1000x",
+        "name": "local_parameter_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(X, Sec, Y, Z)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1,2,3,4)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-local_dim_sec_list",
+        "logger": "cr1000x",
+        "name": "local_dim_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim X, Sec, Y, Z\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-function_parameter_sec",
+        "logger": "cr1000x",
+        "name": "function_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Function F(Sec) As Long\nF=1\nEndFunction\nBeginProg\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-structure_member_sec",
+        "logger": "cr1000x",
+        "name": "structure_member_sec",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Sec\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_ieee8",
+        "logger": "cr1000x",
+        "name": "const_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_ieee4",
+        "logger": "cr1000x",
+        "name": "const_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_bool8",
+        "logger": "cr1000x",
+        "name": "const_bool8",
+        "program_filename": "t.CR6",
+        "source": "Const BOOL8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_uint1",
+        "logger": "cr1000x",
+        "name": "const_uint1",
+        "program_filename": "t.CR6",
+        "source": "Const UINT1=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_uint2",
+        "logger": "cr1000x",
+        "name": "const_uint2",
+        "program_filename": "t.CR6",
+        "source": "Const UINT2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_uint4",
+        "logger": "cr1000x",
+        "name": "const_uint4",
+        "program_filename": "t.CR6",
+        "source": "Const UINT4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-order-const_string",
+        "logger": "cr1000x",
+        "name": "const_string",
+        "program_filename": "t.CR6",
+        "source": "Const STRING=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-order-const_fp2",
+        "logger": "cr1000x",
+        "name": "const_fp2",
+        "program_filename": "t.CR6",
+        "source": "Const FP2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST."
+    },
+    {
+        "id": "cr300-order-public_sec_repeated",
+        "logger": "cr300",
+        "name": "public_sec_repeated",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-public_sec_true_false",
+        "logger": "cr300",
+        "name": "public_sec_true_false",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  FALSE.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-prior_variable_then_sec_list",
+        "logger": "cr300",
+        "name": "prior_variable_then_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-local_parameter_list",
+        "logger": "cr300",
+        "name": "local_parameter_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(X, Sec, Y, Z)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1,2,3,4)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Z.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-local_dim_sec_list",
+        "logger": "cr300",
+        "name": "local_dim_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim X, Sec, Y, Z\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Too many parameters:  Z.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-function_parameter_sec",
+        "logger": "cr300",
+        "name": "function_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Function F(Sec) As Long\nF=1\nEndFunction\nBeginProg\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr300-order-structure_member_sec",
+        "logger": "cr300",
+        "name": "structure_member_sec",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Sec\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr300-order-const_ieee8",
+        "logger": "cr300",
+        "name": "const_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_ieee4",
+        "logger": "cr300",
+        "name": "const_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_bool8",
+        "logger": "cr300",
+        "name": "const_bool8",
+        "program_filename": "t.CR6",
+        "source": "Const BOOL8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: BOOL8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_uint1",
+        "logger": "cr300",
+        "name": "const_uint1",
+        "program_filename": "t.CR6",
+        "source": "Const UINT1=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT1 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_uint2",
+        "logger": "cr300",
+        "name": "const_uint2",
+        "program_filename": "t.CR6",
+        "source": "Const UINT2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_uint4",
+        "logger": "cr300",
+        "name": "const_uint4",
+        "program_filename": "t.CR6",
+        "source": "Const UINT4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_string",
+        "logger": "cr300",
+        "name": "const_string",
+        "program_filename": "t.CR6",
+        "source": "Const STRING=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-order-const_fp2",
+        "logger": "cr300",
+        "name": "const_fp2",
+        "program_filename": "t.CR6",
+        "source": "Const FP2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-public_sec_repeated",
+        "logger": "cr350",
+        "name": "public_sec_repeated",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-public_sec_true_false",
+        "logger": "cr350",
+        "name": "public_sec_true_false",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, FALSE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  FALSE.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-prior_variable_then_sec_list",
+        "logger": "cr350",
+        "name": "prior_variable_then_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-local_parameter_list",
+        "logger": "cr350",
+        "name": "local_parameter_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe(X, Sec, Y, Z)\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe(1,2,3,4)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Z.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-local_dim_sec_list",
+        "logger": "cr350",
+        "name": "local_dim_sec_list",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim X, Sec, Y, Z\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Too many parameters:  Z.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-function_parameter_sec",
+        "logger": "cr350",
+        "name": "function_parameter_sec",
+        "program_filename": "t.CR6",
+        "source": "Function F(Sec) As Long\nF=1\nEndFunction\nBeginProg\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr350-order-structure_member_sec",
+        "logger": "cr350",
+        "name": "structure_member_sec",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Sec\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr350-order-const_ieee8",
+        "logger": "cr350",
+        "name": "const_ieee8",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_ieee4",
+        "logger": "cr350",
+        "name": "const_ieee4",
+        "program_filename": "t.CR6",
+        "source": "Const IEEE4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IEEE4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_bool8",
+        "logger": "cr350",
+        "name": "const_bool8",
+        "program_filename": "t.CR6",
+        "source": "Const BOOL8=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: BOOL8 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_uint1",
+        "logger": "cr350",
+        "name": "const_uint1",
+        "program_filename": "t.CR6",
+        "source": "Const UINT1=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT1 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_uint2",
+        "logger": "cr350",
+        "name": "const_uint2",
+        "program_filename": "t.CR6",
+        "source": "Const UINT2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_uint4",
+        "logger": "cr350",
+        "name": "const_uint4",
+        "program_filename": "t.CR6",
+        "source": "Const UINT4=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: UINT4 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_string",
+        "logger": "cr350",
+        "name": "const_string",
+        "program_filename": "t.CR6",
+        "source": "Const STRING=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: STRING is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-order-const_fp2",
+        "logger": "cr350",
+        "name": "const_fp2",
+        "program_filename": "t.CR6",
+        "source": "Const FP2=2\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FP2 is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+
+    {
+        "id": "cr6-mixed-public_sec_exp",
+        "logger": "cr6",
+        "name": "public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr6-mixed-public_exp_sec",
+        "logger": "cr6",
+        "name": "public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Exp, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-mixed-public_sec_exp_true",
+        "logger": "cr6",
+        "name": "public_sec_exp_true",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp, TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Exp already defined as an internal function.\nline 1: TRUE is a predefined CONST."
+    },
+    {
+        "id": "cr6-mixed-public_sec_true_exp",
+        "logger": "cr6",
+        "name": "public_sec_true_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: TRUE is a predefined CONST.\nline 1: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr6-mixed-prior_x_sec_x_exp",
+        "logger": "cr6",
+        "name": "prior_x_sec_x_exp",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: X already declared as a variable.\nline 2: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr6-mixed-prior_x_exp_x_sec",
+        "logger": "cr6",
+        "name": "prior_x_exp_x_sec",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Exp, X, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: X already declared as a variable.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-mixed-local_public_sec_exp",
+        "logger": "cr6",
+        "name": "local_public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr6-mixed-local_public_exp_sec",
+        "logger": "cr6",
+        "name": "local_public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Exp, Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-mixed-local_dim_sec_exp",
+        "logger": "cr6",
+        "name": "local_dim_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr6-mixed-structure_member_exp",
+        "logger": "cr6",
+        "name": "structure_member_exp",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Exp\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr1000x-mixed-public_sec_exp",
+        "logger": "cr1000x",
+        "name": "public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr1000x-mixed-public_exp_sec",
+        "logger": "cr1000x",
+        "name": "public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Exp, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 1: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-mixed-public_sec_exp_true",
+        "logger": "cr1000x",
+        "name": "public_sec_exp_true",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp, TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Exp already defined as an internal function.\nline 1: TRUE is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-mixed-public_sec_true_exp",
+        "logger": "cr1000x",
+        "name": "public_sec_true_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: TRUE is a predefined CONST.\nline 1: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr1000x-mixed-prior_x_sec_x_exp",
+        "logger": "cr1000x",
+        "name": "prior_x_sec_x_exp",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: X already declared as a variable.\nline 2: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr1000x-mixed-prior_x_exp_x_sec",
+        "logger": "cr1000x",
+        "name": "prior_x_exp_x_sec",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Exp, X, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: X already declared as a variable.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-mixed-local_public_sec_exp",
+        "logger": "cr1000x",
+        "name": "local_public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Exp already defined as an internal function."
+    },
+    {
+        "id": "cr1000x-mixed-local_public_exp_sec",
+        "logger": "cr1000x",
+        "name": "local_public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Exp, Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-mixed-local_dim_sec_exp",
+        "logger": "cr1000x",
+        "name": "local_dim_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+    },
+    {
+        "id": "cr1000x-mixed-structure_member_exp",
+        "logger": "cr1000x",
+        "name": "structure_member_exp",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Exp\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+        "id": "cr300-mixed-public_sec_exp",
+        "logger": "cr300",
+        "name": "public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-public_exp_sec",
+        "logger": "cr300",
+        "name": "public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Exp, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-public_sec_exp_true",
+        "logger": "cr300",
+        "name": "public_sec_exp_true",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp, TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  TRUE.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-public_sec_true_exp",
+        "logger": "cr300",
+        "name": "public_sec_true_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Exp.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-prior_x_sec_x_exp",
+        "logger": "cr300",
+        "name": "prior_x_sec_x_exp",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Too many parameters:  Exp.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-prior_x_exp_x_sec",
+        "logger": "cr300",
+        "name": "prior_x_exp_x_sec",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Exp, X, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: Too many parameters:  Sec.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-local_public_sec_exp",
+        "logger": "cr300",
+        "name": "local_public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-local_public_exp_sec",
+        "logger": "cr300",
+        "name": "local_public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Exp, Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-local_dim_sec_exp",
+        "logger": "cr300",
+        "name": "local_dim_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr300-mixed-structure_member_exp",
+        "logger": "cr300",
+        "name": "structure_member_exp",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Exp\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+        "id": "cr350-mixed-public_sec_exp",
+        "logger": "cr350",
+        "name": "public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-public_exp_sec",
+        "logger": "cr350",
+        "name": "public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Public Exp, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-public_sec_exp_true",
+        "logger": "cr350",
+        "name": "public_sec_exp_true",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, Exp, TRUE\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  TRUE.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-public_sec_true_exp",
+        "logger": "cr350",
+        "name": "public_sec_true_exp",
+        "program_filename": "t.CR6",
+        "source": "Public Sec, TRUE, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: Too many parameters:  Exp.\nline 3: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-prior_x_sec_x_exp",
+        "logger": "cr350",
+        "name": "prior_x_sec_x_exp",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Sec, X, Exp\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 2: Too many parameters:  Exp.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-prior_x_exp_x_sec",
+        "logger": "cr350",
+        "name": "prior_x_exp_x_sec",
+        "program_filename": "t.CR6",
+        "source": "Public X\nPublic Exp, X, Sec\nBeginProg\nScan(1,Sec,3,1)\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 2: Too many parameters:  Sec.\nline 4: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-local_public_sec_exp",
+        "logger": "cr350",
+        "name": "local_public_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-local_public_exp_sec",
+        "logger": "cr350",
+        "name": "local_public_exp_sec",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nPublic Exp, Sec\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Exp already defined as an internal function.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-local_dim_sec_exp",
+        "logger": "cr350",
+        "name": "local_dim_sec_exp",
+        "program_filename": "t.CR6",
+        "source": "Sub Probe\nDim Sec, Exp\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Probe\nNextScan\nEndProg\n",
+        "expected_exit": 1,
+        "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Too many parameters:  Sec."
+    },
+    {
+        "id": "cr350-mixed-structure_member_exp",
+        "logger": "cr350",
+        "name": "structure_member_exp",
+        "program_filename": "t.CR6",
+        "source": "StructureType ST\nDim Exp\nEndStructureType\nBeginProg\nEndProg\n",
+        "expected_exit": 0,
+        "expected_stdout": "t.CR6 -- Compiled OK."
+    }
+  ]
+}

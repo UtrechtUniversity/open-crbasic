@@ -499,6 +499,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             in_struct = False
         if not in_sub and not in_struct:  # a structure body names its own members
             _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
+        elif in_sub and not in_struct:
+            symbols.check_local_name_collision(stmt, profile, diags)
 
         if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
             if not stmt.vars:
@@ -1501,7 +1503,15 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
     the later declaration). `Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow a
     global (the caller skips those bodies)."""
     if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM"):
-        for v in stmt.vars:
+        for index, v in enumerate(stmt.vars):
+            if profile and v.name.upper() in profile.functions:
+                symbols.report_function_name_collision(stmt, v.name, profile, diags)
+                if profile.single_pass:
+                    if index + 2 < len(stmt.vars):
+                        diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                    stmt.file)
+                    break
+                continue  # a failed function-name declaration never registers a variable
             prior = declared.get(v.name.upper())
             if prior == "VAR":
                 diags.error(stmt.line, f"{v.name} already declared as a variable.", stmt.file)
@@ -1509,7 +1519,18 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                 diags.error(stmt.line, f"{v.name} is already declared as a CONST.", stmt.file)
             else:
                 declared[v.name.upper()] = "VAR"
+            if profile and symbols.report_predefined_name_collision(stmt, v.name, profile, diags):
+                if profile.single_pass:
+                    if index + 2 < len(stmt.vars):
+                        diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                    stmt.file)
+                    break
     elif isinstance(stmt, S.ConstDecl):
+        if profile and stmt.name.upper() in profile.functions:
+            symbols.report_function_name_collision(stmt, stmt.name, profile, diags)
+            return
+        if profile and symbols.report_predefined_name_collision(stmt, stmt.name, profile, diags):
+            return  # failed Const declarations do not register a new constant
         prior = declared.get(stmt.name.upper())
         if prior == "VAR":
             diags.error(stmt.line, f"{stmt.name} already declared as a variable.", stmt.file)

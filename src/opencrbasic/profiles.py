@@ -73,6 +73,9 @@ class Profile:
     # CR300/CR350 report pass-2 findings (undefined names, the generic fallback) even after a
     # pass-1 error (oracle: `Dim Z banana` then `X = Q` prints both); CR6/CR1000X do not.
     single_pass: bool = False
+    # Identifier exceptions to the predefined-CONST namespace rule, observed in
+    # docs/checker.md#predefined-constant-name-collisions. STRING and FP2 stay reserved.
+    declarable_predefined_names: frozenset[str] = frozenset()
 
     def _load(self, name: str) -> list[dict]:
         return json.loads((self.data_dir / f"{name}.json").read_text())
@@ -136,10 +139,15 @@ class Profile:
         return json.loads(path.read_text()) if path.is_file() else {}
 
 
+_DECLARABLE_NUMERIC_TYPES = frozenset({
+    "FLOAT", "LONG", "BOOLEAN", "IEEE8", "IEEE4", "BOOL8", "UINT1", "UINT2", "UINT4",
+})
+
 PROFILES = {
-    "cr6": Profile("cr6", "CR6", "CR6.14.2.0", "03/04/2025", DATA, True, "CR6Comp.exe"),
+    "cr6": Profile("cr6", "CR6", "CR6.14.2.0", "03/04/2025", DATA, True, "CR6Comp.exe",
+                   declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
     "cr1000x": Profile("cr1000x", "CR1000X", "CR1000X.8.2.0", "03/04/2025", DATA / "cr1000x", True,
-                       "cr1000xcomp.exe"),
+                       "cr1000xcomp.exe", declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
                      "cr300comp.exe", unresolved_symbol_message="{name} is not defined.",
                      early_warnings_gated=True, undefined_call_message=True,

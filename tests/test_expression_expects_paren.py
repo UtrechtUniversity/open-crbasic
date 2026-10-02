@@ -73,17 +73,18 @@ def test_zero_required_arg_function_with_optional_args_still_triggers():
     assert messages_of(result) == ["Expression expects ( :     X = EmailRelay."]
 
 
-def test_declared_variable_shadowing_a_function_name_is_not_flagged():
-    # `examples/embracer.cr6` (this session's own false-reject sweep, `docs/checker.md`):
-    # `Dim ... exp As Long` followed by plain arithmetic referencing `exp` must resolve to the
-    # *variable*, not the `Exp` math function, and compile clean.
+def test_local_variable_shadowing_a_function_name_is_not_flagged():
+    # CR6 observation: scratch/builtin-local-shadow-probes.json.
     text = """Public X As Float
+Sub Test
 Dim exp As Long
+exp = 2
+X = exp + 1
+EndSub
 BeginProg
-  Scan (1,Sec,3,1)
-    exp = 2
-    X = exp + 1
-  NextScan
+Scan(1,Sec,3,1)
+Call Test
+NextScan
 EndProg
 """
     result = compile_text(text)

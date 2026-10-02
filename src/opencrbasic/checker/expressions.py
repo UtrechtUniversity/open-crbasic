@@ -639,7 +639,8 @@ def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> 
     if profile.name not in _WHOLE_EXPR_ECHO_LOGGERS:
         return
     known = _known_names(program, profile)
-    variable_names = symbols.declared_variable_names(program)
+    variable_names = {name for name in symbols.declared_variable_names(program)
+                      if not symbols.is_reserved_predefined_name(name, profile)}
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
