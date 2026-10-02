@@ -154,9 +154,7 @@ def _run_pass_capture(fn, *args):
 def _record_exception(fn, exc: Exception) -> None:
     result = _current_result.get()
     if result is not None:
-        result.implementation_exceptions.append(
-            f"{fn.__module__}.{fn.__name__}: {type(exc).__name__}: {exc}"
-        )
+        result.record_implementation_failure(f"{fn.__module__}.{fn.__name__}", exc)
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:

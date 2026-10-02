@@ -21,6 +21,7 @@ from .profiles import Profile
 # present), not the `"<program> -- Compile Failed!"` header or the blank line after it, which are
 # printed unconditionally and are not part of this budget.
 _MESSAGE_BUFFER_LIMIT = 4096
+_IMPLEMENTATION_FAILURE_MESSAGE = "Internal error: unable to compile program."
 
 
 def _no_line_kind(d) -> int:
@@ -58,6 +59,17 @@ class CompileResult:
     stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
     implementation_exceptions: list[str] = field(default_factory=list)
 
+    def record_implementation_failure(self, where: str, exc: Exception) -> None:
+        """Make an unexpected implementation error visible as a failed compilation.
+
+        This is deliberately a project marker, not a claimed CRBasic diagnostic.  A swallowed
+        checker exception must never let the CLI report a successful compile or write success-only
+        artifacts.
+        """
+        self.implementation_exceptions.append(f"{where}: {type(exc).__name__}: {exc}")
+        if not any(d.message == _IMPLEMENTATION_FAILURE_MESSAGE for d in self.diagnostics.errors):
+            self.diagnostics.error(0, _IMPLEMENTATION_FAILURE_MESSAGE)
+
     def _position(self, d) -> tuple:
         """Where diagnostic `d` falls in the expanded source: the expansion index of the first
         statement of its file at or after its line (the exe prints in one top-to-bottom pass over
@@ -75,7 +87,7 @@ class CompileResult:
 
     @property
     def ok(self) -> bool:
-        return not self.diagnostics.errors
+        return not self.diagnostics.errors and not self.implementation_exceptions
 
     def result_lines(self, show_signature: bool = False) -> list[str]:
         """The lines CR6Comp prints to stdout (and the message file) for this result."""
@@ -177,9 +189,7 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     try:
         checker.check(program, profile, diags, result)
     except Exception as exc:
-        result.implementation_exceptions.append(
-            f"checker.check: {type(exc).__name__}: {exc}"
-        )
+        result.record_implementation_failure("checker.check", exc)
         if os.environ.get("OPENCRBASIC_STRICT") == "1":
             raise
     if warn_unused and not diags.errors:
@@ -193,9 +203,7 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
             from .checker import unused
             unused.check(program, diags)
         except Exception as exc:
-            result.implementation_exceptions.append(
-                f"checker.unused.check: {type(exc).__name__}: {exc}"
-            )
+            result.record_implementation_failure("checker.unused.check", exc)
             if os.environ.get("OPENCRBASIC_STRICT") == "1":
                 raise
     from .signature import program_signature
