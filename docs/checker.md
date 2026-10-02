@@ -2648,7 +2648,8 @@ Oracle-confirmed 2026-10-01.
 - Constant index out of bounds in instruction arguments: `Battery(A(9))` for `Public A(5)` ->
   `Variable A out of bounds.`. Only a plain Float-array element with number-literal indexes at
   parameter codes 2/8/28/41 (not `AddPrecise`/`MovePrecise`); index 0 or past a dimension.
-  `A(-1)`, `A(6)+1`, Long arrays and assignments are not checked. Pass 2 on CR6/CR1000X;
+  `A(-1)`, `A(6)+1`, Long arrays and assignments are not checked here; codes 27/29 (Long/String
+  arrays too) are covered, for probed instructions only, in "Destination bounds" below. Pass 2 on CR6/CR1000X;
   CR300/CR350 only in an otherwise clean file.
 - `ESSVariables`: the table has 217 entries per exe (CR6 `DAT_005fd008`, 20-byte records: type
   byte 0xb String / 0xff Long count x 16 / else Long, count, name pointer). Messages: `ESS

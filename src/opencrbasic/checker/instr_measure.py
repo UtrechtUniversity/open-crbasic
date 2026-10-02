@@ -10,6 +10,8 @@ error. All rules below are oracle-confirmed per logger this round; see `docs/ins
 
 from __future__ import annotations
 
+import math
+
 import re
 
 from .. import consteval
@@ -130,7 +132,7 @@ def _const_value(arg: S.Expr | None, env: consteval.Env):
 
 def _int_value(arg: S.Expr | None, env: consteval.Env) -> int | None:
     v = _const_value(arg, env)
-    return int(v) if isinstance(v, (int, float)) else None
+    return int(v) if isinstance(v, (int, float)) and math.isfinite(v) else None
 
 
 def _check_gps_port(stmt: S.Instruction, cfg: dict, env: consteval.Env,

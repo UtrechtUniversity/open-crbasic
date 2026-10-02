@@ -1491,6 +1491,12 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
 # compile function takes that argument over (oracle, 2026-10-01: `AddPrecise(X,A(9))` compiles).
 _BOUNDS_CHECKED_CODES = frozenset({2, 8, 27, 28, 29, 41})
 _BOUNDS_UNCHECKED = frozenset({"ADDPRECISE", "MOVEPRECISE"})
+# Codes 27/29 only for oracle-probed instructions (2026-10-02, docs/checker.md "Destination bounds").
+_BOUNDS_PROBED = {
+    27: frozenset({"MOVE", "ERASE", "GETRECORD", "SPLITSTR", "MOVEBYTES"}),
+    29: frozenset({"REALTIME", "READIO", "PORTGET", "AVGSPA", "MAXSPA", "MINSPA", "RMSSPA",
+                   "STDDEVSPA", "SORTSPA", "SORTSPAINDEXED"}),
+}
 
 
 def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnostics,
@@ -1523,6 +1529,8 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
         for i, arg in enumerate(stmt.args):
             code = record["params"][i] if i < len(record["params"]) else None
             if code not in _BOUNDS_CHECKED_CODES or not isinstance(arg, S.Index) or not arg.args:
+                continue
+            if code in _BOUNDS_PROBED and stmt.keyword.upper() not in _BOUNDS_PROBED[code]:
                 continue
             name = arg.name.upper()
             shape = dims.get(name)
