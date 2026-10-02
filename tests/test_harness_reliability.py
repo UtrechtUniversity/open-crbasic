@@ -43,7 +43,7 @@ def test_fuzz_seed_oracle_failure_propagates(monkeypatch, tmp_path):
     [
         ("report", "false_reject", False),
         ("no-regressions", "false_reject", True),
-        ("no-regressions", "false_accept", False),
+        ("no-regressions", "implementation_exception", True),
         ("exact", "false_accept", True),
         ("exact", None, False),
     ],
@@ -88,6 +88,7 @@ def test_difftest_keeps_bad_oracle_row_without_losing_good_row(monkeypatch, tmp_
     assert rows[1]["class"] is None
     assert difftest.summarise(rows)["cli"] == {
         "exact": 1, "verdict": 0, "mismatch": 0, "oracle_error": 1,
+        "implementation_exception": 0,
     }
     assert difftest.gate_failed(rows, "report")
 
@@ -102,6 +103,7 @@ def test_difftest_does_not_hide_arbitrary_oracle_failure(monkeypatch, tmp_path):
 
 def test_replay_no_regressions_rejects_preexisting_false_reject():
     assert fuzz_replay.gate_failed([_replay_row("false_reject")], "no-regressions")
+    assert fuzz_replay.gate_failed([_replay_row("implementation_exception")], "no-regressions")
     assert not fuzz_replay.gate_failed([_replay_row("false_accept")], "no-regressions")
     assert fuzz_replay.gate_failed([_replay_row("message_diff")], "exact")
 

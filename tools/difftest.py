@@ -6,7 +6,8 @@
 Each program is classified as
   exact    identical stdout after normalisation,
   verdict  both accept or both reject, but the text differs,
-  mismatch one accepts and the other rejects.
+  mismatch one accepts and the other rejects,
+  implementation_exception a swallowed opencrbasic implementation failure.
 Results go to stdout and to `difftest-<logger>.json` (ignored by git). The real compiler runs
 through tools/oracle.py (cached), so the first run of a large corpus is slow.
 """
@@ -51,6 +52,8 @@ def gate_failed(rows: list[dict], gate: str) -> bool:
         return True
     if gate == "report":
         return False
+    if any(row["class"] == "implementation_exception" for row in rows):
+        return True
     if gate == "exact":
         return any(row["status"] != "exact" for row in rows)
     return any(row["class"] in {"false_reject", "crash", "hang"} for row in rows)
@@ -59,6 +62,8 @@ def gate_failed(rows: list[dict], gate: str) -> bool:
 def ours(path: Path, profile) -> tuple[int, str]:
     try:
         result = compile_file(path, profile)
+        if result.implementation_exceptions:
+            return 4, "IMPLEMENTATION EXCEPTION: " + " | ".join(result.implementation_exceptions)
         return (0 if result.ok else 1), "\n".join(result.result_lines())
     except Exception as exc:  # a crash is a result, not a harness failure
         return 2, f"CRASH {type(exc).__name__}: {exc}"
@@ -89,6 +94,8 @@ def compare_one(item: tuple[str, Path, Path | None], profile) -> dict:
     cls = fuzz.classify(our_exit, our_out, their_exit, their_out)
     if cls is None:
         status = "exact"
+    elif cls == "implementation_exception":
+        status = cls
     elif our_exit == their_exit:
         status = "verdict"
     else:
@@ -102,7 +109,8 @@ def summarise(rows: list[dict]) -> dict[str, dict[str, int]]:
     summary: dict[str, dict[str, int]] = {}
     for row in rows:
         counts = summary.setdefault(
-            row["group"], {"exact": 0, "verdict": 0, "mismatch": 0, "oracle_error": 0}
+            row["group"], {"exact": 0, "verdict": 0, "mismatch": 0, "oracle_error": 0,
+                           "implementation_exception": 0}
         )
         counts[row["status"]] += 1
     return summary
@@ -136,7 +144,8 @@ def main() -> int:
     for group, s in summary.items():
         total = sum(s.values())
         print(f"{args.logger} {group}: {total} programs, exact {s['exact']}, verdict {s['verdict']}, "
-              f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}")
+              f"mismatch {s['mismatch']}, oracle_error {s['oracle_error']}, "
+              f"implementation_exception {s['implementation_exception']}")
     shown = 0
     for r in rows:
         if r["status"] != "exact" and shown < args.show:

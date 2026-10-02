@@ -114,6 +114,8 @@ def gate_failed(results: list[dict], gate: str) -> bool:
         return True
     if gate == "report":
         return False
+    if any(r["now_class"] == "implementation_exception" for r in results):
+        return True
     if gate == "exact":
         return any(r["now_class"] is not None for r in results)
     return any(r["now_class"] in {"false_reject", "crash", "hang"} for r in results)

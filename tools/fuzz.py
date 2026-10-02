@@ -14,6 +14,7 @@ random text-level mutation operators (`OPERATORS` below) to a seed's lines, seed
   message_diff  both reject, different text
   mode_diff     both accept, different text (mode line or warnings)
   crash         opencrbasic raised a Python exception
+  implementation_exception a checker pass raised but compilation recovered
   hang          opencrbasic did not return at all within a timeout (see below)
 
 `run_ours` calls `compile_file` in a spawned child process with a hard wall-clock timeout
@@ -72,7 +73,8 @@ CHM_DIR = ROOT / "tests" / "corpus" / "chm"
 FUZZ_CORPUS = ROOT / "tests" / "corpus" / "fuzz"
 
 DEFAULT_COUNTS = {"cr6": 1500, "cr1000x": 300, "cr300": 300, "cr350": 300}
-CLASSES = ["crash", "hang", "false_reject", "false_accept", "message_diff", "mode_diff"]
+CLASSES = ["crash", "hang", "implementation_exception", "false_reject", "false_accept",
+           "message_diff", "mode_diff"]
 # Crashes, hangs and false rejects are the important ones; keep more exemplars of those.
 SIGNATURE_CAP_OVERRIDE = {"crash": 20, "hang": 20, "false_reject": 10}
 HANG_TIMEOUT = 8.0
@@ -481,6 +483,10 @@ def _run_ours_child(path_str: str, logger: str, result_pipe) -> None:
     try:
         profile = profiles.get(logger)
         result = compile_file(Path(path_str), profile)
+        if result.implementation_exceptions:
+            result_pipe.send((4, "IMPLEMENTATION EXCEPTION: " +
+                              " | ".join(result.implementation_exceptions)))
+            return
         result_pipe.send(((0 if result.ok else 1), "\n".join(result.result_lines())))
     except Exception as exc:  # a crash is a result, not a harness failure
         result_pipe.send((2, f"CRASH {type(exc).__name__}: {exc}"))
@@ -531,6 +537,8 @@ def classify(our_exit: int, our_out: str, their_exit: int, their_out: str) -> st
         return "hang"
     if our_exit == 2:
         return "crash"
+    if our_exit == 4:
+        return "implementation_exception"
     # A matching diagnostic transcript is not exact parity when the process verdict differs.
     if our_exit == their_exit and normalise(our_out) == normalise(their_out):
         return None
@@ -615,13 +623,15 @@ def shrink(seed: Seed, lines: list[str], profile: profiles.Profile, target_class
 def _signature(cls: str, our_out: str, their_out: str) -> tuple[str, str]:
     a = normalise(our_out).splitlines()
     b = normalise(their_out).splitlines()
-    if cls in ("false_accept", "false_reject", "crash", "hang"):
+    if cls in ("false_accept", "false_reject", "crash", "hang", "implementation_exception"):
         # The exit codes differ, so the first (banner) line always differs on its own -- "X --
         # Compiled ..." vs "X -- Compile Failed!" -- and would swamp a first-differing-line
         # signature with the seed's filename, collapsing every distinct rejection reason from the
         # same seed into one bucket. Use the rejecting side's own detail lines (after the banner)
         # instead, since that is the text that actually distinguishes root causes.
-        detail = a if cls in ("crash", "hang") else (b[1:] if cls == "false_accept" else a[1:])
+        detail = a if cls in ("crash", "hang", "implementation_exception") else (
+            b[1:] if cls == "false_accept" else a[1:]
+        )
         first_diff = " | ".join(detail) if detail else (b[0] if b else a[0] if a else "")
     else:
         first_diff = ""

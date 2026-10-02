@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import bisect
+import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -55,6 +56,7 @@ class CompileResult:
     file_order: dict = field(default_factory=dict)  # file name -> its rank in expansion order
     # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
     stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
+    implementation_exceptions: list[str] = field(default_factory=list)
 
     def _position(self, d) -> tuple:
         """Where diagnostic `d` falls in the expanded source: the expansion index of the first
@@ -151,10 +153,16 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     name = display_name or path.name
     try:
         program, diags = parser.parse_file(path, profile=profile)
-    except Exception:
+    except Exception as exc:
         diags = Diagnostics()
         diags.error(0, "Internal error: unable to parse program.")
-        return CompileResult(name, profile, diags)
+        result = CompileResult(name, profile, diags)
+        result.implementation_exceptions.append(
+            f"parser.parse_file: {type(exc).__name__}: {exc}"
+        )
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
+        return result
     file_order: dict[str, int] = {}
     stmt_lines: dict[str, list[tuple[int, int]]] = {}
     for index, stmt in enumerate(program.statements):
@@ -168,8 +176,12 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     try:
         checker.check(program, profile, diags, result)
-    except Exception:
-        pass
+    except Exception as exc:
+        result.implementation_exceptions.append(
+            f"checker.check: {type(exc).__name__}: {exc}"
+        )
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
     if warn_unused and not diags.errors:
         # `-u` (`docs/cli.md` "-u", `checker/unused.py`): oracle-confirmed to add nothing at all
         # once any error is present anywhere in the file, so this only ever runs on an otherwise-
@@ -180,8 +192,12 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         try:
             from .checker import unused
             unused.check(program, diags)
-        except Exception:
-            pass
+        except Exception as exc:
+            result.implementation_exceptions.append(
+                f"checker.unused.check: {type(exc).__name__}: {exc}"
+            )
+            if os.environ.get("OPENCRBASIC_STRICT") == "1":
+                raise
     from .signature import program_signature
     try:
         result.signature = program_signature(path)

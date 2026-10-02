@@ -94,6 +94,8 @@ name/type resolution (the rest of `expressions.py`) are future work; see `docs/c
 from __future__ import annotations
 
 import dataclasses
+import os
+from contextvars import ContextVar
 
 from .. import consteval, mode
 from .. import syntax as S
@@ -103,6 +105,9 @@ from . import (
     cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
     structure, warnings,
 )
+
+
+_current_result: ContextVar = ContextVar("opencrbasic_checker_result", default=None)
 
 
 def _run_pass(fn, *args) -> None:
@@ -116,8 +121,10 @@ def _run_pass(fn, *args) -> None:
     """
     try:
         fn(*args)
-    except Exception:
-        pass
+    except Exception as exc:
+        _record_exception(fn, exc)
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
 
 
 def _with_inline(program: S.Program) -> S.Program:
@@ -137,11 +144,30 @@ def _run_pass_capture(fn, *args):
     """
     try:
         return fn(*args)
-    except Exception:
+    except Exception as exc:
+        _record_exception(fn, exc)
+        if os.environ.get("OPENCRBASIC_STRICT") == "1":
+            raise
         return None
 
 
+def _record_exception(fn, exc: Exception) -> None:
+    result = _current_result.get()
+    if result is not None:
+        result.implementation_exceptions.append(
+            f"{fn.__module__}.{fn.__name__}: {type(exc).__name__}: {exc}"
+        )
+
+
 def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
+    token = _current_result.set(result)
+    try:
+        _check(program, profile, diags, result)
+    finally:
+        _current_result.reset(token)
+
+
+def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
     env = consteval.Env(profile, dict(program.consts))
 
     _run_pass(structure.check_pass1, program, profile, diags, env)
