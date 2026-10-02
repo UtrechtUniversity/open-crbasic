@@ -906,3 +906,14 @@ Same module (fixture cases `*-sdmcd16-*`, `*-snmpvariable-*`, `*-menurecompile-*
 - `MenuRecompile(Text,Var)`: a String variable, element or `Const` string gives `String type variable
   not allowed.`; `MenuItem`/`DisplayValue` accept strings. A numeric `Const` gives `Invalid Variable or
   Array: A.` (not modelled here).
+
+### String operands
+
+Same module (fixture cases `*-string-operand-*`, all four loggers). A String-typed operand (variable,
+element, string `Const`/literal, or a `+` of strings) in `AND OR XOR IMP EQV << >>` gives `String is
+illegal here`; in `* / MOD` the left String gives `Illegal String operand`, the right one `Illegal
+operand of type STRING` (both when both). `+ - & ^`, comparisons, `NOT` and unary minus accept
+strings (`S` alone in `If S Then` passes). Found in assignments, `If`/`ElseIf` conditions, instruction
+and call arguments, one message per statement. A statement holding two offending operators gets more
+messages than offenders (`(S AND F) OR (F AND S)` printed three), so that shape is left silent. The
+`\` operator is a different family (`Illegal String operand` plus more) and is not modelled.

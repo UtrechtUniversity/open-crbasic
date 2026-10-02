@@ -90,6 +90,57 @@ _SNMP_RE = re.compile(r"\s*SNMPVARIABLE\s*\(\s*(\w+)\s*,\s*[\d.]+\s*,\s*(\w+)", 
 _SNMP_ALLOWED = {"FLOAT": {"FLOAT"}, "STRING": {"STRING", "FLOAT"}}
 
 
+# Operators that reject a String operand (oracle, all four loggers): the logical and shift
+# operators with one shared message, `* / MOD` with one message per String side.
+_STRING_ILLEGAL_OPS = {"AND", "OR", "XOR", "IMP", "EQV", "<<", ">>"}
+_STRING_ARITH_OPS = {"*", "/", "MOD"}
+
+
+def _subexpressions(expr: S.Expr | None):
+    if expr is None:
+        return
+    yield expr
+    if isinstance(expr, S.Binary):
+        yield from _subexpressions(expr.left)
+        yield from _subexpressions(expr.right)
+    elif isinstance(expr, S.Unary):
+        yield from _subexpressions(expr.operand)
+    elif isinstance(expr, (S.Index, S.Member)):
+        for a in expr.args or []:
+            yield from _subexpressions(a)
+    elif isinstance(expr, S.ArrayLiteral):
+        for a in expr.items:
+            yield from _subexpressions(a)
+
+
+def _statement_expressions(stmt: S.Stmt):
+    if isinstance(stmt, S.Assignment):
+        yield stmt.value
+    elif isinstance(stmt, (S.Instruction, S.Call)):
+        yield from stmt.args
+    elif isinstance(stmt, (S.If, S.ElseIf)):
+        yield stmt.cond
+        for inner in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or []):
+            yield from _statement_expressions(inner)
+
+
+def _string_operand_messages(typer: "_Typer", stmt: S.Stmt) -> list[str]:
+    """The messages for the one String-operand error a statement holds; none when it holds
+    several (their number and order is not established)."""
+    found: list[list[str]] = []
+    for top in _statement_expressions(stmt):
+        for node in _subexpressions(top):
+            if not isinstance(node, S.Binary):
+                continue
+            left, right = typer.of(node.left) == "STRING", typer.of(node.right) == "STRING"
+            if node.op in _STRING_ILLEGAL_OPS and (left or right):
+                found.append(["String is illegal here"])
+            elif node.op in _STRING_ARITH_OPS and (left or right):
+                found.append((["Illegal String operand"] if left else []) +
+                             (["Illegal operand of type STRING"] if right else []))
+    return found[0] if len(found) == 1 else []
+
+
 def _snmp_mismatch(typer: "_Typer", name: S.Expr | None, snmp_type: str) -> bool:
     var = typer.variable(name)
     return var is not None and snmp_type.upper() in _SNMP_TYPES and \
@@ -104,6 +155,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     typer = _Typer(program)
     dims = None
     for stmt in program.statements:
+        for text in _string_operand_messages(typer, stmt):
+            diags.error(stmt.line, text, stmt.file)
         if isinstance(stmt, S.Unparsed):  # a dotted OID is not an expression
             m = _SNMP_RE.match(stmt.text)
             if m and "SNMPVARIABLE" in profile.instructions and \
