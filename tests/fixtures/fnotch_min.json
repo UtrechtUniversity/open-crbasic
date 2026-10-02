@@ -1,0 +1,953 @@
+{
+ "observation_date": "2026-10-02",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-zero",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-false",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-true",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,True)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-neg1",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-tiny",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.0001)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-exp-neg",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1.0e-5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-one",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-two",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sixty",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-big",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1e30)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-fifteen-thousand",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-string",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-empty-string",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-digit-string",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"60\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-nan",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-inf",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-minus-inf",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-hex",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,&H3C)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-named-const",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,FNC)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-named-sec",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-expr-fold",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-sqr-fold",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,SQR(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-variable",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,PTemp)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: PTemp."
+  },
+  {
+   "id": "cr6-variable-indexed",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,X(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X(1)."
+  },
+  {
+   "id": "cr6-variable-expr",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,PTemp+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: PTemp+1."
+  },
+  {
+   "id": "cr6-undefined-name",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-too-many",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Too many parameters:  5."
+  },
+  {
+   "id": "cr6-two-lines",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    PanelTemp(PTemp,-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 6: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-colon",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1) : PanelTemp(PTemp,-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-then-structure",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    Foo = Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-structure-then",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Foo = Bar\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-after-banana",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nDim Z banana\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 6: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-after-const-symbol",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Delay(0,5,Foo)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo.\nline 6: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-symbol-then",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    Delay(0,5,Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 6: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr6-missing-param",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    PanelTemp()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short-args",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,mV5000,U1,False,0,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-range-and-fnotch",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,999,U1,False,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-range-only-after-banana",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nDim Z banana\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,999,U1,False,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 6: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr6-tcdiff",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    TCDiff(X(),1,mV200C,1,TypeT,PTemp,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-tcse",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    TCSe(X(),1,mV200C,1,TypeT,PTemp,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-voltdiff",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltDiff(X(),1,mV5000,U1,False,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-therm107",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Therm107(X(),1,1,1,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-brhalf",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrHalf(X(),1,mV5000,1,1,1,2500,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-brhalf4w",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrHalf4W(X(),1,mV200,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-brfull",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrFull(X(),1,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz.\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-brfull6w",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrFull6W(X(),1,mV200,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-inline-if",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    If X(1) Then PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_4",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_45",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.45)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_47",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.47)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_4768",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4768)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_47684",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.47684)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_476845",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.476845)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_4769",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4769)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_48",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.48)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-0_5",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-1_0",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-1_4",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-1_43",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-1_43052",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43052)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is 2 Hz."
+  },
+  {
+   "id": "cr6-edge-1_43053",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43053)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-1_431",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.431)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-1_44",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.44)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-1_5",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-1_9",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-2_0",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-edge-2_5",
+   "logger": "cr6",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-zero",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-false",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,False)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-true",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,True)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-neg1",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-tiny",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.0001)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-exp-neg",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1.0e-5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-one",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-two",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sixty",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-big",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1e30)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-fifteen-thousand",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-string",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-empty-string",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-digit-string",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,\"60\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-nan",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-inf",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-minus-inf",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-hex",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,&H3C)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-named-const",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,FNC)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-named-sec",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-expr-fold",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-sqr-fold",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,SQR(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-variable",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,PTemp)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: PTemp."
+  },
+  {
+   "id": "cr1000x-variable-indexed",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,X(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X(1)."
+  },
+  {
+   "id": "cr1000x-variable-expr",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,PTemp+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: PTemp+1."
+  },
+  {
+   "id": "cr1000x-undefined-name",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-too-many",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Too many parameters:  5."
+  },
+  {
+   "id": "cr1000x-two-lines",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    PanelTemp(PTemp,-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 6: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-colon",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1) : PanelTemp(PTemp,-2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-then-structure",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    Foo = Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-structure-then",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Foo = Bar\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-after-banana",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nDim Z banana\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 6: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-after-const-symbol",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Delay(0,5,Foo)\n    PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo.\nline 6: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-symbol-then",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    Delay(0,5,Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 6: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr1000x-missing-param",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,-1)\n    PanelTemp()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 6: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short-args",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,mV5000,1,False,0,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-range-and-fnotch",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,999,1,False,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange.\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-range-only-after-banana",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nDim Z banana\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltSe(X(),1,999,1,False,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid Variable declaration banana.\nline 6: Invalid range code, valid options are: mV5000, mV1000, mV200, or AutoRange."
+  },
+  {
+   "id": "cr1000x-tcdiff",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    TCDiff(X(),1,mV200C,1,TypeT,PTemp,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-tcse",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    TCSe(X(),1,mV200C,1,TypeT,PTemp,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-voltdiff",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    VoltDiff(X(),1,mV5000,1,False,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-therm107",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    Therm107(X(),1,1,1,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-brhalf",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrHalf(X(),1,mV5000,1,1,1,2500,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-brhalf4w",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrHalf4W(X(),1,mV200,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-brfull",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrFull(X(),1,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz.\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-brfull6w",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    BrFull6W(X(),1,mV200,mV200,1,1,1,2500,True,True,0,-1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-inline-if",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    If X(1) Then PanelTemp(PTemp,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_4",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_45",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.45)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_47",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.47)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_4768",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4768)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_47684",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.47684)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid fnotch, minimum allowed is .5 Hz."
+  },
+  {
+   "id": "cr1000x-edge-0_476845",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.476845)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0_4769",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.4769)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0_48",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.48)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-0_5",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,0.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_0",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_4",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_43",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_43052",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43052)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_43053",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.43053)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_431",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.431)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_44",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.44)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_5",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-1_9",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,1.9)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-2_0",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-edge-2_5",
+   "logger": "cr1000x",
+   "source": "Const FNC = 50\nPublic PTemp, X(2)\nBeginProg\n  Scan (1,Hr,0,0)\n    PanelTemp(PTemp,2.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

@@ -132,6 +132,63 @@ fuzz-findings.md`: 54/300 and 58/300 mutants respectively; both loggers' single 
 reproducer was exactly this warning) and for a large slice of the `chm` corpus's own `verdict`
 count (`PanelTemp`/`TCDiff` alone appear in 188 and 102 corpus files respectively).
 
+## `Invalid fnotch, minimum allowed is N Hz.` (CR6 `2 Hz`, CR1000X `.5 Hz`; an error)
+
+Observed 2026-10-02 on `CR6Comp.exe` and `cr1000xcomp.exe` (compiler hashes in
+`tests/fixtures/fnotch_min.json`), 134 fixture cases
+(`tests/test_fnotch_min.py`), data `data/fnotch.json` (CR6) and `data/cr1000x/fnotch.json`.
+Unlike CR300/CR350 above (a warning on a fixed value set), this is a hard **error** and has no
+maximum (`1e30` and `15000` compile clean).
+
+Value rule on the folded `fN1` argument: `0`, `+INF` and `-INF` pass; `NAN`, every other negative
+number, a string (including `""` and `"60"`) and `True` (= -1) fail; a positive number fails when it
+is below the minimum. The message always says `2 Hz` (CR6) / `.5 Hz` (CR1000X) but the real cut-off
+is not that number. Bisected: CR6 fails at `1.43052` and passes at `1.43053`; CR1000X fails at
+`0.47684` and passes at `0.476845` (`1e6 / f` is about 699,04x us and 2,097,1xx us, the CR1000X
+figure is three times the CR6 one). `min_hz` in the data files is the midpoint of each bracket
+(1.430525, 0.4768425), so the unprobed digits beyond it are an assumption.
+
+Instruction and 1-based position (identical positions on both loggers, `params` type code 20 in
+`data/instructions.json`): `PanelTemp` 2, `VoltSe`/`VoltDiff`/`CurrentSe` 7, `TCSe`/`TCDiff` 9, `Therm107/108/109` 6,
+`BrHalf`/`BrHalf3W` 10, `BrFull` 11, `BrHalf4W`/`BrFull6W` 12, `AM25T` 13. CR6 additionally has
+`PanelTemp2` 4, `Thermistor` 8, `Resistance` 11 and `Resistance2W`/`Resistance3W` 8 (each only
+probed with `-1`, a single failing value, and with unusual argument lists; the positions come from
+the instruction table). The message is printed **twice** for `Therm107/108/109`, `BrHalf`,
+`BrHalf3W` and `BrFull` (both loggers, also with `Reps` 2 and with other `RevEx` values), once for
+the rest; the reason is unknown, it is modelled as the data key `twice`.
+
+Pass and ordering (all oracle-confirmed on both loggers unless noted):
+
+- It is a pass-1, constant-family value check, like the unresolved-symbol check of
+  `expressions.check_const_family_args`. It is reported next to earlier pass-1 errors (`Dim Z
+  banana`, `Delay(0,5,Foo)`, a stage-2a `Battery((1+2))`), and it makes pass 2 not run:
+  `PanelTemp(PTemp,-1)` followed or preceded by `Foo = Bar` prints only the fnotch line, and an
+  undefined destination (`PanelTemp(Nope,60)`) is not reported either.
+- Within a statement: an unresolved name or a variable in any constant position (e.g. `U99`,
+  `mV7`) abandons the statement before the fN1 check; the `Range` code error (below) comes first
+  when both apply; the fnotch line precedes `Invalid or missing parameter.` and `Too many
+  parameters:  N.` on the same line (`PanelTemp(PTemp,True,1)`, `VoltSe(...,-1)` with `Mult`
+  missing). A bad `Mult`/`Offset` name (general family) is not reported. Two fnotch errors on one
+  line (`:` separated) are both printed, and an inline `If ... Then PanelTemp(PTemp,-1)` counts.
+- A variable at the fN1 slot (`PanelTemp(PTemp,PTemp)`, `X(1)`, `PTemp+1`) is `Variable illegal in
+  Parameter: <text>.` on CR6/CR1000X (previously a false accept; CR300/CR350 not touched).
+- `Range` code (`Invalid range code, valid options are: ...`) is the same kind of check: it is
+  reported after `Dim Z banana` and `Delay(0,5,Foo)` errors on both loggers (CR1000X cases use
+  channel `1`). It used to be gated as a tier-C check; it now runs in the same pass-1 function
+  (`instr_measure.check_pass1_values`).
+
+CR350/CR300 fuzz reproducers that were listed as fnotch false accepts (`cr350/false_accept/2e32a4ebade7`,
+`165c693049da`, `1549108234a4`, `881ad67a2b3f`, `cb998c48d68a`, `cr300/false_accept/6c8fb0434bdb`)
+are not fnotch problems: the warning (`Warning:`, which does not fail a compile by itself) is
+already emitted exactly. The compile fails because of other errors we do not model (`DataTable
+interval ... not integrally divisible by scan interval`, `Illegal Semaphore, 1..3 are legal`,
+`Could not find ScanConstTable.ScanConst(1).`, `Illegal option.`, `Illegal Matrix dimensioned`,
+`Variable Temp out of bounds.` for `Therm109` with a missing argument).
+
+Not modelled: on `Scan (1,Sec,0,0)` a low `fN1` (CR6 1.43 to 2, CR1000X 0.477 to 2) additionally
+gives `Scan interval too short for measurement by N Sec.` on the `NextScan` line; it depends on the
+fnotch value and is not implemented.
+
 ## `Scan Interval/BufferOption/Count parameter must be a non-negative integer` (CR6/CR1000X only)
 
 No trailing period (verbatim oracle/`docs/messages.tsv` text, function `FUN_00468900`), for

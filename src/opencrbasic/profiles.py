@@ -107,9 +107,9 @@ class Profile:
 
     @cached_property
     def fnotch(self) -> dict:
-        """`fN1`/fnotch argument value-set check (CR300/CR350 only, `checker/warnings.py`,
-        `docs/instructions.md`). Absent (`{}`) for CR6/CR1000X, which allow any value in range
-        instead of a fixed set (evidence: `docs/instructions.md`)."""
+        """`fN1`/fnotch argument check, `docs/instructions.md`: CR300/CR350 a fixed value set
+        (warning, `checker/warnings.py`), CR6/CR1000X a minimum frequency (error, `min_hz`,
+        `checker/instr_measure.py`)."""
         path = self.data_dir / "fnotch.json"
         return json.loads(path.read_text()) if path.is_file() else {}
 

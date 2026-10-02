@@ -357,8 +357,8 @@ def _check_fnotch(program: S.Program, profile: Profile, diags: Diagnostics, env:
     (like `_check_reachability`/`_check_background_calibration`) this is called ungated.
     """
     data = profile.fnotch
-    if not data:
-        return
+    if not data or "valid" not in data:
+        return  # CR6/CR1000X carry a minimum-frequency error instead (`instr_measure.check_pass1_values`)
     valid = set(data["valid"])
     message = data["message"]
     positions: dict[str, int] = data["instructions"]

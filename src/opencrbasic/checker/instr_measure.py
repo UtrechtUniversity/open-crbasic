@@ -16,6 +16,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
+from . import symbols
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -26,8 +27,6 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
-        if kw in measure.get("range_code_instructions", {}):
-            _check_range_code(stmt, measure, measure["range_code_instructions"][kw], env, diags)
         if kw == "SW12" and "sw12_ports" in measure:
             _check_sw12(stmt, measure, env, diags)
         if kw == "DELAY" and "delay" in measure:
@@ -38,6 +37,83 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_excite_magnitude(stmt, measure, env, diags)
         if kw == "GPS" and "gps" in measure:
             _check_gps_port(stmt, measure["gps"], env, diags)
+
+
+def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
+                       env: consteval.Env) -> None:
+    """CR6/CR1000X pass 1 value checks on const-family positions: `Range` code, then `fN1`
+    (position order within one statement). Oracle: both are reported next to an earlier pass-1
+    error (`Dim Z banana`, `Delay(0,5,Foo)`), unlike the tier-C checks of `check`
+    (`docs/instructions.md` "fN1 / fnotch"). A statement that already has an error on its line
+    (unresolved name, variable in a constant position) is abandoned before these run."""
+    from . import expressions
+    measure = profile.measure
+    fnotch = profile.fnotch
+    ranges = measure.get("range_code_instructions", {}) if measure else {}
+    fn_pos = fnotch.get("instructions", {}) if fnotch and "min_hz" in fnotch else {}
+    if not ranges and not fn_pos:
+        return
+    variable_names = frozenset(name for name in symbols.declared_variable_names(program)
+                               if not symbols.is_reserved_predefined_name(name, profile))
+    earlier = {(d.line, d.file) for d in diags.items if d.severity == "error"}
+    flat = []
+    for st in program.statements:
+        flat.append(st)
+        if isinstance(st, S.If):
+            flat.extend((st.inline or []) + (st.inline_else or []))
+    for stmt in flat:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        if kw not in ranges and kw not in fn_pos:
+            continue
+        if (stmt.line, stmt.file) in earlier:
+            continue
+        if any(expressions._find_arity_problem(a, profile) or
+               expressions._find_bare_function_ref(a, profile, variable_names)
+               for a in stmt.args if a is not None):
+            continue
+        if kw in ranges:
+            _check_range_code(stmt, measure, ranges[kw], env, diags)
+        if kw in fn_pos:
+            _check_fnotch_min(stmt, fnotch, fn_pos[kw], env, diags)
+
+
+_INF_NAMES = {"INF": float("inf"), "NAN": float("nan")}
+
+
+def _fnotch_value(arg: S.Expr, env: consteval.Env):
+    """Folded `fN1` value; `NAN`/`INF` (not named constants in `consteval`) handled here."""
+    inner, sign = arg, 1.0
+    while isinstance(inner, S.Unary) and inner.op == "-":
+        inner, sign = inner.operand, -sign
+    if isinstance(inner, S.Name) and inner.name.upper() in _INF_NAMES and \
+            inner.name.upper() not in env.consts:
+        return sign * _INF_NAMES[inner.name.upper()]
+    return _const_value(arg, env)
+
+
+def _check_fnotch_min(stmt: S.Instruction, cfg: dict, pos: int, env: consteval.Env,
+                      diags: Diagnostics) -> None:
+    """`Invalid fnotch, minimum allowed is N Hz.` (CR6 2, CR1000X .5; docs/instructions.md). Zero
+    and +-INF pass, NAN, negatives, strings and values under the logger's minimum fail; there is
+    no maximum."""
+    idx = pos - 1
+    if idx >= len(stmt.args) or stmt.args[idx] is None:
+        return
+    value = _fnotch_value(stmt.args[idx], env)
+    if value is None:
+        return
+    if isinstance(value, str):
+        bad = True
+    else:
+        value = float(value)
+        bad = value != value or (value != 0 and abs(value) != float("inf") and
+                                 (value < 0 or value < cfg["min_hz"]))
+    if bad:
+        times = 2 if stmt.keyword.upper() in cfg.get("twice", ()) else 1
+        for _ in range(times):
+            diags.error(stmt.line, cfg["message"], stmt.file)
 
 
 def _const_value(arg: S.Expr | None, env: consteval.Env):

@@ -152,6 +152,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
     _run_pass(expressions.check_consts, program, profile, diags)
     # CR6/CR1000X: constant-family instruction arguments resolve in pass 1 too.
     _run_pass(expressions.check_const_family_args, program, profile, diags)
+    # CR6/CR1000X: `Range` code and `fN1` value checks, same pass (`docs/instructions.md`).
+    _run_pass(instr_measure.check_pass1_values, program, profile, diags, env)
     # `TimeIntoInterval`/`IfTime` constant arguments, a parser check (`checker/intervals.py`).
     _run_pass(intervals.check, program, profile, diags, env)
     _run_pass(instr_rules.check_const_int_args, program, profile, diags, env)

@@ -568,7 +568,11 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         # CR300/CR350: an undefined name at a code-20 keyword slot is also `Variable illegal`
         # (oracle, 2026-10-01: `PanelTemp(X,Nope)`).
         is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS or (
-            bool(names) and not whole_echo and positions[i] == "datatype_kw")
+            bool(names) and not whole_echo and positions[i] == "datatype_kw") or (
+            # CR6/CR1000X `fN1` slot: a variable there is `Variable illegal in Parameter`
+            # (oracle, 2026-10-02, `docs/instructions.md` "fN1 / fnotch").
+            whole_echo and positions[i] == "datatype_kw" and
+            profile.fnotch.get("instructions", {}).get(stmt.keyword.upper()) == i + 1)
 
         if names:
             if whole_echo:
