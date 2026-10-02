@@ -972,3 +972,11 @@ legal`). `1.9` is accepted (truncation), `0.9`, `-1`, `TRUE`, strings, `NAN` and
 Not modelled: before `BeginProg` the real compiler reports this value error ahead of the
 `illegally occurs before BeginProg.` placement error of the same line (we print the placement
 error first, or on CR300/CR350 only that one).
+
+### `ACPower`: `Legal configuration is 1..3.` (CR6/CR1000X)
+
+`ConfigAC` (position 2) must convert to 1..3 (`0`, `4`, `-1`, `0.9`, strings and `TRUE` fail, `3.9`
+passes). Printed before any channel errors of the same statement. Known gap: on CR6 the real
+compiler also reports its `Invalid channel N, must use U1..U12.` series for `ACPower` channels
+(and CR1000X `must use 1..16.`) beside it; those are not implemented, so such a file matches only
+when its channels are valid.

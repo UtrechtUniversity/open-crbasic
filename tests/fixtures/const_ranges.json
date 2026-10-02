@@ -748,6 +748,90 @@
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined."
     },
     {
+      "id": "cr6-acpower-0",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),0,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr6-acpower-1",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),1,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-acpower-3",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),3,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-acpower-4",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),4,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr6-acpower--1",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),-1,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr6-acpower-qaq",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),\"a\",60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr6-acpower-3p9",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),3.9,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-acpower-0p9",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),0.9,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr6-acpower-K",
+      "logger": "cr6",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),K,60,U1,115/333,120,U2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-acpower-0",
+      "logger": "cr1000x",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),0,60,1,115/333,120,2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
+      "id": "cr1000x-acpower-3",
+      "logger": "cr1000x",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),3,60,1,115/333,120,2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-acpower-4",
+      "logger": "cr1000x",
+      "source": "Public AC(7)\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    ACPower(AC(),4,60,1,115/333,120,2,10/333,15,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Legal configuration is 1..3."
+    },
+    {
       "id": "cr6-semaphore-beside-channel-error",
       "logger": "cr6",
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    VoltDiff(X,1,mv5000,U2,1,0,15000,1,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
