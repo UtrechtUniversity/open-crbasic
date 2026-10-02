@@ -2902,3 +2902,29 @@ size-3 array), `2e18cd532da2` (AvgRun Reps), `6f3c11c5579c` (LI7700 Reps 3 on a 
 (`Therm109(Temp(),2,...)`), `fuzz/cr1000x/false_accept/49c0752ccf0e` (`CalFile(array2,25,...)`).
 Not covered: negative Reps for instructions other than `CalFile`, CR300/CR350 measurement
 instructions other than `Therm107-109` (not probed), Reps beyond 32 bits.
+
+## Block structure (2026-10-02)
+
+Fixtures: `tests/fixtures/block_structure.json` (`tests/test_block_structure.py`), real-compiler
+outputs recorded 2026-10-02 with the compiler sha256 per logger in the fixture.
+
+### Misplaced Sub / Function
+
+`structure.first_misplaced_sub`. A `Sub`/`Function` declared while another is open prints, all at
+the declaring line, in this order: `Sub declared within a Sub.` (also for Function in Function,
+Sub in Function and the reverse; the text never says Function), `Sub declaration inside
+If..EndIf.` (open `If`/`Select`), then `Sub is declared in the middle of an executing sequence`
+(`Function is ...` for a Function; no period). The last message also appears alone for a
+declaration inside an open `Scan`, between `BeginProg` and the first `Scan`, inside a `DataTable`
+or inside an `If`/`For`/`Do` in the main program. Accepted: after the first `NextScan`, after a
+`SlowSequence` header, after `EndProg`.
+
+It is a pass-2 placement error: earlier pass-2 errors in line order still print, nothing later does;
+a pass-1 error anywhere hides it. CR300/CR350 report it in the late walk
+(`check_scan_placement_late`); any error elsewhere, including an unrelated `X is not defined.` after
+it, hides it, and with no other error there is no `Too many parameters` cascade.
+
+Not implemented: `Duplicate Sub A` (also at top level, `Sub A` twice), and `x already declared as a
+variable.` for a Sub named like a variable (printed between the If and the "middle" message; on
+CR300/CR350 these make the Sub errors survive a later `X is not defined.`). The two-message output
+for these shapes therefore still differs.

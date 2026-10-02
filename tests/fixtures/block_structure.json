@@ -1,0 +1,184 @@
+{
+ "observation_date": "2026-10-02",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "sub-in-sub-cr6",
+   "logger": "cr6",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "function-in-sub-cr6",
+   "logger": "cr6",
+   "source": "Public x\nSub A\nx=1\nFunction B As Long\nB=2\nEndFunction\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-if-in-sub-cr6",
+   "logger": "cr6",
+   "source": "Public x\nSub A\nIf x=1 Then\nSub B\nx=2\nEndSub\nEndIf\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub declaration inside If..EndIf.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-scan-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSub B\nx=2\nEndSub\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-sequential-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x\nSub A\nx=1\nEndSub\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "sub-in-sub-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "function-in-sub-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nSub A\nx=1\nFunction B As Long\nB=2\nEndFunction\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-if-in-sub-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nSub A\nIf x=1 Then\nSub B\nx=2\nEndSub\nEndIf\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub declaration inside If..EndIf.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-scan-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSub B\nx=2\nEndSub\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-sequential-ok-cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nSub A\nx=1\nEndSub\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "sub-in-sub-cr300",
+   "logger": "cr300",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "function-in-sub-cr300",
+   "logger": "cr300",
+   "source": "Public x\nSub A\nx=1\nFunction B As Long\nB=2\nEndFunction\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-if-in-sub-cr300",
+   "logger": "cr300",
+   "source": "Public x\nSub A\nIf x=1 Then\nSub B\nx=2\nEndSub\nEndIf\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub declaration inside If..EndIf.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-scan-cr300",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSub B\nx=2\nEndSub\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-sequential-ok-cr300",
+   "logger": "cr300",
+   "source": "Public x\nSub A\nx=1\nEndSub\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sub-in-sub-cr350",
+   "logger": "cr350",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "function-in-sub-cr350",
+   "logger": "cr350",
+   "source": "Public x\nSub A\nx=1\nFunction B As Long\nB=2\nEndFunction\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-if-in-sub-cr350",
+   "logger": "cr350",
+   "source": "Public x\nSub A\nIf x=1 Then\nSub B\nx=2\nEndSub\nEndIf\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub declaration inside If..EndIf.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-scan-cr350",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSub B\nx=2\nEndSub\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-sequential-ok-cr350",
+   "logger": "cr350",
+   "source": "Public x\nSub A\nx=1\nEndSub\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "sub-in-sub-then-bad-name-cr6",
+   "logger": "cr6",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nx=r\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sub declared within a Sub.\nline 4: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "sub-in-sub-hidden-by-undefined-cr300",
+   "logger": "cr300",
+   "source": "Public x\nSub A\nx=1\nSub B\nx=2\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nx = q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: q is not defined."
+  },
+  {
+   "id": "sub-after-nextscan-ok-cr6",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nx = 1\nNextScan\nSub B\nx=2\nEndSub\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

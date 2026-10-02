@@ -195,6 +195,56 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
         diags.error(stmt.line, f"Cannot autoallocate memory for DataTable {table.args[0].name} "
                     "called outside of Scan, e.g., called by Sub.", stmt.file)
 
+def _ends_sub(stmt: S.Stmt, kw: str) -> bool:
+    return kw in ("ENDSUB", "ENDFUNCTION") or (
+        kw == "END" and _block_word(getattr(stmt, "args", []) or []) in ("SUB", "FUNCTION"))
+
+
+def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None:
+    """The first `Sub`/`Function` declared where the compiler rejects it, with its messages, or
+    `None`. Oracle, all four loggers, 2026-10-02: inside another `Sub`/`Function` (`Sub declared
+    within a Sub.`, whatever the keywords), inside an `If`/`Select` (`Sub declaration inside
+    If..EndIf.`), and `Sub|Function is declared in the middle of an executing sequence` for any of
+    those or inside an open `Scan`, between `BeginProg` and the first `Scan`, or inside a
+    `DataTable`. After the first `NextScan`, a `SlowSequence` header and `EndProg` it is accepted.
+    The message ends compilation (a placement error, `docs/checker.md` "Pass model")."""
+    open_sub = in_table = prescan = False
+    cond = scans = 0
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        if isinstance(stmt, S.SubDef):
+            executing = open_sub or in_table or prescan or scans > 0 or cond > 0
+            if executing:
+                msgs = ["Sub declared within a Sub."] if open_sub else []
+                if cond > 0:
+                    msgs.append("Sub declaration inside If..EndIf.")
+                msgs.append(f"{'Function' if stmt.keyword.upper() == 'FUNCTION' else 'Sub'} "
+                            "is declared in the middle of an executing sequence")
+                return stmt, msgs
+            open_sub = True
+        elif _ends_sub(stmt, kw):
+            open_sub, cond = False, 0
+        elif kw == "BEGINPROG":
+            prescan = True
+        elif kw == "ENDPROG":
+            prescan = False
+        elif kw == "SCAN":
+            scans += 1
+            prescan = False
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            scans = max(0, scans - 1)
+        elif kw == "DATATABLE":
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
+            cond += 1
+        elif kw == "ENDSELECT" or kw == "ENDIF" or (
+                kw == "END" and _block_word(getattr(stmt, "args", []) or []) in ("SELECT", "IF")):
+            cond = max(0, cond - 1)
+    return None
+
+
 def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -> tuple | None:
     """CR300/CR350: `CallTable` outside `Scan`, the first extra `NextScan` and the before-`BeginProg`
     placement errors, in statement order, after the table `Reps` checks and before the
@@ -210,7 +260,12 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     subs = symbols.declared_subs(program)
     stray = stray_controls(program)
     stray.update({k: (m, True) for k, m in scan_only_outside(program).items()})
+    misplaced = first_misplaced_sub(program)
     for stmt in program.statements:
+        if misplaced and stmt is misplaced[0]:
+            for message in misplaced[1]:
+                diags.error(stmt.line, message, stmt.file)
+            return stmt.file, stmt.line
         if id(stmt) in stray:
             diags.error(stmt.line, stray[id(stmt)][0], stmt.file)
             if stray[id(stmt)][1]:
@@ -790,11 +845,16 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
     pass2_scans = 0
+    misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
     for stmt in program.statements:
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         # CR300/CR350 report these placement errors late (`check_scan_placement_late`).
         before_bp = not seen_beginprog and not profile.single_pass
+        if misplaced and stmt is misplaced[0]:
+            for message in misplaced[1]:
+                diags.error(stmt.line, message, stmt.file)
+            return stmt.line
         if isinstance(stmt, S.SubDef):
             in_body_block = True
             if stmt.keyword.upper() == "SUB":
