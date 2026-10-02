@@ -252,7 +252,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(structure.check_pipeline_task_placement, program, profile, pipe)
         _run_pass(structure.check_slow_sequence_blocks, program, profile, pipe)
         menu_stop = _run_pass_capture(instr_data.check_table_and_menu_placement, program, profile,
-                                      diags)
+                                      diags, env)
         if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
             cutoff = menu_stop
         _run_pass(expressions.check, flat, profile, diags, env)

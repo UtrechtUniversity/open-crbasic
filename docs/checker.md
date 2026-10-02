@@ -2565,6 +2565,43 @@ CR6/CR1000X, following the decompiled menu builder (`FUN_004309c0`, `FUN_00430aa
 
 Replay: 841 of 1469 exact.
 
+### Boolean picklists (2026-10-02)
+
+Oracle on CR6 and CR1000X (CR300/CR350 have no menus); fixture `tests/fixtures/boolean_picklist.json`
+(45 cases, compiler hashes and date inside), `tests/test_boolean_picklist.py`, implemented in
+`instr_data._check_boolean_picklist` inside the menu pass, so it has the menu builder's gating:
+it appears next to `Invalid symbol in expression`, `Scan without NextScan.` and `Could not find
+DataTable`, but is hidden by the instruction-argument errors that stop pass 1 (`Invalid or missing
+parameter.`, `Too many parameters`, `ComPort 0 illegal.`, `already declared`).
+
+- Applies to every `MenuPick` that follows a `MenuItem` or `MenuRecompile` whose variable is
+  declared `As Boolean` (scalar, array element or bare array name; `Dim` too). Float, Long and
+  String items are not checked this way. A ConstTable-constant item keeps its own rule.
+- The statement text is split at every comma, quotes ignored (`MenuPick("a,b")` has two tokens).
+  Each rejected token prints `Boolean picklist must be True or False.` on the `MenuPick` line, so
+  `MenuPick(1,2,3)` gives three lines. The check repeats for every `MenuPick` of the item.
+- A token passes when it is a constant name whose value is 0 or -1: `True`, `False`, a `Const` or
+  ConstTable constant (any case; a float `0.0` constant is fine; the string `"0"` and `1` are not;
+  predefined symbols with value 0 such as `uSec`, `Until`, `If` pass, `Sec` does not), or a bare
+  integer literal whose value modulo 2^32 is 0 or -1 (`0`, `-1`, `00`, `-0`, `+0`, `4294967295`,
+  `4294967296`, `&H0`, `&HFFFFFFFF`, `&B0`; not `1`, `2147483648`, `999999999999`, `&H1`).
+- Everything else is rejected: strings, `1+1`, `-1+0`, `(0)`, `0.0`, `1E0`, `- 1`, `NAN`, variables
+  (the non-boolean `must be declared as a Const.` message is not printed), undefined names and
+  empty tokens. A leading blank is skipped; a blank after a literal rejects it (`0 ,-1`, `0 )`)
+  while a name tolerates it (`True ,False`).
+- A final empty token (`MenuPick(0,)`) prints `Unable to parse MenuPick strings.` instead of a
+  Boolean line, after the Boolean lines of the other tokens. A final blank token (`MenuPick(0, )`)
+  is an ordinary rejected token. The same trailing-comma message also occurs for non-boolean items;
+  that is not implemented.
+- Not modelled: literals with more than 8 hex digits (observed: `&H1FFFFFFFF`, `&H1FFFFFFFE`,
+  `&HFFFFFFFFF` pass; `&H100000000`, `&H200000000`, `&H1000000000` fail -- no rule fitted, so
+  those stay silent) or more than 32 binary digits; `MenuPick()` on a Boolean item (real: the
+  Boolean line only; ours: `Invalid or missing parameter.`); `0x0`/`&O0` spellings our parser
+  already rejects differently. Numeric items have a separate unimplemented rule (`"x" must be
+  declared as a integer Const.`).
+
+Replay: reproducers `4c79f7dacefa` (CR6) and `99bf5c38e8cb` (CR1000X) now exact.
+
 ## Unterminated strings (2026-09-28)
 
 A line cut short by an unterminated string is reported by its shape, in pass 1 on CR6/CR1000X.

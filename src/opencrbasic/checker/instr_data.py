@@ -19,6 +19,8 @@ section).
 
 from __future__ import annotations
 
+import re
+
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
@@ -396,7 +398,7 @@ def check_units_targets(program: S.Program, profile: Profile, diags: Diagnostics
 
 
 def check_table_and_menu_placement(program: S.Program, profile: Profile,
-                                   diags: Diagnostics) -> int | None:
+                                   diags: Diagnostics, env=None) -> int | None:
     """Pass 2 (oracle, suppressed by a pass-1 error): a second `DataInterval` in one table ->
     `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers), and the display
     menu structure (CR6/CR1000X; CR300/CR350 have no menus), following the decompiled menu builder
@@ -416,7 +418,11 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         elif in_const_table and isinstance(st, S.ConstDecl):
             table_consts.add(st.name.upper())
     item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
+    item_bool = False              # the current `MenuItem`/`MenuRecompile` variable is Boolean
     variables = symbols.declared_variable_names(program)
+    types = symbols.declared_variable_types(program)
+    if env is None:
+        env = consteval.Env(profile, dict(program.consts))
 
     def within(st: S.Instruction, kw: str) -> bool:
         if menus and open_list:
@@ -453,6 +459,10 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                 target = st.args[1] if kw == "MENUITEM" and len(st.args) > 1 else None
                 item_const = target.name.upper() if isinstance(target, S.Name) and \
                     target.name.upper() in table_consts else None
+                target = st.args[1] if kw in ("MENUITEM", "MENURECOMPILE") and len(st.args) > 1 \
+                    else None
+                item_bool = isinstance(target, (S.Name, S.Index)) and \
+                    types.get(target.name.upper()) == "BOOLEAN"
                 if kw == "SUBMENU":
                     levels.append([])
                     submenus += 1
@@ -472,7 +482,9 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                                     "constant name must be the first parameter.", st.file)
                 bad = next((a for a in st.args if isinstance(a, S.Name)
                             and a.name.upper() in variables), None)
-                if bad is not None:
+                if item_bool and levels[-1] and levels[-1][-1] in ("MENUITEM", "MENURECOMPILE"):
+                    _check_boolean_picklist(st, env, diags)
+                elif bad is not None:
                     # `MenuPick (Y)` for `Public Y` (oracle, 2026-10-01)
                     diags.error(st.line, f"{bad.name} must be declared as a Const.", st.file)
         elif kw == "ENDSUBMENU":
@@ -491,6 +503,68 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                 if submenus:
                     diags.error(st.line, "SubMenu with no EndSubMenu.", st.file)
     return None
+
+
+_BOOL_NAME_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\s*$")
+_BOOL_INT_RE = re.compile(r"[+-]?\d+$")
+
+
+def _boolean_pick_ok(token: str, env) -> bool:
+    """Whether one raw `MenuPick` token is acceptable in a Boolean picklist (oracle, 2026-10-02,
+    `docs/checker.md` "Boolean picklists"): a constant name whose value is 0 or -1 (`True`,
+    `False`, a `Const`), or a bare integer literal that is 0 or -1 as a 32-bit value. Leading
+    blanks are skipped; blanks after a literal reject it; anything else (expression, string,
+    float, parenthesis, variable, undefined name, empty token) is rejected."""
+    token = token.lstrip(" \t")
+    if _BOOL_NAME_RE.match(token):
+        try:
+            value = consteval._lookup(token.strip(), env)
+        except consteval.NotConstant:
+            return False
+        return not isinstance(value, str) and value in (0, -1)
+    if _BOOL_INT_RE.match(token):
+        return int(token) % (1 << 32) in (0, (1 << 32) - 1)
+    prefix, body = token[:2].upper(), token[2:]
+    if prefix == "&H" and re.fullmatch("[0-9A-Fa-f]+", body):
+        digits, ok = 8, (0, 0xFFFFFFFF)
+    elif prefix == "&B" and re.fullmatch("[01]+", body):
+        digits, ok = 32, (0, 0xFFFFFFFF)
+    else:
+        return False
+    if len(body.lstrip("0")) > digits:
+        return True  # past the probed range: stay silent rather than guess
+    return int(body, 16 if digits == 8 else 2) in ok
+
+
+def _pick_tokens(stmt: S.Instruction) -> list[str] | None:
+    """The comma-split raw argument text of a `MenuPick` statement (quotes are not honoured, as
+    in the real compiler), without its comment and enclosing parentheses."""
+    m = re.match(r"\s*MenuPick\b(.*)$", stmt.text or "", re.IGNORECASE | re.DOTALL)
+    if not m:
+        return None
+    rest, quoted = "", False
+    for ch in m.group(1):
+        if ch == '"':
+            quoted = not quoted
+        elif ch == "'" and not quoted:
+            break
+        rest += ch
+    rest = rest.strip()
+    if rest.startswith("(") and rest.endswith(")"):
+        rest = rest[1:-1]
+    return rest.split(",")
+
+
+def _check_boolean_picklist(stmt: S.Instruction, env, diags: Diagnostics) -> None:
+    tokens = _pick_tokens(stmt)
+    if tokens is None:
+        return
+    trailing = len(tokens) > 1 and tokens[-1] == ""
+    for token in tokens[:-1] if trailing else tokens:
+        if not _boolean_pick_ok(token, env):
+            diags.error(stmt.line, "Boolean picklist must be True or False.", stmt.file)
+    if trailing:
+        diags.error(stmt.line, "Unable to parse MenuPick strings.", stmt.file)
 
 
 _MENU_ITEMS = ("SUBMENU", "MENUITEM", "DISPLAYVALUE", "MENURECOMPILE", "DISPLAYLINE")

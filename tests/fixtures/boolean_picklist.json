@@ -1,0 +1,331 @@
+{
+  "observation_date": "2026-10-02",
+  "compilers": {
+    "cr6": {
+      "exe": "CR6Comp.exe",
+      "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+    },
+    "cr1000x": {
+      "exe": "cr1000xcomp.exe",
+      "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+    }
+  },
+  "source_records": [],
+  "cases": [
+    {
+      "id": "ok-true-false",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(True,False)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-zero-minus1",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0,-1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-case-insensitive-name",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(tRuE,fALSE)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-consts",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(K,A,TT,D,E)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-signed-zero-forms",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(00,-0,+0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-leading-blank-trailing-blank-name",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick( true,False )\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-hex-zero-and-ones",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(&H0,&HFFFFFFFF)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-wraps-32-bit",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(4294967296,4294967295)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-array-element-zero",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",BA(1))\n  MenuPick(0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-long-item-unchecked",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"c\",C)\n  MenuPick(1,2)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-recompile-long-unchecked",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuRecompile(\"x\",C)\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "bad-string-and-false",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(\"fuzz\",FALSE)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-true-and-string",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(TRUE,\"x\")\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-one",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-two-after-zero",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0)\n  MenuPick(2)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-one-per-token",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(1,2,3)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False.\nline 13: Boolean picklist must be True or False.\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-const-one",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(BB,A)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-string-const",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(H)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-variable-not-const-message",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(C)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-undefined-name",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(Foo,0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-expression",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(-1+0,0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-float-literal",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0.0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-blank-after-literal",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0 ,-1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-parenthesised",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick((0))\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-empty-middle",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0,,0)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-comma-in-string-counts-twice",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(\"a,b\")\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False.\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-wide-literal",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(999999999999)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-int-min",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(2147483648)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-hex-one",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(&H1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "trailing-comma-unable-to-parse",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0,)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Unable to parse MenuPick strings."
+    },
+    {
+      "id": "trailing-comma-after-bad-token",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(1,)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False.\nline 13: Unable to parse MenuPick strings."
+    },
+    {
+      "id": "trailing-blank-token-is-bad",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0, )\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "recompile-boolean",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuRecompile(\"x\",B)\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "array-element-boolean",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",BA(1))\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "applies-to-latest-item",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"c\",C)\n  MenuPick(5)\n  MenuItem(\"b\",B)\n  MenuPick(5)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Boolean picklist must be True or False."
+    },
+    {
+      "id": "no-pick-after-display-value",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  DisplayValue(\"x\",B)\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: MenuPick must follow a MenuItem instruction."
+    },
+    {
+      "id": "no-parentheses-and-comment",
+      "logger": "cr6",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick 0,1 'note\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "ok-true-false-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(True,False)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "ok-consts-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(K,A,TT,D,E)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "bad-string-and-false-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(\"fuzz\",FALSE)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-one-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(1)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-one-per-token-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(1,2,3)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False.\nline 13: Boolean picklist must be True or False.\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "bad-wide-literal-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(999999999999)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Boolean picklist must be True or False."
+    },
+    {
+      "id": "trailing-comma-unable-to-parse-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"b\",B)\n  MenuPick(0,)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Unable to parse MenuPick strings."
+    },
+    {
+      "id": "applies-to-latest-item-cr1000x",
+      "logger": "cr1000x",
+      "source": "Public B As Boolean, C As Long, BA(3) As Boolean\nConst K = 0\nConstTable\n  Const A = 0\n  Const BB = 1\n  Const TT = True\n  Const D = -1\n  Const E = 0.0\n  Const H = \"0\"\nEndConstTable\nDisplayMenu(\"Config\",-3)\n  MenuItem(\"c\",C)\n  MenuPick(5)\n  MenuItem(\"b\",B)\n  MenuPick(5)\nEndMenu\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Boolean picklist must be True or False."
+    }
+  ]
+}
