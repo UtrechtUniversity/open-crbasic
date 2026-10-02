@@ -888,3 +888,21 @@ variable's whole array to hold at least `7*Reps` elements, else `Float to NSEC e
 size >= 7` (`FB(7)` Reps 1 passes, also as `FB(2)`; Reps 2 passes for 14 elements, fails for 13).
 This one is skipped when the statement already has an error (an out-of-bounds finding replaces it).
 Long sources and integer literals pass. Only `Sample` has the rule: `Maximum(1,S,Nsec,...)` compiles.
+
+### SDMCD16Mask/SDMCD16AC, SNMPVariable, MenuRecompile
+
+Same module (fixture cases `*-sdmcd16-*`, `*-snmpvariable-*`, `*-menurecompile-*`).
+
+- `SDMCD16Mask(Source,Mask,Command)` (CR6/CR1000X): a Boolean `Mask` or Boolean `Source` variable gives
+  `Source and Mask type must be LONG.`; Float, String, Double, Long, literal masks and expression
+  sources all pass. A literal or `Const` `Source` (also `SDMCD16AC`) gives `Invalid Source.`, after the
+  type message when both apply. A Boolean `Source` additionally gets `Variable X out of bounds.`, which
+  is not modelled (so that shape stays a message difference).
+- `SNMPVariable(Name,OID,Type,...)` (a dotted OID is an `Unparsed` statement, so the rule reads its
+  text): `Miss match of types` when the declared variable type and the `Type` keyword disagree. Float
+  variables accept only `Float`; String variables `String` or `Float`; Long, Boolean and Double
+  variables anything but `String`. Omitted type always passes. On CR300/CR350 the message also starts
+  the `Too many parameters` cascade (`cr3xx._is_cascade_trigger`); `RoutersNeighbors` does not.
+- `MenuRecompile(Text,Var)`: a String variable, element or `Const` string gives `String type variable
+  not allowed.`; `MenuItem`/`DisplayValue` accept strings. A numeric `Const` gives `Invalid Variable or
+  Array: A.` (not modelled here).

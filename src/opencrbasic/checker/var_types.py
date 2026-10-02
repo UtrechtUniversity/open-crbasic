@@ -9,6 +9,7 @@ have no type (`None`), and a check that needs a type it does not have stays sile
 from __future__ import annotations
 
 import math
+import re
 
 from .. import consteval
 from .. import syntax as S
@@ -82,6 +83,19 @@ class _Typer:
         return None
 
 
+# SNMPVariable: Type keywords a declared variable type may not be given (oracle, CR6/CR1000X).
+# A Float variable takes only Float, a String one String or Float, the rest anything but String.
+_SNMP_TYPES = {"INTEGER", "COUNTER", "STRING", "TIMETICKS", "OPAQUE", "GAUGE", "FLOAT"}
+_SNMP_RE = re.compile(r"\s*SNMPVARIABLE\s*\(\s*(\w+)\s*,\s*[\d.]+\s*,\s*(\w+)", re.I)
+_SNMP_ALLOWED = {"FLOAT": {"FLOAT"}, "STRING": {"STRING", "FLOAT"}}
+
+
+def _snmp_mismatch(typer: "_Typer", name: S.Expr | None, snmp_type: str) -> bool:
+    var = typer.variable(name)
+    return var is not None and snmp_type.upper() in _SNMP_TYPES and \
+        snmp_type.upper() not in _SNMP_ALLOWED.get(typer.types[var], _SNMP_TYPES - {"STRING"})
+
+
 def _same_type(dest: str, source: str) -> bool:
     return dest == source or (dest == "STRING" and source == "FLOAT")
 
@@ -90,12 +104,19 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     typer = _Typer(program)
     dims = None
     for stmt in program.statements:
+        if isinstance(stmt, S.Unparsed):  # a dotted OID is not an expression
+            m = _SNMP_RE.match(stmt.text)
+            if m and "SNMPVARIABLE" in profile.instructions and \
+                    _snmp_mismatch(typer, S.Name(stmt.line, name=m.group(1)), m.group(2)):
+                diags.error(stmt.line, "Miss match of types", stmt.file)
+            continue
         if not isinstance(stmt, S.Instruction):
             continue
         kw, args = stmt.keyword.upper(), stmt.args
         if kw not in profile.instructions:
             continue
         message = None
+        extra = None
         if kw == "ROUTERSNEIGHBORS" and args:
             kind = "STRING" if isinstance(args[0], S.String) else typer.of(args[0])
             if typer.variable(args[0]) is not None or isinstance(args[0], S.String):
@@ -122,8 +143,22 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                     reps = None
                 if size is not None and isinstance(reps, int) and reps >= 1 and size < 7 * reps:
                     message = "Float to NSEC expects source array size >= 7"
-        if message:
-            diags.error(stmt.line, message, stmt.file)
+        elif kw in ("SDMCD16MASK", "SDMCD16AC") and args:
+            if kw == "SDMCD16MASK" and any(typer.types.get(typer.variable(a), "") == "BOOLEAN"
+                                           for a in args[:2]):
+                message = "Source and Mask type must be LONG."
+            if isinstance(args[0], S.Number) or (isinstance(args[0], S.Name) and
+                                                 args[0].name.upper() in typer.consts):
+                extra = "Invalid Source."
+        elif kw == "SNMPVARIABLE" and len(args) > 2 and isinstance(args[2], S.Name) and \
+                _snmp_mismatch(typer, args[0], args[2].name):
+            message = "Miss match of types"
+        elif kw == "MENURECOMPILE" and len(args) > 1 and \
+                isinstance(args[1], (S.Name, S.Index)) and typer.of(args[1]) == "STRING":
+            message = "String type variable not allowed."
+        for text in (message, extra):
+            if text:
+                diags.error(stmt.line, text, stmt.file)
 
 
 def _array_size(typer: _Typer, dims: dict[str, tuple[int, ...]], expr: S.Expr | None) -> int | None:
