@@ -2863,6 +2863,27 @@ rejects it as a type on CR300/CR350). `SplitStr` accepted an array destination w
 5 elements, so only the scalar overrun is a rule (Float or String scalar; a structure-typed scalar takes Reps 3, `chm/splitstr_5.CR6`). An `Alias` name as destination was not checked
 (`RealTime(RA)` with `Alias RT10(2) = RA` compiles, an exact fit, but no overrun was probed).
 
+Spatial family (same day, all four loggers; fixture cases `*-avgspa-*`, `*-maxspa-*`, `*-sortspa-*`,
+`*-sortspaindexed-*`; `SortSpaIndexed` exists on CR6/CR1000X only). `Instr(Dest, Swath, Source)`:
+
+| Argument | Needs, from its start index (row-major) |
+|---|---|
+| Source (3rd), all seven | Swath elements (Float or Long; a negative Swath is out of bounds; Swath 0 compiles) |
+| Dest of `AvgSpa`, `StdDevSpa`, `RMSSpa` | nothing beyond the index rule (`AvgSpa(A(5),2,B)` compiles) |
+| Dest of `MaxSpa`, `MinSpa` | 2 whatever the Swath (even Swath 0 or 1, a scalar fails) |
+| Dest of `SortSpa` | Swath (a negative Swath is out of bounds) |
+| Dest of `SortSpaIndexed` | 2 * Swath (`A(3),2` into a 5-element array fails, `A(1),2` fits) |
+
+Both arguments are reported when both overrun, destination first (`SortSpa(A(1),6,B)`). A
+non-literal Swath is skipped. Exact fits compile. Only Float destinations are checked; a Long
+destination also draws `Dest type must be Float.`, and String sources were not probed for overrun.
+
+Code 29 index check (`ReadIO`, `PortGet`, `RealTime`) also covers Long arrays and Long scalars
+subscripted past their size (`ReadIO(L(6),&B0001)`, `PortGet(L(0),C1)`, `ReadIO(R(2),..)` on
+CR6/CR1000X; CR300/CR350 say `Dimensions not declared` for the scalar). A String array at code 29
+is not checked (`ReadIO(S(6),..)`, `PortGet(S(6),C1)` compile). `MoveBytes` and `PortGet(A(5),C1)`
+(an exact fit) compile.
+
 Start-index rule (`expressions.check_instruction_index_bounds`): parameter code 27 (`Move`, `Erase`,
 `GetRecord`, `SplitStr`, ... destinations) now also checks Long and String arrays, and code 29
 (`RealTime`) Float arrays: a literal index of 0 or past the dimension is out of bounds (a negative

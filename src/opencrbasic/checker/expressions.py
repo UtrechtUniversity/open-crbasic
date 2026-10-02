@@ -1528,7 +1528,8 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
             shape = dims.get(name)
             # Code 27 (Move/Erase/GetRecord/SplitStr destinations) also checks Long and String
             # arrays (oracle, 2026-10-02); the other codes are only probed for Float.
-            if not shape or (types.get(name) != "FLOAT" and not (code == 27 and name in arrays)) or \
+            if not shape or (types.get(name) != "FLOAT" and not (code == 27 and name in arrays) and
+                             not (code == 29 and types.get(name) == "LONG")) or \
                     not all(isinstance(a, S.Number) and isinstance(a.value, int) for a in arg.args):
                 continue
             index = [a.value for a in arg.args]

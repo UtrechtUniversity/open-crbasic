@@ -419,6 +419,15 @@ _DEST_SINGLE_PASS_ONLY = frozenset({"THERM107", "THERM108", "THERM109"})
 _DEST_NEGATIVE_OOB = frozenset({"CALFILE"})
 
 
+# Spatial family (oracle, 2026-10-02, all four loggers): argument 3, the source, needs Swath
+# elements (Float or Long; negative Swath is out of bounds); the destination needs a fixed 2
+# (Max/Min: value + location), Swath (SortSpa) or 2 * Swath (SortSpaIndexed); Avg/StdDev/RMS
+# impose nothing beyond the index rule. Entries are (fixed, per Swath).
+_SPA_DEST = {"MAXSPA": (2, 0), "MINSPA": (2, 0), "SORTSPA": (0, 1), "SORTSPAINDEXED": (0, 2)}
+_SPA_SOURCE = frozenset({"AVGSPA", "MAXSPA", "MINSPA", "RMSSPA", "STDDEVSPA", "SORTSPA",
+                         "SORTSPAINDEXED"})
+
+
 def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                       env: consteval.Env) -> None:
     from . import symbols
@@ -431,6 +440,23 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
                 types.setdefault(v.name.upper(), (v.type or "FLOAT").upper())
                 if v.dims:
                     arrays.add(v.name.upper())
+
+    def overruns(arg: S.Expr, need: int, negative: bool, kinds: tuple[str, ...]) -> bool:
+        if not isinstance(arg, (S.Name, S.Index)):
+            return False
+        shape = dims.get(arg.name.upper())
+        if shape is None or types.get(arg.name.upper()) not in kinds:
+            return False
+        offset = _flat_offset(arg, shape)
+        if offset is None:
+            return False
+        total = 1
+        for n in shape:
+            total *= n
+        if offset >= total:  # an index past the dimension is the index rule's
+            return False
+        return negative or need > total - offset
+
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or not stmt.args or \
                 not isinstance(stmt.args[0], (S.Name, S.Index)):
@@ -438,40 +464,39 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
         kw = stmt.keyword.upper()
         dest = stmt.args[0]
         name = dest.name.upper()
-        shape = dims.get(name)
-        if shape is None:
-            continue
-        if kw == "SPLITSTR":  # a scalar destination takes one value (Reps > 1 overruns it)
+        bad: list[S.Expr] = []
+        if kw in _SPA_SOURCE and len(stmt.args) > 2:
+            swath = _int_value(stmt.args[1], env)
+            if swath is not None:
+                fixed, per = _SPA_DEST.get(kw, (0, 0))
+                if (fixed or per) and overruns(dest, fixed + per * swath, per > 0 and swath < 0,
+                                               ("FLOAT",)):
+                    bad.append(dest)
+                if overruns(stmt.args[2], swath, swath < 0, ("FLOAT", "LONG")):
+                    bad.append(stmt.args[2])
+        elif kw == "SPLITSTR":  # a scalar destination takes one value (Reps > 1 overruns it)
             reps = _int_value(stmt.args[3], env) if len(stmt.args) > 3 else None
-            bad = isinstance(dest, S.Name) and name not in arrays and reps is not None and \
-                reps > 1 and types.get(name) in ("FLOAT", "STRING")  # a structure takes Reps 3
-        else:
-            if types.get(name) != "FLOAT" or \
-                    (kw in _DEST_SINGLE_PASS_ONLY and not profile.single_pass):
-                continue
+            if isinstance(dest, S.Name) and name in dims and name not in arrays and \
+                    reps is not None and reps > 1 and \
+                    types.get(name) in ("FLOAT", "STRING"):  # a structure takes Reps 3
+                bad.append(dest)
+        elif (kw in _DEST_FIXED or kw in _DEST_PER_REP) and \
+                not (kw in _DEST_SINGLE_PASS_ONLY and not profile.single_pass):
             negative = False
             if kw in _DEST_FIXED:
                 need = _DEST_FIXED[kw]
-            elif kw in _DEST_PER_REP and len(stmt.args) > 1:
-                reps = _int_value(stmt.args[1], env)
+            else:
+                reps = _int_value(stmt.args[1], env) if len(stmt.args) > 1 else None
                 if reps is None or (reps < 0 and kw not in _DEST_NEGATIVE_OOB):
                     continue
                 negative = reps < 0
                 need = reps * _DEST_PER_REP[kw]
-            else:
-                continue
-            offset = _flat_offset(dest, shape)
-            if offset is None:
-                continue
-            total = 1
-            for n in shape:
-                total *= n
-            if offset >= total:  # an index past the dimension is the index rule's
-                continue
-            bad = negative or need > total - offset
-        if bad:
-            diag = Diagnostic("error", stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
-            if profile.single_pass:  # before this line's warnings and channel errors (oracle)
+            if overruns(dest, need, negative, ("FLOAT",)):
+                bad.append(dest)
+        # single-pass loggers: before this line's warnings and channel errors (oracle)
+        for arg in (reversed(bad) if profile.single_pass else bad):
+            diag = Diagnostic("error", stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
+            if profile.single_pass:
                 at = next((i for i, d in enumerate(diags.items)
                            if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
                 diags.items.insert(at, diag)

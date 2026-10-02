@@ -984,6 +984,349 @@
    "source": "Public A(5), RT9(9), RT10(10), M(3,3), L(10) As Long, LS(10) As String * 8, C, U()\nPublic Y As String * 50\nPublic SU As String * 10\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm109(A(6),1,1,VX1,0,60,1,0)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-avgspa-source-swath-fits",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),5,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-avgspa-source-swath-fits",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),5,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-avgspa-source-swath-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr1000x-avgspa-source-swath-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-avgspa-source-swath-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr350-avgspa-source-swath-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr6-avgspa-source-offset-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),2,B(5))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-avgspa-source-offset-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),2,B(5))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr6-avgspa-negative-swath",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),-1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr350-avgspa-negative-swath",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(1),-1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr6-avgspa-dest-scalar-fits",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-avgspa-dest-scalar-fits",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nAvgSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-avgspa-long-source-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMinSpa(A(1),2,L(5))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-avgspa-long-source-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMinSpa(A(1),2,L(5))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-maxspa-dest-fits-2",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(4),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-maxspa-dest-fits-2",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(4),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-maxspa-dest-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-maxspa-dest-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-maxspa-dest-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr350-maxspa-dest-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-maxspa-dest-scalar",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(X,1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable X out of bounds."
+  },
+  {
+   "id": "cr350-maxspa-dest-scalar",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(X,1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable X out of bounds."
+  },
+  {
+   "id": "cr6-maxspa-multidim",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(M(2,3),1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable M out of bounds."
+  },
+  {
+   "id": "cr300-maxspa-multidim",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nMaxSpa(M(2,3),1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable M out of bounds."
+  },
+  {
+   "id": "cr6-sortspa-dest-fits-swath",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(3),3,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-sortspa-dest-fits-swath",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(3),3,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-sortspa-dest-and-source-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr1000x-sortspa-dest-and-source-overrun",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-sortspa-dest-and-source-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr350-sortspa-dest-and-source-overrun",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),6,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr6-sortspa-dest-overrun",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr300-sortspa-dest-overrun",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(5),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-sortspa-negative-swath",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),-1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr300-sortspa-negative-swath",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpa(A(1),-1,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds.\nline 7: Variable B out of bounds."
+  },
+  {
+   "id": "cr6-sortspaindexed-dest-fits",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(A(1),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sortspaindexed-dest-fits",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(A(1),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sortspaindexed-dest-twice-swath",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(A(3),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-sortspaindexed-dest-twice-swath",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(A(3),2,B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-sortspaindexed-multidim-fits",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nSortSpaIndexed(M(1,1),3,B)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-readio-long-index-past",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nReadIO(L(6),&B0001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-readio-long-index-past",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nReadIO(L(6),&B0001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-portget-long-index-zero",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(0),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr1000x-portget-long-index-zero",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(0),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr300-portget-long-index-zero",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(0),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr350-portget-long-index-zero",
+   "logger": "cr350",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(0),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable L out of bounds."
+  },
+  {
+   "id": "cr6-portget-long-index-fits",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(5),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-portget-long-index-fits",
+   "logger": "cr300",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nPortGet(L(5),C1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-readio-long-scalar-index",
+   "logger": "cr6",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nReadIO(R(2),&B0001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-readio-long-scalar-index",
+   "logger": "cr1000x",
+   "source": "Public A(5), B(5), R As Long, X, M(2,3), Q(2,3)\nPublic L(5) As Long\nPublic S(5) As String * 20\nPublic D(3) As Long\nBeginProg\nScan(1,Sec,0,0)\nReadIO(R(2),&B0001)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable R out of bounds."
   }
  ]
 }
