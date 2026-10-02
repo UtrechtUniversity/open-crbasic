@@ -814,18 +814,6 @@ _AVGRUN_TYPE_ERROR = frozenset({"FLOAT", "STRING"})
 _RUNNING_AVG = frozenset({"AVGRUN", "TOTALRUN", "MINRUN", "MAXRUN", "STDDEVRUN"})
 
 
-def _to_int32(value: float | int | str) -> int:
-    """The C `(long)` conversion the compiler applies to a constant parameter (oracle: `0.5` -> 0,
-    `-1.9` -> -1, `"a"`, NaN and out-of-range values -> -2147483648)."""
-    if isinstance(value, str) or value != value:
-        return -2147483648
-    try:
-        n = int(value)
-    except OverflowError:
-        return -2147483648
-    return n if -2147483648 <= n <= 2147483647 else -2147483648
-
-
 def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                          env: consteval.Env) -> None:
     """`AvgRun`'s optional arguments after `ResetVar` (decompiled AvgRun compile function; oracle,
@@ -856,7 +844,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             return None
         if isinstance(value, bool) or not isinstance(value, (int, float, str)):
             return None
-        return _to_int32(value)
+        return consteval.to_long(value)
 
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _RUNNING_AVG:

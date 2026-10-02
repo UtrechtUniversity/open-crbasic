@@ -18,5 +18,9 @@
   "pps_port": 9,
   "port_message": "Only COMRS232, COMC1, COMC3..COMC7 are legal.",
   "pps_message": "GPS pps synchronization is only available on COMC1."
- }
+ },
+ "const_ranges": [
+  {"instr": "SEMAPHOREGET", "pos": 1, "min": 1, "max": 4, "message": "Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"},
+  {"instr": "SEMAPHORERELEASE", "pos": 1, "min": 1, "max": 4, "message": "Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"}
+ ]
 }

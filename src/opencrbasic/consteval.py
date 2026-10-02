@@ -89,6 +89,19 @@ def _bool(v: object) -> bool:
     return _num(v) != 0
 
 
+def to_long(value: object) -> int:
+    """The C `(long)` conversion applied to a constant parameter (oracle, 2026-10-02): truncated
+    toward zero (`0.5` -> 0, `-1.9` -> -1); a string, NaN or a value outside Long range gives
+    `-2147483648`."""
+    if isinstance(value, str) or value != value:
+        return -2147483648
+    try:
+        n = int(value)
+    except OverflowError:
+        return -2147483648
+    return n if -2147483648 <= n <= 2147483647 else -2147483648
+
+
 def _truth(v: bool) -> int:
     return -1 if v else 0
 

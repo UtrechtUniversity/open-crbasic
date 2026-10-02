@@ -438,6 +438,335 @@
       "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    TotalRun(Y(1),0,X,5)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages 5 and reps 0 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-semaphoreget-0",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-1",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-semaphoreget-3",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(3)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-semaphoreget-4",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-semaphoreget-5",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-neg",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-string",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-frac-ok",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(1.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-semaphoreget-frac-zero",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-const-expr",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(K*3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphoreget-true",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(TRUE)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphorerelease-0",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphorerelease-4",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-semaphorerelease-string",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphore-after-undefined-name",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Foo.\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-semaphore-two",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n    SemaphoreRelease(9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr1000x-semaphoreget-0",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr1000x-semaphoreget-4",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-semaphoreget-5",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr1000x-semaphorerelease-0",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr1000x-semaphorerelease-4",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-semaphore-after-undefined-name",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Foo.\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr300-semaphoreget-0",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-1",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(1)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-semaphoreget-3",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(3)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-semaphoreget-4",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-5",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-neg",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(-1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-string",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-frac-ok",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(1.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-semaphoreget-frac-zero",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0.9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-const-expr",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(K*3)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphoreget-true",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(TRUE)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphorerelease-0",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphorerelease-4",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphorerelease-string",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(\"a\")\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr300-semaphore-after-undefined-name",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined."
+    },
+    {
+      "id": "cr300-semaphore-two",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n    SemaphoreRelease(9)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal\nline 6: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphoreget-0",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphoreget-4",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphoreget-5",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreGet(5)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphorerelease-0",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphorerelease-4",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    SemaphoreRelease(4)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr350-semaphore-after-undefined-name",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    X = Foo\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Foo is not defined."
+    },
+    {
+      "id": "cr6-semaphore-beside-channel-error",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    VoltDiff(X,1,mv5000,U2,1,0,15000,1,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid start channel for Differential Measurement. Must be U1, U3, U5 ...\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr350-semaphore-beside-channel-error",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    VoltSe(X,1,mv2500,99,1,0,15000,1,0)\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: Channel 99 exceeds number of valid channels.\nline 6: Illegal Semaphore, 1..3 are legal"
+    },
+    {
+      "id": "cr6-semaphore-after-pass1-error",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Dim Z banana\n    SemaphoreGet(0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid Variable declaration banana."
     }
   ]
 }

@@ -41,6 +41,38 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_gps_port(stmt, measure["gps"], env, diags)
 
 
+def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """Data-driven constant-parameter checks (`measure.json` `const_ranges`, `docs/instructions.md`
+    "Constant-parameter range checks"): the parameter at `pos` converts as C's `(long)` and must
+    lie in `min..max` or in `values`, else `message` (`{value}` is the converted number, or that
+    of the parameter at `show`). A variable or unresolved name is another check's error."""
+    by_instr: dict[str, list[dict]] = {}
+    for rule in profile.measure.get("const_ranges", ()):
+        by_instr.setdefault(rule["instr"], []).append(rule)
+    if not by_instr:
+        return
+    for stmt in flat:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        for rule in by_instr.get(stmt.keyword.upper(), ()):
+            value = _long_arg(stmt, rule["pos"], rule, env)
+            if value is None:
+                continue
+            if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
+                continue
+            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env)
+            if shown is not None:
+                diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
+
+
+def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env) -> int | None:
+    value = _fnotch_value(stmt.args[pos - 1], env) if pos <= len(stmt.args) and \
+        stmt.args[pos - 1] is not None else None
+    if value is None:
+        return None
+    return consteval.to_long(value)
+
+
 def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
                        env: consteval.Env) -> None:
     """CR6/CR1000X pass 1 value checks on const-family positions: `Range` code, then `fN1`

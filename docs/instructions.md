@@ -952,3 +952,23 @@ Implemented in `check_avgrun_options`, so the gating is the one already recorded
 CR300/CR350). Not covered: a literal `-2147483648` prints `-2147483647` on CR300/CR350 (observed,
 not modelled); `Variable %s out of bounds.` that accompanies a negative or overflowing `Reps` is a
 separate check.
+
+### Data-driven rules (`measure.json` `const_ranges`)
+
+`instr_measure.check_const_ranges` reads a per-logger list of `{instr, pos, min/max or values,
+message}` rules; `{value}` in the message is the converted number (or that of the parameter at
+`show`). Placement in `checker/__init__.py`: on CR6/CR1000X the findings are collected aside like
+the index bounds (reported with pass 2, cut off at a placement error, neither hiding the tier-C
+channel checks nor hidden by tier-B findings -- observed: a bad `SemaphoreGet` beside a bad
+`VoltDiff` start channel reports both, and `X = Foo` before or after it does not hide it); on
+CR300/CR350 they run with the tier-C checks, so any earlier `... is not defined.` hides them.
+Pass-1 errors hide every rule (`Dim Z banana`, a variable in the position, a bad `Range` code).
+
+### `SemaphoreGet` / `SemaphoreRelease`: `Illegal Semaphore...`
+
+The constant must convert to 1..4 on CR6/CR1000X (`Illegal Semaphore: 1..4 are legal, 1 to 3 are
+general purpose, 4 is reserved (see docs)`) and 1..3 on CR300/CR350 (`Illegal Semaphore, 1..3 are
+legal`). `1.9` is accepted (truncation), `0.9`, `-1`, `TRUE`, strings, `NAN` and `K*3 = 6` are not.
+Not modelled: before `BeginProg` the real compiler reports this value error ahead of the
+`illegally occurs before BeginProg.` placement error of the same line (we print the placement
+error first, or on CR300/CR350 only that one).

@@ -225,6 +225,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # together with the instruction's own `Invalid channel`/`Invalid port` and `Scan interval too
     # short` errors), merged ahead of the tier-C findings below.
     pipe = Diagnostics()
+
+    ranges = Diagnostics()   # `measure.json` `const_ranges` findings, see below
     links = structure.CallLinks()
     pass1_errors = bool(diags.errors)
     if not diags.errors:
@@ -273,6 +275,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             bounds.items = [d for d in bounds.items if d.line <= cutoff]
             pipe.items = [d for d in pipe.items if d.line <= cutoff]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
+        # Collected aside like the index bounds: a finding neither hides tier C (oracle: a bad
+        # `SemaphoreGet` beside a bad `VoltDiff` channel reports both) nor is hidden by tier B.
+        if not profile.single_pass:
+            _run_pass(instr_measure.check_const_ranges, flat.statements, profile, ranges, env)
+            if cutoff is not None:
+                ranges.items = [d for d in ranges.items if d.line <= cutoff]
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
         # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as
@@ -361,6 +369,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instr_measure.check_reps, program, profile, diags, env)
         _run_pass(instr_measure.check_dest_bounds, program, profile, diags, env)
         _run_pass(var_types.check, program, profile, diags, env)
+
+        if profile.single_pass:
+            _run_pass(instr_measure.check_const_ranges, _with_inline(program).statements, profile, diags, env)
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
@@ -372,7 +383,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
     diags.items[tier_c_start:tier_c_start] = pipe.items
 
-    diags.items += bounds.items + fields.items
+    diags.items += bounds.items + fields.items + ranges.items
     # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message
     # after every other error, so it does not gate the tier-C checks above.
     _run_pass(structure.finalize_call_links, links, profile, diags, pass1_errors)
