@@ -405,20 +405,80 @@ def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | 
     return False
 
 
-def _has_undefined_index(expr: S.Expr | None, known: set[str]) -> bool:
-    """Whether `expr` uses an undefined name with parentheses (`Foo(1)`), which CR300/CR350 follow
-    with `Dimensions not declared: %s` (oracle, 2026-09-27)."""
-    if expr is None:
-        return False
-    if isinstance(expr, S.Index):
-        return expr.name.upper() not in known or any(_has_undefined_index(a, known) for a in expr.args)
-    if isinstance(expr, S.Unary):
-        return _has_undefined_index(expr.operand, known)
-    if isinstance(expr, S.Binary):
-        return _has_undefined_index(expr.left, known) or _has_undefined_index(expr.right, known)
-    if isinstance(expr, S.Member):
-        return _has_undefined_index(expr.base, known)
+def _has_undefined_index(expr: S.Expr | None, known: set[str], arrays: frozenset[str] = frozenset(),
+                         prior: tuple = ()) -> bool:
+    """Whether CR300/CR350 follow the unresolved-name lines with `Dimensions not declared: %s`
+    (oracle, 2026-09-27 and 2026-10-03; `docs/checker.md` "Dimensions not declared"). The walk is
+    left to right over `prior` (the statement's earlier arguments or assignment target) then
+    `expr`: the first undefined name with a non-empty subscript (`Foo(1)`, not `Foo()`) triggers
+    it, unless a declared array (`arrays`, any reference form) was met first. Names without
+    subscript, constants and scalars do not stop the walk."""
+    for node in (*prior, expr):
+        found = _dims_walk(node, known, arrays)
+        if found is not None:
+            return found
     return False
+
+
+def _dims_walk(expr: S.Expr | None, known: set[str], arrays: frozenset[str]) -> bool | None:
+    if expr is None:
+        return None
+    if isinstance(expr, S.Name):
+        return False if expr.name.upper() in arrays else None
+    if isinstance(expr, S.Index):
+        name = expr.name.upper()
+        if name in arrays:
+            return False
+        if name not in known and any(a is not None for a in expr.args):
+            return True
+        children = expr.args
+    elif isinstance(expr, S.Unary):
+        children = [expr.operand]
+    elif isinstance(expr, S.Binary):
+        children = [expr.left, expr.right]
+    elif isinstance(expr, S.Member):
+        children = [expr.base]
+    else:
+        return None
+    for child in children:
+        found = _dims_walk(child, known, arrays)
+        if found is not None:
+            return found
+    return None
+
+
+def _names_and_dims(known: set[str], arrays: frozenset[str], prior: tuple,
+                    *exprs: S.Expr | None) -> tuple[list[str], bool]:
+    """The undefined names of `exprs` and whether `Dimensions not declared` follows them
+    (`_has_undefined_index`). When it does, the walk ends at the triggering subscripted name, so
+    names after it are not reported (oracle, CR300, 2026-10-03: `Battery(Nope(1)+Nope2(1))` names
+    only `Nope`)."""
+    dims = _has_undefined_index(None, known, arrays, (*prior, *exprs))
+    if not dims:
+        return [n for e in exprs for n in _undefined_names(e, known)], False
+    out: list[str] = []
+
+    def walk(e: S.Expr | None) -> bool:
+        if e is None:
+            return False
+        if isinstance(e, S.Name):
+            if e.name.upper() not in known:
+                out.append(e.name)
+            return False
+        if isinstance(e, S.Index):
+            if e.name.upper() not in known:
+                out.append(e.name)
+            done = any(walk(a) for a in e.args)
+            return done or (e.name.upper() not in known and any(a is not None for a in e.args))
+        children = {S.Unary: lambda: [e.operand], S.Binary: lambda: [e.left, e.right],
+                    S.Member: lambda: [e.base, *(e.args or [])],
+                    S.ArrayLiteral: lambda: e.items}.get(type(e))
+        return any(walk(c) for c in children()) if children else False
+
+    for e in exprs:
+        if walk(e):
+            break
+    return out, True
 
 
 def dimensions_message(text: str, profile, whole_statement: bool, at_eol: bool = True) -> str:
@@ -559,7 +619,8 @@ def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
 
 def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
                        variable_names: set[str], profile, diags: Diagnostics,
-                       families: str = "all", dim_counts: dict[str, int] | None = None) -> bool:
+                       families: str = "all", dim_counts: dict[str, int] | None = None,
+                       arrays: frozenset[str] = frozenset()) -> bool:
     """One statement's own undefined-symbol and constant-only-family checks, at every position
     `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
     expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
@@ -622,6 +683,9 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         arg = stmt.args[i]
         names = _undefined_names(arg, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+        dims = False
+        if names and not whole_echo:
+            names, dims = _names_and_dims(known, arrays, tuple(stmt.args[:i]), arg)
         # CR300/CR350: an undefined name at a code-20 keyword slot is also `Variable illegal`
         # (oracle, 2026-10-01: `PanelTemp(X,Nope)`).
         is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS or (
@@ -638,12 +702,16 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
                 return True
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            if _has_undefined_index(arg, known):
+            if dims:
                 # CR300/CR350: `SplitStr(ResultString(1),SearchString,...)` -> `Dimensions not
                 # declared: ResultString(1).` and the rest of the list collapses into `Too many
                 # parameters:  SearchString.`
                 diags.error(stmt.line, dimensions_message(_arg_text(stmt, i).strip(), profile, False),
                             stmt.file)
+                if is_const_family:  # (oracle, CR300, 2026-10-03: `Delay(Nope(1),2,Sec)`)
+                    diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.",
+                                stmt.file)
+                    return True
                 if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
                     from .instr_rules import _next_simple_token
                     token = _next_simple_token(_arg_text(stmt, i + 1))
@@ -835,6 +903,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
+    arrays = symbols.declared_array_names(program)
     dim_counts = symbols.declared_dim_counts(
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
 
@@ -848,7 +917,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             _report_statement(stmt, positions, known, variable_names, profile, diags,
-                              families="general", dim_counts=dim_counts)
+                              families="general", dim_counts=dim_counts, arrays=arrays)
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions
@@ -911,6 +980,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         text = _if_condition_text(stmt)
         if not names or text is None:
             continue
+        names, dims = _names_and_dims(known, arrays, (), stmt.cond)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
         else:
@@ -918,7 +988,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             # declared: Foo(X) > 20 .`; `If Nope Then` -> `Nope is not defined.` (oracle)
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            if _has_undefined_index(stmt.cond, known):
+            if dims:
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
 
     # `Do While Nope` / `Loop Until (Nope <> 1)`: the condition after `While`/`Until`, like an
@@ -968,9 +1038,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file)
         else:
+            names, dims = _names_and_dims(known, arrays, (stmt.target,), stmt.value)
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            if _has_undefined_index(stmt.value, known):
+            if dims:
                 diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                             stmt.file)
 
@@ -1639,6 +1710,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
     its matching `Next` line (`For j = 1 To 2` -> `j .`). CR300/CR350: per-name `%s is not
     defined.` on the `For` line in source order, plus `Dimensions not declared: j(1) .` for an
     undefined indexed loop variable."""
+    arrays = symbols.declared_array_names(program)
     pending: list[tuple[S.For, str]] = []
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "NEXT" and pending and \
@@ -1669,7 +1741,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
                 for name in names:
                     diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                                 stmt.file)
-                if i == 0 and text is not None and _has_undefined_index(expr, known):
+                if i == 0 and text is not None and _has_undefined_index(expr, known, arrays):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
         pending.append((stmt, var_text))
 
@@ -1681,6 +1753,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     when an `Is` comparison or an upper bound fails first): `Case 1, 2, Nope` -> three.
     CR300/CR350 print each undefined name; there a `Select Case` with an undefined name opens no
     block, so its `Case`s give `Case outside Select.` and its end `EndSelect w/o Select`."""
+    arrays = symbols.declared_array_names(program)
     whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     orphans: list[bool] = []  # per open Select: True when CR300 did not open it
     for stmt in program.statements:
@@ -1704,7 +1777,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 for name in names:
                     diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                                 stmt.file)
-                if _has_undefined_index(stmt.cond, known):
+                if _has_undefined_index(stmt.cond, known, arrays):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
             continue
         if not isinstance(stmt, S.Case) or stmt.is_else or \
@@ -1745,6 +1818,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
     its arguments (oracle, 2026-10-01): CR6/CR1000X `Invalid symbol in expression: <statement>.`
     (indentation and trailing spaces kept); CR300/CR350 each name, then `Dimensions not declared:
     <statement>` when an undefined name is indexed."""
+    arrays = symbols.declared_array_names(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.explicit or stmt.name.upper() not in profile.functions:
             continue
@@ -1754,9 +1828,10 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
             continue
+        names, dims = _names_and_dims(known, arrays, (), *stmt.args)
         for name in names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-        if any(_has_undefined_index(a, known) for a in stmt.args):
+        if dims:
             diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                         stmt.file)
 

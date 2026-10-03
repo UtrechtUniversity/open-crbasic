@@ -365,6 +365,10 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
             len(diags.items))
         new = list(own[:len(keep)]) or [Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file)]
+        if keep and expressions._has_undefined_index(arg, known):
+            # (oracle, CR300, 2026-10-03: `Battery(Nope(1))`, `PanelTemp(Nope(1),15000)`)
+            new.append(Diagnostic("error", stmt.line, expressions.dimensions_message(
+                expressions._arg_text(stmt, 0).strip(), profile, False), stmt.file))
         if len(stmt.args) >= 2 and stmt.args[1] is not None:
             text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
                 expressions._arg_text(stmt, 1)
@@ -376,7 +380,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
 
 # Parameter codes resolved as a runtime expression or variable: an undefined name there ends the
 # argument list on CR300/CR350 (`docs/type-codes.md`; code 1 constants report `Variable illegal`).
-_ABORTING_PARAMS = frozenset({2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47})
+_ABORTING_PARAMS = frozenset({2, 8, 24, 25, 26, 27, 28, 29, 33, 40, 41, 47})
 
 
 def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Diagnostics) -> None:

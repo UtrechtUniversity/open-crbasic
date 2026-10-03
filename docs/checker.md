@@ -3495,3 +3495,21 @@ declaration at its first bad variable (a variable with two bad dimensions still 
 `Variable A(..) dimension exceeds max of 3.` stops it too); the variable two positions on supplies
 `Too many parameters:  <name>.` (`Public Tx(-1), Ty(2), Tz(0)` -> `... Tz.`; with only two variables
 nothing more). CR6/CR1000X report every bad variable.
+
+## `Dimensions not declared` (CR300/CR350, 2026-10-03)
+
+Fixture `tests/fixtures/dims_not_declared.json` (88 cases, CR300 and CR350, in
+`tests/test_cr3xx_cascade.py`); code in `expressions._has_undefined_index`/`_names_and_dims`.
+The line follows the `is not defined.` lines only when the walk of the statement, left to right
+(earlier arguments, or the assignment target, first), meets an undefined name with a non-empty
+subscript (`Nope(1)`, `Nope(Q)`; never `Nope()`) before any reference to a declared *array*
+(bare, `Rv()` or `Rv(1)`; scalars, constants and undefined plain names do not count). Examples
+(`Public Rv(5), Sc`): `ClockReport(1,Nope(1),Rv(1))` prints it, `ClockReport(Rv(1),Nope(1),Rv(1))`
+and `Rv(1) = Nope(1)` do not. It ends the walk: names after the triggering subscripted name are
+not reported (`Battery(Nope(1)+Nope2(1))` names only `Nope`). At a constant-only position it
+is followed by `Variable illegal in Parameter: <arg>.` (`Delay(Nope(1),2,Sec)`), elsewhere by the
+usual `Too many parameters:  <next argument>.`; code 26 positions (`SplitStr` arguments 2 and 3,
+`SDI12Recorder` `SDIAddress`) also end the list on an undefined name.
+Not modelled: a declared array in the *immediately preceding* statement also suppresses it for an
+instruction statement (`Sc = Rv(1)` then `Battery(Nope(1))`), but not for an assignment; and
+`Battery(Rv(1)+Nope(1))` ends with `Illegal destination variable type, expecting Float.`.

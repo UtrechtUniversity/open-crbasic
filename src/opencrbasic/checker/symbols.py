@@ -181,6 +181,12 @@ def declared_variable_names(program: S.Program) -> set[str]:
     return names
 
 
+def declared_array_names(program: S.Program) -> frozenset[str]:
+    """Upper-case names of declared `Public`/`Dim`/`Static` variables that have dimensions."""
+    return frozenset(v.name.upper() for stmt in program.statements
+                     if isinstance(stmt, S.Declaration) for v in stmt.vars if v.dims)
+
+
 def declared_dim0_sizes(program: S.Program, env: consteval.Env) -> dict[str, int]:
     """Every `Public`/`Dim`/`Static` variable's own upper-case name -> its *first* dimension's own
     declared constant size, for `structure.py`'s `Illegally dimensioned aliased name` check
