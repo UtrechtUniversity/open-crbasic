@@ -964,6 +964,49 @@ channel checks nor hidden by tier-B findings -- observed: a bad `SemaphoreGet` b
 CR300/CR350 they run with the tier-C checks, so any earlier `... is not defined.` hides them.
 Pass-1 errors hide every rule (`Dim Z banana`, a variable in the position, a bad `Range` code).
 
+### CDM / SDM / TDR constant channels (`CR6` / `CR1000X`)
+
+Oracle boundary sweeps on 2026-10-03 (both compilers; CR300/CR350 do not define these
+instructions) established the following `const_ranges` entries, covered by
+`tests/fixtures/value_ranges.json`:
+
+- `CDM_BrHalf3W` position 6: `1..16`, emitting `Input channel: %d, out of range (1 - 16).`.
+  A separate, ordered entry emits `Reps cycle input beyond last channel!` for values `16` and
+  above, but not for `0`; channel 16 itself therefore has only that second diagnostic.
+- `CDM_TCComp` position 5: `1..20`, with the same `Input channel` spelling and that range.
+- `CDM_PanelTemp` position 5: only `1`, emitting `PanelTemp channel out of range!`.
+- `SDMSw8a` position 5: `1..8`, emitting `Invalid Start Channel: %d, must be 1-8.`; a string
+  displays as `0` for this instruction.
+- `TDR200` position 7: `100..10112`, emitting `Points %d is illegal: range is 100..10112.`.
+
+These share the existing CR6/CR1000X deferred `const_ranges` phase: a pass-1 error hides them,
+while their diagnostics remain ordered after tier-C instruction checks. The CDM ranges were
+tested at both accepted endpoints and one value outside each side where applicable.
+
+### `FileManage` drive and `DNP` ComPort constants
+
+`FileManage` with a literal string whose drive prefix is not `CPU`, `CRD`, `USR`, or `USB` emits
+`FileManage invalid drive: <prefix>.` on CR6/CR1000X; direct probes confirmed `"fuzz"`,
+`"fuzz:x"`, and the empty string, plus all four valid prefixes. This deliberately models only
+the drive check, not the separate extension diagnostics. It is a tier-C instruction check.
+
+`DNP` argument 1 emits `ComPort -2147483648 illegal.` for a string or `NAN` on all four loggers.
+CR6/CR1000X additionally emit it for a finite number outside Long range and literal
+`-2147483648`; all four accept `INF`, `-1`, `1.5`, and a numeric TCP port such as `20000`.
+The rule is data-driven through `const_ranges`' `invalid_raw` form so it preserves the observed
+CR300/CR350 distinction: their literal `-2147483648` and `2147483648` compile, whereas strings
+still fail. These checks share the existing constant-range phase and are hidden by a pass-1 error.
+
+### GPS `NMEASentences` structure member (`CR6` / `CR1000X`)
+
+When `GPS` receives a variable of a `StructureType` containing a `String` member named
+`NMEASentences`, its declared string size below 96 emits at the `GPS` line:
+`Size of NMEASentences is too small, must be at least 100`. The real compiler's printed minimum
+does not equal the source boundary: `String * 95` fails and `String * 96` succeeds on both
+loggers (swept from 0 through the boundary). The rule is data-driven under each profile's `gps`
+configuration and runs before the existing GPS port diagnostic, matching CR6's ordered combined
+output. It is not configured for CR300/CR350, whose GPS signature differs.
+
 ### `SemaphoreGet` / `SemaphoreRelease`: `Illegal Semaphore...`
 
 The constant must convert to 1..4 on CR6/CR1000X (`Illegal Semaphore: 1..4 are legal, 1 to 3 are

@@ -38,7 +38,11 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw in ("EXCITEV", "EXCITEI") and "excite_max_mv" in measure:
             _check_excite_magnitude(stmt, measure, env, diags)
         if kw == "GPS" and "gps" in measure:
+            _check_structure_members(stmt, program, measure["gps"], env, diags)
             _check_gps_port(stmt, measure["gps"], env, diags)
+        for rule in measure.get("string_prefixes", ()):
+            if kw == rule["instr"]:
+                _check_string_prefix(stmt, rule, env, diags)
 
 
 def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -56,8 +60,17 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
         if not isinstance(stmt, S.Instruction):
             continue
         for rule in by_instr.get(stmt.keyword.upper(), ()):
+            raw = _raw_arg(stmt, rule["pos"], env)
+            if raw is None:
+                continue
+            if "invalid_raw" in rule:
+                if _matches_invalid_raw(raw, rule["invalid_raw"]):
+                    diags.error(stmt.line, rule["message"].format(value=consteval.to_long(raw)), stmt.file)
+                continue
             value = _long_arg(stmt, rule["pos"], rule, env)
             if value is None:
+                continue
+            if "lower_gate" in rule and value < rule["lower_gate"]:
                 continue
             if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
                 continue
@@ -66,11 +79,26 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
                 diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
 
 
+def _matches_invalid_raw(value: object, invalid: dict) -> bool:
+    if invalid.get("strings") and isinstance(value, str):
+        return True
+    if not isinstance(value, (int, float)):
+        return False
+    if invalid.get("nan") and value != value:
+        return True
+    if value == float("inf") or value == float("-inf"):
+        return False
+    if invalid.get("outside_long") and (value < -2147483648 or value > 2147483647):
+        return True
+    return value in invalid.get("values", ())
+
+
 def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env) -> int | None:
-    value = _fnotch_value(stmt.args[pos - 1], env) if pos <= len(stmt.args) and \
-        stmt.args[pos - 1] is not None else None
+    value = _raw_arg(stmt, pos, env)
     if value is None:
         return None
+    if rule.get("string_zero") and isinstance(value, str):
+        return 0
     if not rule.get("wrap16"):
         return consteval.to_long(value)
     # A string or NaN is 0; a number outside Long range is 0 on CR6/CR1000X and unobserved
@@ -82,6 +110,64 @@ def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env) -> 
     if abs(value) >= 2 ** 31:
         return rule["overflow"]
     return int(value) & 0xFFFF
+
+
+def _raw_arg(stmt: S.Instruction, pos: int, env: consteval.Env):
+    return _fnotch_value(stmt.args[pos - 1], env) if pos <= len(stmt.args) and \
+        stmt.args[pos - 1] is not None else None
+
+
+def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
+                         diags: Diagnostics) -> None:
+    idx = rule["pos"] - 1
+    if idx >= len(stmt.args) or stmt.args[idx] is None:
+        return
+    value = _const_value(stmt.args[idx], env)
+    if not isinstance(value, str):
+        return
+    drive = value.split(":", 1)[0]
+    if drive.upper() in rule["prefixes"]:
+        return
+    diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
+
+
+def _check_structure_members(stmt: S.Instruction, program: S.Program, cfg: dict,
+                             env: consteval.Env, diags: Diagnostics) -> None:
+    """Data-driven checks on members of a StructureType used as an instruction destination."""
+    rules = cfg.get("structure_members", ())
+    if not rules or not stmt.args:
+        return
+    dest = stmt.args[0]
+    if not isinstance(dest, (S.Name, S.Index)):
+        return
+    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
+    if type_name is None:
+        return
+    members = _structure_members(program, type_name)
+    for rule in rules:
+        member = members.get(rule["member"])
+        if member is None or (member.type or "FLOAT").upper() != rule["type"]:
+            continue
+        size = _int_value(member.string_size, env)
+        if size is not None and size < rule["min_string_size"]:
+            diags.error(stmt.line, rule["message"], stmt.file)
+
+
+def _structure_members(program: S.Program, type_name: str) -> dict[str, S.VarDecl]:
+    members: dict[str, S.VarDecl] = {}
+    active = False
+    for candidate in program.statements:
+        if isinstance(candidate, S.Instruction):
+            kw = candidate.keyword.upper()
+            if kw == "STRUCTURETYPE":
+                active = bool(candidate.args and isinstance(candidate.args[0], S.Name) and
+                              candidate.args[0].name.upper() == type_name)
+                continue
+            if kw == "ENDSTRUCTURETYPE" and active:
+                break
+        if active and isinstance(candidate, S.Declaration) and candidate.kind == "STRUCTUREMEMBER":
+            members.update({var.name.upper(): var for var in candidate.vars})
+    return members
 
 
 def check_pass1_values(program: S.Program, profile: Profile, diags: Diagnostics,
