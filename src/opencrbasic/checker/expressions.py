@@ -275,7 +275,7 @@ _ARITY_MAX_SAFE = {
     "FILERENAME": 2, "FILESIZE": 1, "FILETIME": 1, "FILEWRITE": 3, "FINDSPA": 4,
     "FORMATFLOAT": 2, "FORMATLONG": 2, "FORMATLONGLONG": 1, "HEX": 1, "HEXTODEC": 1, "IIF": 3,
     "INSTR": 4, "IPINFO": 2, "IPTRACE": 1, "LEFT": 2, "LEN": 1, "LOADFIELDCAL": 1,
-    "LOWERCASE": 1, "LTRIM": 1, "MID": 3, "MQTTUNSUBSCRIBE": 1, "NETWORKTIMEPROTOCOL": 5,
+    "LOWERCASE": 1, "LTRIM": 1, "MID": 3, "MQTTUNSUBSCRIBE": 1,
     "NEWFIELDCAL": 0, "PINGIP": 3, "PPPCLOSE": 0, "REPLACE": 3, "RIGHT": 2, "ROUND": 2,
     "ROUTE": 1, "RTRIM": 1, "SECSSINCE1990": 2, "SERIALCLOSE": 1, "SERIALFLUSH": 1,
     "SERIALINBLOCK": 3, "SERIALINCHK": 1, "SERIALOUT": 5, "SMSRECV": 3, "STRCOMP": 2,
@@ -305,6 +305,9 @@ _FUNCTION_CONST_INTEGER_STRING_ARGS = {
 }
 _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
 _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
+# Observed (min, max) argument counts where they differ from the table's `nargs`, keyed by that
+# profile `nargs` (oracle, 2026-10-03, all four loggers).
+_ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}}
 
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
 # embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`
@@ -1119,6 +1122,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
         # `X = Int()`, `SerialFlush()`: the generic fallback on the whole statement, pass 1, all
         # four loggers (oracle, 2026-09-27).
         return "empty"
+    if bounds := _ARITY_RANGE.get(upper, {}).get(nargs):
+        return "few" if n < bounds[0] else "many" if n > bounds[1] else None
     if n < nargs and _ARITY_MIN_SAFE.get(name.upper()) == nargs:
         return "few"
     if n > nargs and _ARITY_MAX_SAFE.get(name.upper()) == nargs:

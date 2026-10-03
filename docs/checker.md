@@ -1756,6 +1756,11 @@ unchecked for that one name, which is why CR300/CR350 lose coverage for those th
 needing a special case. Re-verified clean afterward: zero false rejects on all four loggers,
 `tools/difftest.py --logger <l> --show 0`.
 
+`NetworkTimeProtocol` now has its observed bounds (oracle, 2026-10-03, all four loggers,
+`tests/fixtures/ntp_arity.json`): 3..4 arguments on CR6/CR1000X (table `nargs` 5; a 5th argument
+is rejected), exactly 3 on CR300/CR350 (table `nargs` 3). `_ARITY_RANGE` holds these, keyed by
+the profile's `nargs` like the two maps above.
+
 **CR1000X**: the same 92-function sweep re-run against `cr1000xcomp.exe` (both the `nargs-1` and
 `nargs+1` batches) matched CR6 byte-for-byte on every one of the 92 functions' own two probes
 except one unrelated line (`CheckPort`'s own port-range message, `Port must be C1..C4 or U1..U12.`
