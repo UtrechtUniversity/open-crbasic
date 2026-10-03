@@ -3452,3 +3452,18 @@ Follow-up (oracle, 2026-10-03, `tests/fixtures/struct_index_call.json`): a `Sub`
 (leading blanks dropped, trailing kept). On CR6/CR1000X only the first DataTable output
 instruction with such a reference is reported (not one per instruction or table), and none at all
 once a statement outside a table has one.
+
+### Instruction arguments with adjacent operands (CR6/CR1000X)
+
+Oracle, 2026-10-03 (`tests/fixtures/instr_arg_adjacent.json`): `Keyword(a, b, ...)` whose argument
+has two operands in a row (`Sample(1,x  y,FP2)`, `Scan(1,S  ec,3,1)`) is still recognised as the
+instruction; each argument is read as an expression on its own, left to right. The echo is that
+argument alone (leading blanks dropped, trailing kept). An adjacent known-operand pair is pass 1
+`Incomplete expression: <arg>.` (every such argument is reported; inside a plain `( )` group it is
+`No Matching, or out of place ) in expression:` instead, also for assignments). An unresolved name
+reached first is pass 2 `Invalid symbol in expression: <arg>.`, which stops the scan; after it only
+the `<Name> illegally occurs before BeginProg.` placement line follows, for instructions in
+`profile.before_beginprog` (not `Scan`/`Delay`). Not modelled: `Variable illegal in Parameter`
+after a malformed constant-only argument, `Delay`'s `Measurement delay must have constant
+interval.`, and several unresolved arguments in one instruction (the real compiler reports them
+all, in an order that is neither textual nor by one simple class split).

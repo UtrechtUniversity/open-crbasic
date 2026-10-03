@@ -1,0 +1,295 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-instr_arg_adjacent-0",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x  y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-1",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x,FP  2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: FP  2."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-2",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,xx  yy,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: xx  yy."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-3",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x,FP2 3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: FP2 3."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-4",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x + y  z,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: x + y  z."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-5",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1 2,x,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-6",
+   "logger": "cr6",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Average(1,x,FP2,Fal  se)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Fal  se."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-7",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-8",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  qq,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  qq."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-9",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x(1)  y,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x(1)  y."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-10",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,\"a\" \"b\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-11",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2  3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y.\nline 4: Incomplete expression: 2  3."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-12",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,(x  y),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x  y)."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-13",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,Abs(x  y),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Abs(x  y)."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-14",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,(y) z,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (y) z."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-16",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2)\n  x = qq\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-17",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Scan(1,S  ec,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-19",
+   "logger": "cr6",
+   "source": "Scan (1,se  c,1,0)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: se  c."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-20",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  x = (y  z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   x = (y  z)."
+  },
+  {
+   "id": "cr6-instr_arg_adjacent-21",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1 + (y  qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   x = 1 + (y  qq)."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x  y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x,FP  2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: FP  2."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,xx  yy,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: xx  yy."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x,FP2 3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: FP2 3."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1,x + y  z,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: x + y  z."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Sample(1 2,x,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nDataTable(T1,True,-1)\n  Average(1,x,FP2,Fal  se)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Fal  se."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-8",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  qq,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  qq."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x(1)  y,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x(1)  y."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,\"a\" \"b\",2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: \"a\" \"b\"."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2  3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y.\nline 4: Incomplete expression: 2  3."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-12",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,(x  y),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x  y)."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,Abs(x  y),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Abs(x  y)."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-14",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,(y) z,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (y) z."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-16",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(0,x  y,2)\n  x = qq\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: x  y."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  Scan(1,S  ec,3,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: S  ec."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-19",
+   "logger": "cr1000x",
+   "source": "Scan (1,se  c,1,0)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: se  c."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-20",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  x = (y  z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   x = (y  z)."
+  },
+  {
+   "id": "cr1000x-instr_arg_adjacent-21",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\n  Scan(1,Sec,0,0)\n  x = 1 + (y  qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   x = 1 + (y  qq)."
+  }
+ ]
+}

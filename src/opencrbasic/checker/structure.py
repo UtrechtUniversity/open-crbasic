@@ -864,7 +864,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if known is None:
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
-                verdict = _pass1_scan(stmt.text, operands, profile)
+                findings = _instruction_arg_findings(stmt.text, operands, profile)
+                for stage, kind, arg_text in findings:
+                    if stage == 1:
+                        diags.error(stmt.line, _pass1_message(profile, S.Unparsed(
+                            stmt.line, stmt.file, text=arg_text), kind), stmt.file, show_file=False)
+                verdict = (None if findings else _pass1_scan(stmt.text, operands, profile))
                 if verdict is None and stmt.reason == _UNCLOSED_PAREN_EXPR and \
                         _unclosed_paren_kind(stmt.text, known) == "pass1":
                     verdict = ("pass1", "no_matching")
@@ -1287,6 +1292,22 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file,
                             show_file=False)
             else:
+                findings = (_instruction_arg_findings(stmt.text, pass1_operands(program, profile),
+                                                      profile)
+                            if profile.known_first_word_pass1 else [])
+                if findings:
+                    # stage-1 findings were reported in pass 1 (`check_pass1`)
+                    if findings[0][0] == 2:
+                        diags.error(stmt.line, f"Invalid symbol in expression: {findings[0][2]}.",
+                                    stmt.file, show_file=False)
+                        ikw = stmt.text.split("(")[0].strip().upper()
+                        record = profile.instructions.get(ikw)
+                        if (record and not in_body_block and not in_table and not in_decl_block
+                                and before_bp and ikw in profile.before_beginprog):
+                            diags.error(stmt.line, f"{record['name']} illegally occurs before "
+                                        "BeginProg.", stmt.file)
+                            return stmt.line
+                    continue
                 verdict = (_pass1_scan(stmt.text, pass1_operands(program, profile), profile)
                            if profile.known_first_word_pass1 else None)
                 if verdict == ("pass2", "symbol"):
@@ -1552,6 +1573,64 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     return None
 
 
+class _Everything:
+    """A name set that contains every name: `_scan_expr` then reports syntax problems only."""
+    def __contains__(self, item) -> bool:
+        return True
+
+
+def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tuple[int, str, str]]:
+    """CR6/CR1000X `Keyword(arg, arg, ...)` whose arguments cannot be parsed (`Sample(1,x,FP  2)`,
+    `Scan(1,S  ec,3,1)`): the instruction is still recognised, and each argument is read as an
+    expression on its own, left to right (oracle, 2026-10-03). Returns `(stage, kind, arg text)`:
+    stage 1 `incomplete`/`no_matching` for an adjacent-operand argument (all of them are reported),
+    stage 2 `symbol` (`Invalid symbol in expression: <arg>.`) for the first argument whose name does
+    not resolve, which stops the scan (a later malformed argument is then not reported). The arg
+    text keeps its trailing blanks, not its leading ones. Empty list: not this shape."""
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return []
+    if len(toks) < 3 or toks[0].kind != "IDENT" or toks[0].upper not in profile.instructions \
+            or toks[0].upper in parser._RAW_NAME_FIRST \
+            or not (toks[1].kind == "OP" and toks[1].text == "(") \
+            or not (toks[-1].kind == "OP" and toks[-1].text == ")"):
+        return []
+    args: list[tuple[list, str]] = []
+    depth, cur, start = 0, [], toks[1].col + 1
+    for t in toks[2:]:
+        if t.kind == "OP" and t.text == "(":
+            depth += 1
+        elif t.kind == "OP" and t.text == ")":
+            if depth == 0:
+                args.append((cur, text[start:t.col].lstrip()))
+                break
+            depth -= 1
+        elif t.kind == "OP" and t.text == "," and depth == 0:
+            args.append((cur, text[start:t.col].lstrip()))
+            cur, start = [], t.col + 1
+            continue
+        cur.append(t)
+    else:
+        return []
+    bad = ("incomplete", "no_matching")
+    syntax = [(_scan_expr(t, 0, _Everything(), profile.functions, assign=True, start_operand=False)
+               if t else None, t, txt) for t, txt in args]
+    if any(v is not None and not (v[0] == "pass1" and v[1] in bad) for v, _, _ in syntax) or \
+            not any(v is not None for v, _, _ in syntax):
+        return []
+    out: list[tuple[int, str, str]] = []
+    for v, arg_toks, arg_text in syntax:
+        if not arg_toks:
+            continue
+        if _scan_expr(arg_toks, 0, operands, profile.functions, assign=True,
+                      start_operand=False) == ("pass2", "symbol"):
+            return out or [(2, "symbol", arg_text)]
+        if v is not None:
+            out.append((1, v[1], arg_text))
+    return out
+
+
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None) -> tuple[str, str] | None:
     unknown = ("pass2", "symbol" if assign else "fallback")
@@ -1611,7 +1690,9 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
             elif t.kind == "IDENT" and t.upper in _BINARY_WORDS:
                 expect_operand = True
             elif t.kind in ("IDENT", "NUMBER", "STRING"):
-                return ("pass1", "incomplete")
+                # an operand right after an operand: inside a plain `( )` group the real
+                # compiler calls the group unmatched (oracle, 2026-10-03)
+                return ("pass1", "no_matching" if parens and parens[-1] == "group" else "incomplete")
             else:
                 return None
         i += 1
