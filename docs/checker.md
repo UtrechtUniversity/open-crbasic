@@ -3266,3 +3266,13 @@ a global variable declared before the `ReadOnly` or, in a structure, an earlier 
 structure. A `Const`, a global declared later, another structure's member, a `Sub` local or a
 parameter is not declared (`ReadOnly Zq` after `Dim Zq` in a `Sub` fails). `ReadOnly A(1)`, `ReadOnly 5`
 and the empty/trailing-comma forms are not modelled.
+
+### Structure member types
+
+A `StructureType` member whose `As` type is not a variable type and not a `StructureType` declared
+earlier in the file (itself included) reports `Variable Type <type> not supported` (no period), all
+four loggers: `A As String_Fz`, `A As Floatx`, `A As SU` before `SU` is declared. Each bad member
+gets a line on CR6/CR1000X; CR300/CR350 stop at the first bad type in a statement
+(`A As Foo, B As Bar` and `Public Z As Bad, Y As Worse` give one line), which is now also applied to
+the existing `Public`/`Dim` check. `Function` parameters and return types with a bad type report the
+same message and are not modelled.

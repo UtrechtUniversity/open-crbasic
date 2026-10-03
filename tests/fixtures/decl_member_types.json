@@ -1,0 +1,261 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-member-string-fz",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As String_Fz\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type String_Fz not supported"
+  },
+  {
+   "id": "cr1000x-member-string-fz",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As String_Fz\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type String_Fz not supported"
+  },
+  {
+   "id": "cr300-member-string-fz",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As String_Fz\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type String_Fz not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr350-member-string-fz",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As String_Fz\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type String_Fz not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-member-unknown-type",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Floatx\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Floatx not supported"
+  },
+  {
+   "id": "cr350-member-unknown-type",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Floatx\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Floatx not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-member-two-bad-types",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  B As Nope\n  C As ST2\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Type Nope not supported\nline 5: Variable Type ST2 not supported"
+  },
+  {
+   "id": "cr1000x-member-two-bad-types",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  B As Nope\n  C As ST2\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Type Nope not supported\nline 5: Variable Type ST2 not supported"
+  },
+  {
+   "id": "cr300-member-two-bad-types",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  B As Nope\n  C As ST2\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Type Nope not supported\nline 8: Too many parameters:  Sec.\nline 9: Too many parameters:  15000.\nline 10: G is not defined."
+  },
+  {
+   "id": "cr350-member-two-bad-types",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  B As Nope\n  C As ST2\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable Type Nope not supported\nline 8: Too many parameters:  Sec.\nline 9: Too many parameters:  15000.\nline 10: G is not defined."
+  },
+  {
+   "id": "cr6-member-bad-types-one-line",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo, B As Bar\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 3: Variable Type Bar not supported"
+  },
+  {
+   "id": "cr1000x-member-bad-types-one-line",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo, B As Bar\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 3: Variable Type Bar not supported"
+  },
+  {
+   "id": "cr300-member-bad-types-one-line",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo, B As Bar\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr350-member-bad-types-one-line",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo, B As Bar\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-member-array-bad-type",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A(2) As Floatx\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Floatx not supported"
+  },
+  {
+   "id": "cr350-member-array-bad-type",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A(2) As Floatx\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Floatx not supported\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-member-supported-types-accepted",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As String * 10\n  B As Boolean\n  C As Long\n  D As Double\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     G = 1."
+  },
+  {
+   "id": "cr350-member-supported-types-accepted",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As String * 10\n  B As Boolean\n  C As Long\n  D As Double\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: G is not defined."
+  },
+  {
+   "id": "cr6-member-own-structure-accepted",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As ST\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     G = 1."
+  },
+  {
+   "id": "cr350-member-own-structure-accepted",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As ST\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-member-earlier-structure-accepted",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType SU\n  B As Float\nEndStructureType\nStructureType ST\n  A As SU\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Invalid, or out of place expression:     G = 1."
+  },
+  {
+   "id": "cr350-member-earlier-structure-accepted",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType SU\n  B As Float\nEndStructureType\nStructureType ST\n  A As SU\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: G is not defined."
+  },
+  {
+   "id": "cr6-member-later-structure",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As SU\nEndStructureType\nStructureType SU\n  B As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type SU not supported"
+  },
+  {
+   "id": "cr1000x-member-later-structure",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As SU\nEndStructureType\nStructureType SU\n  B As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type SU not supported"
+  },
+  {
+   "id": "cr300-member-later-structure",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As SU\nEndStructureType\nStructureType SU\n  B As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type SU not supported\nline 9: Too many parameters:  Sec.\nline 10: Too many parameters:  15000.\nline 11: G is not defined."
+  },
+  {
+   "id": "cr350-member-later-structure",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As SU\nEndStructureType\nStructureType SU\n  B As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type SU not supported\nline 9: Too many parameters:  Sec.\nline 10: Too many parameters:  15000.\nline 11: G is not defined."
+  },
+  {
+   "id": "cr6-member-bad-type-then-public",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo\nEndStructureType\nPublic Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 5: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr1000x-member-bad-type-then-public",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo\nEndStructureType\nPublic Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 5: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr300-member-bad-type-then-public",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo\nEndStructureType\nPublic Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr350-member-bad-type-then-public",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Foo\nEndStructureType\nPublic Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-public-two-bad-types-one-line",
+   "logger": "cr6",
+   "source": "Public PT, BV, Z As Bad, Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bad not supported\nline 1: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr1000x-public-two-bad-types-one-line",
+   "logger": "cr1000x",
+   "source": "Public PT, BV, Z As Bad, Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bad not supported\nline 1: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr300-public-two-bad-types-one-line",
+   "logger": "cr300",
+   "source": "Public PT, BV, Z As Bad, Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bad not supported\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  15000.\nline 5: G is not defined."
+  },
+  {
+   "id": "cr350-public-two-bad-types-one-line",
+   "logger": "cr350",
+   "source": "Public PT, BV, Z As Bad, Y As Worse\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Bad not supported\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  15000.\nline 5: G is not defined."
+  }
+ ]
+}

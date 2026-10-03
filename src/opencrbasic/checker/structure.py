@@ -784,6 +784,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     in_sub = False
     in_struct = False
     struct_members: set[str] = set()
+    structs_seen: set[str] = set()
     const_tables = const_open = slow_sequences = 0
     seen_endprog = False
     declared_kinds: dict[str, str] = {}
@@ -818,6 +819,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if kw in ("STRUCTURETYPE", "OBJECTTYPE"):
             in_struct = True
             struct_members = set()
+            if args and isinstance(args[0], S.Name):
+                structs_seen.add(args[0].name.upper())
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = False
         if not in_sub and not in_struct:  # a structure body names its own members
@@ -826,6 +829,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             symbols.check_local_name_collision(stmt, profile, diags)
         if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
             struct_members.update(v.name.upper() for v in stmt.vars)
+            _check_member_types(stmt, structs_seen, profile, diags)
         elif (in_struct or in_sub) and kw == "READONLY":
             # In a structure or `Sub`/`Function` body, `ReadOnly` resolves against the global
             # variables declared so far, plus the structure's own earlier members; neither a
@@ -2163,6 +2167,22 @@ _AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
 _TYPED_DIMS_RE = re.compile(r"(?i)\s*As\s+[A-Za-z_][A-Za-z0-9_]*\s*(?=\()")
 
 
+def _check_member_types(stmt: S.Declaration, structs_seen: set[str], profile, diags: Diagnostics) -> None:
+    """`Variable Type %s not supported` for a structure member whose `As` type is neither a
+    variable type nor a `StructureType` declared earlier in the file (itself included), all four
+    loggers (oracle, 2026-10-03: `A As String_Fz`, `A As Floatx`, `A As SU` before `SU`)."""
+    segments = _split_top(stmt.text)
+    if len(segments) != len(stmt.vars):
+        return
+    for v, seg in zip(stmt.vars, segments):
+        if v.type and v.type not in _VARIABLE_TYPES and v.type not in structs_seen:
+            m = _AS_TYPE_RE.search(seg)
+            if m and m.group(1).upper() == v.type:
+                diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
+                if profile.single_pass:
+                    return  # CR300/CR350 stop at the first one in a statement
+
+
 def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnostics) -> None:
     """`Warning: Attempt to initialize variable out of bounds.`, once per variable with more
     initializer values than elements, all four loggers (oracle, 2026-09-28: `Public A(2) = {1,2,3}`,
@@ -2196,6 +2216,7 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     segments = _split_top(body)
     if len(segments) != len(stmt.vars):
         return
+    unsupported = False
     for v, seg in zip(stmt.vars, segments):
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
@@ -2216,8 +2237,9 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
         if (stmt.kind in ("PUBLIC", "DIM") and v.type and v.type not in _VARIABLE_TYPES
                 and v.type not in struct_types):
             m = _AS_TYPE_RE.search(seg)
-            if m and m.group(1).upper() == v.type:
+            if m and m.group(1).upper() == v.type and not (profile.single_pass and unsupported):
                 diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
+                unsupported = True  # CR300/CR350 stop at the first one in a statement
         rest_at = name_at + len(v.name)
         rest = seg[rest_at:]
         typed_dims = _TYPED_DIMS_RE.match(rest)
