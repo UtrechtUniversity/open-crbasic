@@ -451,24 +451,32 @@ _CLOSERS = frozenset({"ENDIF", "ENDSELECT", "NEXTSUBSCAN", "WEND"})
 
 
 def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnostics,
-                            env: consteval.Env) -> None:
+                            env: consteval.Env, zero: bool = False) -> None:
     """CR6/CR1000X: measurement delays (`Delay(0,...)`) in the main `Scan` that add up to its
     interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, in the scan's
     own unit, rounded up past the small per-scan overhead (oracle, 2026-10-01: `Scan(1,Sec)` with
     `Delay(0,1,Sec)` -> `by 1 Sec`, `Scan(50,mSec)` with `Delay(0,1,Sec)` -> `by 951 mSec`; a delay
-    in `SubScan(0,0,5)` counts five times)."""
+    in `SubScan(0,0,5)` counts five times). A Sec/Min `Scan` whose interval is 0 or past `INT32_MAX`
+    counts as interval 0; a `PanelTemp`/`VoltSe`/`VoltDiff` in it adds its under-one-unit
+    measurement time, so `by 1 Sec`/`by 1 Min` (oracle, 2026-10-03; mSec needs a per-instruction
+    time model and is not done; `Battery` differs per logger); docs/instructions.md. The zero-interval
+    scans (`zero=True`) are reported even though the scan's own parameter error already failed
+    the compile, so the caller runs them ahead of the error-gated tier C."""
     if profile.name not in ("cr6", "cr1000x"):
         return
     from .instr_rules import _US_PER_UNIT
-    for _scan, end, (value, unit), total in scan_delay_totals(program, env):
+    for _scan, end, (value, unit), total in scan_delay_totals(program, env, include_zero=zero):
         interval = value * _US_PER_UNIT[unit]
-        if interval > 0 and total >= interval:
+        if (interval == 0) == zero and total > 0 and total >= interval:
             diags.error(end.line, f"Scan interval too short for measurement by "
                         f"{(total - interval) // _US_PER_UNIT[unit] + 1} {_UNIT_NAMES[unit]}.",
                         end.file)
 
 
-def scan_delay_totals(program: S.Program, env: consteval.Env):
+_ZERO_MEASURE = frozenset({"PANELTEMP", "VOLTSE", "VOLTDIFF"})
+
+
+def scan_delay_totals(program: S.Program, env: consteval.Env, include_zero: bool = False):
     """`(Scan, NextScan, (interval, unit), delay_us)` for each main-sequence `Scan` with a constant
     mSec/Sec/Min interval: the measurement delays (`Delay(0,...)`) it contains, repeated per
     `SubScan(0,0,n)` pass. Delays inside a loop, an `If` block or a `Select` are not counted, so
@@ -490,6 +498,12 @@ def scan_delay_totals(program: S.Program, env: consteval.Env):
             slow = True
         elif kw == "SCAN" and not slow:
             raw = _scan_raw(stmt, env)
+            zero = False
+            if include_zero and len(stmt.args) > 1:
+                v, u = _value(stmt.args[0], env), _value(stmt.args[1], env)
+                if u in (2, 3) and not isinstance(u, bool) and isinstance(v, (int, float)) \
+                        and not isinstance(v, bool) and (0 <= v < 1 or v > 2147483647):
+                    raw, zero = (0, u), True
             scan = stmt if raw and raw[1] in _UNIT_NAMES else None
             frames, total = [], 0
         elif scan is None:
@@ -512,6 +526,8 @@ def scan_delay_totals(program: S.Program, env: consteval.Env):
                 scan = None
             else:
                 frames.pop()
+        elif zero and kw in _ZERO_MEASURE and None not in frames:
+            total += 1
         elif kw == "DELAY" and None not in frames and len(stmt.args) == 3:
             option, value, unit = (_value(a, env) for a in stmt.args)
             if option == 0 and isinstance(value, (int, float)) and not isinstance(value, bool) \

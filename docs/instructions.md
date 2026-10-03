@@ -1279,3 +1279,26 @@ rate message for a table interval that the scan does not divide (gated behind th
 error here), the rate/max messages inside `SubScan` (`Cannot mix output rates in a single Spectrum
 Module.`), scan intervals under 1 mSec. `CDM_TCComp` and the other `CDM_*` measurements have no buffer
 rule (0 buffers at 100 mSec accepted).
+
+## `Scan interval too short` on a zero-interval Sec/Min scan (CR6/CR1000X, 2026-10-03)
+
+Fixture `tests/fixtures/zero_scan_measurement.json`, `tests/test_zero_scan_measurement.py`,
+`instr_measure.check_scan_delay_budget(..., zero=True)`. A main `Scan` whose interval is `0` (also
+`0.5`) or whose interval argument exceeds `INT32_MAX` (`Scan interval parameter must be a
+non-negative integer`, e.g. `999999999999`, `2147483648`) is treated as interval 0 in the Sec and
+Min units, and the compile still reports `Scan interval too short for measurement by N <unit>.` at
+`NextScan`, together with the scan's own parameter error:
+
+- `PanelTemp`, `VoltSe`, `VoltDiff` directly in the scan (or in `SubScan(0,0,n)`): `by 1 Sec` /
+  `by 1 Min` (`Day` also gives `by 1 Day`, not modelled). In an `If` or `For`: no message.
+- `Delay(0,1,Sec)`: `by 2 Sec` (the existing `total // unit + 1`, now also at interval 0); delay plus
+  `PanelTemp` the same.
+- Not modelled: `mSec` (the number is the per-instruction measurement time, e.g. `PanelTemp(,15000)`
+  3 mSec, `(,60)` 36 mSec, `(,250)` 11 mSec, `(,50)` 43 mSec); `Battery` (CR1000X `by 1 Sec`, CR6
+  nothing); a negative interval gives no `too short` message. A pass-1 symbol error on CR1000X
+  (`Invalid symbol ... U1`) also hides the scan error itself; the CR6 tier-C `Invalid channel` still
+  prints beside it. Neither is modelled.
+
+The zero scans run ahead of the error-gated tier C and only when no error preceded the early
+checks. Reproducers fixed: cr6 `false_accept/27f8cf697cbc`, `8dd29dba276b`, `e17429a2a028`,
+`message_diff/9bee9eafb6c3`, `a715a6fa84f0`; cr1000x `false_accept/8fea44ceb325`, `ea6e49fbf407`.

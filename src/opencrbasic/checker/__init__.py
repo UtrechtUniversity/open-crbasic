@@ -219,7 +219,10 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # CR6/CR1000X: an unknown structure member is a pass-1 error (`checker/structs.py`).
         _run_pass(structs.check_members, program, profile, diags, _with_inline(program))
     if not profile.early_warnings_gated:
+        errors_before_early = len(diags.errors)
         _run_pass(warnings.check_early, program, profile, diags, env)
+        if not profile.single_pass and not errors_before_early:
+            _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env, True)
 
     bounds = Diagnostics()
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
