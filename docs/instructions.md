@@ -1257,3 +1257,25 @@ loggers (3 of 3 runs each on CR300/CR350). The earlier "false reject" therefore 
 verdict and nothing was changed. The parenthesised `StructureType (Values)` form WITH
 `EndStructureType` (member without `Public`) matches the real compiler on all four loggers; with a
 `Public` member line CR300/CR350 page-fault (no verdict).
+
+## EPI filter instructions: scan buffers and output rate (CR6/CR1000X, 2026-10-03)
+
+Fixtures `tests/fixtures/epi_scan_buffers.json` (`CDM_BridgeFilt`, 30 cases) and
+`epi_scan_buffers_fft.json` (`CDM_FFTFilt`, 8), `tests/test_epi_scan_buffers.py`,
+`instr_rules.check_epi_scan_buffers`. Corpus: `chm/cdmbridgefilt_1`. Pipeline mode only
+(`SequentialMode` gives `CDM_BridgeFilt not allowed in Sequential Mode.`, not modelled).
+Per call, on the instruction line, also inside an `If` and a `SubScan`:
+
+- `Insufficient Scan buffers to read EPI data, minimum is N.` when the constant `Scan` buffer
+  argument is below `N = min(100, 2 s / interval)` (integer division: 100 mSec -> 20, 200 -> 10,
+  500 -> 4, 50 -> 40, 10 and below -> 100, 300 -> 6). Probed for 1..500 mSec. A 750 mSec scan with
+  buffers 0 gives no buffer message, so the rule stops at 500 mSec; 1 Sec and above never gives it.
+- `CDM_BridgeFilt` only: `Invalid Output Rate.` unless the interval is one of 1/2/5/10/20/50/100/200/
+  500/1000 mSec (the help page's table), then for intervals above 1 Sec `Maximum Scan interval for
+  CDM_BridgeFilt is 1 Sec.` `CDM_FFTFilt` accepts 2 Sec.
+
+Not modelled: `CDM_FFTFilt` `Scan interval must be at least N usec for FFT length M.`, the
+rate message for a table interval that the scan does not divide (gated behind the table-divisibility
+error here), the rate/max messages inside `SubScan` (`Cannot mix output rates in a single Spectrum
+Module.`), scan intervals under 1 mSec. `CDM_TCComp` and the other `CDM_*` measurements have no buffer
+rule (0 buffers at 100 mSec accepted).

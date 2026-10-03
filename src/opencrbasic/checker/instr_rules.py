@@ -1325,6 +1325,74 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
                 diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
 
 
+def check_epi_scan_buffers(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """Pipeline mode, CR6/CR1000X: `CDM_BridgeFilt`/`CDM_FFTFilt` in a main `Scan` with a constant
+    interval of 1 mSec or more, per call (also inside conditionals): `Insufficient Scan buffers to
+    read EPI data, minimum is N.` when the constant buffer count is below `min(100, 2 s / interval)`
+    (integer division; intervals of 1 mSec..500 mSec only), and for `CDM_BridgeFilt` only (`CDM_FFTFilt` accepts 2 Sec) `Invalid Output Rate.` when the interval
+    is not one of 1/2/5/10/20/50/100/200/500/1000 mSec, and `Maximum Scan interval for <name> is 1
+    Sec.` past 1 Sec; docs/instructions.md. Not modelled inside `SubScan` (only the buffer message
+    is), nor below 1 mSec."""
+    from .. import mode
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    stmts = [st for st in program.statements if isinstance(st, S.Instruction)]
+    if not any(st.keyword.upper() in _EPI_FILTERS for st in stmts):
+        return
+    try:
+        if mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
+                       lambda e: consteval.value_of(e, env)) != "Pipeline":
+            return
+    except Exception:
+        return
+    slow = False
+    us = minimum = None
+    subscan = 0
+    for st in stmts:
+        kw = st.keyword.upper()
+        if kw == "SLOWSEQUENCE":
+            slow = True
+        elif kw == "SCAN":
+            us = minimum = None
+            subscan = 0
+            raw = None if slow else _scan_raw(st, env)
+            if raw is not None and raw[0] * _US_PER_UNIT[raw[1]] >= 1000:
+                us = raw[0] * _US_PER_UNIT[raw[1]]
+                buffers = _const_int(st.args[2], env) if len(st.args) > 2 else None
+                if buffers is not None and us <= 500_000 and buffers < min(100, 2_000_000 // us):
+                    minimum = min(100, 2_000_000 // us)
+        elif kw == "SUBSCAN":
+            subscan += 1
+        elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+SubScan\b", st.text or "") or kw == "NEXTSUBSCAN":
+            subscan = max(0, subscan - 1)
+        elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", st.text or "") or kw == "NEXTSCAN":
+            us = minimum = None
+        elif kw in _EPI_FILTERS and us is not None:
+            if minimum is not None:
+                diags.error(st.line, f"Insufficient Scan buffers to read EPI data, minimum is {minimum}.", st.file)
+            if not subscan and kw == "CDM_BRIDGEFILT":
+                if us not in _EPI_RATES_US:
+                    diags.error(st.line, "Invalid Output Rate.", st.file)
+                if us > 1_000_000:
+                    diags.error(st.line, f"Maximum Scan interval for CDM_BridgeFilt is 1 Sec.", st.file)
+
+
+_EPI_RATES_US = frozenset(ms * 1000 for ms in (1, 2, 5, 10, 20, 50, 100, 200, 500, 1000))
+_EPI_FILTERS = frozenset({"CDM_BRIDGEFILT", "CDM_FFTFILT"})
+
+
+def _const_int(arg, env) -> int | None:
+    if arg is None or not consteval.is_constant(arg, env):
+        return None
+    try:
+        value = consteval.value_of(arg, env)
+    except consteval.NotConstant:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return int(value)
+
+
 def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env) -> None:
     """Pipeline mode, CR6/CR1000X: in the one main `Scan` that holds every `AVW200`, each `AVW200`
     after which twice the running sum of `Reps` (2 s per sensor) exceeds the scan interval gets
