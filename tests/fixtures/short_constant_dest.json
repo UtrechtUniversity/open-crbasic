@@ -1,0 +1,303 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-short_constant_dest-0",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-1",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(1+2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1+2.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-2",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-3",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-4",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: .5.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-5",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-6",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-7",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-8",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  CDM_PanelTemp(CDM_A108,1,1,1,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-short_constant_dest-9",
+   "logger": "cr6",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-0",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 15000.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-1",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(1+2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1+2.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-2",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-3",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-4",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: .5.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-5",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-6",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-7",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-8",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  CDM_PanelTemp(CDM_A108,1,1,1,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 1.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-short_constant_dest-9",
+   "logger": "cr1000x",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-short_constant_dest-0",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-short_constant_dest-1",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(1+2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-short_constant_dest-2",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-short_constant_dest-3",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-short_constant_dest-4",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MovePrecise is not defined.\nline 4: Invalid, or out of place expression:   MovePrecise(.5)\n."
+  },
+  {
+   "id": "cr300-short_constant_dest-5",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MovePrecise is not defined.\nline 4: Invalid, or out of place expression:   MovePrecise(x)\n."
+  },
+  {
+   "id": "cr300-short_constant_dest-6",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: AddPrecise is not defined.\nline 4: Invalid, or out of place expression:   AddPrecise(1)\n."
+  },
+  {
+   "id": "cr300-short_constant_dest-7",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: AddPrecise is not defined.\nline 4: qq is not defined.\nline 4: Invalid, or out of place expression:   AddPrecise(qq)\n."
+  },
+  {
+   "id": "cr300-short_constant_dest-8",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  CDM_PanelTemp(CDM_A108,1,1,1,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PanelTemp is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_PanelTemp(CDM_A108,1,1,1,15000)\n."
+  },
+  {
+   "id": "cr300-short_constant_dest-9",
+   "logger": "cr300",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-short_constant_dest-0",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-short_constant_dest-1",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(1+2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-short_constant_dest-2",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-short_constant_dest-3",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  PanelTemp(\"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-short_constant_dest-4",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MovePrecise is not defined.\nline 4: Invalid, or out of place expression:   MovePrecise(.5)\n."
+  },
+  {
+   "id": "cr350-short_constant_dest-5",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  MovePrecise(x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MovePrecise is not defined.\nline 4: Invalid, or out of place expression:   MovePrecise(x)\n."
+  },
+  {
+   "id": "cr350-short_constant_dest-6",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: AddPrecise is not defined.\nline 4: Invalid, or out of place expression:   AddPrecise(1)\n."
+  },
+  {
+   "id": "cr350-short_constant_dest-7",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  AddPrecise(qq)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: AddPrecise is not defined.\nline 4: qq is not defined.\nline 4: Invalid, or out of place expression:   AddPrecise(qq)\n."
+  },
+  {
+   "id": "cr350-short_constant_dest-8",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  CDM_PanelTemp(CDM_A108,1,1,1,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_PanelTemp is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:   CDM_PanelTemp(CDM_A108,1,1,1,15000)\n."
+  },
+  {
+   "id": "cr350-short_constant_dest-9",
+   "logger": "cr350",
+   "source": "Public x, y(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  Delay(5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  }
+ ]
+}

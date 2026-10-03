@@ -3467,3 +3467,12 @@ the `<Name> illegally occurs before BeginProg.` placement line follows, for inst
 after a malformed constant-only argument, `Delay`'s `Measurement delay must have constant
 interval.`, and several unresolved arguments in one instruction (the real compiler reports them
 all, in an order that is neither textual nor by one simple class split).
+
+### Constant destination in a statement short of parameters (CR6/CR1000X)
+
+Oracle, 2026-10-03 (`tests/fixtures/short_constant_dest.json`): `PanelTemp(15000)`,
+`CDM_PanelTemp(CDM_A108,1,1,1,15000)`, `MovePrecise(.5)` print `Invalid Variable or Array: <arg>.`
+for the constant at the destination position, then `Invalid or missing parameter.`, on the same
+line. CR300/CR350 are unchanged. Not modelled: the real compiler also reports a later complete
+statement's constant destination (`PanelTemp(3,15000)`) after a short one, which our pass-1
+gating suppresses.

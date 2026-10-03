@@ -268,12 +268,38 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         missing_code = params[len(stmt.args)]
         if missing_code in _TOLERANT_CODES:
             continue
+        if profile.name in ("cr6", "cr1000x"):
+            _report_constant_destinations(stmt, record, params, program, profile, diags)
         kind = _type_code_kinds().get(missing_code - 100 if missing_code >= 100 else missing_code)
         if kind in _TOO_FEW_PARAMS_KINDS:
             diags.error(stmt.line, "Too few parameters in instruction.", stmt.file)
         else:
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
     _check_unterminated_string_param(program, profile, diags)
+
+
+def _report_constant_destinations(stmt: S.Instruction, record: dict, params: list, program,
+                                  profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X, a statement short of required parameters: the arguments given are still
+    examined first, so a constant at a destination-variable position (`PanelTemp(15000)`,
+    `CDM_PanelTemp(CDM_A108,1,1,1,15000)`) gives `Invalid Variable or Array: <arg>.` ahead of
+    `Invalid or missing parameter.` (oracle, 2026-10-03, `tests/fixtures/short_constant_dest.json`).
+    The checks are those `instr_data._check_stage2a` and `check_precision_variable` make for a
+    complete statement, which pass 1 now suppresses for this one."""
+    from . import instr_data
+    if stmt.keyword.upper() in _PRECISION_VARIABLE_POSITIONS:
+        known = _known_names(program, profile)
+        variables = symbols.declared_variable_names(program)
+        if stmt.args and stmt.args[0] is not None and not (
+                _undefined_names(stmt.args[0], known) or _variable_refs(stmt.args[0], variables)):
+            diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, 0)}.", stmt.file)
+        return
+    for i, code in enumerate(params[:len(stmt.args)]):
+        arg = stmt.args[i]
+        if code in (8, 27, 29) and arg is not None and not isinstance(arg, S.String) \
+                and not instr_data._has_names(arg):
+            diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i).strip()}.",
+                        stmt.file)
 
 
 # --- Too many parameters: `Too many parameters:  %s.` (round 5, new this round) -----------------
@@ -845,6 +871,10 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
         if known is None:
             known = _known_names(program, profile)
             variable_names = symbols.declared_variable_names(program)
+        record = profile.instructions[kw]
+        if len(stmt.args) < _required_count(_real_params(record["params"])) and \
+                profile.name in ("cr6", "cr1000x"):
+            continue  # reported with the missing-parameter line, `_report_constant_destinations`
         for i in sorted(positions):
             if i >= len(stmt.args) or stmt.args[i] is None:
                 continue
