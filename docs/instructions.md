@@ -1126,5 +1126,20 @@ instructions share the address table. Registering instructions observed on CR6: 
 `SWPower`, `Delay`, `PulsePort`, `MuxSelect`, `Therm107`, `Resistance`, `ACPower`, `CurrentDiff`
 (others were not confirmed and are not checked). It is an aside like the PulseCount rule. Not
 implemented: addresses outside 1..120 (the real compiler adds `CPI Address must be 1..120.` and
-folds the address modulo 256), non-constant arguments, and the `<Instruction> instruction not
-supported by module <name>.` family. `instr_rules.check_cdm_address_types`.
+folds the address modulo 256) and non-constant arguments. `instr_rules.check_cdm_address_types`.
+
+### CDM instruction on the NULL module (CR6/CR1000X)
+A `CDMType` constant that names no module (any integer 0..65536 outside 100-105, 200-202, 220-231,
+260 and 261; swept 0..299 on both loggers, 300, 1000 and 65536 spot-checked) is the `NULL` module,
+and a CDM instruction using it gets `<name> instruction not supported by module NULL.`, where
+`<name>` is `Analog measurement` for `VoltSe`, `VoltDiff`, `TCSE`, `PanelTemp`, `BrFull6W`,
+`BrHalf3W`, `Therm107`, `Resistance`; `SW` for `SW12`/`SW5`; `CDM_Excite` for `ExciteV`/`ExciteI`;
+`CDM_MuxSel` for `MuxSelect`; `CDM_<Name>` for `Battery`, `Delay` (only `Option` 0; options 1 and 2 print no module line),
+`PulsePort`, `TCComp`, `ACPower`; and two lines for `SWPower` (`CDM_SWPower`, `SW`) and `CurrentDiff` (`CDM_CurrentDiff`,
+`Analog measurement`). It replaces the instruction's other value errors (a bad channel, range or
+`Reps` were not reported), is hidden by a pass-1 error and coexists with tier-B/tier-C errors on
+other lines (same aside as the address rule). A statement that clashes on its address gets only the
+clash line. Not implemented: named modules that lack an instruction (`EC100`, `CURRENT408`,
+`VOLT408V1` and others print the same message with their own name, or a warning), `PeriodAvg`
+(not confirmed to register its address), `BrHalf`/`BrFull`/`TCDiff`/`Resistance3W`, and addresses
+outside 1..120.

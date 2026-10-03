@@ -1221,21 +1221,49 @@ _CDM_ADDRESS_INSTRUCTIONS = frozenset({
     "CDM_BATTERY", "CDM_VOLTSE", "CDM_VOLTDIFF", "CDM_TCDIFF", "CDM_TCSE", "CDM_PANELTEMP",
     "CDM_BRHALF", "CDM_EXCITEV", "CDM_EXCITEI", "CDM_SW12", "CDM_SW5", "CDM_SWPOWER",
     "CDM_DELAY", "CDM_PULSEPORT", "CDM_MUXSELECT", "CDM_THERM107", "CDM_RESISTANCE",
-    "CDM_ACPOWER", "CDM_CURRENTDIFF",
+    "CDM_ACPOWER", "CDM_CURRENTDIFF", "CDM_BRFULL6W", "CDM_BRHALF3W", "CDM_TCCOMP",
 })
+# `CDMType` values that name a module (the other values 0..65536 are the unnamed `NULL` module;
+# oracle sweep 0..299 on CR6 and CR1000X, spot values above).
+_CDM_NAMED_TYPES = frozenset(range(100, 106)) | {200, 201, 202} | frozenset(range(220, 232)) | {260, 261}
+_CDM_ANALOG = "Analog measurement"
+# Text before ` instruction not supported by module NULL.` for a NULL-module type (one or two lines).
+_CDM_NULL_MODULE = {
+    "CDM_VOLTSE": [_CDM_ANALOG], "CDM_VOLTDIFF": [_CDM_ANALOG], "CDM_TCSE": [_CDM_ANALOG],
+    "CDM_PANELTEMP": [_CDM_ANALOG], "CDM_BRFULL6W": [_CDM_ANALOG], "CDM_BRHALF3W": [_CDM_ANALOG],
+    "CDM_THERM107": [_CDM_ANALOG], "CDM_RESISTANCE": [_CDM_ANALOG],
+    "CDM_BATTERY": ["CDM_Battery"], "CDM_DELAY": ["CDM_Delay"], "CDM_PULSEPORT": ["CDM_PulsePort"],
+    "CDM_TCCOMP": ["CDM_TCComp"], "CDM_ACPOWER": ["CDM_ACPower"],
+    "CDM_EXCITEV": ["CDM_Excite"], "CDM_EXCITEI": ["CDM_Excite"], "CDM_MUXSELECT": ["CDM_MuxSel"],
+    "CDM_SW12": ["SW"], "CDM_SW5": ["SW"],
+    "CDM_SWPOWER": ["CDM_SWPower", "SW"], "CDM_CURRENTDIFF": ["CDM_CurrentDiff", _CDM_ANALOG],
+}
+
+
+def _delay_option(stmt: S.Instruction, env):
+    """`CDM_Delay`'s constant `Option` (only option 0, the measurement delay, needs the module)."""
+    try:
+        return consteval.value_of(stmt.args[2], env) if len(stmt.args) > 2 else None
+    except consteval.NotConstant:
+        return None
 
 
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
-    """CR6/CR1000X: a CDM instruction naming a `CPIAddress` (1..120) with a `CDMType` different from
-    the first one used for that address -> `Address <n> already used with a different type CDM.`
-    on every such later statement; docs/instructions.md. Types compare by value (`VOLT116` is
-    223); non-constant arguments are skipped."""
+    """CR6/CR1000X CDM instructions with a constant `CDMType` and a `CPIAddress` (1..120);
+    docs/instructions.md "CDM address and module type".
+
+    - A type different from the first one used for that address -> `Address <n> already used with
+      a different type CDM.` (every such statement; types compare by value, `VOLT116` is 223).
+    - Otherwise a type that names no module (the `NULL` module) -> `<name> instruction not supported
+      by module NULL.` (`SWPower` and `CurrentDiff` add a second line; `CDM_Delay` only for Option 0).
+      The clash replaces it.
+    Non-constant arguments are skipped."""
     if profile.name not in ("cr6", "cr1000x"):
         return
     first: dict[int, object] = {}
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _CDM_ADDRESS_INSTRUCTIONS \
-                or len(stmt.args) < 2:
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        if kw not in _CDM_ADDRESS_INSTRUCTIONS or len(stmt.args) < 2:
             continue
         try:
             kind = consteval.value_of(stmt.args[0], env)
@@ -1250,6 +1278,10 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
         if first.setdefault(address, kind) != kind:
             diags.error(stmt.line, f"Address {address} already used with a different type CDM.",
                         stmt.file)
+        elif kind == int(kind) and 0 <= kind <= 65536 and int(kind) not in _CDM_NAMED_TYPES \
+                and (kw != "CDM_DELAY" or _delay_option(stmt, env) == 0):
+            for name in _CDM_NULL_MODULE.get(kw, ()):
+                diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
 
 
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
