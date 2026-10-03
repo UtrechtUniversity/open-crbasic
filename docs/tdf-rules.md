@@ -718,3 +718,24 @@ keywords, so questions about their TDF encoding are moot.
   simultaneously (the doc's `overhead=16` fit was only ever checked pairwise) — `tables.py` uses
   this table as an exact lookup for these four widths and the `overhead=16`/`Pool2=4,188,120`
   formula only as a fallback for an unseen width.
+
+## Storage limit (observed 2026-10-03, not implemented)
+
+CR300 `Unable to allocate enough data table space to manage flash write cycle limits.` /
+`Not enough storage area for DataTables.` (oracle, `cr300comp.exe`; reproducer
+`tests/corpus/fuzz/cr300/false_accept/80cdb831bd9a.CR6`). Not modelled because the rule below is
+incomplete and a partial model would false-reject.
+
+- One called table with fixed `N` records and no `DataInterval` fails when
+  `N * (16 + payload) > 10,444,800`; payload FP2 2, IEEE4/Long 4, `String*n` `(n div 4 + 1) * 4`.
+  Boundaries: one FP2 field 580266/580267, two FP2 fields 522240/522241, `String*4` 435200/435201.
+  Independent of scan interval (100 mSec to 1 Hr).
+- Not monotonic: one FP2 field fails from 580267 to 119304187 and passes again from 119304188
+  (`N * 18` within ~8300 bytes of 2^31); `-999999999999` alone passes.
+- Shared budget with an unmeasured per-table overhead (~12-24 KB): two FP2 tables of 290133
+  records fail; a fixed table plus a `-1` table also failed.
+- A table with `DataInterval` has a much larger budget (5,059,161 records passed); a table never
+  called is not checked; `Maximum` with time stamps failed at 580266 (record size has terms not
+  listed above).
+- CR350 thresholds are roughly five times larger (not pinned). CR6/CR1000X report `Out of
+  memory.` for large tables instead (separate, unimplemented family).
