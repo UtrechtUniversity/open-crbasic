@@ -197,6 +197,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(structure.check_missing_param_followup, program, profile, diags)
     _run_pass(instr_rules.check_too_many, program, profile, diags)
     _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags)
+    _run_pass(instr_rules.check_snmpvariable_too_many, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
     # `AddPrecise`/`MovePrecise`'s own `PrecisionVariable` argument (`instr_rules.py`'s own
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
@@ -207,7 +208,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
     # confirmed the same way as the two calls just above (`docs/checker.md`).
     _run_pass(var_types.check_ctype, program, profile, diags)
-    _run_pass(expressions.check_function_arity, program, profile, diags)
+    _run_pass(expressions.check_function_arity, _with_inline(program), profile, diags)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
@@ -424,7 +425,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # whatever it would otherwise have found (`checker/cr3xx.py`'s own module-level comment for the
     # oracle evidence). Run unconditionally, after every other diagnostic-producing pass, since the
     # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
-    _run_pass(cr3xx.check_too_many_cascade, program, profile, diags)
+    _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:

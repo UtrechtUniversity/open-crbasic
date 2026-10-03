@@ -142,12 +142,11 @@ def test_uniform_argtypes_math_function_too_many_args():
     assert messages_of(result) == ["No Matching, or out of place ) in expression:     X = Floor(X,1)."]
 
 
-def test_abs_too_many_args_is_not_flagged_different_message_family():
-    # Oracle-confirmed exception (`docs/checker.md`): `Abs(x,y)` gets `Incomplete expression: %s.`
-    # instead, a different message this rule does not reproduce -- so `Abs` is deliberately absent
-    # from `_ARITY_MAX_SAFE` and this rule stays silent for it.
+def test_abs_too_many_args_uses_its_own_incomplete_expression_message():
+    # Oracle-confirmed exception (`docs/checker.md`): `Abs(x,y)` does not use the ordinary arity
+    # message, but is still a pass-1 error.
     result = compile_text(wrapped("    X = Abs(X,1)\n"))
-    assert messages_of(result) == []
+    assert messages_of(result) == ["Incomplete expression:     X = Abs(X,1)."]
 
 
 def test_sprintf_variadic_argument_counts_are_never_flagged():

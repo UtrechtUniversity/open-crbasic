@@ -1615,6 +1615,21 @@ mistaken for a regression, and re-confirmed clean (see below) before this item w
 
 ## Built-in function call arity (oracle-confirmed 2026-09-27, `checker/expressions.py`)
 
+### Special parser-first function diagnostics (oracle-confirmed 2026-10-03)
+
+The ordinary built-in arity messages do not cover every boundary. Across all four compilers,
+strings in `SerialOpen` positions 4 or 5 and `Timer` position 2 produce `Parameter must be a
+constant integer: <whole statement>.`; the same message occurs for a fourth string argument to
+`TCPOpen`. `Abs` with a second argument and `MQTTPublish` with a fifth instead produce `Incomplete
+expression: <whole statement>.`. CR300/CR350 put the period on a new line. `SerialFlush` keeps the
+ordinary `No Matching, or out of place )` diagnostic, including in a one-line `If` body.
+
+`WindVector`'s eight-argument form is accepted in a `DataTable`; a ninth argument yields `Too many
+parameters:`. A normal dotted `SNMPVariable` OID remains accepted, but whitespace immediately
+after a dotted OID segment resumes parsing at the type token and yields `Too many parameters:` for
+that token. An OID used as the destination is separately invalid. These parser recovery cases are
+implemented narrowly in `instr_rules.py`; fixture evidence is `tests/fixtures/function_specials.json`.
+
 `Expression expects , : %s.` (too few arguments) and `No Matching, or out of place ) in
 expression: %s.` (too many) for a call to a `data/functions.json` built-in *function* nested
 anywhere inside an expression -- as distinct from an *instruction*'s own required/excess-parameter

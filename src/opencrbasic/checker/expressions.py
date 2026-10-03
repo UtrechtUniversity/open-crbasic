@@ -296,6 +296,16 @@ _ARITY_MAX_SAFE = {
     # constant-integer message on *this* side too. None of the three are in this map.
 }
 
+# A small group of function shapes reaches a different parser diagnostic before the ordinary
+# argument-count handler.  Each entry is restricted to the directly observed boundary: a string
+# in a constant-integer position, or one argument beyond the extracted count.
+_FUNCTION_CONST_INTEGER_STRING_ARGS = {
+    "SERIALOPEN": frozenset({3, 4}),
+    "TIMER": frozenset({1}),
+}
+_CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
+_INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
+
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
 # embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`
 # immediately after the text on one line (oracle, `Round(X)`/`Round(X,1,2)` alone, both directions,
@@ -1078,6 +1088,15 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     nargs = record.get("nargs")
     if nargs is None:
         return None
+    upper = name.upper()
+    if any(i < len(args) and isinstance(args[i], S.String)
+           for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
+        return "constint"
+    if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
+            and isinstance(args[-1], S.String)):
+        return "constint"
+    if _INCOMPLETE_OVERFLOW.get(upper) == nargs and len(args) == nargs + 1:
+        return "incomplete"
     if n == 0 and (nargs > 0 or record.get("argspec")):
         # `X = Int()`, `SerialFlush()`: the generic fallback on the whole statement, pass 1, all
         # four loggers (oracle, 2026-09-27).
@@ -1138,6 +1157,11 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
 
 def _arity_message(kind: str, text: str, profile, at_eol: bool = True,
                    whole_statement: bool = False) -> str:
+    if kind in ("constint", "incomplete"):
+        verb = ("Parameter must be a constant integer: " if kind == "constint"
+                else "Incomplete expression: ")
+        sep = "\n" if profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS and at_eol else ""
+        return f"{verb}{text}{sep}."
     if kind == "empty":
         sep = "\n" if whole_statement and at_eol and profile.fallback_echo_newline else ""
         return f"Invalid, or out of place expression: {text}{sep}."
@@ -1301,6 +1325,11 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     if problem:
                         break
             if problem:
+                if (problem == "constint" and any(
+                        d.line == stmt.line and d.file == stmt.file
+                        and d.message.startswith("Parameter must be a constant integer:")
+                        for d in diags.items)):
+                    continue
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
                                                             whole_statement=True), stmt.file)
         elif isinstance(stmt, S.If):

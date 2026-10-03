@@ -1,0 +1,20 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {"exe": "CR6Comp.exe", "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"},
+  "cr1000x": {"exe": "cr1000xcomp.exe", "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"},
+  "cr300": {"exe": "cr300comp.exe", "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"},
+  "cr350": {"exe": "cr350comp.exe", "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"}
+ },
+ "cases": [
+  {"id":"cr6-serialopen-string-option","logger":"cr6","source":"BeginProg\n  SerialOpen(COMC1,9600,0,\"fuzz\",10000)\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer:   SerialOpen(COMC1,9600,0,\"fuzz\",10000)."},
+  {"id":"cr6-serialopen-string-timeout","logger":"cr6","source":"BeginProg\n  SerialOpen(COMC1,9600,0,0,\"fuzz\")\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 2: Parameter must be a constant integer:   SerialOpen(COMC1,9600,0,0,\"fuzz\")."},
+  {"id":"cr6-timer-string-unit","logger":"cr6","source":"Const ReportTimer=1\nConst TimerResetAndStart=2\nBeginProg\n  Timer(ReportTimer,\"fuzz\",TimerResetAndStart)\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   Timer(ReportTimer,\"fuzz\",TimerResetAndStart)."},
+  {"id":"cr300-tcpopen-extra-string","logger":"cr300","source":"Public pppSocket\nConst IPAddress=\"192.168.4.23\"\nBeginProg\n  pppSocket=TCPOpen(IPAddress,6785,0,\"fuzz\")\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a constant integer:   pppSocket=TCPOpen(IPAddress,6785,0,\"fuzz\")\n."},
+  {"id":"cr300-abs-extra","logger":"cr300","source":"Public X,R\nBeginProg\n  R=ABS(X,\"fuzz\")\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression:   R=ABS(X,\"fuzz\")\n."},
+  {"id":"cr300-mqttpublish-extra","logger":"cr300","source":"Public R\nPublic Payload As String * 20\nBeginProg\n  R=MQTTPublish(\"T\",Payload,0,0,(1+2))\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   R=MQTTPublish(\"T\",Payload,0,0,(1+2))\n."},
+  {"id":"cr300-inline-serialflush-extra","logger":"cr300","source":"BeginProg\n  If True Then SerialFlush(ComRS232,\"fuzz\")\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 2: No Matching, or out of place ) in expression: SerialFlush(ComRS232,\"fuzz\")."},
+  {"id":"cr6-windvector-extra","logger":"cr6","source":"Public WS,WD\nDataTable(T,1,-1)\n  WindVector(1,WS,WD,IEEE4,0,0,0,0,\"fuzz\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  \"fuzz\"."},
+  {"id":"cr350-snmp-spaced-oid","logger":"cr350","source":"Public MyTemp\nBeginProg\n  SNMPVariable(MyTemp,1.3.6.1.4.  1.43592.55.1.4,Float,RONLY)\nEndProg\n","expected_exit":1,"expected_stdout":"t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  Float."}
+ ]
+}

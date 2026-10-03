@@ -187,6 +187,7 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Illegally dimension
                                  "Call argument required", "No Matching, or out of place )",
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",
                                  "Invalid or missing parameter.",
+                                 "Parameter must be a constant integer:",
                                  "Invalid, or out of place expression:",
                                  "Illegal destination variable type", "Invalid Variable or Array:",
                                  "Cannot recursively call functions.", "Parameter must be integral.",

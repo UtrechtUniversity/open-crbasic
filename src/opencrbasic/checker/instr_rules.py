@@ -250,7 +250,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 # with its `deferred_text` source, `Minimum (1,X,FP2,False,False,"fuzz")` -> `Too many parameters:
 # "fuzz".`, `SendTableDef(ComRS232,0,4094,T,(1+2))` -> `... 1+2.`.
 _TOO_MANY_EXTRA = frozenset({"DATATABLE", "CALLTABLE", "SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM",
-                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF", "ESSINITIALIZE"})
+                             "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF", "ESSINITIALIZE",
+                             "WINDVECTOR"})
 
 _TOO_MANY_SAFE_KINDS = frozenset({
     "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
@@ -369,6 +370,34 @@ def check_essinitialize_too_many(program: S.Program, profile, diags: Diagnostics
         token = _next_simple_token(body[split + 1:])
         if token:
             diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+
+
+_SNMP_SPACED_OID = re.compile(
+    r"^\s*SNMPVARIABLE\s*\(\s*[^,]+\s*,\s*(?:\d+\.)+\s+\d+(?:\.\d+)*\s*,\s*([A-Za-z_]\w*)\s*,",
+    re.I,
+)
+_SNMP_OID_DEST = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*(\d+(?:\.\d+)*)\s*,", re.I)
+
+
+def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
+    """Whitespace within a dotted SNMP OID makes the real parser resume at its type token.
+
+    The normal dotted OID is an intentional parser gap that compiles; this is only its observed
+    whitespace-split recovery shape, which emits the ordinary excess-parameter message.
+    """
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed) or not stmt.reason.startswith("expected ')', found"):
+            continue
+        match = _SNMP_SPACED_OID.match(stmt.text)
+        if match:
+            diags.error(stmt.line, f"Too many parameters:  {match.group(1)}.", stmt.file)
+            continue
+        match = _SNMP_OID_DEST.match(stmt.text)
+        if match:
+            oid = match.group(1)
+            diags.error(stmt.line, "Illegal object id.", stmt.file)
+            diags.error(stmt.line, "SNMP OID must be greater than 1.3.6.1.2.1.1.7", stmt.file)
+            diags.error(stmt.line, f"Variable name {oid} illegal, starts with a number.", stmt.file)
 
 
 # --- Ungated `Scan`/`DataInterval` numeric-value checks (called from `checker/warnings.py`'s
