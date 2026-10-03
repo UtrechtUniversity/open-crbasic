@@ -1250,3 +1250,10 @@ variants still compiled. Treat the rule as compiler undefined behaviour. The che
 programs that the real compiler either rejected or crashed on, so it cannot cause a false reject.
 `tools/fixture_audit.py` raises an `OracleError` on these cases rather than reporting a
 difference.
+
+Re-probed later on 2026-10-03: the unclosed `Sensor1.val_Float = 1` program (plain and parenthesised
+type name) shows a clean accept only from an older cache entry; uncached it page-faults on all four
+loggers (3 of 3 runs each on CR300/CR350). The earlier "false reject" therefore has no live
+verdict and nothing was changed. The parenthesised `StructureType (Values)` form WITH
+`EndStructureType` (member without `Public`) matches the real compiler on all four loggers; with a
+`Public` member line CR300/CR350 page-fault (no verdict).
