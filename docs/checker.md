@@ -3352,3 +3352,19 @@ before `BeginProg` gives, on CR6/CR1000X, `Invalid symbol in expression: <line>.
 gets `If illegally occurs before BeginProg.` after the symbol line. The placement line sorts after the
 other messages of its line (`compiler.py`). CR300/CR350 give only `Nope is not defined.` and go on.
 Evidence: `tests/fixtures/small_gaps.json` (`*-prebp-*`).
+
+### Structure variable with more than one index
+
+A structure variable reference takes at most one index (`check_function_arity`, pass 1; oracle,
+2026-10-03, all four loggers). `s2(1,2)` is rejected even for `Public s2(3,4) As s`; a member's own
+index is separate (`s1(1).value(2)` compiles). Destination (whole structure or member, also
+compound `+=`): `Invalid, or out of place expression: <stmt>.`. In a value, `If` condition or
+instruction argument: `No Matching, or out of place ) in expression: <stmt>.` (same text and CR300/
+CR350 newline form as a bad built-in arity; instruction arguments echo the argument). On CR300/CR350
+only, a whole-structure target with a whole `s1(10,2)` value adds `Structured Variable assignment
+illegal, wrong type` first. CR300/CR350 drop all of these when the file has a call-arity error
+anywhere. Pass 2's `Dimensions not declared` skips these statements.
+Not modelled: output instructions outside a table keep `must be used inside a table declaration.`
+(skipped); only the first error of a `DataTable` is reported (ours reports each); CR300/CR350
+`Too many parameters` cascades after instruction arguments (same as for bad built-in arity).
+Evidence: `tests/fixtures/struct_index.json`.

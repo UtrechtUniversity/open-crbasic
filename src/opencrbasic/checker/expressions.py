@@ -12,8 +12,8 @@ from pathlib import Path
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostics
-from . import symbols
+from ..diagnostics import Diagnostic, Diagnostics
+from . import instr_data, symbols
 
 _TYPE_CODES_PATH = Path(__file__).resolve().parent.parent / "data" / "type_codes.json"
 
@@ -887,11 +887,14 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
 
     dim_counts = symbols.declared_dim_counts(
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
+    struct_vars = _struct_var_names(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Assignment):
             continue
         if _undefined_names(stmt.target, known):
             continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
+        if _multi_indexed_struct(stmt.target, struct_vars) or _multi_indexed_struct(stmt.value, struct_vars):
+            continue  # already reported by `check_function_arity` (pass 1)
         names = _undefined_names(stmt.value, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
         if _over_indexed(stmt.target, dim_counts, 3 if whole_echo else None):
@@ -1271,6 +1274,35 @@ def _bare_function_message(text: str, profile, whole_statement: bool) -> str:
     return f"Expression expects ( : {text}."
 
 
+def _struct_var_names(program: S.Program) -> frozenset[str]:
+    from . import structs  # lazy: structs imports this module
+    types = structs._structure_members(program)
+    if not types:
+        return frozenset()
+    return frozenset(n for n, k in structs._variable_kinds(program, types).items()
+                     if k.startswith("STRUCT:"))
+
+
+def _multi_indexed_struct(expr: S.Expr | None, struct_vars: frozenset[str]) -> bool:
+    """True when `expr` contains a structure-variable reference with two or more indices
+    (`s1(10,2)`, `s2(1,2).value`): a structure reference takes at most one (`s1(1).value(2)`
+    is fine -- the member's own index is separate). Same walk shape as `_find_arity_problem`."""
+    if expr is None:
+        return False
+    if isinstance(expr, S.Index):
+        return (expr.name.upper() in struct_vars and len(expr.args) >= 2) or any(
+            _multi_indexed_struct(a, struct_vars) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _multi_indexed_struct(expr.operand, struct_vars)
+    if isinstance(expr, S.Binary):
+        return (_multi_indexed_struct(expr.left, struct_vars)
+                or _multi_indexed_struct(expr.right, struct_vars))
+    if isinstance(expr, S.Member):
+        return _multi_indexed_struct(expr.base, struct_vars) or any(
+            _multi_indexed_struct(a, struct_vars) for a in expr.args or [])
+    return False
+
+
 def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> None:
     """Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     in expression: %s.`) *and* a bare function-name reference with no argument list at all
@@ -1309,11 +1341,27 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
     """
     declared_variables = frozenset(symbols.declared_variable_names(program))
     known: set[str] | None = None
+    from . import structs, structure  # lazy: both import this module
+    struct_types = structs._structure_members(program)
+    kinds = structs._variable_kinds(program, struct_types) if struct_types else {}
+    struct_vars = _struct_var_names(program)
+    start = len(diags.items)
+    mine: list = []
+    in_table = False
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
+            kw = stmt.keyword.upper()
+            in_table = kw == "DATATABLE" or (in_table and kw != "ENDTABLE")
+            # outside a table the "must be used inside a table declaration" check wins
+            table_only = kw in instr_data.TABLE_ONLY_INSTRUCTIONS and not in_table
             for i, arg in enumerate(stmt.args):
                 if arg is None:
                     continue
+                if not table_only and _multi_indexed_struct(arg, struct_vars):
+                    diags.error(stmt.line, _arity_message("many", _arg_text(stmt, i), profile, False),
+                                stmt.file)
+                    mine.append(diags.items[-1])
+                    break
                 if _find_bare_function_ref(arg, profile, declared_variables):
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
                     diags.error(stmt.line, msg, stmt.file)
@@ -1360,6 +1408,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
             # (the condition echo, no CR300/CR350 newline).
             problem = _find_arity_problem(stmt.cond, profile)
+            struct_cond = not problem and _multi_indexed_struct(stmt.cond, struct_vars)
+            problem = problem or ("many" if struct_cond else None)
             text = _if_condition_text(stmt)
             if problem == "empty" and text is not None:
                 diags.error(stmt.line, _arity_message(problem, text, profile), stmt.file)
@@ -1367,6 +1417,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
+                if struct_cond:
+                    mine.append(diags.items[-1])
         elif isinstance(stmt, S.ConstDecl) and stmt.value_span:
             # `Const CRLF = CHR(13,1) + CHR(10)` -> `No Matching, or out of place ) in expression:
             # CHR(13,1) + CHR(10).`, the value echoed, all four loggers (oracle, 2026-10-01)
@@ -1388,13 +1440,33 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 # An undeclared target defers the whole statement to pass 2 (the fallback and
                 # its placement follow-up there; oracle: `Y=EXP()` before `BeginProg`).
                 continue
+            if _multi_indexed_struct(stmt.target, struct_vars):
+                # a structure reference takes one index; oracle 2026-10-03, docs/checker.md
+                diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
+                            stmt.file)
+                mine.append(diags.items[-1])
+                continue
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
                 continue
             problem = _find_arity_problem(stmt.value, profile)
+            struct_value = not problem and _multi_indexed_struct(stmt.value, struct_vars)
+            if struct_value:
+                problem = "many"
+                if (profile.single_pass and not stmt.compound and isinstance(stmt.value, S.Index)
+                        and structs._operand_kind(stmt.target, kinds, struct_types) == "S"):
+                    diags.items.append(Diagnostic("error", stmt.line, structs._WRONG_TYPE, stmt.file,
+                                                  cascade=False))
+                    mine.append(diags.items[-1])
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
                                                             whole_statement=True), stmt.file)
+                if struct_value:
+                    mine.append(diags.items[-1])
+    if profile.single_pass and any(d not in mine for d in diags.items[start:]):
+        # CR300/CR350: any call-arity error in the file suppresses every structure-index one,
+        # before or after it (oracle, 2026-10-03)
+        diags.items[start:] = [d for d in diags.items[start:] if d not in mine]
 
 
 def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:
