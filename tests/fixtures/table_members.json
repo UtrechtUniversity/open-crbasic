@@ -1,0 +1,401 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-bytesperrecord-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-1",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.bytesperrecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-2",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-3",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-4",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-5",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(100)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-6",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2.5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-7",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(-3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-9",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1+1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-10",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord()\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-11",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    If T.BytesPerRecord > 3 Then x = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bytesperrecord-12",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = 1 + T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-1",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.bytesperrecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-2",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-3",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-4",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-5",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(100)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-6",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2.5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-7",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(-3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-9",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1+1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-10",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord()\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-11",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    If T.BytesPerRecord > 3 Then x = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bytesperrecord-12",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = 1 + T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bytesperrecord-0",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-1",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.bytesperrecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.bytesperrecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-2",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-3",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(2)."
+  },
+  {
+   "id": "cr300-bytesperrecord-4",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(0)."
+  },
+  {
+   "id": "cr300-bytesperrecord-5",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(100)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(100)."
+  },
+  {
+   "id": "cr300-bytesperrecord-6",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2.5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(2)."
+  },
+  {
+   "id": "cr300-bytesperrecord-7",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(-3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr300-bytesperrecord-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr300-bytesperrecord-9",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1+1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr300-bytesperrecord-10",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord()\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-11",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    If T.BytesPerRecord > 3 Then x = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-12",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = 1 + T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr300-bytesperrecord-fieldnames",
+   "logger": "cr300",
+   "source": "Public x, y\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\n  FieldNames(\"BytesPerRecord\")\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bytesperrecord-0",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-1",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.bytesperrecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.bytesperrecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-2",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-3",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(2)."
+  },
+  {
+   "id": "cr350-bytesperrecord-4",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(0)."
+  },
+  {
+   "id": "cr350-bytesperrecord-5",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(100)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(100)."
+  },
+  {
+   "id": "cr350-bytesperrecord-6",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(2.5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(2)."
+  },
+  {
+   "id": "cr350-bytesperrecord-7",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(-3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr350-bytesperrecord-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr350-bytesperrecord-9",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord(1+1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord."
+  },
+  {
+   "id": "cr350-bytesperrecord-10",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord()\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-11",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    If T.BytesPerRecord > 3 Then x = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-12",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = 1 + T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.BytesPerRecord(1)."
+  },
+  {
+   "id": "cr350-bytesperrecord-fieldnames",
+   "logger": "cr350",
+   "source": "Public x, y\nDataTable (T,1,-1)\n  Sample (1,x,FP2)\n  FieldNames(\"BytesPerRecord\")\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x = T.BytesPerRecord\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

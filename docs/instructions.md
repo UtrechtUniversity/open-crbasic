@@ -1193,3 +1193,16 @@ channels outside 1..32 (`Bad parameter(s): ...`), an `AVW200` in an `If`/`For`/`
 not allowed inside of a conditional statement in PipeLine Mode.`), `AVW200` in more than one scan or
 beside a `SubScan` (`All instances of AVW200 to the same interface must scan at the same interval`).
 `instr_rules.check_avw200_scan_time`.
+
+### `BytesPerRecord` is not a DataTable member on CR300/CR350
+
+`Table.BytesPerRecord` compiles on CR6/CR1000X and fails on CR300/CR350 with
+`Could not find Table.BytesPerRecord(N).` (member spelling echoed as written; fixture
+`tests/fixtures/table_members.json`). `N` is 1 for no index or `()`, the truncated literal for a
+non-negative number (`(2.5)` -> 2, `(0)`, `(100)`), and the whole `(N)` is dropped for a variable,
+an expression (`1+1`) or a negative literal (`Could not find T.BytesPerRecord.`). Found in
+assignments and `If` conditions. A `FieldNames("BytesPerRecord")` in the program makes the member
+valid on CR300 (so it is not reported). Implemented in `expressions.check_table_members`. Not
+modelled: the oracle reports every bad member of a statement (`T.BytesPerRecord + T.Nope` gives two
+errors on CR300/CR350; the check stops at the first), `TableBytesX(2)` echoing its index (the
+existing rule always prints `(1)`), and CR6's `predefined field name` error for such a FieldNames.

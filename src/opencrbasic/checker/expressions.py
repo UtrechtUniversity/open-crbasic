@@ -642,8 +642,20 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
     return False
 
 
+def _member_index_text(args: list | None) -> str:
+    """The `(N)` echoed for an absent DataTable member: 1 for no index, the truncated literal, and
+    nothing for a variable, expression or negative index (oracle, CR300, docs/instructions.md)."""
+    if not args or args[0] is None:
+        return "(1)"
+    index = args[0]
+    if isinstance(index, S.Number) and index.value >= 0:
+        return f"({int(index.value)})"
+    return ""
+
+
 def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]],
-                          data_tables: set[str]) -> tuple[str, str] | None:
+                          data_tables: set[str], absent: frozenset[str] = frozenset()
+                          ) -> tuple[str, str, str] | None:
     if expr is None:
         return None
     if isinstance(expr, S.Member):
@@ -651,27 +663,29 @@ def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]]
             table = expr.base.name.upper()
             member = expr.member.upper()
             if table in const_tables and member not in const_tables[table]:
-                return expr.base.name, expr.member
+                return expr.base.name, expr.member, "(1)"
             if table in data_tables and member == "TABLEBYTESX":
-                return expr.base.name, expr.member
+                return expr.base.name, expr.member, "(1)"
+            if table in data_tables and member in absent:
+                return expr.base.name, expr.member, _member_index_text(expr.args)
         for arg in expr.args or []:
-            found = _table_member_problem(arg, const_tables, data_tables)
+            found = _table_member_problem(arg, const_tables, data_tables, absent)
             if found:
                 return found
-        return _table_member_problem(expr.base, const_tables, data_tables)
+        return _table_member_problem(expr.base, const_tables, data_tables, absent)
     if isinstance(expr, S.Index):
         for arg in expr.args:
-            found = _table_member_problem(arg, const_tables, data_tables)
+            found = _table_member_problem(arg, const_tables, data_tables, absent)
             if found:
                 return found
     elif isinstance(expr, S.Unary):
-        return _table_member_problem(expr.operand, const_tables, data_tables)
+        return _table_member_problem(expr.operand, const_tables, data_tables, absent)
     elif isinstance(expr, S.Binary):
-        return _table_member_problem(expr.left, const_tables, data_tables) or \
-            _table_member_problem(expr.right, const_tables, data_tables)
+        return _table_member_problem(expr.left, const_tables, data_tables, absent) or \
+            _table_member_problem(expr.right, const_tables, data_tables, absent)
     elif isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
-            found = _table_member_problem(item, const_tables, data_tables)
+            found = _table_member_problem(item, const_tables, data_tables, absent)
             if found:
                 return found
     return None
@@ -690,6 +704,10 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
     }
     if not const_tables and not data_tables:
         return
+    renamed = any(isinstance(st, S.Instruction) and st.keyword.upper() == "FIELDNAMES" and
+                  any(isinstance(a, S.String) and "BYTESPERRECORD" in a.value.upper() for a in st.args)
+                  for st in program.statements)
+    absent = frozenset({"BYTESPERRECORD"}) if profile.single_pass and not renamed else frozenset()
     for stmt in program.statements:
         exprs: list[S.Expr | None] = []
         if isinstance(stmt, S.Assignment):
@@ -701,10 +719,10 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
         elif isinstance(stmt, S.Call):
             exprs = stmt.args
         for expr in exprs:
-            found = _table_member_problem(expr, const_tables, data_tables)
+            found = _table_member_problem(expr, const_tables, data_tables, absent)
             if found:
-                table, member = found
-                diags.error(stmt.line, f"Could not find {table}.{member}(1).", stmt.file)
+                table, member, index = found
+                diags.error(stmt.line, f"Could not find {table}.{member}{index}.", stmt.file)
                 break
 
 
