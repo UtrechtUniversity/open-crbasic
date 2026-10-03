@@ -578,6 +578,426 @@
    "source": "Const A = 4294967295\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 4.29497e+09 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-hdrtype-0",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-0",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-0",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-0",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-1",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P As Bad) As Long\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-1",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P As Bad) As Long\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-1",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P As Bad) As Long\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-1",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P As Bad) As Long\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-2",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P As Long, Q As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-2",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P As Long, Q As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-2",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P As Long, Q As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-2",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P As Long, Q As Bad)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-3",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P As Bad, Q As Worse)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 2: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-3",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P As Bad, Q As Worse)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 2: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr300-hdrtype-3",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P As Bad, Q As Worse)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-3",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P As Bad, Q As Worse)\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-4",
+   "logger": "cr6",
+   "source": "Public X\nSub S(P As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-4",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(P As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-4",
+   "logger": "cr300",
+   "source": "Public X\nSub S(P As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-4",
+   "logger": "cr350",
+   "source": "Public X\nSub S(P As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-5",
+   "logger": "cr6",
+   "source": "Public X\nSub S(P As Long, Q As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-5",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(P As Long, Q As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-5",
+   "logger": "cr300",
+   "source": "Public X\nSub S(P As Long, Q As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-5",
+   "logger": "cr350",
+   "source": "Public X\nSub S(P As Long, Q As Bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-6",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P As Bad) As Worse\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 2: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-6",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P As Bad) As Worse\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 2: Variable Type Worse not supported"
+  },
+  {
+   "id": "cr300-hdrtype-6",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P As Bad) As Worse\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-6",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P As Bad) As Worse\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-7",
+   "logger": "cr6",
+   "source": "Public X\nSub S(p As bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-7",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(p As bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-7",
+   "logger": "cr300",
+   "source": "Public X\nSub S(p As bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-7",
+   "logger": "cr350",
+   "source": "Public X\nSub S(p As bad)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-8",
+   "logger": "cr6",
+   "source": "Public X\nSub S(P As UInt2)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UInt2 not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-8",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(P As UInt2)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UInt2 not supported"
+  },
+  {
+   "id": "cr300-hdrtype-8",
+   "logger": "cr300",
+   "source": "Public X\nSub S(P As UInt2)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UInt2 not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-8",
+   "logger": "cr350",
+   "source": "Public X\nSub S(P As UInt2)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type UInt2 not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-9",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Integer\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Integer not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-9",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Integer\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Integer not supported"
+  },
+  {
+   "id": "cr300-hdrtype-9",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Integer\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Integer not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-9",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Integer\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Integer not supported\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-10",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As UInt1\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-hdrtype-10",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As UInt1\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-hdrtype-10",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As UInt1\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-hdrtype-10",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As UInt1\nF = 1\nEndFunction\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-hdrtype-11",
+   "logger": "cr6",
+   "source": "Public X\nSub S(P As String * 4)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-hdrtype-11",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(P As String * 4)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-hdrtype-11",
+   "logger": "cr300",
+   "source": "Public X\nSub S(P As String * 4)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-hdrtype-11",
+   "logger": "cr350",
+   "source": "Public X\nSub S(P As String * 4)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-hdrtype-12",
+   "logger": "cr6",
+   "source": "Public X\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type ST not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-12",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type ST not supported"
+  },
+  {
+   "id": "cr300-hdrtype-12",
+   "logger": "cr300",
+   "source": "Public X\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type ST not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-12",
+   "logger": "cr350",
+   "source": "Public X\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type ST not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-hdrtype-13",
+   "logger": "cr6",
+   "source": "Public X\nStructureType ST\nA As Long\nEndStructureType\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-hdrtype-13",
+   "logger": "cr1000x",
+   "source": "Public X\nStructureType ST\nA As Long\nEndStructureType\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-hdrtype-13",
+   "logger": "cr300",
+   "source": "Public X\nStructureType ST\nA As Long\nEndStructureType\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-hdrtype-13",
+   "logger": "cr350",
+   "source": "Public X\nStructureType ST\nA As Long\nEndStructureType\nSub S(P As ST)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-hdrtype-14",
+   "logger": "cr6",
+   "source": "Public X\nSub S(Optional P As Bad = 1)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr1000x-hdrtype-14",
+   "logger": "cr1000x",
+   "source": "Public X\nSub S(Optional P As Bad = 1)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported"
+  },
+  {
+   "id": "cr300-hdrtype-14",
+   "logger": "cr300",
+   "source": "Public X\nSub S(Optional P As Bad = 1)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-hdrtype-14",
+   "logger": "cr350",
+   "source": "Public X\nSub S(Optional P As Bad = 1)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
   }
  ]
 }

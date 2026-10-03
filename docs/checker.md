@@ -3280,8 +3280,16 @@ earlier in the file (itself included) reports `Variable Type <type> not supporte
 four loggers: `A As String_Fz`, `A As Floatx`, `A As SU` before `SU` is declared. Each bad member
 gets a line on CR6/CR1000X; CR300/CR350 stop at the first bad type in a statement
 (`A As Foo, B As Bar` and `Public Z As Bad, Y As Worse` give one line), which is now also applied to
-the existing `Public`/`Dim` check. `Function` parameters and return types with a bad type report the
-same message and are not modelled.
+the existing `Public`/`Dim` check. `Sub`/`Function` headers: see below.
+
+`Sub S(P As Bad)`, `Function F(P As Bad)` and `Function F(P) As Bad` report the same message on the
+header line (oracle, all four loggers, 2026-10-03): every bad `As` type in order, parameters first
+and then the return type, on CR6/CR1000X; only the first on CR300/CR350. A `StructureType` declared
+earlier is valid, one declared later is not; `Integer`, `UInt2` and the like are bad, `UInt1` and
+`String * 4` are fine, the written spelling is echoed (`bad`). Not modelled: `ByRef` parameters (real:
+`Invalid Variable declaration P.`), `P() As Bad` and `P As Bad(3)` (extra lines), a `Sub` nested in
+another `Sub`, and CR300/CR350 with three or more bad types (extra `Too many parameters:  As.`).
+Evidence: `tests/fixtures/small_gaps.json` (`*-hdrtype-*`).
 
 ### `Alias` with fewer indices than dimensions
 

@@ -820,6 +820,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if isinstance(stmt, S.SubDef):
             if not in_sub and declared_kinds.get(stmt.name.upper()) == "CONST":
                 _report_numeric_sub_name(stmt, program.consts.get(stmt.name.upper()), diags)
+            if not in_sub:
+                _check_header_types(stmt, structs_seen, profile, diags)
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
@@ -2202,6 +2204,17 @@ def _check_member_types(stmt: S.Declaration, structs_seen: set[str], profile, di
                 diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
                 if profile.single_pass:
                     return  # CR300/CR350 stop at the first one in a statement
+
+
+def _check_header_types(stmt: S.SubDef, structs_seen: set[str], profile, diags: Diagnostics) -> None:
+    """`Variable Type %s not supported` for each `As` type in a `Sub`/`Function` header (parameters
+    in order, then the return type) that is neither a variable type nor an earlier `StructureType`
+    (oracle, all four loggers, 2026-10-03); CR300/CR350 report only the first."""
+    for name in _AS_TYPE_RE.findall(stmt.text):
+        if name.upper() not in _VARIABLE_TYPES and name.upper() not in structs_seen:
+            diags.error(stmt.line, f"Variable Type {name} not supported", stmt.file)
+            if profile.single_pass:
+                return
 
 
 def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnostics) -> None:
