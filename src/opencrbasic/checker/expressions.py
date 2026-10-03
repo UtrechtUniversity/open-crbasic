@@ -669,7 +669,7 @@ def _table_member_problem(expr: S.Expr | None, const_tables: dict[str, set[str]]
                 return expr.base.name, expr.member, "(1)"
             if table in data_tables and member == "TABLEBYTESX":
                 return expr.base.name, expr.member, "(1)"
-            if table in data_tables and member in absent:
+            if table in data_tables and f"{table}.{member}" in absent:
                 return expr.base.name, expr.member, _member_index_text(expr.args)
         for arg in expr.args or []:
             found = _table_member_problem(arg, const_tables, data_tables, absent)
@@ -707,10 +707,22 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
     }
     if not const_tables and not data_tables:
         return
-    renamed = any(isinstance(st, S.Instruction) and st.keyword.upper() == "FIELDNAMES" and
-                  any(isinstance(a, S.String) and "BYTESPERRECORD" in a.value.upper() for a in st.args)
-                  for st in program.statements)
-    absent = frozenset({"BYTESPERRECORD"}) if profile.single_pass and not renamed else frozenset()
+    renamed: set[str] = set()  # tables with a FieldNames entry exactly BytesPerRecord
+    table = None
+    for st in program.statements:
+        if not isinstance(st, S.Instruction):
+            continue
+        kw = st.keyword.upper()
+        if kw == "DATATABLE":
+            table = st.args[0].name.upper() if st.args and isinstance(st.args[0], S.Name) else None
+        elif kw == "ENDTABLE":
+            table = None
+        elif kw == "FIELDNAMES" and table and any(
+                isinstance(a, S.String) and "BYTESPERRECORD" in
+                (f.strip().upper() for f in a.value.split(",")) for a in st.args):
+            renamed.add(table)
+    absent = frozenset(f"{t}.BYTESPERRECORD" for t in data_tables - renamed) if profile.single_pass \
+        else frozenset()
     for stmt in program.statements:
         exprs: list[S.Expr | None] = []
         if isinstance(stmt, S.Assignment):
