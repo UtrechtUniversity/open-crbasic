@@ -3541,3 +3541,18 @@ the expression be parsed (`Round(Nope1)+Nope3` -> both). A first `few` followed 
 the `Expression expects , :` text and stops at the surplus argument. An assignment whose target is
 itself undefined still gets the arity line (`Nope4 = Round(Nope1)`). Not modelled: the same order
 inside instruction arguments (`Battery(Floor(Nope1,Sd))`, `Delay(0,Floor(Nope1,Sd),Sec)`).
+
+## Unmatched block closers hidden by other errors (CR300/CR350, 2026-10-03)
+
+Fixture `tests/fixtures/block_closer_suppression.json` (128 cases, all four loggers),
+`cr3xx.drop_block_closer_errors_after_errors`. On CR300/CR350 `END IF without IF or END SELECT
+without SELECT.`, `NEXT without FOR.`, `LOOP without DO.`, the three `... illegally has SCAN
+without NEXT SCAN.` companions and the `<closer> illegally occurs before BeginProg.` line are only
+printed when the file has no other error, whether that error comes before or after the closer
+(`Sc = Nope1` then `EndIf`; `EndIf` then `Battery(Nope1)`; a duplicate declaration; `Too many
+parameters`). Closer errors do not hide one another. `EndSelect w/o Select`, `Case outside
+Select.` and the CR6/CR1000X behaviour (always printed) are unchanged. A code-generating statement
+before `BeginProg` ends the walk first (`Sc = 1` then `EndIf` -> `Expr illegally occurs before
+BeginProg.` only), so on these loggers `check_block_closers` now feeds `leading` (printed ahead of
+their line, outside the placement stop) instead of the main list; `leading` findings of one line
+keep their own order.

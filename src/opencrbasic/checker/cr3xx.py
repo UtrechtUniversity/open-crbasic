@@ -1037,6 +1037,34 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
         diags.items[:] = items
 
 
+_CLOSER_ERRORS = frozenset({
+    "END IF without IF or END SELECT without SELECT.", "NEXT without FOR.", "LOOP without DO.",
+    "IF or SELECT statement illegally has SCAN without NEXT SCAN.",
+    "FOR NEXT statement illegally has SCAN without NEXT SCAN.",
+    "LOOP statement illegally has SCAN without NEXT SCAN."})
+
+
+def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the unmatched-closer errors (`END IF without IF ...`, `NEXT without FOR.`,
+    `LOOP without DO.` and their `... illegally has SCAN without NEXT SCAN.` companions, with the
+    `<closer> illegally occurs before BeginProg.` line) are only reported when no other error
+    exists anywhere in the file, before or after them (oracle, CR300, 2026-10-03: `Sc = Nope1`
+    then `EndIf`, `EndIf` then `Sc = Nope1`, a duplicate declaration, `Too many parameters`;
+    several closer errors do not hide one another). CR6/CR1000X always report them."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    closers = [d for d in diags.items if d.severity == "error" and d.message in _CLOSER_ERRORS]
+    if not closers:
+        return
+    lines = {(d.line, d.file) for d in closers}
+    placement = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in lines
+                 and d.message.endswith(" illegally occurs before BeginProg.")]
+    ours = {id(d) for d in closers + placement}
+    if not any(d.severity == "error" and id(d) not in ours for d in diags.items):
+        return
+    diags.items[:] = [d for d in diags.items if id(d) not in ours]
+
+
 def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: `Nope += 1` reports `Nope is not defined.` once, though it is stored as
     `Nope = Nope + 1` (oracle, 2026-10-01; also under the cascade, `i2copen_1.CR6`)."""

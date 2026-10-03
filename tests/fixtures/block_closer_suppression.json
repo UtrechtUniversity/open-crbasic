@@ -1,0 +1,919 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-block_closer_suppression-0",
+   "logger": "cr6",
+   "source": "Public Sc\nBattery(Nope1)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope1.\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-1",
+   "logger": "cr6",
+   "source": "Public Sc\nBattery(Sc)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-2",
+   "logger": "cr6",
+   "source": "Public Sc\nBattery(Sc)\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-3",
+   "logger": "cr6",
+   "source": "Public Sc\nBattery(Sc)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-4",
+   "logger": "cr6",
+   "source": "Public Sc\nBattery(Sc)\nPublic Zz\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-5",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nBattery(Nope1)\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope1.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr6-block_closer_suppression-6",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nBattery(Sc,1)\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-block_closer_suppression-7",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nEndIf\nBattery(Sc,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-block_closer_suppression-8",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nEndIf\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-block_closer_suppression-9",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nEndIf\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr6-block_closer_suppression-10",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nLoop\nSc = Nope1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: LOOP without DO.\nline 4: Invalid symbol in expression: Sc = Nope1."
+  },
+  {
+   "id": "cr6-block_closer_suppression-11",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nNext m\nBattery(Nope1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: Invalid symbol in expression: Nope1."
+  },
+  {
+   "id": "cr6-block_closer_suppression-12",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nNext m\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-block_closer_suppression-13",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nCase 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr6-block_closer_suppression-14",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Sc = Nope1.\nline 4: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-block_closer_suppression-15",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Sc = Nope1.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr6-block_closer_suppression-16",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nEndIf\nSc = Nope1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 4: END IF without IF or END SELECT without SELECT.\nline 5: Invalid symbol in expression: Sc = Nope1."
+  },
+  {
+   "id": "cr6-block_closer_suppression-17",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr6-block_closer_suppression-18",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Sc = Nope1.\nline 5: LOOP statement illegally has SCAN without NEXT SCAN.\nline 5: LOOP without DO."
+  },
+  {
+   "id": "cr6-block_closer_suppression-19",
+   "logger": "cr6",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Sc = Nope1.\nline 5: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 5: NEXT without FOR."
+  },
+  {
+   "id": "cr6-block_closer_suppression-20",
+   "logger": "cr6",
+   "source": "Public Sc\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-21",
+   "logger": "cr6",
+   "source": "Public Sc\nPublic Sc\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sc already declared as a variable."
+  },
+  {
+   "id": "cr6-block_closer_suppression-22",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-23",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = 1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-24",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = 1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-25",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = 1\nPublic Zz\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-26",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = 1\nSc = 2\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-27",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = Nope1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-28",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = Nope1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-29",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = Nope1\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-30",
+   "logger": "cr6",
+   "source": "Public Sc\nSc = Nope1\nNext m\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-block_closer_suppression-31",
+   "logger": "cr6",
+   "source": "Public Zq As Foo\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-0",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBattery(Nope1)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope1.\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-1",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBattery(Sc)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-2",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBattery(Sc)\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-3",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBattery(Sc)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-4",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBattery(Sc)\nPublic Zz\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-5",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nBattery(Nope1)\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope1.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-6",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nBattery(Sc,1)\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-7",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nEndIf\nBattery(Sc,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-8",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nEndIf\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-9",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nEndIf\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-10",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nLoop\nSc = Nope1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: LOOP without DO.\nline 4: Invalid symbol in expression: Sc = Nope1."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-11",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nNext m\nBattery(Nope1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: Invalid symbol in expression: Nope1."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-12",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nNext m\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-13",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nCase 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-14",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Sc = Nope1.\nline 4: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-15",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Sc = Nope1.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-16",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nEndIf\nSc = Nope1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 4: END IF without IF or END SELECT without SELECT.\nline 5: Invalid symbol in expression: Sc = Nope1."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-17",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-18",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Sc = Nope1.\nline 5: LOOP statement illegally has SCAN without NEXT SCAN.\nline 5: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-19",
+   "logger": "cr1000x",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Sc = Nope1.\nline 5: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 5: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-20",
+   "logger": "cr1000x",
+   "source": "Public Sc\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-21",
+   "logger": "cr1000x",
+   "source": "Public Sc\nPublic Sc\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sc already declared as a variable."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-22",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-23",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = 1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-24",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = 1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-25",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = 1\nPublic Zz\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-26",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = 1\nSc = 2\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-27",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = Nope1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-28",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = Nope1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-29",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = Nope1\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-30",
+   "logger": "cr1000x",
+   "source": "Public Sc\nSc = Nope1\nNext m\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Sc = Nope1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-block_closer_suppression-31",
+   "logger": "cr1000x",
+   "source": "Public Zq As Foo\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr300-block_closer_suppression-0",
+   "logger": "cr300",
+   "source": "Public Sc\nBattery(Nope1)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-1",
+   "logger": "cr300",
+   "source": "Public Sc\nBattery(Sc)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-2",
+   "logger": "cr300",
+   "source": "Public Sc\nBattery(Sc)\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-3",
+   "logger": "cr300",
+   "source": "Public Sc\nBattery(Sc)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-4",
+   "logger": "cr300",
+   "source": "Public Sc\nBattery(Sc)\nPublic Zz\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-5",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nBattery(Nope1)\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-6",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nBattery(Sc,1)\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-block_closer_suppression-7",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nEndIf\nBattery(Sc,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-block_closer_suppression-8",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nEndIf\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-block_closer_suppression-9",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nEndIf\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr300-block_closer_suppression-10",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nLoop\nSc = Nope1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-11",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nNext m\nBattery(Nope1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-12",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nNext m\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-block_closer_suppression-13",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nCase 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined.\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr300-block_closer_suppression-14",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-15",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-16",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nEndIf\nSc = Nope1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-17",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr300-block_closer_suppression-18",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-19",
+   "logger": "cr300",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-20",
+   "logger": "cr300",
+   "source": "Public Sc\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-21",
+   "logger": "cr300",
+   "source": "Public Sc\nPublic Sc\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sc already declared as a variable."
+  },
+  {
+   "id": "cr300-block_closer_suppression-22",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-23",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = 1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-24",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = 1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-25",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = 1\nPublic Zz\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-26",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = 1\nSc = 2\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-block_closer_suppression-27",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = Nope1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-28",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = Nope1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-29",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = Nope1\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-30",
+   "logger": "cr300",
+   "source": "Public Sc\nSc = Nope1\nNext m\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr300-block_closer_suppression-31",
+   "logger": "cr300",
+   "source": "Public Zq As Foo\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr350-block_closer_suppression-0",
+   "logger": "cr350",
+   "source": "Public Sc\nBattery(Nope1)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-1",
+   "logger": "cr350",
+   "source": "Public Sc\nBattery(Sc)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-2",
+   "logger": "cr350",
+   "source": "Public Sc\nBattery(Sc)\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-3",
+   "logger": "cr350",
+   "source": "Public Sc\nBattery(Sc)\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-4",
+   "logger": "cr350",
+   "source": "Public Sc\nBattery(Sc)\nPublic Zz\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-5",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nBattery(Nope1)\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-6",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nBattery(Sc,1)\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-block_closer_suppression-7",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nEndIf\nBattery(Sc,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-block_closer_suppression-8",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nEndIf\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-block_closer_suppression-9",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nEndIf\nNext m\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: END IF without IF or END SELECT without SELECT.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr350-block_closer_suppression-10",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nLoop\nSc = Nope1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-11",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nNext m\nBattery(Nope1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-12",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nNext m\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NEXT without FOR.\nline 4: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-block_closer_suppression-13",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nCase 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined.\nline 4: Case outside Select."
+  },
+  {
+   "id": "cr350-block_closer_suppression-14",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-15",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nSc = Nope1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-16",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nEndIf\nSc = Nope1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-17",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 4: NEXT without FOR."
+  },
+  {
+   "id": "cr350-block_closer_suppression-18",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-19",
+   "logger": "cr350",
+   "source": "Public Sc\nBeginProg\nScan(1,Sec,0,0)\nSc = Nope1\nNext m\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-20",
+   "logger": "cr350",
+   "source": "Public Sc\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-21",
+   "logger": "cr350",
+   "source": "Public Sc\nPublic Sc\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sc already declared as a variable."
+  },
+  {
+   "id": "cr350-block_closer_suppression-22",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-23",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = 1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-24",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = 1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-25",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = 1\nPublic Zz\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-26",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = 1\nSc = 2\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-block_closer_suppression-27",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = Nope1\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-28",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = Nope1\nEndIf\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-29",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = Nope1\nEndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-30",
+   "logger": "cr350",
+   "source": "Public Sc\nSc = Nope1\nNext m\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope1 is not defined."
+  },
+  {
+   "id": "cr350-block_closer_suppression-31",
+   "logger": "cr350",
+   "source": "Public Zq As Foo\nBeginProg\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable Type Foo not supported"
+  }
+ ]
+}

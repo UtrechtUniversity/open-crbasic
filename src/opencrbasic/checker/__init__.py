@@ -263,7 +263,10 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instr_rules.check_spi_open_order, _with_inline(program), profile, leading)
         # Block-closer messages come before a same-line placement error (`EndIf illegally
         # occurs before BeginProg.` follows `END IF without IF...`).
-        _run_pass(structure.check_block_closers, program, profile, diags)
+        # CR300/CR350: collected aside in `leading` (printed first on their line, but they do not
+        # count as errors for the placement stop; `cr3xx.drop_block_closer_errors_after_errors`).
+        _run_pass(structure.check_block_closers, program, profile,
+                  leading if profile.single_pass else diags)
         # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
         # `Invalid, or out of place expression: Y = 1.`).
         flat = _with_inline(program)
@@ -481,12 +484,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             early.items = [d for d in early.items
                            if links.positions.get((d.file, d.line), 0) <= links.positions[table_stop]]
     diags.items += bounds.items + fields.items + ranges.items + early.items
+    last: dict[tuple, Diagnostic] = {}  # (file, line) -> its latest leading finding
     for d in leading.items:
-        # Aside like `bounds` (tier C still runs), but printed first on its own line (oracle:
-        # `SPIOpen must precede SPIWrite.` precedes `SPIWrite illegally occurs before BeginProg.`).
-        at = next((i for i, o in enumerate(diags.items) if (o.file, o.line) == (d.file, d.line)),
-                  len(diags.items))
+        # Aside like `bounds` (tier C still runs), but printed first on its own line, in their own
+        # order (oracle: `SPIOpen must precede SPIWrite.` precedes `SPIWrite illegally occurs
+        # before BeginProg.`).
+        key = (d.file, d.line)
+        if key in last:
+            at = next(i for i, o in enumerate(diags.items) if o is last[key]) + 1
+        else:
+            at = next((i for i, o in enumerate(diags.items) if (o.file, o.line) == key),
+                      len(diags.items))
         diags.items.insert(at, d)
+        last[key] = d
     # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message
     # after every other error, so it does not gate the tier-C checks above.
     _run_pass(structure.finalize_call_links, links, profile, diags, pass1_errors)
@@ -499,6 +509,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # whatever it would otherwise have found (`checker/cr3xx.py`'s own module-level comment for the
     # oracle evidence). Run unconditionally, after every other diagnostic-producing pass, since the
     # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
+    _run_pass(cr3xx.drop_block_closer_errors_after_errors, program, profile, diags)
     _run_pass(cr3xx.order_names_around_arity, program, profile, diags)
     _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
