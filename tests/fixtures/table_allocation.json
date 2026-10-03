@@ -69,6 +69,27 @@
       "source": "Public D As String * 8\nDim S As String * 1\nBeginProg\n  Scan(1,Sec,0,0)\n    S=CHR(1)\n    SDMGeneric(D,0,5,1,S,4,-1,1,0)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If source and destination are of type STRING, bytes per value must be 1"
+    },
+    {
+      "id": "cr300-windvector-negative-reps-memory",
+      "logger": "cr300",
+      "source": "Public W,D\nDataTable(T,True,-1)\n  WindVector(-1,W,D,IEEE4,0,0,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+    },
+    {
+      "id": "cr350-windvector-negative-two-reps-memory",
+      "logger": "cr350",
+      "source": "Public W,D\nDataTable(T,True,-1)\n  WindVector(-2,W,D,IEEE4,0,0,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Out of memory."
+    },
+    {
+      "id": "cr6-windvector-one-rep",
+      "logger": "cr6",
+      "source": "Public W,D\nDataTable(T,True,-1)\n  WindVector(1,W,D,IEEE4,0,0,0,0)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
     }
   ]
 }

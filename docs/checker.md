@@ -2374,6 +2374,11 @@ ordering, and accepted boundary were observed on all four profiles on 2026-10-03
 same CR6/CR1000X stage-2a versus CR300/CR350 late-pass placement as the other table Reps checks.
 Fixture: `tests/fixtures/table_allocation.json`.
 
+`WindVector` is different: literal Reps `-1` and `-2` emit `Out of memory.` rather than the
+generic illegal-Reps message, while Reps 1 is accepted. This was observed on all four profiles on
+2026-10-03. The signed-minimum case has distinct diagnostics and is deliberately not folded into
+this narrow allocation rule. Fixture: `tests/fixtures/table_allocation.json`.
+
 ## Scan placement (2026-09-27)
 
 Oracle, all four loggers unless noted. `NextScan with no Scan.` is not a pass-1 error: a pass-1

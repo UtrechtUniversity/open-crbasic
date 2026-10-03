@@ -664,6 +664,11 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
         record = profile.instructions.get(kw)
         if not record:
             continue
+        if kw == "WINDVECTOR" and st.args:
+            reps = _reps_value(st.args[0], env)
+            if reps is not None and _INT32_MIN < reps < 0:
+                diags.error(st.line, "Out of memory.", st.file)
+                return True
         if destinations and kw not in _OWN_VARIABLE_CHECK:
             for i, code in enumerate(record["params"][:len(st.args)]):
                 arg = st.args[i]
