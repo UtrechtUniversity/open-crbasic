@@ -578,6 +578,8 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
         if isinstance(stmt, S.SubDef):
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and word in ("SUB", "FUNCTION")):
+            if not in_sub:
+                message = "EndSub without Sub or nested subs."  # `EndFunction` too (oracle, 2026-10-03)
             in_sub = False
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
             elses.append(False)
@@ -742,6 +744,9 @@ def _keyword(stmt: S.Stmt) -> str:
     return type(stmt).__name__.upper()
 
 
+_END_EXIT_WORDS = frozenset({"IF", "SELECT", "SUB", "FUNCTION", "PROG", "TABLE", "SCAN", "DO", "FOR"})
+
+
 def _block_word(args: list) -> str | None:
     """`Next Scan`, `End If`, `End Select`: the word after a two-word block terminator."""
     if args and isinstance(args[0], S.Name):
@@ -795,6 +800,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
 
         fire_suppress = suppress_line is not None and stmt.line == suppress_line
         suppress_line = None
+
+        if kw in ("END", "EXIT") and isinstance(stmt, S.Instruction) and len(args) == 1 and \
+                isinstance(args[0], S.Name) and args[0].name.upper() not in _END_EXIT_WORDS and \
+                args[0].name.upper() not in profile.symbols and \
+                args[0].name.upper() not in profile.functions:
+            # `End Sequence`/`Exit Foo` (oracle, 2026-10-03, all four loggers); a word the compiler
+            # tokenizes as a predefined symbol is mapped to other messages (`End Min` is `EndSub
+            # without Sub`, `End Day` `EndTable without DataTable`) and is not modelled.
+            diags.error(stmt.line, f"Illegal END or EXIT {args[0].name}.", stmt.file)
 
         if isinstance(stmt, S.SubDef):
             in_sub = True

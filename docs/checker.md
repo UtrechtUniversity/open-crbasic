@@ -3230,3 +3230,30 @@ the failures.
   reports `Cannot find <Field>` for the same absent field. The complete DataTable field-naming
   grammar is not inferred: the independently observed misspelled `TableBytesX` member is checked,
   while `TableBytes` is accepted by CR6/CR1000X in the probe.
+
+## Declaration and block-end diagnostics (2026-10-03)
+
+Fixtures: `tests/fixtures/decl_*.json`, run by `tests/test_fixture_decls.py`; every expected output is
+the real compiler's, taken on 2026-10-03 (compiler hashes in each fixture). The probes were made
+with `tools/probe.py` against all four compilers, including accepted boundary forms.
+
+### Stray `EndSub`/`EndFunction` and `Illegal END or EXIT`
+
+- `EndSub`, `EndFunction`, `End Sub` and `End Function` with no `Sub`/`Function` open give
+  `EndSub without Sub or nested subs.` (one text for all four spellings), all four loggers. The
+  open `Sub` is closed by either `EndSub` or `EndFunction` (a `Function` closed by `EndSub`
+  compiles), so only a closer with nothing open is reported. It is a pass-2 placement-style check
+  that does not stop the pass (`structure.stray_controls`; CR300/CR350 report it in the late walk,
+  with no `Too many parameters` cascade).
+- `End <word>` / `Exit <word>` with a single following word the compiler does not know gives
+  `Illegal END or EXIT <word>.` (the word as written), a pass-1 error that does not stop
+  anything: `End Sequence`, `Exit Foo`, `End Structure`, `End Case`, `End Loop`, `End Type` in a
+  `Scan`, a `Sub`, a `DataTable` body, before `BeginProg` and after `NextScan`. On CR300/CR350 it
+  starts the `Too many parameters` cascade like the other declaration errors. On CR6/CR1000X a pass-1
+  error hides the reachability warning (`End never reached at run time.` is not printed).
+- Not modelled (left silent): a word that is a predefined symbol or built-in function. The compiler
+  maps those through other tokens: `End Min` is `EndSub without Sub or nested subs.`, `End Day` is
+  `EndTable without DataTable.`, `End Float` and `Exit Select` are `END ???`/`EXIT ???`, `Exit
+  Float` is `Exit For without FOR.`, `End ASCII` is the ordinary `Illegal END or EXIT` (this
+  project instead prints an unrelated function-arity line for it). Extra words after the first
+  (`End Sequence 5`) also add `Too many parameters: 5.` and are not modelled.

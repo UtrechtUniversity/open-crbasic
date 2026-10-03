@@ -187,6 +187,8 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
     A `Sub`/`Function` body is skipped entirely (its own statements are reachable whenever the sub
     is called, independent of where its definition sits in the file).
     """
+    if any(d.message.startswith("Illegal END or EXIT ") for d in diags.items):
+        return  # a pass-1 error of this kind hides the warning (oracle, CR6, 2026-10-03)
     statements = program.statements
     n = len(statements)
     dead = False

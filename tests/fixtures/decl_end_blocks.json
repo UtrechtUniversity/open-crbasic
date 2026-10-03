@@ -1,0 +1,317 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-endsub-stray",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-endsub-stray",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-endsub-stray",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-endsub-stray",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-endfunction-stray",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-endfunction-stray",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-endfunction-stray",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-endfunction-stray",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end-sub-two-words-in-scan",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sub\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-end-sub-two-words-in-scan",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sub\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-endsub-after-sub",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nSub S1\n  X = 1\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-endsub-after-sub",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nSub S1\n  X = 1\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-endsub-after-sub",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nSub S1\n  X = 1\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-endsub-after-sub",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nSub S1\n  X = 1\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-endfunction-after-function",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nFunction F1\n  Return 1\nEndFunction\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-endfunction-after-function",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nFunction F1\n  Return 1\nEndFunction\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: EndSub without Sub or nested subs.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-function-closed-by-endsub-accepted",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nFunction F1\n  Return 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-function-closed-by-endsub-accepted",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nFunction F1\n  Return 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-endsub-twice",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 3: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-endsub-twice",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nEndSub\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs.\nline 3: EndSub without Sub or nested subs.\nline 6: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end-sequence-in-scan",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr1000x-end-sequence-in-scan",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr300-end-sequence-in-scan",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-in-scan",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr6-exit-foo-in-scan",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    Exit Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr1000x-exit-foo-in-scan",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    Exit Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr300-exit-foo-in-scan",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    Exit Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr350-exit-foo-in-scan",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    Exit Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr6-end-sequence-before-beginprog",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nEnd Sequence\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-before-beginprog",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nEnd Sequence\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegal END or EXIT Sequence.\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-end-sequence-after-nextscan",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\n  End Sequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr1000x-end-sequence-after-nextscan",
+   "logger": "cr1000x",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\n  End Sequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr300-end-sequence-after-nextscan",
+   "logger": "cr300",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\n  End Sequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-after-nextscan",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\n  End Sequence\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr6-end-foo-twice",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    End Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence.\nline 6: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr350-end-foo-twice",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence\n    End Foo\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence.\nline 6: Illegal END or EXIT Foo."
+  },
+  {
+   "id": "cr6-end-sequence-in-sub",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nSub S1\n  End Sequence\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-in-sub",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nSub S1\n  End Sequence\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal END or EXIT Sequence.\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-end-sequence-in-datatable",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nDataTable (T1,True,10)\n  End Sequence\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-in-datatable",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nDataTable (T1,True,10)\n  End Sequence\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    X = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal END or EXIT Sequence.\nline 4: Too many parameters:  X.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-end-sequence-then-colon",
+   "logger": "cr6",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence : X = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  },
+  {
+   "id": "cr350-end-sequence-then-colon",
+   "logger": "cr350",
+   "source": "Public X, PT, BV\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    End Sequence : X = 2\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal END or EXIT Sequence."
+  }
+ ]
+}
