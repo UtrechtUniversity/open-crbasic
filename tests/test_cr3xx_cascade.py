@@ -6,7 +6,8 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURES = ["illegal_dimension_echo", "dims_not_declared"]
+FIXTURES = ["illegal_dimension_echo", "dims_not_declared",
+            "alias_consttable_cascade"]
 CASES = [c for name in FIXTURES for c in json.loads(
     (Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 

@@ -3508,8 +3508,19 @@ subscript (`Nope(1)`, `Nope(Q)`; never `Nope()`) before any reference to a decla
 and `Rv(1) = Nope(1)` do not. It ends the walk: names after the triggering subscripted name are
 not reported (`Battery(Nope(1)+Nope2(1))` names only `Nope`). At a constant-only position it
 is followed by `Variable illegal in Parameter: <arg>.` (`Delay(Nope(1),2,Sec)`), elsewhere by the
-usual `Too many parameters:  <next argument>.`; code 26 positions (`SplitStr` arguments 2 and 3,
-`SDI12Recorder` `SDIAddress`) also end the list on an undefined name.
+usual `Too many parameters:  <next argument>.`; code 26 positions (`SplitStr` arguments 2 and 3)
+also end the list on an undefined name.
 Not modelled: a declared array in the *immediately preceding* statement also suppresses it for an
 instruction statement (`Sc = Rv(1)` then `Battery(Nope(1))`), but not for an assignment; and
 `Battery(Rv(1)+Nope(1))` ends with `Illegal destination variable type, expecting Float.`.
+
+## CR300/CR350 cascade exemptions: `Alias`, `ConstTable` (2026-10-03)
+
+Fixture `tests/fixtures/alias_consttable_cascade.json` (28 cases). After the cascade has started
+(`Too many parameters`, `docs/loggers.md`) an `Alias X(2) = Y` line and a `ConstTable (T,0)` line
+are not rewritten into `Too many parameters:  <second argument>.` (a `DataTable (T,1,100)` is);
+a tainted `Alias` still registers its name. An `Alias` whose subscript names an undefined variable
+(`Alias Q(2,Nope) = NetDir`) is not registered at all: a later `NetDir` is `NetDir is not
+defined.` (`expressions._known_names`). Not modelled: an `Alias` naming an existing variable
+(`Alias Q(1) = LevelFt` -> `LevelFt already declared as a variable.`) is accepted by us on all four
+loggers.

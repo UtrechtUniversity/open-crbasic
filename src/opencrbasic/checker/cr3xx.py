@@ -267,8 +267,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
-                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS")):
-                # (`Units X = m` is never rewritten: repository libraries, oracle.)
+                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE")):
+                # (`Units X = m` is never rewritten: repository libraries, oracle; nor is an
+                # `Alias` or a `ConstTable (T,0)`, oracle 2026-10-03.)
                 # the next simple token, like a genuine overflow (oracle: `MainScanSecs * 4` ->
                 # `MainScanSecs`, `SearchString()` -> `SearchString`)
                 text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \

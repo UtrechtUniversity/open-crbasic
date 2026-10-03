@@ -557,6 +557,13 @@ def _known_names(program: S.Program, profile) -> set[str]:
     known -= _failed_consts(program, known)
     if profile.single_pass:
         known -= _unclosed_structure_variables(program)
+        # an `Alias` whose subscript names something undefined is not registered (oracle, CR300/
+        # CR350, 2026-10-03: `Alias Q(2,Nope) = NetDir`, then `NetDir` is not defined)
+        known -= {st.args[1].name.upper() for st in program.statements
+                  if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+                  and len(st.args) == 2 and isinstance(st.args[0], S.Index)
+                  and isinstance(st.args[1], S.Name)
+                  and any(_undefined_names(a, known) for a in st.args[0].args if a is not None)}
     return KnownNames(known, tables=_value_less_tables(program))
 
 
