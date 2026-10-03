@@ -634,7 +634,7 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
 
 
 def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int | None:
-    """CR6/CR1000X pass 2 (`stray_controls`); returns the line pass 2 stops at, if any. CR300/CR350
+    """CR6/CR1000X pass 2 (`stray_controls`); returns the `(file, line)` pass 2 stops at, if any. CR300/CR350
     report these in `check_scan_placement_late`."""
     if profile.single_pass:
         return None
@@ -645,7 +645,7 @@ def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int
             message, stops = found[id(stmt)]
             diags.error(stmt.line, message, stmt.file)
             if stops:
-                return stmt.line
+                return stmt.file, stmt.line
     return None
 
 
@@ -1122,6 +1122,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     for position, source_stmt in enumerate(program.statements):
         link_ctx.links.positions.setdefault((source_stmt.file, source_stmt.line), position)
     for stmt in program.statements:
+        link_ctx.links.cutoff = (stmt.file, stmt.line)   # the stop, if this statement returns
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         # CR300/CR350 report these placement errors late (`check_scan_placement_late`).
         before_bp = not seen_beginprog and not profile.single_pass
@@ -1282,6 +1283,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if not in_body_block and before_bp:
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
+    link_ctx.links.cutoff = None
     return None
 
 
@@ -1745,7 +1747,6 @@ def _unlinked_call(stmt, link: str, profile, diags: Diagnostics, before_beginpro
             ctx.links.first = (stmt.line, stmt.file, f"Sub {link} not defined.")
         return None
     diags.error(stmt.line, f"Sub {link} not defined.", stmt.file, show_file=False)
-    ctx.links.cutoff = (stmt.file, stmt.line)
     return stmt.line
 
 

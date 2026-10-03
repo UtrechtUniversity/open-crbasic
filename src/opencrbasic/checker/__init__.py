@@ -54,7 +54,7 @@ Runs, in order:
 If, and only if, steps 1-5 found nothing:
 
 6. `structure.check_pass2` -- the generic "Expr"/implicit-`Call` fallback and the before-`BeginProg`
-   placement check (returns the cutoff line, if any).
+   placement check (returns the stop, if any).
 7. `expressions.check` -- a bare identifier or compound expression used at an instruction argument
    position that resolves nowhere, and the constant-only-family "rejects a variable" check
    (deliberately narrow; see that module's docstring). `instr_data.check_unclosed_calltable` runs
@@ -66,7 +66,7 @@ If, and only if, steps 1-5 found nothing:
    check_table_structure` (table-structure placement) and `instr_measure.check` (`Range`/`SW12`/
    `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value checks, `docs/instructions.md`) run
    alongside it.
-9. Every error step 6-8 added is truncated to step 6's cutoff line, if it returned one.
+9. Every error step 6-8 added is truncated to the earliest stop (expanded-source position) of steps 6-8.
 
 Then, regardless of errors so far:
 
@@ -248,23 +248,26 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
         # `Invalid, or out of place expression: Y = 1.`).
         flat = _with_inline(program)
-        cutoff = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
-        cutoff_position = links.positions.get(links.cutoff) if links.cutoff else None
-
-        def before_cutoff(diagnostic) -> bool:
-            if cutoff_position is None:
-                return diagnostic.line <= cutoff
-            return links.positions.get((diagnostic.file, diagnostic.line), cutoff_position) <= cutoff_position
-
+        stop_line = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
+        # Every stop is one expanded-source position (`links.positions`), the earliest wins; an
+        # included file has its own line numbers, so a physical line cannot order them.
+        stops = [links.cutoff] if stop_line is not None and links.cutoff else []
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
-        if stray_stop is not None and (cutoff is None or stray_stop < cutoff):
-            cutoff = stray_stop
+        if stray_stop is not None:
+            stops.append(stray_stop)
         _run_pass(structure.check_pipeline_task_placement, program, profile, pipe)
         _run_pass(structure.check_slow_sequence_blocks, program, profile, pipe)
         menu_stop = _run_pass_capture(instr_data.check_table_and_menu_placement, program, profile,
                                       diags, env)
-        if menu_stop is not None and (cutoff is None or menu_stop < cutoff):
-            cutoff = menu_stop
+        if menu_stop is not None:
+            stops.append(menu_stop)
+        stop_at = min((links.positions[k] for k in stops if k in links.positions), default=None)
+
+        def before_cutoff(diagnostic) -> bool:
+            if stop_at is None:
+                return True
+            return links.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
+
         _run_pass(expressions.check, flat, profile, diags, env)
         _run_pass(expressions.check_table_members, flat, profile, diags)
         _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
@@ -277,16 +280,14 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(expressions.check_instruction_index_bounds, flat, profile, bounds, env)
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
             _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
-        if cutoff is not None:
-            bounds.items = [d for d in bounds.items if before_cutoff(d)]
-            pipe.items = [d for d in pipe.items if before_cutoff(d)]
+        bounds.items = [d for d in bounds.items if before_cutoff(d)]
+        pipe.items = [d for d in pipe.items if before_cutoff(d)]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # Collected aside like the index bounds: a finding neither hides tier C (oracle: a bad
         # `SemaphoreGet` beside a bad `VoltDiff` channel reports both) nor is hidden by tier B.
         if not profile.single_pass:
             _run_pass(instr_measure.check_const_ranges, flat.statements, profile, ranges, env)
-            if cutoff is not None:
-                ranges.items = [d for d in ranges.items if d.line <= cutoff]
+            ranges.items = [d for d in ranges.items if before_cutoff(d)]
         # `Could not find DataTable %s.` (round 6, `checker/instr_data.py`'s
         # `check_unclosed_calltable` docstring): a `CallTable` referencing a `DataTable` that was
         # declared but never closed with `EndTable`. Also tier B, oracle-confirmed the same way as
@@ -298,8 +299,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # below, only when nothing else was found). `docs/instructions.md`.
         if not profile.single_pass:
             _run_pass(instr_rules.check_settings_fields, flat, profile, diags, fields, env)
-            if cutoff is not None:
-                fields.items = [d for d in fields.items if before_cutoff(d)]
+            fields.items = [d for d in fields.items if before_cutoff(d)]
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one leading-word
         # `%s is not defined.` line per bare word of an `S.Unparsed` statement's own source text,
         # spliced in immediately ahead of `structure.check_pass2`'s generic "Invalid, or out of
@@ -316,16 +316,15 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(cr3xx.check_float_destinations, flat, profile, diags)
         _run_pass(cr3xx.check_undefined_arg_aborts, flat, profile, diags)
         _run_pass(cr3xx.drop_too_many_after_variable_illegal, flat, profile, diags)
-        if cutoff is not None:
-            # Every pass-2 error past the placement-error's own line is dropped, reproducing the
-            # real compiler's "stop entirely" behaviour without any of the modules above needing
-            # to coordinate the cutoff themselves (`docs/checker.md` "Pass model"). Warnings and
-            # anything already present before this pass (pass-1 errors -- none, since `not
-            # diags.errors` just gated this whole block, but defensive) are left untouched.
-            diags.items = diags.items[:pass2_start] + [
-                d for d in diags.items[pass2_start:]
-                if d.severity != "error" or not d.line or before_cutoff(d)
-            ]
+        # Every pass-2 error past the placement-error's own line is dropped, reproducing the
+        # real compiler's "stop entirely" behaviour without any of the modules above needing
+        # to coordinate the cutoff themselves (`docs/checker.md` "Pass model"). Warnings and
+        # anything already present before this pass (pass-1 errors -- none, since `not
+        # diags.errors` just gated this whole block, but defensive) are left untouched.
+        diags.items = diags.items[:pass2_start] + [
+            d for d in diags.items[pass2_start:]
+            if d.severity != "error" or not d.line or before_cutoff(d)
+        ]
 
     if profile.single_pass:
         _run_pass(structure.commit_deferred_sub_error, links, profile, diags)

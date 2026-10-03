@@ -404,7 +404,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     `Only one DataInterval allowed within DataTable..EndTable.` (all four loggers), and the display
     menu structure (CR6/CR1000X; CR300/CR350 have no menus), following the decompiled menu builder
     (`FUN_004309c0`, `FUN_00430aa0`, `FUN_00430b50`; oracle, 2026-09-28, `docs/checker.md`
-    "Display menus"). Returns the line pass 2 stops at (`EndSubMenu without SubMenu.`), if any."""
+    "Display menus"). Returns the `(file, line)` pass 2 stops at (`EndSubMenu without SubMenu.`), if any."""
     in_table = False
     intervals = 0
     menus = submenus = 0
@@ -491,7 +491,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         elif kw == "ENDSUBMENU":
             if not submenus:
                 diags.error(st.line, "EndSubMenu without SubMenu.", st.file)
-                return st.line
+                return st.file, st.line
             submenus -= 1
             if within(st, kw) and not levels.pop():
                 diags.error(st.line, "Empty SubMenu ... EndSubMenu.", st.file)
