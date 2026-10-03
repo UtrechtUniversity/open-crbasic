@@ -1,4 +1,4 @@
-"""FileManage, TableFile, SetSetting/SetStatus index and DataTable member observations; expected output is the real compilers'."""
+"""FileManage, TableFile, SetSetting/SetStatus index, DataTable member and SDI12Recorder structure destination observations; expected output is the real compilers'."""
 import json
 from pathlib import Path
 
@@ -7,7 +7,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index", "table_members")
+CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index", "table_members", "sdi12_structure_dest")
          for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 
 

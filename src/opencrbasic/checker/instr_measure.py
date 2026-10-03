@@ -40,6 +40,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "GPS" and "gps" in measure:
             _check_structure_members(stmt, program, measure["gps"], env, diags)
             _check_gps_port(stmt, measure["gps"], env, diags)
+        if kw == "SDI12RECORDER" and profile.single_pass:
+            _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
             _check_tablefile(stmt, measure["tablefile"], env, diags)
         for rule in measure.get("string_prefixes", ()):
@@ -136,6 +138,21 @@ def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
     if drive.upper() in (f"{p}:" for p in rule["prefixes"]):
         return
     diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
+
+
+def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: Diagnostics) -> None:
+    """CR300/CR350: a StructureType variable as the `SDI12Recorder` destination gives `Could not
+    find DataTable <argument text>.`; docs/instructions.md#sdi12recorder-structure-destination."""
+    dest = stmt.args[0] if stmt.args else None
+    if not isinstance(dest, (S.Name, S.Index)) or (isinstance(dest, S.Index) and None in dest.args):
+        return
+    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
+    if type_name is not None and any(
+            isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" and st.args and
+            isinstance(st.args[0], S.Name) and st.args[0].name.upper() == type_name
+            for st in program.statements):
+        from .expressions import _arg_text
+        diags.error(stmt.line, f"Could not find DataTable {_arg_text(stmt, 0)}.", stmt.file)
 
 
 def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env,

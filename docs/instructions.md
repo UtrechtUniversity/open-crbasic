@@ -1206,3 +1206,16 @@ valid on CR300 (so it is not reported). Implemented in `expressions.check_table_
 modelled: the oracle reports every bad member of a statement (`T.BytesPerRecord + T.Nope` gives two
 errors on CR300/CR350; the check stops at the first), `TableBytesX(2)` echoing its index (the
 existing rule always prints `(1)`), and CR6's `predefined field name` error for such a FieldNames.
+
+### `SDI12Recorder` with a structure destination on CR300/CR350 {#sdi12recorder-structure-destination}
+
+A variable declared `As <StructureType>` as the first `SDI12Recorder` argument (scalar, array, or
+`A(i)` element) compiles on CR6/CR1000X but fails on CR300/CR350 with `Could not find DataTable
+<argument text>.`, the text echoed verbatim (`A `, `A(1)`; fixture
+`tests/fixtures/sdi12_structure_dest.json`). It is a tier-C check in `instr_measure.check`, hidden
+by a pass-1 error, and the earlier `fnotch` warning is kept. A plain Float array compiles.
+Not modelled: member destinations (`A(1).Temp` already fails, with another message here), `A()`
+(two errors), and the interplay with another `Could not find DataTable` (e.g. `CallTable Nope` or an
+unallocated `CallTable` later in the file): the oracle reports both, we report only the later one.
+Other instructions with a structure destination (`VoltSe`, `Therm107`, `SerialIn`) give unrelated
+messages and were not changed.
