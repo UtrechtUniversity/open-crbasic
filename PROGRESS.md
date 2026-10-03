@@ -87,9 +87,10 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Worktree gotcha: the shared uv env's editable install imports the MAIN checkout. Inside a
   worktree always `export PYTHONPATH=$PWD/src` (from `opencrbasic/`); difftest/tdftest insert
   their own path.
-- Codex CLI: use ONLY `gpt-6-sol` for read-only reviews of each merged batch (human
+- Codex CLI: use ONLY `gpt-6.1-sol` (human instruction 2026-10-04; API slug from
+  `~/.codex/models_cache.json`) for read-only reviews of each merged batch (human
   instruction 2026-10-03: the Codex 5-hour window exhausts quickly; implementation workers were
-  cut off twice). `codex exec -m gpt-6-sol -s read-only -C <repo> -o <out.md> "<prompt>"`.
+  cut off twice). `codex exec -m gpt-6.1-sol -s read-only -C <repo> -o <out.md> "<prompt>"`.
   Act on findings with Claude subagents (Sonnet for rule families, Haiku for small precise
   changes). Every review so far found real defects.
 - Agent brief for Claude workers: `scratch/codex/brief-claude.md` (untracked; it restates this
