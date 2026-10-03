@@ -1178,6 +1178,20 @@ def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> Non
                 diags.error(stmt.line, f"SPIOpen must precede {name}.", stmt.file)
 
 
+def check_dnp_update(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`DNPUpdate` with no `DNPVariable` textually before it -> `DNP3Statics and/or DNP3Events are
+    not defined` (no period; docs/instructions.md). A `DNPVariable` of any kind counts, so a
+    malformed one under-reports."""
+    defined = False
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction):
+            kw = stmt.keyword.upper()
+            if kw == "DNPVARIABLE":
+                defined = True
+            elif kw == "DNPUPDATE" and not defined:
+                diags.error(stmt.line, "DNP3Statics and/or DNP3Events are not defined", stmt.file)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 
