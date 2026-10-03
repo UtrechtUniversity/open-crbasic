@@ -100,6 +100,16 @@ class Profile:
         return json.loads((self.data_dir / "mode.json").read_text())
 
     @cached_property
+    def pipeline_tasks(self) -> dict:
+        """Explicit-PipeLineMode placement rules with only fixture-backed instructions.
+
+        CR6/CR1000X have separate observed subsets and same-line ordering exceptions; CR300/CR350
+        have no file and therefore no placement rule.
+        """
+        path = self.data_dir / "pipeline_tasks.json"
+        return json.loads(path.read_text()) if path.is_file() else {"tasks": {}}
+
+    @cached_property
     def terminals(self) -> dict:
         """Channel-argument (`U1..U12`-style) range checks (`checker/terminals.py`)."""
         path = self.data_dir / "terminals.json"

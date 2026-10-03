@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "pipeline-paneltemp-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(10,Sec,0,0)\nPanelTemp(y(1),15000)\nIf x=1 Then\nPanelTemp(y(1),15000)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-battery-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBattery(y(1))\nScan(10,Sec,0,0)\nBattery(y(1))\nIf x=1 Then\nBattery(y(1))\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Battery not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Battery not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-voltse-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nVoltSe(y(1),1,mv5000C,U1,0,0,15000,1,0)\nScan(10,Sec,0,0)\nVoltSe(y(1),1,mv5000C,U1,0,0,15000,1,0)\nIf x=1 Then\nVoltSe(y(1),1,mv5000C,U1,0,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: VoltSe not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: VoltSe not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-voltdiff-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nVoltDiff(y(1),1,mv5000C,U1,0,0,15000,1,0)\nScan(10,Sec,0,0)\nVoltDiff(y(1),1,mv5000C,U1,0,0,15000,1,0)\nIf x=1 Then\nVoltDiff(y(1),1,mv5000C,U1,0,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: VoltDiff not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: VoltDiff not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-portget-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPortGet(y(1),C1,1)\nScan(10,Sec,0,0)\nPortGet(y(1),C1,1)\nIf x=1 Then\nPortGet(y(1),C1,1)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PortGet not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PortGet not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-portset-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPortSet(C1,1)\nScan(10,Sec,0,0)\nPortSet(C1,1)\nIf x=1 Then\nPortSet(C1,1)\nEndIf\nNextScan\nEndProg\n",
+  "expected_exit": 1,
+  "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: PortSet not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-therm107-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTherm107(y(1),1,U1,U1,0,15000,1,0)\nScan(10,Sec,0,0)\nTherm107(y(1),1,U1,U1,0,15000,1,0)\nIf x=1 Then\nTherm107(y(1),1,U1,U1,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Therm107 not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Therm107 not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-brhalf-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBrHalf(y(1),1,mv5000C,U1,U1,1,2500,True,0,15000,1,0)\nScan(10,Sec,0,0)\nBrHalf(y(1),1,mv5000C,U1,U1,1,2500,True,0,15000,1,0)\nIf x=1 Then\nBrHalf(y(1),1,mv5000C,U1,U1,1,2500,True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: BrHalf not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: BrHalf not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-brfull-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBrFull(y(1),1,mv5000C,U1,U1,1,2500,False,False,0,15000,1,0)\nScan(10,Sec,0,0)\nBrFull(y(1),1,mv5000C,U1,U1,1,2500,False,False,0,15000,1,0)\nIf x=1 Then\nBrFull(y(1),1,mv5000C,U1,U1,1,2500,False,False,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: BrFull not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: BrFull not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-tcse-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTCSe(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nScan(10,Sec,0,0)\nTCSe(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nIf x=1 Then\nTCSe(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: TCSe not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: TCSe not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-tcdiff-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTCDiff(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nScan(10,Sec,0,0)\nTCDiff(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nIf x=1 Then\nTCDiff(y(1),1,mv200C,U1,TypeT,y(2),True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: TCDiff not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: TCDiff not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-periodavg-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPeriodAvg(y(1),1,mv5000,U1,0,0,10,50,.001,0)\nScan(10,Sec,0,0)\nPeriodAvg(y(1),1,mv5000,U1,0,0,10,50,.001,0)\nIf x=1 Then\nPeriodAvg(y(1),1,mv5000,U1,0,0,10,50,.001,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PeriodAvg not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PeriodAvg not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-cs616-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nCS616(y(1),1,U1,C1,1,0,0)\nScan(10,Sec,0,0)\nCS616(y(1),1,U1,C1,1,0,0)\nIf x=1 Then\nCS616(y(1),1,U1,C1,1,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS616 not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: CS616 not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-excitev-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nExciteV(U1,2500,0,1)\nScan(10,Sec,0,0)\nExciteV(U1,2500,0,1)\nIf x=1 Then\nExciteV(U1,2500,0,1)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExciteV not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: ExciteV not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-boundaries-cr6",
+   "logger": "cr6",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(10,Sec,0,0)\nDelay(0,1,Sec)\nIf x=1 Then\nDelay(0,1,Sec)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Delay not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-paneltemp-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPanelTemp(y(1),15000)\nScan(10,Sec,0,0)\nPanelTemp(y(1),15000)\nIf x=1 Then\nPanelTemp(y(1),15000)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PanelTemp not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PanelTemp not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-battery-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBattery(y(1))\nScan(10,Sec,0,0)\nBattery(y(1))\nIf x=1 Then\nBattery(y(1))\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Battery not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Battery not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-voltse-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nVoltSe(y(1),1,mv5000C,1,0,0,15000,1,0)\nScan(10,Sec,0,0)\nVoltSe(y(1),1,mv5000C,1,0,0,15000,1,0)\nIf x=1 Then\nVoltSe(y(1),1,mv5000C,1,0,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: VoltSe not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: VoltSe not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-voltdiff-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nVoltDiff(y(1),1,mv5000C,1,0,0,15000,1,0)\nScan(10,Sec,0,0)\nVoltDiff(y(1),1,mv5000C,1,0,0,15000,1,0)\nIf x=1 Then\nVoltDiff(y(1),1,mv5000C,1,0,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: VoltDiff not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: VoltDiff not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-portget-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPortGet(y(1),C1,1)\nScan(10,Sec,0,0)\nPortGet(y(1),C1,1)\nIf x=1 Then\nPortGet(y(1),C1,1)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PortGet not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PortGet not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-portset-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPortSet(C1,1)\nScan(10,Sec,0,0)\nPortSet(C1,1)\nIf x=1 Then\nPortSet(C1,1)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PortSet not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PortSet not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-therm107-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTherm107(y(1),1,1,Vx1,0,15000,1,0)\nScan(10,Sec,0,0)\nTherm107(y(1),1,1,Vx1,0,15000,1,0)\nIf x=1 Then\nTherm107(y(1),1,1,Vx1,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Therm107 not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Therm107 not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-brhalf-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBrHalf(y(1),1,mv5000C,1,Vx1,1,2500,True,0,15000,1,0)\nScan(10,Sec,0,0)\nBrHalf(y(1),1,mv5000C,1,Vx1,1,2500,True,0,15000,1,0)\nIf x=1 Then\nBrHalf(y(1),1,mv5000C,1,Vx1,1,2500,True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: BrHalf not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: BrHalf not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-brfull-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nBrFull(y(1),1,mv5000C,1,Vx1,1,2500,False,False,0,15000,1,0)\nScan(10,Sec,0,0)\nBrFull(y(1),1,mv5000C,1,Vx1,1,2500,False,False,0,15000,1,0)\nIf x=1 Then\nBrFull(y(1),1,mv5000C,1,Vx1,1,2500,False,False,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: BrFull not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: BrFull not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-tcse-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTCSe(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nScan(10,Sec,0,0)\nTCSe(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nIf x=1 Then\nTCSe(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: TCSe not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: TCSe not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-tcdiff-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nTCDiff(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nScan(10,Sec,0,0)\nTCDiff(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nIf x=1 Then\nTCDiff(y(1),1,mv200C,1,TypeT,y(2),True,0,15000,1,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: TCDiff not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: TCDiff not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-periodavg-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPeriodAvg(y(1),1,mv5000,1,0,0,10,50,.001,0)\nScan(10,Sec,0,0)\nPeriodAvg(y(1),1,mv5000,1,0,0,10,50,.001,0)\nIf x=1 Then\nPeriodAvg(y(1),1,mv5000,1,0,0,10,50,.001,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: PeriodAvg not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: PeriodAvg not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-cs616-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nCS616(y(1),1,1,C1,1,0,0)\nScan(10,Sec,0,0)\nCS616(y(1),1,1,C1,1,0,0)\nIf x=1 Then\nCS616(y(1),1,1,C1,1,0,0)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: CS616 not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: CS616 not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-excitev-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nExciteV(Vx1,2500,0,1)\nScan(10,Sec,0,0)\nExciteV(Vx1,2500,0,1)\nIf x=1 Then\nExciteV(Vx1,2500,0,1)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: ExciteV not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: ExciteV not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-boundaries-cr1000x",
+   "logger": "cr1000x",
+   "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(10,Sec,0,0)\nDelay(0,1,Sec)\nIf x=1 Then\nDelay(0,1,Sec)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Delay not allowed inside of a conditional statement in PipeLine Mode."
+  }
+ ]
+}

@@ -317,21 +317,6 @@ def check_data_table_placement(program: S.Program, profile, diags: Diagnostics) 
                     stmt.file)
 
 
-# Measurement/task instructions that print `%s not allowed outside of Scan..NextScan in PipeLine
-# Mode.` / `... inside of a conditional statement ...` after an explicit `PipeLineMode` (oracle,
-# 2026-10-02, probed one by one on CR6 and CR1000X). A subset of `mode.json`'s task instructions:
-# `SW12`, `SerialOutBlock`/`SerialInRecord` (accepted outside a Scan), `PulseCount` (its own
-# message) and the unprobed ones are left out.
-_PIPELINE_TASKS = frozenset({
-    "PANELTEMP", "BATTERY", "VOLTSE", "VOLTDIFF", "PORTGET", "PORTSET", "THERM107", "BRHALF",
-    "BRFULL", "TCSE", "TCDIFF", "PERIODAVG", "CS616", "EXCITEV", "DELAY"})
-
-# At one shared source location, tier-C argument diagnostics ordinarily follow the pipeline
-# placement diagnostic. These two oracle-observed profile exceptions put the argument diagnostics
-# first instead.
-_PIPELINE_ARGUMENT_ERROR_FIRST = frozenset({("cr6", "EXCITEV"), ("cr1000x", "PORTSET")})
-
-
 def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]]:
     """CR6/CR1000X, pass 2, accumulating (it does not end the pass): after `PipeLineMode` (and no
     `SequentialMode`) earlier in the file, a `_PIPELINE_TASKS` instruction outside any `Scan` (a
@@ -346,7 +331,7 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     found: list[tuple[S.Stmt, str]] = []
     if profile.single_pass:
         return found
-    tasks = _PIPELINE_TASKS & set(profile.mode_rules["task_instructions"])
+    task_rules = profile.pipeline_tasks["tasks"]
     pipeline = sequential = False
     scans = depth = 0
 
@@ -369,12 +354,16 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
         elif kw in ("ENDIF", "ENDSELECT", "LOOP", "WEND") or (
                 kw == "NEXT" and word != "SUBSCAN") or (kw == "END" and word in ("IF", "SELECT")):
             depth = max(0, depth - 1)
-        elif kw in tasks and pipeline and not sequential and isinstance(stmt, S.Instruction):
-            if kw == "DELAY" and not (args and isinstance(args[0], S.Number) and args[0].value == 0):
-                return
+        elif kw in task_rules and pipeline and not sequential and isinstance(stmt, S.Instruction):
+            constants = task_rules[kw].get("constant_values", {})
+            for position, allowed in constants.items():
+                index = int(position) - 1
+                if (index >= len(args) or not isinstance(args[index], S.Number)
+                        or args[index].value not in allowed):
+                    return
             record = profile.instructions.get(kw)
             name = record["name"] if record else stmt.keyword
-            if not scans:
+            if not scans and not task_rules[kw].get("conditional_only"):
                 found.append((stmt, f"{name} not allowed outside of Scan..NextScan in PipeLine "
                               "Mode."))
             elif depth or inline:
@@ -398,7 +387,7 @@ def pipeline_argument_error_first_locations(program: S.Program, profile) -> set[
     return {
         (stmt.file, stmt.line)
         for stmt, _message in pipeline_task_errors(program, profile)
-        if (profile.name, _keyword(stmt)) in _PIPELINE_ARGUMENT_ERROR_FIRST
+        if _keyword(stmt) in profile.pipeline_tasks.get("argument_error_first", [])
     }
 
 

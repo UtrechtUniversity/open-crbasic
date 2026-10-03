@@ -3115,11 +3115,15 @@ measurement/task instruction prints at its own line:
   before the instruction does not count (unlike the auto-mode decision in `mode.py`, which has a
   quirk there).
 
-`X` is the instruction's display name (`VoltSe`, `TCSe`). Probed one by one: `Delay` (constant
-option 0 only; option 1 is accepted, option 2 prints `SDM instruction must be in Scan..NextScan,
-unless SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `VoltSE`, `VoltDiff`,
-`PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`,
-`ExciteV` (`_PIPELINE_TASKS`). Not implemented because not probed or different: the other
+`X` is the instruction's display name (`VoltSe`, `TCSe`). The profile data files
+`data[/cr1000x]/pipeline_tasks.json` contain the measured list: `Delay` (constant option 0 only;
+option 1 is accepted, option 2 prints `SDM instruction must be in Scan..NextScan, unless
+SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `VoltSE`, `VoltDiff`,
+`PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`, and
+`ExciteV`. `PortSet` is a measured exception on CR6: outside a Scan is accepted, but conditional
+placement remains rejected; CR1000X rejects both. `tests/fixtures/pipeline_tasks.json` records an
+accepted in-Scan call and both boundary placements for each member on each logger. Not implemented
+because not probed or different: the other
 `mode.json` task instructions (`CDM_*`, `CS7500`, `EC100`, ...), `SW12`, and
 `SerialOutBlock`/`SerialInRecord` (accepted outside a `Scan`).
 
