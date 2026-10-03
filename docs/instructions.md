@@ -1099,7 +1099,7 @@ there; CR6 does not), which is left unchecked. `instr_rules.check_spi_open_order
 `DNP3Statics and/or DNP3Events are not defined` (no period) on a `DNPUpdate` with no `DNPVariable`
 textually before it (a `DNP` call alone is not enough; a `Sub` body, an inline `If`, a call in the
 scan and a `DNPVariable` inside the scan above it all follow the same text order). CR6/CR1000X
-treat it as an aside that coexists with tier-B and tier-C findings on other lines and is hidden by a
+treat it as an aside, printed ahead of a same-line `DNPUpdate illegally occurs before BeginProg.`, that coexists with tier-B and tier-C findings on other lines and is hidden by a
 pass-1 error (`Battery()`); CR300/CR350 print it only when no earlier error exists (an undefined
 name or a bad `PortSet` port hides or replaces it). Not implemented: a `DNPVariable` that exists
 but is malformed or event-only (`Must assign group 1 before using group 2.` plus this line; any
