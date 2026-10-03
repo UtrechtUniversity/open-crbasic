@@ -103,7 +103,7 @@ from ..diagnostics import Diagnostics
 from ..profiles import Profile
 from . import (
     cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
-    structure, var_types, warnings,
+    structs, structure, var_types, warnings,
 )
 
 
@@ -214,6 +214,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
     # `docs/loggers.md`): there, this same call waits until tier B and the table `Reps` checks are
     # clean.
+    if not profile.single_pass and not diags.errors:
+        # CR6/CR1000X: an unknown structure member is a pass-1 error (`checker/structs.py`).
+        _run_pass(structs.check_members, program, profile, diags, _with_inline(program))
     if not profile.early_warnings_gated:
         _run_pass(warnings.check_early, program, profile, diags, env)
 
@@ -391,6 +394,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
+    if profile.single_pass and not diags.errors:
+        # CR300/CR350: structure member/assignment errors; they do not hide the early warnings
+        # (oracle: `Invalid fnotch value` still printed) and are sorted in by line.
+        flat_program = _with_inline(program)
+        _run_pass(structs.check_members, program, profile, diags, flat_program)
+        _run_pass(structs.check_struct_assignment, program, profile, diags, flat_program)
     argument_error_first = structure.pipeline_argument_error_first_locations(program, profile)
     ordinary_pipe = []
     delayed_pipe = []

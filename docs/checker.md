@@ -3282,5 +3282,29 @@ same message and are not modelled.
 `Alias W(5)` on `Public W(4,5)` gives `Illegally dimensioned aliased name`, all four loggers.
 Missing trailing indices count as 1 in the flat-offset test of "Alias dimensions": `W(1,4)` on
 `W(2,3,4)` compiles, `W(2,4)`, `W(3)` and `W(1,0)` do not, while `W(4)` on `W(4,5)` does. More indices
-than dimensions stay unchecked. `Alias W(5) = A1, A2` reports the message once per alias name, and a
-`Sub`-style `Alias W2(5), W1(2) = A1` list is not modelled.
+than dimensions stay unchecked. `Alias W(5) = A1, A2` reports the message once per alias name, and an
+`Alias W2(5), W1(2) = A1` source list is not modelled.
+
+### Structure member and assignment checks
+
+`checker/structs.py`, plain (non-compound) assignments only; a statement with an undefined name, a
+nested structure member, a pointer or any other unmodelled operand is left silent.
+
+- **Unknown member** (`inp.flagX = 1`, `G = sa(1).flagX`, `inp.value.x`): CR6/CR1000X report
+  `In structure <name>, could not find .<member path>` for every access, left side first, as a
+  pass-1 error (later pass-2 errors disappear). CR300/CR350 report `Could not find <name>.<path>(<n>).`
+  (`n` is the index argument of the member, else 1); a bad left side ends the statement with
+  `Invalid assignment in expression: <line>` and the right side is not examined. No cascade.
+  Unknown members in `If` conditions and instruction arguments give the same lines but are not
+  modelled, and combined with an undefined name the order differs, so those stay silent.
+- **Structure against non-structure** (CR300/CR350 only; CR6/CR1000X accept every one of these): a
+  structure target with a non-structure source (`inp = 5`, `inp = G`, `sa(1) = H(1)`, `inp = -inp`)
+  gives `Structured Variable assignment illegal, wrong type`; a non-structure target with a
+  structure source (`G = inp`, `H(1) = inp`, `G = sa(1)`, `G = (inp)`) gives `Illegal structure type
+  assignment`. `name()` of a structure array adds `Invalid, or out of place expression: <line>`
+  (`inp = sa()`, `G = sa()`), and as a target always gives the wrong-type line then the invalid line
+  (`sa() = inp`, whatever the source). A scalar structure member as source (`inp = inp.value`) is
+  accepted by every target except `sa()`. A variable declared with a parenthesised dimension
+  (`Public s1(size,(1+2)) As ST`) is a Float array, so `s1(size) = inp` gives `Illegal structure type
+  assignment`. Different structure types assigned to each other were accepted in the probe and are
+  not checked. No cascade; the fnotch warnings are still printed.
