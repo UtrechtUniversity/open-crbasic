@@ -160,6 +160,61 @@ def _calltable_known(stmt: S.Stmt, state: dict) -> bool:
         args[0].name.upper() in state.get("closed", set())
 
 
+def _scan_counts_for_table_placement(stmt: S.Stmt) -> bool:
+    """Whether this parsed ``Scan`` contains a valid literal interval for ``CallTable`` placement.
+
+    The compilers leave a literal-zero ``Scan`` structurally open for its matching ``NextScan``,
+    but a ``CallTable`` within it is still outside a Scan for an auto-sized table.  Keep this
+    intentionally narrow: only the observed literal-zero case is excluded here.
+    """
+    args = getattr(stmt, "args", []) or []
+    return not (args and isinstance(args[0], S.Number) and args[0].value == 0)
+
+
+def check_zero_scan_auto_table_placement(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X's ungated auto-table message within a literal-zero ``Scan``.
+
+    Their Scan-interval diagnostic is emitted before pass 2, yet this placement diagnostic still
+    follows it.  The regular pass-2 walk is therefore unavailable for this one observed shape.
+    """
+    if profile.single_pass:
+        return
+    tables: dict = {}
+    scans: list[bool] = []
+    in_table = False
+    for stmt in program.statements:
+        kw = _keyword(stmt)
+        _track_tables(stmt, kw, tables)
+        if kw == "DATATABLE":
+            in_table = True
+        elif kw == "ENDTABLE":
+            in_table = False
+        elif kw == "SCAN":
+            scans.append(_scan_counts_for_table_placement(stmt))
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and
+                                    _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
+            if scans:
+                scans.pop()
+        elif kw == "CALLTABLE" and not in_table and scans and not any(scans) and \
+                _calltable_known(stmt, tables):
+            target = stmt.args[0] if stmt.args else None
+            if not isinstance(target, S.Name):
+                continue
+            for table_stmt in program.statements:
+                if _keyword(table_stmt) != "DATATABLE" or not table_stmt.args or \
+                        not isinstance(table_stmt.args[0], S.Name) or \
+                        table_stmt.args[0].name.upper() != target.name.upper():
+                    continue
+                size = table_stmt.args[2] if len(table_stmt.args) > 2 else None
+                auto = isinstance(size, S.Unary) and size.op == "-" or \
+                    isinstance(size, S.Number) and size.value < 0
+                if auto:
+                    diags.error(stmt.line, f"Cannot autoallocate memory for DataTable "
+                                f"{table_stmt.args[0].name} called outside of Scan, e.g., "
+                                "called by Sub.", stmt.file)
+                break
+
+
 def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
                                   in_sub: bool) -> None:
     """`CallTable` outside any `Scan` (before it, after `NextScan`, or in a `Sub`), pass 2, all four
@@ -443,7 +498,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     if not profile.single_pass:
         return None
     in_table = in_body = in_decl = seen_beginprog = False
-    scans = 0
+    scans: list[bool] = []
     tables: dict = {}
     subs = symbols.declared_subs(program)
     stray = stray_controls(program)
@@ -470,13 +525,13 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
         elif kw == "ENDTABLE":
             in_table = False
         elif kw == "SCAN":
-            scans += 1
+            scans.append(_scan_counts_for_table_placement(stmt))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if not scans:
                 diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
                 return stmt.file, stmt.line
-            scans -= 1
-        elif kw == "CALLTABLE" and not in_table and (scans == 0 or in_body) and \
+            scans.pop()
+        elif kw == "CALLTABLE" and not in_table and (not any(scans) or in_body) and \
                 _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body)
         if kw in _BODY_BLOCK_STARTS:
@@ -1060,7 +1115,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     # *third* `BeginProg` nested inside the second gets its own second `Multiple BeginProgs.` line
     # too (one diagnostic per excess `BeginProg`, not just the first).
     in_beginprog = False
-    pass2_scans = 0
+    pass2_scans: list[bool] = []
     misplaced = first_misplaced_sub(program) if not profile.single_pass else None
     misplaced_table = first_misplaced_data_table(program, profile) if not profile.single_pass else None
     # `IF or SELECT statement illegally has SCAN without NEXT SCAN.`: `check_block_closers`.
@@ -1107,17 +1162,17 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif kw == "ENDPROG":
             in_beginprog = False
         if kw == "SCAN":
-            pass2_scans += 1
+            pass2_scans.append(_scan_counts_for_table_placement(stmt))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if pass2_scans:
-                pass2_scans -= 1
+                pass2_scans.pop()
             elif not profile.single_pass:
                 # CR6/CR1000X: pass 2, and it ends pass 2 (oracle: only the first extra `NextScan`
                 # is reported; a later `X = Q` is not). CR300/CR350: `check_scan_placement_late`.
                 diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
                 return stmt.line
         elif kw == "CALLTABLE" and not profile.single_pass and not in_table and \
-                (pass2_scans == 0 or in_body_block) and _calltable_known(stmt, tables):
+                (not any(pass2_scans) or in_body_block) and _calltable_known(stmt, tables):
             _check_calltable_outside_scan(stmt, program, diags, in_body_block)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True

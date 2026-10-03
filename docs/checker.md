@@ -2379,6 +2379,13 @@ error hides it. Only the first extra `NextScan` is reported.
   Scan, e.g., called by Sub.`, after the first message when both apply;
 - a fixed-size table without `DataInterval` is accepted.
 
+A literal `Scan(0,...)` still consumes its matching `NextScan`, but does **not** count as a Scan
+for the auto-allocation placement check: a `CallTable` in that syntactic block gets the same
+`Cannot autoallocate ... outside of Scan ...` message. CR6/CR1000X additionally retain their
+ungated `Scan 0uSec invalid must be at least 1mSec.` diagnostic first; CR300/CR350 emit only the
+auto-allocation message. `Scan(1,Sec,...)` is accepted. Oracle probes, all four profiles,
+2026-10-03; fixture `tests/fixtures/table_allocation.json`.
+
 When the two checks run:
 
 - CR6/CR1000X: both run in the pass-2 walk (`structure.check_pass2`). A stray `NextScan` ends
