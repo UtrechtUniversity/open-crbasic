@@ -445,6 +445,28 @@ def _arg_text(stmt: S.Instruction, i: int) -> str:
 
 
 
+def _call_arg_text(text: str, index: int) -> str:
+    """Source text of top-level argument `index` of a call statement (`S.Call` keeps no spans)."""
+    depth, quote, start, n = 0, False, None, 0
+    for pos, ch in enumerate(text):
+        if ch == '"':
+            quote = not quote
+        elif quote:
+            continue
+        elif ch == "(":
+            depth += 1
+            if depth == 1 and start is None:
+                start = pos + 1
+        elif ch == ")" or ch == ",":
+            if ch == ")":
+                depth -= 1
+            if (ch == "," and depth == 1) or depth == 0:
+                if n == index:
+                    return text[start:pos].lstrip()
+                n, start = n + 1, pos + 1
+    return ""
+
+
 _IF_COND_RE = re.compile(r"(?is)^\s*(?:Else)?If\s(.*?)\bThen\b")
 
 
@@ -1381,6 +1403,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
     struct_vars = _struct_var_names(program)
     start = len(diags.items)
     mine: list = []
+    table_mine: list = []   # the `mine` entries from DataTable output instructions
     in_table = False
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
@@ -1395,6 +1418,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     diags.error(stmt.line, _arity_message("many", _arg_text(stmt, i), profile, False),
                                 stmt.file)
                     mine.append(diags.items[-1])
+                    if in_table:
+                        table_mine.append(diags.items[-1])
                     break
                 if _find_bare_function_ref(arg, profile, declared_variables):
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
@@ -1422,6 +1447,14 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue
             if any(_find_bare_function_ref(a, profile, declared_variables) for a in stmt.args):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                continue
+            bad = next((i for i, a in enumerate(stmt.args) if _multi_indexed_struct(a, struct_vars)),
+                       None)
+            if bad is not None:
+                # `Foo(A(1,2).V)`: the argument is echoed alone (oracle, 2026-10-03)
+                diags.error(stmt.line, _arity_message("many", _call_arg_text(stmt.text, bad),
+                                                      profile, False), stmt.file)
+                mine.append(diags.items[-1])
                 continue
             problem = _call_arity_problem(stmt.name, stmt.args, profile)
             if not problem:
@@ -1497,6 +1530,14 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                                                             whole_statement=True), stmt.file)
                 if struct_value:
                     mine.append(diags.items[-1])
+    if not profile.single_pass and table_mine:
+        # CR6/CR1000X: only the first DataTable instruction is reported, and none at all once a
+        # statement outside a table has one (oracle, 2026-10-03)
+        outside = any(d not in table_mine for d in mine)
+        keep = [] if outside else table_mine[:1]
+        drop = [d for d in table_mine if d not in keep]
+        diags.items[start:] = [d for d in diags.items[start:] if d not in drop]
+        mine[:] = [d for d in mine if d not in drop]
     if profile.single_pass and any(d not in mine for d in diags.items[start:]):
         # CR300/CR350: any call-arity error in the file suppresses every structure-index one,
         # before or after it (oracle, 2026-10-03)

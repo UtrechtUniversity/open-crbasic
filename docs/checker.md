@@ -3446,3 +3446,9 @@ return_placement}.json`, test `tests/test_block_placement.py`.
   Function.` (any context except a `Sub`), and with arguments `Too many parameters:  <first argument
   token>.` (once, even for `Return 1,2`). In a `Sub`: `RETURN illegal inside Sub` (no period) with
   an argument, `Invalid or missing parameter.` bare. CR300/CR350 cascades after it are not modelled.
+
+Follow-up (oracle, 2026-10-03, `tests/fixtures/struct_index_call.json`): a `Sub` call argument
+(`Foo(A(1,2).V)`, `Call Foo(...)`) is rejected on all four loggers, echoing that argument alone
+(leading blanks dropped, trailing kept). On CR6/CR1000X only the first DataTable output
+instruction with such a reference is reported (not one per instruction or table), and none at all
+once a statement outside a table has one.
