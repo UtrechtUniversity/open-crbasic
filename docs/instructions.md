@@ -1054,3 +1054,18 @@ is accepted), so those are skipped (`overflow: null`). Infinity (prints 65535) i
 Declarations run before `BeginProg`, and the same gating applies as for the other rules: a `Dim`
 error anywhere hides them. Other `PakBus address` parameters (`Route`, `PakBusClock`, `ClockReport`,
 `GetVariables`) have no compile-time range check (0, 4095, -1, 5000 all accepted, CR6 and CR350).
+
+## Instruction-resource and pairing checks (2026-10-03, fixture `tests/fixtures/instruction_resources.json`)
+
+Fixture cases are real-compiler observations (`tests/test_instruction_resources.py`); each family
+below lists what was probed and what was left unchecked.
+
+### EmailRecv destination (CR6/CR1000X)
+`A string variable destination is required` (no period) is reported for `EmailRecv` when argument 9
+is missing or when any argument from 9 on is a Float/Long variable or element, a named constant, or
+a literal. It precedes `Expression expects , : <statement>.`, which the compiler adds for 6 to 8
+arguments (fewer already got it from the arity check). `Result,Result` (a second String) and a
+String array element compile; `Result+"a"` also compiled, so expressions are never flagged, nor is
+a parenthesized variable (rejected by the compiler, not modelled). Observed on assignment RHS and
+as a bare statement; `If EmailRecv(...)` was rejected the same way but is not implemented.
+`instr_rules.check_emailrecv_destination`.

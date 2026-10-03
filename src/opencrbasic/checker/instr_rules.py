@@ -1077,6 +1077,37 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
         diags.items[at:at] = new
 
 
+def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X `EmailRecv`: argument 9 must exist and every argument from 9 on must be a String
+    variable/element, else `A string variable destination is required` ahead of any arity message
+    (docs/instructions.md#emailrecv-destination). Only literals, constants and non-String
+    variables count as bad; expressions are left unchecked."""
+    if profile.name not in ("cr6", "cr1000x") or "EMAILRECV" not in profile.functions:
+        return
+    types = _serialin_types(program, profile)
+    for stmt in program.statements:
+        call = stmt.value if isinstance(stmt, S.Assignment) else stmt
+        if isinstance(call, (S.Index, S.Call)) and call.name.upper() == "EMAILRECV":
+            args = call.args
+        else:
+            continue
+        tail = args[8:]
+        if None in tail or (tail and not any(
+                not isinstance(a, (S.Binary, S.Unary)) and _serialin_bad_destination(a, types)
+                for a in tail)):
+            continue
+        key = (stmt.line, stmt.file)
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
+                  len(diags.items))
+        new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
+        if 6 <= len(args) < 9 and isinstance(stmt, S.Assignment):
+            # The table `nargs` (6) leaves 6..8 arguments to this pass; fewer reach the arity check.
+            from .expressions import _arity_message
+            new.append(Diagnostic("error", stmt.line, _arity_message("few", stmt.text, profile),
+                                  stmt.file))
+        diags.items[at:at] = new
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 
