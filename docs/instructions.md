@@ -1031,9 +1031,10 @@ when its channels are valid.
 
 ### `Broadcast`: `Illegal message type %d` (all four loggers)
 
-The `Message` constant (position 2) must convert to 0, 12, 13 or 14 (0..15 swept on CR6 and CR350;
-others spot-checked on CR1000X/CR300). The converted number is printed (`14.9` is accepted,
-`TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`). Same tier as the other
+The `Message` constant (position 2) must convert to 0, 12, 13 or 14 (0..20 plus -1, 255, 256, `14.9`, `12.5`,
+`TRUE`, a string swept on all four loggers, 2026-10-03; accept/reject identical on each). The converted number is printed (`14.9` is accepted,
+`TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`; CR300/CR350 saturate instead for
+`2147483648` (`2147483647`) and `-2147483648` (`-2147483647`), not yet modelled). Same tier as the other
 `const_ranges` rules. Not modelled: `Broadcast` before `BeginProg`, where the real compilers print
 only this error (no placement error) while we add the placement one.
 

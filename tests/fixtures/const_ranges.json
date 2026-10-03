@@ -1201,6 +1201,118 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,7)\n    SemaphoreGet(7)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 7\nline 6: Illegal Semaphore: 1..4 are legal, 1 to 3 are general purpose, 4 is reserved (see docs)"
+    },
+    {
+      "id": "cr6-broadcast-11",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,11)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 11"
+    },
+    {
+      "id": "cr1000x-broadcast-1",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1"
+    },
+    {
+      "id": "cr1000x-broadcast-11",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,11)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 11"
+    },
+    {
+      "id": "cr1000x-broadcast-12",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-broadcast-13",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,13)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-broadcast-15",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,15)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 15"
+    },
+    {
+      "id": "cr300-broadcast-1",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1"
+    },
+    {
+      "id": "cr300-broadcast-11",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,11)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 11"
+    },
+    {
+      "id": "cr300-broadcast-12",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-broadcast-13",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,13)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-broadcast-15",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,15)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 15"
+    },
+    {
+      "id": "cr350-broadcast-1",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,1)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1"
+    },
+    {
+      "id": "cr350-broadcast-11",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,11)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 11"
+    },
+    {
+      "id": "cr350-broadcast-12",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-broadcast-13",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,13)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-broadcast-15",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,15)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 15"
     }
   ]
 }
