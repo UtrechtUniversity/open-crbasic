@@ -191,6 +191,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # (oracle-confirmed, `docs/loggers.md`).
     _run_pass(cr3xx.check, program, profile, diags)
     _run_pass(instr_rules.check, program, profile, diags)
+    _run_pass(instr_rules.check_return_placement, program, profile, diags)
     # The leftover line a required-parameter shortfall's own wrapped argument list spills onto
     # (`checker/structure.py`'s `check_missing_param_followup` docstring for the oracle evidence):
     # also ungated, since it fires precisely because the call just above already found something.
@@ -218,11 +219,18 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     if not profile.single_pass and not diags.errors:
         # CR6/CR1000X: an unknown structure member is a pass-1 error (`checker/structs.py`).
         _run_pass(structs.check_members, program, profile, diags, _with_inline(program))
+    early = Diagnostics()  # CR6/CR1000X `Scan`/`DataInterval` value errors, see below
     if not profile.early_warnings_gated:
+        early_start = len(diags.items)
         errors_before_early = len(diags.errors)
         _run_pass(warnings.check_early, program, profile, diags, env)
         if not profile.single_pass and not errors_before_early:
             _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env, True)
+        # Pass-2 findings that neither gate pass 2 nor tier C (oracle, CR6/CR1000X, 2026-10-03:
+        # `Scan(0,Sec,1,0)` plus a later `z = Q`, a bad channel or an orphan `Sample` reports
+        # both) but end it past a placement stop, and hide the unclosed-block checks.
+        early.items = [d for d in diags.items[early_start:] if d.severity == "error"]
+        diags.items[early_start:] = [d for d in diags.items[early_start:] if d.severity != "error"]
 
     bounds = Diagnostics()
     fields = Diagnostics()   # `SetSetting`/`SetStatus` field-name findings, see below
@@ -236,6 +244,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     leading = Diagnostics()  # pass-2 findings that print ahead of their line's other findings
     links = structure.CallLinks()
     pass1_errors = bool(diags.errors)
+    if pass1_errors:
+        early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
     if not diags.errors:
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
@@ -260,6 +270,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         stop_line = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
         # Every stop is one expanded-source position (`links.positions`), the earliest wins; an
         # included file has its own line numbers, so a physical line cannot order them.
+        # Like the `Scan` value errors, a nested `Scan` neither gates tier C nor survives past a
+        # placement stop (oracle, CR6/CR1000X, 2026-10-03: a later bad channel is still reported).
+        if not profile.single_pass:
+            early.items[:0] = [d for d in diags.items[pass2_start:]
+                               if d.message == structure.NESTED_SCAN]
+            diags.items[pass2_start:] = [d for d in diags.items[pass2_start:]
+                                         if d.message != structure.NESTED_SCAN]
         stops = [links.cutoff] if stop_line is not None and links.cutoff else []
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None:
@@ -270,6 +287,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                                       diags, env)
         if menu_stop is not None:
             stops.append(menu_stop)
+        # An unknown `CallTable` target ends pass 2 there like a placement error (oracle, all four
+        # loggers: a later `NextScan with no Scan.`/`x = 1` is not reported).
+        # (CR300/CR350 order these differently, `check_scan_placement_late`: not modelled.)
+        if not profile.single_pass:
+            for stmt, _name in instr_data.unknown_calltables(program):
+                stops.append((stmt.file, stmt.line))
+        # An orphan `EndTable`/empty table ends pass 2 too (reported in tier C, `check_table_
+        # structure`), cutting a later placement error.
+        if not profile.single_pass:
+            early_table_stop = _run_pass_capture(instr_data.check_table_structure, program,
+                                                 profile, Diagnostics())
+            if early_table_stop is not None:
+                stops.append(early_table_stop)
         stop_at = min((links.positions[k] for k in stops if k in links.positions), default=None)
 
         def before_cutoff(diagnostic) -> bool:
@@ -382,12 +412,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             # before `BeginProg` hides an fnotch warning further down).
             diags.items = [d for d in diags.items if d.severity != "warning" or
                            d.file != stop[0] or d.line <= stop[1]]
-    if not diags.errors and not fields.items and not pipe.items:
-        _run_pass(structure.check_end_blocks, program, diags)
     # CR300/CR350: these late errors do not start the `Too many parameters` cascade (oracle:
     # `Sample (1,Nope,FP2)` gives only `Nope is not defined.`).
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
     tier_c_start = len(diags.items)
+    table_stop = None
     if not diags.errors:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the
@@ -404,18 +433,28 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instructions.check, program, profile, diags, env)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
-        _run_pass(instr_data.check_table_structure, program, profile, diags)
-        _run_pass(instr_data.check_units_targets, program, profile, diags)
+        table_stop = _run_pass_capture(instr_data.check_table_structure, program, profile, diags)
+        if not early.items:  # hidden by a `Scan` value error (oracle, CR6/CR1000X, 2026-10-03)
+            _run_pass(instr_data.check_units_targets, program, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
+    if table_stop is not None and table_stop in links.positions:
+        late_pos = links.positions[table_stop]
+        diags.items[tier_c_start:] = [
+            d for d in diags.items[tier_c_start:]
+            if d.severity != "error" or links.positions.get((d.file, d.line), late_pos) <= late_pos]
     if profile.single_pass and not diags.errors:
         # CR300/CR350: structure member/assignment errors; they do not hide the early warnings
         # (oracle: `Invalid fnotch value` still printed) and are sorted in by line.
         flat_program = _with_inline(program)
         _run_pass(structs.check_members, program, profile, diags, flat_program)
         _run_pass(structs.check_struct_assignment, program, profile, diags, flat_program)
+    if not diags.errors and not fields.items and not pipe.items and not early.items:
+        # After tier C, not before (oracle, all four loggers: an unclosed `Scan`/`If`/`For` or a
+        # missing `BeginProg` plus a tier-C finding reports only the tier-C finding).
+        _run_pass(structure.check_end_blocks, program, diags)
     argument_error_first = structure.pipeline_argument_error_first_locations(program, profile)
     ordinary_pipe = []
     delayed_pipe = []
@@ -436,7 +475,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         ) + 1
         diags.items.insert(index, diagnostic)
 
-    diags.items += bounds.items + fields.items + ranges.items
+    if early.items:
+        early.items = [d for d in early.items if before_cutoff(d)]
+        if table_stop is not None and table_stop in links.positions:
+            early.items = [d for d in early.items
+                           if links.positions.get((d.file, d.line), 0) <= links.positions[table_stop]]
+    diags.items += bounds.items + fields.items + ranges.items + early.items
     for d in leading.items:
         # Aside like `bounds` (tier C still runs), but printed first on its own line (oracle:
         # `SPIOpen must precede SPIWrite.` precedes `SPIWrite illegally occurs before BeginProg.`).

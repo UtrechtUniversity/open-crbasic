@@ -1,0 +1,421 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-scan_value_errors-0",
+   "logger": "cr6",
+   "source": "Scan(1,Sec,-1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan BufferOption parameter must be a non-negative integer\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-1",
+   "logger": "cr6",
+   "source": "Scan(-1,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan Interval parameter must be a non-negative integer\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-2",
+   "logger": "cr6",
+   "source": "Scan(0,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-3",
+   "logger": "cr6",
+   "source": "Scan(1,Sec,1,0)\nScan(-1,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-4",
+   "logger": "cr6",
+   "source": "Scan(0,Sec,1,0)\nScan(0,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-5",
+   "logger": "cr6",
+   "source": "Scan(0,Sec,1,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-scan_value_errors-6",
+   "logger": "cr6",
+   "source": "Public\nBeginProg\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable not named."
+  },
+  {
+   "id": "cr6-scan_value_errors-7",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Invalid channel 99, must use U1..U12."
+  },
+  {
+   "id": "cr6-scan_value_errors-8",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nSample(1,x,FP2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-scan_value_errors-9",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nx=Nope\nz=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Invalid symbol in expression: x=Nope.\nline 5: Invalid, or out of place expression: z=Q."
+  },
+  {
+   "id": "cr6-scan_value_errors-10",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nx=Nope\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: x=Nope.\nline 4: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-11",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(86402,Sec,1,0)\nz=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 4: Invalid, or out of place expression: z=Q."
+  },
+  {
+   "id": "cr6-scan_value_errors-12",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(0,Sec,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-13",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(0,Sec,1,0)\nSample(1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too few parameters in instruction."
+  },
+  {
+   "id": "cr6-scan_value_errors-14",
+   "logger": "cr6",
+   "source": "Public x\nUnits y=Volts\nBeginProg\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-15",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1,mSec,-1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -1000uSec invalid must be at least 1mSec.\nline 2: Scan BufferOption parameter must be a non-negative integer\nline 2: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-16",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(0,mSec,-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec.\nline 2: Scan BufferOption parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-17",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-18",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-999999,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -999999uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-19",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1000000,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-20",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1000001,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-21",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-999,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -999000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-22",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1000,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-23",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-1,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-24",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-2147,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_value_errors-25",
+   "logger": "cr6",
+   "source": "BeginProg\nScan(-0.5,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-26",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,100)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-27",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-scan_value_errors-28",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nNextScan\nCallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 9: Table with DataInterval must be called within Scan..NextScan.\nline 9: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 9: Warning: CallTable never reached at run time."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-0",
+   "logger": "cr1000x",
+   "source": "Scan(1,Sec,-1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan BufferOption parameter must be a non-negative integer\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-1",
+   "logger": "cr1000x",
+   "source": "Scan(-1,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan Interval parameter must be a non-negative integer\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-2",
+   "logger": "cr1000x",
+   "source": "Scan(0,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-3",
+   "logger": "cr1000x",
+   "source": "Scan(1,Sec,1,0)\nScan(-1,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-4",
+   "logger": "cr1000x",
+   "source": "Scan(0,Sec,1,0)\nScan(0,Sec,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-5",
+   "logger": "cr1000x",
+   "source": "Scan(0,Sec,1,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Scan 0uSec invalid must be at least 1mSec.\nline 1: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-6",
+   "logger": "cr1000x",
+   "source": "Public\nBeginProg\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable not named."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-7",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Invalid channel 99, must use 1..16."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-8",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nSample(1,x,FP2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-9",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nx=Nope\nz=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 4: Invalid symbol in expression: x=Nope.\nline 5: Invalid, or out of place expression: z=Q."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-10",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nx=Nope\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: x=Nope.\nline 4: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-11",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(86402,Sec,1,0)\nz=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 4: Invalid, or out of place expression: z=Q."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-12",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(0,Sec,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-13",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(0,Sec,1,0)\nSample(1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too few parameters in instruction."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-14",
+   "logger": "cr1000x",
+   "source": "Public x\nUnits y=Volts\nBeginProg\nScan(0,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-15",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1,mSec,-1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -1000uSec invalid must be at least 1mSec.\nline 2: Scan BufferOption parameter must be a non-negative integer\nline 2: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-16",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(0,mSec,-1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec.\nline 2: Scan BufferOption parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-17",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-18",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-999999,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -999999uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-19",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1000000,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-20",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1000001,uSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-21",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-999,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan -999000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-22",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1000,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-23",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-1,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-24",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-2147,mSec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_value_errors-25",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan(-0.5,Sec,1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-26",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,100)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-27",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_value_errors-28",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nDataInterval(0,1,Sec,10)\nSample(1,x,FP2)\nEndTable\nBeginProg\nScan(0,Sec,3,0)\nNextScan\nCallTable T\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 9: Table with DataInterval must be called within Scan..NextScan.\nline 9: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 9: Warning: CallTable never reached at run time."
+  }
+ ]
+}

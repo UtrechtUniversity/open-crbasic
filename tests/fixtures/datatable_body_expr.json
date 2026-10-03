@@ -1,0 +1,127 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-datatable_body_expr-0",
+   "logger": "cr6",
+   "source": "DataTable(T,True,-1)\nFuzzVar = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: FuzzVar = 1.\nline 3: Invalid symbol in expression: x."
+  },
+  {
+   "id": "cr6-datatable_body_expr-1",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nFuzzVar = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: FuzzVar = 1."
+  },
+  {
+   "id": "cr6-datatable_body_expr-2",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nx = Nope\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: x = Nope."
+  },
+  {
+   "id": "cr6-datatable_body_expr-3",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nx = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-datatable_body_expr-4",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nSampleX(1,x,FP2)\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: SampleX(1,x,FP2)."
+  },
+  {
+   "id": "cr6-datatable_body_expr-5",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nfoo bar\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo bar."
+  },
+  {
+   "id": "cr6-datatable_body_expr-6",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nFuzzVar = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: FuzzVar = 1.\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-datatable_body_expr-7",
+   "logger": "cr6",
+   "source": "Public x\nConstTable\nFuzzVar = 1\nEndConstTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: FuzzVar = 1.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-0",
+   "logger": "cr1000x",
+   "source": "DataTable(T,True,-1)\nFuzzVar = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: FuzzVar = 1.\nline 3: Invalid symbol in expression: x."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-1",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nFuzzVar = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: FuzzVar = 1."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-2",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nx = Nope\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: x = Nope."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-3",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nx = 1\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-4",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nSampleX(1,x,FP2)\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: SampleX(1,x,FP2)."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-5",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nfoo bar\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo bar."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-6",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nSample(1,x,FP2)\nEndTable\nFuzzVar = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: FuzzVar = 1.\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-datatable_body_expr-7",
+   "logger": "cr1000x",
+   "source": "Public x\nConstTable\nFuzzVar = 1\nEndConstTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: FuzzVar = 1.\nline 3: Expr illegally occurs before BeginProg."
+  }
+ ]
+}

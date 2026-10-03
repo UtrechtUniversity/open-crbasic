@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-table_structure_order-0",
+   "logger": "cr6",
+   "source": "EndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-1",
+   "logger": "cr6",
+   "source": "Public x\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-2",
+   "logger": "cr6",
+   "source": "Public x\nSample(1,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_structure_order-3",
+   "logger": "cr6",
+   "source": "Average(1,x,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_structure_order-4",
+   "logger": "cr6",
+   "source": "Public x\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-5",
+   "logger": "cr6",
+   "source": "Public x\nEndTable\nSample(1,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-6",
+   "logger": "cr6",
+   "source": "DataTable(T,True,-1)\nEndTable\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table T declared with no output fields."
+  },
+  {
+   "id": "cr6-table_structure_order-7",
+   "logger": "cr6",
+   "source": "Public x\nEndTable\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-8",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSample(1,x,FP2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_structure_order-9",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nEndTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-10",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nIf x=1 Then\nSample(1,x,FP2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-table_structure_order-11",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nFor x=1 To 2\nEndTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-table_structure_order-12",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 99, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-table_structure_order-0",
+   "logger": "cr1000x",
+   "source": "EndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-1",
+   "logger": "cr1000x",
+   "source": "Public x\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-2",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(1,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_structure_order-3",
+   "logger": "cr1000x",
+   "source": "Average(1,x,FP2,False)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_structure_order-4",
+   "logger": "cr1000x",
+   "source": "Public x\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration.\nline 3: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-5",
+   "logger": "cr1000x",
+   "source": "Public x\nEndTable\nSample(1,x,FP2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-6",
+   "logger": "cr1000x",
+   "source": "DataTable(T,True,-1)\nEndTable\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Table T declared with no output fields."
+  },
+  {
+   "id": "cr1000x-table_structure_order-7",
+   "logger": "cr1000x",
+   "source": "Public x\nEndTable\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-8",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nSample(1,x,FP2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_structure_order-9",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nEndTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-10",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nIf x=1 Then\nSample(1,x,FP2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-table_structure_order-11",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nFor x=1 To 2\nEndTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-table_structure_order-12",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,0,0)\nVoltSE(x,1,mV5000,99,True,0,_60Hz,1,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 99, must use 1..16."
+  }
+ ]
+}

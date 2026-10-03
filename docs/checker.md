@@ -3404,3 +3404,45 @@ Not modelled: output instructions outside a table keep `must be used inside a ta
 (skipped); only the first error of a `DataTable` is reported (ours reports each); CR300/CR350
 `Too many parameters` cascades after instruction arguments (same as for bad built-in arity).
 Evidence: `tests/fixtures/struct_index.json`.
+
+## Block placement order (2026-10-03, CR6/CR1000X unless noted)
+
+Observed with the real compilers; evidence `tests/fixtures/{unknown_calltable_stop,
+table_structure_order,datatable_body_expr,scan_value_errors,nested_scan,stale_closer,
+return_placement}.json`, test `tests/test_block_placement.py`.
+
+- **Unknown `CallTable` target** (`Could not find DataTable X.`) ends pass 2 like a placement error: a
+  later `NextScan with no Scan.` or `x = 1` is not reported (CR6/CR1000X; CR300/CR350 order these
+  late and differ, not modelled).
+- **End-of-program checks come after tier C.** `No BeginProg in Program.`, `Scan without NextScan.`
+  and the other unclosed-block messages are reported only when passes 1 and 2 *and* tier C found
+  nothing; an unclosed `Scan`/`If`/`For` plus an orphan `EndTable`, a `Sample` outside a table or a bad
+  channel reports only the latter. All four loggers.
+- **Orphan `EndTable`** (`EndTable without DataTable.`) and an `EndTable` of a table with no output
+  fields end pass 2 (a later `Sample` outside a table, bad channel or placement error is not
+  reported); a `Sample` outside a table before it is still reported.
+- **`DataTable` body**: an unresolved statement there gets only `Invalid, or out of place
+  expression`/`Invalid symbol`, never `Expr illegally occurs before BeginProg.`, and a resolving
+  assignment or built-in call is silent (a `ConstTable` body still adds the placement line).
+- **`Scan` value errors** (`Scan Interval/BufferOption/Count parameter must be a non-negative
+  integer`, `Scan %duSec invalid must be at least 1mSec.`, `Scans must be a multiple of 1mSec.`,
+  `Maximum Scan interval is 1 Day.`, `DataInterval ... non-negative`) are pass-2 findings: hidden by
+  any pass-1 error, but they gate neither the rest of pass 2, tier C, nor `Scan illegally occurs before
+  BeginProg.` (reported after them on the same line); they hide the end-of-program checks and
+  `Can't assign units`. Order on one line: Interval, its minimum/multiple message, BufferOption, Count.
+  A negative interval at or below -1000000 uSec gets no minimum message (`Scan(-1,Sec)`,
+  `Scan(-1000,mSec)`); `-1000001 uSec` gets `Scans must be a multiple of 1mSec.`; `-999999 uSec` the
+  minimum message. A `CallTable` of a `DataInterval` table inside a literal-zero `Scan` gets neither
+  placement message (auto-sized without `DataInterval`: `Cannot autoallocate...` as before).
+- **Nested `Scan`**: a `Scan` while another is open (zero interval, `SlowSequence`, inside an `If`
+  too) gives `Scan without NextScan or nested Scans.` at the inner `Scan`; pass 2 goes on, tier C is
+  not gated, and the end-of-program `Scan without NextScan.` is replaced (CR6/CR1000X pass 2;
+  CR300/CR350 print it late and only when nothing else is wrong).
+- **Stale closer slot**: a closer that pops a `Scan` (`Scan` / `EndIf` ...) leaves the `Scan` in its
+  block-stack slot, so every later block opened at that depth reports `<kind> statement illegally has
+  SCAN without NEXT SCAN.` at its own closer (a one-line `If` at its own line); a stray closer at
+  depth 0 reports only its `without` message. All four loggers.
+- **`Return`** outside a `Function` is a pass-1 error, all four loggers: `Return outside of
+  Function.` (any context except a `Sub`), and with arguments `Too many parameters:  <first argument
+  token>.` (once, even for `Return 1,2`). In a `Sub`: `RETURN illegal inside Sub` (no period) with
+  an argument, `Invalid or missing parameter.` bare. CR300/CR350 cascades after it are not modelled.

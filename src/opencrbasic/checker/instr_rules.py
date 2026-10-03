@@ -176,6 +176,59 @@ def _required_count(params: list[int]) -> int:
     return len(params)
 
 
+def misplaced_returns(program: S.Program) -> dict[int, bool]:
+    """`id(Return statement) -> inside a Sub` for each `Return` not inside a `Function`, one-line
+    `If` bodies included."""
+    found: dict[int, bool] = {}
+    routine = None
+    flat: list[S.Stmt] = []
+    for stmt in program.statements:
+        flat.append(stmt)
+        if isinstance(stmt, S.If):
+            flat.extend((stmt.inline or []) + (stmt.inline_else or []))
+    for stmt in flat:
+        if isinstance(stmt, S.SubDef):
+            routine = stmt.keyword.upper()
+        elif isinstance(stmt, S.Instruction):
+            kw = stmt.keyword.upper()
+            if kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and stmt.args and isinstance(
+                    stmt.args[0], S.Name) and stmt.args[0].name.upper() in ("SUB", "FUNCTION")):
+                routine = None
+            elif kw == "RETURN" and routine != "FUNCTION":
+                found[id(stmt)] = routine == "SUB"
+    return found
+
+
+def check_return_placement(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Return` outside a `Function`, pass 1, all four loggers (oracle, 2026-10-03): `Return
+    outside of Function.` (any context but a `Sub`, `DataTable` and `BeginProg` bodies included),
+    then, for any argument, `Too many parameters:  <first argument token>.` (the instruction
+    takes none there). In a `Sub` only `RETURN illegal inside Sub` (no period) and only with an
+    argument; a bare `Return` there is still `Invalid or missing parameter.` (`check`)."""
+    misplaced = misplaced_returns(program)
+    for stmt in _return_statements(program):
+        in_sub = misplaced.get(id(stmt))
+        if in_sub is None:
+            continue
+        if in_sub:
+            if stmt.args:
+                diags.error(stmt.line, "RETURN illegal inside Sub", stmt.file)
+            continue
+        diags.error(stmt.line, "Return outside of Function.", stmt.file)
+        spans = getattr(stmt, "arg_spans", None)
+        if stmt.args and spans and spans[0] is not None:
+            token = _next_simple_token(stmt.text[spans[0][0]:])
+            if token:
+                diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+
+
+def _return_statements(program: S.Program):
+    for stmt in program.statements:
+        for st in [stmt] + ((stmt.inline or []) + (stmt.inline_else or []) if isinstance(stmt, S.If) else []):
+            if isinstance(st, S.Instruction) and st.keyword.upper() == "RETURN":
+                yield st
+
+
 def check(program: S.Program, profile, diags: Diagnostics) -> None:
     """Flags an `Instruction` statement whose declared required-parameter prefix runs past the end
     of the parsed argument list -- almost always a CHM corpus example whose instruction call was
@@ -201,8 +254,9 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     it flags -- `checker/__init__.py` already gates all of pass 2 behind "no pass-1 error anywhere
     in the file" (oracle evidence there), which covers this case for free.
     """
+    outside = {k for k, in_sub in misplaced_returns(program).items() if not in_sub}
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction):
+        if not isinstance(stmt, S.Instruction) or id(stmt) in outside:
             continue
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
@@ -317,8 +371,9 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
     (an empty/skipped argument slot with no captured position) is left unflagged rather than
     guessed at.
     """
+    outside = {k for k, in_sub in misplaced_returns(program).items() if not in_sub}
     for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction):
+        if not isinstance(stmt, S.Instruction) or id(stmt) in outside:
             continue
         record = profile.instructions.get(stmt.keyword.upper())
         # `DataTable (T,1,-1,"fuzz")` -> `Too many parameters:  "fuzz".`, pass 1, all four
@@ -472,6 +527,8 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
                 continue
             if _is_negative_or_invalid(value):
                 diags.error(stmt.line, f"Scan {label} parameter must be a non-negative integer", stmt.file)
+            if idx == 0:
+                _scan_min_interval(stmt, diags, env)
 
 
 # `Scan`/`DataInterval`'s `Units` argument folds (via `consteval`, `profile.symbols`) to this 0..5
@@ -479,7 +536,7 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
 _US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
 
 
-def check_scan_min_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env) -> None:
     """`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
     (round 6, CR6/CR1000X only, same `FUN_00468900` family as `check_scan_params` above -- oracle-
     confirmed ungated the same way, fires alongside unrelated errors both before and after it in
@@ -504,39 +561,37 @@ def check_scan_min_interval(program: S.Program, profile, diags: Diagnostics, env
       can structurally never fire for those two units.
 
     Both comparisons run on this one folded `raw_us` value, **independently of whether
-    `check_scan_params`'s own non-negative check above also already fired for the same `Interval`
+    `check_scan_params`'s own non-negative check also already fired for the same `Interval`
     argument** -- oracle-confirmed not mutually exclusive: `Scan(-1,mSec,...)` fires *both* `Scan
     Interval parameter must be a non-negative integer` *and* `Scan -1000uSec invalid must be at
-    least 1mSec.`, on the same line, in that order (`check_scan_params` is called first in
-    `warnings.check_early`). Only `Interval` (position 0) -- no oracle evidence either message
+    least 1mSec.`, on the same line, in that order, both before the `BufferOption`/`Count`
+    messages (`check_scan_params` calls this right after the `Interval` check). A negative value
+    at or below -1000000 uSec gets no "at least" message (oracle, CR6/CR1000X, 2026-10-03:
+    `Scan(-999999,uSec,..)` does, `Scan(-1000000,uSec,..)`, `Scan(-1,Sec,..)`, `Scan(-2147,mSec,..)`
+    do not; `Scan(-1000001,uSec,..)` gets the multiple-of message). Only `Interval` (position 0) -- no oracle evidence either message
     applies to `BufferOption`/`Count`.
     """
-    if profile.name not in _SCAN_VALUE_CHECK_LOGGERS:
+    args = stmt.args
+    interval = args[0] if args else None
+    units = args[1] if len(args) > 1 else None
+    if interval is None or units is None:
         return
-    for stmt in program.statements:
-        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SCAN":
-            continue
-        args = stmt.args
-        interval = args[0] if args else None
-        units = args[1] if len(args) > 1 else None
-        if interval is None or units is None:
-            continue
-        if not (consteval.is_constant(interval, env) and consteval.is_constant(units, env)):
-            continue
-        try:
-            value = consteval.value_of(interval, env)
-            unit = consteval.value_of(units, env)
-        except consteval.NotConstant:
-            continue
-        if isinstance(value, str) or not isinstance(value, (int, float)):
-            continue
-        # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01)
-        us_per_unit = _US_PER_UNIT.get(unit, 0) if not isinstance(unit, bool) else 0
-        raw_us = int(value) * us_per_unit
-        if raw_us < 1000:
-            diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
-        elif raw_us % 1000 != 0:
-            diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
+    if not (consteval.is_constant(interval, env) and consteval.is_constant(units, env)):
+        return
+    try:
+        value = consteval.value_of(interval, env)
+        unit = consteval.value_of(units, env)
+    except consteval.NotConstant:
+        return
+    if isinstance(value, str) or not isinstance(value, (int, float)):
+        return
+    # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01)
+    us_per_unit = _US_PER_UNIT.get(unit, 0) if not isinstance(unit, bool) else 0
+    raw_us = int(value) * us_per_unit
+    if -1_000_000 < raw_us < 1000:
+        diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
+    elif raw_us % 1000 != 0:
+        diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
 
 
 def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:

@@ -143,8 +143,10 @@ def calltable_targets(program: S.Program) -> set[str]:
     return names
 
 
-def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
-    """`Could not find DataTable %s.` (round 6, `docs/checker.md`) at a `CallTable <name>` site
+def unknown_calltables(program: S.Program):
+    """`(CallTable statement, name)` pairs naming no closed table, for `check_unclosed_calltable`.
+
+    `Could not find DataTable %s.` (round 6, `docs/checker.md`) at a `CallTable <name>` site
     whose own `DataTable(name,...)` was declared somewhere in the program but never closed with a
     matching `EndTable` -- an unclosed table never gets "finalised" into the real compiler's table
     registry, so a later reference to it fails exactly like a genuine typo would, oracle-confirmed
@@ -188,6 +190,10 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
     # Any other target that is not a closed table fails the same way (oracle, all four loggers,
     # 2026-09-27): `CallTable Nope`, a variable `CallTable X`, `CallTable Status`, `CallTable
     # ("fuzz")` -> `fuzz`, `CallTable((1+2))` -> `1+2` (quotes and parentheses dropped).
+    return [(stmt, name) for stmt, name in _calltable_names(program) if name.upper() not in closed]
+
+
+def _calltable_names(program: S.Program):
     for stmt in program.statements:
         if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE"):
             continue
@@ -203,11 +209,16 @@ def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
                 name = name[1:-1].strip()
         else:
             continue
-        if name.upper() not in closed:
-            diags.error(stmt.line, f"Could not find DataTable {name}.", stmt.file)
+        yield stmt, name
 
 
-def check_table_structure(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
+def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
+    for stmt, name in unknown_calltables(program):
+        diags.error(stmt.line, f"Could not find DataTable {name}.", stmt.file)
+
+
+def check_table_structure(program: S.Program, profile: Profile,
+                          diags: Diagnostics) -> tuple[str | None, int] | None:
     """`%s must be used inside a table declaration.` for an output-processing instruction (see
     `TABLE_ONLY_INSTRUCTIONS`) found outside any `DataTable...EndTable` block,
     `EndTable without DataTable.` for an orphan/extra `EndTable` (oracle-confirmed at the `EndTable`
@@ -219,6 +230,10 @@ def check_table_structure(program: S.Program, profile: Profile, diags: Diagnosti
     nothing at all, three from-scratch probes this round, plus a saved fuzz reproducer,
     `tests/corpus/fuzz/cr6/false_accept/5d5ffec92ac4.json`, for the "nothing at all" shape -- `docs/
     instructions.md`).
+
+    Either `EndTable` message ends pass 2: the first one is returned as the stop location and
+    later findings are dropped (oracle, all four loggers, 2026-10-03: `EndTable` then `Sample`
+    outside a table reports only the `EndTable`; `Sample` then `EndTable` reports both).
 
     Pass-2 (called from `checker/__init__.py` only when pass 1 found no error anywhere in the
     file): oracle-confirmed for both messages this round by placing an unrelated pass-1 error (a
@@ -249,8 +264,10 @@ def check_table_structure(program: S.Program, profile: Profile, diags: Diagnosti
         if kw == "ENDTABLE":
             if not in_table:
                 diags.error(stmt.line, "EndTable without DataTable.", stmt.file)
-            elif not has_field and table_name:
+                return (stmt.file, stmt.line)
+            if not has_field and table_name:
                 diags.error(stmt.line, f"Table {table_name} declared with no output fields.", stmt.file)
+                return (stmt.file, stmt.line)
             in_table = False
             continue
         if in_table:
@@ -260,6 +277,7 @@ def check_table_structure(program: S.Program, profile: Profile, diags: Diagnosti
         display = TABLE_ONLY_INSTRUCTIONS.get(kw)
         if display is not None and kw in profile.instructions:
             diags.error(stmt.line, f"{display} must be used inside a table declaration.", stmt.file)
+    return None
 
 
 # `Sample(Reps, CH400Status, ...)` samples the predefined CH400Status table: `Reps` consecutive

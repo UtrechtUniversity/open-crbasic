@@ -1,0 +1,99 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unknown_calltable_stop-0",
+   "logger": "cr6",
+   "source": "CallTable(Nope)\nNextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unknown_calltable_stop-1",
+   "logger": "cr6",
+   "source": "CallTable(Nope)\nx=1\nNextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unknown_calltable_stop-2",
+   "logger": "cr6",
+   "source": "BeginProg\nCallTable(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unknown_calltable_stop-3",
+   "logger": "cr6",
+   "source": "BeginProg\nCallTable(Nope)\nz=Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unknown_calltable_stop-4",
+   "logger": "cr6",
+   "source": "BeginProg\nz=Q\nCallTable(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: z=Q.\nline 3: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unknown_calltable_stop-5",
+   "logger": "cr6",
+   "source": "BeginProg\nNextScan\nCallTable(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-0",
+   "logger": "cr1000x",
+   "source": "CallTable(Nope)\nNextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-1",
+   "logger": "cr1000x",
+   "source": "CallTable(Nope)\nx=1\nNextScan\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-2",
+   "logger": "cr1000x",
+   "source": "BeginProg\nCallTable(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-3",
+   "logger": "cr1000x",
+   "source": "BeginProg\nCallTable(Nope)\nz=Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-4",
+   "logger": "cr1000x",
+   "source": "BeginProg\nz=Q\nCallTable(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: z=Q.\nline 3: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unknown_calltable_stop-5",
+   "logger": "cr1000x",
+   "source": "BeginProg\nNextScan\nCallTable(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  }
+ ]
+}

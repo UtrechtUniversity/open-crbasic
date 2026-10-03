@@ -1,0 +1,267 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-return_placement-0",
+   "logger": "cr6",
+   "source": "Return False\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Return outside of Function.\nline 1: Too many parameters:  False."
+  },
+  {
+   "id": "cr6-return_placement-1",
+   "logger": "cr6",
+   "source": "Return\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Return outside of Function."
+  },
+  {
+   "id": "cr6-return_placement-2",
+   "logger": "cr6",
+   "source": "Public x\nReturn x\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-return_placement-3",
+   "logger": "cr6",
+   "source": "Public x\nFunction F(a)\nReturn a\nEndFunction\nReturn x\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Return outside of Function.\nline 5: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-return_placement-4",
+   "logger": "cr6",
+   "source": "BeginProg\nReturn(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-return_placement-5",
+   "logger": "cr6",
+   "source": "BeginProg\nReturn 1,2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-return_placement-6",
+   "logger": "cr6",
+   "source": "BeginProg\nReturn Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr6-return_placement-7",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nz=Q\nReturn x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function.\nline 4: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-return_placement-8",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nReturn x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function.\nline 4: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-return_placement-9",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nIf x Then Return\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function."
+  },
+  {
+   "id": "cr6-return_placement-10",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\nScan(1,Sec,3,0)\nReturn\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function."
+  },
+  {
+   "id": "cr6-return_placement-11",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\nReturn\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function."
+  },
+  {
+   "id": "cr6-return_placement-12",
+   "logger": "cr6",
+   "source": "Public\nReturn\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable not named.\nline 2: Return outside of Function."
+  },
+  {
+   "id": "cr6-return_placement-13",
+   "logger": "cr6",
+   "source": "Public x\nScan(1,Sec,3,0)\nReturn x\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function.\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-return_placement-14",
+   "logger": "cr6",
+   "source": "Public x\nSub S\nReturn x\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: RETURN illegal inside Sub"
+  },
+  {
+   "id": "cr6-return_placement-15",
+   "logger": "cr6",
+   "source": "Public x\nSub S\nReturn\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-return_placement-16",
+   "logger": "cr6",
+   "source": "Public x\nFunction F(a)\nReturn a\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-return_placement-17",
+   "logger": "cr6",
+   "source": "Public x\nFunction F(a)\nReturn a,a\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  a."
+  },
+  {
+   "id": "cr1000x-return_placement-0",
+   "logger": "cr1000x",
+   "source": "Return False\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Return outside of Function.\nline 1: Too many parameters:  False."
+  },
+  {
+   "id": "cr1000x-return_placement-1",
+   "logger": "cr1000x",
+   "source": "Return\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Return outside of Function."
+  },
+  {
+   "id": "cr1000x-return_placement-2",
+   "logger": "cr1000x",
+   "source": "Public x\nReturn x\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-return_placement-3",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F(a)\nReturn a\nEndFunction\nReturn x\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Return outside of Function.\nline 5: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-return_placement-4",
+   "logger": "cr1000x",
+   "source": "BeginProg\nReturn(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-return_placement-5",
+   "logger": "cr1000x",
+   "source": "BeginProg\nReturn 1,2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-return_placement-6",
+   "logger": "cr1000x",
+   "source": "BeginProg\nReturn Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Return outside of Function.\nline 2: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr1000x-return_placement-7",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nz=Q\nReturn x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function.\nline 4: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-return_placement-8",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(0,Sec,1,0)\nReturn x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function.\nline 4: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-return_placement-9",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nIf x Then Return\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function."
+  },
+  {
+   "id": "cr1000x-return_placement-10",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\nScan(1,Sec,3,0)\nReturn\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return outside of Function."
+  },
+  {
+   "id": "cr1000x-return_placement-11",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\nReturn\nSample(1,x,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function."
+  },
+  {
+   "id": "cr1000x-return_placement-12",
+   "logger": "cr1000x",
+   "source": "Public\nReturn\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable not named.\nline 2: Return outside of Function."
+  },
+  {
+   "id": "cr1000x-return_placement-13",
+   "logger": "cr1000x",
+   "source": "Public x\nScan(1,Sec,3,0)\nReturn x\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Return outside of Function.\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-return_placement-14",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S\nReturn x\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: RETURN illegal inside Sub"
+  },
+  {
+   "id": "cr1000x-return_placement-15",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S\nReturn\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-return_placement-16",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F(a)\nReturn a\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-return_placement-17",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F(a)\nReturn a,a\nEndFunction\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  a."
+  }
+ ]
+}

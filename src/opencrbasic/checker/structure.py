@@ -160,6 +160,12 @@ def _calltable_known(stmt: S.Stmt, state: dict) -> bool:
         args[0].name.upper() in state.get("closed", set())
 
 
+# A `Scan` while another is open (a literal-zero one too, in or out of `SlowSequence`): reported at
+# the inner `Scan`, does not stop pass 2, and replaces the end-of-program `Scan without NextScan.`
+# (oracle, all four loggers, 2026-10-03; CR300/CR350 print it late, `check_scan_placement_late`).
+NESTED_SCAN = "Scan without NextScan or nested Scans."
+
+
 def _scan_counts_for_table_placement(stmt: S.Stmt) -> bool:
     """Whether this parsed ``Scan`` contains a valid literal interval for ``CallTable`` placement.
 
@@ -171,57 +177,16 @@ def _scan_counts_for_table_placement(stmt: S.Stmt) -> bool:
     return not (args and isinstance(args[0], S.Number) and args[0].value == 0)
 
 
-def check_zero_scan_auto_table_placement(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR6/CR1000X's ungated auto-table message within a literal-zero ``Scan``.
-
-    Their Scan-interval diagnostic is emitted before pass 2, yet this placement diagnostic still
-    follows it.  The regular pass-2 walk is therefore unavailable for this one observed shape.
-    """
-    if profile.single_pass:
-        return
-    tables: dict = {}
-    scans: list[bool] = []
-    in_table = False
-    for stmt in program.statements:
-        kw = _keyword(stmt)
-        _track_tables(stmt, kw, tables)
-        if kw == "DATATABLE":
-            in_table = True
-        elif kw == "ENDTABLE":
-            in_table = False
-        elif kw == "SCAN":
-            scans.append(_scan_counts_for_table_placement(stmt))
-        elif kw == "NEXTSCAN" or (kw == "NEXT" and
-                                    _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
-            if scans:
-                scans.pop()
-        elif kw == "CALLTABLE" and not in_table and scans and not any(scans) and \
-                _calltable_known(stmt, tables):
-            target = stmt.args[0] if stmt.args else None
-            if not isinstance(target, S.Name):
-                continue
-            for table_stmt in program.statements:
-                if _keyword(table_stmt) != "DATATABLE" or not table_stmt.args or \
-                        not isinstance(table_stmt.args[0], S.Name) or \
-                        table_stmt.args[0].name.upper() != target.name.upper():
-                    continue
-                size = table_stmt.args[2] if len(table_stmt.args) > 2 else None
-                auto = isinstance(size, S.Unary) and size.op == "-" or \
-                    isinstance(size, S.Number) and size.value < 0
-                if auto:
-                    diags.error(stmt.line, f"Cannot autoallocate memory for DataTable "
-                                f"{table_stmt.args[0].name} called outside of Scan, e.g., "
-                                "called by Sub.", stmt.file)
-                break
-
-
 def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
-                                  in_sub: bool) -> None:
+                                  in_sub: bool, zero_scan: bool = False) -> None:
     """`CallTable` outside any `Scan` (before it, after `NextScan`, or in a `Sub`), pass 2, all four
     loggers (oracle, 2026-09-27): a table with `DataInterval` -> `Table with DataInterval must be
     called within Scan..NextScan.`; an auto-sized one (negative size) -> `Cannot autoallocate memory
     for DataTable %s called outside of Scan, e.g., called by Sub.`; a fixed-size table without
-    `DataInterval` is fine. Inside a `Sub` only the second (probed) message is emitted."""
+    `DataInterval` is fine. Inside a `Sub` only the second (probed) message is emitted. Inside a
+    literal-zero `Scan` (`zero_scan`) a `DataInterval` table gets neither message, while an
+    auto-sized one without `DataInterval` still gets the second (oracle, all four loggers,
+    2026-10-03)."""
     target = stmt.args[0] if stmt.args else None
     if not isinstance(target, S.Name):
         return
@@ -243,6 +208,8 @@ def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags
     size = table.args[2] if len(table.args) > 2 else None
     auto = isinstance(size, S.Unary) and size.op == "-" or \
         isinstance(size, S.Number) and size.value < 0
+    if zero_scan and has_interval:
+        return
     if has_interval and not in_sub:
         diags.error(stmt.line, "Table with DataInterval must be called within Scan..NextScan.",
                     stmt.file)
@@ -536,6 +503,8 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
         elif kw == "ENDTABLE":
             in_table = False
         elif kw == "SCAN":
+            if scans:
+                diags.error(stmt.line, NESTED_SCAN, stmt.file)
             scans.append(_scan_counts_for_table_placement(stmt))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if not scans:
@@ -544,7 +513,8 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
             scans.pop()
         elif kw == "CALLTABLE" and not in_table and (not any(scans) or in_body) and \
                 _calltable_known(stmt, tables):
-            _check_calltable_outside_scan(stmt, program, diags, in_body)
+            _check_calltable_outside_scan(stmt, program, diags, in_body,
+                                          bool(scans) and not in_body)
         if kw in _BODY_BLOCK_STARTS:
             in_body = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
@@ -1212,6 +1182,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif kw == "ENDPROG":
             in_beginprog = False
         if kw == "SCAN":
+            if pass2_scans and not profile.single_pass:
+                diags.error(stmt.line, NESTED_SCAN, stmt.file)
             pass2_scans.append(_scan_counts_for_table_placement(stmt))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if pass2_scans:
@@ -1223,7 +1195,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 return stmt.line
         elif kw == "CALLTABLE" and not profile.single_pass and not in_table and \
                 (not any(pass2_scans) or in_body_block) and _calltable_known(stmt, tables):
-            _check_calltable_outside_scan(stmt, program, diags, in_body_block)
+            _check_calltable_outside_scan(stmt, program, diags, in_body_block,
+                                          bool(pass2_scans) and not in_body_block)
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue
@@ -1232,12 +1205,14 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             continue
 
         if isinstance(stmt, S.Call):
-            stop = _check_call_pass2(stmt, subs, profile, diags, before_bp, in_body_block,
+            stop = _check_call_pass2(stmt, subs, profile, diags, before_bp and not in_table,
+                                     in_body_block,
                                      sub_params, known, link_ctx)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
-            stop = _check_assignment_pass2(stmt, known, diags, before_bp, in_body_block,
+            stop = _check_assignment_pass2(stmt, known, diags, before_bp and not in_table,
+                                            in_body_block,
                                             profile)
             if stop is not None:
                 return stop
@@ -1267,7 +1242,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 link_ctx.links.calls.append(bare)
                 # `S1 1,2` with `S1` a declared Sub: the link step's `S11,2 is not declared as a
                 # Subroutine.` (oracle, 2026-10-02), not the generic fallback.
-                stop = _unlinked_call(stmt, bare, profile, diags, not in_body_block and before_bp,
+                stop = _unlinked_call(stmt, bare, profile, diags,
+                                      not in_body_block and before_bp and not in_table,
                                       link_ctx)
                 if stop is not None:
                     return stop
@@ -1329,7 +1305,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     # tested -- the `_UNCLOSED_PAREN_EXPR`/`_EXTRA_CLOSE_PAREN` branches above keep
                     # the ordinary follow-up/stop below, unprobed this round.
                     continue
-            if not in_body_block and before_bp:
+            if not in_body_block and before_bp and not in_table:
+                # not inside a `DataTable` body (oracle, CR6/CR1000X, 2026-10-03: `FuzzVar = 1`
+                # there reports only the out-of-place line; a `ConstTable` body still adds this)
                 diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
     link_ctx.links.cutoff = None
@@ -1351,26 +1329,45 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
     without NEXT SCAN.`, and with no block of its own kind open it reports `END IF without IF or
     END SELECT without SELECT.`/`NEXT without FOR.`/`LOOP without DO.`; an `EndSelect` with no
     `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends").
-    Programs using `While`/`Wend` are skipped (not probed)."""
+    Programs using `While`/`Wend` are skipped (not probed).
+
+    The block stack is an array with a depth: only a `Scan`/`SubScan` writes its slot, so one that
+    a stray closer popped stays in its slot (`stale`) and every later `If`/`For`/`Do`/`Select`
+    opened at that depth reports `<kind> statement illegally has SCAN without NEXT SCAN.` at its
+    own closer (a one-line `If` at its own line); a further stray closer at depth 0 reports only
+    its `without` message (oracle, all four loggers, 2026-10-03)."""
     if any(_keyword(st) in ("WHILE", "WEND") for st in program.statements):
         return
-    stack: list[str] = []
+    frames: list[str] = []
+    depth = 0
     open_count = {"IF": 0, "FOR": 0, "DO": 0, "SCAN": 0}
     selects = 0
     subscans = 0
+
+    def push(kind: str) -> None:
+        nonlocal depth
+        if depth == len(frames):
+            frames.append(kind)
+        elif kind == "SCAN":
+            frames[depth] = kind
+        depth += 1
+
     for stmt in program.statements:
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
-        if kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None) or kw == "SELECT":
-            stack.append("IF")
+        if isinstance(stmt, S.If) and stmt.inline is not None:
+            if depth < len(frames) and frames[depth] == "SCAN":
+                diags.error(stmt.line, _CLOSER_MESSAGES["IF"][0], stmt.file)
+        elif kw == "IF" or kw == "SELECT":
+            push("IF")
             open_count["IF"] += 1
             selects += kw == "SELECT"
         elif kw in ("FOR", "DO"):
-            stack.append(kw)
+            push(kw)
             open_count[kw] += 1
         elif kw in ("SCAN", "SUBSCAN"):
-            stack.append("SCAN")
+            push("SCAN")
             subscans += kw == "SUBSCAN"
         elif kw == "NEXTSUBSCAN" and subscans == 0:
             diags.error(stmt.line, "Next SubScan without SubScan.", stmt.file)
@@ -1378,16 +1375,20 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
             subscans -= kw == "NEXTSUBSCAN" or word == "SUBSCAN"
             # Removes the innermost `Scan` wherever it is; blocks opened inside it stay open
             # (oracle: `If X Then` / `NextScan` / `EndIf` compiles, a fuzz-found false reject).
-            if "SCAN" in stack:
-                del stack[len(stack) - 1 - stack[::-1].index("SCAN")]
+            live = frames[:depth]
+            if "SCAN" in live:
+                del frames[len(live) - 1 - live[::-1].index("SCAN")]
+                depth -= 1
         elif kw in ("ENDIF", "ENDSELECT", "NEXT", "LOOP") or (kw == "END" and word in ("IF", "SELECT")):
             is_select = kw == "ENDSELECT" or (kw == "END" and word == "SELECT")
             if is_select and selects == 0:
                 return  # `EndSelect w/o Select` is a pass-1 error (`check_pass1`)
             kind = {"NEXT": "FOR", "LOOP": "DO"}.get(kw, "IF")
             illegal_scan, without = _CLOSER_MESSAGES[kind]
-            if stack and stack.pop() == "SCAN":
-                diags.error(stmt.line, illegal_scan, stmt.file)
+            if depth > 0:
+                depth -= 1
+                if frames[depth] == "SCAN":
+                    diags.error(stmt.line, illegal_scan, stmt.file)
             if open_count[kind] == 0:
                 diags.error(stmt.line, without, stmt.file)
             else:
