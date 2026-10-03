@@ -2366,6 +2366,14 @@ reads `Too many parameters:  <second variable>.` (`Dim A(), B` -> `B`).
 CR300/CR350 print the same `Illegal Reps` / out-of-bounds messages, but only when nothing else
 failed, stopping at the first (`instr_data.check_table_reps_late`).
 
+For the table-output instructions handled by that same Reps/source path (`Sample`, `Average`, and
+`Maximum` independently probed), an expression source accepts only `Reps = 1`. A literal string
+or `A+1` with `Reps` 2 or 24 emits, in order, `Reps must be 1 when the source is an expression.`
+and `Variable Anonymous1, index 1, reps N, out of bounds.`; `Reps = 1` is accepted. The message,
+ordering, and accepted boundary were observed on all four profiles on 2026-10-03. It follows the
+same CR6/CR1000X stage-2a versus CR300/CR350 late-pass placement as the other table Reps checks.
+Fixture: `tests/fixtures/table_allocation.json`.
+
 ## Scan placement (2026-09-27)
 
 Oracle, all four loggers unless noted. `NextScan with no Scan.` is not a pass-1 error: a pass-1

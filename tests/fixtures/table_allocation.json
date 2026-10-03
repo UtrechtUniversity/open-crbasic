@@ -34,6 +34,20 @@
       "source": "Public A As Float\nDataTable(T,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
       "expected_exit": 0,
       "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr6-table-expression-reps-one",
+      "logger": "cr6",
+      "source": "Public A As Float\nDataTable(T,True,-1)\n  Sample(1,A+1,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr350-table-expression-reps-24",
+      "logger": "cr350",
+      "source": "Public A As Float\nDataTable(T,True,-1)\n  Sample(24,\"fuzz\",FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Reps must be 1 when the source is an expression.\nline 3: Variable Anonymous1, index 1, reps 24, out of bounds."
     }
   ]
 }

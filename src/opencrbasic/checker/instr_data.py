@@ -680,6 +680,11 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             if not destinations and _report_undefined_source(st, record, known, profile, diags):
                 return True
             source = st.args[1]
+            if reps is not None and reps > 1 and not isinstance(source, (S.Name, S.Index)):
+                diags.error(st.line, "Reps must be 1 when the source is an expression.", st.file)
+                diags.error(st.line, f"Variable Anonymous1, index 1, reps {reps}, out of bounds.",
+                            st.file)
+                return True
             if reps is None or not isinstance(source, (S.Name, S.Index)):
                 continue
             shape = dims.get(source.name.upper())
