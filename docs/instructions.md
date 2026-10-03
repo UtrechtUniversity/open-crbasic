@@ -1241,3 +1241,12 @@ real compiler: `Sensor1 = 1` and `Sensor1.val_Float = 1`; the parenthesised-name
 following `Sensor1.val_Float = 1` is a false reject here (`Invalid Variable declaration .`), and
 `Sensor1.val_Float` as an argument (`Could not find DataTable Sensor1.`) is not modelled. CR6 and
 CR1000X crash with a page fault on every unclosed variant, so no rule is available there.
+
+The CR300/CR350 observations are not reproducible. The fixture's 12 unclosed (`open*`) cases were
+recorded from real-compiler verdicts on 2026-10-03, and replay had earlier recorded the same
+messages for `f89fbcbeef10`. Later the same day, uncached reruns of those sources (LF and CRLF)
+and of `f89fbcbeef10` itself page-faulted every time (exit 5, empty message file), while closed
+variants still compiled. Treat the rule as compiler undefined behaviour. The check rejects only
+programs that the real compiler either rejected or crashed on, so it cannot cause a false reject.
+`tools/fixture_audit.py` raises an `OracleError` on these cases rather than reporting a
+difference.
