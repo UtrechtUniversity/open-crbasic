@@ -43,9 +43,9 @@ opencrbasic rejects: **none observed** in any differential, replay or fixture ru
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 6,922 passed, 311 skipped |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 7,260 passed, 311 skipped |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 436/68/2/1, CR1000X 443/61/2/1, CR300 408/91/6/2, CR350 409/91/5/2 |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 436/68/2/1, CR1000X 443/61/2/1, CR300 415/90/0/2, CR350 415/90/0/2 |
 | `tools/fuzz_replay.py` (1,949 reproducers) | 1,291 exact, 6 false accepts, 620 message diffs, 14 mode diffs, 18 oracle errors (1,108 exact / 115 false accepts on 2026-10-02 morning) |
 | `tools/tdftest.py` | repo TDF + table list 16/16 byte-identical; CHM 139/192 TDF, 155/192 table list (last measured 2026-10-02) |
 | implementation exceptions (difftest/replay class) | 0 |
@@ -97,11 +97,6 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
 ## Resume here (open work at 2026-10-03 midday)
 
-- Branch `ocb-mism` (worktree `.claude/worktrees/ocb-mism`, Sonnet agent possibly still
-  running or finished): CR300/CR350 help-corpus verdict mismatches (newfile_2 `FileManage invalid
-  drive: CRD:.`, setstatussetsetting_1, structuretype_2, tablefile_1/2,
-  tablenamebytesperrecord_1). Review its commits, cherry-pick, verify (pytest, four-logger
-  difftest, fixture_audit).
 - Branch `ocb-ranges` worktree: uncommitted, unverified CDM range work (`checker/cdm.py`,
   `data/cdm.json`); CDM address/NULL-module rules have since landed from another branch, so
   compare before finishing, or discard.
