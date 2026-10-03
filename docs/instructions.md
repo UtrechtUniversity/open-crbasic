@@ -1126,9 +1126,14 @@ no earlier `SPIOpen` (textual order only: `Sub` bodies, branches and an inline `
 tier-B error elsewhere or on the same line, does not hide the tier-C `SPI Port must be ...` of
 another line, prints first on its own line (ahead of `SPIWrite illegally occurs before BeginProg.`
 and of `Invalid symbol ...`), and a pass-1 error (`Battery()`, a short argument list) hides it.
-Not implemented: a write whose own port is not a valid SPI port (no must-precede was seen for
-`C3`), and any file with an `SPIOpen` on a non-SPI port (CR1000X still reports the later write
-there; CR6 does not), which is left unchecked. `instr_rules.check_spi_open_order`.
+An `SPIOpen` on an invalid port (`C3`) opens nothing: `SPIOpen(C3,...)` then `SPIWrite(C1,...)` reports
+both `SPI Port must be C1, U1, U5, or U9.` and `SPIOpen must precede SPIWrite.` on CR6 and CR1000X, and a
+later valid `SPIOpen(C1,...)` after the write does not rescue it; a valid `SPIOpen(C1)` after the bad
+one does (oracle, 2026-10-03; `tests/fixtures/spi_open_order.json`). `SPIOpen(7,...)` differs: CR6
+reports only `Invalid port 7, use C1..C4 or U1..U12.` (file left unchecked), CR1000X also reports the later
+write. Not implemented: a write whose own port is not a valid SPI port (no must-precede was seen for
+`C3`), and any file with an `SPIOpen` whose port is not a plain terminal/number, which is left
+unchecked. `instr_rules.check_spi_open_order`.
 
 ### DNPUpdate without DNPVariable (all four loggers)
 `DNP3Statics and/or DNP3Events are not defined` (no period) on a `DNPUpdate` with no `DNPVariable`
@@ -1201,8 +1206,10 @@ beside a `SubScan` (`All instances of AVW200 to the same interface must scan at 
 `tests/fixtures/table_members.json`). `N` is 1 for no index or `()`, the truncated literal for a
 non-negative number (`(2.5)` -> 2, `(0)`, `(100)`), and the whole `(N)` is dropped for a variable,
 an expression (`1+1`) or a negative literal (`Could not find T.BytesPerRecord.`). Found in
-assignments and `If` conditions. A `FieldNames("BytesPerRecord")` in the program makes the member
-valid on CR300 (so it is not reported). Implemented in `expressions.check_table_members`. Not
+assignments and `If` conditions. A `FieldNames("BytesPerRecord")` entry exactly of that name in the same
+table makes the member valid on CR300 (not a substring such as `NotBytesPerRecord`, and not another
+table's field: `U.BytesPerRecord` is valid only if `U` renames one; oracle, CR300/CR350,
+2026-10-03; `tests/fixtures/table_members_scope.json`). Implemented in `expressions.check_table_members`. Not
 modelled: the oracle reports every bad member of a statement (`T.BytesPerRecord + T.Nope` gives two
 errors on CR300/CR350; the check stops at the first), `TableBytesX(2)` echoing its index (the
 existing rule always prints `(1)`), and CR6's `predefined field name` error for such a FieldNames.
