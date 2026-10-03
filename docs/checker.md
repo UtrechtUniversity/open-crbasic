@@ -3278,6 +3278,10 @@ used to be a false reject). A list with no name at all (`ReadOnly`, `ReadOnly ,`
 name.` (pass 1, top level and in a `Sub`; it taints CR300/CR350 like the other declaration errors).
 Evidence: `tests/fixtures/small_gaps.json` (`*-readonly-*`).
 
+After `EndStructureType` the structure's members are no longer declared: a later `Sub` with
+`ReadOnly A` (member `A` of the closed structure) fails with `A not yet declared.` on all four loggers
+(oracle, 2026-10-03; `tests/fixtures/readonly_struct_scope.json`).
+
 ### Structure member types
 
 A `StructureType` member whose `As` type is not a variable type and not a `StructureType` declared

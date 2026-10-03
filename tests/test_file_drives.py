@@ -7,7 +7,8 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index", "table_members", "sdi12_structure_dest")
+CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index", "table_members", "sdi12_structure_dest",
+                     "readonly_struct_scope")
          for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 
 

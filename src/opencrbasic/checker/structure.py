@@ -832,6 +832,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 structs_seen.add(args[0].name.upper())
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = False
+            struct_members = set()
         if not in_sub and not in_struct:  # a structure body names its own members
             _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
         elif in_sub and not in_struct:
