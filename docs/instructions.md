@@ -874,6 +874,11 @@ replayed by `tests/test_var_types.py`.
   `As` type (seen through `RoutersNeighbors` and `SortSpaIndexed`; String and Boolean too). The
   parser sets `VarDecl.paren_dim` and `symbols.declared_variable_types` returns FLOAT for it. The
   dimension following the type (`As Float(5)`) was not probed.
+- `SDMGeneric(Dest,...,Source,...,BytesPerValue,...)` (CR6/CR1000X): when both `Dest` and
+  `Source` are declared `String` variables, a compile-time `BytesPerValue` other than 1 gives
+  `If source and destination are of type STRING, bytes per value must be 1`; 1 is accepted. A
+  numeric source with a String destination is not subject to this rule. Observed on both supported
+  profiles on 2026-10-03; fixture `tests/fixtures/table_allocation.json`.
 
 Probed, not implemented: `Median` of a String (`Type must be Float, FP2 or Long`),
 `Sample(...,Bool8)` with Reps 1.

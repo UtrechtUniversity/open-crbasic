@@ -209,6 +209,15 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         elif kw == "MENURECOMPILE" and len(args) > 1 and \
                 isinstance(args[1], (S.Name, S.Index)) and typer.of(args[1]) == "STRING":
             message = "String type variable not allowed."
+        elif kw == "SDMGENERIC" and len(args) > 6 and \
+                typer.of(args[0]) == typer.of(args[4]) == "STRING" and \
+                consteval.is_constant(args[6], env):
+            try:
+                bytes_per_value = consteval.value_of(args[6], env)
+            except consteval.NotConstant:
+                bytes_per_value = None
+            if bytes_per_value != 1:
+                message = "If source and destination are of type STRING, bytes per value must be 1"
         for text in (message, extra):
             if text:
                 diags.error(stmt.line, text, stmt.file)

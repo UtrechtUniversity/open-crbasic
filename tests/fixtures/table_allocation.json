@@ -48,6 +48,27 @@
       "source": "Public A As Float\nDataTable(T,True,-1)\n  Sample(24,\"fuzz\",FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Reps must be 1 when the source is an expression.\nline 3: Variable Anonymous1, index 1, reps 24, out of bounds."
+    },
+    {
+      "id": "cr6-sdmgeneric-string-bytes-one",
+      "logger": "cr6",
+      "source": "Public D As String * 8\nDim S As String * 1\nBeginProg\n  Scan(1,Sec,0,0)\n    S=CHR(1)\n    SDMGeneric(D,0,5,1,S,4,1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-sdmgeneric-string-bytes-minus-one",
+      "logger": "cr6",
+      "source": "Public D As String * 8\nDim S As String * 1\nBeginProg\n  Scan(1,Sec,0,0)\n    S=CHR(1)\n    SDMGeneric(D,0,5,1,S,4,-1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If source and destination are of type STRING, bytes per value must be 1"
+    },
+    {
+      "id": "cr1000x-sdmgeneric-string-bytes-minus-one",
+      "logger": "cr1000x",
+      "source": "Public D As String * 8\nDim S As String * 1\nBeginProg\n  Scan(1,Sec,0,0)\n    S=CHR(1)\n    SDMGeneric(D,0,5,1,S,4,-1,1,0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If source and destination are of type STRING, bytes per value must be 1"
     }
   ]
 }
