@@ -219,13 +219,14 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
         elif not in_routine and isinstance(stmt, S.Declaration):
             global_variables.update(v.name.upper() for v in stmt.vars)
 
-    open_sub = in_table = prescan = False
-    cond = scans = 0
+    open_sub = in_table = before_sequence = False
+    conditional_depth = active_scans = for_do_depth = 0
     routines: set[str] = set()
     for stmt in program.statements:
         kw = _keyword(stmt)
         if isinstance(stmt, S.SubDef):
-            executing = open_sub or in_table or prescan or scans > 0 or cond > 0
+            executing = (open_sub or in_table or before_sequence or active_scans > 0
+                         or conditional_depth > 0 or for_do_depth > 0)
             duplicate = stmt.name.upper() in routines
             variable = stmt.name.upper() in global_variables
             if executing or duplicate or variable:
@@ -234,7 +235,7 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
                     msgs.append(f"Duplicate Sub {stmt.name}")
                 if variable:
                     msgs.append(f"{stmt.name} already declared as a variable.")
-                if cond > 0:
+                if conditional_depth > 0:
                     msgs.append("Sub declaration inside If..EndIf.")
                 if executing:
                     msgs.append(f"{'Function' if stmt.keyword.upper() == 'FUNCTION' else 'Sub'} "
@@ -243,25 +244,32 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
             routines.add(stmt.name.upper())
             open_sub = True
         elif _ends_sub(stmt, kw):
-            open_sub, cond = False, 0
+            open_sub, conditional_depth = False, 0
         elif kw == "BEGINPROG":
-            prescan = True
+            before_sequence = True
         elif kw == "ENDPROG":
-            prescan = False
+            before_sequence = False
+        elif kw == "SLOWSEQUENCE":
+            before_sequence = False
         elif kw == "SCAN":
-            scans += 1
-            prescan = False
+            active_scans += 1
+            before_sequence = False
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
-            scans = max(0, scans - 1)
+            active_scans = max(0, active_scans - 1)
         elif kw == "DATATABLE":
             in_table = True
         elif kw == "ENDTABLE":
             in_table = False
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
-            cond += 1
+            conditional_depth += 1
         elif kw == "ENDSELECT" or kw == "ENDIF" or (
                 kw == "END" and _block_word(getattr(stmt, "args", []) or []) in ("SELECT", "IF")):
-            cond = max(0, cond - 1)
+            conditional_depth = max(0, conditional_depth - 1)
+        elif kw in ("FOR", "DO", "WHILE"):
+            for_do_depth += 1
+        elif kw in ("LOOP", "WEND") or (kw == "NEXT" and _block_word(
+                getattr(stmt, "args", []) or []) != "SCAN"):
+            for_do_depth = max(0, for_do_depth - 1)
     return None
 
 

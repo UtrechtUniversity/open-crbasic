@@ -3062,7 +3062,8 @@ If..EndIf.` (open `If`/`Select`), then `Sub is declared in the middle of an exec
 (`Function is ...` for a Function; no period). The last message also appears alone for a
 declaration inside an open `Scan`, between `BeginProg` and the first `Scan`, inside a `DataTable`
 or inside an `If`/`For`/`Do` in the main program. Accepted: after the first `NextScan`, after a
-`SlowSequence` header, after `EndProg`.
+`SlowSequence` header, after `EndProg`. An open `For` or `Do` remains an executing context even
+after a completed `Scan`, so a following `Sub` is misplaced.
 
 It is a pass-2 placement error: earlier pass-2 errors in line order still print, nothing later does;
 a pass-1 error anywhere hides it. CR300/CR350 report it in the late walk
