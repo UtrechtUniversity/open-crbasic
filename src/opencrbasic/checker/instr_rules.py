@@ -1108,6 +1108,37 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         diags.items[at:at] = new
 
 
+_PULSE_CHANNELS = {"cr6": re.compile(r"C[1-4]|U(?:[1-9]|1[0-2])"), "cr1000x": re.compile(r"C[1-8]")}
+
+
+def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X: a second `PulseCount` naming a terminal an earlier one in the same
+    `Scan..NextScan` already took is `<T> already used as PulseCount in this scan.` (CR1000X first
+    adds `Pulsecount: channel <T> already in use or unavailable.`); docs/instructions.md. Static
+    textual order: branches, `SubScan`s and the scan's other measurements do not matter."""
+    channel = _PULSE_CHANNELS.get(profile.name)
+    if channel is None:
+        return
+    used: set[str] | None = None
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        if kw == "SCAN":
+            used = set()
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", stmt.text or "")):
+            used = None
+        elif kw == "PULSECOUNT" and used is not None and len(stmt.args) > 2 \
+                and isinstance(stmt.args[2], S.Name) and channel.fullmatch(stmt.args[2].name.upper()):
+            name = stmt.args[2].name.upper()
+            if name in used:
+                if profile.name == "cr1000x":
+                    diags.error(stmt.line, f"Pulsecount: channel {name} already in use or unavailable.",
+                                stmt.file)
+                diags.error(stmt.line, f"{name} already used as PulseCount in this scan.", stmt.file)
+            used.add(name)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 

@@ -1069,3 +1069,15 @@ String array element compile; `Result+"a"` also compiled, so expressions are nev
 a parenthesized variable (rejected by the compiler, not modelled). Observed on assignment RHS and
 as a bare statement; `If EmailRecv(...)` was rejected the same way but is not implemented.
 `instr_rules.check_emailrecv_destination`.
+
+### PulseCount terminal reuse (CR6/CR1000X)
+A second `PulseCount` in the same `Scan..NextScan` that names a terminal an earlier one named
+gets `<T> already used as PulseCount in this scan.` on its own line (CR6 `C1..C4`/`U1..U12`,
+CR1000X `C1..C8`; case-insensitive, parenthesized names too). CR1000X prints `Pulsecount: channel
+<T> already in use or unavailable.` first. Every further reuse reports again. The rule is static:
+`If`/`Else` branches, inline `If` and `SubScan` bodies count, and the options (`PConfig`) do not
+matter. It is an aside like the index bounds: it coexists with a tier-B error elsewhere and is
+hidden by a pass-1 error (`Battery()`). Numeric channels, `P1`/`P2`, `Const` channel names,
+CR300/CR350 (different messages, and CR350 compiled the reuse), a reuse across scans, and the
+sibling clash with `PortSet`/`SDI12Recorder` (`channel C1 already in use or unavailable.`) were
+probed but are not implemented. `instr_rules.check_pulsecount_channels`.
