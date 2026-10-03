@@ -866,7 +866,14 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
     def variable_type(arg: S.Expr | None) -> str | None:
         return types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
 
+    from . import longconv
+    names = longconv.float_names(program.statements)
+    literals = longconv.literal_names(program.statements)
+
     def number(arg: S.Expr | None) -> int | None:
+        converted = longconv.long_value(arg, env, profile, names, literals)
+        if converted is not None:
+            return converted
         try:
             value = consteval.value_of(arg, env) if arg is not None else None
         except consteval.NotConstant:
@@ -914,7 +921,8 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
     - `Matrix` `Option` (first argument): `(value & 0x7FFFFFFF)` outside 1..5 -> `Illegal option.`.
     """
     from . import longconv
-    names = longconv.float_names(program)
+    names = longconv.float_names(program.statements)
+    literals = longconv.literal_names(program.statements)
     cr3 = profile.name in ("cr300", "cr350")
     for stmt in program.statements:
         if not isinstance(stmt, (S.Instruction, S.Call)):
@@ -926,7 +934,7 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
         args = list(stmt.args)
 
         def value(i: int) -> int | None:
-            return longconv.long_value(args[i], env, profile, names) if i < len(args) else None
+            return longconv.long_value(args[i], env, profile, names, literals) if i < len(args) else None
 
         if kw == "SPLITSTR":
             v = value(4)

@@ -6,8 +6,9 @@ An integer-typed constant expression (integer literals, whole-valued names, `+ -
 at 32 bits (`100000*100000` -> 1410065408, `2147483647+1` -> -2147483648). A float-typed one (a
 decimal point or exponent, `/`, `^`, a literal beyond 32 bits, a name declared from one) is
 truncated toward zero. Beyond the 32-bit range a float becomes -2147483648 on CR6/CR1000X; on
-CR300/CR350 it is first rounded to a 32-bit float, becoming -2147483648 past +-2^31 and otherwise
-saturating at +-2147483647. A string or NAN is -2147483648. Hex literals wrap to 32 bits.
+CR300/CR350 a digits-only literal (optionally negated, or a `Const` declared as one) is first rounded to a 32-bit float,
+becoming -2147483648 past +-2^31 and otherwise saturating at +-2147483647 (any other float
+expression gives -2147483648). A string or NAN is -2147483648. Hex literals wrap to 32 bits.
 """
 
 from __future__ import annotations
@@ -22,13 +23,19 @@ INT_MIN = -2**31
 _OPS = ("+", "-", "*", "/", "^", "\\", "MOD")
 
 
-def float_names(program: S.Program) -> frozenset[str]:
+def float_names(statements) -> frozenset[str]:
     """`Const` names whose declaration is float-typed (resolved in declaration order)."""
     names: set[str] = set()
-    for st in program.statements:
+    for st in statements:
         if isinstance(st, S.ConstDecl) and _float_typed(st.value, names):
             names.add(st.name.upper())
     return frozenset(names)
+
+
+def literal_names(statements) -> frozenset[str]:
+    """`Const` names declared as one digits-only literal (`_integer_literal`)."""
+    return frozenset(st.name.upper() for st in statements
+                     if isinstance(st, S.ConstDecl) and _integer_literal(st.value))
 
 
 def _float_typed(expr: S.Expr | None, names) -> bool:
@@ -57,7 +64,8 @@ def _plain(expr: S.Expr | None) -> bool:
     return False
 
 
-def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset()) -> int | None:
+def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(),
+               literals=frozenset()) -> int | None:
     """The 32-bit `long` the compiler makes of constant `arg`, or None when `arg` is missing, not
     constant, or in a form this model does not cover (hex beyond 8 digits, function calls)."""
     if arg is None:
@@ -89,9 +97,19 @@ def long_value(arg: S.Expr | None, env: consteval.Env, profile, names=frozenset(
         return _wrap(int(value))
     if INT_MIN < value < 2**31:
         return int(value)
-    if profile.name in ("cr300", "cr350"):
+    if profile.name in ("cr300", "cr350") and (_integer_literal(arg) or (
+            isinstance(arg, S.Name) and arg.name.upper() in literals)):
         return _float32_long(value)
     return INT_MIN
+
+
+def _integer_literal(expr: S.Expr | None) -> bool:
+    """A digits-only literal, optionally negated: the only form CR300/CR350 saturate (oracle,
+    2026-10-03, and the `Const` forms in `tests/fixtures/option_args.json`: `2147483648` -> 2147483647, `-2147483649` -> -2147483647, but `2147483648.0`,
+    `2147483648*1.0`, `2^31` and `-2^31` all give -2147483648)."""
+    if isinstance(expr, S.Unary) and expr.op == "-":
+        expr = expr.operand
+    return isinstance(expr, S.Number) and expr.text.isdigit()
 
 
 def _hex_inside(expr: S.Expr | None) -> bool:

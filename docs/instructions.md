@@ -954,8 +954,8 @@ Not only `AvgRun`: `TotalRun`, `MinRun`, `MaxRun` and (CR6/CR1000X) `StdDevRun` 
 conversion above (`"fuzz"` -> `-2147483648`, `999999999999` -> `-2147483648`, `0.5` -> `0`).
 Implemented in `check_avgrun_options`, so the gating is the one already recorded for `AvgRun`
 (reported alongside pass 2 without hiding tier C on CR6/CR1000X; only in a clean file on
-CR300/CR350). Not covered: a literal `-2147483648` prints `-2147483647` on CR300/CR350 (observed,
-not modelled); `Variable %s out of bounds.` that accompanies a negative or overflowing `Reps` is a
+CR300/CR350). The conversion is `longconv.long_value` (`docs/checker.md` "Option arguments"), so a literal
+`-2147483648` prints `-2147483647` on CR300/CR350 (observed 2026-10-03). Not covered: `Variable %s out of bounds.` that accompanies a negative or overflowing `Reps` is a
 separate check.
 
 ### Data-driven rules (`measure.json` `const_ranges`)
@@ -1033,8 +1033,11 @@ when its channels are valid.
 
 The `Message` constant (position 2) must convert to 0, 12, 13 or 14 (0..20 plus -1, 255, 256, `14.9`, `12.5`,
 `TRUE`, a string swept on all four loggers, 2026-10-03; accept/reject identical on each). The converted number is printed (`14.9` is accepted,
-`TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`; CR300/CR350 saturate instead for
-`2147483648` (`2147483647`) and `-2147483648` (`-2147483647`), not yet modelled). Same tier as the other
+`TRUE` prints `-1`, a string or `999999999999` prints `-2147483648`; CR300/CR350 saturate a bare
+literal, `2147483648` -> `2147483647`, `-2147483648` -> `-2147483647`). The number comes from
+`longconv.long_value`, shared with the `const_ranges` and `AvgRun` paths (`65536*65536+12` wraps to 12
+and is accepted; `2147483648*1.0` prints `-2147483648` even on CR300). Not modelled: float32
+rounding of values within 2^31 of the Long limit (`2^31-100` prints `2147483520`). Same tier as the other
 `const_ranges` rules. Not modelled: `Broadcast` before `BeginProg`, where the real compilers print
 only this error (no placement error) while we add the placement one.
 

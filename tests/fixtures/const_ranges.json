@@ -1313,6 +1313,286 @@
       "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,15)\n  NextScan\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 15"
+    },
+    {
+      "id": "cr6-broadcast-long-wrap-accept",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,65536*65536+12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr6-broadcast-long-wrap-print",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1410065408"
+    },
+    {
+      "id": "cr6-broadcast-long-wrap-neg",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483647*2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2"
+    },
+    {
+      "id": "cr6-broadcast-long-hex-high",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,&H8000000C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483636"
+    },
+    {
+      "id": "cr6-broadcast-long-lit-2p31",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr6-broadcast-long-lit-min",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr6-broadcast-long-float-2p31",
+      "logger": "cr6",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648*1.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr6-avgrun-number-long-lit-min",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-long-lit-below-min",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr6-avgrun-number-long-wrap-accept",
+      "logger": "cr6",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,65536*65536+5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-broadcast-long-wrap-accept",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,65536*65536+12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr1000x-broadcast-long-wrap-print",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1410065408"
+    },
+    {
+      "id": "cr1000x-broadcast-long-wrap-neg",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483647*2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2"
+    },
+    {
+      "id": "cr1000x-broadcast-long-hex-high",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,&H8000000C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483636"
+    },
+    {
+      "id": "cr1000x-broadcast-long-lit-2p31",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr1000x-broadcast-long-lit-min",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr1000x-broadcast-long-float-2p31",
+      "logger": "cr1000x",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648*1.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr1000x-avgrun-number-long-lit-min",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-long-lit-below-min",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483648 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr1000x-avgrun-number-long-wrap-accept",
+      "logger": "cr1000x",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,65536*65536+5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+    },
+    {
+      "id": "cr300-broadcast-long-wrap-accept",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,65536*65536+12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-broadcast-long-wrap-print",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1410065408"
+    },
+    {
+      "id": "cr300-broadcast-long-wrap-neg",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483647*2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2"
+    },
+    {
+      "id": "cr300-broadcast-long-hex-high",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,&H8000000C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483636"
+    },
+    {
+      "id": "cr300-broadcast-long-lit-2p31",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 2147483647"
+    },
+    {
+      "id": "cr300-broadcast-long-lit-min",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483647"
+    },
+    {
+      "id": "cr300-broadcast-long-float-2p31",
+      "logger": "cr300",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648*1.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr300-avgrun-number-long-lit-min",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483647 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-avgrun-number-long-lit-below-min",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483647 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr300-avgrun-number-long-wrap-accept",
+      "logger": "cr300",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,65536*65536+5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-broadcast-long-wrap-accept",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,65536*65536+12)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-broadcast-long-wrap-print",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,100000*100000)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 1410065408"
+    },
+    {
+      "id": "cr350-broadcast-long-wrap-neg",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483647*2)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2"
+    },
+    {
+      "id": "cr350-broadcast-long-hex-high",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,&H8000000C)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483636"
+    },
+    {
+      "id": "cr350-broadcast-long-lit-2p31",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type 2147483647"
+    },
+    {
+      "id": "cr350-broadcast-long-lit-min",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483647"
+    },
+    {
+      "id": "cr350-broadcast-long-float-2p31",
+      "logger": "cr350",
+      "source": "Public X\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    Broadcast(ComRS232,2147483648*1.0)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal message type -2147483648"
+    },
+    {
+      "id": "cr350-avgrun-number-long-lit-min",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483648)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483647 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-long-lit-below-min",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,-2147483649)\n  NextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: number of averages -2147483647 and reps 1 in RunningAvg must be > 0."
+    },
+    {
+      "id": "cr350-avgrun-number-long-wrap-accept",
+      "logger": "cr350",
+      "source": "Public X, Y(3)\nDim N As Long\nConst K = 2\nBeginProg\n  Scan (1,Sec,0,0)\n    AvgRun(Y(1),1,X,65536*65536+5)\n  NextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
     }
   ]
 }

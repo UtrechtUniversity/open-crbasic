@@ -18,7 +18,7 @@ from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
-from . import symbols
+from . import longconv, symbols
 
 
 def check(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -56,6 +56,7 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
         by_instr.setdefault(rule["instr"], []).append(rule)
     if not by_instr:
         return
+    names = longconv.float_names(flat), longconv.literal_names(flat)
     for stmt in flat:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -67,14 +68,14 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
                 if _matches_invalid_raw(raw, rule["invalid_raw"]):
                     diags.error(stmt.line, rule["message"].format(value=consteval.to_long(raw)), stmt.file)
                 continue
-            value = _long_arg(stmt, rule["pos"], rule, env)
+            value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
             if value is None:
                 continue
             if "lower_gate" in rule and value < rule["lower_gate"]:
                 continue
             if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
                 continue
-            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env)
+            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
             if shown is not None:
                 diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
 
@@ -93,14 +94,18 @@ def _matches_invalid_raw(value: object, invalid: dict) -> bool:
     return value in invalid.get("values", ())
 
 
-def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env) -> int | None:
+def _long_arg(stmt: S.Instruction, pos: int, rule: dict, env: consteval.Env, profile: Profile,
+              names) -> int | None:
     value = _raw_arg(stmt, pos, env)
     if value is None:
         return None
     if rule.get("string_zero") and isinstance(value, str):
         return 0
     if not rule.get("wrap16"):
-        return consteval.to_long(value)
+        # The profile-aware conversion (`checker/longconv.py`) where it covers the expression;
+        # `to_long` for the forms it does not (function calls, `TRUE`).
+        converted = longconv.long_value(stmt.args[pos - 1], env, profile, *names)
+        return consteval.to_long(value) if converted is None else converted
     # A string or NaN is 0; a number outside Long range is 0 on CR6/CR1000X and unobserved
     # (`overflow: null`, skipped) on CR300/CR350; infinity is 65535 (not modelled).
     if isinstance(value, str) or value != value:

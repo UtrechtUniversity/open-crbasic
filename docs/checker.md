@@ -2633,9 +2633,12 @@ Conversion of the constant to a 32-bit `long` (`longconv.long_value`), shared by
 an integer-typed expression wraps (`100000*100000` -> 1410065408, `2147483647+1` and `Const KC =
 2147483647+1` -> -2147483648, `-2147483647-2` -> 2147483647); a float-typed one (decimal point or
 exponent, `/`, `^`, a literal beyond 32 bits, or a `Const` declared from one) truncates toward
-zero. Out of range, a float gives -2147483648 on CR6/CR1000X; on CR300/CR350 it is first rounded to
+zero. Out of range, a float gives -2147483648 on CR6/CR1000X; on CR300/CR350 a digits-only literal (or a `Const` declared as one) is first rounded to
 a 32-bit float and gives -2147483648 beyond +-2^31 and +-2147483647 otherwise (`2147483776` ->
-2147483647, `-2147483648` -> -2147483647). A string, `NAN` or `INF` gives -2147483648 (`SplitStr`
+2147483647, `-2147483648` -> -2147483647); any other float expression gives -2147483648
+(`2147483648*1.0`, `2^31`, `-2^31`; oracle 2026-10-03). The `const_ranges` rules and RunningAvg
+use the same conversion (`instr_measure._long_arg`, `check_avgrun_options`), falling back to
+`consteval.to_long` only for forms it does not evaluate (function calls, `TRUE`) A string, `NAN` or `INF` gives -2147483648 (`SplitStr`
 and `Matrix`: `"2"` is an error). Hex literals wrap to 32 bits (`&HFFFFFFFF` -> -1); more than 8
 digits is not modelled. Only a plain numeric expression is evaluated; function calls are not.
 `True` is -1.
