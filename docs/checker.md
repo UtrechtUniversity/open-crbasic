@@ -3524,3 +3524,7 @@ a tainted `Alias` still registers its name. An `Alias` whose subscript names an 
 defined.` (`expressions._known_names`). Not modelled: an `Alias` naming an existing variable
 (`Alias Q(1) = LevelFt` -> `LevelFt already declared as a variable.`) is accepted by us on all four
 loggers.
+
+`... not yet declared so cannot be aliased.` also starts the cascade (fixture
+`tests/fixtures/alias_undeclared_cascade.json`: `Alias Nope(1) = Foo` -> a later `Scan` prints
+`Too many parameters:  Sec.`).
