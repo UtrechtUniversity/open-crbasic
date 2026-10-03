@@ -3314,3 +3314,18 @@ nested structure member, a pointer or any other unmodelled operand is left silen
   (`Public s1(size,(1+2)) As ST`) is a Float array, so `s1(size) = inp` gives `Illegal structure type
   assignment`. Different structure types assigned to each other were accepted in the probe and are
   not checked. No cascade; the fnotch warnings are still printed.
+
+### `Sub`/`Function` named like a `Const`
+
+A `Sub` or `Function` whose name equals an earlier top-level `Const` (any type, case-insensitive) reports
+`Subroutine name <name> illegal; cannot be numeric.` on its header line, all four loggers, pass 1
+(oracle, 2026-10-03). The name is replaced by the constant's value first, so a value that is not a
+whole number (or a whole one of 3e9 and up) adds `Parameter <value, printf %g> is integer type.` before
+it (`1.5`, `1e-05`, `123457`, `3e+09`). The routine is not registered: a second `Sub A` reports the
+same line again instead of `Duplicate Sub A`. A `Const` declared after the `Sub` does not count.
+Parameters and the body are checked as usual (the statement still compiles on). CR300/CR350 taint
+the rest like other declaration errors. Not modelled: a `Function` body assigning its own
+const-named return value (real: `Invalid assignment in expression: A = 2`), a const-named `Sub`
+nested in another `Sub` (real: only the numeric line; ours prints the placement lines), whole
+values between 2^31 and 3e9 or below -2^31 (CR6 and CR300 disagreed on 2147483648).
+Evidence: `tests/fixtures/small_gaps.json` (`*-constsub-*`).

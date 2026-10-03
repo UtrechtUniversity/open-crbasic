@@ -298,6 +298,286 @@
    "source": "Public A, B, C(3)\nSub S\nReadOnly\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nA = 1\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Missing variable name.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-constsub-0",
+   "logger": "cr6",
+   "source": "Const A = 1\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-0",
+   "logger": "cr1000x",
+   "source": "Const A = 1\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-0",
+   "logger": "cr300",
+   "source": "Const A = 1\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-0",
+   "logger": "cr350",
+   "source": "Const A = 1\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-1",
+   "logger": "cr6",
+   "source": "Const A = 1\nFunction A\nEndFunction\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-1",
+   "logger": "cr1000x",
+   "source": "Const A = 1\nFunction A\nEndFunction\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-1",
+   "logger": "cr300",
+   "source": "Const A = 1\nFunction A\nEndFunction\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-1",
+   "logger": "cr350",
+   "source": "Const A = 1\nFunction A\nEndFunction\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-2",
+   "logger": "cr6",
+   "source": "Const A = 1.5\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 1.5 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-2",
+   "logger": "cr1000x",
+   "source": "Const A = 1.5\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 1.5 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-2",
+   "logger": "cr300",
+   "source": "Const A = 1.5\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 1.5 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-2",
+   "logger": "cr350",
+   "source": "Const A = 1.5\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 1.5 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-3",
+   "logger": "cr6",
+   "source": "Const A As String = \"s\"\nSub a(P)\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name a illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-3",
+   "logger": "cr1000x",
+   "source": "Const A As String = \"s\"\nSub a(P)\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name a illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-3",
+   "logger": "cr300",
+   "source": "Const A As String = \"s\"\nSub a(P)\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name a illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-3",
+   "logger": "cr350",
+   "source": "Const A As String = \"s\"\nSub a(P)\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name a illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-4",
+   "logger": "cr6",
+   "source": "Const A = 1\nPublic A\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A is already declared as a CONST.\nline 3: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-4",
+   "logger": "cr1000x",
+   "source": "Const A = 1\nPublic A\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A is already declared as a CONST.\nline 3: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-4",
+   "logger": "cr300",
+   "source": "Const A = 1\nPublic A\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A is already declared as a CONST.\nline 3: Subroutine name A illegal; cannot be numeric.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-4",
+   "logger": "cr350",
+   "source": "Const A = 1\nPublic A\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A is already declared as a CONST.\nline 3: Subroutine name A illegal; cannot be numeric.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-5",
+   "logger": "cr6",
+   "source": "Const A = 1\nSub A\nEndSub\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 4: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-5",
+   "logger": "cr1000x",
+   "source": "Const A = 1\nSub A\nEndSub\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 4: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-5",
+   "logger": "cr300",
+   "source": "Const A = 1\nSub A\nEndSub\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 4: Subroutine name A illegal; cannot be numeric.\nline 8: Too many parameters:  Sec.\nline 9: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-5",
+   "logger": "cr350",
+   "source": "Const A = 1\nSub A\nEndSub\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 4: Subroutine name A illegal; cannot be numeric.\nline 8: Too many parameters:  Sec.\nline 9: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-6",
+   "logger": "cr6",
+   "source": "Sub A\nEndSub\nConst A = 1\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-constsub-6",
+   "logger": "cr1000x",
+   "source": "Sub A\nEndSub\nConst A = 1\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-constsub-6",
+   "logger": "cr300",
+   "source": "Sub A\nEndSub\nConst A = 1\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-constsub-6",
+   "logger": "cr350",
+   "source": "Sub A\nEndSub\nConst A = 1\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-constsub-7",
+   "logger": "cr6",
+   "source": "Const A = 1/3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 0.333333 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-7",
+   "logger": "cr1000x",
+   "source": "Const A = 1/3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 0.333333 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-7",
+   "logger": "cr300",
+   "source": "Const A = 1/3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 0.333333 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-7",
+   "logger": "cr350",
+   "source": "Const A = 1/3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 0.333333 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-8",
+   "logger": "cr6",
+   "source": "Const A = 1E3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-8",
+   "logger": "cr1000x",
+   "source": "Const A = 1E3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-8",
+   "logger": "cr300",
+   "source": "Const A = 1E3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-8",
+   "logger": "cr350",
+   "source": "Const A = 1E3\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr6-constsub-9",
+   "logger": "cr6",
+   "source": "Const A = 4294967295\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 4.29497e+09 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr1000x-constsub-9",
+   "logger": "cr1000x",
+   "source": "Const A = 4294967295\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 4.29497e+09 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric."
+  },
+  {
+   "id": "cr300-constsub-9",
+   "logger": "cr300",
+   "source": "Const A = 4294967295\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 4.29497e+09 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
+  },
+  {
+   "id": "cr350-constsub-9",
+   "logger": "cr350",
+   "source": "Const A = 4294967295\nSub A\nEndSub\nPublic X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Parameter 4.29497e+09 is integer type.\nline 2: Subroutine name A illegal; cannot be numeric.\nline 6: Too many parameters:  Sec.\nline 7: X is not defined."
   }
  ]
 }

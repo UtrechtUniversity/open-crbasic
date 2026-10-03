@@ -182,7 +182,7 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "not supported", "Variable not named.", " is illegal baud rate.",
                          "already defined as an internal function.", "is a predefined CONST.",
                          "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
-                         "Missing variable name.")
+                         "Missing variable name.", "; cannot be numeric.")
 _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",

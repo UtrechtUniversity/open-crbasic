@@ -277,9 +277,14 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
     open_sub = in_table = before_sequence = False
     conditional_depth = active_scans = for_do_depth = 0
     routines: set[str] = set()
+    consts: set[str] = set()
     for stmt in program.statements:
         kw = _keyword(stmt)
-        if isinstance(stmt, S.SubDef):
+        if isinstance(stmt, S.ConstDecl):
+            consts.add(stmt.name.upper())
+        elif isinstance(stmt, S.SubDef) and stmt.name.upper() in consts:
+            open_sub = True  # reported on its own (`_report_numeric_sub_name`), never a placement error
+        elif isinstance(stmt, S.SubDef):
             executing = (open_sub or in_table or before_sequence or active_scans > 0
                          or conditional_depth > 0 or for_do_depth > 0)
             duplicate = stmt.name.upper() in routines
@@ -813,6 +818,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             diags.error(stmt.line, f"Illegal END or EXIT {args[0].name}.", stmt.file)
 
         if isinstance(stmt, S.SubDef):
+            if not in_sub and declared_kinds.get(stmt.name.upper()) == "CONST":
+                _report_numeric_sub_name(stmt, program.consts.get(stmt.name.upper()), diags)
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and _block_word(args) in ("SUB", "FUNCTION")):
             in_sub = False
@@ -1992,6 +1999,16 @@ def _first_dim_text(stmt_text: str, v: S.VarDecl) -> str:
     start, end = v.dim0_span
     return stmt_text[start:end]
 
+
+
+def _report_numeric_sub_name(stmt: S.SubDef, value: object, diags: Diagnostics) -> None:
+    """`Sub`/`Function` named like an earlier `Const` (oracle, all four loggers, 2026-10-03): the
+    name is replaced by the constant's value, so `Subroutine name A illegal; cannot be numeric.`;
+    a non-whole number (or a whole one of 3e9 and up) first adds `Parameter <value, %g> is integer type.`"""
+    if isinstance(value, (int, float)) and not isinstance(value, bool) and (
+            value != int(value) or value >= 3_000_000_000):  # probed whole values: 3e9 and up
+        diags.error(stmt.line, f"Parameter {value:g} is integer type.", stmt.file)
+    diags.error(stmt.line, f"Subroutine name {stmt.name} illegal; cannot be numeric.", stmt.file)
 
 
 def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics,
