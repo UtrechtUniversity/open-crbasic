@@ -50,8 +50,8 @@
    "id": "pipeline-portset-boundaries-cr6",
    "logger": "cr6",
    "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nPortSet(C1,1)\nScan(10,Sec,0,0)\nPortSet(C1,1)\nIf x=1 Then\nPortSet(C1,1)\nEndIf\nNextScan\nEndProg\n",
-  "expected_exit": 1,
-  "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: PortSet not allowed inside of a conditional statement in PipeLine Mode."
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: PortSet not allowed inside of a conditional statement in PipeLine Mode."
   },
   {
    "id": "pipeline-therm107-boundaries-cr6",
@@ -220,6 +220,76 @@
    "source": "PipeLineMode\nPublic x\nPublic y(3)\nBeginProg\nDelay(0,1,Sec)\nScan(10,Sec,0,0)\nDelay(0,1,Sec)\nIf x=1 Then\nDelay(0,1,Sec)\nEndIf\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay not allowed outside of Scan..NextScan in PipeLine Mode.\nline 9: Delay not allowed inside of a conditional statement in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-name-cr6",
+   "logger": "cr6",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Zero,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-name-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Zero,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-minus-cr6",
+   "logger": "cr6",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(One-1,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-minus-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(One-1,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-times-cr6",
+   "logger": "cr6",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Zero*5,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-times-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Zero*5,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-neg-zero-cr6",
+   "logger": "cr6",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(-0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-neg-zero-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(-0,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-minus-2-cr6",
+   "logger": "cr6",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Two-2,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
+  },
+  {
+   "id": "pipeline-delay-folded-zero-const-minus-2-cr1000x",
+   "logger": "cr1000x",
+   "source": "Const Zero = 0\nConst One = 1\nConst Two = One + One\nPublic x\nBeginProg\nPipeLineMode\nDelay(Two-2,1,Sec)\nScan(1,Sec,0,0)\nx=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Delay not allowed outside of Scan..NextScan in PipeLine Mode."
   }
  ]
 }

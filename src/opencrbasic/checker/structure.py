@@ -386,7 +386,7 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     `Sub` body, before the first `Scan`, a `SlowSequence` header, after `NextScan`) is `X not
     allowed outside of Scan..NextScan in PipeLine Mode.`; inside a `Scan` but nested in an
     `If`/`Select`/`For`/`Do`/`While` (or a one-line `If`) it is `X not allowed inside of a
-    conditional statement in PipeLine Mode.`. `Delay` only with a constant option 0. The message
+    conditional statement in PipeLine Mode.`. `Delay` only with a constant-folded option 0 (`Const Zero = 0`, `One-1`; oracle, 2026-10-03). The message
     comes before the instruction's own argument errors (`Invalid channel ...`), except `ExciteV`
     on CR6 and `PortSet` on CR1000X; those are not reordered.
 
@@ -395,6 +395,7 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
     if profile.single_pass:
         return found
     task_rules = profile.pipeline_tasks["tasks"]
+    env = consteval.Env(profile, dict(program.consts))
     pipeline = sequential = False
     scans = depth = 0
 
@@ -421,8 +422,13 @@ def pipeline_task_errors(program: S.Program, profile) -> list[tuple[S.Stmt, str]
             constants = task_rules[kw].get("constant_values", {})
             for position, allowed in constants.items():
                 index = int(position) - 1
-                if (index >= len(args) or not isinstance(args[index], S.Number)
-                        or args[index].value not in allowed):
+                if index >= len(args):
+                    return
+                try:
+                    value = consteval.value_of(args[index], env)
+                except consteval.NotConstant:
+                    return
+                if value not in allowed:
                     return
             record = profile.instructions.get(kw)
             name = record["name"] if record else stmt.keyword

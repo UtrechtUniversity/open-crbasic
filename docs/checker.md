@@ -3152,7 +3152,7 @@ measurement/task instruction prints at its own line:
   quirk there).
 
 `X` is the instruction's display name (`VoltSe`, `TCSe`). The profile data files
-`data[/cr1000x]/pipeline_tasks.json` contain the measured list: `Delay` (constant option 0 only;
+`data[/cr1000x]/pipeline_tasks.json` contain the measured list: `Delay` (constant-folded option 0 only: `Const Zero = 0`, `One-1`, `-0` all measured, 2026-10-03;
 option 1 is accepted, option 2 prints `SDM instruction must be in Scan..NextScan, unless
 SequentialMode is used.`, not implemented), `PanelTemp`, `Battery`, `VoltSE`, `VoltDiff`,
 `PortGet`, `PortSet`, `Therm107`, `BrHalf`, `BrFull`, `TCSe`, `TCDiff`, `PeriodAvg`, `CS616`, and
