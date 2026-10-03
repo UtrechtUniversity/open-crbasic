@@ -1105,3 +1105,13 @@ name or a bad `PortSet` port hides or replaces it). Not implemented: a `DNPVaria
 but is malformed or event-only (`Must assign group 1 before using group 2.` plus this line; any
 `DNPVariable` counts here), and the real compiler dropping the `DNPVariable never reached at run
 time.` warning when this error fires (a `DNPVariable` after the scan). `instr_rules.check_dnp_update`.
+
+### PortBridge array shape (all four loggers)
+`Bridge parameter must be an Array(2,3) of type long.` (the dimensions are literal text, whatever
+the variable's own) for `PortBridge`'s second argument when it is a numeric literal or a declared
+variable that is not a Long array with first dimensions 2 and 3: Boolean/Float/String, `(3,3)`,
+`(2,2)`, `(2,4)`, `(3,2)`, `(6)` and a scalar all fail, while `(2,3,1)`, `B()` and `B(1,1)` compile.
+Gating mirrors `DNPUpdate`: CR6/CR1000X aside, CR300/CR350 only without an earlier error. Not
+implemented: an undeclared second argument (CR6/CR1000X add this line after `Invalid symbol`) and
+the separate `Enable parameter must be of type Boolean.` for the first argument.
+`instr_rules.check_portbridge_array`.

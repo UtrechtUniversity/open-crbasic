@@ -1192,6 +1192,29 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics) -> None:
                 diags.error(stmt.line, "DNP3Statics and/or DNP3Events are not defined", stmt.file)
 
 
+def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`PortBridge`'s second argument must be a variable array whose first two dimensions are
+    (2,3) and whose type is Long, else `Bridge parameter must be an Array(2,3) of type long.`;
+    docs/instructions.md. A literal or a plainly declared variable of another shape/type is flagged;
+    anything not resolvable (undeclared, `B()`, `B(1,1)`, `Const`, `Alias`) is left alone."""
+    types = symbols.declared_variable_types(program)
+    dims = symbols.declared_all_dims(program, env)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "PORTBRIDGE" \
+                or len(stmt.args) != 2:
+            continue
+        arg = stmt.args[1]
+        if isinstance(arg, S.Number):
+            bad = True
+        elif isinstance(arg, S.Name) and arg.name.upper() in types and arg.name.upper() in dims:
+            shape = dims[arg.name.upper()]
+            bad = types[arg.name.upper()] != "LONG" or len(shape) < 2 or shape[:2] != (2, 3)
+        else:
+            continue
+        if bad:
+            diags.error(stmt.line, "Bridge parameter must be an Array(2,3) of type long.", stmt.file)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 

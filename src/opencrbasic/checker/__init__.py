@@ -288,6 +288,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
             _run_pass(instr_rules.check_pulsecount_channels, flat, profile, bounds)
             _run_pass(instr_rules.check_dnp_update, flat, profile, bounds)
+            _run_pass(instr_rules.check_portbridge_array, flat, profile, bounds, env)
         bounds.items = [d for d in bounds.items if before_cutoff(d)]
         pipe.items = [d for d in pipe.items if before_cutoff(d)]
         leading.items = [d for d in leading.items if before_cutoff(d)]
@@ -361,6 +362,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
         if profile.single_pass:
             _run_pass(instr_rules.check_dnp_update, _with_inline(program), profile, diags)
+            _run_pass(instr_rules.check_portbridge_array, _with_inline(program), profile, diags, env)
     if (not diags.errors or (profile.single_pass and all(
             d.message.startswith("Could not find ") for d in diags.errors))) and \
             profile.early_warnings_gated:
