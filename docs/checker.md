@@ -3264,8 +3264,14 @@ with `tools/probe.py` against all four compilers, including accepted boundary fo
 loggers) in a `StructureType` or `Sub`/`Function` body too, not only at top level. The name must be
 a global variable declared before the `ReadOnly` or, in a structure, an earlier member of the same
 structure. A `Const`, a global declared later, another structure's member, a `Sub` local or a
-parameter is not declared (`ReadOnly Zq` after `Dim Zq` in a `Sub` fails). `ReadOnly A(1)`, `ReadOnly 5`
-and the empty/trailing-comma forms are not modelled.
+parameter is not declared (`ReadOnly Zq` after `Dim Zq` in a `Sub` fails). `ReadOnly A(1)` and `ReadOnly 5`
+are not modelled.
+
+The name list is split by commas or blanks and empty items are ignored (oracle, all four loggers,
+2026-10-03): `ReadOnly A,`, `ReadOnly ,A`, `ReadOnly A,,B` and `ReadOnly A B` compile (a trailing comma
+used to be a false reject). A list with no name at all (`ReadOnly`, `ReadOnly ,`) reports `Missing variable
+name.` (pass 1, top level and in a `Sub`; it taints CR300/CR350 like the other declaration errors).
+Evidence: `tests/fixtures/small_gaps.json` (`*-readonly-*`).
 
 ### Structure member types
 

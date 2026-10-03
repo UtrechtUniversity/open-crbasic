@@ -482,6 +482,16 @@ class _Parser:
             # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
             p.next()
             args, spans = self._parse_bare_arglist(p, line, file)
+        elif kw == "READONLY":
+            # names split by commas or blanks; empty items are ignored (oracle, all four loggers,
+            # 2026-10-03: `ReadOnly A,`, `ReadOnly A,,B`, `ReadOnly A B` compile)
+            while not p.at_end():
+                if p.is_op(","):
+                    p.next()
+                    continue
+                start_col = p.peek().col
+                args.append(self._parse_expr(p, line, file))
+                spans.append((start_col, p.peek().col))
         elif not p.at_end():
             args, spans = self._parse_bare_arglist(p, line, file)
         return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)

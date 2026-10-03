@@ -835,6 +835,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             # variables declared so far, plus the structure's own earlier members; neither a
             # `Const`, a later declaration, a local, a parameter nor another structure's member
             # counts (oracle, all four loggers, 2026-10-03).
+            if not args:
+                diags.error(stmt.line, "Missing variable name.", stmt.file)
             for a in args:
                 if isinstance(a, S.Name) and a.name.upper() not in struct_members and \
                         declared_kinds.get(a.name.upper()) != "VAR":
@@ -2038,6 +2040,8 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             declared[stmt.name.upper()] = "CONST"
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "READONLY":
         # `ReadOnly Nope` -> `Nope not yet declared.`, pass 1, all four loggers (oracle)
+        if not stmt.args:
+            diags.error(stmt.line, "Missing variable name.", stmt.file)
         for a in stmt.args:
             if isinstance(a, S.Name) and declared.get(a.name.upper()) != "VAR":
                 diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
