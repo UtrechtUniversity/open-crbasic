@@ -783,6 +783,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     operands: set[str] = set()
     in_sub = False
     in_struct = False
+    struct_members: set[str] = set()
     const_tables = const_open = slow_sequences = 0
     seen_endprog = False
     declared_kinds: dict[str, str] = {}
@@ -816,12 +817,24 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             in_sub = False
         if kw in ("STRUCTURETYPE", "OBJECTTYPE"):
             in_struct = True
+            struct_members = set()
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = False
         if not in_sub and not in_struct:  # a structure body names its own members
             _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
         elif in_sub and not in_struct:
             symbols.check_local_name_collision(stmt, profile, diags)
+        if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
+            struct_members.update(v.name.upper() for v in stmt.vars)
+        elif (in_struct or in_sub) and kw == "READONLY":
+            # In a structure or `Sub`/`Function` body, `ReadOnly` resolves against the global
+            # variables declared so far, plus the structure's own earlier members; neither a
+            # `Const`, a later declaration, a local, a parameter nor another structure's member
+            # counts (oracle, all four loggers, 2026-10-03).
+            for a in args:
+                if isinstance(a, S.Name) and a.name.upper() not in struct_members and \
+                        declared_kinds.get(a.name.upper()) != "VAR":
+                    diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
 
         if isinstance(stmt, S.Instruction):
             # Oracle, all four loggers, 2026-10-02: pass 1, in line order. Every `ConstTable`

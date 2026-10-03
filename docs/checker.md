@@ -3257,3 +3257,12 @@ with `tools/probe.py` against all four compilers, including accepted boundary fo
   Float` is `Exit For without FOR.`, `End ASCII` is the ordinary `Illegal END or EXIT` (this
   project instead prints an unrelated function-arity line for it). Extra words after the first
   (`End Sequence 5`) also add `Too many parameters: 5.` and are not modelled.
+
+### `ReadOnly` in structures and subs
+
+`ReadOnly <name>` reports `<name> not yet declared.` (one line per unknown name, pass 1, all four
+loggers) in a `StructureType` or `Sub`/`Function` body too, not only at top level. The name must be
+a global variable declared before the `ReadOnly` or, in a structure, an earlier member of the same
+structure. A `Const`, a global declared later, another structure's member, a `Sub` local or a
+parameter is not declared (`ReadOnly Zq` after `Dim Zq` in a `Sub` fails). `ReadOnly A(1)`, `ReadOnly 5`
+and the empty/trailing-comma forms are not modelled.

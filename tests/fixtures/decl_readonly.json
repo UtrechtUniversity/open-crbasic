@@ -1,0 +1,233 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-readonly-member-ok",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     G = 1."
+  },
+  {
+   "id": "cr350-readonly-member-ok",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-undeclared-in-struct",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly B\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared."
+  },
+  {
+   "id": "cr1000x-readonly-undeclared-in-struct",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly B\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared."
+  },
+  {
+   "id": "cr300-readonly-undeclared-in-struct",
+   "logger": "cr300",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly B\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr350-readonly-undeclared-in-struct",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly B\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-mixed-list",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly A,B,C\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared.\nline 4: C not yet declared."
+  },
+  {
+   "id": "cr350-readonly-mixed-list",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly A,B,C\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: B not yet declared.\nline 4: C not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-before-member",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  ReadOnly A\n  A As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: A not yet declared."
+  },
+  {
+   "id": "cr350-readonly-before-member",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  ReadOnly A\n  A As Float\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: A not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-global-ok",
+   "logger": "cr6",
+   "source": "Public G, PT, BV\nStructureType ST\n  A As Float\n  ReadOnly G, A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-readonly-global-ok",
+   "logger": "cr350",
+   "source": "Public G, PT, BV\nStructureType ST\n  A As Float\n  ReadOnly G, A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-readonly-global-declared-later",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly H\nEndStructureType\nPublic H\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: H not yet declared."
+  },
+  {
+   "id": "cr350-readonly-global-declared-later",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly H\nEndStructureType\nPublic H\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: H not yet declared.\nline 8: Too many parameters:  Sec.\nline 9: Too many parameters:  15000.\nline 10: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-const-not-a-variable",
+   "logger": "cr6",
+   "source": "Const K = 3\nPublic PT, BV\nStructureType ST\n  A As Float\n  ReadOnly K\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: K not yet declared."
+  },
+  {
+   "id": "cr350-readonly-const-not-a-variable",
+   "logger": "cr350",
+   "source": "Const K = 3\nPublic PT, BV\nStructureType ST\n  A As Float\n  ReadOnly K\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: K not yet declared.\nline 8: Too many parameters:  Sec.\nline 9: Too many parameters:  15000.\nline 10: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-other-structure-member",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\nEndStructureType\nStructureType SU\n  ReadOnly A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: A not yet declared."
+  },
+  {
+   "id": "cr350-readonly-other-structure-member",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\nEndStructureType\nStructureType SU\n  ReadOnly A\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: A not yet declared.\nline 9: Too many parameters:  Sec.\nline 10: Too many parameters:  15000.\nline 11: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-twice-per-line",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly Z\n  ReadOnly Z\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Z not yet declared.\nline 5: Z not yet declared."
+  },
+  {
+   "id": "cr350-readonly-twice-per-line",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly Z\n  ReadOnly Z\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Z not yet declared.\nline 5: Z not yet declared.\nline 8: Too many parameters:  Sec.\nline 9: Too many parameters:  15000.\nline 10: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-in-sub",
+   "logger": "cr6",
+   "source": "Public PT, BV\nSub S1\n  ReadOnly Z\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z not yet declared."
+  },
+  {
+   "id": "cr1000x-readonly-in-sub",
+   "logger": "cr1000x",
+   "source": "Public PT, BV\nSub S1\n  ReadOnly Z\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z not yet declared."
+  },
+  {
+   "id": "cr300-readonly-in-sub",
+   "logger": "cr300",
+   "source": "Public PT, BV\nSub S1\n  ReadOnly Z\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z not yet declared.\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr350-readonly-in-sub",
+   "logger": "cr350",
+   "source": "Public PT, BV\nSub S1\n  ReadOnly Z\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z not yet declared.\nline 6: Too many parameters:  Sec.\nline 7: Too many parameters:  15000.\nline 8: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-in-sub-global-ok",
+   "logger": "cr6",
+   "source": "Public G, PT, BV\nSub S1\n  ReadOnly G\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-readonly-in-sub-global-ok",
+   "logger": "cr350",
+   "source": "Public G, PT, BV\nSub S1\n  ReadOnly G\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-readonly-in-sub-local-not-declared",
+   "logger": "cr6",
+   "source": "Public PT, BV\nSub S1\n  Dim Zq\n  ReadOnly Zq\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zq not yet declared."
+  },
+  {
+   "id": "cr350-readonly-in-sub-local-not-declared",
+   "logger": "cr350",
+   "source": "Public PT, BV\nSub S1\n  Dim Zq\n  ReadOnly Zq\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zq not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  },
+  {
+   "id": "cr6-readonly-multiple-names",
+   "logger": "cr6",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly Nope1, Nope2 : ReadOnly Nope3\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 not yet declared.\nline 4: Nope2 not yet declared.\nline 4: Nope3 not yet declared."
+  },
+  {
+   "id": "cr350-readonly-multiple-names",
+   "logger": "cr350",
+   "source": "Public PT, BV\nStructureType ST\n  A As Float\n  ReadOnly Nope1, Nope2 : ReadOnly Nope3\nEndStructureType\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    G = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope1 not yet declared.\nline 4: Nope2 not yet declared.\nline 4: Nope3 not yet declared.\nline 7: Too many parameters:  Sec.\nline 8: Too many parameters:  15000.\nline 9: G is not defined."
+  }
+ ]
+}
