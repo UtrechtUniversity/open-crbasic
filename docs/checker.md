@@ -3528,3 +3528,16 @@ loggers.
 `... not yet declared so cannot be aliased.` also starts the cascade (fixture
 `tests/fixtures/alias_undeclared_cascade.json`: `Alias Nope(1) = Foo` -> a later `Scan` prints
 `Too many parameters:  Sec.`).
+
+## Undefined names around a built-in arity error (CR300/CR350, 2026-10-03)
+
+Fixture `tests/fixtures/arity_name_order.json` (50 cases), `cr3xx.order_names_around_arity`. In an
+assignment or `If` condition the single-pass parser prints undefined names as it meets them, left
+to right, and the arity error of a built-in call after them (`Sc = Nope3+Round(Nope1)` -> `Nope3`,
+`Nope1`, `Expression expects , :`; we used to print the arity line first). A call with too many
+arguments stops the parse at its first surplus argument, so nothing later is named
+(`Floor(Sd,Nope)` -> none, `Floor(Nope1,Nope)+Nope3` -> `Nope1`); too few arguments let the rest of
+the expression be parsed (`Round(Nope1)+Nope3` -> both). A first `few` followed by a `many` keeps
+the `Expression expects , :` text and stops at the surplus argument. An assignment whose target is
+itself undefined still gets the arity line (`Nope4 = Round(Nope1)`). Not modelled: the same order
+inside instruction arguments (`Battery(Floor(Nope1,Sd))`, `Delay(0,Floor(Nope1,Sd),Sec)`).

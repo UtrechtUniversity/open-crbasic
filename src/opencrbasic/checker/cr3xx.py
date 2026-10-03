@@ -941,6 +941,102 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
         return
 
 
+_ARITY_PREFIXES = ("No Matching, or out of place ) in expression: ", "Expression expects , : ")
+
+
+def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: dict) -> None:
+    """Left-to-right parse-order walk collecting `state["names"]` (undefined names met) until a
+    built-in call with too many arguments stops it at its first surplus argument
+    (`state["kind"] == "many"`); too few arguments only mark `state["kind"] == "few"`."""
+    if expr is None or state.get("stop"):
+        return
+    if isinstance(expr, S.Name):
+        if expr.name.upper() not in known or expr.name.upper() in getattr(known, "tables", ()):
+            state["names"].append(expr.name)
+        return
+    if isinstance(expr, S.Index):
+        if expr.name.upper() not in known:
+            state["names"].append(expr.name)
+        problem = expressions._call_arity_problem(expr.name, expr.args, profile)
+        args, stop = expr.args, False
+        if problem == "many":
+            at = next(k for k in range(len(args))
+                      if expressions._call_arity_problem(expr.name, args[:k + 1], profile) == "many")
+            args, stop = args[:at], True
+            state.setdefault("kind", "many")
+        elif problem == "few":
+            state.setdefault("kind", "few")
+        elif problem:
+            state["bad"] = True
+        for a in args:
+            _arity_walk(a, known, profile, state)
+        state["stop"] = state.get("stop") or stop
+        return
+    if isinstance(expr, S.Unary):
+        _arity_walk(expr.operand, known, profile, state)
+    elif isinstance(expr, S.Binary):
+        _arity_walk(expr.left, known, profile, state)
+        _arity_walk(expr.right, known, profile, state)
+    elif isinstance(expr, S.Member):
+        _arity_walk(expr.base, known, profile, state)
+        for a in expr.args or []:
+            _arity_walk(a, known, profile, state)
+    elif isinstance(expr, S.ArrayLiteral):
+        for item in expr.items:
+            _arity_walk(item, known, profile, state)
+
+
+def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the parser reports undefined names as it meets them and the arity error of a
+    built-in call last (oracle, 2026-10-03): `Sc = Nope3+Round(Nope1)` -> `Nope3`, `Nope1`, then
+    `Expression expects , :`. A call with too many arguments stops the parse at its first surplus
+    argument, so later names are not reported (`Floor(Nope1,Nope)` -> `Nope1` only,
+    `Floor(Sd,Nope)+Nope3` -> none); too few arguments let the rest of the expression be parsed."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    known = None
+    for stmt in program.statements:
+        if isinstance(stmt, S.Assignment):
+            exprs = [stmt.target, stmt.value]
+        elif isinstance(stmt, S.If):
+            exprs = [stmt.cond]
+        else:
+            continue
+        key = (stmt.line, stmt.file)
+        if per_line[key] != 1:
+            continue
+        own = [(i, d) for i, d in enumerate(diags.items) if (d.line, d.file) == key
+               and d.severity == "error"]
+        arity = [(i, d) for i, d in own if d.message.startswith(_ARITY_PREFIXES)]
+        if known is None:
+            known = expressions._known_names(program, profile)
+        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(
+                stmt.target, known):
+            # an unresolved target hides the pass-1 arity check, but the parse still reaches it
+            kind = expressions._find_arity_problem(stmt.value, profile)
+            if kind in ("few", "many"):
+                arity = [(own[0][0], Diagnostic("error", stmt.line, expressions._arity_message(
+                    kind, stmt.text, profile, stmt.at_eol, True), stmt.file, show_file=False))]
+        if len(arity) != 1 or any(
+                d.message != arity[0][1].message and not d.message.endswith(_UNRESOLVED_SUFFIX)
+                for _, d in own):
+            continue
+        state = {"names": []}
+        for e in exprs:
+            _arity_walk(e, known, profile, state)
+        if state.get("bad") or state.get("kind") is None:
+            continue
+        new = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=n),
+                          stmt.file) for n in state["names"]] + [arity[0][1]]
+        first = own[0][0]
+        drop = {id(d) for _, d in own}
+        items = [d for d in diags.items if id(d) not in drop]
+        at = first - sum(1 for i, d in enumerate(diags.items[:first]) if id(d) in drop)
+        items[at:at] = new
+        diags.items[:] = items
+
+
 def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: `Nope += 1` reports `Nope is not defined.` once, though it is stored as
     `Nope = Nope + 1` (oracle, 2026-10-01; also under the cascade, `i2copen_1.CR6`)."""

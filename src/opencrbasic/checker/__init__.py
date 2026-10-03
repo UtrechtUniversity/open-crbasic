@@ -499,6 +499,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # whatever it would otherwise have found (`checker/cr3xx.py`'s own module-level comment for the
     # oracle evidence). Run unconditionally, after every other diagnostic-producing pass, since the
     # taint can originate from a tier-A finding that would otherwise skip tier B/C entirely.
+    _run_pass(cr3xx.order_names_around_arity, program, profile, diags)
     _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
 
