@@ -2433,11 +2433,15 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
             index_key = (*index_key, int(v))
 
         dims = all_dims.get(name_upper)
-        if index_key is not None and dims is not None and len(index_key) == len(dims):
+        if index_key is not None and dims is not None and 0 < len(index_key) <= len(dims):
             total = 1
             for d in dims:
                 total *= d
-            if not (1 <= _alias_flat_offset(index_key, dims) <= total):
+            # Fewer indices than dimensions are padded with 1s (oracle, all four loggers,
+            # 2026-10-03: `Alias W(5)` on `W(4,5)` fails, `Alias W(2,4)` on `W(2,3,4)` fails,
+            # `Alias W(1,4)` compiles).
+            padded = (*index_key, *([1] * (len(dims) - len(index_key))))
+            if not (1 <= _alias_flat_offset(padded, dims) <= total):
                 diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
 
     if index_key is not None:

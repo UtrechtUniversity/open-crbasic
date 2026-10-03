@@ -1,0 +1,261 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias-2d-one-index-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias-2d-one-index-high",
+   "logger": "cr1000x",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-alias-2d-one-index-high",
+   "logger": "cr300",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-alias-2d-one-index-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-2d-one-index-low",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(1) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-2d-one-index-low",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(1) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-2d-one-index-flat-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(20) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-2d-one-index-flat-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(20) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-2d-one-index-zero",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(0) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-2d-one-index-zero",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(0) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-2d-one-index-last-row",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-2d-one-index-last-row",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-3d-one-index-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(3) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-3d-one-index-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(3) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-3d-two-index-low",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(1,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-3d-two-index-low",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(1,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-3d-two-index-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias-3d-two-index-high",
+   "logger": "cr1000x",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr300-alias-3d-two-index-high",
+   "logger": "cr300",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-alias-3d-two-index-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-3d-two-index-ok",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,3) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-3d-two-index-ok",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,3) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-3d-two-index-zero",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(1,0) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-3d-two-index-zero",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(1,0) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-3d-full-index-ok",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,3,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-3d-full-index-ok",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(2,3,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-3d-full-index-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(3,3,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-3d-full-index-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W3(3,3,4) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-1d-too-high",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W1(7) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr350-alias-1d-too-high",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W1(7) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: Too many parameters:  Sec.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr6-alias-extra-index-ignored",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W1(2,2) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-alias-extra-index-ignored",
+   "logger": "cr350",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W1(2,2) = A1\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-alias-duplicate-after-illegal",
+   "logger": "cr6",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nAlias W2(5) = A2\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias-duplicate-after-illegal",
+   "logger": "cr1000x",
+   "source": "Public W2(4,5), W1(6), W3(2,3,4), S, PT, BV\nAlias W2(5) = A1\nAlias W2(5) = A2\nBeginProg\n  Scan (1,Sec,0,0)\n    PanelTemp (PT,15000)\n    S = 1\n    Battery (BV)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias"
+  }
+ ]
+}

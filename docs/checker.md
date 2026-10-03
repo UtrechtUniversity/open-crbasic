@@ -3276,3 +3276,11 @@ gets a line on CR6/CR1000X; CR300/CR350 stop at the first bad type in a statemen
 (`A As Foo, B As Bar` and `Public Z As Bad, Y As Worse` give one line), which is now also applied to
 the existing `Public`/`Dim` check. `Function` parameters and return types with a bad type report the
 same message and are not modelled.
+
+### `Alias` with fewer indices than dimensions
+
+`Alias W(5)` on `Public W(4,5)` gives `Illegally dimensioned aliased name`, all four loggers.
+Missing trailing indices count as 1 in the flat-offset test of "Alias dimensions": `W(1,4)` on
+`W(2,3,4)` compiles, `W(2,4)`, `W(3)` and `W(1,0)` do not, while `W(4)` on `W(4,5)` does. More indices
+than dimensions stay unchecked. `Alias W(5) = A1, A2` reports the message once per alias name, and a
+`Sub`-style `Alias W2(5), W1(2) = A1` list is not modelled.
