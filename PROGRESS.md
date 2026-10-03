@@ -101,15 +101,14 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
 ## Resume here (open work at 2026-10-04)
 
-- Branch `ocb-ranges` worktree: uncommitted, unverified CDM range work (`checker/cdm.py`,
-  `data/cdm.json`); CDM address/NULL-module rules have since landed from another branch, so
-  compare before finishing, or discard.
+- Branch `ocb-ranges` (no worktree): WIP commit `3228f99` holds unverified CDM range work
+  (`checker/cdm.py`, `data/cdm.json`). CDM address/NULL-module rules have since landed on the main
+  branch, so compare before finishing, or discard.
 - gpt-6-sol reviewed round 1 (`7ed5dff..3daf6f6`, `scratch/codex/review-214e442-HEAD.md`); its
   findings are fixed. Not reviewed yet: round 2, `0f41903`..HEAD (block placement
   order, expression messages, EPI buffers, zero-interval scans, CR300/CR350 cascade).
-- Finished worker worktrees under `.claude/worktrees/` (`ocb-structidx`, `ocb-review3`,
-  `ocb-tablespace`, `ocb-cr3xx-matrix`, `ocb-r2-*`) hold only untracked scratch; safe for the
-  human to remove. A `git stash` entry from the argvals agent is also safe to drop.
+- Worker worktrees removed and the stash dropped (2026-10-04). Their branches remain; all except
+  `ocb-ranges` are already integrated by cherry-pick.
 - Unclosed `StructureType` is compiler undefined behaviour on all four loggers: verdicts observed
   once (old cache entries), uncached reruns page-fault (`docs/instructions.md`).
 
