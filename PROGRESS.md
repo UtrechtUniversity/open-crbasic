@@ -104,8 +104,8 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Branch `ocb-ranges` worktree: uncommitted, unverified CDM range work (`checker/cdm.py`,
   `data/cdm.json`); CDM address/NULL-module rules have since landed from another branch, so
   compare before finishing, or discard.
-- gpt-6-sol reviewed through `db6fbd1`'s predecessors of round 1 (`scratch/codex/review-214e442-
-  HEAD.md`); its findings are fixed. Not reviewed yet: round 2, `0f41903`..HEAD (block placement
+- gpt-6-sol reviewed round 1 (`7ed5dff..3daf6f6`, `scratch/codex/review-214e442-HEAD.md`); its
+  findings are fixed. Not reviewed yet: round 2, `0f41903`..HEAD (block placement
   order, expression messages, EPI buffers, zero-interval scans, CR300/CR350 cascade).
 - Finished worker worktrees under `.claude/worktrees/` (`ocb-structidx`, `ocb-review3`,
   `ocb-tablespace`, `ocb-cr3xx-matrix`, `ocb-r2-*`) hold only untracked scratch; safe for the
@@ -118,8 +118,8 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 1. Suspected false reject: `PortSet(C1,x) 1` is silently accepted by the real compiler, ours
    reports `Invalid, or out of place`. Then false accept: `Alias Q(1) = LevelFt` naming an
    existing variable (real: `already declared as a variable.`, all four loggers). Remaining help
-   verdict mismatch `cpispeed2_1` (CPI time needed is non-linear in Reps; evidence in the
-   ocb-r2-misc report summary in `docs/instructions.md`) and the CR300 storage limit
+   verdict mismatch `cpispeed2_1` (CPI time needed is non-linear in Reps: at a 1 ms scan,
+   Reps 2..16 need 2,2,2,3,3,4,4,5,5,6,6,6,7,7,8 ms; Reps 1 passes; not modelled) and the CR300 storage limit
    (`docs/tdf-rules.md`).
 2. Message differences (305 replay; 56-85 per logger in the help corpus): rank by first
    differing diagnostic; prefer shared gating/ordering fixes (CR300/CR350 cascade, tier gating,
