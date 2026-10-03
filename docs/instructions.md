@@ -990,10 +990,30 @@ tested at both accepted endpoints and one value outside each side where applicab
 
 ### `FileManage` drive and `DNP` ComPort constants
 
-`FileManage` with a literal string whose drive prefix is not `CPU`, `CRD`, `USR`, or `USB` emits
-`FileManage invalid drive: <prefix>.` on CR6/CR1000X; direct probes confirmed `"fuzz"`,
-`"fuzz:x"`, and the empty string, plus all four valid prefixes. This deliberately models only
-the drive check, not the separate extension diagnostics. It is a tier-C instruction check.
+`FileManage` with a literal string whose first four characters, upper-cased, are not a valid
+drive plus colon emits `FileManage invalid drive: <first four characters>.` (probed `"SD:a.crb"` ->
+`SD:a`, `"a.crb"` -> `a.cr`, `"CPU"` -> `CPU`, `"CP"`, `""`; case-insensitive: `"cpu:a.crb"`
+compiles). Valid drives: CR6/CR1000X `CPU CRD USR USB`; **CR300/CR350 `CPU` only** (`CRD:`, `USR:`,
+`USB:` all rejected, fixture `tests/fixtures/filemanage_drives.json`). This deliberately models
+only the drive check, not the separate `FileManage name ... invalid extension.` diagnostics. It is
+a tier-C instruction check.
+
+### `TableFile` drive and file-type option (`measure.json` `tablefile`)
+
+Constant file name (a `+`/`&` concatenation of literals; `Status.SerialNumber` folds to the empty
+string), tier-C check, fixture `tests/fixtures/tablefile_drives.json`:
+
+- First four characters, upper-cased, must be a valid drive plus colon, else
+  `Invalid drive or no drive specified in filename <name>.` Valid: CR6/CR1000X `CRD USB USR`;
+  CR300 `CPU`; CR350 `CPU USB` (probed `CRD`, `USB`, `USR`, `CPU`, `SD`, no drive on all four).
+- CR300/CR350 only: with `r` = C remainder of the option by 100, `Invalid file type option.` when
+  `|r|` is 24..31 or >= 40 (swept 0..1099 and a negative sample on CR300 `CPU:`; swept 0..299 on
+  CR350; the hundreds digit is ignored, e.g. 512 and 1024 behave as 12 and 24).
+- CR350 only: on `USB:` with option >= 0 and `option mod 100 >= 64`, `TOB3 TableFile output only
+  allowed on CRD: drive.` precedes the file-type error (swept 0..299). CPU gets no such message.
+- Not modelled: the CR6/CR1000X option rule and TOB3 message (irregular, probe sweep incomplete),
+  `Invalid filename.` for an empty name, and variables folded into the name (the oracle uses the
+  variable's value, e.g. `"CRD:"+x` reports `CRD:0`).
 
 `DNP` argument 1 emits `ComPort -2147483648 illegal.` for a string or `NAN` on all four loggers.
 CR6/CR1000X additionally emit it for a finite number outside Long range and literal

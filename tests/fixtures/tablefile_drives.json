@@ -1,0 +1,695 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tablefile-crd-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-crd-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-usb-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-usb-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-usr-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-usr-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-tablefile-cpu-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CPU:Test."
+  },
+  {
+   "id": "cr6-tablefile-cpu-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CPU:Test."
+  },
+  {
+   "id": "cr6-tablefile-sd-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr6-tablefile-sd-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr6-tablefile-none-8",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr6-tablefile-none-0",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr6-tablefile-serial",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:\"+Status.SerialNumber+\"_F\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-crd-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-crd-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-usb-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-usb-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-usr-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-usr-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tablefile-cpu-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CPU:Test."
+  },
+  {
+   "id": "cr1000x-tablefile-cpu-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CPU:Test."
+  },
+  {
+   "id": "cr1000x-tablefile-sd-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr1000x-tablefile-sd-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr1000x-tablefile-none-8",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr1000x-tablefile-none-0",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",0,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr1000x-tablefile-serial",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:\"+Status.SerialNumber+\"_F\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tablefile-crd-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CRD:Test."
+  },
+  {
+   "id": "cr300-tablefile-crd-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CRD:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usb-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test."
+  },
+  {
+   "id": "cr300-tablefile-usb-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usr-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USR:Test."
+  },
+  {
+   "id": "cr300-tablefile-usr-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USR:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-sd-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr300-tablefile-sd-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-none-8",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr300-tablefile-none-64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-serial",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:\"+Status.SerialNumber+\"_F\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:_F."
+  },
+  {
+   "id": "cr350-tablefile-crd-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CRD:Test."
+  },
+  {
+   "id": "cr350-tablefile-crd-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CRD:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename CRD:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usb-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-usb-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TOB3 TableFile output only allowed on CRD: drive.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usr-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USR:Test."
+  },
+  {
+   "id": "cr350-tablefile-usr-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USR:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USR:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-sd-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test."
+  },
+  {
+   "id": "cr350-tablefile-sd-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"SD:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename SD:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-none-8",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test."
+  },
+  {
+   "id": "cr350-tablefile-none-64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-serial",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:\"+Status.SerialNumber+\"_F\",8,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt23",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",23,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt24",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",24,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt31",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",31,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt32",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",32,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt39",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",39,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt40",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",40,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt99",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",99,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt100",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",100,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt123",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",123,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt124",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",124,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt-23",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-23,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt-24",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-24,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt-31",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-31,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt-32",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-32,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt-40",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-40,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt512",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",512,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-tablefile-cpu-opt1024",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",1024,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usb-opt63",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",63,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usb-opt64",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usb-opt99",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",99,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr300-tablefile-usb-opt100",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",100,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test."
+  },
+  {
+   "id": "cr300-tablefile-usb-opt164",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",164,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid drive or no drive specified in filename USB:Test.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt23",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",23,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt24",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",24,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt31",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",31,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt32",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",32,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt39",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",39,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt40",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",40,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt99",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",99,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt100",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",100,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt123",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",123,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt124",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",124,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt-23",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-23,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt-24",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-24,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt-31",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-31,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt-32",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-32,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt-40",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",-40,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt512",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",512,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-cpu-opt1024",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"CPU:Test\",1024,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usb-opt63",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",63,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usb-opt64",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",64,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TOB3 TableFile output only allowed on CRD: drive.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usb-opt99",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",99,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TOB3 TableFile output only allowed on CRD: drive.\nline 3: Invalid file type option."
+  },
+  {
+   "id": "cr350-tablefile-usb-opt100",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",100,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tablefile-usb-opt164",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,-1)\n  TableFile (\"USB:Test\",164,-1,0,60,Min,0,0)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    x=1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TOB3 TableFile output only allowed on CRD: drive.\nline 3: Invalid file type option."
+  }
+ ]
+}

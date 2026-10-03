@@ -40,6 +40,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "GPS" and "gps" in measure:
             _check_structure_members(stmt, program, measure["gps"], env, diags)
             _check_gps_port(stmt, measure["gps"], env, diags)
+        if kw == "TABLEFILE" and "tablefile" in measure:
+            _check_tablefile(stmt, measure["tablefile"], env, diags)
         for rule in measure.get("string_prefixes", ()):
             if kw == rule["instr"]:
                 _check_string_prefix(stmt, rule, env, diags)
@@ -130,10 +132,39 @@ def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
     value = _const_value(stmt.args[idx], env)
     if not isinstance(value, str):
         return
-    drive = value.split(":", 1)[0]
-    if drive.upper() in rule["prefixes"]:
+    drive = value[:4]
+    if drive.upper() in (f"{p}:" for p in rule["prefixes"]):
         return
     diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
+
+
+def _check_tablefile(stmt: S.Instruction, cfg: dict, env: consteval.Env,
+                     diags: Diagnostics) -> None:
+    """`TableFile` file name drive and file-type option; docs/instructions.md#tablefile-drive."""
+    name = _name_text(stmt.args[0], env) if stmt.args else None
+    if not name:
+        return
+    if name[:4].upper() not in (f"{d}:" for d in cfg["drives"]):
+        diags.error(stmt.line, f"Invalid drive or no drive specified in filename {name}.", stmt.file)
+    option = _int_value(stmt.args[1], env) if len(stmt.args) > 1 else None
+    if option is not None and cfg.get("option_mod100"):
+        low = abs(int(math.fmod(option, 100)))
+        if option >= 0 and low >= 64 and name[:4].upper() in (f"{d}:" for d in cfg.get("tob3_drives", ())):
+            diags.error(stmt.line, "TOB3 TableFile output only allowed on CRD: drive.", stmt.file)
+        if 24 <= low <= 31 or low >= 40:
+            diags.error(stmt.line, "Invalid file type option.", stmt.file)
+
+
+def _name_text(arg: S.Expr | None, env: consteval.Env) -> str | None:
+    """A constant file name; `Status.SerialNumber` folds to the empty string (oracle)."""
+    if isinstance(arg, S.Member) and isinstance(arg.base, S.Name) and arg.args is None and \
+            (arg.base.name.upper(), arg.member.upper()) == ("STATUS", "SERIALNUMBER"):
+        return ""
+    if isinstance(arg, S.Binary) and arg.op in ("+", "&"):
+        left, right = _name_text(arg.left, env), _name_text(arg.right, env)
+        return None if left is None or right is None else left + right
+    value = _const_value(arg, env)
+    return value if isinstance(value, str) else None
 
 
 def _check_structure_members(stmt: S.Instruction, program: S.Program, cfg: dict,

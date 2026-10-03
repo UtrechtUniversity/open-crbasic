@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-filemanage-cpu",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CPU:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-filemanage-crd",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CRD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-filemanage-usb",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USB:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-filemanage-usr",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USR:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-filemanage-sd",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"SD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr6-filemanage-plain",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr6-filemanage-short",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CP\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CP."
+  },
+  {
+   "id": "cr6-filemanage-lower",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"cpu:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-filemanage-cpu",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CPU:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-filemanage-crd",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CRD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-filemanage-usb",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USB:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-filemanage-usr",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USR:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-filemanage-sd",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"SD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr1000x-filemanage-plain",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr1000x-filemanage-short",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CP\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CP."
+  },
+  {
+   "id": "cr1000x-filemanage-lower",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"cpu:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-filemanage-cpu",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CPU:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-filemanage-crd",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CRD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr300-filemanage-usb",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USB:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: USB:."
+  },
+  {
+   "id": "cr300-filemanage-usr",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USR:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: USR:."
+  },
+  {
+   "id": "cr300-filemanage-sd",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"SD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr300-filemanage-plain",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr300-filemanage-short",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CP\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CP."
+  },
+  {
+   "id": "cr300-filemanage-lower",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"cpu:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-filemanage-cpu",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CPU:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-filemanage-crd",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CRD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr350-filemanage-usb",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USB:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: USB:."
+  },
+  {
+   "id": "cr350-filemanage-usr",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"USR:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: USR:."
+  },
+  {
+   "id": "cr350-filemanage-sd",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"SD:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr350-filemanage-plain",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr350-filemanage-short",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"CP\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CP."
+  },
+  {
+   "id": "cr350-filemanage-lower",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  Scan (1,Sec,3,0)\n    FileManage (\"cpu:a.crb\",4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

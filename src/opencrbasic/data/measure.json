@@ -25,6 +25,7 @@
    {"member": "NMEASENTENCES", "type": "STRING", "min_string_size": 96, "message": "Size of NMEASentences is too small, must be at least 100"}
   ]
  },
+ "tablefile": {"drives": ["CRD", "USB", "USR"]},
  "string_prefixes": [
   {"instr": "FILEMANAGE", "pos": 1, "prefixes": ["CPU", "CRD", "USR", "USB"], "message": "FileManage invalid drive: {drive}."}
  ],
