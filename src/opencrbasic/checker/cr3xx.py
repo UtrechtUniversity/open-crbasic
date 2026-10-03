@@ -192,7 +192,7 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Illegal END or EXIT
                                  "Invalid, or out of place expression:",
                                  "Illegal destination variable type", "Invalid Variable or Array:",
                                  "Cannot recursively call functions.", "Parameter must be integral.",
-                                 "Interval (", "Scan interval must be integrally divisible")
+                                 "Interval (", "Illegally dimension: ", "Scan interval must be integrally divisible")
 
 
 def _is_cascade_trigger(diag) -> bool:
@@ -267,7 +267,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
-                    and stmt.keyword.upper() not in ("UNITS", "READONLY")):
+                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS")):
                 # (`Units X = m` is never rewritten: repository libraries, oracle.)
                 # the next simple token, like a genuine overflow (oracle: `MainScanSecs * 4` ->
                 # `MainScanSecs`, `SearchString()` -> `SearchString`)

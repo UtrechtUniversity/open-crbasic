@@ -1,0 +1,387 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-illegal_dimension_echo-0",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(\"fuzz\")\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-1",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(3)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-2",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"fuzz\")\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-3",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-4",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1.5)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-5",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(Foo)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Foo.\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-6",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-7",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(2), Ty(-1), Tz, Tw\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(2), Ty(-1), Tz, Tw\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-8",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0), Tw(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-9",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1,1,1,1), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Tx(1 dimension exceeds max of 3.\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-10",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1,0), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-11",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"a\"), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"a\"), Ty, Tz\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr6-illegal_dimension_echo-12",
+   "logger": "cr6",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1) 'cmt\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1) \nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-0",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(\"fuzz\")\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-1",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(3)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-2",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"fuzz\")\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-3",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-4",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1.5)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-5",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(Foo)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Foo.\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-6",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-7",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(2), Ty(-1), Tz, Tw\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(2), Ty(-1), Tz, Tw\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-8",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0), Tw(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-9",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1,1,1,1), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Tx(1 dimension exceeds max of 3.\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-10",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1,0), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-11",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"a\"), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"a\"), Ty, Tz\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr1000x-illegal_dimension_echo-12",
+   "logger": "cr1000x",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1) 'cmt\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1) \nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-0",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(\"fuzz\")\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-1",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(3)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-2",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"fuzz\")\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-3",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1)\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-4",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1.5)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-5",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(Foo)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo is not defined.\nline 2: Variable illegal in Parameter: Foo.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-6",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-7",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(2), Ty(-1), Tz, Tw\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(2), Ty(-1), Tz, Tw\n\nline 2: Too many parameters:  Tw.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-8",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0), Tw(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-9",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1,1,1,1), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Tx(1 dimension exceeds max of 3.\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-10",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1,0), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-11",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"a\"), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"a\"), Ty, Tz\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-illegal_dimension_echo-12",
+   "logger": "cr300",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1) 'cmt\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1) \nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-0",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(\"fuzz\")\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-1",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(3)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-2",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"fuzz\")\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"fuzz\")\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-3",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1)\n\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-4",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1.5)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: VxA."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-5",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(Foo)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo is not defined.\nline 2: Variable illegal in Parameter: Foo.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-6",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-7",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(2), Ty(-1), Tz, Tw\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(2), Ty(-1), Tz, Tw\n\nline 2: Too many parameters:  Tw.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-8",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1), Ty(2), Tz(0), Tw(0)\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1), Ty(2), Tz(0), Tw(0)\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-9",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(1,1,1,1), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Tx(1 dimension exceeds max of 3.\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-10",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1,0), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Illegally dimension: Public Tx(-1,0), Ty, Tz\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-11",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nDim Tx(\"a\"), Ty, Tz\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Dim Tx(\"a\"), Ty, Tz\n\nline 2: Too many parameters:  Tz.\nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-illegal_dimension_echo-12",
+   "logger": "cr350",
+   "source": "Public Tmp(3), VxA\nPublic Tx(-1) 'cmt\nBeginProg\n  Scan (1,min,3,0)\n    Therm109 (Tmp(),2,1,VxA,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public Tx(-1) \nline 4: Too many parameters:  min.\nline 5: Too many parameters:  2."
+  }
+ ]
+}

@@ -3484,3 +3484,14 @@ of zero or below (itself `Illegally dimension`) counts as 1 for the alias index 
 dimension (`Public a(0)` / `Alias a(1)` passes, `a(2)` and `a(0)` fail). The `Illegally dimension:
 <statement>` echo carries the source line's newline, so a blank line follows it whenever more
 output does; the final output is right-trimmed (`compiler.py`).
+
+## `Illegally dimension` echo and CR300/CR350 stop (2026-10-03)
+
+Fixture `tests/fixtures/illegal_dimension_echo.json`, `tests/test_cr3xx_cascade.py` (52 cases, all
+four loggers). `Illegally dimension: <statement>` echoes the statement through its line end: on
+all four loggers a blank line follows it when another message comes next (none when a `'` comment
+follows the statement). On CR300/CR350 it starts the `Too many parameters` cascade and stops the
+declaration at its first bad variable (a variable with two bad dimensions still reports both,
+`Variable A(..) dimension exceeds max of 3.` stops it too); the variable two positions on supplies
+`Too many parameters:  <name>.` (`Public Tx(-1), Ty(2), Tz(0)` -> `... Tz.`; with only two variables
+nothing more). CR6/CR1000X report every bad variable.

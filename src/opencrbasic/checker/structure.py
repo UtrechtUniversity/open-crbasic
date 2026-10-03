@@ -850,7 +850,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if not stmt.vars:
                 suppress_line = _check_declaration(stmt, diags)
             else:
-                _check_array_dims(stmt, diags, env)
+                _check_array_dims(stmt, diags, env, profile)
                 if known is None:
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
@@ -2164,7 +2164,13 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             if row["count"]:
                 declared.setdefault(row["name"].upper(), "VAR")
 
-def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env) -> None:
+def _illegal_dim_message(stmt: S.Declaration) -> str:
+    # the echo ends with the statement's newline unless a comment follows (oracle, all four loggers)
+    return f"Illegally dimension: {stmt.text}{chr(10) if stmt.at_eol else ''}"
+
+
+def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.Env,
+                      profile=None) -> None:
     """`Public`/`Dim` array-dimension limits (oracle-confirmed, `docs/checker.md` "Array
     dimension limits"): more than `_MAX_ARRAY_DIMS` dimensions on one variable, checked before any
     per-dimension value, reports `Variable %s dimension exceeds max of %d.` naming the variable
@@ -2184,29 +2190,40 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
     evidence this session found supports guessing at that shape, and AGENTS.md's priority (never
     reject an accepted program) rules out it.
     """
-    for v in stmt.vars:
-        if len(v.dims) > _MAX_ARRAY_DIMS:
-            first_text = _first_dim_text(stmt.text, v)
-            diags.error(
-                stmt.line,
-                f"Variable {v.name}({first_text} dimension exceeds max of {_MAX_ARRAY_DIMS}.",
-                stmt.file,
-            )
-            continue
-        for d in v.dims:
-            if isinstance(d, S.String):
-                # `Public Q("fuzz")`, pass 1, all four loggers (oracle, 2026-09-27)
-                diags.error(stmt.line, f"Illegally dimension: {stmt.text}\n", stmt.file)
-                continue
-            try:
-                val = consteval.value_of(d, env)
-            except consteval.NotConstant:
-                continue
-            if isinstance(val, bool) or not isinstance(val, (int, float)):
-                continue
-            if not (1 <= val <= _MAX_DIM_VALUE):
-                diags.error(stmt.line, f"Illegally dimension: {stmt.text}\n", stmt.file)
+    for index, v in enumerate(stmt.vars):
+        before = len(diags.items)
+        _check_var_dims(stmt, v, diags, env)
+        if len(diags.items) > before and profile and profile.single_pass:
+            # single-pass loggers stop the declaration at its first bad variable; the item two
+            # on supplies `Too many parameters` (oracle, CR300/CR350)
+            if index + 2 < len(stmt.vars):
+                diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                            stmt.file)
+            break
 
+
+def _check_var_dims(stmt: S.Declaration, v, diags: Diagnostics, env: consteval.Env) -> None:
+    if len(v.dims) > _MAX_ARRAY_DIMS:
+        first_text = _first_dim_text(stmt.text, v)
+        diags.error(
+            stmt.line,
+            f"Variable {v.name}({first_text} dimension exceeds max of {_MAX_ARRAY_DIMS}.",
+            stmt.file,
+        )
+        return
+    for d in v.dims:
+        if isinstance(d, S.String):
+            # `Public Q("fuzz")`, pass 1, all four loggers (oracle, 2026-09-27)
+            diags.error(stmt.line, _illegal_dim_message(stmt), stmt.file)
+            continue
+        try:
+            val = consteval.value_of(d, env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(val, bool) or not isinstance(val, (int, float)):
+            continue
+        if not (1 <= val <= _MAX_DIM_VALUE):
+            diags.error(stmt.line, _illegal_dim_message(stmt), stmt.file)
 
 
 def _split_top(text: str, sep: str = ",") -> list[str]:
