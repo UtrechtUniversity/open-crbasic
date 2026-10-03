@@ -35,19 +35,19 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-03)
+## Status (2026-10-03, midday)
 
-Measured on `claude/laughing-franklin-08z9vo` after the 2026-10-02/03 chunks. Exact = equal exit
-code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
+Measured on `claude/laughing-franklin-08z9vo` at the commit that adds this text. Exact = equal
+exit code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
 opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 5,868 passed, 311 skipped |
-| `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 5 (CR300/CR350 reject these CR6 programs with matching verdicts) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 436/68/2/1, CR1000X 443/61/2/1, CR300 406/93/6/2, CR350 407/93/5/2 |
-| `tools/fuzz_replay.py` (1,949 reproducers) | 1,200 exact, 45 false accepts, 672 message diffs, 14 mode diffs, 18 oracle errors (from 1,108/115 at session start) |
-| `tools/tdftest.py` | repo TDF + table list 16/16 byte-identical; CHM 139/192 TDF, 155/192 table list (unchanged by this session) |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 6,922 passed, 311 skipped |
+| `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 436/68/2/1, CR1000X 443/61/2/1, CR300 408/91/6/2, CR350 409/91/5/2 |
+| `tools/fuzz_replay.py` (1,949 reproducers) | 1,291 exact, 6 false accepts, 620 message diffs, 14 mode diffs, 18 oracle errors (1,108 exact / 115 false accepts on 2026-10-02 morning) |
+| `tools/tdftest.py` | repo TDF + table list 16/16 byte-identical; CHM 139/192 TDF, 155/192 table list (last measured 2026-10-02) |
 | implementation exceptions (difftest/replay class) | 0 |
 | `cd ../scripts && uv run --no-sync verify.py` | last observed 2026-10-02: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
 
@@ -83,49 +83,47 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Worktree gotcha: the shared uv env's editable install imports the MAIN checkout. Inside a
   worktree always `export PYTHONPATH=$PWD/src` (from `opencrbasic/`); difftest/tdftest insert
   their own path.
-- Codex CLI workers (human-approved 2026-10-03, separate quota): `codex exec -m <model>
-  --dangerously-bypass-approvals-and-sandbox -C <worktree> -o <out.md> "<brief>"`. Models:
-  `gpt-6-sol` (reviews), `gpt-5.6-terra` (Sonnet-level chunks), `gpt-6-luna` (small tasks).
-  Shared brief: `scratch/codex/brief.md` (untracked; recreate from this section if missing).
-  The Codex sandbox cannot reach the Wine server, hence the bypass. Run reviews read-only
-  (`-s read-only`) after each batch; they found real defects every time.
+- Codex CLI: use ONLY `gpt-6-sol` for read-only reviews of each merged batch (human
+  instruction 2026-10-03: the Codex 5-hour window exhausts quickly; implementation workers were
+  cut off twice). `codex exec -m gpt-6-sol -s read-only -C <repo> -o <out.md> "<prompt>"`.
+  Act on findings with Claude subagents (Sonnet for rule families, Haiku for small precise
+  changes). Every review so far found real defects.
+- Agent brief for Claude workers: `scratch/codex/brief-claude.md` (untracked; it restates this
+  section: worktree-only, PYTHONPATH, probe/difftest/replay/fixture_audit, own baseline before
+  editing, one commit per family). Recreate from this section if missing.
+- Cherry-pick conflicts in `checker/__init__.py` are usually parallel workers adding
+  `_run_pass(...)` lines at the same spot: keep HEAD, add the new pass lines, and confirm with a
+  sorted diff of `_run_pass(` names against the worker branch.
 
-## Resume here (open work at 2026-10-03)
+## Resume here (open work at 2026-10-03 midday)
 
-- Branch `cx-names` (Codex, may still be running or finished; output
-  `scratch/codex/names.md`): Duplicate Sub / Sub named like a variable, `DataTable is declared in
-  the middle of an executing sequence`, and the deferred-`Call` cutoff comparing raw line numbers
-  across Include files (`structure.commit_deferred_sub_error`). Review, then cherry-pick.
-- Branch `cx-review2` (Codex; output `scratch/codex/review2-fix.md`): fixes for review findings
-  in `scratch/codex/review-2.md` #1 (implementation exception must not yield a successful
-  CLI compile), #2 (same-line order of pipeline errors vs CR1000X `PortSet`/CR6 `ExciteV`
-  argument errors), #4 (dead-`Delay` warning suppressed without the pipeline error being
-  emitted), #5 (`mode.decide`/signature exceptions still swallowed), #6 (pipeline task set
-  needs recorded accepted+rejected probes per member; move to profile data). Review, cherry-pick.
-- Review finding #3 (not assigned): `structure.py` Sub placement misses `For`/`Do` blocks after
-  a completed `Scan` (false accept) and rejects `BeginProg`/`SlowSequence`/`Sub` before any
-  `Scan` (possible false reject). Do after `cx-names` lands.
-- Branch `ocb-ranges` worktree has uncommitted, unverified CDM range work
-  (`checker/cdm.py`, `data/cdm.json`, an `__init__.py` edit); its five finished commits are
-  merged. Finish or discard.
-- A `git stash` entry from the argvals agent holds a discarded draft `intervals.py` edit
-  (`Parameter must be integral` for `TimeIntoInterval` only); superseded, safe for the human to
-  drop.
-- After landing the above: full replay, `tools/fixture_audit.py` on new fixtures, a fresh fuzz
-  seed (`tools/fuzz.py`), and `cd ../scripts && uv run --no-sync verify.py`.
+- Branch `ocb-mism` (worktree `.claude/worktrees/ocb-mism`, Sonnet agent possibly still
+  running or finished): CR300/CR350 help-corpus verdict mismatches (newfile_2 `FileManage invalid
+  drive: CRD:.`, setstatussetsetting_1, structuretype_2, tablefile_1/2,
+  tablenamebytesperrecord_1). Review its commits, cherry-pick, verify (pytest, four-logger
+  difftest, fixture_audit).
+- Branch `ocb-ranges` worktree: uncommitted, unverified CDM range work (`checker/cdm.py`,
+  `data/cdm.json`); CDM address/NULL-module rules have since landed from another branch, so
+  compare before finishing, or discard.
+- Not reviewed yet by gpt-6-sol: commits after `fc8e92d` (declarations `130e4f0`..`1d2ecb9`,
+  small gaps `b7fbeb6`..`d8c1cd7`, pairing `eaa72db`..`7af25d1`). Run a review first.
+- A `git stash` entry from the argvals agent holds a superseded `intervals.py` draft; safe for
+  the human to drop.
 
 ## Next steps
 
-1. Remaining 45 replay false accepts: group with
-   `python3 -c` over `scratch/replay-final.json` rows `now_class == 'false_accept'` by first
-   real message. Known leftovers: `Duplicate Sub`, `Scan interval too short for measurement`
-   on low fN1, `N is illegal baud rate.` on non-RS232 ports, `Warning: Parameter will truncate`,
-   `Dest type must be Float.`, `Median` of a String, `SDM` address/points checks.
-2. Message differences (672 replay, ~68-93 per logger in the help corpus): rank by first
-   differing diagnostic, prefer shared gating/ordering fixes (CR300/CR350 cascade, tier
-   gating) over per-instruction edits.
+1. Remaining 6 replay false accepts (`scratch/replay-wrap2.json`, rows `now_class ==
+   'false_accept'`) and the two CR6/CR1000X help verdict mismatches (`cdmbridgefilt_1`: EPI scan
+   buffers; `cpispeed2_1`: CPI measurement time).
+2. Message differences (620 replay; 61-91 per logger in the help corpus): rank by first
+   differing diagnostic; prefer shared gating/ordering fixes (CR300/CR350 cascade, tier gating,
+   same-line ordering by argument) over per-instruction edits. Known: `PortGet(A(9),1)` order on
+   CR6/CR1000X, interleaved messages for two port statements on one `:` line, float32 rounding
+   of values near 2^31 on CR300/CR350.
 3. Local-function resolution gap: CR300/CR350 accept a local `Dim exp` but resolve bare uses
    as the internal function (pending observations in `tests/fixtures/function_name_collision.json`).
 4. Outputs: auto-allocated table sizes and mixed regimes (`docs/tdf-rules.md` §10, §12; CHM
    TDF 139/192), CDM binary image, `Reps`-dependent timing, non-CR6 artifact byte parity.
-5. Settle `docs/legal.md` before publishing outside this repository.
+5. Fresh fuzz seeds (`tools/fuzz.py`) to find new families now that the saved set is nearly
+   closed; then `cd ../scripts && uv run --no-sync verify.py`.
+6. Settle `docs/legal.md` before publishing outside this repository.

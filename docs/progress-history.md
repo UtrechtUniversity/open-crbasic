@@ -2,6 +2,15 @@
 
 Archived from `PROGRESS.md` on 2026-10-03; current state lives there. Newest log entries first.
 
+- 2026-10-03 (morning/midday): merged Codex `cx-names` (routine-name errors, DataTable
+  placement, include-aware Call cutoff) and `cx-review2` (failed compile on checker exception,
+  pipeline same-line order, pipeline task data with per-member probes, Sub placement), Codex
+  special-function diagnostics, value ranges and table allocation; Sonnet review-3 fixes
+  (expanded-source stop model, folded `Delay` option, shared long conversion), declarations and
+  block ends, small gaps (fixed the `ReadOnly A,` false reject), instruction resources/pairing.
+  Codex hit its usage window twice; human then restricted Codex to gpt-6-sol reviews. Replay
+  1,200 -> 1,291 exact, 45 -> 6 false accepts; pytest 5,868 -> 6,922.
+
 ## Status snapshots before 2026-10-03
 
 Measured 2026-10-02 (evening) on `claude/laughing-franklin-08z9vo` at `94b64c6`, after the
