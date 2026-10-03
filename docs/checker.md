@@ -3498,21 +3498,28 @@ nothing more). CR6/CR1000X report every bad variable.
 
 ## `Dimensions not declared` (CR300/CR350, 2026-10-03)
 
-Fixture `tests/fixtures/dims_not_declared.json` (88 cases, CR300 and CR350, in
-`tests/test_cr3xx_cascade.py`); code in `expressions._has_undefined_index`/`_names_and_dims`.
-The line follows the `is not defined.` lines only when the walk of the statement, left to right
-(earlier arguments, or the assignment target, first), meets an undefined name with a non-empty
-subscript (`Nope(1)`, `Nope(Q)`; never `Nope()`) before any reference to a declared *array*
-(bare, `Rv()` or `Rv(1)`; scalars, constants and undefined plain names do not count). Examples
-(`Public Rv(5), Sc`): `ClockReport(1,Nope(1),Rv(1))` prints it, `ClockReport(Rv(1),Nope(1),Rv(1))`
-and `Rv(1) = Nope(1)` do not. It ends the walk: names after the triggering subscripted name are
-not reported (`Battery(Nope(1)+Nope2(1))` names only `Nope`). At a constant-only position it
-is followed by `Variable illegal in Parameter: <arg>.` (`Delay(Nope(1),2,Sec)`), elsewhere by the
-usual `Too many parameters:  <next argument>.`; code 26 positions (`SplitStr` arguments 2 and 3)
-also end the list on an undefined name.
-Not modelled: a declared array in the *immediately preceding* statement also suppresses it for an
-instruction statement (`Sc = Rv(1)` then `Battery(Nope(1))`), but not for an assignment; and
-`Battery(Rv(1)+Nope(1))` ends with `Illegal destination variable type, expecting Float.`.
+Fixtures `tests/fixtures/dims_not_declared.json` (88 cases) and `tests/fixtures/dims_state.json`
+(110 cases), CR300 and CR350, in `tests/test_cr3xx_cascade.py`; code in `expressions.DimsState`,
+`dims_state`, `_dims_walk`, `_names_and_dims`. The compiler keeps one running "dimension count":
+every reference to a declared variable, in text order and across statements, sets it to that
+variable's number of dimensions (scalar 0, array its declared count, `String` one more than
+declared; the *last* reference in text order wins, so `Rv(Sc)` leaves 0). Constants, predefined
+names and undefined names leave it alone. An undefined name met with more subscripts than the
+current count prints `Dimensions not declared: <arg or statement>` after the `is not defined.`
+lines (`Nope()` never does; the count is compared at the name, before its own arguments). The
+count at the start of the first statement is 0. Examples (`Public Sc, Rv(5), Mm(2,3)`):
+`Sc = Nope(1)` and `ClockReport(Sc,Nope(1),..)` print it, `Rv(1) = Nope(1)` and
+`ClockReport(Mm(1,1),Nope(1,1),..)` do not, `Rv(1) = 1` then `Battery(Nope(1))` does not (the count
+carries over) but `Rv(1) = 1`, `Sc = 2`, `Battery(Nope(1))` does. It ends the walk: names after
+the triggering name are not reported (`Battery(Nope(1)+Nope2(1))` names only `Nope`). At a
+constant-only position it is followed by `Variable illegal in Parameter: <arg>.`
+(`Delay(Nope(1),2,Sec)`), elsewhere by `Too many parameters:  <next argument>.`; code 26
+positions (`SplitStr` arguments 2 and 3) also end the list on an undefined name. An arithmetic
+expression at a Float destination (`Battery(Sa(1)+Nope)`) prints its names, then `Dimensions not
+declared` if the rule fires, else `Illegal destination variable type, expecting Float.`.
+Not modelled: declarations with an initialiser, `Alias` names, table members and `Case` items do
+not move the count (unprobed); a variable declared with different dimension counts in two scopes
+disables the line.
 
 ## CR300/CR350 cascade exemptions: `Alias`, `ConstTable` (2026-10-03)
 
@@ -3567,3 +3574,8 @@ other error of pass 1 or tier B, before or after it (`Sc = Nope1`, `Too many par
 late checks (`SetSetting` field names, option arguments) still print beside it, as the existing
 `file_drives`, `option_args` and `settings_fields` fixtures show. Not modelled: CR6/CR1000X end the
 walk at that `CallTable` (a later `Sc = Nope1` is not printed there).
+
+`C = Int()` with an undefined target `C` prints `C is not defined.` then the generic `Invalid, or
+out of place expression: <statement>` (an empty argument list); like too few arguments, the rest of
+the expression is still parsed, so its names come first (`Nope4 = Int()+Nope`: `Nope4`, `Nope`,
+then the message). Fixture `dims_state.json`.

@@ -1,0 +1,785 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-dims_state-0",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-1",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-2",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-3",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-4",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-5",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-6",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Cc(1,1,1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-7",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Cc(1,1,1),Nope(1,1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-8",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sc,Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-9",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sc,Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-10",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Ss,Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-11",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Ss,Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-12",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sa(1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-13",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sa(1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-14",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm,Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr300-dims_state-15",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(Sc) = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(Sc) = Nope(1)\n."
+  },
+  {
+   "id": "cr300-dims_state-16",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-17",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(Sc,1) = Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Mm(Sc,1) = Nope(1,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-18",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-19",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = K+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-20",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = K+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = K+Nope(1,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-21",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Sc+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Sc+Nope(1)\n."
+  },
+  {
+   "id": "cr300-dims_state-22",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope2+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope2 is not defined.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-23",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope2+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope2 is not defined.\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Nope2+Nope(1,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-24",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Rv(Sc)+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Rv(Sc)+Nope(1)\n."
+  },
+  {
+   "id": "cr300-dims_state-25",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Mm(1,1)+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-26",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Mm(1,1)+Nope(1,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Mm(1,1)+Nope(1,1,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-27",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Status.Battery+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-28",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Rv(1)+Sc+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Rv(1)+Sc+Nope(1)\n."
+  },
+  {
+   "id": "cr300-dims_state-29",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Sc+Rv(1)+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-30",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(Sc)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-31",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Nope(Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Nope(Rv(1))\n."
+  },
+  {
+   "id": "cr300-dims_state-32",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(Sc,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Nope(Sc,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-33",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = Nope(1,Sc)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-34",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Sa(1)+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-35",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Ss+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Ss+Nope(1,1)\n."
+  },
+  {
+   "id": "cr300-dims_state-36",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-37",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = Nope(Ss,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Ss = Nope(Ss,10)\n."
+  },
+  {
+   "id": "cr300-dims_state-38",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = FormatLong(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Expression expects , :     Ss = FormatLong(Nope(1))\n."
+  },
+  {
+   "id": "cr300-dims_state-39",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-40",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Sc = 2\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Dimensions not declared: Nope(1)."
+  },
+  {
+   "id": "cr300-dims_state-41",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Sc = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined.\nline 6: Dimensions not declared:     Sc = Nope(1)\n."
+  },
+  {
+   "id": "cr300-dims_state-42",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = 1\n    Battery(Nope(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr300-dims_state-43",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1)."
+  },
+  {
+   "id": "cr300-dims_state-44",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope(Nope2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Nope2 is not defined.\nline 5: Dimensions not declared: Nope(Nope2)."
+  },
+  {
+   "id": "cr300-dims_state-45",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dims_state-46",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Rv(1)+Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dims_state-47",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Sc+Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Sc+Nope(1)."
+  },
+  {
+   "id": "cr300-dims_state-48",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Rv(1)+Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr300-dims_state-49",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(Rv(1)+Nope,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr300-dims_state-50",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Sc = Int()\n."
+  },
+  {
+   "id": "cr300-dims_state-51",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = Int()\n."
+  },
+  {
+   "id": "cr300-dims_state-52",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = Int()+Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Nope is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = Int()+Nope\n."
+  },
+  {
+   "id": "cr300-dims_state-53",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = 1+Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = 1+Int()\n."
+  },
+  {
+   "id": "cr300-dims_state-54",
+   "logger": "cr300",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = DayName()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: DayName is not defined."
+  },
+  {
+   "id": "cr350-dims_state-0",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-1",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-2",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Rv(1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-3",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-4",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-5",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm(1,1),Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-6",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Cc(1,1,1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-7",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Cc(1,1,1),Nope(1,1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-8",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sc,Nope(),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-9",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sc,Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-10",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Ss,Nope(1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-11",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Ss,Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-12",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sa(1),Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-13",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Sa(1),Nope(1,1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1,1,1).\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-14",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    ClockReport(Mm,Nope(1,1),Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Too many parameters:  Rv."
+  },
+  {
+   "id": "cr350-dims_state-15",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(Sc) = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(Sc) = Nope(1)\n."
+  },
+  {
+   "id": "cr350-dims_state-16",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-17",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(Sc,1) = Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Mm(Sc,1) = Nope(1,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-18",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-19",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = K+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-20",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = K+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = K+Nope(1,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-21",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Sc+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Sc+Nope(1)\n."
+  },
+  {
+   "id": "cr350-dims_state-22",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope2+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope2 is not defined.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-23",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope2+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope2 is not defined.\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Nope2+Nope(1,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-24",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Rv(Sc)+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Rv(Sc)+Nope(1)\n."
+  },
+  {
+   "id": "cr350-dims_state-25",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Mm(1,1)+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-26",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Mm(1,1)+Nope(1,1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Mm(1,1)+Nope(1,1,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-27",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Status.Battery+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-28",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Rv(1)+Sc+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Rv(1)+Sc+Nope(1)\n."
+  },
+  {
+   "id": "cr350-dims_state-29",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Sc+Rv(1)+Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-30",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(Sc)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-31",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Nope(Rv(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Nope(Rv(1))\n."
+  },
+  {
+   "id": "cr350-dims_state-32",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = Nope(Sc,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Rv(1) = Nope(Sc,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-33",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = Nope(1,Sc)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-34",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Sa(1)+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-35",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Ss+Nope(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Sc = Ss+Nope(1,1)\n."
+  },
+  {
+   "id": "cr350-dims_state-36",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-37",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = Nope(Ss,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared:     Ss = Nope(Ss,10)\n."
+  },
+  {
+   "id": "cr350-dims_state-38",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Ss = FormatLong(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Expression expects , :     Ss = FormatLong(Nope(1))\n."
+  },
+  {
+   "id": "cr350-dims_state-39",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-40",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Sc = 2\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Dimensions not declared: Nope(1)."
+  },
+  {
+   "id": "cr350-dims_state-41",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Rv(1) = 1\n    Sc = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined.\nline 6: Dimensions not declared:     Sc = Nope(1)\n."
+  },
+  {
+   "id": "cr350-dims_state-42",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Mm(1,1) = 1\n    Battery(Nope(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr350-dims_state-43",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Nope(1)."
+  },
+  {
+   "id": "cr350-dims_state-44",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope(Nope2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Nope2 is not defined.\nline 5: Dimensions not declared: Nope(Nope2)."
+  },
+  {
+   "id": "cr350-dims_state-45",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Nope+1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dims_state-46",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Rv(1)+Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dims_state-47",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Sc+Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Dimensions not declared: Sc+Nope(1)."
+  },
+  {
+   "id": "cr350-dims_state-48",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(Rv(1)+Nope(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-dims_state-49",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(Rv(1)+Nope,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope is not defined.\nline 5: Illegal destination variable type, expecting Float.\nline 5: Too many parameters:  15000."
+  },
+  {
+   "id": "cr350-dims_state-50",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Sc = Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Sc = Int()\n."
+  },
+  {
+   "id": "cr350-dims_state-51",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = Int()\n."
+  },
+  {
+   "id": "cr350-dims_state-52",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = Int()+Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Nope is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = Int()+Nope\n."
+  },
+  {
+   "id": "cr350-dims_state-53",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = 1+Int()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: Invalid, or out of place expression:     Nope4 = 1+Int()\n."
+  },
+  {
+   "id": "cr350-dims_state-54",
+   "logger": "cr350",
+   "source": "Public Sc, Rv(5), Mm(2,3), Ss As String, Sa(2) As String, Cc(2,2,2)\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    Nope4 = DayName()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Nope4 is not defined.\nline 5: DayName is not defined."
+  }
+ ]
+}

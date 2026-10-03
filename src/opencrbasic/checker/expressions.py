@@ -405,75 +405,160 @@ def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | 
     return False
 
 
-def _has_undefined_index(expr: S.Expr | None, known: set[str], arrays: frozenset[str] = frozenset(),
-                         prior: tuple = ()) -> bool:
-    """Whether CR300/CR350 follow the unresolved-name lines with `Dimensions not declared: %s`
-    (oracle, 2026-09-27 and 2026-10-03; `docs/checker.md` "Dimensions not declared"). The walk is
-    left to right over `prior` (the statement's earlier arguments or assignment target) then
-    `expr`: the first undefined name with a non-empty subscript (`Foo(1)`, not `Foo()`) triggers
-    it, unless a declared array (`arrays`, any reference form) was met first. Names without
-    subscript, constants and scalars do not stop the walk."""
-    for node in (*prior, expr):
-        found = _dims_walk(node, known, arrays)
-        if found is not None:
-            return found
+class DimsState:
+    """The CR300/CR350 compiler's running "dimension count" (oracle, CR300, 2026-10-03,
+    `docs/checker.md` "Dimensions not declared"): every reference to a declared variable, in text
+    order and across statements, sets it to that variable's number of dimensions (a scalar 0, a
+    `String` one more than declared); constants, predefined names and undefined names leave it
+    alone. An undefined name with more subscripts than the current count is
+    `Dimensions not declared`. `var_dims` maps names to counts (None: counted differently in
+    two declarations), `before` maps `id(stmt)` to the count when the statement starts."""
+
+    def __init__(self, var_dims: dict, before: dict | None = None):
+        self.var_dims = var_dims
+        self.before = before or {}
+
+
+def _stmt_exprs(stmt: S.Stmt) -> list:
+    if isinstance(stmt, S.Assignment):
+        return [stmt.target, stmt.value]
+    if isinstance(stmt, (S.If, S.ElseIf, S.DoLoop)):
+        return [stmt.cond]
+    if isinstance(stmt, S.For):
+        return [stmt.var, stmt.start, stmt.end, stmt.step]
+    if isinstance(stmt, (S.Instruction, S.Call)):
+        return list(stmt.args)
+    return []
+
+
+def dims_state(program: S.Program) -> DimsState:
+    """`DimsState` for `program`: variable dimension counts, and the count at each statement's
+    start, simulated over every statement in order (one-line `If` bodies included)."""
+    var_dims: dict[str, int | None] = {}
+
+    def declare(name: str, count: int) -> None:
+        name = name.upper()
+        var_dims[name] = count if var_dims.get(name, count) == count else None
+
+    for stmt in program.statements:
+        if isinstance(stmt, S.Declaration):
+            for v in stmt.vars:
+                declare(v.name, len(v.dims) + ((v.type or "").upper() == "STRING"))
+        elif isinstance(stmt, S.SubDef):
+            for prm in stmt.params:
+                declare(prm.name, prm.dims + ((prm.type or "").upper() == "STRING"))
+    ordered: list[S.Stmt] = []
+    present = {id(st) for st in program.statements}
+    for stmt in program.statements:
+        ordered.append(stmt)
+        if isinstance(stmt, S.If):
+            ordered.extend(st for st in (stmt.inline or []) + (stmt.inline_else or [])
+                           if id(st) not in present)
+    before: dict[int, int | None] = {}
+    state: list = [0]
+    known = _NO_NAMES
+    for stmt in ordered:
+        before[id(stmt)] = state[0]
+        for expr in _stmt_exprs(stmt):
+            if _dims_walk(expr, known, var_dims, state):
+                break
+    return DimsState(var_dims, before)
+
+
+_NO_NAMES: frozenset = frozenset()
+
+
+def _dims_walk(expr: S.Expr | None, known, var_dims: dict, state: list) -> bool:
+    """Walks `expr` in text order updating `state[0]`; True when an undefined name has more
+    subscripts than the current count. With `known` empty every name counts as undefined, so only
+    declared variables (`var_dims`) move the state: that is the simulation mode."""
+    if expr is None:
+        return False
+    if isinstance(expr, S.Name):
+        upper = expr.name.upper()
+        if upper in var_dims:
+            state[0] = var_dims[upper]
+        return False
+    if isinstance(expr, S.Index):
+        upper = expr.name.upper()
+        if upper in var_dims:
+            state[0] = var_dims[upper]
+        elif upper not in known and known is not _NO_NAMES:
+            count = sum(1 for a in expr.args if a is not None)
+            if state[0] is not None and count > state[0]:
+                return True
+        return any(_dims_walk(a, known, var_dims, state) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _dims_walk(expr.operand, known, var_dims, state)
+    if isinstance(expr, S.Binary):
+        return (_dims_walk(expr.left, known, var_dims, state)
+                or _dims_walk(expr.right, known, var_dims, state))
+    if isinstance(expr, S.Member):
+        return (_dims_walk(expr.base, known, var_dims, state)
+                or any(_dims_walk(a, known, var_dims, state) for a in expr.args or []))
+    if isinstance(expr, S.ArrayLiteral):
+        return any(_dims_walk(a, known, var_dims, state) for a in expr.items)
     return False
 
 
-def _dims_walk(expr: S.Expr | None, known: set[str], arrays: frozenset[str]) -> bool | None:
-    if expr is None:
-        return None
-    if isinstance(expr, S.Name):
-        return False if expr.name.upper() in arrays else None
-    if isinstance(expr, S.Index):
-        name = expr.name.upper()
-        if name in arrays:
-            return False
-        if name not in known and any(a is not None for a in expr.args):
-            return True
-        children = expr.args
-    elif isinstance(expr, S.Unary):
-        children = [expr.operand]
-    elif isinstance(expr, S.Binary):
-        children = [expr.left, expr.right]
-    elif isinstance(expr, S.Member):
-        children = [expr.base]
-    else:
-        return None
-    for child in children:
-        found = _dims_walk(child, known, arrays)
-        if found is not None:
-            return found
-    return None
+def _has_undefined_index(expr: S.Expr | None, known: set[str], ds: DimsState | None = None,
+                         stmt: S.Stmt | None = None, prior: tuple = ()) -> bool:
+    """Whether CR300/CR350 follow the unresolved-name lines with `Dimensions not declared: %s`:
+    the walk over `prior` (the statement's earlier arguments, or the assignment target) then
+    `expr`, starting from the count at `stmt`'s start (`DimsState`), meets an undefined name with
+    more subscripts than the current count. Without `ds` the count is 0 (any subscript)."""
+    state = [ds.before.get(id(stmt), 0) if ds and stmt is not None else 0]
+    var_dims = ds.var_dims if ds else {}
+    return any(_dims_walk(e, known, var_dims, state) for e in (*prior, expr))
 
 
-def _names_and_dims(known: set[str], arrays: frozenset[str], prior: tuple,
+def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, prior: tuple,
                     *exprs: S.Expr | None) -> tuple[list[str], bool]:
     """The undefined names of `exprs` and whether `Dimensions not declared` follows them
     (`_has_undefined_index`). When it does, the walk ends at the triggering subscripted name, so
-    names after it are not reported (oracle, CR300, 2026-10-03: `Battery(Nope(1)+Nope2(1))` names
-    only `Nope`)."""
-    dims = _has_undefined_index(None, known, arrays, (*prior, *exprs))
+    the names after it are not reported (oracle, CR300, 2026-10-03: `Battery(Nope(1)+Nope2(1))`
+    names only `Nope`)."""
+    dims = _has_undefined_index(None, known, ds, stmt, (*prior, *exprs))
     if not dims:
         return [n for e in exprs for n in _undefined_names(e, known)], False
+    state = [ds.before.get(id(stmt), 0) if ds and stmt is not None else 0]
+    var_dims = ds.var_dims if ds else {}
+    for e in prior:
+        _dims_walk(e, known, var_dims, state)
     out: list[str] = []
 
     def walk(e: S.Expr | None) -> bool:
         if e is None:
             return False
         if isinstance(e, S.Name):
-            if e.name.upper() not in known:
+            if e.name.upper() in var_dims:
+                state[0] = var_dims[e.name.upper()]
+            if e.name.upper() not in known or e.name.upper() in getattr(known, "tables", ()):
                 out.append(e.name)
             return False
         if isinstance(e, S.Index):
-            if e.name.upper() not in known:
+            upper = e.name.upper()
+            if upper in var_dims:
+                state[0] = var_dims[upper]
+            if upper not in known:
                 out.append(e.name)
-            done = any(walk(a) for a in e.args)
-            return done or (e.name.upper() not in known and any(a is not None for a in e.args))
+                count = sum(1 for a in e.args if a is not None)
+                if state[0] is not None and count > state[0]:
+                    for a in e.args:  # its own arguments are still named
+                        walk(a)
+                    return True
+            for a in e.args:
+                if walk(a):
+                    return True
+            return False
         children = {S.Unary: lambda: [e.operand], S.Binary: lambda: [e.left, e.right],
                     S.Member: lambda: [e.base, *(e.args or [])],
                     S.ArrayLiteral: lambda: e.items}.get(type(e))
-        return any(walk(c) for c in children()) if children else False
+        if children:
+            for c in children():
+                if walk(c):
+                    return True
+        return False
 
     for e in exprs:
         if walk(e):
@@ -627,7 +712,7 @@ def _failed_consts(program: S.Program, known: set[str]) -> set[str]:
 def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set[str],
                        variable_names: set[str], profile, diags: Diagnostics,
                        families: str = "all", dim_counts: dict[str, int] | None = None,
-                       arrays: frozenset[str] = frozenset()) -> bool:
+                       ds: DimsState | None = None) -> bool:
     """One statement's own undefined-symbol and constant-only-family checks, at every position
     `_position_kinds` marks as routed through the general expression/symbol resolver -- a full
     expression-tree walk (`_undefined_names`), not just a direct bare-`Name` argument (round 4,
@@ -692,7 +777,7 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
         dims = False
         if names and not whole_echo:
-            names, dims = _names_and_dims(known, arrays, tuple(stmt.args[:i]), arg)
+            names, dims = _names_and_dims(known, ds, stmt, tuple(stmt.args[:i]), arg)
         # CR300/CR350: an undefined name at a code-20 keyword slot is also `Variable illegal`
         # (oracle, 2026-10-01: `PanelTemp(X,Nope)`).
         is_const_family = positions[i] in _CONST_ONLY_VARIABLE_REJECT_KINDS or (
@@ -910,7 +995,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
-    arrays = symbols.declared_array_names(program)
+    ds = dims_state(program)
     dim_counts = symbols.declared_dim_counts(
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
 
@@ -924,7 +1009,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             _report_statement(stmt, positions, known, variable_names, profile, diags,
-                              families="general", dim_counts=dim_counts, arrays=arrays)
+                              families="general", dim_counts=dim_counts, ds=ds)
 
             # `_VARIABLE_REQUIRED_KINDS` (`Invalid Variable or Array: %s.`) is intentionally not
             # applied here despite oracle evidence that it is a real rule for *some* instructions
@@ -987,7 +1072,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         text = _if_condition_text(stmt)
         if not names or text is None:
             continue
-        names, dims = _names_and_dims(known, arrays, (), stmt.cond)
+        names, dims = _names_and_dims(known, ds, stmt, (), stmt.cond)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
         else:
@@ -1045,7 +1130,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file)
         else:
-            names, dims = _names_and_dims(known, arrays, (stmt.target,), stmt.value)
+            names, dims = _names_and_dims(known, ds, stmt, (stmt.target,), stmt.value)
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
             if dims:
@@ -1717,7 +1802,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
     its matching `Next` line (`For j = 1 To 2` -> `j .`). CR300/CR350: per-name `%s is not
     defined.` on the `For` line in source order, plus `Dimensions not declared: j(1) .` for an
     undefined indexed loop variable."""
-    arrays = symbols.declared_array_names(program)
+    ds = dims_state(program)
     pending: list[tuple[S.For, str]] = []
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "NEXT" and pending and \
@@ -1748,7 +1833,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
                 for name in names:
                     diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                                 stmt.file)
-                if i == 0 and text is not None and _has_undefined_index(expr, known, arrays):
+                if i == 0 and text is not None and _has_undefined_index(expr, known, ds, stmt):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
         pending.append((stmt, var_text))
 
@@ -1760,7 +1845,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     when an `Is` comparison or an upper bound fails first): `Case 1, 2, Nope` -> three.
     CR300/CR350 print each undefined name; there a `Select Case` with an undefined name opens no
     block, so its `Case`s give `Case outside Select.` and its end `EndSelect w/o Select`."""
-    arrays = symbols.declared_array_names(program)
+    ds = dims_state(program)
     whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     orphans: list[bool] = []  # per open Select: True when CR300 did not open it
     for stmt in program.statements:
@@ -1784,7 +1869,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
                 for name in names:
                     diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                                 stmt.file)
-                if _has_undefined_index(stmt.cond, known, arrays):
+                if _has_undefined_index(stmt.cond, known, ds, stmt):
                     diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
             continue
         if not isinstance(stmt, S.Case) or stmt.is_else or \
@@ -1825,7 +1910,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
     its arguments (oracle, 2026-10-01): CR6/CR1000X `Invalid symbol in expression: <statement>.`
     (indentation and trailing spaces kept); CR300/CR350 each name, then `Dimensions not declared:
     <statement>` when an undefined name is indexed."""
-    arrays = symbols.declared_array_names(program)
+    ds = dims_state(program)
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.explicit or stmt.name.upper() not in profile.functions:
             continue
@@ -1835,7 +1920,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
             continue
-        names, dims = _names_and_dims(known, arrays, (), *stmt.args)
+        names, dims = _names_and_dims(known, ds, stmt, (), *stmt.args)
         for name in names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
         if dims:

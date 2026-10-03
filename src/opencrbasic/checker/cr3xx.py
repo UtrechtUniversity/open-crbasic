@@ -346,11 +346,18 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             continue
         if types is None:
             types, known = _variable_types(program), expressions._known_names(program, profile)
+            ds = expressions.dims_state(program)
         arg = stmt.args[0]
         key = (stmt.line, stmt.file)
         undefined = [n for n in _expr_names(arg) if n.upper() not in known]
+        expression = False
         if undefined:
-            if not isinstance(arg, (S.Name, S.Index)):
+            if isinstance(arg, (S.Binary, S.Unary)):
+                # an arithmetic expression is no destination: after its names, `Dimensions not
+                # declared` or the destination-type error (oracle, CR300, 2026-10-03)
+                expression = True
+                undefined, dims = expressions._names_and_dims(known, ds, stmt, (), arg)
+            elif not isinstance(arg, (S.Name, S.Index)):
                 continue
             keep = [profile.unresolved_symbol_message.format(name=n) for n in undefined]
         elif _is_bad_destination(arg, types):
@@ -366,10 +373,12 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             (i for i, d in enumerate(diags.items) if d.file == stmt.file and d.line > stmt.line),
             len(diags.items))
         new = list(own[:len(keep)]) or [Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file)]
-        if keep and expressions._has_undefined_index(arg, known):
+        if keep and (dims if expression else expressions._has_undefined_index(arg, known, ds, stmt)):
             # (oracle, CR300, 2026-10-03: `Battery(Nope(1))`, `PanelTemp(Nope(1),15000)`)
             new.append(Diagnostic("error", stmt.line, expressions.dimensions_message(
                 expressions._arg_text(stmt, 0).strip(), profile, False), stmt.file))
+        elif keep and expression:
+            new.append(Diagnostic("error", stmt.line, _DEST_MESSAGE, stmt.file))
         if len(stmt.args) >= 2 and stmt.args[1] is not None:
             text = instr_rules._next_simple_token(expressions._arg_text(stmt, 1)) or \
                 expressions._arg_text(stmt, 1)
@@ -941,7 +950,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
         return
 
 
-_ARITY_PREFIXES = ("No Matching, or out of place ) in expression: ", "Expression expects , : ")
+_ARITY_PREFIXES = {"many": "No Matching, or out of place ) in expression: ",
+                   "few": "Expression expects , : ",
+                   "empty": "Invalid, or out of place expression: "}
 
 
 def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: dict) -> None:
@@ -964,8 +975,8 @@ def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: dict) -> N
                       if expressions._call_arity_problem(expr.name, args[:k + 1], profile) == "many")
             args, stop = args[:at], True
             state.setdefault("kind", "many")
-        elif problem == "few":
-            state.setdefault("kind", "few")
+        elif problem in ("few", "empty"):
+            state.setdefault("kind", problem)
         elif problem:
             state["bad"] = True
         for a in args:
@@ -1008,24 +1019,23 @@ def order_names_around_arity(program: S.Program, profile, diags: Diagnostics) ->
             continue
         own = [(i, d) for i, d in enumerate(diags.items) if (d.line, d.file) == key
                and d.severity == "error"]
-        arity = [(i, d) for i, d in own if d.message.startswith(_ARITY_PREFIXES)]
         if known is None:
             known = expressions._known_names(program, profile)
-        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(
-                stmt.target, known):
-            # an unresolved target hides the pass-1 arity check, but the parse still reaches it
-            kind = expressions._find_arity_problem(stmt.value, profile)
-            if kind in ("few", "many"):
-                arity = [(own[0][0], Diagnostic("error", stmt.line, expressions._arity_message(
-                    kind, stmt.text, profile, stmt.at_eol, True), stmt.file, show_file=False))]
-        if len(arity) != 1 or any(
-                d.message != arity[0][1].message and not d.message.endswith(_UNRESOLVED_SUFFIX)
-                for _, d in own):
-            continue
         state = {"names": []}
         for e in exprs:
             _arity_walk(e, known, profile, state)
-        if state.get("bad") or state.get("kind") is None:
+        kind = state.get("kind")
+        if state.get("bad") or kind is None:
+            continue
+        arity = [(i, d) for i, d in own if d.message.startswith(_ARITY_PREFIXES[kind])]
+        if not arity and isinstance(stmt, S.Assignment) and own and expressions._undefined_names(
+                stmt.target, known):
+            # an unresolved target hides the pass-1 arity check, but the parse still reaches it
+            arity = [(own[0][0], Diagnostic("error", stmt.line, expressions._arity_message(
+                kind, stmt.text, profile, stmt.at_eol, True), stmt.file, show_file=False))]
+        if len(arity) != 1 or any(
+                d.message != arity[0][1].message and not d.message.endswith(_UNRESOLVED_SUFFIX)
+                for _, d in own):
             continue
         new = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=n),
                           stmt.file) for n in state["names"]] + [arity[0][1]]
