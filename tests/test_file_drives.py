@@ -8,7 +8,7 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index", "table_members", "sdi12_structure_dest",
-                     "readonly_struct_scope", "table_members_scope")
+                     "readonly_struct_scope", "table_members_scope", "spi_open_order")
          for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 
 

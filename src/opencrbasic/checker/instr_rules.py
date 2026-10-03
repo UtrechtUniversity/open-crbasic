@@ -1156,8 +1156,10 @@ def _port_number(arg: S.Expr | None) -> int | None:
 def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X: `SPIRead`/`SPIWrite` on a port no earlier (textual order, `Sub` bodies and
     branches included) `SPIOpen` opened -> `SPIOpen must precede SPIWrite.` (`...SPIRead.`);
-    docs/instructions.md. Ports compare by terminal (`C1` = 101, `U1` = 201). Any `SPIOpen` that is
-    not a plain valid SPI port makes the rest of the file unchecked."""
+    docs/instructions.md. Ports compare by terminal (`C1` = 101, `U1` = 201). An `SPIOpen` on a
+    numeric port outside the valid set opens nothing but later reads/writes are still checked; one whose
+    port is not a plain terminal/number (or, on CR6, a bare number below 100) makes the rest of the file
+    unchecked."""
     valid = _SPI_PORTS.get(profile.name)
     if valid is None:
         return
@@ -1168,9 +1170,10 @@ def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> Non
         kw = stmt.keyword.upper()
         if kw == "SPIOPEN":
             port = _port_number(stmt.args[0]) if stmt.args else None
-            if port not in valid:
-                return
-            opened.add(port)
+            if port is None or (port < 100 and profile.name == "cr6"):
+                return  # CR6 reports `Invalid port N` for a non-terminal number instead
+            if port in valid:
+                opened.add(port)
         elif kw in ("SPIREAD", "SPIWRITE") and len(stmt.args) == 3:
             port = _port_number(stmt.args[0])
             if port in valid and port not in opened:
