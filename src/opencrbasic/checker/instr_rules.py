@@ -1284,6 +1284,82 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
                 diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
 
 
+def check_avw200_scan_time(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """Pipeline mode, CR6/CR1000X: in the one main `Scan` that holds every `AVW200`, each `AVW200`
+    after which twice the running sum of `Reps` (2 s per sensor) exceeds the scan interval gets
+    `Scan interval <I> secs is too small; AVW200 measurement time is <T> secs (2 secs per sensor).`;
+    docs/instructions.md. Only whole-second intervals, constant `Reps` 1..16 and channels 1..32, and no `SubScan` or
+    conditional block in the scan."""
+    from .. import mode
+    if profile.name not in ("cr6", "cr1000x") or "AVW200" not in profile.instructions:
+        return
+    stmts = [st for st in program.statements if isinstance(st, (S.Instruction, S.If, S.For, S.DoLoop, S.Case))]
+    if not any(isinstance(st, S.Instruction) and st.keyword.upper() == "AVW200" for st in stmts):
+        return
+    try:
+        decided = mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
+                              lambda e: consteval.value_of(e, env))
+    except Exception:
+        return
+    if decided != "Pipeline":
+        return
+    scan = None            # the open main-sequence Scan statement
+    slow = False
+    sums: list[tuple[S.Instruction, int, list]] = []   # (scan, interval seconds, [(stmt, reps)])
+    for st in stmts:
+        if not isinstance(st, S.Instruction):
+            if scan is not None:
+                return  # AVW200 in a conditional/loop has its own, unmodelled message
+            continue
+        kw = st.keyword.upper()
+        if kw in ("SELECT", "WHILE") and scan is not None:
+            return
+        if kw == "SLOWSEQUENCE":
+            slow = True
+        elif kw == "SCAN":
+            scan = None if slow else st
+            if scan is not None:
+                sums.append((st, None, []))
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", st.text or "")):
+            scan = None
+        elif kw == "SUBSCAN" and scan is not None:
+            return
+        elif kw == "AVW200":
+            if scan is None:
+                return
+            sums[-1][2].append(st)
+    holders = [entry for entry in sums if entry[2]]
+    if len(holders) != 1 or sum(len(e[2]) for e in sums) != sum(
+            1 for st in stmts if isinstance(st, S.Instruction) and st.keyword.upper() == "AVW200"):
+        return
+    scan_stmt, _, calls = holders[0]
+    interval_us = _interval_us(scan_stmt.args[0] if scan_stmt.args else None,
+                               scan_stmt.args[1] if len(scan_stmt.args) > 1 else None, env)
+    if interval_us is None or interval_us % 1_000_000 or interval_us <= 0:
+        return
+    interval = int(interval_us // 1_000_000)
+    total = 0
+    for st in calls:
+        try:
+            reps = consteval.value_of(st.args[7], env) if len(st.args) > 7 else None
+        except consteval.NotConstant:
+            return
+        if isinstance(reps, bool) or not isinstance(reps, (int, float)) or reps != int(reps) \
+                or not 1 <= reps <= 16:
+            return
+        for position in (5, 6):   # AVWChan / MuxChannel: outside 1..32 the compiler adds `Bad parameter(s)`
+            try:
+                channel = consteval.value_of(st.args[position], env)
+            except (consteval.NotConstant, IndexError):
+                return
+            if isinstance(channel, bool) or not isinstance(channel, (int, float)) or not 1 <= channel <= 32:
+                return
+        total += int(reps)
+        if 2 * total > interval:
+            diags.error(st.line, f"Scan interval {interval} secs is too small; AVW200 measurement "
+                        f"time is {2 * total} secs (2 secs per sensor).", st.file)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 

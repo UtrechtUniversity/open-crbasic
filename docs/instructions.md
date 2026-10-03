@@ -1143,3 +1143,18 @@ clash line. Not implemented: named modules that lack an instruction (`EC100`, `C
 `VOLT408V1` and others print the same message with their own name, or a warning), `PeriodAvg`
 (not confirmed to register its address), `BrHalf`/`BrFull`/`TCDiff`/`Resistance3W`, and addresses
 outside 1..120.
+
+### AVW200 scan time (pipeline mode, CR6/CR1000X)
+`Scan interval <I> secs is too small; AVW200 measurement time is <T> secs (2 secs per sensor).`
+at each `AVW200` after which `2 * (sum of Reps so far)` exceeds the scan interval `I` in seconds
+(equal is accepted: 16 sensors need a 32 s scan, 63 s fails 2x16 and 64 s passes). The sum runs over
+all `AVW200` calls in the scan regardless of `ComPort`, channels, frequencies, excitation or
+thermistor options; every call past the limit reports its own running time (`64`, then `96`).
+`Min` and whole-second `mSec` intervals are shown in seconds. No message in `SlowSequence` or
+`SequentialMode`. Aside, like the other asides here: coexists with tier-B and tier-C findings, hidden
+by a pass-1 error. Not implemented (the check stays silent): a non-whole-second interval (the real
+compiler adds `Scan interval for AVW200 must be integral number of seconds`), `Reps` outside 1..16,
+channels outside 1..32 (`Bad parameter(s): ...`), an `AVW200` in an `If`/`For`/`Select`/loop (`AVW200
+not allowed inside of a conditional statement in PipeLine Mode.`), `AVW200` in more than one scan or
+beside a `SubScan` (`All instances of AVW200 to the same interface must scan at the same interval`).
+`instr_rules.check_avw200_scan_time`.
