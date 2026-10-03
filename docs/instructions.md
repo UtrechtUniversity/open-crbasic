@@ -1081,3 +1081,16 @@ hidden by a pass-1 error (`Battery()`). Numeric channels, `P1`/`P2`, `Const` cha
 CR300/CR350 (different messages, and CR350 compiled the reuse), a reuse across scans, and the
 sibling clash with `PortSet`/`SDI12Recorder` (`channel C1 already in use or unavailable.`) were
 probed but are not implemented. `instr_rules.check_pulsecount_channels`.
+
+### SPIRead/SPIWrite before SPIOpen (CR6/CR1000X)
+`SPIOpen must precede SPIWrite.` / `...SPIRead.` is reported for an `SPIRead`/`SPIWrite` whose port
+no earlier `SPIOpen` (textual order only: `Sub` bodies, branches and an inline `If` count; an
+`SPIOpen` after the call does not) opened. Pairing is per terminal, with
+`C1`, `101` (and CR6 `U1`, `201`) the same terminal and CR6 `C1`/`U1` different: `Open(C1)` then
+`Write(U1)` fails. CR1000X pairs `C1` and `C5` the same way. It is an aside: it coexists with a
+tier-B error elsewhere or on the same line, does not hide the tier-C `SPI Port must be ...` of
+another line, prints first on its own line (ahead of `SPIWrite illegally occurs before BeginProg.`
+and of `Invalid symbol ...`), and a pass-1 error (`Battery()`, a short argument list) hides it.
+Not implemented: a write whose own port is not a valid SPI port (no must-precede was seen for
+`C3`), and any file with an `SPIOpen` on a non-SPI port (CR1000X still reports the later write
+there; CR6 does not), which is left unchecked. `instr_rules.check_spi_open_order`.

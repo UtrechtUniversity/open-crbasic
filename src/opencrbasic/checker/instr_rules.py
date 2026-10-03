@@ -1139,6 +1139,45 @@ def check_pulsecount_channels(program: S.Program, profile, diags: Diagnostics) -
             used.add(name)
 
 
+_SPI_PORTS = {"cr6": {101, 201, 205, 209}, "cr1000x": {101, 105}}
+_PORT_NAME = re.compile(r"([CU])(\d+)")
+
+
+def _port_number(arg: S.Expr | None) -> int | None:
+    """`C<n>` -> 100+n, `U<n>` -> 200+n, an integer literal as is; `None` when not recognisable."""
+    if isinstance(arg, S.Name):
+        m = _PORT_NAME.fullmatch(arg.name.upper())
+        return (100 if m.group(1) == "C" else 200) + int(m.group(2)) if m else None
+    if isinstance(arg, S.Number) and float(arg.value).is_integer():
+        return int(arg.value)
+    return None
+
+
+def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X: `SPIRead`/`SPIWrite` on a port no earlier (textual order, `Sub` bodies and
+    branches included) `SPIOpen` opened -> `SPIOpen must precede SPIWrite.` (`...SPIRead.`);
+    docs/instructions.md. Ports compare by terminal (`C1` = 101, `U1` = 201). Any `SPIOpen` that is
+    not a plain valid SPI port makes the rest of the file unchecked."""
+    valid = _SPI_PORTS.get(profile.name)
+    if valid is None:
+        return
+    opened: set[int] = set()
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        kw = stmt.keyword.upper()
+        if kw == "SPIOPEN":
+            port = _port_number(stmt.args[0]) if stmt.args else None
+            if port not in valid:
+                return
+            opened.add(port)
+        elif kw in ("SPIREAD", "SPIWRITE") and len(stmt.args) == 3:
+            port = _port_number(stmt.args[0])
+            if port in valid and port not in opened:
+                name = "SPIRead" if kw == "SPIREAD" else "SPIWrite"
+                diags.error(stmt.line, f"SPIOpen must precede {name}.", stmt.file)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 

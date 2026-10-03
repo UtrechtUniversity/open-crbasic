@@ -230,6 +230,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     pipe = Diagnostics()
 
     ranges = Diagnostics()   # `measure.json` `const_ranges` findings, see below
+    leading = Diagnostics()  # pass-2 findings that print ahead of their line's other findings
     links = structure.CallLinks()
     pass1_errors = bool(diags.errors)
     if not diags.errors:
@@ -246,6 +247,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # where (if anywhere) tier B should be considered cut off, matching the real compiler's own
         # "stop entirely at the first placement error" behaviour.
         pass2_start = len(diags.items)
+        _run_pass(instr_rules.check_spi_open_order, _with_inline(program), profile, leading)
         # Block-closer messages come before a same-line placement error (`EndIf illegally
         # occurs before BeginProg.` follows `END IF without IF...`).
         _run_pass(structure.check_block_closers, program, profile, diags)
@@ -287,6 +289,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_pulsecount_channels, flat, profile, bounds)
         bounds.items = [d for d in bounds.items if before_cutoff(d)]
         pipe.items = [d for d in pipe.items if before_cutoff(d)]
+        leading.items = [d for d in leading.items if before_cutoff(d)]
         _run_pass(instr_rules.check_sdm_address, program, profile, diags, env)
         # Collected aside like the index bounds: a finding neither hides tier C (oracle: a bad
         # `SemaphoreGet` beside a bad `VoltDiff` channel reports both) nor is hidden by tier B.
@@ -423,6 +426,12 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         diags.items.insert(index, diagnostic)
 
     diags.items += bounds.items + fields.items + ranges.items
+    for d in leading.items:
+        # Aside like `bounds` (tier C still runs), but printed first on its own line (oracle:
+        # `SPIOpen must precede SPIWrite.` precedes `SPIWrite illegally occurs before BeginProg.`).
+        at = next((i for i, o in enumerate(diags.items) if (o.file, o.line) == (d.file, d.line)),
+                  len(diags.items))
+        diags.items.insert(at, d)
     # `Call`s naming no declared `Sub` (`structure.finalize_call_links`): a link-step message
     # after every other error, so it does not gate the tier-C checks above.
     _run_pass(structure.finalize_call_links, links, profile, diags, pass1_errors)
