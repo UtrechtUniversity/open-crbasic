@@ -1065,6 +1065,22 @@ def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Di
     diags.items[:] = [d for d in diags.items if id(d) not in ours]
 
 
+def drop_calltable_error_with_other_errors(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the `CallTable` `Could not find DataTable %s.` is hidden by any other error
+    found by pass 1 or tier B, before or after it (oracle, CR300, 2026-10-03: `CallTable Hourly`
+    with `Sc = Nope1` before or after it, or a `Too many parameters`). The late checks run after
+    it and print beside it (`SetSetting("Baudrate(9)",1)`, a `Matrix` option error; tests of
+    `tests/fixtures/file_drives*.json`, `option_args.json`, `settings_fields.json`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    sites = {(st.line, st.file) for st in program.statements
+             if isinstance(st, S.Instruction) and st.keyword.upper() == "CALLTABLE"}
+    mine = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in sites
+            and d.message.startswith("Could not find DataTable ")]
+    if mine and any(d.severity == "error" and d not in mine for d in diags.items):
+        diags.items[:] = [d for d in diags.items if d not in mine]
+
+
 def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: `Nope += 1` reports `Nope is not defined.` once, though it is stored as
     `Nope = Nope + 1` (oracle, 2026-10-01; also under the cascade, `i2copen_1.CR6`)."""

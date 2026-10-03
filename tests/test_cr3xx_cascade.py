@@ -9,7 +9,8 @@ from opencrbasic.compiler import compile_file
 FIXTURES = ["illegal_dimension_echo", "dims_not_declared",
             "alias_consttable_cascade", "alias_undeclared_cascade",
             "arity_name_order",
-            "block_closer_suppression"]
+            "block_closer_suppression",
+            "calltable_first_only", "calltable_hidden"]
 CASES = [c for name in FIXTURES for c in json.loads(
     (Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 

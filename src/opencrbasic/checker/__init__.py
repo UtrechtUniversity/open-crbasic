@@ -365,6 +365,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(cr3xx.check_float_destinations, flat, profile, diags)
         _run_pass(cr3xx.check_undefined_arg_aborts, flat, profile, diags)
         _run_pass(cr3xx.drop_too_many_after_variable_illegal, flat, profile, diags)
+        _run_pass(cr3xx.drop_calltable_error_with_other_errors, program, profile, diags)
         # Every pass-2 error past the placement-error's own line is dropped, reproducing the
         # real compiler's "stop entirely" behaviour without any of the modules above needing
         # to coordinate the cutoff themselves (`docs/checker.md` "Pass model"). Warnings and

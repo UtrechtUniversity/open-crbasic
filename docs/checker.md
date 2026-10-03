@@ -3556,3 +3556,14 @@ before `BeginProg` ends the walk first (`Sc = 1` then `EndIf` -> `Expr illegally
 BeginProg.` only), so on these loggers `check_block_closers` now feeds `leading` (printed ahead of
 their line, outside the placement stop) instead of the main list; `leading` findings of one line
 keep their own order.
+
+## `Could not find DataTable` for `CallTable` (2026-10-03)
+
+Fixtures `tests/fixtures/calltable_first_only.json` (all four loggers) and
+`tests/fixtures/calltable_hidden.json` (CR300/CR350), `instr_data.check_unclosed_calltable`,
+`cr3xx.drop_calltable_error_with_other_errors`. Only the first `CallTable` of a missing table is
+reported, whatever later ones name (all four loggers). On CR300/CR350 it is also hidden by any
+other error of pass 1 or tier B, before or after it (`Sc = Nope1`, `Too many parameters`); the
+late checks (`SetSetting` field names, option arguments) still print beside it, as the existing
+`file_drives`, `option_args` and `settings_fields` fixtures show. Not modelled: CR6/CR1000X end the
+walk at that `CallTable` (a later `Sc = Nope1` is not printed there).

@@ -214,7 +214,9 @@ def _calltable_names(program: S.Program):
 
 def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
     for stmt, name in unknown_calltables(program):
+        # only the first one is printed (oracle, all four loggers, 2026-10-03)
         diags.error(stmt.line, f"Could not find DataTable {name}.", stmt.file)
+        return
 
 
 def check_table_structure(program: S.Program, profile: Profile,
