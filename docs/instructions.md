@@ -1226,3 +1226,18 @@ Not modelled: member destinations (`A(1).Temp` already fails, with another messa
 unallocated `CallTable` later in the file): the oracle reports both, we report only the later one.
 Other instructions with a structure destination (`VoltSe`, `Therm107`, `SerialIn`) give unrelated
 messages and were not changed.
+
+## Unclosed StructureType (CR300/CR350, 2026-10-03)
+
+Fixture `tests/fixtures/unclosed_structure.json`, `tests/test_unclosed_structure.py`,
+`expressions._unclosed_structure_variables`. Reproducer `cr350/false_accept/f89fbcbeef10`. When the
+last `StructureType T` never reaches `EndStructureType`, a `Public`/`Dim` variable declared `As T`
+is undefined as an instruction argument: `SplitStr (Sensor1,Measurements,",",3,5)` gives
+`Sensor1 is not defined.` plus the usual undefined-name cascade (`Too many parameters:  Measurements.`);
+`PanelTemp(Sensor1,15000)`, `Move(X,1,Sensor1,1)` and `Battery(Sensor1)` likewise (probed, not
+fixture-pinned beyond `PanelTemp`). Not the cause: the parenthesised type name `StructureType
+(Values)` and the line-continuation string both behave like the plain forms. Still accepted by the
+real compiler: `Sensor1 = 1` and `Sensor1.val_Float = 1`; the parenthesised-name form with a
+following `Sensor1.val_Float = 1` is a false reject here (`Invalid Variable declaration .`), and
+`Sensor1.val_Float` as an argument (`Could not find DataTable Sensor1.`) is not modelled. CR6 and
+CR1000X crash with a page fault on every unclosed variant, so no rule is available there.

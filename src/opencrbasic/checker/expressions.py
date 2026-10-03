@@ -472,7 +472,29 @@ def _known_names(program: S.Program, profile) -> set[str]:
         | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
-    return KnownNames(known - _failed_consts(program, known), tables=_value_less_tables(program))
+    known -= _failed_consts(program, known)
+    if profile.single_pass:
+        known -= _unclosed_structure_variables(program)
+    return KnownNames(known, tables=_value_less_tables(program))
+
+
+def _unclosed_structure_variables(program: S.Program) -> set[str]:
+    """CR300/CR350: upper-case names of variables declared `As <T>` where `StructureType T` never
+    reaches `EndStructureType`; they are `is not defined.` (oracle 2026-10-03,
+    `docs/instructions.md` "Unclosed StructureType")."""
+    open_type = None
+    unclosed: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" \
+                and st.args and isinstance(st.args[0], S.Name):
+            open_type = st.args[0].name.upper()
+        elif isinstance(st, S.Instruction) and st.keyword.upper() == "ENDSTRUCTURETYPE":
+            open_type = None
+    if open_type is not None:
+        for st in program.statements:
+            if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+                unclosed.update(v.name.upper() for v in st.vars if (v.type or "") == open_type)
+    return unclosed
 
 
 class KnownNames(set):
