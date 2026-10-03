@@ -35,7 +35,7 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-03, evening)
+## Status (2026-10-04, after round 2)
 
 Measured on `claude/laughing-franklin-08z9vo` at the commit that adds this text. Exact = equal
 exit code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
@@ -43,10 +43,10 @@ opencrbasic rejects: **none observed** in any differential, replay or fixture ru
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 7,499 passed, 311 skipped |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 8,437 passed, 311 skipped |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 436/68/2/1, CR1000X 443/61/2/1, CR300 415/90/0/2, CR350 415/90/0/2 |
-| `tools/fuzz_replay.py` (1,949 reproducers) | 1,296 exact, 1 false accept (CR300 storage limit, `docs/tdf-rules.md` "Storage limit"), 620 message diffs, 14 mode diffs, 18 oracle errors (`scratch/replay-evening2.json`) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 438/67/1/1, CR1000X 449/56/1/1, CR300 420/85/0/2, CR350 420/85/0/2 |
+| `tools/fuzz_replay.py` (1,949 reproducers) | 1,611 exact, 1 false accept (CR300 storage limit, `docs/tdf-rules.md` "Storage limit"), 305 message diffs, 14 mode diffs, 18 oracle errors (`scratch/replay-r2.json`) |
 | `tools/tdftest.py` | repo TDF + table list 16/16 byte-identical; CHM 139/192 TDF, 155/192 table list (last measured 2026-10-02) |
 | implementation exceptions (difftest/replay class) | 0 |
 | `cd ../scripts && uv run --no-sync verify.py` (needs `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`, not the opencrbasic env) | 2026-10-03: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
@@ -99,31 +99,35 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `_run_pass(...)` lines at the same spot: keep HEAD, add the new pass lines, and confirm with a
   sorted diff of `_run_pass(` names against the worker branch.
 
-## Resume here (open work at 2026-10-03 evening)
+## Resume here (open work at 2026-10-04)
 
 - Branch `ocb-ranges` worktree: uncommitted, unverified CDM range work (`checker/cdm.py`,
   `data/cdm.json`); CDM address/NULL-module rules have since landed from another branch, so
   compare before finishing, or discard.
-- gpt-6-sol review of `fc8e92d..7a632be` done (`scratch/codex/review-fc8e92d-HEAD.md`); its three
-  defects are fixed. Not reviewed yet: `214e442`..HEAD (NTP arity, structure index count, review
-  fixes, interval truncation, Matrix dimensions, unclosed StructureType).
-- Finished worker worktrees `ocb-structidx`, `ocb-review3`, `ocb-tablespace`, `ocb-cr3xx-matrix`
-  hold only untracked scratch; safe for the human to remove.
-- A `git stash` entry from the argvals agent holds a superseded `intervals.py` draft; safe for
-  the human to drop.
-- Unclosed `StructureType` on CR300/CR350 is compiler undefined behaviour: verdicts observed once,
-  later reruns page-fault (`docs/instructions.md` "Unclosed StructureType").
+- gpt-6-sol reviewed through `db6fbd1`'s predecessors of round 1 (`scratch/codex/review-214e442-
+  HEAD.md`); its findings are fixed. Not reviewed yet: round 2, `0f41903`..HEAD (block placement
+  order, expression messages, EPI buffers, zero-interval scans, CR300/CR350 cascade).
+- Finished worker worktrees under `.claude/worktrees/` (`ocb-structidx`, `ocb-review3`,
+  `ocb-tablespace`, `ocb-cr3xx-matrix`, `ocb-r2-*`) hold only untracked scratch; safe for the
+  human to remove. A `git stash` entry from the argvals agent is also safe to drop.
+- Unclosed `StructureType` is compiler undefined behaviour on all four loggers: verdicts observed
+  once (old cache entries), uncached reruns page-fault (`docs/instructions.md`).
 
 ## Next steps
 
-1. Known false reject (worst class): `StructureType (Values)` without `EndStructureType`, then
-   `Sensor1.val_Float = 1` -> ours `Invalid Variable declaration .`, real accepts (CR300/CR350).
-   Then the two CR6/CR1000X help verdict mismatches (`cdmbridgefilt_1`: EPI scan buffers;
-   `cpispeed2_1`: CPI measurement time) and the CR300 storage limit (evidence in
-   `docs/tdf-rules.md`, only once modelled without false rejects).
-2. Message differences (620 replay; 61-91 per logger in the help corpus): rank by first
+1. Suspected false reject: `PortSet(C1,x) 1` is silently accepted by the real compiler, ours
+   reports `Invalid, or out of place`. Then false accept: `Alias Q(1) = LevelFt` naming an
+   existing variable (real: `already declared as a variable.`, all four loggers). Remaining help
+   verdict mismatch `cpispeed2_1` (CPI time needed is non-linear in Reps; evidence in the
+   ocb-r2-misc report summary in `docs/instructions.md`) and the CR300 storage limit
+   (`docs/tdf-rules.md`).
+2. Message differences (305 replay; 56-85 per logger in the help corpus): rank by first
    differing diagnostic; prefer shared gating/ordering fixes (CR300/CR350 cascade, tier gating,
-   same-line ordering by argument) over per-instruction edits. Known: `PortGet(A(9),1)` order on
+   same-line ordering by argument) over per-instruction edits. Open from round 2: several
+   unresolved instruction arguments are each reported in a non-textual order (MoveBytes 1,4,3;
+   SendVariables 1,9); `If` with a malformed `Then`; CR6 `Invalid channel` beside a Scan parameter
+   error; CR1000X pass-1 symbol error hiding `Scan 0uSec invalid`; `CallTable` inside its own open
+   `DataTable`; CR300/CR350 `Return`/nested-Scan cascades. Known: `PortGet(A(9),1)` order on
    CR6/CR1000X, interleaved messages for two port statements on one `:` line, float32 rounding
    of values near 2^31 on CR300/CR350.
 3. Local-function resolution gap: CR300/CR350 accept a local `Dim exp` but resolve bare uses
