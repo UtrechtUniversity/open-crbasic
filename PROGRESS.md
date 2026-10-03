@@ -49,7 +49,7 @@ opencrbasic rejects: **none observed** in any differential, replay or fixture ru
 | `tools/fuzz_replay.py` (1,949 reproducers) | 1,291 exact, 6 false accepts, 620 message diffs, 14 mode diffs, 18 oracle errors (1,108 exact / 115 false accepts on 2026-10-02 morning) |
 | `tools/tdftest.py` | repo TDF + table list 16/16 byte-identical; CHM 139/192 TDF, 155/192 table list (last measured 2026-10-02) |
 | implementation exceptions (difftest/replay class) | 0 |
-| `cd ../scripts && uv run --no-sync verify.py` | last observed 2026-10-02: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
+| `cd ../scripts && uv run --no-sync verify.py` (needs `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`, not the opencrbasic env) | 2026-10-03: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
 
 Reference faults (`pointervariable_2.CR6` on all loggers, `strcomp_3.CR6` on CR300/CR350, 18
 replay reproducers) make the gates exit nonzero; they are counted separately, never as verdicts.
