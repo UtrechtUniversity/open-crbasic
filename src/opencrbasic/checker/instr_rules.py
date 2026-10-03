@@ -1215,6 +1215,43 @@ def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env)
             diags.error(stmt.line, "Bridge parameter must be an Array(2,3) of type long.", stmt.file)
 
 
+# CDM instructions whose first two arguments are `CDMType, CPIAddress` and that were each observed to
+# register their address (oracle, CR6; docs/instructions.md "CDM address and module type").
+_CDM_ADDRESS_INSTRUCTIONS = frozenset({
+    "CDM_BATTERY", "CDM_VOLTSE", "CDM_VOLTDIFF", "CDM_TCDIFF", "CDM_TCSE", "CDM_PANELTEMP",
+    "CDM_BRHALF", "CDM_EXCITEV", "CDM_EXCITEI", "CDM_SW12", "CDM_SW5", "CDM_SWPOWER",
+    "CDM_DELAY", "CDM_PULSEPORT", "CDM_MUXSELECT", "CDM_THERM107", "CDM_RESISTANCE",
+    "CDM_ACPOWER", "CDM_CURRENTDIFF",
+})
+
+
+def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """CR6/CR1000X: a CDM instruction naming a `CPIAddress` (1..120) with a `CDMType` different from
+    the first one used for that address -> `Address <n> already used with a different type CDM.`
+    on every such later statement; docs/instructions.md. Types compare by value (`VOLT116` is
+    223); non-constant arguments are skipped."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    first: dict[int, object] = {}
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() not in _CDM_ADDRESS_INSTRUCTIONS \
+                or len(stmt.args) < 2:
+            continue
+        try:
+            kind = consteval.value_of(stmt.args[0], env)
+            address = consteval.value_of(stmt.args[1], env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(address, bool) or not isinstance(address, (int, float)) \
+                or isinstance(kind, (bool, str)) or not isinstance(kind, (int, float)) \
+                or address != int(address) or not 1 <= address <= 120:
+            continue
+        address = int(address)
+        if first.setdefault(address, kind) != kind:
+            diags.error(stmt.line, f"Address {address} already used with a different type CDM.",
+                        stmt.file)
+
+
 def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 require MQTTPublish's second argument to be string-typed.
 

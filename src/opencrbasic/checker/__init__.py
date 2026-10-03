@@ -289,6 +289,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_pulsecount_channels, flat, profile, bounds)
             _run_pass(instr_rules.check_dnp_update, flat, profile, bounds)
             _run_pass(instr_rules.check_portbridge_array, flat, profile, bounds, env)
+            _run_pass(instr_rules.check_cdm_address_types, flat, profile, bounds, env)
         bounds.items = [d for d in bounds.items if before_cutoff(d)]
         pipe.items = [d for d in pipe.items if before_cutoff(d)]
         leading.items = [d for d in leading.items if before_cutoff(d)]

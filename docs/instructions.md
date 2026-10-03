@@ -1115,3 +1115,16 @@ Gating mirrors `DNPUpdate`: CR6/CR1000X aside, CR300/CR350 only without an earli
 implemented: an undeclared second argument (CR6/CR1000X add this line after `Invalid symbol`) and
 the separate `Enable parameter must be of type Boolean.` for the first argument.
 `instr_rules.check_portbridge_array`.
+
+### CDM address and module type (CR6/CR1000X)
+`Address <n> already used with a different type CDM.` on a CDM instruction whose constant `CPIAddress`
+(1..120) was earlier used with a different `CDMType` value; the first type seen for an address is
+the reference, so `Open(A), B, A` flags only `B` and `A, B, B` flags both `B`s. Types compare by
+value (`VOLT116` and `223` agree; `CDM_A116` and `1` differ from it), and different CDM
+instructions share the address table. Registering instructions observed on CR6: `Battery`,
+`VoltSe`, `VoltDiff`, `TCDiff`, `TCSE`, `PanelTemp`, `BrHalf`, `ExciteV`, `ExciteI`, `SW12`, `SW5`,
+`SWPower`, `Delay`, `PulsePort`, `MuxSelect`, `Therm107`, `Resistance`, `ACPower`, `CurrentDiff`
+(others were not confirmed and are not checked). It is an aside like the PulseCount rule. Not
+implemented: addresses outside 1..120 (the real compiler adds `CPI Address must be 1..120.` and
+folds the address modulo 256), non-constant arguments, and the `<Instruction> instruction not
+supported by module <name>.` family. `instr_rules.check_cdm_address_types`.
