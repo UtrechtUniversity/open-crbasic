@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-0-1.5_Sec-1_Min",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr6-1-1.5_Msec-1_Min",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr6-2-1000.5_Msec-1_Min",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1000.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr6-3-1.5_Sec-1_Sec",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-4-10_Sec-3.5_Sec",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr6-5-10_Sec-3000.7_Msec",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3000.7,Msec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr6-6-10_Sec-2.5_Sec",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (2.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-7-1.5_Min-1_Min",
+   "logger": "cr6",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Min,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-0-1.5_Sec-1_Min",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr1000x-1-1.5_Msec-1_Min",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr1000x-2-1000.5_Msec-1_Min",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1000.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr1000x-3-1.5_Sec-1_Sec",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-4-10_Sec-3.5_Sec",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr1000x-5-10_Sec-3000.7_Msec",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3000.7,Msec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr1000x-6-10_Sec-2.5_Sec",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (2.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-7-1.5_Min-1_Min",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Min,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-0-1.5_Sec-1_Min",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr300-1-1.5_Msec-1_Min",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr300-2-1000.5_Msec-1_Min",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1000.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr300-3-1.5_Sec-1_Sec",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-4-10_Sec-3.5_Sec",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr300-5-10_Sec-3000.7_Msec",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3000.7,Msec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr300-6-10_Sec-2.5_Sec",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (2.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-7-1.5_Min-1_Min",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Min,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-0-1.5_Sec-1_Min",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr350-1-1.5_Msec-1_Min",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr350-2-1000.5_Msec-1_Min",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1000.5,Msec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 1000000 uSec not integrally divisible by scan interval 60000000 uSec."
+  },
+  {
+   "id": "cr350-3-1.5_Sec-1_Sec",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-4-10_Sec-3.5_Sec",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr350-5-10_Sec-3000.7_Msec",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (3000.7,Msec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: DataTable interval 10000000 uSec not integrally divisible by scan interval 3000000 uSec."
+  },
+  {
+   "id": "cr350-6-10_Sec-2.5_Sec",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,10,Sec,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (2.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-7-1.5_Min-1_Min",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\n  DataInterval (0,1.5,Min,10)\n  Sample (1,x,FP2)\nEndTable\nBeginProg\n  Scan (1,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

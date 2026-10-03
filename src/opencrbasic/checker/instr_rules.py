@@ -585,20 +585,14 @@ def _interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None, env: con
 
 def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None,
                             env: consteval.Env) -> float | None:
-    """`_interval_us`, but `None` (never trackable for the divisibility check below) when the
-    interval's own raw declared value is not a whole number -- oracle-confirmed this round
-    (`docs/checker.md` "Round 5", a fuzz-found false reject): a fractional `Interval` on *either*
-    side (`DataInterval`'s own or the enclosing `Scan`'s) silences `DataTable interval ... not
-    integrally divisible ...` entirely, at every fractional value swept (`1.1`..`2.9` in `0.1`
-    steps against a `1`-second `Scan`, and a `1.5`-second `Scan` against a `10`-second
-    `DataInterval`) -- `DataInterval(0,1.5,Sec,10)` inside `Scan(1,Sec,...)` compiles clean on
-    `CR6Comp.exe` despite `1.5` not being an integer multiple of `1`, while `DataInterval(0,5,...)`
-    (an integer) against the same `2`-second `Scan` still correctly fires (`5000000 uSec not
-    integrally divisible by 2000000 uSec.`) -- so this is not "the check never fires for a
-    non-integer `Scan`/`DataInterval` combination", only "a *fractional-valued* interval argument
-    on either side is exempt". A whole-number **float** literal (`5.0`) still counts as an integer
-    here and the check still fires for it (oracle-confirmed, `5.0` against a `2`-second `Scan`) --
-    this is about the folded *value*, not whether the source token has a decimal point.
+    """`_interval_us` with the interval's value truncated toward zero to a whole number of its own
+    units first. Oracle-confirmed (`docs/checker.md` "Interval truncation", all four loggers
+    identical): `DataInterval(0,1.5,Sec,10)` against `Scan(1,Min,0,0)` reports `interval 1000000
+    uSec`, `1.5,Msec` -> `1000 uSec`, `1000.5,Msec` -> `1000000 uSec`, `90.5,Sec` -> `90000000 uSec`;
+    the same truncation applies to the `Scan` interval (`Scan(3.5,Sec)` -> `scan interval 3000000
+    uSec`, `Scan(3000.7,Msec)` -> `3000000`). A fractional interval therefore still fires whenever
+    its truncated value is not a divisor (`2.5` Sec in a `1` Min table fires; `1.5` Sec in a
+    `1` Sec scan is clean because it truncates to `1`).
     """
     us = _interval_us(interval_arg, units_arg, env)
     if us is None:
@@ -607,9 +601,9 @@ def _divisible_interval_us(interval_arg: S.Expr | None, units_arg: S.Expr | None
         value = consteval.value_of(interval_arg, env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
         return None
-    return us
+    return int(value) * _US_PER_UNIT[consteval.value_of(units_arg, env)]
 
 
 def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:

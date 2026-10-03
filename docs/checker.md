@@ -1259,6 +1259,16 @@ four loggers + `fuzz_replay.py` after every change). All probes CR6 via the orac
 under Wine (`tools/oracle.py`'s own CLI always drives `CR6Comp.exe`) and found byte-identical, so
 implemented logger-unconditionally.
 
+**Corrected (2026-10-03, "Interval truncation")**: the "exemption" was really truncation. The
+compared value is `int(value) * unit_us` (the same truncation `Scan` min-interval uses, see
+below), on both the `DataInterval` and `Scan` side, all four loggers identical. `DataInterval(0,1.5,
+Sec,10)` against `Scan(1,Min,0,0)` fires `DataTable interval 1000000 uSec not integrally divisible
+by scan interval 60000000 uSec.` (it is clean against `Scan(1,Sec)` only because it truncates to
+1 s); `1.5,Msec` -> `1000 uSec`; `1000.5,Msec` -> `1000000 uSec`; `Scan(3.5,Sec)` -> `scan interval
+3000000 uSec`; `Scan(3000.7,Msec)` -> `3000000`; `1.5,Min` against `Scan(1,Min)` clean (60 s).
+Truncating to 0 skips the check (`0.5,Sec`). `_divisible_interval_us` now truncates instead of
+returning `None`. Evidence: `tests/fixtures/interval_truncation.json`.
+
 ### 1. `Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
 (`instr_rules.check_scan_min_interval`)
 
