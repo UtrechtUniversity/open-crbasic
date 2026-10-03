@@ -3337,3 +3337,13 @@ const-named return value (real: `Invalid assignment in expression: A = 2`), a co
 nested in another `Sub` (real: only the numeric line; ours prints the placement lines), whole
 values between 2^31 and 3e9 or below -2^31 (CR6 and CR300 disagreed on 2147483648).
 Evidence: `tests/fixtures/small_gaps.json` (`*-constsub-*`).
+
+### Undefined name in an assignment before `BeginProg`
+
+`X = Nope` (undefined name on the right side, also inside a longer expression, an index, or `X = Y = 1`)
+before `BeginProg` gives, on CR6/CR1000X, `Invalid symbol in expression: <line>.` followed by
+`Expr illegally occurs before BeginProg.` on the same line, and compilation stops there (oracle,
+2026-10-03): a later `X = Nope2` or `Nope3` is not reported. A one-line `If X = Nope Then X = 1`
+gets `If illegally occurs before BeginProg.` after the symbol line. The placement line sorts after the
+other messages of its line (`compiler.py`). CR300/CR350 give only `Nope is not defined.` and go on.
+Evidence: `tests/fixtures/small_gaps.json` (`*-prebp-*`).

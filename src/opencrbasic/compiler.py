@@ -132,7 +132,8 @@ class CompileResult:
         # and fuzz transcripts); other warnings keep their check order.
         ordered = sorted(self.diagnostics.items,
                           key=lambda d: (False, self._position(d),
-                                         d.message.endswith("never reached at run time."))
+                                         d.message.endswith("never reached at run time.") * 2
+                                         or d.message.endswith("illegally occurs before BeginProg."))
                           if d.line else (True, _no_line_kind(d), 0))
         drive = self.profile.include_drive_prefix
         if not self.ok:

@@ -998,6 +998,286 @@
    "source": "Public X\nSub S(Optional P As Bad = 1)\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Bad not supported\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-0",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-0",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-0",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-0",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-1",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope + 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope + 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-1",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope + 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope + 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-1",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope + 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-1",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope + 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-2",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope(1)\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope(1).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-2",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope(1)\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope(1).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-2",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope(1)\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Dimensions not declared: X = Nope(1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-2",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope(1)\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 2: Dimensions not declared: X = Nope(1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-3",
+   "logger": "cr6",
+   "source": "Public X\nX = Y = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-3",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Y = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Y = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-3",
+   "logger": "cr300",
+   "source": "Public X\nX = Y = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-3",
+   "logger": "cr350",
+   "source": "Public X\nX = Y = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-4",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope\nX = Nope2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-4",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope\nX = Nope2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-4",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope\nX = Nope2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Nope2 is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-4",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope\nX = Nope2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Nope2 is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-5",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope\nNope3\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-5",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope\nNope3\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-5",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope\nNope3\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Nope3 is not defined.\nline 3: Invalid, or out of place expression: Nope3\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-5",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope\nNope3\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 3: Nope3 is not defined.\nline 3: Invalid, or out of place expression: Nope3\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-6",
+   "logger": "cr6",
+   "source": "Public X\nX = 1\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-6",
+   "logger": "cr1000x",
+   "source": "Public X\nX = 1\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-6",
+   "logger": "cr300",
+   "source": "Public X\nX = 1\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-6",
+   "logger": "cr350",
+   "source": "Public X\nX = 1\nX = Nope\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-7",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope : X = 2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-7",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope : X = 2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-7",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope : X = 2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-7",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope : X = 2\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-8",
+   "logger": "cr6",
+   "source": "Public X\nIf X = Nope Then X = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-8",
+   "logger": "cr1000x",
+   "source": "Public X\nIf X = Nope Then X = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-8",
+   "logger": "cr300",
+   "source": "Public X\nIf X = Nope Then X = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-8",
+   "logger": "cr350",
+   "source": "Public X\nIf X = Nope Then X = 1\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-prebp-9",
+   "logger": "cr6",
+   "source": "Public X\nX = Nope\nSub S\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-prebp-9",
+   "logger": "cr1000x",
+   "source": "Public X\nX = Nope\nSub S\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = Nope.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-prebp-9",
+   "logger": "cr300",
+   "source": "Public X\nX = Nope\nSub S\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-prebp-9",
+   "logger": "cr350",
+   "source": "Public X\nX = Nope\nSub S\nEndSub\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined.\nline 6: Too many parameters:  Sec."
   }
  ]
 }

@@ -1967,6 +1967,11 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
             return stmt.line
         return None
     if expressions._undefined_names(stmt.value, known):
+        if before_beginprog and not (profile is not None and profile.single_pass):
+            # `X = Nope` before `BeginProg`: CR6/CR1000X add the placement line after
+            # `expressions.check`'s own (oracle, 2026-10-03; sorted last on the line, `compiler.py`)
+            diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+            return stmt.line
         return None  # `expressions.check` reports this alone; no placement follow-up (oracle).
     if before_beginprog:
         diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
