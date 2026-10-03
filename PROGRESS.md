@@ -91,6 +91,9 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `~/.codex/models_cache.json`) for read-only reviews of each merged batch (human
   instruction 2026-10-03: the Codex 5-hour window exhausts quickly; implementation workers were
   cut off twice). `codex exec -m gpt-6.1-sol -s read-only -C <repo> -o <out.md> "<prompt>"`.
+  Use the ChatGPT app's bundled CLI (0.159.2+):
+  `/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex`;
+  `~/.local/bin/codex` (0.158.0) rejects `gpt-6.1-sol` with a ChatGPT account. Pass `</dev/null`.
   Act on findings with Claude subagents (Sonnet for rule families, Haiku for small precise
   changes). Every review so far found real defects.
 - Agent brief for Claude workers: `scratch/codex/brief-claude.md` (untracked; it restates this
