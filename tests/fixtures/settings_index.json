@@ -1,0 +1,863 @@
+{
+ "observation_date": "2026-10-03",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-Baudrate-0",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-18",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(18)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-19",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(19)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 19"
+  },
+  {
+   "id": "cr6-Baudrate--1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr6-Security-0",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Security-1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Security-3",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(3)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Security-4",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(4)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 4"
+  },
+  {
+   "id": "cr6-Security--1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr6-Baudrate-ComRS232",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRS232)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComUSB",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComUSB)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComC1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-Com1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-Com2",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com2)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-ComME",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComME)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComRF",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRF)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComSDC7",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComSDC7)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComU1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComU1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-ComC1_Rx",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1_Rx)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-comc1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(comc1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Baudrate-Foo",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Foo)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-x",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(x)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr6-Baudrate-Sec",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Sec)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-setstatus-COMC1",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetStatus(\"Baudrate(COMC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-unknown-field-first",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Foo(COMC1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr6-two-errors",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  SetSetting(\"Foo\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr6-after-fnotch",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  PanelTemp(x,15000)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-pass1-hides",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  y=2\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   y=2."
+  },
+  {
+   "id": "cr6-calltable-stop",
+   "logger": "cr6",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  CallTable Nope\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-Baudrate-0",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-14",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(14)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-15",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(15)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 15"
+  },
+  {
+   "id": "cr1000x-Baudrate--1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr1000x-Security-0",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Security-1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Security-3",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(3)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Security-4",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(4)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 4"
+  },
+  {
+   "id": "cr1000x-Security--1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr1000x-Baudrate-ComRS232",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRS232)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-ComUSB",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComUSB)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-ComC1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-Com1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-Com2",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com2)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-ComME",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComME)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-ComRF",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRF)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-ComSDC7",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComSDC7)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-ComU1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComU1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-ComC1_Rx",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1_Rx)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-comc1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(comc1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Baudrate-Foo",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Foo)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-x",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(x)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr1000x-Baudrate-Sec",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Sec)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-setstatus-COMC1",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetStatus(\"Baudrate(COMC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-unknown-field-first",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Foo(COMC1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr1000x-two-errors",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  SetSetting(\"Foo\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr1000x-after-fnotch",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  PanelTemp(x,15000)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-pass1-hides",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  y=2\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   y=2."
+  },
+  {
+   "id": "cr1000x-calltable-stop",
+   "logger": "cr1000x",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  CallTable Nope\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-Baudrate-0",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-8",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(8)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-9",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9"
+  },
+  {
+   "id": "cr300-Baudrate--1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr300-Security-0",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Security-1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Security-3",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(3)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Security-4",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(4)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 4"
+  },
+  {
+   "id": "cr300-Security--1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr300-Baudrate-ComRS232",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRS232)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-ComUSB",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComUSB)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-ComC1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-Com1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-Com2",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com2)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-ComME",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComME)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-ComRF",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRF)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-ComSDC7",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComSDC7)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-ComU1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComU1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-ComC1_Rx",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1_Rx)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-Baudrate-comc1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(comc1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-Foo",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Foo)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-x",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(x)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-Baudrate-Sec",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Sec)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-setstatus-COMC1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetStatus(\"Baudrate(COMC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr300-unknown-field-first",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Foo(COMC1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr300-two-errors",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  SetSetting(\"Foo\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr300-after-fnotch",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  PanelTemp(x,15000)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-pass1-hides",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  y=2\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: y is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-calltable-stop",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  CallTable Nope\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-Baudrate-0",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-6",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(6)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-7",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(7)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 7"
+  },
+  {
+   "id": "cr350-Baudrate--1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr350-Security-0",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(0)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Security-1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Security-3",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(3)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Security-4",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(4)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 4"
+  },
+  {
+   "id": "cr350-Security--1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Security(-1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension -1"
+  },
+  {
+   "id": "cr350-Baudrate-ComRS232",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRS232)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-ComUSB",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComUSB)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-ComC1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-Com1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-Com2",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Com2)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-ComME",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComME)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-ComRF",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComRF)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-Baudrate-ComSDC7",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComSDC7)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-ComU1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComU1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-ComC1_Rx",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(ComC1_Rx)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 8"
+  },
+  {
+   "id": "cr350-Baudrate-comc1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(comc1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-Foo",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Foo)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-x",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(x)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-Baudrate-Sec",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(Sec)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-setstatus-COMC1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetStatus(\"Baudrate(COMC1)\",115200)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 0"
+  },
+  {
+   "id": "cr350-unknown-field-first",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Foo(COMC1)\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr350-two-errors",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  SetSetting(\"Foo\",1)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Foo is not a Settings Field Name."
+  },
+  {
+   "id": "cr350-after-fnotch",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  PanelTemp(x,15000)\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-pass1-hides",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  y=2\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: y is not defined.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-calltable-stop",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\n  SetSetting(\"Baudrate(9)\",1)\n  CallTable Nope\n  Scan (1,Sec,3,0)\n    x=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal dimension 9\nline 4: Could not find DataTable Nope."
+  }
+ ]
+}

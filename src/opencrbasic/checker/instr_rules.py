@@ -1411,6 +1411,23 @@ def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) 
     return None
 
 
+def _check_port_index(stmt: S.Instruction, key: str, index: str | None, cfg: dict | None,
+                      env: consteval.Env, profile, found: Diagnostics) -> None:
+    """`Illegal dimension N` for `Baudrate(index)`/`Security(index)`; docs/instructions.md#field-index-dimension."""
+    if not cfg or index is None or key not in cfg or not index.endswith(")"):
+        return
+    index = index[:-1]
+    if re.fullmatch(r"0|-?[1-9]\d*", index):
+        value = int(index)
+    elif re.fullmatch(r"[A-Za-z]\w*", index) and index.upper() not in env.consts:
+        symbol = profile.symbols.get(index.upper())
+        value = symbol["value"] if symbol else 0
+    else:
+        return
+    if not 1 <= value <= cfg[key]:
+        found.error(stmt.line, f"Illegal dimension {value}", stmt.file)
+
+
 def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found: Diagnostics,
                           env: consteval.Env) -> None:
     """`%s is not a Settings Field Name.` / `%s is not a Status or Settings Field Name.` /
@@ -1454,11 +1471,14 @@ def check_settings_fields(program: S.Program, profile, diags: Diagnostics, found
         if "(" in name:
             # `Name(index)`: only the field name before the first `(` is looked up here; the
             # index is validated separately (`Illegal dimension N`, not implemented).
-            name = name.split("(", 1)[0]
+            name, _, index = name.partition("(")
             if not name:
                 continue
+        else:
+            index = None
         key = (name.rstrip(" \t") if trim else name).upper()
         if key in (both if kw == "SETSTATUS" else settings):
+            _check_port_index(stmt, key, index, fields.get("index_size"), env, profile, found)
             continue
         shown = name if name else fields["empty_name"]
         found.error(stmt.line, f"{shown} is not a {label} Field Name.", stmt.file)

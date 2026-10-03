@@ -1,4 +1,4 @@
-"""FileManage / TableFile drive and file-type observations; expected output is the real compilers'."""
+"""FileManage, TableFile and SetSetting/SetStatus index observations; expected output is the real compilers'."""
 import json
 from pathlib import Path
 
@@ -7,7 +7,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-CASES = [case for name in ("filemanage_drives", "tablefile_drives")
+CASES = [case for name in ("filemanage_drives", "tablefile_drives", "settings_index")
          for case in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 
 

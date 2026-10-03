@@ -805,13 +805,28 @@ Spelling rules, identical on all four loggers unless noted:
   non-strings give `Status Field name must be constant.` (not implemented, so such arguments are
   skipped).
 - `Name(index)`: only the text before the first `(` is looked up (`Foo(1)` reports `Foo`,
-  `DNS(1)`, `Security(2)` pass). The index is checked afterwards (`Illegal dimension N`, depends on
-  the field's size, not implemented). An empty name before `(` is skipped.
+  `DNS(1)`, `Security(2)` pass). The index is then checked (see "Field index dimension" below for
+  the two fields modelled). An empty name before `(` is skipped.
 - A name containing `.` reports `Cannot find <text before the first dot>` (no final period) for
   every table name tried, including `Status`, `Settings` and a `DataTable`. A declared
   `ConstTable` prefix (`ScanConstTable.ScanConst`, as in the repository's `PowerProfile_tester.CR6`)
   is valid; its field lookup is not modelled (CR300/CR350 print `Cannot find <field>` for an
   unknown field; CR6/CR1000X crashed under Wine on those probes, so there is no CR6 evidence).
+
+
+### Field index dimension (`settings_fields.json` `index_size`) {#field-index-dimension}
+
+`Illegal dimension N` (no final period) for `Baudrate(index)` and `Security(index)`, constant
+index only (fixture `tests/fixtures/settings_index.json`, all four loggers, `SetSetting` and
+`SetStatus` alike). The index is a decimal integer, or a bare identifier: a predefined symbol
+contributes its value (`ComRS232` is 1 on CR6/CR1000X, 2 on CR300/CR350; `ComC1` is 9 on
+CR6/CR1000X and unknown on CR300/CR350), any other identifier (including a Public variable) is 0.
+Valid values are `1..size`; otherwise `N` is the value (`Baudrate(COMC1)` on CR300/CR350 gives
+`Illegal dimension 0`). Sizes: `Baudrate` CR6 18, CR1000X 14, CR300 8, CR350 6; `Security` 3 on all.
+Evidence: every `COM*` symbol of every logger plus numerics probed, and non-COM symbols (`Sec`,
+`Min`, `True`, `Pi`, ...) behaved as predicted. It runs in the same phase as the name check
+(same ordering, gating, `CallTable` stop line); an unknown field name reports only the name.
+Not modelled: other fields' sizes, expression or space-padded indices, a missing `)`, and `CS I`.
 
 Ordering and gating (CR6/CR1000X versus CR300/CR350):
 
