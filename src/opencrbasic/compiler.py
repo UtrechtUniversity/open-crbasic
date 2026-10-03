@@ -138,6 +138,10 @@ class CompileResult:
         drive = self.profile.include_drive_prefix
         if not self.ok:
             rendered = _bounded_by_message_buffer([d.cr6comp(self.program, drive) for d in ordered])
+            if rendered:
+                # a message that echoes its source line keeps the newline (`Illegally dimension:`);
+                # the real output is right-trimmed
+                rendered[-1] = rendered[-1].rstrip("\n")
             return [f"{self.program} -- Compile Failed!", ""] + rendered
         if self.profile.reports_mode:
             lines = [f"{self.program} -- Compiled in {self.mode or 'Sequential'}Mode."]

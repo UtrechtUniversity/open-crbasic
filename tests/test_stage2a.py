@@ -55,7 +55,7 @@ def test_stage2a_is_suppressed_by_pass1_errors():
 @pytest.mark.parametrize("logger", ["cr6", "cr1000x", "cr300", "cr350"])
 def test_string_array_dimension(logger):
     text = prog("  Sample (1,X,FP2)").replace("Public X, Y, A(5)", 'Public X, Y, A(5)\nPublic Q("fuzz")')
-    assert messages(text, logger)[0] == 'Illegally dimension: Public Q("fuzz")'
+    assert messages(text, logger)[0] == 'Illegally dimension: Public Q("fuzz")\n'
 
 
 @pytest.mark.parametrize("logger", ["cr300", "cr350"])

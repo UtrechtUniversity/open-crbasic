@@ -323,18 +323,18 @@ def test_oversized_array_dimension_is_rejected():
     # tests/corpus/fuzz/cr6/hang/dd9cc650482d.CR6, minimized: >2147483647 (INT32_MAX).
     result = compile_text("Public X(999999999999) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == [
-        "Illegally dimension: Public X(999999999999) As Long"
+        "Illegally dimension: Public X(999999999999) As Long\n"
     ]
 
 
 def test_zero_array_dimension_is_rejected():
     result = compile_text("Public X(0) As Long\n" + wrapped_bare(""))
-    assert messages_of(result) == ["Illegally dimension: Public X(0) As Long"]
+    assert messages_of(result) == ["Illegally dimension: Public X(0) As Long\n"]
 
 
 def test_negative_array_dimension_is_rejected():
     result = compile_text("Public X(-5) As Long\n" + wrapped_bare(""))
-    assert messages_of(result) == ["Illegally dimension: Public X(-5) As Long"]
+    assert messages_of(result) == ["Illegally dimension: Public X(-5) As Long\n"]
 
 
 def test_max_int32_array_dimension_is_accepted():
@@ -352,7 +352,7 @@ def test_illegally_dimension_echoes_the_whole_declaration_verbatim():
         "Public A As Long, X(0) As Long, B As Float\n" + wrapped_bare("")
     )
     assert messages_of(result) == [
-        "Illegally dimension: Public A As Long, X(0) As Long, B As Float"
+        "Illegally dimension: Public A As Long, X(0) As Long, B As Float\n"
     ]
 
 
@@ -360,8 +360,8 @@ def test_illegally_dimension_fires_once_per_bad_dimension():
     # oracle-confirmed: two illegal dimensions on the same variable report the message twice.
     result = compile_text("Public X(0,-1) As Long\n" + wrapped_bare(""))
     assert messages_of(result) == [
-        "Illegally dimension: Public X(0,-1) As Long",
-        "Illegally dimension: Public X(0,-1) As Long",
+        "Illegally dimension: Public X(0,-1) As Long\n",
+        "Illegally dimension: Public X(0,-1) As Long\n",
     ]
 
 
@@ -625,7 +625,7 @@ def test_error_from_an_included_file_gets_the_file_prefix(tmp_path):
         '#If Section = "Defs" Then\nPublic LibArr(0) As Long\n#EndIf\n',
         'IncludeSection("Defs", "CPU:Lib.crb")\n' + wrapped(""),
     )
-    assert messages_of(result) == ["Illegally dimension: Public LibArr(0) As Long"]
+    assert messages_of(result) == ["Illegally dimension: Public LibArr(0) As Long\n"]
     assert result.result_lines() == [
         "main.CR6 -- Compile Failed!",
         "",
@@ -640,7 +640,7 @@ def test_error_in_the_main_file_itself_gets_no_prefix(tmp_path):
         'IncludeSection("Defs", "CPU:Lib.crb")\nPublic X(0) As Long\n' + wrapped(""),
     )
     assert "<main.CR6>" not in result.result_lines()[2]
-    assert result.result_lines()[2] == "line 2: Illegally dimension: Public X(0) As Long"
+    assert result.result_lines()[2] == "line 2: Illegally dimension: Public X(0) As Long\n"
 
 
 def test_sub_not_defined_never_gets_the_file_prefix(tmp_path):

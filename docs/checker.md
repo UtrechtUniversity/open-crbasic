@@ -3476,3 +3476,11 @@ for the constant at the destination position, then `Invalid or missing parameter
 line. CR300/CR350 are unchanged. Not modelled: the real compiler also reports a later complete
 statement's constant destination (`PanelTemp(3,15000)`) after a short one, which our pass-1
 gating suppresses.
+
+### Alias on a non-positive declared size; `Illegally dimension` newline
+
+Oracle, 2026-10-03 (`tests/fixtures/alias_nonpositive_dim.json`, all four loggers): a declared size
+of zero or below (itself `Illegally dimension`) counts as 1 for the alias index check, in every
+dimension (`Public a(0)` / `Alias a(1)` passes, `a(2)` and `a(0)` fail). The `Illegally dimension:
+<statement>` echo carries the source line's newline, so a blank line follows it whenever more
+output does; the final output is right-trimmed (`compiler.py`).

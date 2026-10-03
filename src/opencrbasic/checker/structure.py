@@ -2196,7 +2196,7 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
         for d in v.dims:
             if isinstance(d, S.String):
                 # `Public Q("fuzz")`, pass 1, all four loggers (oracle, 2026-09-27)
-                diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
+                diags.error(stmt.line, f"Illegally dimension: {stmt.text}\n", stmt.file)
                 continue
             try:
                 val = consteval.value_of(d, env)
@@ -2205,7 +2205,7 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
             if isinstance(val, bool) or not isinstance(val, (int, float)):
                 continue
             if not (1 <= val <= _MAX_DIM_VALUE):
-                diags.error(stmt.line, f"Illegally dimension: {stmt.text}", stmt.file)
+                diags.error(stmt.line, f"Illegally dimension: {stmt.text}\n", stmt.file)
 
 
 
@@ -2556,6 +2556,9 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
 
         dims = all_dims.get(name_upper)
         if index_key is not None and dims is not None and 0 < len(index_key) <= len(dims):
+            # a zero or negative declared size (itself `Illegally dimension`) counts as 1 (oracle,
+            # 2026-10-03: `Public a(0)` / `Alias a(1)` compiles past the alias check, `a(2)` fails)
+            dims = tuple(max(d, 1) for d in dims)
             total = 1
             for d in dims:
                 total *= d
