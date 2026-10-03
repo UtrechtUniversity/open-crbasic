@@ -75,6 +75,10 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   oracle), implement data-driven in the existing passes, fixture-backed test, docs section, then
   full pytest + four-logger difftest + replay + fixture audit. Commit each chunk, single-line
   message.
+- **Human instruction (2026-10-03): execute chunks of work with Sonnet-class Claude subagents**
+  (Agent tool, `model: "sonnet"`, one family per agent, in its own worktree as below). The
+  coordinating session plans, reviews, integrates and verifies; it does not implement chunks
+  itself.
 - Orchestration: Opus coordinates; workers get disjoint families in their own git worktree
   (`git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`, then
   `ln -s <main>/opencrbasic/.oracle-cache` into it), and are integrated with `git cherry-pick`
