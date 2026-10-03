@@ -918,6 +918,7 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
     names = longconv.float_names(program.statements)
     literals = longconv.literal_names(program.statements)
     cr3 = profile.name in ("cr300", "cr350")
+    matrix_shapes = None
     for stmt in program.statements:
         if not isinstance(stmt, (S.Instruction, S.Call)):
             continue
@@ -942,6 +943,11 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
             v = value(0)
             if v is not None and not 1 <= v & 0x7FFFFFFF <= 5:
                 diags.error(stmt.line, "Illegal option.", stmt.file)
+            elif v is not None and len(args) == 4:
+                if matrix_shapes is None:
+                    matrix_shapes = _matrix_shapes(program, env)
+                for message in _matrix_dimension_errors(v & 0x7FFFFFFF, args, matrix_shapes):
+                    diags.error(stmt.line, message, stmt.file)
         elif all(consteval.is_constant(a, env) for a in args if a is not None):
             net = value(1)
             if net is not None and not 0 <= net <= (4 if cr3 else 5):
@@ -952,6 +958,44 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
             opt = value(2)
             if opt is not None and opt not in (0, 1):
                 diags.error(stmt.line, f"{opt} is illegal option", stmt.file)
+
+
+def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, int]]:
+    """Name -> (rows, columns) of every variable declared exactly once as a Float of at most two
+    constant dimensions (a 1-D array is `(n, 1)`, a scalar `(1, 1)`)."""
+    dims = symbols.declared_all_dims(program, env)
+    types = symbols.declared_variable_types(program)
+    seen: set[str] = set()
+    repeated: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
+            for v in st.vars:
+                (repeated if v.name.upper() in seen else seen).add(v.name.upper())
+    return {n: (d[0], d[1] if len(d) == 2 else 1) for n, d in dims.items()
+            if len(d) <= 2 and types.get(n) == "FLOAT" and n not in repeated}
+
+
+def _matrix_dimension_errors(option: int, args, shapes) -> list[str]:
+    """`Matrix` operand dimension messages (oracle 2026-10-03, all four loggers,
+    `docs/instructions.md` "Matrix dimensions"); empty unless every checked operand is a bare
+    Float variable of known shape (`B` is unused by options 4 and 5)."""
+    ops = [args[1], args[2], args[3]] if option <= 3 else [args[1], args[3]]
+    shape = []
+    for a in ops:
+        if not isinstance(a, S.Name) or a.name.upper() not in shapes:
+            return []
+        shape.append(shapes[a.name.upper()])
+    out = ["Matrix cannot be > 4X4" for sh in shape if max(sh) > 4]
+    result = shape[-1]
+    if option == 3:
+        (m, n), (p, q) = shape[0], shape[1]
+        if n != p:
+            out.append("multiply A columns and B rows must be the same")
+        if result[0] != m and result[1] != q:
+            out.append(f"multiply result illegal dimensioned, must be {m},{q}")
+    elif any(sh != shape[0] for sh in shape) or (option > 3 and shape[0][0] != shape[0][1]):
+        out.append("Illegal Matrix dimensioned")
+    return out
 
 
 def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:

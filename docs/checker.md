@@ -2641,8 +2641,30 @@ and date inside), `tests/test_option_args.py`, `instr_rules.check_option_values`
   message, but accumulating with tier-B findings.
 - `Matrix` `Option` (first argument): `Illegal option.` (no number) unless `(value & 0x7FFFFFFF)`
   is 1..5. So `-2147483647..-2147483643` pass, as the sign bit is ignored; on CR300/CR350
-  `-2147483648` saturates to `-2147483647` and passes too. Dimension messages (`Illegal Matrix`,
-  `Illegal Matrix dimensioned`) are separate and not modelled.
+  `-2147483648` saturates to `-2147483647` and passes too. Dimension messages: next section.
+
+## Matrix dimensions (2026-10-03)
+
+Oracle on all four loggers, identical on each; fixture `tests/fixtures/matrix_dims.json` (84 cases),
+`tests/test_matrix_dims.py`, `instr_rules._matrix_dimension_errors` (called from
+`check_option_values`, so it shares the option error's gating and ordering by line). Shape of a
+variable: `(rows, columns)`, a 1-D `A(n)` is `(n, 1)`, a scalar `(1, 1)`. Messages for one call, in
+this order (no trailing period; line of the call):
+
+1. `Matrix cannot be > 4X4` once per checked operand with either dimension above 4 (A, then B,
+   then Result; options 4 and 5 do not look at B, it may be anything).
+2. Options 1, 2: `Illegal Matrix dimensioned` unless A, B and Result all have the same shape.
+   Options 4, 5: the same message unless A is square and Result has A's shape.
+3. Option 3: `multiply A columns and B rows must be the same` when columns(A) differs from
+   rows(B); then `multiply result illegal dimensioned, must be M,Q` (A is MxN, B is PxQ) only when
+   rows(Result) differs from M *and* columns(Result) differs from Q. A Result sharing either
+   dimension passes (`M23*M32 -> M23`, `D2`, `M12` all compile; `M33`, `M44`, `V`, `D3` do not).
+
+Only modelled when every checked operand is a bare name declared once as a Float with at most two
+dimensions and the option folds to 1..5; anything else stays silent. Seen but not modelled: a
+3-D operand (`Illegal Matrix` per such operand, then the dimension message, with garbage
+dimensions for option 3), `A()`/`A(1,1)` operand forms, `Long`/`String`/`Const`/undefined
+operands (CR6/CR1000X add `Illegal Matrix`, CR300/CR350 `Illegal destination variable type`).
 
 Conversion of the constant to a 32-bit `long` (`longconv.long_value`), shared by all three:
 an integer-typed expression wraps (`100000*100000` -> 1410065408, `2147483647+1` and `Const KC =

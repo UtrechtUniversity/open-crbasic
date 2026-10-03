@@ -178,7 +178,7 @@ Pass and ordering (all oracle-confirmed on both loggers unless noted):
   (`instr_measure.check_pass1_values`).
 
 CR350/CR300 fuzz reproducers that were listed as fnotch false accepts (`cr350/false_accept/2e32a4ebade7`,
-`165c693049da`, `1549108234a4`, `881ad67a2b3f`, `cb998c48d68a`, `cr300/false_accept/6c8fb0434bdb`)
+`165c693049da`, `1549108234a4`, `881ad67a2b3f`, `cb998c48d68a` (now closed, `docs/checker.md` "Matrix dimensions"), `cr300/false_accept/6c8fb0434bdb`)
 are not fnotch problems: the warning (`Warning:`, which does not fail a compile by itself) is
 already emitted exactly. The compile fails because of other errors we do not model (`DataTable
 interval ... not integrally divisible by scan interval`, `Illegal Semaphore, 1..3 are legal`,
