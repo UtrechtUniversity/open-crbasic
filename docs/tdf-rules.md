@@ -296,7 +296,8 @@ one `Temp_Max` field, `dim=3`).
   `M(2,1)` has `begin` = row-major flat index (`4` for `M(2,3)`) (oracle-confirmed, fixture
   `source_array_declared_shape_and_flat_begin`, `dim_1`/`public_1` CHM).
 - `DataInterval(into, 0, unit, lapses)` (interval 0): the header interval and the sizing weight are
-  the enclosing `Scan`'s interval (`modemhangupendmodemhangup_1`, five ms-scan CardOut programs).
+  the enclosing `Scan`'s interval (`modemhangupendmodemhangup_1`, five ms-scan CardOut programs); `-l`
+  prints that interval in the declared unit (`Interval: 50 MSEC`).
 
 ## 10. Auto-allocated table size (`Size = -1`)
 

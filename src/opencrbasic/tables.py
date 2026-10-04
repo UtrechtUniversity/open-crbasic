@@ -1188,6 +1188,8 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[st
             ns = round(w * 1_000_000_000)
             t.interval = (ns // 1_000_000_000, ns % 1_000_000_000)
             m["interval_seconds"] = w
+            unit = m["display_interval"][1]
+            t._interval_display = (w / _UNIT_SECONDS.get(unit, 1), unit)  # type: ignore[attr-defined]
         if not m["called"]:
             # A table with no `CallTable` anywhere in the compiled program never gets its
             # DataInterval/DataEvent finalised either (oracle-confirmed, docs/tdf-rules.md §13):
