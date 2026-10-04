@@ -1,0 +1,163 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-portset_tail-0",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr6-portset_tail-1",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr6-portset_tail-2",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,y) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter y, expecting constant integer."
+  },
+  {
+   "id": "cr6-portset_tail-3",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr6-portset_tail-4",
+   "logger": "cr6",
+   "source": "Public x, y, z\nBeginProg\nDelay(1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr1000x-portset_tail-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-portset_tail-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-portset_tail-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,y) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal parameter y, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-portset_tail-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr1000x-portset_tail-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, z\nBeginProg\nDelay(1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr300-portset_tail-0",
+   "logger": "cr300",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr300-portset_tail-1",
+   "logger": "cr300",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr300-portset_tail-2",
+   "logger": "cr300",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,y) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  y."
+  },
+  {
+   "id": "cr300-portset_tail-3",
+   "logger": "cr300",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-portset_tail-4",
+   "logger": "cr300",
+   "source": "Public x, y, z\nBeginProg\nDelay(1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: y."
+  },
+  {
+   "id": "cr350-portset_tail-0",
+   "logger": "cr350",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr350-portset_tail-1",
+   "logger": "cr350",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  x."
+  },
+  {
+   "id": "cr350-portset_tail-2",
+   "logger": "cr350",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,y) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  y."
+  },
+  {
+   "id": "cr350-portset_tail-3",
+   "logger": "cr350",
+   "source": "Public x, y, z\nBeginProg\nPortSet(C1,1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-portset_tail-4",
+   "logger": "cr350",
+   "source": "Public x, y, z\nBeginProg\nDelay(1,x,y,z)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable illegal in Parameter: y."
+  }
+ ]
+}

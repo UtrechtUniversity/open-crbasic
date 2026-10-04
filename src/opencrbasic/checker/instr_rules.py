@@ -418,6 +418,13 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         token = _next_simple_token(stmt.text[start:])
         if not token:
             continue
+        # CR6/CR1000X: an earlier parameter-kind error on the statement hides it (oracle,
+        # 2026-10-04: `PortSet(C1,1,x,y)`, `PortSet(x,1,y,z)`, `Delay(1,x,y,z)`)
+        if not profile.single_pass and any(
+                d.line == stmt.line and d.file == stmt.file and d.message.startswith(
+                    ("Illegal parameter ", "Variable illegal in Parameter"))
+                for d in diags.items):
+            continue
         diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
 
 
