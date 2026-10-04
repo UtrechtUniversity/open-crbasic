@@ -1130,7 +1130,7 @@ def _is_integer_token(text: str, arg: S.Expr, env: consteval.Env) -> bool:
     """One integer token (after `_strip_parens`): `2`, `-1`, `&H1`, `(1)`, or a name whose constant
     value is an integer (`Const K = 1`, `True`). `1+2`, `K+1`, `1.0`, `1E0` and `- 1` are not
     (oracle, 2026-09-28)."""
-    if re.fullmatch(r"-?(?:\d+|&[Hh][0-9A-Fa-f]+|&[Bb][01]+)", text):
+    if re.fullmatch(r"(?:\+?\d+|-?(?:\d+|&[Hh][0-9A-Fa-f]+|&[Bb][01]+))", text):
         return True
     if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", text) or not consteval.is_constant(arg, env):
         return False
