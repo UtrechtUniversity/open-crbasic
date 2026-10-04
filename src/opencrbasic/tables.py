@@ -770,6 +770,7 @@ class _OutField:
     ch400: bool = False
     placeholder: bool = False
     rng: tuple[int, int] | None = None
+    unit_list: list | None = None   # per-element units when a FieldNames split must differ
     struct_members: int = 0   # >0: field of a StructureType source (members per element)
     member: str = ""
 
@@ -995,8 +996,13 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         output_opt = _as_int(_fold(a[7], env, 0), 0) if len(a) > 7 else 0
         dim = {0: 3, 1: 2, 2: 4, 3: 1, 4: 2}.get(output_opt, 3)
         units = _units_for_source(speed, var_info, by_display)
-        return [_OutField(_source_name(speed, var_info) + "_WVc", tcode, True, "WVc", 1, dim,
-                           [] if dim == 1 else [dim], units)]
+        # per-element units by Output option (docs/tdf-rules.md §9a): speed units, then "Deg"
+        ulist = {0: [units, "Deg", "Deg"], 1: [units, "Deg"], 2: [units, units, "Deg", "Deg"],
+                 3: ["Deg"], 4: ["Deg", "Deg"]}.get(output_opt, [units] * dim)
+        f = _OutField(_source_name(speed, var_info) + "_WVc", tcode, True, "WVc", 1, dim,
+                      [] if dim == 1 else [dim], ulist[0])
+        f.unit_list = ulist
+        return [f]
 
     if kw == "HISTOGRAM":
         bin_select = a[0] if a else None
@@ -1049,8 +1055,9 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
             name, _, desc = parts[i].partition(":")
             proc = base.processing + (":" + desc if desc else "")
             rng = None if base.rng is None else (base.rng[0] + i, base.rng[0] + i)
+            u = base.unit_list[i] if base.unit_list and i < len(base.unit_list) else base.units
             out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
-                                  1, 1, [], base.units, renamed=True,
+                                  1, 1, [], u, renamed=True,
                                   name_only=base.name_only, placeholder=False, rng=rng))
         remaining = base.dim - n_named
         if remaining > 0:

@@ -311,6 +311,10 @@ one `Temp_Max` field, `dim=3`).
   programs). `Units` on the declared array name applies to every split piece; time-of-extreme
   (`TMx`/`TMn`) fields carry the source's units (`cdmtccomp_1`).
 
+- `WindVector` units (oracle-confirmed, all 5 Output options): the field's units are the speed
+  source's for options 0-2 and `Deg` for 3-4; once `FieldNames` splits it, element units are
+  option 0 `[spd,Deg,Deg]`, 1 `[spd,Deg]`, 2 `[spd,spd,Deg,Deg]`, 3 `[Deg]`, 4 `[Deg,Deg]`.
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower

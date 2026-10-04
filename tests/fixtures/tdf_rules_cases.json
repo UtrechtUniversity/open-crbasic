@@ -106,5 +106,13 @@
  {
   "id": "ch400status_table",
   "source": "Public count\nCH400Status(1000,msec)\nBeginProg\n  Scan(1000,mSec,0,0)\n    count = count + 1\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "windvector_units_by_output_option",
+  "source": "Public WS, WD\nUnits WS = m/s\nUnits WD = deg\nDataTable(T0,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,0)\nEndTable\nDataTable(T1,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,1)\nEndTable\nDataTable(T2,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,2)\nEndTable\nDataTable(T3,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,3)\nEndTable\nDataTable(T4,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "windvector_split_units_by_element",
+  "source": "Public WS, WD\nUnits WS = m/s\nUnits WD = deg\nDataTable(T0,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,0)\n  FieldNames(\"f0_0,f0_1,f0_2\")\nEndTable\nDataTable(T1,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,1)\n  FieldNames(\"f1_0,f1_1\")\nEndTable\nDataTable(T2,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,2)\n  FieldNames(\"f2_0,f2_1,f2_2,f2_3\")\nEndTable\nDataTable(T4,True,10)\n  WindVector(1,WS,WD,IEEE4,False,0,0,4)\n  FieldNames(\"f4_0,f4_1\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n    CallTable T4\n  NextScan\nEndProg\n"
  }
 ]
