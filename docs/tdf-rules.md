@@ -291,6 +291,13 @@ one `Temp_Max` field, `dim=3`).
   `interval=(0,0)` and the no-interval size formula (`instructiontimes_2.CR6`, fixture
   `solo_interval_auto_2000_bytes`); `-l` still prints `Interval:`.
 
+- An array source's field `subdims` is the *declared* shape whatever `reps` is
+  (`Sample(3,A,FP2)` on `A(10)`: `[10]`; `Sample(24,M3D,FP2)`: `[2,3,4]`), and a multi-index
+  `M(2,1)` has `begin` = row-major flat index (`4` for `M(2,3)`) (oracle-confirmed, fixture
+  `source_array_declared_shape_and_flat_begin`, `dim_1`/`public_1` CHM).
+- `DataInterval(into, 0, unit, lapses)` (interval 0): the header interval and the sizing weight are
+  the enclosing `Scan`'s interval (`modemhangupendmodemhangup_1`, five ms-scan CardOut programs).
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower

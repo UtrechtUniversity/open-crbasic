@@ -82,5 +82,13 @@
  {
   "id": "alias_split_output_sources",
   "source": "Public A(6), B(3)\nAlias A(1)=a1\nAlias A(2)=a2\nAlias A(4)=a4\nAlias B(1)=b1\nAlias B(2)=b2\nAlias B(3)=b3\nUnits a2 = mm\nDataTable(T1,True,10)\n  Sample(6,A(),FP2)\nEndTable\nDataTable(T2,True,10)\n  Average(3,A(2),FP2,False)\nEndTable\nDataTable(T3,True,10)\n  Sample(2,A(3),IEEE4)\nEndTable\nDataTable(T4,True,10)\n  Maximum(3,B,IEEE4,False,False)\n  Minimum(3,B(),IEEE4,False,True)\nEndTable\nDataTable(T5,True,10)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n    CallTable T5\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "source_array_declared_shape_and_flat_begin",
+  "source": "Public A(10), M(2,3), K\nDataTable(T1,True,10)\n  Sample(3,A,FP2)\nEndTable\nDataTable(T2,True,10)\n  Sample(2,M,FP2)\nEndTable\nDataTable(T3,True,10)\n  Sample(3,M(2,1),FP2)\nEndTable\nDataTable(T4,True,10)\n  Sample(1,M(2,3),FP2)\nEndTable\nDataTable(T5,True,10)\n  Sample(6,M,FP2)\nEndTable\nDataTable(T6,True,10)\n  Sample(1,K,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n    CallTable T5\n    CallTable T6\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "datainterval_zero_uses_scan_interval",
+  "source": "Public X, A(9)\nDataTable(T,True,10000)\n  DataInterval(0,0,Sec,10)\n  Sample(1,X,FP2)\nEndTable\nDataTable(T2,True,-1)\n  DataInterval(0,0,mSec,10)\n  CardOut(0,-1)\n  Sample(9,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(60,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Scan(50,mSec,3,0)\n    CallTable T2\n  NextScan\nEndProg\n"
  }
 ]

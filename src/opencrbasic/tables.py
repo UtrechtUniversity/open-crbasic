@@ -649,15 +649,26 @@ def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None
 
 def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: consteval.Env,
                    reps: int) -> tuple[int, list[int]]:
-    """(begin, subdims) for an output field's Source, per §3."""
-    if isinstance(expr, S.Index):
+    """(begin, subdims) for an output field's Source, per §3: subdims are the *declared* shape of the
+    source array whatever `reps` is; begin is the 1-based row-major flat index of the first element."""
+    if isinstance(expr, (S.Index, S.Name)):
         info = var_info.get(expr.name.upper())
-        array_shape = list(info.shape) if info and info.shape else [reps]
+        array_shape = list(info.shape) if info and info.shape else ([reps] if isinstance(expr, S.Index) else [])
         if array_shape == [1]:
             array_shape = []  # §3 collapse rule: a one-element array has no subdims
         begin = 1
-        if expr.args:
-            begin = _as_int(_fold(expr.args[0], env, 1), 1)
+        if isinstance(expr, S.Index) and expr.args:
+            idx = [_as_int(_fold(a, env, 1), 1) for a in expr.args]
+            if info and info.shape and len(idx) == len(info.shape) > 1:
+                begin = 0
+                for k, v in enumerate(idx):
+                    stride = 1
+                    for d in info.shape[k + 1:]:
+                        stride *= d
+                    begin += (v - 1) * stride
+                begin += 1
+            else:
+                begin = idx[0]
         return begin, array_shape
     return 1, []
 
@@ -1013,6 +1024,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
     interval = (0, 0)
     interval_seconds = None
     display_interval = None  # (value, unit_text) for the -l "Interval:" line
+    zero_interval = False
     has_card = False
 
     out_fields: list[_OutField] = []
@@ -1024,6 +1036,9 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             into, interval, ival, unit = _interval_from_args(s.args, env, 0, 1, 2)
             interval_seconds = ival * (_UNIT_SECONDS.get(unit, 1))
             display_interval = (ival, unit)
+            zero_interval = interval_seconds == 0
+            if zero_interval:
+                interval_seconds = None
             if len(s.args) > 3 and _fold(s.args[3], env, None) == 0:
                 # Lapses = 0: TDF header and sizing as for a table with no DataInterval; only the
                 # `-l` "Interval:" line remains (docs/tdf-rules.md §5)
@@ -1072,7 +1087,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         # record larger than the 1008-byte probe buffer: sized and stamped like a no-interval table
         into, interval, interval_seconds = (0, 0), (0, 0), None
 
-    meta = dict(size_val=size_val, bytes_per_record=bytes_per_record,
+    meta = dict(zero_interval=zero_interval, size_val=size_val, bytes_per_record=bytes_per_record,
                 interval_seconds=interval_seconds, has_card=has_card,
                 display_interval=display_interval, called=dt.name.upper() in called)
 
@@ -1166,6 +1181,13 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
 
 def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[str, float]):
     for t, m in tables_meta:
+        w = scan_weights.get(t.name.upper())
+        if (m["zero_interval"] and m["called"] and w
+                and m["bytes_per_record"] <= _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD):
+            # DataInterval(0,0,...): the interval is the enclosing Scan's (docs/tdf-rules.md §5)
+            ns = round(w * 1_000_000_000)
+            t.interval = (ns // 1_000_000_000, ns % 1_000_000_000)
+            m["interval_seconds"] = w
         if not m["called"]:
             # A table with no `CallTable` anywhere in the compiled program never gets its
             # DataInterval/DataEvent finalised either (oracle-confirmed, docs/tdf-rules.md §13):
