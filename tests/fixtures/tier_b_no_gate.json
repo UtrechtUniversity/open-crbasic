@@ -1,0 +1,141 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tier_b_no_gate-0",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Zork\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Zork.\nline 8: Invalid channel 2, must use U1..U12."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-1",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n    foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     Zork.\nline 8: Invalid channel 2, must use U1..U12.\nline 9: Invalid, or out of place expression:     foo bar."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-2",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid channel 2, must use U1..U12.\nline 8: Invalid, or out of place expression:     Zork = 1."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-3",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Randomize(Zork)\n    PortSet(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Zork.\nline 8: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-4",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    SWVX(Vx1,1,1)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     SWVX(Vx1,1,1).\nline 8: Invalid channel 2, must use U1..U12."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-5",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    ExciteV(Zork,2000,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-6",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    ExciteV(U1,Zork,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Zork.\nline 8: Invalid channel 2, must use U1..U12."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-7",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 +\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     X = 1 +."
+  },
+  {
+   "id": "cr6-tier_b_no_gate-8",
+   "logger": "cr6",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    foo bar\n    Sample(1,X,FP2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     foo bar.\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-0",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Zork\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Zork."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-1",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n    foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     Zork.\nline 9: Invalid, or out of place expression:     foo bar."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-2",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     Zork = 1."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-3",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Randomize(Zork)\n    PortSet(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Zork.\nline 8: Invalid port 1, use C1..C8."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-4",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    SWVX(Vx1,1,1)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-5",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    ExciteV(Zork,2000,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: Zork."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-6",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    ExciteV(U1,Zork,0)\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-7",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 +\n    VoltSe(AirTC,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     X = 1 +."
+  },
+  {
+   "id": "cr1000x-tier_b_no_gate-8",
+   "logger": "cr1000x",
+   "source": "Public AirTC, X, A(3)\nDataTable(T,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    foo bar\n    Sample(1,X,FP2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression:     foo bar.\nline 8: Sample must be used inside a table declaration."
+  }
+ ]
+}

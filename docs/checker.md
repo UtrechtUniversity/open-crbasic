@@ -3729,3 +3729,25 @@ Fixtures: `closer_arity.json`, `alias_known.json`, `subcall_tail.json`, `portset
   also for parenthesised arguments; CR300/CR350 hide the count error when a name error prints.
 - CR6/CR1000X: an earlier `Illegal parameter` or `Variable illegal in Parameter` on the same
   statement hides `Too many parameters` (PortSet, Delay; CR300/CR350 already matched).
+
+## Round 4 (CR6/CR1000X diagnostics): pass-2 expression errors do not gate tier C
+
+Observed 2026-10-04 with CR6Comp/cr1000xcomp (`tests/fixtures/tier_b_no_gate.json`, test
+`tests/test_tier_b_no_gate.py`). This corrects the earlier "either `structure.check_pass2` or
+`expressions.check` finding suppresses tier C" statement under "Pass model":
+
+- The generic fallback (`Zork`, `Zork = 1`, `foo bar`, `SWVX(Vx1,1,1)`), `X = Zork`, an `If`
+  condition and an undefined name in a *general* instruction position (`Randomize(Zork)`,
+  `ExciteV(U1,Zork,0)`) are pass-2 findings that do **not** hide the instruction channel/port/
+  range checks (`Invalid channel 2, must use U1..U12.`, `Excitation exceeds ...`, `Sample must be
+  used inside a table declaration.`); everything prints in source order.
+- What hid `ExciteV(Vx1,...)`'s successor is that the channel position is constant family, a
+  pass-1 finding (`check_const_family_args`). `X = 1 +` (parse error) and `Call Zork` (link step)
+  still print alone.
+- A placement stop (`Scan illegally occurs before BeginProg.`) still cuts later tier-C findings.
+- `Can't assign units` (`check_units_targets`) stays hidden by these findings
+  (`test_duplicate_units_is_late`). A `DataTable` body whose field statement does not parse
+  (`Sample(1,x,FP  2)`) is not reported as `declared with no output fields` (inference, safe side).
+- CR300/CR350 keep the old gate (not probed).
+
+Measured: cr6 chm exact 438 -> 443; cr1000x unchanged.

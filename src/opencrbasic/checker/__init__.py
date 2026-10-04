@@ -247,6 +247,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         return True
 
     pass1_errors = bool(diags.errors)
+    generic_errors: list = []  # pass-2 argument/expression findings (CR6/CR1000X: no tier-C gate)
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
     if not diags.errors:
@@ -276,7 +277,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # Tier B also checks the statements of a one-line `If` (oracle: `If X Then Y = 1` ->
         # `Invalid, or out of place expression: Y = 1.`).
         flat = _with_inline(program)
+        n_generic = len(diags.items)
         stop_line = _run_pass_capture(structure.check_pass2, flat, profile, diags, env, links)
+        generic_errors += diags.items[n_generic:]
         # Every stop is one expanded-source position (`links.positions`), the earliest wins; an
         # included file has its own line numbers, so a physical line cannot order them.
         # Like the `Scan` value errors, a nested `Scan` neither gates tier C nor survives past a
@@ -316,8 +319,10 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                 return True
             return links.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
 
+        n_generic = len(diags.items)
         _run_pass(expressions.check, flat, profile, diags, env)
         _run_pass(expressions.check_table_members, flat, profile, diags)
+        generic_errors += diags.items[n_generic:]
         _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
         if not profile.single_pass:
             _run_pass(instr_data.check_eventcount_tables, flat, profile, diags)
@@ -427,7 +432,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]
     tier_c_start = len(diags.items)
     table_stop = None
-    if not diags.errors:
+    gate = [d for d in diags.errors if profile.single_pass or not any(d is g for g in generic_errors)]
+    if not gate:
         # Pass 2, tier C: the real compiler never reaches an instruction's own channel/range/
         # table/value validation once *either* tier A or tier B recorded any error anywhere in the
         # file -- oracle-confirmed, `docs/checker.md` "Two-pass compilation"/"Pass model":
@@ -444,12 +450,25 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
         table_stop = _run_pass_capture(instr_data.check_table_structure, program, profile, diags)
-        if not early.items:  # hidden by a `Scan` value error (oracle, CR6/CR1000X, 2026-10-03)
+        if not early.items and not generic_errors:  # hidden by a `Scan` value error (oracle, CR6/CR1000X, 2026-10-03)
             _run_pass(instr_data.check_units_targets, program, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
         # `Delay`/`CS616`/`TimerInput`/`ExciteV`/`ExciteI` value-set and value-range checks.
         _run_pass(instr_measure.check, program, profile, diags, env)
         _run_pass(instr_measure.check_scan_delay_budget, program, profile, diags, env)
+    if generic_errors:
+        diags.items[tier_c_start:] = [d for d in diags.items[tier_c_start:]
+                                      if d.severity != "error" or not d.line or before_cutoff(d)]
+    if generic_errors and len(diags.items) > tier_c_start:
+        # Tier-C findings print in source order among the generic pass-2 ones (oracle, CR6/
+        # CR1000X, 2026-10-04: a bad channel on an earlier line precedes a later `foo bar`).
+        tail = diags.items[pass2_start:]
+        slots = [i for i, d in enumerate(tail) if d.severity == "error" and d.line]
+        ordered = sorted((tail[i] for i in slots),
+                         key=lambda d: links.positions.get((d.file, d.line), d.line))
+        for i, d in zip(slots, ordered):
+            tail[i] = d
+        diags.items[pass2_start:] = tail
     if table_stop is not None and table_stop in links.positions:
         late_pos = links.positions[table_stop]
         diags.items[tier_c_start:] = [
