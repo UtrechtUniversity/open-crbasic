@@ -3708,3 +3708,24 @@ Fixture `tests/fixtures/trailing_after_call2.json` (`parser.py` `_absorb_trailin
   `+&H1`, `++1`, `-+1`, `+x` stay `Illegal parameter`). CR300/CR350 had no issue (`Too many
   parameters:  +1.`). `+` in assignments, `Abs(+1)`, `Call S1(+1)`, operands, `Sample`, `Dim`
   sizes etc. already matched (probed, no change).
+
+## Round 4 follow-ups (2026-10-04)
+
+Oracle-confirmed fixes from the gpt-6.1-sol review of round 3 and the trailing-token leftovers.
+Fixtures: `closer_arity.json`, `alias_known.json`, `subcall_tail.json`, `portset_tail.json`.
+
+- CR300/CR350 closer suppression (`cr3xx._hides_nothing`): a built-in arity error hides the
+  unmatched-closer errors unless a `Public.<name>` reference occurs before the call's first `)`.
+  The function does not matter: `Round(Public.x,1,2)` hides nothing; `Round(x)+Public.Timestamp`,
+  `Floor(x,1)`, `FormatLong(x)` and `SecsSince1990(x,1,2)` hide the closers (probed too few and too
+  many arguments). Not modelled: `CallTable Nope` before `Round(Public.x,1,2)` prints only the
+  CallTable error.
+- CR300/CR350 failed `Alias` (`expressions._known_names`): names registered by a declaration or by
+  another valid Alias stay known (`Public x` / `Alias Nope = x`: `x` stays defined).
+- Sub-call tails: `S2() =` and `S2()=` are a Sub call with the tail ignored. Undefined names in a
+  tail are reported (CR6/CR1000X: the last tail piece keeps its trailing blanks plus the
+  trailing-newline quirk; CR300/CR350: `nope is not defined.` plus `Dimensions not declared`).
+  Name errors precede `Call to S with N parameters` / `Call argument required.` on all loggers,
+  also for parenthesised arguments; CR300/CR350 hide the count error when a name error prints.
+- CR6/CR1000X: an earlier `Illegal parameter` or `Variable illegal in Parameter` on the same
+  statement hides `Too many parameters` (PortSet, Delay; CR300/CR350 already matched).
