@@ -1854,21 +1854,36 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
     m = re.match(r"\s*(?:call\s+)?" + re.escape(stmt.name) + r"\s*", stmt.text, re.I)
     if not m or not stmt.text[m.end():].startswith("("):
         return
+    last_tail = None
     items = _group_items(stmt.text, m.end())
+    quirk = [False] * len(items or [])
+    if items is not None and len(items) < len(stmt.args) and not stmt.tail_ignored:
+        # the tail after `)` is more arguments (`Call S3(1) nope`); CR6/CR1000X echo it with the
+        # trailing newline (oracle, 2026-10-04, all four loggers)
+        close = _group_end(stmt.text, m.end())
+        tail = _split_top(stmt.text[close + 1:]) if close is not None else []
+        if tail and not tail[-1].strip():
+            tail.pop()
+        if len(items) + len(tail) == len(stmt.args):
+            items, quirk = items + tail, quirk + [False] * (len(tail) - 1) + [stmt.at_eol]
+            last_tail = len(items) - 1
     if items is None or len(items) != len(stmt.args):
         return
-    for arg, raw in zip(stmt.args, items):
+    for i, (arg, raw, nl) in enumerate(zip(stmt.args, items, quirk)):
         names = expressions._undefined_names(arg, known)
         if not names:
             continue
         echo = raw.strip()
+        if i == last_tail:  # the final tail piece keeps its trailing blanks (oracle, 2026-10-04)
+            echo = raw.lstrip()
         if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
-            diags.error(stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file)
+            diags.error(stmt.line, f"Invalid symbol in expression: {echo}{chr(10) if nl else ''}.",
+                        stmt.file)
             continue
         for name in names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
         if expressions._has_undefined_index(arg, known):
-            diags.error(stmt.line, expressions.dimensions_message(echo, profile, False), stmt.file)
+            diags.error(stmt.line, expressions.dimensions_message(echo, profile, nl, nl), stmt.file)
 
 
 @dataclasses.dataclass
@@ -1998,9 +2013,12 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         if link.upper() not in link_ctx.subs:
             return _unlinked_call(stmt, link, profile, diags, before_beginprog, link_ctx)
     if sub_params and name in sub_params:
-        _check_call_args(stmt, sub_params[name], diags)
+        # names first; CR300/CR350 then print no argument-count error (oracle, 2026-10-04)
+        before = len(diags.items)
         if known is not None:
             _report_call_arg_names(stmt, known, profile, diags)
+        if not (profile.single_pass and len(diags.items) > before):
+            _check_call_args(stmt, sub_params[name], diags)
     if name in subs:
         if before_beginprog:
             diags.error(stmt.line, "Call illegally occurs before BeginProg.", stmt.file)
@@ -2015,7 +2033,9 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         # CR300/CR350 only (`profiles.py`'s own field docstring, `docs/loggers.md`): an extra
         # `{name} is not defined.` line right before the generic fallback below, and no
         # before-`BeginProg` follow-up/stop for this branch (unlike the two branches above).
-        diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name), stmt.file)
+        if known is None or name not in known:  # a declared `x()` is not `not defined` (oracle, 2026-10-04)
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name),
+                        stmt.file)
         diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                     show_file=False)
         return None
@@ -2301,6 +2321,22 @@ def _split_top(text: str, sep: str = ",") -> list[str]:
             start = i + 1
     items.append(text[start:])
     return items
+
+
+def _group_end(text: str, open_at: int) -> int | None:
+    """Index of the `)` closing the `(` at `text[open_at]`."""
+    depth, in_str = 0, False
+    for i in range(open_at, len(text)):
+        ch = text[i]
+        if ch == '"':
+            in_str = not in_str
+        elif not in_str and ch in "(":
+            depth += 1
+        elif not in_str and ch == ")":
+            depth -= 1
+            if depth == 0:
+                return i
+    return None
 
 
 def _group_items(text: str, open_at: int) -> list[str] | None:

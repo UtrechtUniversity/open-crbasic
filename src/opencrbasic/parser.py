@@ -651,6 +651,11 @@ class _Parser:
         # parens; anything nested inside it is parsed via `_parse_expr` and is strict again.
         target = self._parse_atom(p, line, file, strict=False)
         t = p.peek()
+        if (t.kind == "OP" and t.text == "=" and isinstance(target, S.Index) and not target.args
+                and p.toks[p.i + 1].kind == "EOF"):
+            # `S2() =`: a Sub call whose tail is ignored (oracle, 2026-10-04, all four loggers)
+            p.i = len(p.toks) - 1
+            return S.Call(line, file, name=target.name, args=[], explicit=False, tail_ignored=True)
         if t.kind == "OP" and (t.text == "=" or t.text in _COMPOUND_OPS):
             op_tok = p.next()
             value = self._parse_expr(p, line, file)
