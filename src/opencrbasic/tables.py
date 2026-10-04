@@ -10,6 +10,7 @@ Entry points:
 
 from __future__ import annotations
 
+import dataclasses
 import json
 from dataclasses import dataclass, field
 from fractions import Fraction
@@ -482,10 +483,22 @@ def _cpistatus_table() -> TdfTable:
 # ---------------------------------------------------------------- Public table (§8)
 
 
-def _resolve_alias_target(expr: S.Expr | None) -> tuple[str, int | None]:
-    """`Var` -> (Var, None); `Var(i)` -> (Var, i) for a single constant index."""
+def _resolve_alias_target(expr: S.Expr | None, var_info: dict | None = None) -> tuple[str, int | None]:
+    """`Var` -> (Var, None); `Var(i)` -> (Var, i) for a single constant index; `Var(i,j)` of a
+    declared multi-dimensional array -> its row-major flat 1-based index."""
     if isinstance(expr, S.Name):
         return expr.name.upper(), None
+    if isinstance(expr, S.Index) and len(expr.args) > 1 and var_info is not None:
+        info = var_info.get(expr.name.upper())
+        if (info is not None and len(info.shape) == len(expr.args)
+                and all(isinstance(a, S.Number) for a in expr.args)):
+            flat = 0
+            for k, a in enumerate(expr.args):
+                stride = 1
+                for d in info.shape[k + 1:]:
+                    stride *= d
+                flat += (_as_int(a.value) - 1) * stride
+            return expr.name.upper(), flat + 1
     if isinstance(expr, S.Index) and expr.args:
         idx = expr.args[0]
         if isinstance(idx, S.Number):
@@ -508,7 +521,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
     for a in alias_stmts:
         if len(a.args) < 2 or not isinstance(a.args[1], S.Name):
             continue
-        base, idx = _resolve_alias_target(a.args[0])
+        base, idx = _resolve_alias_target(a.args[0], var_info)
         alias_name = a.args[1].name
         if idx is None:
             whole_alias[base] = alias_name
@@ -526,8 +539,10 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
         ro = base in readonly_names
 
         elements = aliased_elements.get(base)
-        if elements and info.shape and len(info.shape) == 1:
-            array_size = info.shape[0]
+        if elements and info.shape:
+            array_size = 1
+            for d in info.shape:
+                array_size *= d
             full_shape = info.full_shape()
             group: list[TdfField] = []
             pos = 1
@@ -535,6 +550,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
                 if pos in elements:
                     f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, 1, [])
                     f.alias_elem = True  # type: ignore[attr-defined]
+                    f.alias_of = (v.name, pos)  # type: ignore[attr-defined]
                     group.append(f)
                     pos += 1
                 else:
@@ -772,12 +788,23 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict)
             else:
                 a, b = max(lo, glo), min(hi, ghi)
                 out.append(_OutField(f.name, f.type_code, f.read_only, f.processing, a, b - a + 1,
-                                      f.subdims, f.units, renamed=f.renamed, rng=(a, b)))
+                                      list(g.subdims), f.units, renamed=f.renamed, rng=(a, b)))
     return out
 
 
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
                          env: consteval.Env, by_base: dict | None = None) -> list[_OutField]:
+    if (by_base and len(instr.args) > 1 and isinstance(instr.args[1], S.Name)
+            and instr.args[1].name.upper() not in var_info):
+        # a Source that names an element Alias is that element of its array (docs/tdf-rules.md §9a)
+        target = by_display.get(instr.args[1].name.upper())
+        of = getattr(target, "alias_of", None)
+        if of is not None:
+            a = instr.args[1]
+            idx = S.Number(a.line, a.file, value=of[1], text=str(of[1]))
+            args = list(instr.args)
+            args[1] = S.Index(a.line, a.file, name=of[0], args=[idx])
+            instr = dataclasses.replace(instr, args=args)
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
         fields = _emit_output_fields_raw(instr, var_info, by_display, env)

@@ -300,6 +300,12 @@ one `Temp_Max` field, `dim=3`).
   the enclosing `Scan`'s interval (`modemhangupendmodemhangup_1`, five ms-scan CardOut programs); `-l`
   prints that interval in the declared unit (`Interval: 50 MSEC`).
 
+- Multi-dimensional `Alias` (`Alias w(2,2)=x` on `w(2,3)`): flat row-major element index, split
+  like the 1-D case, run fields keep the full declared shape. A `Source` that names an element
+  alias (`Sample(5, Ux, ...)`) is that element of the aliased array (alias-split as above, 4 CHM
+  programs). `Units` on the declared array name applies to every split piece; time-of-extreme
+  (`TMx`/`TMn`) fields carry the source's units (`cdmtccomp_1`).
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower

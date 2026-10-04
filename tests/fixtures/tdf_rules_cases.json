@@ -98,5 +98,9 @@
  {
   "id": "solo_interval_auto_506_bytes_loses_interval",
   "source": "Public A(253)\nDataTable(T,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(253,A(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "alias_2d_and_alias_name_source",
+  "source": "Public w(2,3), V(5)\nAlias w(1,1)=a11\nAlias w(2,2)=a22\nAlias V(1)=v1\nAlias V(2)=v2\nUnits V = m\nUnits a22 = s\nDataTable(T,True,10)\n  Sample(5,v1,IEEE4)\n  Average(1,a22,IEEE4,False)\n  Maximum(2,a11,IEEE4,False,True)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
  }
 ]
