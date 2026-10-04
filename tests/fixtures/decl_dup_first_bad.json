@@ -1,0 +1,337 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-decl_dup_first_bad-0",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-1",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-2",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P, Q\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-3",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-4",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Y, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-5",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Q, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-6",
+   "logger": "cr300",
+   "source": "Const C = 1\nPublic C, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: C is already declared as a CONST.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-7",
+   "logger": "cr300",
+   "source": "Const C = 1\nPublic X, C, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: C is already declared as a CONST.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-8",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nDim P, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-9",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nDim X, P, R, T, U\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  T.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-10",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P(3), Q(nv), R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-11",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P As Long, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-12",
+   "logger": "cr300",
+   "source": "Public P\nAlias P = Z\nPublic Z, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z already declared as a variable.\nline 3: Too many parameters:  R.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-13",
+   "logger": "cr300",
+   "source": "Public P\nAlias P = Z\nPublic X, Z, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z already declared as a variable.\nline 3: Too many parameters:  R.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-14",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P(-1), Q(nv), R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public P(-1), Q(nv), R\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-15",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X(-1), Q(nv), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(-1), Q(nv), R, S\n\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-16",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X(nv), Q(-1), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: nv is not defined.\nline 2: Variable illegal in Parameter: nv.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-17",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Q(-1), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X, Q(-1), R, S\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-18",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic P(nv), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: nv is not defined.\nline 2: Variable illegal in Parameter: nv.\nline 2: P already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-19",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic Sin, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-20",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Sin, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-21",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Y, Sin, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-decl_dup_first_bad-22",
+   "logger": "cr300",
+   "source": "Public P, Q, R\nPublic X, Y, Day, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Day is a predefined CONST.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-0",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-1",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-2",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P, Q\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-3",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-4",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Y, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-5",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Q, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-6",
+   "logger": "cr350",
+   "source": "Const C = 1\nPublic C, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: C is already declared as a CONST.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-7",
+   "logger": "cr350",
+   "source": "Const C = 1\nPublic X, C, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: C is already declared as a CONST.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-8",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nDim P, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-9",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nDim X, P, R, T, U\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  T.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-10",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P(3), Q(nv), R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-11",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P As Long, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-12",
+   "logger": "cr350",
+   "source": "Public P\nAlias P = Z\nPublic Z, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z already declared as a variable.\nline 3: Too many parameters:  R.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-13",
+   "logger": "cr350",
+   "source": "Public P\nAlias P = Z\nPublic X, Z, Q, R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Z already declared as a variable.\nline 3: Too many parameters:  R.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-14",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P(-1), Q(nv), R\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public P(-1), Q(nv), R\n\nline 2: P already declared as a variable.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-15",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X(-1), Q(nv), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X(-1), Q(nv), R, S\n\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-16",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X(nv), Q(-1), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: nv is not defined.\nline 2: Variable illegal in Parameter: nv.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-17",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Q(-1), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimension: Public X, Q(-1), R, S\n\nline 2: Q already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-18",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic P(nv), R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: nv is not defined.\nline 2: Variable illegal in Parameter: nv.\nline 2: P already declared as a variable.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-19",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic Sin, Q, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  R.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-20",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Sin, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-21",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Y, Sin, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin already defined as an internal function.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-decl_dup_first_bad-22",
+   "logger": "cr350",
+   "source": "Public P, Q, R\nPublic X, Y, Day, R, S\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Day is a predefined CONST.\nline 2: Too many parameters:  S.\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

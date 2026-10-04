@@ -3657,3 +3657,11 @@ modelled (message-only difference on already rejected programs). Fixture:
   cascade. Not modelled: `Alias R1(1 = B` (`Need '=' ...`), `Dim R3(` (`R3( is missing the )
   character.`), a dimension name declared later in the file (`Public a(Sc)` then `Public Sc` is
   `Sc is not defined.` on the real compilers, we say only `Variable illegal in Parameter`).
+- **Redeclared variable stops a declaration** (`tests/fixtures/decl_dup_first_bad.json`, 46 cases,
+  CR300/CR350 real output): `already declared as a variable.` / `is already declared as a CONST.`
+  on variable i stops the statement and names variable i+2 with `Too many parameters`
+  (`Public P, Q, R` twice -> `P already declared ...`, `Too many parameters:  R.`; Q and R are not
+  reported). On one variable the order is dimension error, then the redeclaration, one `Too many`.
+  The first bad variable of dimension/name/redeclaration wins (`Public X(-1), Q(nv), R, S` with Q
+  declared -> only `Illegally dimension: ...` and `... R.`); `structure.check_pass1` merges the
+  three results.

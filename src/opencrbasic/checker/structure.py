@@ -803,8 +803,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
             in_struct = False
             struct_members = set()
+        dup_at = None
+        dup_diags = diags
         if not in_sub and not in_struct:  # a structure body names its own members
-            _check_duplicate_declaration(stmt, declared_kinds, diags, profile)
+            if (profile.single_pass and isinstance(stmt, S.Declaration)
+                    and stmt.kind in ("PUBLIC", "DIM") and stmt.vars):
+                dup_diags = Diagnostics()  # merged with the dimension checks below
+            dup_at = _check_duplicate_declaration(stmt, declared_kinds, dup_diags, profile)
         elif in_sub and not in_struct:
             symbols.check_local_name_collision(stmt, profile, diags)
         if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
@@ -854,15 +859,27 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
                 if profile.single_pass:
-                    # one bad variable stops the declaration: whichever of an illegal dimension
-                    # and an undefined dimension name comes first in the line wins (oracle,
-                    # CR300/CR350, 2026-10-04: `Public a(-1), b(nv), c` / `a(nv), b(-1), c`)
+                    # one bad variable stops the declaration: the first of an illegal dimension,
+                    # an undefined dimension/initializer name and a redeclared name wins; on the
+                    # same variable the dimension error comes before the redeclaration, which
+                    # names the one two on (oracle, CR300/CR350, 2026-10-04: `Public a(-1),
+                    # b(nv), c` / `a(nv), b(-1), c` / `Public P(-1), Q, R` after `Public P, Q, R`)
                     dims_diags, names_diags = Diagnostics(), Diagnostics()
-                    first_bad = _check_array_dims(stmt, dims_diags, env, profile)
-                    names_bad = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
-                                                  struct_types, first_bad)
-                    diags.items.extend(names_diags.items if names_bad else
-                                       dims_diags.items + names_diags.items)
+                    dim_at = _check_array_dims(stmt, dims_diags, env, profile)
+                    name_at = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
+                                                struct_types, dim_at)
+                    bad_at = name_at if name_at is not None else dim_at
+                    own_items = names_diags.items if name_at is not None else \
+                        dims_diags.items + names_diags.items
+                    if dup_at is None:
+                        diags.items.extend(own_items)
+                    elif bad_at is None or dup_at < bad_at:
+                        diags.items.extend(dup_diags.items)
+                    elif dup_at == bad_at:
+                        diags.items.extend([d for d in own_items if not d.message.startswith(
+                            "Too many parameters:")] + dup_diags.items)
+                    else:
+                        diags.items.extend(own_items)
                 else:
                     _check_array_dims(stmt, diags, env, profile)
                     _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
@@ -2119,7 +2136,7 @@ def _report_numeric_sub_name(stmt: S.SubDef, value: object, diags: Diagnostics) 
 
 
 def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics,
-                                 profile=None) -> None:
+                                 profile=None) -> int | None:
     """Global-scope redeclaration, pass 1, all four loggers (oracle, 2026-09-27, `docs/checker.md`
     "Duplicate declarations"): a `Public`/`Dim` or `Const` name already declared as a variable
     (`Public`/`Dim`, or an `Alias` name) -> `%s already declared as a variable.`; a `Public`/`Dim`
@@ -2134,13 +2151,19 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                     if index + 2 < len(stmt.vars):
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
-                    break
+                    return index
                 continue  # a failed function-name declaration never registers a variable
             prior = declared.get(v.name.upper())
-            if prior in ("VAR", "ALIAS"):
-                diags.error(stmt.line, f"{v.name} already declared as a variable.", stmt.file)
-            elif prior == "CONST":
-                diags.error(stmt.line, f"{v.name} is already declared as a CONST.", stmt.file)
+            if prior in ("VAR", "ALIAS", "CONST"):
+                diags.error(stmt.line, f"{v.name} already declared as a variable." if prior != "CONST"
+                            else f"{v.name} is already declared as a CONST.", stmt.file)
+                if profile and profile.single_pass:
+                    # the first redeclared variable stops the statement; the one two on is
+                    # named (oracle, CR300/CR350, 2026-10-04: `Public P, Q, R` twice -> `... R.`)
+                    if index + 2 < len(stmt.vars):
+                        diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                    stmt.file)
+                    return index
             else:
                 declared[v.name.upper()] = "VAR"
             if profile and symbols.report_predefined_name_collision(stmt, v.name, profile, diags):
@@ -2148,7 +2171,7 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                     if index + 2 < len(stmt.vars):
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
-                    break
+                    return index
     elif isinstance(stmt, S.ConstDecl):
         if profile and stmt.name.upper() in profile.functions:
             symbols.report_function_name_collision(stmt, stmt.name, profile, diags)
@@ -2374,7 +2397,7 @@ def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnosti
 
 def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
                       diags: Diagnostics, struct_types: frozenset[str] = frozenset(),
-                      stop_at: int | None = None) -> bool:
+                      stop_at: int | None = None) -> int | None:
     """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers.
     Oracle, all four loggers (`docs/checker.md` "Declaration expressions"): `Public A(3, Nope)` ->
     `Invalid symbol in expression: Nope.` (each bad dimension, echo left-trimmed); `Dim A(Y)`, `Y`
@@ -2384,7 +2407,7 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     body = body[len(body.split(None, 1)[0]):] if body else ""
     segments = _split_top(body)
     if len(segments) != len(stmt.vars):
-        return False
+        return None
     unsupported = False
     for index, (v, seg) in enumerate(zip(stmt.vars, segments)):
         name_at = seg.upper().find(v.name.upper())
@@ -2427,7 +2450,7 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                     if index + 2 < len(stmt.vars):
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
-                    return True
+                    return index
         if v.init and (stop_at is None or index < stop_at):
             eq = _split_top(seg, "=")
             if len(eq) != 2:
@@ -2451,8 +2474,8 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                     if index + 2 < len(stmt.vars):
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
-                    return True
-    return False
+                    return index
+    return None
 
 
 def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: set[str],
