@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from fractions import Fraction
 from pathlib import Path
 
 from . import consteval
@@ -76,7 +77,7 @@ _DEFAULT_PROBE_OVERHEAD = 16
 # regime) -- those two are established, working formulas for their own regimes and are left
 # untouched; per docs/tdf-rules.md §10 open question 9, the compiler's free-memory snapshot
 # genuinely differs between these code paths, and why has not been traced further.
-_MIXED_POOL = 4_194_139
+_MIXED_POOL = 4_194_140
 # The finalisation loop's reserved-bytes accumulator starting value (decompiled: `local_18 =
 # 0x1000` before the per-table loop runs).
 _TABLE_INIT_RESERVED = 4096
@@ -114,7 +115,7 @@ def _table_rate_contrib(bytes_per_record: int, weight: float, default_records: i
     if weight <= 0:
         return 0.0
     t8 = default_records * bytes_per_record + _DEFAULT_PROBE_OVERHEAD
-    return t8 / (default_records * weight)
+    return Fraction(t8) / (default_records * Fraction(weight).limit_denominator(10**9))
 
 
 def _fold(expr: S.Expr | None, env: consteval.Env, default=None):
@@ -533,6 +534,7 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             while pos <= array_size:
                 if pos in elements:
                     f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, 1, [])
+                    f.alias_elem = True  # type: ignore[attr-defined]
                     group.append(f)
                     pos += 1
                 else:
@@ -725,11 +727,52 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
     return _TYPE_BYTES.get(type_code, 4)
 
 
+def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict) -> list[_OutField]:
+    """docs/tdf-rules.md §9a: an output field over an array that has element `Alias`es follows the
+    Public table's field decomposition: one scalar field per aliased element (alias name + the
+    instruction suffix, the alias' units), one field per un-aliased run (source name, `begin` =
+    run start in the array)."""
+    if not isinstance(src, (S.Name, S.Index)):
+        return fields
+    base = src.name.upper()
+    groups = by_base.get(base)
+    if not groups or not any(getattr(g, "alias_elem", False) for g in groups):
+        return fields
+    out = []
+    declared = var_info[base].name
+    for f in fields:
+        if f.name_only or not f.name.startswith(declared):
+            out.append(f)
+            continue
+        suffix = f.name[len(declared):]
+        lo, hi = f.begin, f.begin + f.dim - 1
+        pos = 1
+        for g in groups:
+            if getattr(g, "alias_elem", False):
+                glo = ghi = pos
+            else:
+                glo, ghi = g.begin_index, g.begin_index + g.dimension - 1
+            pos = ghi + 1
+            if ghi < lo or glo > hi:
+                continue
+            if getattr(g, "alias_elem", False):
+                out.append(_OutField(g.name + suffix, f.type_code, f.read_only, f.processing, 1, 1,
+                                      [], g.units, renamed=f.renamed, rng=(glo, glo)))
+            else:
+                a, b = max(lo, glo), min(hi, ghi)
+                out.append(_OutField(f.name, f.type_code, f.read_only, f.processing, a, b - a + 1,
+                                      f.subdims, f.units, renamed=f.renamed, rng=(a, b)))
+    return out
+
+
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
-                         env: consteval.Env) -> list[_OutField]:
+                         env: consteval.Env, by_base: dict | None = None) -> list[_OutField]:
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
         fields = _emit_output_fields_raw(instr, var_info, by_display, env)
+        if by_base:
+            fields = _split_by_alias(fields, instr.args[1] if len(instr.args) > 1 else None,
+                                      var_info, by_base)
     src = instr.args[1] if len(instr.args) > 1 else None
     if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
             and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
@@ -962,7 +1005,7 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
 
 
 def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
-                       by_display: dict, called: set[str]) -> tuple[TdfTable, dict]:
+                       by_display: dict, called: set[str], by_base: dict | None = None) -> tuple[TdfTable, dict]:
     """Returns (TdfTable, meta) where meta carries auto-sizing inputs (bytes_per_record,
     interval_seconds, has_interval, has_card) for tables whose declared Size is -1.
     """
@@ -997,7 +1040,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         elif kw in _OUTPUT_KEYWORDS:
             if pending:
                 out_fields.extend(pending)
-            pending = _emit_output_fields(s, var_info, by_display, env)
+            pending = _emit_output_fields(s, var_info, by_display, env, by_base)
         elif kw == "FFT":
             # Name-only field (`_OutField.name_only`): FFT's TDF layout is not modelled here, but
             # its `<Source>_FFT` name takes part in the duplicate-field-name check.
@@ -1024,6 +1067,10 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
     size_val = _as_int(size_val, -1)
 
     bytes_per_record = sum(_field_record_bytes(of) for of in out_fields if not of.name_only)
+
+    if interval_seconds is not None and bytes_per_record > _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD:
+        # record larger than the 1008-byte probe buffer: sized and stamped like a no-interval table
+        into, interval, interval_seconds = (0, 0), (0, 0), None
 
     meta = dict(size_val=size_val, bytes_per_record=bytes_per_record,
                 interval_seconds=interval_seconds, has_card=has_card,
@@ -1079,7 +1126,7 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         t.size = max((_SOLO_POOL - _TABLE_INIT_RESERVED - _table_reserved_bytes(b, 1)) // t8, 1)
         return
 
-    if not event_ones:
+    if not event_ones and n > 1:
         # Pure DataInterval-only auto tables: the well-established, oracle-confirmed formula
         # (equal duration, pool shrinking by a flat amount per extra auto table).
         pool = _POOL1 - _PER_TABLE_DECREMENT * (n - 1)
@@ -1108,9 +1155,10 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
     rate = sum(_table_rate_contrib(m["bytes_per_record"], m["_weight"], defaults[id(t)])
                for t, m in autos)
     pool = (_MIXED_POOL if interval_ones else _SOLO_POOL) - reserved
-    duration = pool / rate if rate else 0.0
+    duration = Fraction(pool) / rate if rate else Fraction(0)
     for t, m in autos:
-        records = int(duration / m["_weight"]) if m["_weight"] else 0
+        w = Fraction(m["_weight"]).limit_denominator(10**9)
+        records = int(duration / w) if w else 0
         if m["has_card"] and m["bytes_per_record"]:
             records += _CARDOUT_BONUS_BYTES // m["bytes_per_record"]
         t.size = max(records, defaults[id(t)], 1)
@@ -1155,7 +1203,7 @@ def build_tables(program: S.Program, profile, consts: dict):
 
     data_table_metas = []
     for dt in scanned["data_tables"]:
-        table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"])
+        table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base)
         tables.append(table)
         data_table_metas.append((table, meta))
 

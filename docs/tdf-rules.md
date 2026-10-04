@@ -281,6 +281,16 @@ one `Temp_Max` field, `dim=3`).
   sized like a no-interval table, but `-l` still prints `Interval: <n> <UNIT>`.
 - A one-element array source (`Public A(1)`) has `subdims=[]` in its output field (§3 collapse).
 
+- **Alias-split output fields** (oracle-confirmed, fixture `alias_split_output_sources`, 5 CHM
+  programs): an output instruction whose Source array has element `Alias`es follows the Public
+  table's decomposition over the covered elements: each aliased element is a scalar field named
+  `<alias><suffix>` (`begin=1`, the alias' units), each un-aliased run keeps `<source><suffix>`
+  with `begin` = its first element and `dim` = its overlap length. `Minimum(...,True)` emits all
+  `_Min` fields then all `_TMn` fields.
+- A `DataInterval` table whose record exceeds 1008 bytes (probe buffer, §10) gets header
+  `interval=(0,0)` and the no-interval size formula (`instructiontimes_2.CR6`, fixture
+  `solo_interval_auto_2000_bytes`); `-l` still prints `Interval:`.
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower
@@ -332,6 +342,14 @@ question 9 below), and `tables.py` keeps each regime's own fitted constant rathe
 they coincide.
 
 ### Interval-based tables (have `DataInterval`)
+
+**2026-10-04**: a *single* interval auto table follows the mixed-regime formula (§10 top) with
+`_MIXED_POOL = 4,194,140` (was 4,194,139: the exact b=2 point needs `M >= 4194139.43`) and exact
+rational arithmetic (no float truncation: `2059767`, not `2059766`). 14 oracle points, b = 2..2000:
+all exact except b=52 (79236 vs 79235) and CHM `tga_1` (b=128: 32139 vs 32138): for `t8 < 1024`
+the fitted reserved bytes look near-constant (~7144) instead of `4096 + 3*t8`; unresolved. Two or
+more pure-interval tables still use the older `_POOL1 - 5198*(n-1)` fit (the mixed formula breaks
+`Shunt_tester.CR6`, which is 2 interval tables).
 
 **oracle-confirmed**, exp `#5`/`#6`/`#12`/`#13`/`#20`/`#23`/`#39`–`#45`. Record count:
 

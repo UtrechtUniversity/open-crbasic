@@ -66,5 +66,21 @@
  {
   "id": "two_event_auto_tables_no_interval",
   "source": "Public S1 As String, S2 As String\nDataTable(R1,True,-1)\n  Sample(1,S1,String)\nEndTable\nDataTable(R2,True,-1)\n  Sample(1,S2,String)\nEndTable\nBeginProg\n  Scan(1,Sec,3,1)\n    CallTable R1\n    CallTable R2\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_interval_auto_2_bytes",
+  "source": "Public A(1)\nDataTable(T,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(1,A(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_interval_auto_10_bytes",
+  "source": "Public A(5)\nDataTable(T,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(5,A(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_interval_auto_2000_bytes",
+  "source": "Public A(1000)\nDataTable(T,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(1000,A(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "alias_split_output_sources",
+  "source": "Public A(6), B(3)\nAlias A(1)=a1\nAlias A(2)=a2\nAlias A(4)=a4\nAlias B(1)=b1\nAlias B(2)=b2\nAlias B(3)=b3\nUnits a2 = mm\nDataTable(T1,True,10)\n  Sample(6,A(),FP2)\nEndTable\nDataTable(T2,True,10)\n  Average(3,A(2),FP2,False)\nEndTable\nDataTable(T3,True,10)\n  Sample(2,A(3),IEEE4)\nEndTable\nDataTable(T4,True,10)\n  Maximum(3,B,IEEE4,False,False)\n  Minimum(3,B(),IEEE4,False,True)\nEndTable\nDataTable(T5,True,10)\n  Sample(2,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n    CallTable T5\n  NextScan\nEndProg\n"
  }
 ]
