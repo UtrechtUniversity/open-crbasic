@@ -3776,3 +3776,15 @@ before its usual line. Not modelled: literal ports (`0`, `-1`, `U5` -> `ComPort 
 add `No Matching, or out of place )`, and an undefined name in argument 2 with a valid port
 (`CommsMode Option 100 not supported on ComC1.`). Implemented in `cr3xx.check` / `expressions.check`.
 Measured: chm exact cr6 447 -> 450, cr1000x 453 -> 454.
+
+### `EmailSend` destination (CR6/CR1000X)
+
+Observed 2026-10-04 (`tests/fixtures/emailsend_destination.json`): `EmailSend` behaves like
+`EmailRecv` (`docs/instructions.md` "EmailRecv destination"): argument 9 missing or a non-String
+variable/literal gives `A string variable destination is required` ahead of the arity line. Also
+for the bare `X = EmailSend` / `X = EmailRecv` (arguments wrapped to the next line, the CHM shape),
+and when the call is nested in a larger expression (`L = EmailSend(...,L)+1`, with 9+ arguments).
+An unresolved assignment target keeps only the generic `Invalid, or out of place expression`.
+Not implemented: `If EmailSend(...) Then` (same message), `X = EmailRelay(S,S)` / 8-argument
+`EmailSend` arity (`Expression expects ,`), `X = SMSSend` (`Invalid symbol`).
+Measured: chm exact cr6 450 -> 452, cr1000x 454 -> 456.

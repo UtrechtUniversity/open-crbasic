@@ -1207,18 +1207,34 @@ def check_serialin_destination(program: S.Program, profile, diags: Diagnostics) 
         diags.items[at:at] = new
 
 
+_EMAIL_FUNCTIONS = ("EMAILRECV", "EMAILSEND")
+
+
 def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR6/CR1000X `EmailRecv`: argument 9 must exist and every argument from 9 on must be a String
-    variable/element, else `A string variable destination is required` ahead of any arity message
+    """CR6/CR1000X `EmailRecv`/`EmailSend` (same behaviour, oracle 2026-10-04): argument 9 must
+    exist and every argument from 9 on must be a String variable/element, else `A string variable destination is required` ahead of any arity message
     (docs/instructions.md#emailrecv-destination). Only literals, constants and non-String
     variables count as bad; expressions are left unchecked."""
     if profile.name not in ("cr6", "cr1000x") or "EMAILRECV" not in profile.functions:
         return
     types = _serialin_types(program, profile)
+    from .expressions import _index_nodes, _known_names, _undefined_names
+    known = _known_names(program, profile)
     for stmt in program.statements:
+        if isinstance(stmt, S.Assignment) and _undefined_names(stmt.target, known):
+            continue  # an unresolved target is the generic `Invalid, or out of place expression`
         call = stmt.value if isinstance(stmt, S.Assignment) else stmt
-        if isinstance(call, (S.Index, S.Call)) and call.name.upper() == "EMAILRECV":
+        if isinstance(call, (S.Index, S.Call)) and call.name.upper() in _EMAIL_FUNCTIONS:
             args = call.args
+        elif isinstance(call, S.Name) and call.name.upper() in _EMAIL_FUNCTIONS \
+                and isinstance(stmt, S.Assignment):
+            args = []  # `X = EmailSend` with its arguments wrapped onto the next line
+        elif isinstance(stmt, S.Assignment):
+            nested = [n for n in _index_nodes(call) if n.name.upper() in _EMAIL_FUNCTIONS
+                      and len(n.args) >= 9]  # inside a larger expression (oracle: `...+1`)
+            if not nested:
+                continue
+            args = nested[0].args
         else:
             continue
         tail = args[8:]

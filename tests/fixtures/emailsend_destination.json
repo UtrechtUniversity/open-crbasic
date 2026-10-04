@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-emailsend_destination-0",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects ( :     X = EmailSend."
+  },
+  {
+   "id": "cr6-emailsend_destination-1",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Invalid, or out of place expression:     X = EmailSend()."
+  },
+  {
+   "id": "cr6-emailsend_destination-2",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects , :     X = EmailSend(1,2,3)."
+  },
+  {
+   "id": "cr6-emailsend_destination-3",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend(S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects , :     X = EmailSend(S,S,S,S,S,S,S,S)."
+  },
+  {
+   "id": "cr6-emailsend_destination-4",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr6-emailsend_destination-5",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-emailsend_destination-6",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    S = EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-emailsend_destination-7",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,L)+1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr6-emailsend_destination-8",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 + EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr6-emailsend_destination-9",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork = EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork = EmailSend(S,S,S,S,S,S,S,S,L)."
+  },
+  {
+   "id": "cr6-emailsend_destination-10",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-emailsend_destination-11",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailRecv\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects ( :     X = EmailRecv."
+  },
+  {
+   "id": "cr6-emailsend_destination-12",
+   "logger": "cr6",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,S)\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Zork = 1."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-0",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects ( :     X = EmailSend."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-1",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Invalid, or out of place expression:     X = EmailSend()."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-2",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend(1,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects , :     X = EmailSend(1,2,3)."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-3",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailSend(S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects , :     X = EmailSend(S,S,S,S,S,S,S,S)."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-4",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-emailsend_destination-5",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-6",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    S = EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-7",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,L)+1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-emailsend_destination-8",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 + EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-emailsend_destination-9",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork = EmailSend(S,S,S,S,S,S,S,S,L)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork = EmailSend(S,S,S,S,S,S,S,S,L)."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-10",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    EmailSend(S,S,S,S,S,S,S,S,S)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-11",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    X = EmailRecv\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required\nline 4: Expression expects ( :     X = EmailRecv."
+  },
+  {
+   "id": "cr1000x-emailsend_destination-12",
+   "logger": "cr1000x",
+   "source": "Public X, I, B As Boolean, L As Long, S As String * 20, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n    L = EmailSend(S,S,S,S,S,S,S,S,S)\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Zork = 1."
+  }
+ ]
+}
