@@ -243,6 +243,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     ranges = Diagnostics()   # `measure.json` `const_ranges` findings, see below
     leading = Diagnostics()  # pass-2 findings that print ahead of their line's other findings
     links = structure.CallLinks()
+    def before_cutoff(diagnostic) -> bool:  # tier B (below) redefines it once a stop is known
+        return True
+
     pass1_errors = bool(diags.errors)
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
@@ -250,6 +253,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # CR6/CR1000X instruction checks between pass 1 and pass 2's expression tier; an error
         # here skips tier B (`instr_data.check_stage2a`).
         _run_pass(instr_data.check_stage2a, program, profile, diags, env)
+        if diags.errors:
+            early.items = []  # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04:
+            # `PanelTemp(1,15000)` under `Scan(0,Sec,3,0)` reports only `Invalid Variable or Array`)
     if not diags.errors or profile.single_pass:
         # Pass 2, tier B (see this module's docstring): the generic "Expr"/implicit-`Call`
         # fallback (`structure.check_pass2`) and the undefined-symbol/constant-only-family checks

@@ -1054,6 +1054,14 @@ _CLOSER_ERRORS = frozenset({
     "LOOP statement illegally has SCAN without NEXT SCAN."})
 
 
+# Errors that do not hide the closer / `CallTable` errors below (oracle, CR300, 2026-10-04, the
+# fuzz reproducers `false_accept/ca5935f3a78b` and `a2f667cdbbc7`): another block-structure error
+# (`EndSub without Sub or nested subs.`) and a built-in call's arity error.
+def _hides_nothing(d) -> bool:
+    return d.message.endswith("without Sub or nested subs.") or d.message.startswith(
+        ("No Matching, or out of place ) in expression", "Expression expects"))
+
+
 def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: the unmatched-closer errors (`END IF without IF ...`, `NEXT without FOR.`,
     `LOOP without DO.` and their `... illegally has SCAN without NEXT SCAN.` companions, with the
@@ -1070,7 +1078,8 @@ def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Di
     placement = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in lines
                  and d.message.endswith(" illegally occurs before BeginProg.")]
     ours = {id(d) for d in closers + placement}
-    if not any(d.severity == "error" and id(d) not in ours for d in diags.items):
+    if not any(d.severity == "error" and id(d) not in ours and not _hides_nothing(d)
+               for d in diags.items):
         return
     diags.items[:] = [d for d in diags.items if id(d) not in ours]
 
@@ -1087,7 +1096,8 @@ def drop_calltable_error_with_other_errors(program: S.Program, profile, diags: D
              if isinstance(st, S.Instruction) and st.keyword.upper() == "CALLTABLE"}
     mine = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in sites
             and d.message.startswith("Could not find DataTable ")]
-    if mine and any(d.severity == "error" and d not in mine for d in diags.items):
+    if mine and any(d.severity == "error" and d not in mine and not _hides_nothing(d)
+                    for d in diags.items):
         diags.items[:] = [d for d in diags.items if d not in mine]
 
 

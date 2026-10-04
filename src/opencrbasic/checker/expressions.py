@@ -649,6 +649,14 @@ def _known_names(program: S.Program, profile) -> set[str]:
                   and len(st.args) == 2 and isinstance(st.args[0], S.Index)
                   and isinstance(st.args[1], S.Name)
                   and any(_undefined_names(a, known) for a in st.args[0].args if a is not None)}
+        # nor is one whose source was never declared (`Quad not yet declared so cannot be
+        # aliased.`; oracle, CR300, 2026-10-04, `tests/corpus/fuzz/cr300/message_diff/829cfa80394a`)
+        declared = symbols.declared_variable_names(program)
+        known -= {st.args[1].name.upper() for st in program.statements
+                  if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+                  and len(st.args) == 2 and isinstance(st.args[1], S.Name)
+                  and isinstance(st.args[0], (S.Name, S.Index))
+                  and st.args[0].name.upper() not in declared}
     return KnownNames(known, tables=_value_less_tables(program))
 
 
