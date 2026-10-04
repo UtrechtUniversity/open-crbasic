@@ -819,7 +819,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 diags.error(stmt.line, "Missing variable name.", stmt.file)
             for a in args:
                 if isinstance(a, S.Name) and a.name.upper() not in struct_members and \
-                        declared_kinds.get(a.name.upper()) != "VAR":
+                        declared_kinds.get(a.name.upper()) not in ("VAR", "ALIAS"):
                     diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
 
         if isinstance(stmt, S.Instruction):
@@ -895,7 +895,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                             "number.", stmt.file)
             elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
                 _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
-                                   seen_alias_sources)
+                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"))
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
@@ -2120,7 +2120,7 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                     break
                 continue  # a failed function-name declaration never registers a variable
             prior = declared.get(v.name.upper())
-            if prior == "VAR":
+            if prior in ("VAR", "ALIAS"):
                 diags.error(stmt.line, f"{v.name} already declared as a variable.", stmt.file)
             elif prior == "CONST":
                 diags.error(stmt.line, f"{v.name} is already declared as a CONST.", stmt.file)
@@ -2139,7 +2139,7 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
         if profile and symbols.report_predefined_name_collision(stmt, stmt.name, profile, diags):
             return  # failed Const declarations do not register a new constant
         prior = declared.get(stmt.name.upper())
-        if prior == "VAR":
+        if prior in ("VAR", "ALIAS"):
             diags.error(stmt.line, f"{stmt.name} already declared as a variable.", stmt.file)
         elif prior == "CONST":
             diags.error(stmt.line, f"{stmt.name} is already declared as a CONST.", stmt.file)
@@ -2150,12 +2150,23 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
         if not stmt.args:
             diags.error(stmt.line, "Missing variable name.", stmt.file)
         for a in stmt.args:
-            if isinstance(a, S.Name) and declared.get(a.name.upper()) != "VAR":
+            if isinstance(a, S.Name) and declared.get(a.name.upper()) not in ("VAR", "ALIAS"):
                 diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS":
-        for a in stmt.args[1:]:
+        # An alias name that is already a `Public`/`Dim` variable or a `Const` (not another
+        # alias: that is `Duplicate Alias Name`) -> `%s already declared as a variable.` /
+        # `%s is already declared as a CONST.` (oracle, all four loggers, 2026-10-04,
+        # `docs/checker.md` "Alias name already declared"). Only the first comma item, and only
+        # when it is a bare name with nothing after it; reported by `_check_alias_dims`, after
+        # its own dimension error (stashed here under `declared[stmt]` as the message).
+        for index, a in enumerate(stmt.args[1:]):
             if isinstance(a, S.Name):
-                declared.setdefault(a.name.upper(), "VAR")
+                prior = declared.setdefault(a.name.upper(), "ALIAS")
+                if index == 0 and not getattr(stmt, "alias_junk", False):
+                    if prior == "VAR":
+                        declared[f"#{id(stmt)}"] = f"{a.name} already declared as a variable."
+                    elif prior == "CONST":
+                        declared[f"#{id(stmt)}"] = f"{a.name} is already declared as a CONST."
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ESSVARIABLES" and profile:
         # declares its table's variables: a later `Public essBatteryStatus` -> `already declared
         # as a variable.` (oracle, 2026-10-01; `checker/ess.py`)
@@ -2463,7 +2474,8 @@ def _alias_flat_offset(index: tuple[int, ...], dims: tuple[int, ...]) -> int:
 def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env,
                        dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
                        seen_alias_names: set[str],
-                       seen_alias_sources: dict[str, set[tuple]]) -> None:
+                       seen_alias_sources: dict[str, set[tuple]],
+                       name_collision: str | None = None) -> None:
     """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional (oracle-confirmed
     each accumulates with an unrelated, later `Variable not named.` in the same file, and, being
     pass 1, all suppress every pass-2 check the same way any other pass-1 error already does -- no
@@ -2586,6 +2598,8 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
             if not (1 <= _alias_flat_offset(padded, dims) <= total):
                 diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
 
+    if name_collision:
+        diags.error(stmt.line, name_collision, stmt.file)
     if index_key is not None:
         bucket = seen_alias_sources.setdefault(name_upper, set())
         if index_key in bucket:
@@ -2597,6 +2611,8 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         if not isinstance(rhs, S.Name):
             continue
         rhs_upper = rhs.name.upper()
+        if name_collision and rhs is stmt.args[1]:
+            continue  # a colliding first name is never registered as an alias
         if rhs_upper in seen_alias_names:
             diags.error(stmt.line, f"Duplicate Alias Name: {rhs.name}.", stmt.file)
         else:
