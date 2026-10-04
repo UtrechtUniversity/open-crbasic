@@ -377,9 +377,10 @@ def _scan_program(program: S.Program):
             called.add(s.args[2].name.upper())
 
     publics = [v for v in publics if (v.type or "").upper() not in struct_types]
+    uses_ch400 = any(_kw(s) == "CH400STATUS" for s in stmts)
     uses_cpi = any(_kw(s).startswith("CDM_") or _kw(s) == "CPIFILESEND" for s in stmts)
 
-    return dict(struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
+    return dict(uses_ch400=uses_ch400, struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
 
@@ -469,6 +470,51 @@ def _build_struct_tables(all_vars: list[S.VarDecl], struct_types: dict, env: con
                                     st["units"].get(m.name.upper(), ""), "", 1, dim, subdims))
         out.append(TdfTable(v.name, size, 14, (0, 0), (0, 0), fields))
     return out
+
+
+_DEG_C = "\xef\xbf\xbdC"
+# CH400Status instruction table (docs/tdf-rules.md §2): (name, units); None = 28-byte string. The
+# temperature units are the bytes EF BF BD 'C' (a UTF-8 replacement character, then C) -- reproduced
+# as latin-1 text.
+_CH400_FIELDS = (
+    ("ChargeAVoltage", 'Volts'),
+    ("ChargeACurrent", 'Amps'),
+    ("ChargeBVoltage", 'Volts'),
+    ("ChargeBCurrent", 'Amps'),
+    ("InputChargeStatus", None),
+    ("InputCurrentLimit", 'Amps'),
+    ("BattAVoltage", 'Volts'),
+    ("BattACurrent", 'Amps'),
+    ("BattAChargeStatus", None),
+    ("BattASetVoltage", 'Volts'),
+    ("BattACurrentLimit", 'Amps'),
+    ("BattADepthofDischarge", '%'),
+    ("BattBVoltage", 'Volts'),
+    ("BattBCurrent", 'Amps'),
+    ("BattBChargeStatus", None),
+    ("BattBSetVoltage", 'Volts'),
+    ("BattBCurrentLimit", 'Amps'),
+    ("BattBDepthofDischarge", '%'),
+    ("SystemVoltage", 'Volts'),
+    ("SystemCurrent", 'Amps'),
+    ("AlwaysOn12Voltage", 'Volts'),
+    ("AlwaysOn12Current", 'Amps'),
+    ("Switched12Voltage", 'Volts'),
+    ("Switched12Current", 'Amps'),
+    ("Switched24Voltage", 'Volts'),
+    ("Switched24Current", 'Amps'),
+    ("PowerSwitchState", None),
+    ("MaxBoardTemp", _DEG_C),
+    ("MinBoardTemp", _DEG_C),
+    ("PanelTemp", _DEG_C),
+    ("BattAProbeTemp", _DEG_C),
+    ("BattBProbeTemp", _DEG_C),
+)
+def _ch400status_table() -> TdfTable:
+    fields = [TdfField(11 if u is None else 9, True, n, [], "", u or "", "", 1,
+                        28 if u is None else 1, [28] if u is None else [])
+              for n, u in _CH400_FIELDS]
+    return TdfTable("CH400Status", 1, 14, (0, 0), (0, 0), fields)
 
 
 def _cpistatus_table() -> TdfTable:
@@ -1251,6 +1297,9 @@ def build_tables(program: S.Program, profile, consts: dict):
     tables: list[TdfTable] = [_status_table(scanned["slow_seq_count"])]
     struct_tables = _build_struct_tables(scanned["all_vars"], scanned["struct_types"], env)
     tables.extend(struct_tables)
+    if scanned["uses_ch400"]:
+        struct_tables = struct_tables + [_ch400status_table()]
+        tables.append(struct_tables[-1])
 
     data_table_metas = []
     for dt in scanned["data_tables"]:

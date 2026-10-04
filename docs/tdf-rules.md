@@ -72,6 +72,11 @@ investigated further: **open question**.
    is present whenever structure tables exist, with **zero fields** if there is no `DataTable`.
    Nested structure members give garbage tables (`z.sb`) and are not modelled.
 
+3c. `CH400Status(...)` adds a 32-field `CH400Status` table (`_CH400_FIELDS`; temperature units are the
+   raw bytes EF BF BD 'C') and, like structure tables, forces `DataTableInfo` (zero fields without
+   `DataTable`); it sits right after `Status` (`ch400status_1.CR6`; its position relative to
+   structure tables/`DataTable`s is untested).
+
 No other system tables were observed (`Settings`, alarms, etc. did not appear in any experiment;
 none of these features were exercised, so their absence is **not** evidence they never appear —
 **open question**).
