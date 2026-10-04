@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-function_stmt_undefined_arg-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(1 + Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(1 + Zork)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn( Zork )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn( Zork )."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(Zork, Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(Zork, Zork2)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(1, Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(1, Zork)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(Zork, Q)\n    Fn2(Zork3, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(Zork, Q).\nline 11: Invalid symbol in expression:     Fn2(Zork3, 1)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(Zork)\n    VoltSe(X,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork).\nline 11: Invalid channel 2, must use U1..U12."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(X, Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression:     Fn(X, Zork)."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Call argument required.\nline 10: Invalid, or out of place expression:     Fn()."
+  },
+  {
+   "id": "cr6-function_stmt_undefined_arg-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(1 + Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(1 + Zork)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn( Zork )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn( Zork )."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(Zork, Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(Zork, Zork2)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(1, Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(1, Zork)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn2(Zork, Q)\n    Fn2(Zork3, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn2(Zork, Q).\nline 11: Invalid symbol in expression:     Fn2(Zork3, 1)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(Zork)\n    VoltSe(X,1,mv5000C,2,0,0,15000,0.1,-40.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(X, Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression:     Fn(X, Zork)."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Call argument required.\nline 10: Invalid, or out of place expression:     Fn()."
+  },
+  {
+   "id": "cr1000x-function_stmt_undefined_arg-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20\nFunction Fn2(A As Long, B As Long) As Long\n  Return A\nEndFunction\nFunction Fn(A As Long) As Long\n  Return A\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

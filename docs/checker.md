@@ -3799,3 +3799,15 @@ start channel...`, `Invalid port, must be C1..C4 or U1..U12.`; the value seems t
 200) and are left unchecked (previously a false reject for `-200`/`-213`). Positive `>= 213` prints
 `Channel <v mod 200> exceeds number of valid channels.` (observed 213..1199; 0 = accepted for SE,
 odd message for diff), not implemented. CR1000X is unchanged. `terminals._cr6_burst_kind`.
+
+### Bare calls of a user `Function` (CR6/CR1000X)
+
+Observed 2026-10-04 (`tests/fixtures/function_stmt_undefined_arg.json`, `function_bare_name.json`):
+a statement-level call of a declared `Function` (`Fn(Zork)`, no `Call`) with an undefined name in
+any argument gives one `Invalid symbol in expression: <whole statement text>.` (like `X = Fn(Zork)`),
+however many arguments are undefined, where a `Sub` call echoes each bad argument separately. Tier-C
+errors on later lines still print. A bare `Fn` without parentheses is accepted for a `Function`
+(was a false reject `Call argument required.`); `Fn()` still gives it, and a bare `Sub` with a
+required parameter still gives it. Not done: `Call Fn(Zork)` (adds `Invalid symbol in expression:
+Zork.` before the link message), `Fn(1) + Zork` / `Fn(Zork).y` (`Invalid symbol`, whole statement),
+`Fn 1` (`Incomplete expression: <text>.`).

@@ -1850,7 +1850,8 @@ def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
                 diags.error(stmt.line, "Call argument required.", stmt.file)
 
 
-def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagnostics) -> None:
+def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagnostics,
+                           is_function: bool = False) -> None:
     """Undefined names in a `Sub` call's arguments, every argument (oracle, 2026-09-28: `Two(Q,
     Q2)` reports both). CR6/CR1000X echo the argument (`Invalid symbol in expression: Q+1.`);
     CR300/CR350 name each undefined name, plus `Dimensions not declared: Nope(1).`."""
@@ -1879,6 +1880,11 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
         echo = raw.strip()
         if i == last_tail:  # the final tail piece keeps its trailing blanks (oracle, 2026-10-04)
             echo = raw.lstrip()
+        if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS and is_function:
+            # A bare call of a declared `Function` is one expression statement: a single line
+            # echoing the whole statement, however many arguments are undefined (oracle).
+            diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
+            return
         if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {echo}{chr(10) if nl else ''}.",
                         stmt.file)
@@ -2019,7 +2025,9 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         # names first; CR300/CR350 then print no argument-count error (oracle, 2026-10-04)
         before = len(diags.items)
         if known is not None:
-            _report_call_arg_names(stmt, known, profile, diags)
+            _report_call_arg_names(stmt, known, profile, diags,
+                                   is_function=sub_params[name].keyword.upper() == "FUNCTION"
+                                   and not stmt.explicit)
         if not (profile.single_pass and len(diags.items) > before):
             _check_call_args(stmt, sub_params[name], diags)
     if name in subs:
