@@ -3820,9 +3820,11 @@ instructions below, 114 cases, all agreeing): most instructions report only the 
 position (existing rule), but these report every undefined position, each as its own `Invalid symbol
 in expression: <arg>.` line, in a compile-function-specific order (1-based positions):
 `Move` 2,1,4,3; `RMSSpa`/`StdDevSpa`/`MaxSpa`/`MinSpa`/`AvgSpa` 2,3,1; `CPIFileSend` 1..5; `GOESSetup`
-1..7,10,8,9; `GOESGPS` 1,2; `CH400SendOS` 1,2. The order is not derivable from the type codes (`Move`
+1..7,10,8,9; `GOESGPS` 1,2; `CH400SendOS` 1,2; `MoveBytes` 1,2,4,5,3 (when its optional
+sixth, constant argument is undefined only that one is reported, pass 1); `ReadIO` 2,1; `IPRoute` 1..3;
+`MQTTPublishMeta` 1..6. The order is not derivable from the type codes (`Move`
 and `MoveBytes` share their first codes and differ), so it is the `_MULTI_REPORT_ORDER` table in
-`expressions.py`. `MoveBytes` already printed positions 1,2,4,5 textually. Not done: `GOESData`
+`expressions.py`. Not done: `GOESData`
 (`Could not find DataTable <arg 2>` after the symbol lines), `AddPrecise`/`MovePrecise`, `RainFlowSample`.
 Also: after an undefined name at a const-family position, the later `Illegal parameter ..., expecting
 constant integer.` (`PortSet`, `PortGet`, `SW12`, `CDM_SW*`, `SwVx`) is no longer printed

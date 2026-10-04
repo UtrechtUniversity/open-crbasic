@@ -110,6 +110,69 @@
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z."
   },
   {
+   "id": "cr6-multi_report_order-14",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,2,Q3z,2,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr6-multi_report_order-15",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,Q2z,Q3z,Q4z,Q5z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q4z.\nline 4: Invalid symbol in expression: Q5z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr6-multi_report_order-16",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,Q2z,Q3z,Q4z,Q5z,Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q6z."
+  },
+  {
+   "id": "cr6-multi_report_order-17",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(X(1),Q2z,X(1),Q4z,X(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q4z."
+  },
+  {
+   "id": "cr6-multi_report_order-18",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    ReadIO(Q1z,Q2z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q1z."
+  },
+  {
+   "id": "cr6-multi_report_order-19",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    IPRoute(Q1z,Q2z,Q3z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr6-multi_report_order-20",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    IPRoute(X(1),1,Q3z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr6-multi_report_order-21",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MQTTPublishMeta(Q1z,Q2z,Q3z,Q4z,Q5z,Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q3z.\nline 4: Invalid symbol in expression: Q4z.\nline 4: Invalid symbol in expression: Q5z.\nline 4: Invalid symbol in expression: Q6z."
+  },
+  {
+   "id": "cr6-multi_report_order-22",
+   "logger": "cr6",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MQTTPublishMeta(X(1),X(1),Q3z,X(1),X(1),Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q3z.\nline 4: Invalid symbol in expression: Q6z."
+  },
+  {
    "id": "cr1000x-multi_report_order-0",
    "logger": "cr1000x",
    "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(Q1z,Q2z,Q3z,Q4z)\n  NextScan\nEndProg\n",
@@ -206,6 +269,69 @@
    "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    CH400SendOS(Q1z,Q2z)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-14",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,2,Q3z,2,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-15",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,Q2z,Q3z,Q4z,Q5z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q4z.\nline 4: Invalid symbol in expression: Q5z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-16",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(Q1z,Q2z,Q3z,Q4z,Q5z,Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q6z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-17",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(X(1),Q2z,X(1),Q4z,X(1),2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q4z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-18",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    ReadIO(Q1z,Q2z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q1z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-19",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    IPRoute(Q1z,Q2z,Q3z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-20",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    IPRoute(X(1),1,Q3z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q3z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-21",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MQTTPublishMeta(Q1z,Q2z,Q3z,Q4z,Q5z,Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q1z.\nline 4: Invalid symbol in expression: Q2z.\nline 4: Invalid symbol in expression: Q3z.\nline 4: Invalid symbol in expression: Q4z.\nline 4: Invalid symbol in expression: Q5z.\nline 4: Invalid symbol in expression: Q6z."
+  },
+  {
+   "id": "cr1000x-multi_report_order-22",
+   "logger": "cr1000x",
+   "source": "Public X(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    MQTTPublishMeta(X(1),X(1),Q3z,X(1),X(1),Q6z)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Q3z.\nline 4: Invalid symbol in expression: Q6z."
   }
  ]
 }

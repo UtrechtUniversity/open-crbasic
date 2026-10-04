@@ -186,7 +186,7 @@ _VARIABLE_REQUIRED_KINDS = frozenset({"variable_or_array"})
 # CR6/CR1000X instructions whose compile function reports every undefined argument instead of the
 # first one only, in the listed 0-based position order (oracle, 2026-10-04, all positions
 # undefined: `Move(a,b,c,d)` reports b, a, d, c; the `*Spa` family b, c, a; `GOESSetup` reports
-# its tenth argument before the eighth and ninth). Positions are independent (subset probes).
+# its tenth argument before the eighth and ninth; `MoveBytes` 1,2,4,5,3). Positions are independent (subset probes).
 _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
     "MOVE": (1, 0, 3, 2),
     "RMSSPA": (1, 2, 0), "STDDEVSPA": (1, 2, 0), "MAXSPA": (1, 2, 0), "MINSPA": (1, 2, 0),
@@ -194,6 +194,8 @@ _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
     "CPIFILESEND": (0, 1, 2, 3, 4),
     "GOESSETUP": (0, 1, 2, 3, 4, 5, 6, 9, 7, 8),
     "GOESGPS": (0, 1), "CH400SENDOS": (0, 1),
+    "MOVEBYTES": (0, 1, 3, 4, 2), "READIO": (1, 0), "IPROUTE": (0, 1, 2),
+    "MQTTPUBLISHMETA": (0, 1, 2, 3, 4, 5),
 }
 
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
