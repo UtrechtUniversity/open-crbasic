@@ -477,7 +477,7 @@ class _Parser:
             # silently completes right there, oracle-confirmed (`docs/checker.md` "Need closing )
             # shapes"), unlike a call reached through the general expression grammar.
             args, spans = self._parse_arglist(p, ")", line, file, strict=False)
-            self._absorb_trailing(p, args, spans, line, file)
+            self._absorb_trailing(p, args, spans, line, file, kw)
         elif p.is_op("="):
             # A handful of instructions (`StationName=Value`) take `=Value` instead of an
             # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
@@ -497,7 +497,8 @@ class _Parser:
             args, spans = self._parse_bare_arglist(p, line, file)
         return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)
 
-    def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str) -> None:
+    def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str,
+                         kw: str) -> None:
         """`Instr(a,b) tail`: the real compiler appends one gap-free tail chunk as one more
         parameter (`PortSet(C1,1) 1` == `PortSet(C1,1,1)`), and ignores stray `)` `,` `=` tokens
         (oracle, all four loggers, 2026-10-04, `docs/checker.md` "Trailing tokens after an
@@ -511,9 +512,29 @@ class _Parser:
                 pieces.append([])
             else:
                 pieces[-1].append(t)
+        params = self.profile.instructions[kw]["params"]
         found: list[tuple[S.Expr, tuple[int, int]]] = []
         for piece in pieces:
-            got = self._tail_chunk(piece, p.seg_text, line, file)
+            slot = len(args) + len(found)
+            const_slot = slot >= len(params) or params[slot] in (4, 104)
+            got = self._tail_chunk(piece, p.seg_text, line, file, const_slot)
+            if got is None and const_slot:
+                # a constant-integer slot, or one past the last: whitespace separates parameters
+                # (`PortSet(C1,1) 1 2` -> `Too many parameters:  2.`, `docs/checker.md`)
+                groups: list[list[Token]] = [[piece[0]]] if piece else []
+                for a, b in zip(piece, piece[1:]):
+                    if b.col == a.col + len(a.text):
+                        groups[-1].append(b)
+                    else:
+                        groups.append([b])
+                got = [self._tail_chunk(g, p.seg_text, line, file, True) for g in groups]
+                if not got or None in got:
+                    return
+                found.extend(g for g in got if g is not True)
+                continue
+            if got is None and piece:
+                # an expression slot reads the whole piece as one expression (`Delay(1,1) 1 +2`)
+                got = self._whole_expr(piece, p.seg_text, line, file)
             if got is None:
                 return
             if got is not True:
@@ -523,10 +544,70 @@ class _Parser:
             spans.append(span)
         p.i = len(p.toks) - 1
 
-    def _tail_chunk(self, piece: list[Token], seg_text: str, line: int, file: str):
+    def _absorb_sub_tail(self, p: _TokStream, args: list, line: int, file: str) -> bool:
+        """`S(a) tail` (user `Sub` call): the tail is more comma-separated arguments (oracle, all
+        four loggers, 2026-10-04, `docs/checker.md` "Trailing tokens after a Sub call"). Modelled:
+        pieces that are one complete expression (gaps allowed, or one with a stray closing
+        `)`); empty pieces count except a final one; a lone `)` or `,` is one empty argument. Anything else stays
+        unparsed. After empty parentheses `S()` the whole tail is ignored (returns True)."""
+        rest = [t for t in p.remaining() if t.kind != "EOF"]
+        if not rest:
+            return False
+        if not args:
+            p.i = len(p.toks) - 1
+            return True
+        pieces: list[list[Token]] = [[]]
+        for t in rest:
+            if t.kind == "OP" and t.text == ",":
+                pieces.append([])
+            else:
+                pieces[-1].append(t)
+        if not pieces[-1]:
+            pieces.pop()
+        found: list[S.Expr | None] = []
+        for piece in pieces:
+            if not piece:
+                found.append(None)
+            elif len(piece) == 1 and piece[0].text == ")":
+                if len(pieces) > 1:
+                    return False
+                found.append(None)
+            else:
+                got = self._whole_expr(piece, p.seg_text, line, file)
+                if got is None:
+                    return False
+                found.append(got[0])
+        args.extend(found)
+        p.i = len(p.toks) - 1
+        return False
+
+    def _whole_expr(self, piece: list[Token], seg_text: str, line: int, file: str):
+        """`piece` (gaps allowed) as one expression, or with one stray trailing `)` dropped ->
+        `(expr, span)`, else `None`."""
+        for cand in (piece, piece[:-1] if piece[-1].text == ")" else None):
+            if not cand:
+                continue
+            sub = _TokStream(cand + [lexer.Token("EOF", "", "", cand[-1].col)], seg_text)
+            try:
+                expr = self._parse_expr(sub, line, file)
+            except _ParseError:
+                continue
+            if sub.at_end():
+                return expr, (cand[0].col, cand[-1].col + len(cand[-1].text))
+        return None
+
+    def _tail_chunk(self, piece: list[Token], seg_text: str, line: int, file: str,
+                    const_slot: bool = False):
         """One comma-free tail piece -> `(expr, span)`, `True` (only stray `)`/`=`), or `None`."""
-        for chunk in (piece, [t for t in piece if not (t.kind == "OP" and t.text in (")", "="))]):
+        lead = 0
+        while lead < len(piece) and piece[lead].kind == "OP" and piece[lead].text == "(":
+            lead += 1
+        loose = [t for t in piece[lead:] if not (t.kind == "OP" and t.text in (")", "="))] if lead and const_slot else []
+        for chunk in (piece, [t for t in piece if not (t.kind == "OP" and t.text in (")", "="))],
+                      loose):
             if not chunk:
+                if chunk is loose:
+                    continue
                 return True
             if any(a.kind == "STRING" or b.col != a.col + len(a.text) for a, b in zip(chunk, chunk[1:])):
                 continue
@@ -552,6 +633,9 @@ class _Parser:
         if p.is_op("("):
             p.next()
             args, _spans = self._parse_arglist(p, ")", line, file, strict=False)  # see above
+            ignored = self._absorb_sub_tail(p, args, line, file)
+            return S.Call(line, file, name=name_tok.text, args=args, explicit=True,
+                          tail_ignored=ignored)
         elif not p.at_end():
             args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
@@ -595,7 +679,10 @@ class _Parser:
         if isinstance(target, S.Name):
             return S.Call(line, file, name=target.name, args=[], explicit=False)
         if isinstance(target, S.Index):
-            return S.Call(line, file, name=target.name, args=target.args, explicit=False)
+            args = list(target.args)
+            ignored = self._absorb_sub_tail(p, args, line, file)
+            return S.Call(line, file, name=target.name, args=args, explicit=False,
+                          tail_ignored=ignored)
         raise _ParseError("expected an assignment or a call")
 
     # ---- If / ElseIf ----------------------------------------------------

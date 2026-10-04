@@ -207,6 +207,7 @@ class Call(Stmt):
     name: str = ""
     args: list[Expr | None] = field(default_factory=list)
     explicit: bool = False          # written with `Call`
+    tail_ignored: bool = False      # `S()` followed by ignored trailing text
 
 
 @dataclass

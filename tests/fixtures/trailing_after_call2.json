@@ -1,0 +1,1339 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-trailing_after_call2-0",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-1",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-2",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1)2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-3",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-4",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-5",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-6",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-7",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) (2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-8",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-9",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-10",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2 ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-11",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-12",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-13",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) , 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-14",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2,,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 4 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-15",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,2) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr6-trailing_after_call2-16",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-17",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-18",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-19",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr6-trailing_after_call2-20",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-21",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-22",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-23",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-24",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-25",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-26",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S3(1)(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-27",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-28",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-29",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-30",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-31",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-32",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-33",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1,2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-34",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1 -2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-35",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 (2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-36",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-37",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 ) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-trailing_after_call2-38",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 mSec\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr6-trailing_after_call2-39",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 +2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-40",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-41",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-trailing_after_call2-43",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call2-44",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+&H1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter +&H1, expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call2-45",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter +x, expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call2-46",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,++1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter ++1, expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call2-47",
+   "logger": "cr6",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,-+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter -+1, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1)2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) (2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2 ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) , 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-14",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2,,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 4 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-15",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,2) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-16",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-17",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-18",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-19",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-20",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-21",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-22",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-23",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-24",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-25",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-26",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S3(1)(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-27",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-28",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-29",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-30",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-31",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-32",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-33",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1,2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-34",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1 -2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-35",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 (2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-36",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-37",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 ) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-38",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 mSec\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-39",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 +2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-40",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-41",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-43",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-44",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+&H1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter +&H1, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-45",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter +x, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-46",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,++1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter ++1, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call2-47",
+   "logger": "cr1000x",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,-+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Illegal parameter -+1, expecting constant integer."
+  },
+  {
+   "id": "cr300-trailing_after_call2-0",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-1",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-2",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1)2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-3",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-4",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-5",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-6",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-7",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) (2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-8",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-9",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-10",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2 ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-11",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-12",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-13",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) , 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-14",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2,,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 4 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-15",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,2) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr300-trailing_after_call2-16",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-17",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-18",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-19",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr300-trailing_after_call2-20",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-21",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-22",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-23",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-24",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-25",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-26",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S3(1)(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-27",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-28",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-29",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-30",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-31",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-32",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-33",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1,2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-34",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1 -2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-35",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 (2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-36",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-37",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 ) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-38",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 mSec\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-39",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 +2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-40",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call2-41",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-43",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-44",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+&H1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +&H1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-45",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +x."
+  },
+  {
+   "id": "cr300-trailing_after_call2-46",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,++1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  ++1."
+  },
+  {
+   "id": "cr300-trailing_after_call2-47",
+   "logger": "cr300",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,-+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -+1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-0",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-1",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-2",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1)2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-3",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-4",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS1(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-5",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S1(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S1 with 2 parameters, requires 1 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-6",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-7",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) (2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-8",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-9",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-10",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2 ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-11",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-12",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) ,\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-13",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) , 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-14",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1) 2,,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 4 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-15",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,2) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call to S3 with 3 parameters, requires 2 arguments."
+  },
+  {
+   "id": "cr350-trailing_after_call2-16",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-17",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3() 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required.\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-18",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(1,)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-19",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS3(,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Call argument required."
+  },
+  {
+   "id": "cr350-trailing_after_call2-20",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-21",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() 1 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-22",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ((1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-23",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS2() ) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-24",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-25",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nS4(1) 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-26",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nCall S3(1)(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-27",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-28",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-29",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ((1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-30",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-31",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-32",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 2,3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-33",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1,2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-34",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1 -2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-35",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 (2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-36",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-37",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 ) 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-38",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 mSec\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-39",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 +2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-40",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) 1 + 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call2-41",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,1) 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-43",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-44",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+&H1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +&H1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-45",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,+x)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  +x."
+  },
+  {
+   "id": "cr350-trailing_after_call2-46",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,++1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  ++1."
+  },
+  {
+   "id": "cr350-trailing_after_call2-47",
+   "logger": "cr350",
+   "source": "Public x, y\nSub S1(a)\n x = a\nEndSub\nSub S3(a, b)\n x = a\nEndSub\nSub S4(a, Optional b = 2)\n x = a\nEndSub\nSub S2\n x = 1\nEndSub\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1,-+1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 18: Too many parameters:  -+1."
+  }
+ ]
+}

@@ -3594,8 +3594,7 @@ parameters, so `PortSet(C1,1) 1` behaves exactly like `PortSet(C1,1,1)` (silent 
   `Too many parameters:  2.`), but their exact splitting was not mapped: `parser.py`
   `_absorb_trailing` only consumes the gap-free single-chunk shapes above; anything else stays an
   unparsed statement. Not modelled: `((1)` (accepted), `PortSet(C1,1) 1 2`, `x y`, `a(1)` echo.
-- Only recognised instructions were mapped (`SW12V(1) 1` stays rejected); `Call S1(1) 2` and
-  `S1(1) 2` (Sub calls) are also accepted by the real compilers but not yet modelled.
+- Only recognised instructions were mapped (`SW12V(1) 1` stays rejected); Sub calls: see below.
 
 Fixture: `tests/fixtures/trailing_after_call.json`.
 
@@ -3674,3 +3673,38 @@ modelled (message-only difference on already rejected programs). Fixture:
   While.` line. `Too few parameters in instruction.` (`CallTable()`, `Histogram()`) starts the
   cascade. `cr3xx.check_too_many_cascade`. Closes the "not implemented" note under PipeLine Mode
   for the `Loop While x=1` line only in the generic cascade form.
+
+## Trailing tokens, round 4 (oracle, all four loggers, 2026-10-04)
+
+Fixture `tests/fixtures/trailing_after_call2.json` (`parser.py` `_absorb_trailing`,
+`_absorb_sub_tail`).
+
+- **Instruction tail, next slot decides.** The tail lands in the next parameter slot
+  (`len(args)`). A constant-integer slot (type 4/104) or one past the last slot splits the tail at
+  whitespace: each gap-free token is a parameter (`PortSet(C1,1) 1 2` -> `Too many parameters:  2.`
+  on CR6, `1` on CR300/CR350 which have two slots; `1 x 2` -> `x`; `-1 -2` -> `-2`; `1 ) 2` drops
+  the `)`). Leading `(` are stray there too: `PortSet(C1,1) ((1)`, `(1`, `((1` compile (CR300:
+  `Too many parameters:  1.`). An expression slot reads the whole tail as one expression
+  (`Delay(1,1) 1 +2` compiles) and `Delay(1,1) (1` is `No Matching, or out of place ) in
+  expression: (1.`. Whitespace-separated words in an expression slot are
+  `Incomplete expression: <text>.` (`Delay(1,1) 1 2`, `PortSet(C1) 1 2`; CR6 adds `Invalid or
+  missing parameter.` when the slot is `Delay`'s units): not modelled, they stay rejected with our
+  generic message. `PortSet(C1,1) 1 + 2` (`Too many parameters:  +.`) likewise unmodelled.
+- **Sub tail.** `Call S1(1) 2`, `S1(1) 2`, `S1(1)2`, `S1(1) x` append one argument (so
+  `Call to S1 with 2 parameters, requires 1 arguments.` for a one-parameter Sub, silent for
+  `S3(a,b)`). The tail is a comma list of full expressions, gaps allowed (`S3(1) 1 + 2`, `- 2`,
+  `(2)`, `"s"`); one trailing `)` is tolerated (`S3(1) 1)`); a final empty piece is dropped
+  (`S3(1) 2,`), others count (`S3(1) 2,,3` -> 4 parameters). A lone `)` or `,` is one empty
+  argument: `S3(1) )` -> `Call argument required.`, `S4(1) )` (Optional second) compiles,
+  `S1(1) )` -> 2 parameters. An empty argument in a required position reports `Call argument
+  required.` once each (also `S3(1,)`, `S3(,2)`, which were silent before).
+  `S()` followed by anything swallows the whole tail (`S2() 1 2`, `((1)`, `) 1` compile); a Sub
+  with required parameters then reports `Call argument required.` twice.
+  Not modelled (stay rejected): `S3(1) 2 3` (`Incomplete expression: 2 3 | .`), `S3(1) (1`
+  (`No Matching ...`), `S3(1) =`, `S3(1) 2 ) )` / `2) 3` (counted parameters), `S3(1) ) 2`, `S2() =`.
+  Known false accept: an undefined name in the tail (`Call S3(1) nope` reports `Invalid symbol in
+  expression: nope | .`) is not reported.
+- **Unary plus.** `PortSet(C1,1,+1)` compiles on CR6/CR1000X (type-4 slot accepts `+<decimal>`;
+  `+&H1`, `++1`, `-+1`, `+x` stay `Illegal parameter`). CR300/CR350 had no issue (`Too many
+  parameters:  +1.`). `+` in assignments, `Abs(+1)`, `Call S1(+1)`, operands, `Sample`, `Dim`
+  sizes etc. already matched (probed, no change).

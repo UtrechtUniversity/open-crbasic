@@ -1838,7 +1838,13 @@ def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
         diags.error(stmt.line, f"Call to {sub.name} with {given} parameters, requires "
                     f"{len(sub.params)} arguments.", stmt.file)
     elif given < required:
-        diags.error(stmt.line, "Call argument required.", stmt.file)
+        # `S() tail` reports it twice (oracle, 2026-10-04)
+        for _ in range(2 if stmt.tail_ignored else 1):
+            diags.error(stmt.line, "Call argument required.", stmt.file)
+    else:  # an empty required argument (`S(1,)` is dropped, `S(,2)`, `S(1) )` are not): one each
+        for arg, param in zip(stmt.args, sub.params):
+            if arg is None and param.default is None:
+                diags.error(stmt.line, "Call argument required.", stmt.file)
 
 
 def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagnostics) -> None:
