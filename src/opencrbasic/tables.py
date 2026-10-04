@@ -362,7 +362,9 @@ def _scan_program(program: S.Program):
             # table named only here still gets its declared size, not the uncalled `size=1`).
             called.add(s.args[2].name.upper())
 
-    return dict(publics=publics, all_vars=all_vars, const_tables=const_tables,
+    uses_cpi = any(_kw(s).startswith("CDM_") or _kw(s) == "CPIFILESEND" for s in stmts)
+
+    return dict(uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
 
@@ -431,6 +433,15 @@ def _status_table(slow_seq_count: int) -> TdfTable:
             fields.insert(idx + 1, new_field)
     return TdfTable("Status", 1, _STATUS_JSON["time_type"], tuple(_STATUS_JSON["time_into"]),
                      tuple(_STATUS_JSON["interval"]), fields)
+
+
+def _cpistatus_table() -> TdfTable:
+    """docs/tdf-rules.md §2: present iff a `CDM_*` instruction or `CPIFileSend` is used."""
+    f = lambda t, ro, name, dim=1, sub=(): TdfField(t, ro, name, [], "", "", "", 1, dim, list(sub))  # noqa: E731
+    fields = [f(9, True, "BusLoad")] + [f(6, False, n) for n in (
+        "ModuleReportCount", "ActiveModules", "BuffErr", "RxErrMax", "TxErrMax", "FrameErr")]
+    fields.append(f(11, False, "ModuleInfo", 6400, (50, 128)))
+    return TdfTable("CPIStatus", 1, 14, (0, 0), (0, 0), fields)
 
 
 # ---------------------------------------------------------------- Public table (§8)
@@ -1046,6 +1057,9 @@ def build_tables(program: S.Program, profile, consts: dict):
 
     if scanned["data_tables"]:
         tables.append(_datatableinfo_table(len(scanned["data_tables"])))
+
+    if scanned["uses_cpi"]:
+        tables.append(_cpistatus_table())
 
     tables.extend(_build_const_tables(scanned["const_tables"], env))
 

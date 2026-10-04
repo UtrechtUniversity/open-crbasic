@@ -1,0 +1,14 @@
+[
+ {
+  "id": "cpistatus_before_consttable",
+  "source": "Public X\nConstTable(CT,0)\n  Const A=1\nEndConstTable\nDataTable(T1,1,10)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CDM_PulsePort (CDM_A108,1,1,10)\n    CallTable T1\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "cpistatus_cpifilesend",
+  "source": "Public R,P\nBeginProg\n  Scan(1,Sec,0,0)\n    CPIFileSend(R,P,1,1,\"CRD:x.obj\")\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "no_cpistatus_cpiaddmodule",
+  "source": "Public X\nBeginProg\n  CPIAddModule(CDM_A108,1608,\"A\",1)\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n"
+ }
+]

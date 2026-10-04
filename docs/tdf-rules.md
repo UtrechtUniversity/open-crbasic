@@ -57,6 +57,12 @@ investigated further: **open question**.
 5. `Public` — present **only if at least one `Public` variable exists** (exp `#20`: `Dim X As
    Float` alone, no `Public`, produces no `Public` table at all).
 
+3a. `CPIStatus` (8 fields: `BusLoad` FLOAT ro, six `LONG`s, `ModuleInfo` STRING dim 6400 subdims
+   `[50,128]`) — **oracle-confirmed** (14 CHM programs plus synthetic probes): present iff the
+   program uses a `CDM_*` instruction or `CPIFileSend`, positioned after `DataTableInfo` and
+   *before* named `ConstTable`s. `CPIAddModule` alone does not add it; `CDM_A108` etc. as a
+   module constant does not either.
+
 No other system tables were observed (`Settings`, alarms, etc. did not appear in any experiment;
 none of these features were exercised, so their absence is **not** evidence they never appear —
 **open question**).
