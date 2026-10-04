@@ -1107,8 +1107,16 @@ _CLOSER_ERRORS = frozenset({
 # fuzz reproducers `false_accept/ca5935f3a78b` and `a2f667cdbbc7`): another block-structure error
 # (`EndSub without Sub or nested subs.`) and a built-in call's arity error.
 def _hides_nothing(d) -> bool:
-    return d.message.endswith("without Sub or nested subs.") or d.message.startswith(
-        ("No Matching, or out of place ) in expression", "Expression expects"))
+    if d.message.endswith("without Sub or nested subs."):
+        return True
+    # a built-in call's arity error hides nothing only when a `Public.<name>` reference precedes
+    # its first `)` on the line (oracle, 2026-10-04: `Round(Public.x,1,2)`, `Round(x,Public.T,2,3)`
+    # hide nothing; `Round(x)+Public.T`, `FormatLong(x)`, `Floor(x,1)` hide the closers)
+    if d.message.startswith(("No Matching, or out of place ) in expression", "Expression expects")):
+        text = d.message.split(":", 1)[-1].lower()
+        at = text.find("public.")
+        return 0 <= at < (text.find(")") if ")" in text else len(text))
+    return False
 
 
 def drop_block_closer_errors_after_errors(program: S.Program, profile, diags: Diagnostics) -> None:
