@@ -1,0 +1,527 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-trailing_after_call-0",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-1",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,x) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-2",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-3",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-4",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-5",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-6",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-7",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) =\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-8",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-9",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1)1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-10",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-11",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1) 1,mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-12",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) ) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-trailing_after_call-13",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call-14",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1.5\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter 1.5, expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call-15",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) \"s\"\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter \"s\", expecting constant integer."
+  },
+  {
+   "id": "cr6-trailing_after_call-16",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-trailing_after_call-17",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nVoltSe(x,1,mV5000,1,False,0,250,1,0) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-0",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-1",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,x) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-2",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-3",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-4",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-5",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-6",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-7",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) =\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-8",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-9",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1)1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-10",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-11",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1) 1,mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-12",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) ) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-13",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-14",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1.5\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter 1.5, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-15",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) \"s\"\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal parameter \"s\", expecting constant integer."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-16",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-trailing_after_call-17",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nVoltSe(x,1,mV5000,1,False,0,250,1,0) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-0",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-1",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,x) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-2",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  -1."
+  },
+  {
+   "id": "cr300-trailing_after_call-3",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-4",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-5",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-6",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-7",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) =\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-8",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-9",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1)1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-10",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-11",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1) 1,mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-12",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) ) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-trailing_after_call-13",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  x."
+  },
+  {
+   "id": "cr300-trailing_after_call-14",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1.5\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1.5."
+  },
+  {
+   "id": "cr300-trailing_after_call-15",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) \"s\"\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  \"s\"."
+  },
+  {
+   "id": "cr300-trailing_after_call-16",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-trailing_after_call-17",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nVoltSe(x,1,mV5000,1,False,0,250,1,0) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-trailing_after_call-0",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-1",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,x) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-2",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) -1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  -1."
+  },
+  {
+   "id": "cr350-trailing_after_call-3",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) (1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-4",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-5",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1 )\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-6",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) ,\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-7",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) =\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-8",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1) 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-9",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1)1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-10",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1) mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-11",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1) 1,mSec\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-12",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) ) )\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-trailing_after_call-13",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  x."
+  },
+  {
+   "id": "cr350-trailing_after_call-14",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) 1.5\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1.5."
+  },
+  {
+   "id": "cr350-trailing_after_call-15",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nPortSet(C1,1) \"s\"\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  \"s\"."
+  },
+  {
+   "id": "cr350-trailing_after_call-16",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nDelay(1,1,mSec) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-trailing_after_call-17",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic LevelFt, Q(3)\nDataTable(T,True,-1)\n Sample(1,x,FP2)\nEndTable\nBeginProg\nVoltSe(x,1,mV5000,1,False,0,250,1,0) 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: mV5000 is not defined.\nline 7: Variable illegal in Parameter: mV5000."
+  }
+ ]
+}

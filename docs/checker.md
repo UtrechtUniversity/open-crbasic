@@ -3579,3 +3579,45 @@ walk at that `CallTable` (a later `Sc = Nope1` is not printed there).
 out of place expression: <statement>` (an empty argument list); like too few arguments, the rest of
 the expression is still parsed, so its names come first (`Nope4 = Int()+Nope`: `Nope4`, `Nope`,
 then the message). Fixture `dims_state.json`.
+
+## Trailing tokens after an instruction call (oracle, all four loggers, 2026-10-04)
+
+`Instr(a,b) tail` is not a syntax error: the real compilers append the tail as further
+parameters, so `PortSet(C1,1) 1` behaves exactly like `PortSet(C1,1,1)` (silent on CR6/CR1000X,
+`Too many parameters:  1.` on CR300/CR350 where `PortSet` takes two). Observed, all four loggers:
+
+- A tail chunk without internal whitespace (`1`, `x`, `-1`, `+1`, `"s"`, `1+1`, `(1)`, `1)`) is one
+  extra parameter; `PortSet(C1,1)1` too. Comma-separated chunks (`Delay(1) 1,mSec`) are several.
+  `Delay(1,1) mSec` is valid.
+- Stray `)`, `,`, `=` tokens (alone, or `1 )`) are ignored: `PortSet(C1,1) )`, `Delay(1,1,mSec) ) )`.
+- Later whitespace-separated tokens are separate parameters (`PortSet(C1,1) 1 2 3` ->
+  `Too many parameters:  2.`), but their exact splitting was not mapped: `parser.py`
+  `_absorb_trailing` only consumes the gap-free single-chunk shapes above; anything else stays an
+  unparsed statement. Not modelled: `((1)` (accepted), `PortSet(C1,1) 1 2`, `x y`, `a(1)` echo.
+- Only recognised instructions were mapped (`SW12V(1) 1` stays rejected); `Call S1(1) 2` and
+  `S1(1) 2` (Sub calls) are also accepted by the real compilers but not yet modelled.
+
+Fixture: `tests/fixtures/trailing_after_call.json`.
+
+## Alias name already declared (oracle, all four loggers, 2026-10-04)
+
+`Alias Q(1) = LevelFt` with `LevelFt` already a `Public`/`Dim` variable (or `Q` itself, or `x`)
+-> `LevelFt already declared as a variable.`; an already-declared `Const` -> `K is already
+declared as a CONST.` (name as written, case-insensitive match). Only the first comma item, and only
+as a bare name (`= LevelFt 3`, `= LevelFt As Long`, `= Fresh, LevelFt` compile). Ordering on the
+line: `Illegally dimensioned aliased name` first, then this; an undeclared source
+(`Nope not yet declared so cannot be aliased.`) pre-empts it. A colliding name is never
+registered, so a repeat gives the same message, not `Duplicate Alias Name`. CR300/CR350: later
+lines' pass-1 errors vanish after it in the probes (second `Alias`, `Public Zed, Zed`): not
+modelled (message-only difference on already rejected programs). Fixture:
+`tests/fixtures/alias_name_collision.json` (CR300/CR350 multi-line cases omitted).
+
+## CR300/CR350 follow-ups (2026-10-04)
+
+- `cr3xx._hides_nothing`: `EndSub without Sub or nested subs.` and built-in arity errors
+  (`No Matching, or out of place )`, `Expression expects`) do not hide unmatched-closer or
+  `Could not find DataTable` errors (`tests/corpus/fuzz/cr300/false_accept/ca5935f3a78b`,
+  `a2f667cdbbc7`, saved real output).
+- An `Alias` whose source was never declared does not register its name
+  (`.../message_diff/829cfa80394a`). The cascade-dropped declaration case (`48f550e6a0a0`) is not
+  modelled.

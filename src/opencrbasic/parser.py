@@ -477,6 +477,7 @@ class _Parser:
             # silently completes right there, oracle-confirmed (`docs/checker.md` "Need closing )
             # shapes"), unlike a call reached through the general expression grammar.
             args, spans = self._parse_arglist(p, ")", line, file, strict=False)
+            self._absorb_trailing(p, args, spans, line, file)
         elif p.is_op("="):
             # A handful of instructions (`StationName=Value`) take `=Value` instead of an
             # argument list, confirmed valid CRBasic by corpus testing; see docs/frontend.md.
@@ -495,6 +496,48 @@ class _Parser:
         elif not p.at_end():
             args, spans = self._parse_bare_arglist(p, line, file)
         return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)
+
+    def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str) -> None:
+        """`Instr(a,b) tail`: the real compiler appends one gap-free tail chunk as one more
+        parameter (`PortSet(C1,1) 1` == `PortSet(C1,1,1)`), and ignores stray `)` `,` `=` tokens
+        (oracle, all four loggers, 2026-10-04, `docs/checker.md` "Trailing tokens after an
+        instruction call"). Anything else is left unconsumed and stays a rejected statement."""
+        rest = [t for t in p.remaining() if t.kind != "EOF"]
+        if not rest:
+            return
+        pieces: list[list[Token]] = [[]]
+        for t in rest:
+            if t.kind == "OP" and t.text == ",":
+                pieces.append([])
+            else:
+                pieces[-1].append(t)
+        found: list[tuple[S.Expr, tuple[int, int]]] = []
+        for piece in pieces:
+            got = self._tail_chunk(piece, p.seg_text, line, file)
+            if got is None:
+                return
+            if got is not True:
+                found.append(got)
+        for expr, span in found:
+            args.append(expr)
+            spans.append(span)
+        p.i = len(p.toks) - 1
+
+    def _tail_chunk(self, piece: list[Token], seg_text: str, line: int, file: str):
+        """One comma-free tail piece -> `(expr, span)`, `True` (only stray `)`/`=`), or `None`."""
+        for chunk in (piece, [t for t in piece if not (t.kind == "OP" and t.text in (")", "="))]):
+            if not chunk:
+                return True
+            if any(a.kind == "STRING" or b.col != a.col + len(a.text) for a, b in zip(chunk, chunk[1:])):
+                continue
+            sub = _TokStream(chunk + [lexer.Token("EOF", "", "", chunk[-1].col)], seg_text)
+            try:
+                expr = self._parse_expr(sub, line, file)
+            except _ParseError:
+                continue
+            if sub.at_end():
+                return expr, (chunk[0].col, chunk[-1].col + len(chunk[-1].text))
+        return None
 
     def _parse_select(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # SELECT
@@ -947,10 +990,12 @@ class _Parser:
             # `= Sp + 1`, `= Sp As Long` compile; in `= A1, B1` both names are declared, in
             # `= A1 B1` only `A1`) -- a fuzz-found false reject.
             rhs = []
+            junk = False
             while not p.at_end() and p.peek().kind == "IDENT":
                 rhs.append(self._parse_atom(p, line, file))
                 depth = 0
                 while not p.at_end() and not (depth == 0 and p.is_op(",")):
+                    junk = junk or len(rhs) == 1
                     tok = p.next()
                     if tok.kind == "OP" and tok.text == "(":
                         depth += 1
@@ -961,7 +1006,9 @@ class _Parser:
                 p.next()  # the comma
             while not p.at_end():
                 p.next()
-            return S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
+            inst = S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
+            inst.alias_junk = junk  # something follows the first name (`= Sp 3`, `= Sp As Long`)
+            return inst
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
             p.next()
