@@ -643,20 +643,24 @@ def _known_names(program: S.Program, profile) -> set[str]:
     if profile.single_pass:
         known -= _unclosed_structure_variables(program)
         # an `Alias` whose subscript names something undefined is not registered (oracle, CR300/
-        # CR350, 2026-10-03: `Alias Q(2,Nope) = NetDir`, then `NetDir` is not defined)
-        known -= {st.args[1].name.upper() for st in program.statements
-                  if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-                  and len(st.args) == 2 and isinstance(st.args[0], S.Index)
-                  and isinstance(st.args[1], S.Name)
-                  and any(_undefined_names(a, known) for a in st.args[0].args if a is not None)}
-        # nor is one whose source was never declared (`Quad not yet declared so cannot be
-        # aliased.`; oracle, CR300, 2026-10-04, `tests/corpus/fuzz/cr300/message_diff/829cfa80394a`)
+        # CR350, 2026-10-03: `Alias Q(2,Nope) = NetDir`, then `NetDir` is not defined), nor is one
+        # whose source was never declared (`Quad not yet declared so cannot be aliased.`; oracle,
+        # CR300, 2026-10-04, `tests/corpus/fuzz/cr300/message_diff/829cfa80394a`). A name that a
+        # declaration or another valid `Alias` registers stays known (oracle, 2026-10-04:
+        # `Public x` / `Alias Nope = x` and `Alias x = a` / `Alias Nope = a`, then `a`/`x` resolve).
         declared = symbols.declared_variable_names(program)
-        known -= {st.args[1].name.upper() for st in program.statements
-                  if isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
-                  and len(st.args) == 2 and isinstance(st.args[1], S.Name)
-                  and isinstance(st.args[0], (S.Name, S.Index))
-                  and st.args[0].name.upper() not in declared}
+        failed, valid = set(), set(declared)
+        for st in program.statements:
+            if not (isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS"
+                    and len(st.args) == 2 and isinstance(st.args[1], S.Name)
+                    and isinstance(st.args[0], (S.Name, S.Index))):
+                continue
+            src = st.args[0]
+            bad = src.name.upper() not in declared or (
+                isinstance(src, S.Index) and any(
+                    _undefined_names(a, known) for a in src.args if a is not None))
+            (failed if bad else valid).add(st.args[1].name.upper())
+        known -= failed - valid
     return KnownNames(known, tables=_value_less_tables(program))
 
 

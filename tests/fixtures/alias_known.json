@@ -1,0 +1,85 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-alias_known-0",
+   "logger": "cr300",
+   "source": "Public x\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased.\nline 4: a is not defined."
+  },
+  {
+   "id": "cr300-alias_known-1",
+   "logger": "cr300",
+   "source": "Public x\nAlias x = a\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_known-2",
+   "logger": "cr300",
+   "source": "Public x\nAlias x = a\nAlias Q(2,Nope) = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_known-3",
+   "logger": "cr300",
+   "source": "Public x\nAlias Nope = a\nAlias x = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_known-4",
+   "logger": "cr300",
+   "source": "Public a\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased.\nline 5: x is not defined."
+  },
+  {
+   "id": "cr350-alias_known-0",
+   "logger": "cr350",
+   "source": "Public x\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased.\nline 4: a is not defined."
+  },
+  {
+   "id": "cr350-alias_known-1",
+   "logger": "cr350",
+   "source": "Public x\nAlias x = a\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_known-2",
+   "logger": "cr350",
+   "source": "Public x\nAlias x = a\nAlias Q(2,Nope) = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Q not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_known-3",
+   "logger": "cr350",
+   "source": "Public x\nAlias Nope = a\nAlias x = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_known-4",
+   "logger": "cr350",
+   "source": "Public a\nAlias Nope = a\nBeginProg\n  a = 1\n  x = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope not yet declared so cannot be aliased.\nline 5: x is not defined."
+  }
+ ]
+}
