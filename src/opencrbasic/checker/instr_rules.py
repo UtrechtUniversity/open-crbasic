@@ -1103,6 +1103,11 @@ def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: c
         record = profile.instructions.get(kw)
         if not record or kw in ("DO", "LOOP", "ELSE"):
             continue
+        if not profile.single_pass and any(
+                (d.file, d.line) == (stmt.file, stmt.line) and d.message.startswith(
+                    ("Invalid symbol in expression", "Variable illegal in Parameter"))
+                for d in diags.errors):
+            continue  # CR6/CR1000X: an earlier const-family error on the line ends the statement
         for i, code in enumerate(record["params"][:len(stmt.args)]):
             arg = stmt.args[i]
             if code not in (4, 104) or arg is None:

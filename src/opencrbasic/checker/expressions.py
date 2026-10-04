@@ -183,6 +183,19 @@ _VARIABLE_REQUIRED_KINDS = frozenset({"variable_or_array"})
 # REQUIRED_KINDS`'s own docstring above), just for the *undefined-name* check instead. Modelled as a
 # position exemption (rather than adding the name to `known`) so it costs nothing outside these two
 # instructions' own first argument.
+# CR6/CR1000X instructions whose compile function reports every undefined argument instead of the
+# first one only, in the listed 0-based position order (oracle, 2026-10-04, all positions
+# undefined: `Move(a,b,c,d)` reports b, a, d, c; the `*Spa` family b, c, a; `GOESSetup` reports
+# its tenth argument before the eighth and ninth). Positions are independent (subset probes).
+_MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
+    "MOVE": (1, 0, 3, 2),
+    "RMSSPA": (1, 2, 0), "STDDEVSPA": (1, 2, 0), "MAXSPA": (1, 2, 0), "MINSPA": (1, 2, 0),
+    "AVGSPA": (1, 2, 0),
+    "CPIFILESEND": (0, 1, 2, 3, 4),
+    "GOESSETUP": (0, 1, 2, 3, 4, 5, 6, 9, 7, 8),
+    "GOESGPS": (0, 1), "CH400SENDOS": (0, 1),
+}
+
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
     "ADDPRECISE": frozenset({0}),
     "MOVEPRECISE": frozenset({0}),
@@ -846,6 +859,13 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
 
         return bool(names)
 
+    multi = _MULTI_REPORT_ORDER.get(stmt.keyword.upper())
+    if multi and profile.name in _WHOLE_EXPR_ECHO_LOGGERS and families == "general":
+        reported = False
+        for i in multi:
+            if i in positions and _check_position(i):
+                reported = True
+        return reported
     if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
         order = []
         if families in ("all", "const"):

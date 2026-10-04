@@ -3811,3 +3811,19 @@ errors on later lines still print. A bare `Fn` without parentheses is accepted f
 required parameter still gives it. Not done: `Call Fn(Zork)` (adds `Invalid symbol in expression:
 Zork.` before the link message), `Fn(1) + Zork` / `Fn(Zork).y` (`Invalid symbol`, whole statement),
 `Fn 1` (`Incomplete expression: <text>.`).
+
+### Several undefined arguments in one call, and their order (CR6/CR1000X)
+
+Observed 2026-10-04 (`tests/fixtures/multi_report_order.json`; all-positions-undefined sweep of every
+instruction with two or more parameters on CR6 and CR1000X, then random 1-3 position subsets of the
+instructions below, 114 cases, all agreeing): most instructions report only the first bad
+position (existing rule), but these report every undefined position, each as its own `Invalid symbol
+in expression: <arg>.` line, in a compile-function-specific order (1-based positions):
+`Move` 2,1,4,3; `RMSSpa`/`StdDevSpa`/`MaxSpa`/`MinSpa`/`AvgSpa` 2,3,1; `CPIFileSend` 1..5; `GOESSetup`
+1..7,10,8,9; `GOESGPS` 1,2; `CH400SendOS` 1,2. The order is not derivable from the type codes (`Move`
+and `MoveBytes` share their first codes and differ), so it is the `_MULTI_REPORT_ORDER` table in
+`expressions.py`. `MoveBytes` already printed positions 1,2,4,5 textually. Not done: `GOESData`
+(`Could not find DataTable <arg 2>` after the symbol lines), `AddPrecise`/`MovePrecise`, `RainFlowSample`.
+Also: after an undefined name at a const-family position, the later `Illegal parameter ..., expecting
+constant integer.` (`PortSet`, `PortGet`, `SW12`, `CDM_SW*`, `SwVx`) is no longer printed
+(`check_const_int_args`).
