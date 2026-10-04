@@ -98,11 +98,13 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         name = stmt.name.upper()
         if name not in _SERIAL_FUNCTIONS_WITH_COMPORT_ARG:
             continue
+        if name == _SERIALOPEN and not cr3 and not stmt.args:
+            diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)  # bare `SerialOpen[()]`
         if _COMPORT_ARG_POSITION >= len(stmt.args) or stmt.args[_COMPORT_ARG_POSITION] is None:
             continue
         arg = stmt.args[_COMPORT_ARG_POSITION]
-        names = expressions._undefined_names(arg, known) if cr3 else []
-        for undefined_name in names:
+        names = expressions._undefined_names(arg, known)
+        for undefined_name in names if cr3 else []:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=undefined_name),
                         stmt.file)
         if name != _SERIALOPEN:
@@ -113,6 +115,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).
             diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)
+            if not cr3 and names and not is_variable:
+                continue  # CR6/CR1000X: an undefined name gives only this line (docs/checker.md)
             sep = "\n" if cr3 and stmt.at_eol else ""
             diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
                         stmt.file)

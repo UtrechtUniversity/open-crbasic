@@ -1018,6 +1018,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         if not record:
             continue
         positions = _position_kinds(record["params"], stmt.keyword)
+        if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
+                and profile.name in _WHOLE_EXPR_ECHO_LOGGERS
+                and _undefined_names(stmt.args[0], known)):
+            continue  # `ComPort 0 illegal.` replaces every `Invalid symbol` (`cr3xx.check`)
         if positions:
             # CR6/CR1000X: constant-family positions are pass 1 (`check_const_family_args`).
             _report_statement(stmt, positions, known, variable_names, profile, diags,

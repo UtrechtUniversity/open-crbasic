@@ -3764,3 +3764,15 @@ expression: <To- or Step-expression and trailing text>.` (CR300/CR350 add `Foo i
 before it) and `For 5 = 1 To 3` prints `5  is not a variable`.
 
 Measured: chm exact cr6 443 -> 447, cr1000x 449 -> 453, cr300/cr350 420 -> 422.
+
+### `SerialOpen` with an undefined ComPort name (CR6/CR1000X)
+
+Observed 2026-10-04 (`tests/fixtures/serialopen_comport.json`): an undefined name anywhere in
+argument 1 (`ComC5` on CR6, `Zork`, `Zork+1`, `ComC1+Zork`) gives only `ComPort 0 illegal.`, pass 1
+(accumulates with `Dim Z banana`), replacing every `Invalid symbol in expression` for the statement
+(an undefined name in a later argument too); unlike a variable or string port there is no `Parameter
+must be a constant integer` line. A bare `SerialOpen` / `SerialOpen()` prints `ComPort 0 illegal.`
+before its usual line. Not modelled: literal ports (`0`, `-1`, `U5` -> `ComPort 205 illegal.`) which
+add `No Matching, or out of place )`, and an undefined name in argument 2 with a valid port
+(`CommsMode Option 100 not supported on ComC1.`). Implemented in `cr3xx.check` / `expressions.check`.
+Measured: chm exact cr6 447 -> 450, cr1000x 453 -> 454.

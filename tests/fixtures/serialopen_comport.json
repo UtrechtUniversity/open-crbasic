@@ -1,0 +1,183 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-serialopen_comport-0",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(ComC5,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-1",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-2",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork+1,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-3",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(ComC1+Zork,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-4",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,Zork2,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-5",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    SerialOpen(Zork2,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 5: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-6",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    Foo = Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr6-serialopen_comport-7",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr6-serialopen_comport-8",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(X,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(X,19200,2,100,100)."
+  },
+  {
+   "id": "cr6-serialopen_comport-9",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Expression expects ( :     SerialOpen."
+  },
+  {
+   "id": "cr6-serialopen_comport-10",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Invalid, or out of place expression:     SerialOpen()."
+  },
+  {
+   "id": "cr6-serialopen_comport-11",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialClose(Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialClose(Zork)."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-0",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(ComC5,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-1",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-2",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork+1,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-3",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(ComC1+Zork,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-4",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,Zork2,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-5",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    SerialOpen(Zork2,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 5: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-6",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    Foo = Bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-7",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Zork,19200,2,100,100)\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 5: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-8",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(X,19200,2,100,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Parameter must be a constant integer:     SerialOpen(X,19200,2,100,100)."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-9",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Expression expects ( :     SerialOpen."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-10",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.\nline 4: Invalid, or out of place expression:     SerialOpen()."
+  },
+  {
+   "id": "cr1000x-serialopen_comport-11",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialClose(Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialClose(Zork)."
+  }
+ ]
+}
