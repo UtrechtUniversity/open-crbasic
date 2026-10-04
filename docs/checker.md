@@ -3632,3 +3632,14 @@ modelled (message-only difference on already rejected programs). Fixture:
   line is itself a cascade trigger (`Duplicate Alias` in `_DECLARATION_TRIGGER_PREFIXES`):
   the next `Public R2` is dropped and a later `Scan` gets `Too many parameters:  Sec.`.
   Fixes `tests/corpus/fuzz/cr300/false_accept/48f550e6a0a0`.
+- **Dimension count in an assignment with an unresolved target** (`tests/fixtures/dims_assign_target.json`,
+  102 cases, CR300/CR350 real output): `Rv(1)=1` then `Nope4=Nope(1)` prints no `Dimensions not
+  declared` (the existing `test_dimensions_not_declared` expectation is for a different program and
+  still holds): `structure._check_assignment_pass2` used a count of 0 instead of the running count
+  and now takes `expressions.dims_state(program, known)`. `dims_state` given `known` stops a
+  statement's walk at the first triggering undefined name, like the real compiler (a later
+  `SearchString()` in the same statement does not move the count). A target `Nope(1)=...` of an
+  undefined array whose subscripts fit the count, or a declared array with an undefined subscript
+  (`Rv(Bad)=Sc`), is not followed by the generic `Invalid, or out of place expression` line; the
+  right side's undefined names and `Dimensions not declared` follow instead. With count 0 and an
+  undefined array target (`Nope(1)=Sc`) the generic line stays.

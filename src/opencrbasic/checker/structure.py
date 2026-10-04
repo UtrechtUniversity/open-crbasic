@@ -1113,6 +1113,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
          if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"},
         bool(subs), links if links is not None else CallLinks())
     known = expressions._known_names(program, profile)
+    dims_ds = expressions.dims_state(program, known) if profile.single_pass else None
     # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
     seen_beginprog = False
 
@@ -1218,7 +1219,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         elif isinstance(stmt, S.Assignment):
             stop = _check_assignment_pass2(stmt, known, diags, before_bp and not in_table,
                                             in_body_block,
-                                            profile)
+                                            profile, dims_ds)
             if stop is not None:
                 return stop
         elif _control_keyword(stmt) and not in_body_block and not in_table and not seen_beginprog \
@@ -1994,7 +1995,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
 
 def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnostics,
                              before_bp: bool, in_body_block: bool,
-                             profile=None) -> int | None:
+                             profile=None, ds=None) -> int | None:
     """One `Assignment` (`target = value`) statement's pass-2 check. Returns the line to stop pass 2
     at, or `None` to keep going. Oracle-confirmed shapes (`docs/checker.md` "Round 5", a scratch
     probe set alongside `_check_call_pass2`'s own):
@@ -2031,14 +2032,19 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
         # stops pass 2 or gets the before-`BeginProg` follow-up.
         for name in target_names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-        if isinstance(stmt.target, S.Index):
+        if isinstance(stmt.target, S.Index) and (
+                stmt.target.name.upper() not in known
+                and expressions._has_undefined_index(stmt.target, known, ds, stmt)):
+            # (an undefined array whose subscripts fit the running dimension count is not
+            # a placement error, nor is a declared one with an undefined subscript: `Rv(1)=1`
+            # then `Nope(1)=Sc` names only `Nope`; oracle 2026-10-04)
             diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                         show_file=False)
         else:
             for name in expressions._undefined_names(stmt.value, known):
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                             stmt.file)
-            if expressions._has_undefined_index(stmt.value, known):
+            if expressions._has_undefined_index(stmt.value, known, ds, stmt, (stmt.target,)):
                 diags.error(stmt.line, expressions.dimensions_message(stmt.text, profile, True,
                                                                       stmt.at_eol), stmt.file)
         return None

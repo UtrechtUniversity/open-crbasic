@@ -405,6 +405,9 @@ def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | 
     return False
 
 
+_NO_NAMES: frozenset = frozenset()
+
+
 class DimsState:
     """The CR300/CR350 compiler's running "dimension count" (oracle, CR300, 2026-10-03,
     `docs/checker.md` "Dimensions not declared"): every reference to a declared variable, in text
@@ -431,7 +434,7 @@ def _stmt_exprs(stmt: S.Stmt) -> list:
     return []
 
 
-def dims_state(program: S.Program) -> DimsState:
+def dims_state(program: S.Program, known=_NO_NAMES) -> DimsState:
     """`DimsState` for `program`: variable dimension counts, and the count at each statement's
     start, simulated over every statement in order (one-line `If` bodies included)."""
     var_dims: dict[str, int | None] = {}
@@ -456,7 +459,6 @@ def dims_state(program: S.Program) -> DimsState:
                            if id(st) not in present)
     before: dict[int, int | None] = {}
     state: list = [0]
-    known = _NO_NAMES
     for stmt in ordered:
         before[id(stmt)] = state[0]
         for expr in _stmt_exprs(stmt):
@@ -464,8 +466,6 @@ def dims_state(program: S.Program) -> DimsState:
                 break
     return DimsState(var_dims, before)
 
-
-_NO_NAMES: frozenset = frozenset()
 
 
 def _dims_walk(expr: S.Expr | None, known, var_dims: dict, state: list) -> bool:
