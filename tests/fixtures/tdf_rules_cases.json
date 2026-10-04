@@ -94,5 +94,9 @@
  {
   "id": "datainterval_zero_auto_cardout_msec",
   "source": "Public A(9)\nDataTable(T2,True,-1)\n  DataInterval(0,0,mSec,10)\n  CardOut(0,-1)\n  Sample(9,A(),IEEE4)\nEndTable\nBeginProg\n  Scan(50,mSec,3,0)\n    CallTable T2\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_interval_auto_506_bytes_loses_interval",
+  "source": "Public A(253)\nDataTable(T,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(253,A(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
  }
 ]

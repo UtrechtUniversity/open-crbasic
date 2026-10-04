@@ -287,7 +287,8 @@ one `Temp_Max` field, `dim=3`).
   `<alias><suffix>` (`begin=1`, the alias' units), each un-aliased run keeps `<source><suffix>`
   with `begin` = its first element and `dim` = its overlap length. `Minimum(...,True)` emits all
   `_Min` fields then all `_TMn` fields.
-- A `DataInterval` table whose record exceeds 1008 bytes (probe buffer, §10) gets header
+- A `DataInterval` table with `2*bytes > 1008` (i.e. fewer than 2 default records; boundary
+  oracle-confirmed: b=504 keeps the interval, b=506 loses it) gets header
   `interval=(0,0)` and the no-interval size formula (`instructiontimes_2.CR6`, fixture
   `solo_interval_auto_2000_bytes`); `-l` still prints `Interval:`.
 

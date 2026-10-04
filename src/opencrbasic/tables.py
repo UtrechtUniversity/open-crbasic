@@ -1083,8 +1083,8 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
 
     bytes_per_record = sum(_field_record_bytes(of) for of in out_fields if not of.name_only)
 
-    if interval_seconds is not None and bytes_per_record > _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD:
-        # record larger than the 1008-byte probe buffer: sized and stamped like a no-interval table
+    if interval_seconds is not None and 2 * bytes_per_record > _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD:
+        # fewer than 2 records fit the 1008-byte probe buffer: sized and stamped like a no-interval table
         into, interval, interval_seconds = (0, 0), (0, 0), None
 
     meta = dict(zero_interval=zero_interval, size_val=size_val, bytes_per_record=bytes_per_record,
@@ -1183,7 +1183,7 @@ def _apply_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: dict[st
     for t, m in tables_meta:
         w = scan_weights.get(t.name.upper())
         if (m["zero_interval"] and m["called"] and w
-                and m["bytes_per_record"] <= _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD):
+                and 2 * m["bytes_per_record"] <= _DEFAULT_PROBE_BUFFER_BYTES - _DEFAULT_PROBE_OVERHEAD):
             # DataInterval(0,0,...): the interval is the enclosing Scan's (docs/tdf-rules.md §5)
             ns = round(w * 1_000_000_000)
             t.interval = (ns // 1_000_000_000, ns % 1_000_000_000)
