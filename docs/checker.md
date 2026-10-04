@@ -3621,3 +3621,14 @@ modelled (message-only difference on already rejected programs). Fixture:
 - An `Alias` whose source was never declared does not register its name
   (`.../message_diff/829cfa80394a`). The cascade-dropped declaration case (`48f550e6a0a0`) is not
   modelled.
+
+## CR300/CR350 round 4 (2026-10-04)
+
+- **Dropped declaration + aliases** (`tests/fixtures/alias_dropped_decl.json`, 30 cases, CR300 and
+  CR350 real output): once the cascade has started, a `Public`/`Dim` is not registered
+  (`dropped`), so every later `Alias` of it prints `<name> not yet declared so cannot be aliased.`
+  and nothing else for that line (it pre-empts `Illegally dimensioned`, `Duplicate Alias`,
+  `already declared`); `cr3xx.check_too_many_cascade`. A `Duplicate Alias` / `Duplicate Alias Name:`
+  line is itself a cascade trigger (`Duplicate Alias` in `_DECLARATION_TRIGGER_PREFIXES`):
+  the next `Public R2` is dropped and a later `Scan` gets `Too many parameters:  Sec.`.
+  Fixes `tests/corpus/fuzz/cr300/false_accept/48f550e6a0a0`.

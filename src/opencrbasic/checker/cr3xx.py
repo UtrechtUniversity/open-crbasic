@@ -183,7 +183,7 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "already defined as an internal function.", "is a predefined CONST.",
                          "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
                          "Missing variable name.", "; cannot be numeric.")
-_DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Invalid Variable declaration",
+_DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",
@@ -230,8 +230,12 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     dropped: set[int] = set()      # tainted declarations: their names are never registered
     tainted_subs: set[int] = set()  # tainted `Sub`/`Function` headers: parameters dropped
     rewritten: set[int] = set()
+    dropped_names: set[str] = set()
+    registered_names: set[str] = set()
     for index, stmt in enumerate(program.statements):
         key = (stmt.line, stmt.file)
+        if not tainted and isinstance(stmt, S.Declaration):
+            registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
             if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
@@ -254,6 +258,19 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     diags.error(stmt.line, f"Too many parameters:  {stmt.vars[1].name}.", stmt.file)
                 if isinstance(stmt, S.Declaration) and stmt.kind in ("PUBLIC", "DIM", "STATIC"):
                     dropped.add(id(stmt))
+                    dropped_names.update(v.name.upper() for v in stmt.vars)
+                continue
+            if (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" and stmt.args
+                    and isinstance(stmt.args[0], (S.Index, S.Name))
+                    and stmt.args[0].name.upper() in dropped_names - registered_names):
+                # a cascade-dropped declaration is never registered, so its aliases name an
+                # undeclared source (oracle, CR300/CR350, 2026-10-04)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                at = next((i for i, d in enumerate(diags.items)
+                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  f"{stmt.args[0].name} not yet declared so cannot be aliased.",
+                                                  stmt.file))
                 continue
             if isinstance(stmt, S.SubDef):
                 tainted_subs.add(id(stmt))

@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-alias_dropped_decl-0",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(1)=Y\nAlias R2(2)=M\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-1",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nDim R2(2)\nAlias R2(1)=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-2",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2), R3\nAlias R2(1)=Y\nAlias R3=Z\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 3: Too many parameters:  R3.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R3 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-3",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2\nAlias R2=Y\nAlias R2=W\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-4",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2\nAlias R2=Y\nPublic R4\nAlias R4=R2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 6: R4 not yet declared so cannot be aliased.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-5",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(1)=B\nAlias R1(1)=C\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-6",
+   "logger": "cr300",
+   "source": "Public R2\nPublic R1(6)\nAlias R1(6,Und)=B\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Und is not defined.\nline 3: Variable illegal in Parameter: Und.\nline 3: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-7",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(1)=Y\nPublic R2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-8",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(9)=Y\nAlias R2(1)=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-9",
+   "logger": "cr300",
+   "source": "Public R1(6)\nAlias R1(1)=B\nAlias R1(1)=C\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-10",
+   "logger": "cr300",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(2)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-11",
+   "logger": "cr300",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(2)=B\nPublic R2\nDim Q As Long\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: B.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-12",
+   "logger": "cr300",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(1)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-13",
+   "logger": "cr300",
+   "source": "Public R1(6), Q\nAlias R1(9)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: R2 not yet declared so cannot be aliased.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_dropped_decl-14",
+   "logger": "cr300",
+   "source": "Public R1(6), Q\nAlias Q=B\nAlias R1(9)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-0",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(1)=Y\nAlias R2(2)=M\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-1",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nDim R2(2)\nAlias R2(1)=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-2",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2), R3\nAlias R2(1)=Y\nAlias R3=Z\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 3: Too many parameters:  R3.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R3 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-3",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2\nAlias R2=Y\nAlias R2=W\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-4",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2\nAlias R2=Y\nPublic R4\nAlias R4=R2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 6: R4 not yet declared so cannot be aliased.\nline 8: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-5",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(1)=B\nAlias R1(1)=C\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-6",
+   "logger": "cr350",
+   "source": "Public R2\nPublic R1(6)\nAlias R1(6,Und)=B\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Und is not defined.\nline 3: Variable illegal in Parameter: Und.\nline 3: Alias is illegally dimensioned.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-7",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(1)=Y\nPublic R2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-8",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(6,Und)=B\nPublic R2(2)\nAlias R2(9)=Y\nAlias R2(1)=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Und is not defined.\nline 2: Variable illegal in Parameter: Und.\nline 2: Alias is illegally dimensioned.\nline 4: R2 not yet declared so cannot be aliased.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-9",
+   "logger": "cr350",
+   "source": "Public R1(6)\nAlias R1(1)=B\nAlias R1(1)=C\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-10",
+   "logger": "cr350",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(2)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-11",
+   "logger": "cr350",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(2)=B\nPublic R2\nDim Q As Long\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias Name: B.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-12",
+   "logger": "cr350",
+   "source": "Public R1(6), Q\nAlias R1(1)=B\nAlias R1(1)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-13",
+   "logger": "cr350",
+   "source": "Public R1(6), Q\nAlias R1(9)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 4: R2 not yet declared so cannot be aliased.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_dropped_decl-14",
+   "logger": "cr350",
+   "source": "Public R1(6), Q\nAlias Q=B\nAlias R1(9)=B\nPublic R2\nAlias R2=Y\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias Name: B.\nline 5: R2 not yet declared so cannot be aliased.\nline 7: Too many parameters:  Sec."
+  }
+ ]
+}
