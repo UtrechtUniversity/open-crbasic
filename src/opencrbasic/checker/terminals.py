@@ -57,6 +57,10 @@ def _in_range(v: float, kind: dict) -> bool:
     return any(lo <= v <= hi for lo, hi in _ranges(kind))
 
 
+def _cr6_burst_kind(kind: dict) -> bool:
+    return kind.get("transform") == "abs" and _ranges(kind) == [(201, 212)]
+
+
 def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
     """(in_range, odd_ok, displayed_value) for a constant `value` against one channel `kind`.
 
@@ -66,6 +70,8 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
     -202 compiles). `transform: "none"` (every other kind): the raw value is both tested and shown.
     """
     v = abs(value) if kind.get("transform") == "abs" else value
+    if _cr6_burst_kind(kind) and -200 < value < 0:
+        v = value  # a small negative is no burst code: tested and shown signed (oracle, CR6)
     in_range = _in_range(v, kind)
     odd_ok = (not kind.get("odd_only")) or (in_range and int(v) % 2 == 1)
     return in_range, odd_ok, int(v)
@@ -109,6 +115,8 @@ def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, di
         # falsely reject" priority -- every corpus mismatch this rule fixes is a plain positive
         # channel number written where a different range or terminal name was required.
         return
+    if _cr6_burst_kind(kind) and value <= -200 and not -212 <= value <= -201:
+        return  # CR6 -200 and -213 and below behave irregularly (accepted, odd-start or port messages)
     in_range, odd_ok, shown = _evaluate(value, kind)
     allowed_ok = "allowed" not in kind or (in_range and shown in kind["allowed"])
     if not in_range:

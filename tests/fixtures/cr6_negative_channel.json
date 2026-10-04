@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cr6_negative_channel-0",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-1,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -1, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-1",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-5,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -5, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-2",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-12,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -12, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-3",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-101,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -101, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-4",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-199,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -199, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-5",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-200,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-6",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-201,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-7",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-212,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-8",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-213,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-9",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-U1,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-10",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-3,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -3, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-11",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-6,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -6, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-12",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-199,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -199, must use U1..U12."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-13",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-201,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cr6_negative_channel-14",
+   "logger": "cr6",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-U1,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-0",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-1,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-1",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-5,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-2",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-12,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-3",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-101,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 101, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-4",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-199,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 199, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-5",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-200,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 200, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-6",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-201,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 201, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-7",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-212,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 212, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-8",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-213,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 213, must use 1..16."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-9",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mv5000C,-U1,0,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: -U1."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-10",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-3,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-11",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-6,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-12",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-199,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 199, must use 1..8."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-13",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-201,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 201, must use 1..8."
+  },
+  {
+   "id": "cr1000x-cr6_negative_channel-14",
+   "logger": "cr1000x",
+   "source": "Public X, A(130), B(4)\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltDiff(X,1,mv5000C,-U1,True,0,15000,1,0.0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: -U1."
+  }
+ ]
+}

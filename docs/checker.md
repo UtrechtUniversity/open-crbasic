@@ -3788,3 +3788,14 @@ An unresolved assignment target keeps only the generic `Invalid, or out of place
 Not implemented: `If EmailSend(...) Then` (same message), `X = EmailRelay(S,S)` / 8-argument
 `EmailSend` arity (`Expression expects ,`), `X = SMSSend` (`Invalid symbol`).
 Measured: chm exact cr6 450 -> 452, cr1000x 454 -> 456.
+
+### CR6 negative `VoltSe`/`VoltDiff` channel constants
+
+Observed 2026-10-04 (`tests/fixtures/cr6_negative_channel.json`): a small negative channel
+(`-1`..`-199`) is not a burst code; it is rejected and shown signed (`Invalid channel -5, must use
+U1..U12.`), where the burst model printed its absolute value. `-201`..`-212` stay accepted (diff:
+odd rule). `-200`, `-213` and below behave irregularly in the real compiler (accepted, `Invalid
+start channel...`, `Invalid port, must be C1..C4 or U1..U12.`; the value seems to be taken modulo
+200) and are left unchecked (previously a false reject for `-200`/`-213`). Positive `>= 213` prints
+`Channel <v mod 200> exceeds number of valid channels.` (observed 213..1199; 0 = accepted for SE,
+odd message for diff), not implemented. CR1000X is unchanged. `terminals._cr6_burst_kind`.
