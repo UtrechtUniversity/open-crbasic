@@ -3665,3 +3665,12 @@ modelled (message-only difference on already rejected programs). Fixture:
   The first bad variable of dimension/name/redeclaration wins (`Public X(-1), Q(nv), R, S` with Q
   declared -> only `Illegally dimension: ...` and `... R.`); `structure.check_pass1` merges the
   three results.
+- **`Do`/`Loop` conditions in the cascade** (`tests/fixtures/cascade_do_loop.json`, 90 cases, CR300
+  and CR350 real output): after the cascade starts, `Do While/Until <cond>` and `Loop While/Until
+  <cond>` lines are rewritten like a second argument to `Too many parameters:  <first token>.`
+  (`X=-1` -> `X`, `X+Y=1` -> `X+Y`, `X<>5` -> `X<`, `Not X` -> `Not`, `X(1)=1` -> `X`; same
+  tokenizer as instruction arguments), replacing the line's own undefined-name lines. A bare `Do`,
+  `While`/`Wend` and `If` are untouched; an empty `Do While` loses its `Incomplete expression:
+  While.` line. `Too few parameters in instruction.` (`CallTable()`, `Histogram()`) starts the
+  cascade. `cr3xx.check_too_many_cascade`. Closes the "not implemented" note under PipeLine Mode
+  for the `Loop While x=1` line only in the generic cascade form.

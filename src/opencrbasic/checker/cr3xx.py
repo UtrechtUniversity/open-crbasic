@@ -182,7 +182,8 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "not supported", "Variable not named.", " is illegal baud rate.",
                          "already defined as an internal function.", "is a predefined CONST.",
                          "Only one ConstTable allowed.", "EndConstTable with no ConstTable.",
-                         "Missing variable name.", "; cannot be numeric.")
+                         "Missing variable name.", "; cannot be numeric.",
+                         "Too few parameters in instruction.")
 _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",
@@ -281,6 +282,24 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 if len(tokens) >= 2:
                     diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                     diags.error(stmt.line, f"Too many parameters:  {tokens[1]}.", stmt.file)
+                continue
+            if isinstance(stmt, S.Unparsed) and re.fullmatch(r"(?i)\s*(?:do|loop)\s+(?:while|until)\s*", stmt.text or ""):
+                # (`Do While` with nothing after it: the incomplete-expression line is gone)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
+                                  or not d.message.startswith("Incomplete expression:")]
+                continue
+            m = (re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
+                 if isinstance(stmt, S.DoLoop) and stmt.cond is not None else None)
+            if m:
+                # a `Do`/`Loop` condition is rewritten like a second argument (oracle, CR300,
+                # 2026-10-04: `Loop Until X=-1` -> `Too many parameters:  X.`)
+                text = instr_rules._next_simple_token(m.group(1)) or m.group(1)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                at = next((i for i, d in enumerate(diags.items)
+                           if d.file == stmt.file and d.line > stmt.line), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  f"Too many parameters:  {text}.", stmt.file))
+                rewritten.add(id(stmt))
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
@@ -528,7 +547,7 @@ def _report_rewritten_first_arg(program: S.Program, profile, diags: Diagnostics,
         return name.upper() not in known or name.upper() in tables
 
     for stmt in program.statements:
-        if id(stmt) not in rewritten or not stmt.args or stmt.args[0] is None:
+        if id(stmt) not in rewritten or not getattr(stmt, "args", None) or stmt.args[0] is None:
             continue
         info = profile.instructions.get(stmt.keyword.upper())
         if not info or not info["params"] or info["params"][0] not in _RESOLVED_FIRST_PARAM:
