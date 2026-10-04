@@ -416,8 +416,10 @@ def drop_too_many_after_variable_illegal(program: S.Program, profile, diags: Dia
     if profile.name not in ("cr300", "cr350"):
         return
     per_line = collections.Counter((st.line, st.file) for st in program.statements)
+    declarations = {(st.line, st.file) for st in program.statements if isinstance(st, S.Declaration)}
     bad = {(d.line, d.file) for d in diags.errors
-           if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX) and per_line[(d.line, d.file)] == 1}
+           if d.message.startswith(_VARIABLE_ILLEGAL_PREFIX) and per_line[(d.line, d.file)] == 1
+           and (d.line, d.file) not in declarations}  # (a declaration names the variable two on)
     if bad:
         diags.items[:] = [d for d in diags.items if not (
             (d.line, d.file) in bad and d.message.startswith(_TOO_MANY_PREFIX))]
@@ -620,9 +622,20 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
     expressions.check(modified, profile, scratch, env)
     expressions.check_function_call_counts(modified, profile, scratch)
     existing = collections.Counter((e.line, e.file, e.message) for e in diags.items)
-    for d in scratch.items:
-        key = (d.line, d.file)
-        if key in affected and d.severity == "error":
+    for key in sorted(affected, key=lambda k: (k[1] or "", k[0])):
+        fresh = [d for d in scratch.items if (d.line, d.file) == key and d.severity == "error"]
+        at = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+        old = collections.Counter(diags.items[i].message for i in at)
+        if (at and at == list(range(at[0], at[-1] + 1))
+                and all(diags.items[i].severity == "error" for i in at)
+                and not old - collections.Counter(d.message for d in fresh)):
+            # the names are reported in text order: a newly undefined name (`For i = 1 To nv`
+            # with `i` dropped) goes before an already reported one (oracle, CR300, 2026-10-04)
+            diags.items[at[0]:at[-1] + 1] = fresh
+            for d in fresh:
+                existing[(d.line, d.file, d.message)] -= 1
+            continue
+        for d in fresh:
             if existing[(d.line, d.file, d.message)]:
                 existing[(d.line, d.file, d.message)] -= 1
             else:

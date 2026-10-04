@@ -3643,3 +3643,17 @@ modelled (message-only difference on already rejected programs). Fixture:
   (`Rv(Bad)=Sc`), is not followed by the generic `Invalid, or out of place expression` line; the
   right side's undefined names and `Dimensions not declared` follow instead. With count 0 and an
   undefined array target (`Nope(1)=Sc`) the generic line stays.
+- **First bad variable of a declaration** (`tests/fixtures/decl_first_bad.json`, 56 cases, CR300 and
+  CR350 real output): the declaration stops at its first variable with an undefined dimension name
+  or initializer name (or an illegal dimension, whichever variable comes first): later variables are
+  not examined (`Public a(nv), b(nv)` names `nv` once) and the variable two positions on is named
+  by `Too many parameters:  <name>.` (`Public a(nv), b(nv), c` -> `... c.`; `Public a(-1), b(nv),
+  c, d` gets only `Illegally dimension: ...` and `... c.`). `structure.check_pass1` runs the
+  illegal-dimension check and `_check_decl_exprs` side by side for CR300/CR350 and keeps the
+  earlier one. `cr3xx.drop_too_many_after_variable_illegal` leaves a declaration's own `Too many`
+  alone. After the cascade drops a declaration, the re-run name check places a newly undefined
+  name in text order among the ones already reported (`For i = 1 To nv`, `i` dropped: `i` before
+  `nv`), `cr3xx._report_unregistered`. `Need closing )` (an `Alias R1() = B`) also starts the
+  cascade. Not modelled: `Alias R1(1 = B` (`Need '=' ...`), `Dim R3(` (`R3( is missing the )
+  character.`), a dimension name declared later in the file (`Public a(Sc)` then `Public Sc` is
+  `Sc is not defined.` on the real compilers, we say only `Variable illegal in Parameter`).

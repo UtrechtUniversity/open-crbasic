@@ -850,11 +850,22 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if not stmt.vars:
                 suppress_line = _check_declaration(stmt, diags)
             else:
-                _check_array_dims(stmt, diags, env, profile)
                 if known is None:
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
-                _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
+                if profile.single_pass:
+                    # one bad variable stops the declaration: whichever of an illegal dimension
+                    # and an undefined dimension name comes first in the line wins (oracle,
+                    # CR300/CR350, 2026-10-04: `Public a(-1), b(nv), c` / `a(nv), b(-1), c`)
+                    dims_diags, names_diags = Diagnostics(), Diagnostics()
+                    first_bad = _check_array_dims(stmt, dims_diags, env, profile)
+                    names_bad = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
+                                                  struct_types, first_bad)
+                    diags.items.extend(names_diags.items if names_bad else
+                                       dims_diags.items + names_diags.items)
+                else:
+                    _check_array_dims(stmt, diags, env, profile)
+                    _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
             pass
@@ -2216,7 +2227,8 @@ def _check_array_dims(stmt: S.Declaration, diags: Diagnostics, env: consteval.En
             if index + 2 < len(stmt.vars):
                 diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                             stmt.file)
-            break
+            return index
+    return None
 
 
 def _check_var_dims(stmt: S.Declaration, v, diags: Diagnostics, env: consteval.Env) -> None:
@@ -2361,7 +2373,8 @@ def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnosti
 
 
 def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
-                      diags: Diagnostics, struct_types: frozenset[str] = frozenset()) -> None:
+                      diags: Diagnostics, struct_types: frozenset[str] = frozenset(),
+                      stop_at: int | None = None) -> bool:
     """Pass-1 name resolution in `Public`/`Dim`/`Static` array dimensions and initializers.
     Oracle, all four loggers (`docs/checker.md` "Declaration expressions"): `Public A(3, Nope)` ->
     `Invalid symbol in expression: Nope.` (each bad dimension, echo left-trimmed); `Dim A(Y)`, `Y`
@@ -2371,9 +2384,9 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     body = body[len(body.split(None, 1)[0]):] if body else ""
     segments = _split_top(body)
     if len(segments) != len(stmt.vars):
-        return
+        return False
     unsupported = False
-    for v, seg in zip(stmt.vars, segments):
+    for index, (v, seg) in enumerate(zip(stmt.vars, segments)):
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
             continue
@@ -2403,10 +2416,19 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             # `Public A(Nope)` and `Public A As Float(Nope)` alike (oracle, 2026-09-28)
             open_at = rest_at + (typed_dims.end() if typed_dims else len(rest) - len(rest.lstrip()))
             items = _group_items(seg, open_at)
-            if items is not None and len(items) == len(v.dims):
+            if items is not None and len(items) == len(v.dims) and (
+                    stop_at is None or index < stop_at):
+                bad_dim = False
                 for d, text in zip(v.dims, items):
-                    _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
-        if v.init:
+                    bad_dim |= _report_decl_expr(d, text.lstrip(), known, variables, profile, stmt, diags)
+                if bad_dim and profile.single_pass:
+                    # CR300/CR350 stop at the first bad variable; the one two on is named
+                    # (oracle, 2026-10-04: `Public a(nv), b(nv), c` -> `Too many parameters:  c.`)
+                    if index + 2 < len(stmt.vars):
+                        diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                    stmt.file)
+                    return True
+        if v.init and (stop_at is None or index < stop_at):
             eq = _split_top(seg, "=")
             if len(eq) != 2:
                 continue
@@ -2425,6 +2447,12 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             if bad:
                 diags.error(stmt.line, f"Variable initialization of {v.name} has bad syntax.",
                             stmt.file)
+                if profile.single_pass:
+                    if index + 2 < len(stmt.vars):
+                        diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                    stmt.file)
+                    return True
+    return False
 
 
 def _check_alias_index_names(stmt: S.Instruction, known: set[str], variables: set[str],
