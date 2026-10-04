@@ -566,10 +566,10 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             targets = by_base.get(target.name.upper(), [])
         elif isinstance(target, (S.Name, S.Index)):
             nm = target.name.upper()
-            if nm in by_display:
+            if nm in by_base:
+                targets = by_base[nm]   # Units on the declared name covers every alias split too
+            elif nm in by_display:
                 targets = [by_display[nm]]
-            else:
-                targets = by_base.get(nm, [])
         for f in targets:
             f.units = label
 
@@ -884,7 +884,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         out = [_OutField(base + vsuf, tcode, True, vtag, begin, reps, subdims, units)]
         if time_flag:
             out.append(_OutField(base + tsuf, 14, True, ttag, 1, reps,
-                                  [] if reps == 1 else [reps], ""))
+                                  [] if reps == 1 else [reps], units))
         return out
 
     if kw == "MEDIAN":
