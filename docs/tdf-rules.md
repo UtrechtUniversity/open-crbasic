@@ -273,6 +273,14 @@ one `Temp_Max` field, `dim=3`).
   (not `source begin + k`); the unnamed remainder keeps `begin = source begin + names`.
 - `Sample(1, S(i).member, Float)` takes its units from the structure member.
 
+- String sources (`Sample` of a `String` variable): `dim = reps * stored_len`,
+  `subdims = [array dims..., stored_len]`, `begin = (index-1)*stored_len + 1` (bytes, oracle-
+  confirmed). `-l` lists the *elements* for such a field (bytes divided by `stored_len`).
+- `DataInterval(into, interval, unit, Lapses)` with `Lapses = 0` (4th argument, constant 0):
+  **oracle-confirmed** (5 CHM programs): the TDF header has `interval=(0,0)` and the table is
+  sized like a no-interval table, but `-l` still prints `Interval: <n> <UNIT>`.
+- A one-element array source (`Public A(1)`) has `subdims=[]` in its output field (§3 collapse).
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower
@@ -388,6 +396,13 @@ was not algebraically reconciled to the clean `160/bytes` fit above — recorded
 question** (mechanism decompiled-only, magnitude oracle-confirmed).
 
 ### Tables without `DataInterval` (plain trigger, or `DataEvent`) — when it is the *only* auto table
+
+**2026-10-04 correction**: the table of exact widths below is reproduced by the *mixed-regime
+formula* with `n=1` and a solo pool `M = 4,194,298` (`_SOLO_POOL`):
+`size = floor((M - 4096 - reserved) / (bytes+16))`, `reserved = (floor(2048/t8) + 1 + segs) * t8`,
+`t8 = bytes+16`. Fitted on 23 oracle points (2 to 4004 bytes/record; M is bounded to
+`[4194298, 4194304)`). The old `bytes+16` / `Pool2` model failed above ~100 bytes (e.g. two
+`String*50` fields, 104 bytes: 34899, not 34901).
 
 **oracle-confirmed but not reconciled to the interval-table formula above** — behaves as a
 **separate regime** when no `DataInterval`-based auto table coexists in the program, matching

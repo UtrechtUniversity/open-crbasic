@@ -30,5 +30,37 @@
  {
   "id": "fieldnames_split_begin_is_one",
   "source": "Public Y(4)\nDataTable(T2,True,10)\n  Sample(3,Y(2),Float)\n  FieldNames(\"a,b\")\n  Average(2,Y(),Float,False)\n  FieldNames(\"c\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_4_bytes",
+  "source": "Public A(1) As Float\nDataTable(T,True,-1)\n  Sample(1,A(),Float)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_8_bytes",
+  "source": "Public A(2) As Float\nDataTable(T,True,-1)\n  Sample(2,A(),Float)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_104_bytes",
+  "source": "Public A(26) As Float\nDataTable(T,True,-1)\n  Sample(26,A(),Float)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_1024_bytes",
+  "source": "Public A(256) As Float\nDataTable(T,True,-1)\n  Sample(256,A(),Float)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_4000_bytes",
+  "source": "Public A(1000) As Float\nDataTable(T,True,-1)\n  Sample(1000,A(),Float)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "solo_event_auto_two_strings",
+  "source": "Public S1 As String * 50, S2 As String * 50\nDataTable(T,True,-1)\n  Sample(1,S1,String)\n  Sample(1,S2,String)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "string_array_sources",
+  "source": "Public s2(3) As String * 6\nDataTable(T2,True,10)\n  Sample(2,s2(2),String)\nEndTable\nDataTable(T3,True,10)\n  Sample(3,s2(),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "datainterval_lapses_zero",
+  "source": "Public X\nDataTable(T,True,-1)\n  DataInterval(0,60,Min,0)\n  Sample(1,X,IEEE4)\nEndTable\nBeginProg\n  Scan(5,Sec,1,0)\n    CallTable T\n  NextScan\nEndProg\n"
  }
 ]

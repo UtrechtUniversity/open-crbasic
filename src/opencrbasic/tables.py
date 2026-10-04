@@ -42,13 +42,6 @@ _STATUS_JSON = json.loads((DATA / "status_table.json").read_text())
 _POOL1 = 4_119_534
 _PER_TABLE_DECREMENT = 5198
 _CARDOUT_BONUS_BYTES = 160
-_EVENT_ALONE_OVERHEAD = 16
-_EVENT_ALONE_POOL2 = 4_188_120
-# Exact oracle measurements for a single no-DataInterval/DataEvent auto table, alone in the
-# program (docs/tdf-rules.md §10): no flat `overhead` value reconciles all four simultaneously
-# (checked exhaustively), so known byte-widths are looked up directly and only an unseen width
-# falls back to the floor(Pool2/(bytes+16)) approximation.
-_EVENT_ALONE_SIZES = {2: 232_674, 4: 209_406, 6: 190_368, 8: 174_504}
 # A called auto table's own "default" single-table buffer allocation: `FUN_004f4400`'s probe call
 # (decompiled) sizes an initial 1024-byte buffer as `(1024-16)/bytes_per_record` records before any
 # pool-sharing runs. In the mixed regime (see below) a table that would get *less* than this from
@@ -79,7 +72,7 @@ _DEFAULT_PROBE_OVERHEAD = 16
 # weight and byte width) and once against all 8 real `crbasic/` corpus programs in this regime
 # (byte-for-byte on both the `DataInterval` table and every `DataEvent`/no-interval table, per
 # `tools/tdftest.py --group repo`) -- both agree exactly on 4_194_139. It is *not* the same constant
-# as `_POOL1` (the pure-`DataInterval`-only regime) or `_EVENT_ALONE_POOL2` (the solo-event-alone
+# as `_POOL1` (the pure-`DataInterval`-only regime) or `_SOLO_POOL` (the solo-event-alone
 # regime) -- those two are established, working formulas for their own regimes and are left
 # untouched; per docs/tdf-rules.md §10 open question 9, the compiler's free-memory snapshot
 # genuinely differs between these code paths, and why has not been traced further.
@@ -87,6 +80,7 @@ _MIXED_POOL = 4_194_139
 # The finalisation loop's reserved-bytes accumulator starting value (decompiled: `local_18 =
 # 0x1000` before the per-table loop runs).
 _TABLE_INIT_RESERVED = 4096
+_SOLO_POOL = 4_194_298
 
 
 def _table_default_records(bytes_per_record: int, is_interval: bool) -> int:
@@ -657,6 +651,8 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
     if isinstance(expr, S.Index):
         info = var_info.get(expr.name.upper())
         array_shape = list(info.shape) if info and info.shape else [reps]
+        if array_shape == [1]:
+            array_shape = []  # §3 collapse rule: a one-element array has no subdims
         begin = 1
         if expr.args:
             begin = _as_int(_fold(expr.args[0], env, 1), 1)
@@ -798,7 +794,16 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         src = a[1] if len(a) > 1 else None
         tcode = type_of(2)
         begin, subdims, units = shaped(src, reps)
-        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, reps, subdims,
+        info = var_info.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+        dim = reps
+        if info is not None and info.stored_len is not None and tcode == 11:
+            # String source (docs/tdf-rules.md §9a): element = stored_len bytes
+            ln = info.stored_len
+            dim = reps * ln
+            subdims = info.full_shape()
+            if isinstance(src, S.Index) and src.args:
+                begin = (begin - 1) * ln + 1
+        return [_OutField(_source_name(src, var_info), tcode, True, "Smp", begin, dim, subdims,
                           units, placeholder=not isinstance(src, (S.Name, S.Index)))]
 
     if kw in ("AVERAGE", "TOTALIZE", "STDDEV"):
@@ -976,6 +981,10 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             into, interval, ival, unit = _interval_from_args(s.args, env, 0, 1, 2)
             interval_seconds = ival * (_UNIT_SECONDS.get(unit, 1))
             display_interval = (ival, unit)
+            if len(s.args) > 3 and _fold(s.args[3], env, None) == 0:
+                # Lapses = 0: TDF header and sizing as for a table with no DataInterval; only the
+                # `-l` "Interval:" line remains (docs/tdf-rules.md §5)
+                into, interval, interval_seconds = (0, 0), (0, 0), None
         elif kw == "DATAEVENT":
             pass  # interval/into stay (0,0) (§5, oracle-confirmed)
         elif kw in ("CARDOUT", "TABLEFILE"):
@@ -1066,7 +1075,8 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         # solo no-interval/DataEvent auto table, alone in the program: exact oracle lookup (§10).
         t, m = event_ones[0]
         b = m["bytes_per_record"]
-        t.size = _EVENT_ALONE_SIZES.get(b, _EVENT_ALONE_POOL2 // (b + _EVENT_ALONE_OVERHEAD))
+        t8 = b + _DEFAULT_PROBE_OVERHEAD
+        t.size = max((_SOLO_POOL - _TABLE_INIT_RESERVED - _table_reserved_bytes(b, 1)) // t8, 1)
         return
 
     if not event_ones:
@@ -1191,6 +1201,9 @@ def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: i
     both need the *slice*, not every valid coordinate of the full declared shape). Bounded by
     `_MAX_EXPLODE_COUNT` regardless of how large `dim`/`subdims` claim to be; see that constant."""
     dims = subdims[:-1] if drop_last and subdims else subdims
+    if drop_last and subdims and dim % subdims[-1] == 0 and begin % subdims[-1] == 1 % subdims[-1]:
+        # string field: begin/dim are in bytes (§9a), convert to elements
+        begin, dim = (begin - 1) // subdims[-1] + 1, dim // subdims[-1]
     if not dims:
         yield ()
         return
