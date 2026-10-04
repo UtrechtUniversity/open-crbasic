@@ -401,7 +401,9 @@ question** (mechanism decompiled-only, magnitude oracle-confirmed).
 formula* with `n=1` and a solo pool `M = 4,194,298` (`_SOLO_POOL`):
 `size = floor((M - 4096 - reserved) / (bytes+16))`, `reserved = (floor(2048/t8) + 1 + segs) * t8`,
 `t8 = bytes+16`. Fitted on 23 oracle points (2 to 4004 bytes/record; M is bounded to
-`[4194298, 4194304)`). The old `bytes+16` / `Pool2` model failed above ~100 bytes (e.g. two
+`[4194298, 4194304)`) and, with `n>1` event tables and *no* `DataInterval` auto table, by the same
+formula with the same `M` (`fileread_1.CR6`: two 24-byte tables, 52324 each); `_MIXED_POOL`
+(4,194,139) applies once an interval auto table is present. The old `bytes+16` / `Pool2` model failed above ~100 bytes (e.g. two
 `String*50` fields, 104 bytes: 34899, not 34901).
 
 **oracle-confirmed but not reconciled to the interval-table formula above** — behaves as a

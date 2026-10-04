@@ -62,5 +62,9 @@
  {
   "id": "datainterval_lapses_zero",
   "source": "Public X\nDataTable(T,True,-1)\n  DataInterval(0,60,Min,0)\n  Sample(1,X,IEEE4)\nEndTable\nBeginProg\n  Scan(5,Sec,1,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "two_event_auto_tables_no_interval",
+  "source": "Public S1 As String, S2 As String\nDataTable(R1,True,-1)\n  Sample(1,S1,String)\nEndTable\nDataTable(R2,True,-1)\n  Sample(1,S2,String)\nEndTable\nBeginProg\n  Scan(1,Sec,3,1)\n    CallTable R1\n    CallTable R2\n  NextScan\nEndProg\n"
  }
 ]

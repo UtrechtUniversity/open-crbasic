@@ -1107,7 +1107,7 @@ def _resolve_auto_sizes(tables_meta: list[tuple[TdfTable, dict]], scan_weights: 
         _table_reserved_bytes(m["bytes_per_record"], defaults[id(t)]) for t, m in autos)
     rate = sum(_table_rate_contrib(m["bytes_per_record"], m["_weight"], defaults[id(t)])
                for t, m in autos)
-    pool = _MIXED_POOL - reserved
+    pool = (_MIXED_POOL if interval_ones else _SOLO_POOL) - reserved
     duration = pool / rate if rate else 0.0
     for t, m in autos:
         records = int(duration / m["_weight"]) if m["_weight"] else 0
