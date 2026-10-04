@@ -773,10 +773,19 @@ class _Parser:
 
     def _parse_for(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # FOR
-        var = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
-        p.expect_op("=")
+        try:
+            var = self._parse_atom(p, line, file)  # lvalue only; see `_parse_assignment_or_call`
+            p.expect_op("=")
+        except _ParseError:
+            raise _ParseError("For missing parameter")
+        if p.at_end():
+            raise _ParseError("For missing parameter")
         start = self._parse_expr(p, line, file)
+        if p.at_end():
+            raise _ParseError("For missing parameter")
         p.expect_ident("TO")
+        if p.at_end():
+            raise _ParseError("For missing parameter")
         end = self._parse_expr(p, line, file)
         step = None
         if p.is_ident("STEP"):

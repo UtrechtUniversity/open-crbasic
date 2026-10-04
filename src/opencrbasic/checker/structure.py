@@ -49,6 +49,9 @@ _UNITS_WITHOUT_EQ = "Units without '='"
 # partway through its own grammar, `rectpolar_1.CR6`/`sprintf_4.CR6`); `Alias` echoes an (empty
 # when no target at all was parsed) trailing target, like `Units`.
 _CONST_WITHOUT_EQ = "Const without '='"
+# `parser.py`'s `_parse_for`: a `For` header with no `=`, no `To`, or nothing after `To`. All four
+# loggers, pass 1: `Invalid or missing parameter.` (docs/checker.md "Round 4 (CR6/CR1000X ...)").
+_FOR_MISSING = "For missing parameter"
 _ALIAS_WITHOUT_EQ = "Alias without '='"
 
 # `parser.py`'s `_parse_alias`/`_parse_units_segment` reason for the *other* line-wrap shape: a
@@ -1288,7 +1291,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 continue  # a missing-parameter leftover or `Data` line, reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
-            if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
+            if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
                     stmt.reason.startswith(_INVALID_AS_CLAUSE) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
@@ -1517,7 +1520,7 @@ def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     """An `Unparsed` statement no specific pass-1 diagnosis claims (`_check_unparsed_pass1`)."""
     return not (stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
-                                   _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ)
+                                   _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
                 or stmt.reason.startswith(_INVALID_AS_CLAUSE)
                 or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
 
@@ -1805,7 +1808,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             continue
         if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
             continue
-        if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ) or \
+        if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
                 nxt.reason.startswith(_INVALID_AS_CLAUSE) or \
                 nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
             continue  # already reported by `check_pass1`
@@ -2750,6 +2753,9 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         return
     if stmt.reason == _CONST_WITHOUT_EQ:
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
+        return
+    if stmt.reason == _FOR_MISSING:
+        diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
         return
     if stmt.reason == _ALIAS_WITHOUT_EQ:
         diags.error(stmt.line, f"Need '=' in alias definition: {_after_keyword(stmt)}.", stmt.file)

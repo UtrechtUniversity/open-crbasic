@@ -3751,3 +3751,16 @@ Observed 2026-10-04 with CR6Comp/cr1000xcomp (`tests/fixtures/tier_b_no_gate.jso
 - CR300/CR350 keep the old gate (not probed).
 
 Measured: cr6 chm exact 438 -> 443; cr1000x unchanged.
+
+### Malformed `For` header (all four loggers)
+
+Observed 2026-10-04 (`tests/fixtures/for_missing_parameter.json`): a `For` with no `=` after its
+variable (`For more information ...`, `for communication.`), or nothing after `=`, no `To`, or
+nothing after `To` (`For I = 1 To`, `For I =`, bare `For`) is the pass-1 error `Invalid or missing
+parameter.` at its line; the block still opens (a later `Next` is not reported), pass-2 findings
+are hidden as for any pass-1 error, and a `Dim Z banana` finding accumulates. Not done (belongs
+with the trailing-token work): `For I = 1 To 3 Foo` / `... Step` / `Step 1 2` print `Incomplete
+expression: <To- or Step-expression and trailing text>.` (CR300/CR350 add `Foo is not defined.`
+before it) and `For 5 = 1 To 3` prints `5  is not a variable`.
+
+Measured: chm exact cr6 443 -> 447, cr1000x 449 -> 453, cr300/cr350 420 -> 422.

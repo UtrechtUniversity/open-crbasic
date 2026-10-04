@@ -1,0 +1,331 @@
+{
+ "observation_date": "2026-10-04",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-for_missing_parameter-0",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more information see this blog article.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-1",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    for communication.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-2",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-3",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-4",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I =\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-5",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-6",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-7",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-8",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    Dim Z banana\n    For more info\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-for_missing_parameter-9",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr6-for_missing_parameter-10",
+   "logger": "cr6",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Zork = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-0",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more information see this blog article.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-1",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    for communication.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-2",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-3",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-4",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I =\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-5",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-6",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-7",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-8",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    Dim Z banana\n    For more info\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-9",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 6: Invalid Variable declaration banana."
+  },
+  {
+   "id": "cr1000x-for_missing_parameter-10",
+   "logger": "cr1000x",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Zork = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-0",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more information see this blog article.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-1",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    for communication.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-2",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-3",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-4",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I =\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-5",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-6",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-7",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr300-for_missing_parameter-8",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    Dim Z banana\n    For more info\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-9",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-for_missing_parameter-10",
+   "logger": "cr300",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Zork = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr350-for_missing_parameter-0",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more information see this blog article.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-1",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    for communication.\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-2",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-3",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-4",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I =\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-5",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-6",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-7",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Zork = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr350-for_missing_parameter-8",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    Dim Z banana\n    For more info\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable declaration banana.\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-9",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For more info\n    Next\n    Dim Z banana\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-for_missing_parameter-10",
+   "logger": "cr350",
+   "source": "Public X, I\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To\n    Zork = 1\n    Next\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Zork is not defined."
+  }
+ ]
+}
