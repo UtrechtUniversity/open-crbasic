@@ -190,6 +190,7 @@ class VarInfo:
     shape: list[int] = field(default_factory=list)   # declared array dims, e.g. [10] or [2,3]
     stored_len: int | None = None                     # STRING only: rounded storage length
     units: str = ""
+    struct: dict | None = None                         # StructureType body when typed as one
     name: str = ""                                     # declared spelling (CRBasic is
     # case-insensitive; a `Source` reference may use different casing than the declaration, but
     # the default output field name follows the declaration -- oracle-confirmed, ftpclient_4.CR6:
@@ -292,6 +293,7 @@ def _scan_program(program: S.Program):
     units_stmts: list[S.Instruction] = []
     readonly_names: set[str] = set()
     slow_seq_count = 0
+    struct_types: dict[str, dict] = {}   # NAME -> {"members": [VarDecl], "units": {}, "ro": set}
 
     stmts = program.statements
     n = len(stmts)
@@ -299,6 +301,22 @@ def _scan_program(program: S.Program):
     while i < n:
         s = stmts[i]
         kw = _kw(s)
+        if kw == "STRUCTURETYPE":
+            st = {"members": [], "units": {}, "ro": set()}
+            if s.args and isinstance(s.args[0], S.Name):
+                struct_types[s.args[0].name.upper()] = st
+            i += 1
+            while i < n and _kw(stmts[i]) != "ENDSTRUCTURETYPE":
+                m = stmts[i]
+                if isinstance(m, S.Declaration):
+                    st["members"].extend(m.vars)
+                elif _kw(m) == "UNITS" and len(m.args) > 1 and isinstance(m.args[1], S.String):
+                    st["units"][getattr(m.args[0], "name", "").upper()] = m.args[1].value
+                elif _kw(m) == "READONLY":
+                    st["ro"].update(a.name.upper() for a in m.args if isinstance(a, S.Name))
+                i += 1
+            i += 1
+            continue
         if isinstance(s, S.Declaration) and s.kind in ("PUBLIC", "DIM", "STATIC"):
             all_vars.extend(s.vars)
             if s.kind == "PUBLIC":
@@ -362,9 +380,10 @@ def _scan_program(program: S.Program):
             # table named only here still gets its declared size, not the uncalled `size=1`).
             called.add(s.args[2].name.upper())
 
+    publics = [v for v in publics if (v.type or "").upper() not in struct_types]
     uses_cpi = any(_kw(s).startswith("CDM_") or _kw(s) == "CPIFILESEND" for s in stmts)
 
-    return dict(uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
+    return dict(struct_types=struct_types, uses_cpi=uses_cpi, publics=publics, all_vars=all_vars, const_tables=const_tables,
                 data_tables=data_tables, alias_stmts=alias_stmts, units_stmts=units_stmts,
                 readonly_names=readonly_names, slow_seq_count=slow_seq_count, called=called)
 
@@ -433,6 +452,27 @@ def _status_table(slow_seq_count: int) -> TdfTable:
             fields.insert(idx + 1, new_field)
     return TdfTable("Status", 1, _STATUS_JSON["time_type"], tuple(_STATUS_JSON["time_into"]),
                      tuple(_STATUS_JSON["interval"]), fields)
+
+
+def _build_struct_tables(all_vars: list[S.VarDecl], struct_types: dict, env: consteval.Env):
+    """docs/tdf-rules.md §2: every Public/Dim variable of a StructureType is a table named after
+    the variable (size = product of its dims, one field per member), in reverse declaration order."""
+    out = []
+    for v in reversed(all_vars):
+        st = struct_types.get((v.type or "").upper())
+        if st is None:
+            continue
+        size = 1
+        for d in _var_shape(v, env):
+            size *= d
+        fields = []
+        for m in st["members"]:
+            info = _make_var_info(m, env)
+            dim, subdims = info.collapsed()
+            fields.append(TdfField(info.type_code, m.name.upper() in st["ro"], m.name, [], "",
+                                    st["units"].get(m.name.upper(), ""), "", 1, dim, subdims))
+        out.append(TdfTable(v.name, size, 14, (0, 0), (0, 0), fields))
+    return out
 
 
 def _cpistatus_table() -> TdfTable:
@@ -583,7 +623,7 @@ def _datatableinfo_table(n: int) -> TdfTable:
     def dims(n):
         return [] if n == 1 else [n]
 
-    fields = [
+    fields = [] if n == 0 else [
         TdfField(11, True, "DataTableName", [], "", "", "", 1, 24 * n, [n, 24]),
         TdfField(6, False, "SkippedRecord", [], "", "", "", 1, n, dims(n)),
         TdfField(6, True, "DataRecordSize", [], "", "records", "", 1, 2 * n, [n, 2]),
@@ -626,6 +666,10 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
 
 def _units_for_source(expr: S.Expr | None, var_info: dict[str, VarInfo],
                        by_display: dict[str, TdfField]) -> str:
+    if isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)):
+        info = var_info.get(expr.base.name.upper())
+        if info is not None and info.struct is not None:
+            return info.struct["units"].get(expr.member.upper(), "")
     name = _source_name(expr, var_info).upper()
     f = by_display.get(name)
     if f is not None:
@@ -655,6 +699,8 @@ class _OutField:
     ch400: bool = False
     placeholder: bool = False
     rng: tuple[int, int] | None = None
+    struct_members: int = 0   # >0: field of a StructureType source (members per element)
+    member: str = ""
 
 
 _FFT_UNBOUNDED = 1 << 30
@@ -685,7 +731,9 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
 
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
                          env: consteval.Env) -> list[_OutField]:
-    fields = _emit_output_fields_raw(instr, var_info, by_display, env)
+    fields = _emit_struct_fields(instr, var_info, env)
+    if fields is None:
+        fields = _emit_output_fields_raw(instr, var_info, by_display, env)
     src = instr.args[1] if len(instr.args) > 1 else None
     if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
             and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
@@ -695,6 +743,36 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
         if f.rng is None and not f.ch400:
             f.rng = _element_range(src, f.begin, f.dim, env)
     return fields
+
+
+_STRUCT_SUFFIX = {"SAMPLE": ("", "Smp"), "AVERAGE": ("_Avg", "Avg"), "TOTALIZE": ("_Tot", "Tot"),
+                  "MAXIMUM": ("_Max", "Max"), "MINIMUM": ("_Min", "Min")}
+
+
+def _emit_struct_fields(instr: S.Instruction, var_info: dict, env: consteval.Env):
+    """docs/tdf-rules.md §9a: an output instruction whose Source is a StructureType variable emits
+    one field per member per element (reps elements); None when not applicable."""
+    kw = instr.keyword.upper()
+    a = instr.args
+    if kw not in _STRUCT_SUFFIX or len(a) < 2 or not isinstance(a[1], (S.Name, S.Index)):
+        return None
+    info = var_info.get(a[1].name.upper())
+    if info is None or info.struct is None:
+        return None
+    if kw in ("MAXIMUM", "MINIMUM") and len(a) > 4 and str(getattr(a[4], "name", "")).upper() == "TRUE":
+        return None  # time-of-extreme fields of a structure source: not probed
+    reps = _as_int(_fold(a[0], env, 1), 1)
+    suffix, tag = _STRUCT_SUFFIX[kw]
+    st = info.struct
+    out = []
+    for _ in range(reps):
+        for m in st["members"]:
+            mi = _make_var_info(m, env)
+            dim, subdims = mi.collapsed()
+            out.append(_OutField(m.name + suffix, mi.type_code, m.name.upper() in st["ro"], tag, 1,
+                                  dim, subdims, st["units"].get(m.name.upper(), ""),
+                                  struct_members=len(st["members"]), member=m.name))
+    return out
 
 
 def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: dict,
@@ -804,14 +882,27 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
 
 
 def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
-    parts = [p.strip() for p in arg.split(",")]
+    parts = arg.split(",")
+    n_members = fields[0].struct_members if fields else 0
+    if n_members:
+        # structure source: name k prefixes every member of element k (`<name>_<member>`), the
+        # instruction's own suffix (`_Avg`...) is dropped; unnamed elements keep default names
+        raw = arg.split(",")
+        for k, f in enumerate(fields):
+            if k // n_members < len(raw):
+                nm, _, desc = raw[k // n_members].partition(":")
+                f.name = nm + "_" + f.member
+                if desc:
+                    f.processing += ":" + desc
+                f.renamed = True
+        return fields
     if len(fields) == 1 and len(parts) == 1 and fields[0].dim == 1:
         name, _, desc = parts[0].partition(":")
         fields[0].name = name.strip()
         fields[0].renamed = True
         fields[0].placeholder = False
         if desc:
-            fields[0].processing += ":" + desc.strip()
+            fields[0].processing += ":" + desc
         return fields
     if len(fields) == 1 and fields[0].dim > 1:
         # One name per repetition (§9, exp #33/#37): split a single Reps>1 field into scalar
@@ -824,10 +915,10 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         n_named = min(len(parts), base.dim)
         for i in range(n_named):
             name, _, desc = parts[i].partition(":")
-            proc = base.processing + (":" + desc.strip() if desc else "")
+            proc = base.processing + (":" + desc if desc else "")
             rng = None if base.rng is None else (base.rng[0] + i, base.rng[0] + i)
             out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
-                                  base.begin + i, 1, [], base.units, renamed=True,
+                                  1, 1, [], base.units, renamed=True,
                                   name_only=base.name_only, placeholder=False, rng=rng))
         remaining = base.dim - n_named
         if remaining > 0:
@@ -842,7 +933,7 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         f.renamed = True
         f.placeholder = False
         if desc:
-            f.processing += ":" + desc.strip()
+            f.processing += ":" + desc
     return fields
 
 
@@ -1040,6 +1131,7 @@ def build_tables(program: S.Program, profile, consts: dict):
     var_info: dict[str, VarInfo] = {}
     for v in scanned["all_vars"]:
         var_info[v.name.upper()] = _make_var_info(v, env)
+        var_info[v.name.upper()].struct = scanned["struct_types"].get((v.type or "").upper())
 
     # Build the Public table first (source-variable units lookups for output fields need its
     # display-name map), but keep its position in the TDF (after DataTableInfo/ConstTables, §2).
@@ -1048,6 +1140,8 @@ def build_tables(program: S.Program, profile, consts: dict):
         scanned["readonly_names"])
 
     tables: list[TdfTable] = [_status_table(scanned["slow_seq_count"])]
+    struct_tables = _build_struct_tables(scanned["all_vars"], scanned["struct_types"], env)
+    tables.extend(struct_tables)
 
     data_table_metas = []
     for dt in scanned["data_tables"]:
@@ -1055,7 +1149,7 @@ def build_tables(program: S.Program, profile, consts: dict):
         tables.append(table)
         data_table_metas.append((table, meta))
 
-    if scanned["data_tables"]:
+    if scanned["data_tables"] or struct_tables:
         tables.append(_datatableinfo_table(len(scanned["data_tables"])))
 
     if scanned["uses_cpi"]:

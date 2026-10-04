@@ -10,5 +10,25 @@
  {
   "id": "no_cpistatus_cpiaddmodule",
   "source": "Public X\nBeginProg\n  CPIAddModule(CDM_A108,1608,\"A\",1)\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "struct_vars_reverse_order",
+  "source": "StructureType s\n  value As Float\n  flag As Boolean\n  nm As String * 10\n  arr(3) As Long\nEndStructureType\nPublic a As s, b(2) As s\nPublic c As s\nPublic X\nDim d As s\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "struct_only_public_no_public_table",
+  "source": "StructureType s\n  v As Float\n  Units v = mV\n  ReadOnly v\nEndStructureType\nPublic b(2,3) As s\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "struct_output_fields",
+  "source": "StructureType V\n  f As Float\n  Units f = Hz\n  ReadOnly f\n  g As Float\n  arr(2) As Float\nEndStructureType\nStructureType M\n  f As Float\n  l As Long\n  nm As String * 8\n  b As Boolean\nEndStructureType\nPublic P(3) As V\nPublic Q As V\nPublic R As M\nDataTable(T,True,10)\n  DataInterval(0,10,Sec,10)\n  Sample(3,P,V)\n  FieldNames(\"a,b ,c: d \")\n  Average(3,P,V,False)\n  FieldNames(\"a1,b1,c1\")\n  Maximum(1,Q,V,False,False)\n  Sample(1,P(2),V)\n  FieldNames(\"p2\")\n  Totalize(1,P(1),V,False)\n  Sample(1,P(1).f,Float)\n  FieldNames(\"pf\")\nEndTable\nDataTable(T2,True,10)\n  Sample(1,R,M)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n    CallTable T2\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_description_is_raw",
+  "source": "Public Y(2)\nPublic Z\nDataTable(T2,True,10)\n  Sample(2,Y(),Float)\n  FieldNames(\" a : d , b: e \")\n  Minimum(1,Z,Float,False,False)\n  FieldNames(\" c : x \")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_split_begin_is_one",
+  "source": "Public Y(4)\nDataTable(T2,True,10)\n  Sample(3,Y(2),Float)\n  FieldNames(\"a,b\")\n  Average(2,Y(),Float,False)\n  FieldNames(\"c\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T2\n  NextScan\nEndProg\n"
  }
 ]

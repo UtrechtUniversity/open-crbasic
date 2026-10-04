@@ -63,6 +63,15 @@ investigated further: **open question**.
    *before* named `ConstTable`s. `CPIAddModule` alone does not add it; `CDM_A108` etc. as a
    module constant does not either.
 
+3b. **Structure tables** (**oracle-confirmed**, 4 CHM programs plus probes, fixtures
+   `struct_*` in `tests/fixtures/tdf_rules.json`): every `Public`/`Dim` variable of a
+   `StructureType` becomes a table named after the variable (size = product of its dims, one field
+   per member: type, `ReadOnly`, `Units` from the type; String members use the usual stored length),
+   placed right after `Status`, *before* user `DataTable`s, in **reverse declaration order** across
+   `Public` and `Dim` (even inside `BeginProg`). Such variables are not in `Public`. `DataTableInfo`
+   is present whenever structure tables exist, with **zero fields** if there is no `DataTable`.
+   Nested structure members give garbage tables (`z.sb`) and are not modelled.
+
 No other system tables were observed (`Settings`, alarms, etc. did not appear in any experiment;
 none of these features were exercised, so their absence is **not** evidence they never appear —
 **open question**).
@@ -250,6 +259,19 @@ two fields for this). Type = the instruction's `DataType` argument, mapped per �
 
 `Reps > 1` without `FieldNames`: one field, `dim=Reps`, per §3 (e.g. `Maximum(3,Temp(),FP2,...)` →
 one `Temp_Max` field, `dim=3`).
+
+## 9a. Structure sources and `FieldNames` details (oracle-confirmed 2026-10-04)
+
+- `Sample/Average/Totalize/Maximum/Minimum(n, Struct[(i)], Type)` emit, per element (n of them) per
+  member, one field: name = member (+`_Avg`/`_Tot`/`_Max`/`_Min`), `begin=1`, dim/subdims of the
+  member, `ro`/units from the *member* (not always `ro`). `FieldNames("a,b,c")` names element k:
+  `<name>_<member>`, with no instruction suffix; the name is **not** stripped (`"b "` gives
+  `b _f`). Time-of-extreme fields of a structure source were not probed (not modelled).
+- `FieldNames` `name:desc`: the description is appended raw (`Smp: d `), only the name is stripped
+  (non-structure sources).
+- When `FieldNames` splits an array source into scalar fields, each *named* field has `begin=1`
+  (not `source begin + k`); the unnamed remainder keeps `begin = source begin + names`.
+- `Sample(1, S(i).member, Float)` takes its units from the structure member.
 
 ## 10. Auto-allocated table size (`Size = -1`)
 
