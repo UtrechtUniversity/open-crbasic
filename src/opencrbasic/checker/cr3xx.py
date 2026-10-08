@@ -14,7 +14,7 @@ import re
 
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import expressions, instr_rules, symbols
+from . import expressions, instr_rules, structure, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
 # `Serial*` function on CR300/CR350 whose compile-time validator additionally requires a genuine
@@ -211,6 +211,34 @@ def _is_cascade_trigger(diag) -> bool:
     )
 
 
+def _reword_prose(program: S.Program, profile, diags: Diagnostics, stmt: S.Unparsed,
+                  gone: set[str]) -> None:
+    """A prose line after the cascade has started: a name whose declaration the cascade dropped is
+    undefined there too (oracle, CR300, 2026-10-08: `Current` declared after the first error, then
+    prose mentioning `current`). Re-derives the leading-word lines of the generic fallback."""
+    key = (stmt.line, stmt.file)
+    own = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+    fb = next((i for i in own if diags.items[i].message.startswith(_GENERIC_FALLBACK_PREFIX)
+               and _echo_key(diags.items[i].message[len(_GENERIC_FALLBACK_PREFIX):-1])
+               == _echo_key(stmt.text)), None)
+    if fb is None or not all(diags.items[i].message.endswith(_UNRESOLVED_SUFFIX)
+                             for i in own if i < fb):
+        return
+    text = diags.items[fb].message[len(_GENERIC_FALLBACK_PREFIX):-1]
+    lead = _INSTRUCTION_PROSE_RE.match(text)
+    info = profile.instructions.get(lead.group(1).upper()) if lead else None
+    if _TABLE_LINE_RE.match(text) or (info and info["params"]):
+        return
+    known = prose_known(program, profile) - declared_later(first_declarations(program), stmt.line,
+                                                           stmt.file) - gone
+    words = _leading_unknown_words(text, known)
+    old = [diags.items[i].message for i in own if i < fb]
+    new = [profile.unresolved_symbol_message.format(name=w) for w in words]
+    if old != new:
+        fresh = [Diagnostic("error", stmt.line, m, stmt.file, True) for m in new]
+        diags.items[own[0] if own else fb:fb] = fresh
+
+
 def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger and when nothing in the file ever taints
     (see this module's comment above for the oracle evidence and the exact shape implemented).
@@ -255,6 +283,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     diags.items.insert(at, Diagnostic("error", stmt.line, profile.unresolved_symbol_message
                                                       .format(name=lead_name), stmt.file))
                 continue
+            if isinstance(stmt, S.Unparsed) and dropped_names - registered_names:
+                _reword_prose(program, profile, diags, stmt, dropped_names - registered_names)
             if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
                     d.message.startswith("Could not find DataTable ") or (
@@ -749,7 +779,7 @@ _LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-
 # A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
 # declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
 _TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
-_LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*[-+*/^&<>=]+[ \t]*)(?=[A-Za-z_0-9])|[-+*/^&<>=]+")
+_LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*(?:<>|<=|>=|[-+*/^&<>=])[ \t]*)(?=[A-Za-z_0-9])|(?:<>|<=|>=|[-+*/^&<>=])")
 _LINE_WS_RE = re.compile(r"[ \t]+")
 _LINE_PAREN_RE = re.compile(r"[ \t]*\(")
 
@@ -763,6 +793,28 @@ def prose_known(program: S.Program, profile) -> set[str]:
     return set(known) - instruction_only - set(known.tables)
 
 
+def first_declarations(program: S.Program) -> dict[str, tuple[str, int]]:
+    """Upper-cased variable/`Const`/`Alias` name -> (file, line) of its first declaration."""
+    first: dict[str, tuple[str, int]] = {}
+    for st in program.statements:
+        names: list[str] = []
+        if isinstance(st, S.Declaration):
+            names = [v.name for v in st.vars]
+        elif isinstance(st, S.ConstDecl):
+            names = [st.name]
+        elif isinstance(st, S.Instruction) and st.keyword.upper() == "ALIAS":
+            names = [a.name for a in st.args[1:] if isinstance(a, S.Name)]
+        for n in names:
+            first.setdefault(n.upper(), (st.file, st.line))
+    return first
+
+
+def declared_later(first: dict[str, tuple[str, int]], line: int, file: str) -> set[str]:
+    """Names whose first declaration comes after `line`: single-pass compilers do not know them
+    yet when a prose line mentions them (oracle, CR300, 2026-10-08)."""
+    return {n for n, (f, l) in first.items() if f == file and l > line}
+
+
 def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
     """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
     would report as `%s is not defined.` ahead of the generic fallback for it -- see this
@@ -774,6 +826,8 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
     pos = len(text) - len(text.lstrip(" \t"))
     if not _LINE_OPERAND_RE.match(text, pos):
         return []
+    if text[pos:pos + 3].upper() == "IS " or text[pos:].upper() == "IS":
+        return []  # a leading `Is` ends the walk before any word (oracle, CR300, 2026-10-08)
     words: list[str] = []
     extending = True  # False once we're consuming the single trailing "peek" word.
     while True:
@@ -1016,6 +1070,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 in unparsed_text):
             if known is None:
                 known = prose_known(program, profile)
+                first = first_declarations(program)
+            here = known - declared_later(first, d.line, d.file)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
             table = _TABLE_LINE_RE.match(text)
             if table:
@@ -1030,7 +1086,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
                 # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
                 rest = lead.group(2).rstrip("\n")
-                for word in _leading_unknown_words(rest, known):
+                for word in _leading_unknown_words(rest, here):
                     new_items.append(Diagnostic("error", d.line,
                                                 profile.unresolved_symbol_message.format(name=word),
                                                 d.file))
@@ -1041,10 +1097,19 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                                                 f"Variable illegal in Parameter: {rest}.", d.file))
                 changed = True
                 continue
-            for word in _leading_unknown_words(text, known):
+            for word in _leading_unknown_words(text, here):
                 new_items.append(Diagnostic(
                     "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,
                     True))
+                changed = True
+            fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
+            if (fw and fw.group(0).upper() not in profile.instructions
+                    and not text[fw.end():].lstrip(" \t").startswith(("(", "."))
+                    and fw.group(0).upper() not in symbols.declared_variable_names(program)
+                    and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions)):
+                # a built-in function used as the first word without its parenthesis (oracle,
+                # CR300/CR350, 2026-10-08: `Sin foo`, `Timer 1`, `COS of angle`)
+                d = dataclasses.replace(d, message=f"Expression expects ( : {text}.")
                 changed = True
         new_items.append(d)
     if changed:

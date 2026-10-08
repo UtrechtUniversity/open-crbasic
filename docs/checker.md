@@ -3941,3 +3941,15 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   destination slots counts as bad there and the statement's `X is not defined.` lines come first
   (`cr3xx.order_email_destination`). Not modelled: more than nine arguments (`Expression expects ,`,
   also wrong on CR6), an undefined assignment target (`Nope = EmailSend`).
+
+- **Names declared later or dropped** (fixtures `cr3xx_prose_dropped.json`, `cr3xx_prose_dropped2.json`):
+  prose words are resolved against the declarations that precede the line (`foo X bar` above
+  `Public X` reports `X`; `cr3xx.declared_later`) and, once the cascade has started, against the
+  declarations it did not drop (`cr3xx._reword_prose`: a prose line after the first error that
+  mentions a dropped `Current` reports `current is not defined.`).
+- **Built-in function as first word** (`Sin foo`, `Timer 1`, `COS of angle`, `Round foo`): the
+  fallback is `Expression expects ( : <text>` (CR6/CR1000X already did this); the leading-word lines
+  stay. A leading `Is` ends the walk with no word lines. Operator runs in the chain are the valid
+  operators only (`<> <= >=` or one of `+ - * / ^ & < > =`), so `Datalogger</title>` stops after
+  `Datalogger`. Not modelled: `Timer is bar baz` reports `bar`, `baz` (`Sin is ...` reports none);
+  `Not foo bar` is `Incomplete expression`.

@@ -1,0 +1,667 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cr3xx_prose_dropped-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin foo."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin foo bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin foo bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin 1."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin and."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin is foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin is foo."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin + X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin + X."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin, X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin, X."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-7",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nRound foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Round foo."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-8",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nTimer foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer foo."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-9",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nTimer 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer 1."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-10",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nCOS of angle in radians\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : COS of angle in radians."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-11",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSecsSince1990 function to store\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : SecsSince1990 function to store."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-12",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSin X foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin X foo."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-13",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nis of type\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is of type."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-14",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nis used because\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is used because."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-15",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nIs foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Is foo bar."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-16",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nDatalogger</title>\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Datalogger</title>\")."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-17",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo</bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo</bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-18",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo<=bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo<=bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-19",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo<>bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo<>bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-20",
+   "logger": "cr6",
+   "source": "foo X bar\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: foo X bar.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-21",
+   "logger": "cr6",
+   "source": "Public Y\nfoo X bar\nPublic X\nBeginProg\n Y = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: foo X bar.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-cr3xx_prose_dropped-22",
+   "logger": "cr6",
+   "source": "Public Y\nY = \nfoo\nPublic Cur, Q\ncdm Cur Q bar\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = ."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin foo."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin foo bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin foo bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin 1."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin and."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin is foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin is foo."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin + X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin + X."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin, X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin, X."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-7",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nRound foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Round foo."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-8",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nTimer foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer foo."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-9",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nTimer 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer 1."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-10",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nCOS of angle in radians\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : COS of angle in radians."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-11",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSecsSince1990 function to store\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : SecsSince1990 function to store."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-12",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSin X foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin X foo."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-13",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nis of type\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is of type."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-14",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nis used because\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is used because."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-15",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nIs foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Is foo bar."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-16",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nDatalogger</title>\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Datalogger</title>\")."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-17",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo</bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo</bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-18",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo<=bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo<=bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-19",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo<>bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo<>bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-20",
+   "logger": "cr1000x",
+   "source": "foo X bar\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: foo X bar.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-21",
+   "logger": "cr1000x",
+   "source": "Public Y\nfoo X bar\nPublic X\nBeginProg\n Y = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: foo X bar.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_dropped-22",
+   "logger": "cr1000x",
+   "source": "Public Y\nY = \nfoo\nPublic Cur, Q\ncdm Cur Q bar\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = ."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Sin foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin foo bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Sin foo bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin 1\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin and\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin is foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin is foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin + X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin + X\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin, X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin, X\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nRound foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Round foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nTimer foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Timer foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nTimer 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer 1\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nCOS of angle in radians\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: of is not defined.\nline 3: Expression expects ( : COS of angle in radians\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSecsSince1990 function to store\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : SecsSince1990 function to store\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSin X foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin X foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-13",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nis of type\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is of type\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-14",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nis used because\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is used because\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-15",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nIs foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Is foo bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-16",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nDatalogger</title>\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Datalogger is not defined.\nline 3: Invalid, or out of place expression: Datalogger</title>\")\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-17",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo</bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo</bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-18",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo<=bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo<=bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-19",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo<>bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo<>bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-20",
+   "logger": "cr300",
+   "source": "foo X bar\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: foo is not defined.\nline 1: X is not defined.\nline 1: Invalid, or out of place expression: foo X bar\n.\nline 2: Too many parameters:  Y."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-21",
+   "logger": "cr300",
+   "source": "Public Y\nfoo X bar\nPublic X\nBeginProg\n Y = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo is not defined.\nline 2: X is not defined.\nline 2: Invalid, or out of place expression: foo X bar\n.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr300-cr3xx_prose_dropped-22",
+   "logger": "cr300",
+   "source": "Public Y\nY = \nfoo\nPublic Cur, Q\ncdm Cur Q bar\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = \n.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo\n.\nline 4: Too many parameters:  Q.\nline 5: cdm is not defined.\nline 5: Cur is not defined.\nline 5: Invalid, or out of place expression: cdm Cur Q bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Sin foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin foo bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Sin foo bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin 1\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin and\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin is foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin is foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin + X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin + X\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin, X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin, X\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nRound foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Round foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nTimer foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Expression expects ( : Timer foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nTimer 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer 1\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nCOS of angle in radians\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: of is not defined.\nline 3: Expression expects ( : COS of angle in radians\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSecsSince1990 function to store\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : SecsSince1990 function to store\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSin X foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin X foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-13",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nis of type\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is of type\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-14",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nis used because\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is used because\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-15",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nIs foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Is foo bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-16",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nDatalogger</title>\")\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Datalogger is not defined.\nline 3: Invalid, or out of place expression: Datalogger</title>\")\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-17",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo</bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo</bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-18",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo<=bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo<=bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-19",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo<>bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo<>bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-20",
+   "logger": "cr350",
+   "source": "foo X bar\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: foo is not defined.\nline 1: X is not defined.\nline 1: Invalid, or out of place expression: foo X bar\n.\nline 2: Too many parameters:  Y."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-21",
+   "logger": "cr350",
+   "source": "Public Y\nfoo X bar\nPublic X\nBeginProg\n Y = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo is not defined.\nline 2: X is not defined.\nline 2: Invalid, or out of place expression: foo X bar\n.\nline 5: X is not defined."
+  },
+  {
+   "id": "cr350-cr3xx_prose_dropped-22",
+   "logger": "cr350",
+   "source": "Public Y\nY = \nfoo\nPublic Cur, Q\ncdm Cur Q bar\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Y = \n.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo\n.\nline 4: Too many parameters:  Q.\nline 5: cdm is not defined.\nline 5: Cur is not defined.\nline 5: Invalid, or out of place expression: cdm Cur Q bar\n."
+  }
+ ]
+}
