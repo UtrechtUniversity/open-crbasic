@@ -365,3 +365,50 @@ None of these are false rejects, so per this project's own stated priority order
 (`docs/checker.md`: never reject an accepted program, first; exact match, second) they are lower
 urgency than sections 1-6, but the `Scan`/`DataInterval` value check is worth pulling forward since
 it is also the hang and crash fix.
+
+## Round 5: fresh seeds 201-208 (2026-10-08)
+
+New seeds, not used before (earlier rounds used 0, 1, 42-54, 100). Run with `--workers 2` because
+Wine was shared. Counts are the tool's classify-phase tallies for each run; `oracle_error` mutants
+and seeds are real-compiler page faults (exit 5) or 60 s timeouts, which are no verdict and are
+excluded from every other class (`tests/corpus/fuzz/summary-<logger>.json` lists them; the tool
+overwrites that file per logger, so only the second run of each logger survives there).
+
+First pass, run before any fix of this round (reproducers saved: 92):
+
+| Seed | Logger | Mutants | exact | false_reject | false_accept | message_diff | mode_diff |
+|---|---|---|---|---|---|---|---|
+| 201 | cr6 | 500 | 474 | 2 | 8 | 13 | 1 |
+| 202 | cr1000x | 400 | 384 | 0 | 2 | 13 | 0 |
+| 203 | cr300 | 400 | 374 | 1 | 4 | 21 | 0 |
+| 204 | cr350 | 400 | 372 | 0 | 8 | 19 | 0 |
+
+Second pass, run while the fixes listed below were being added to the working tree (so the three
+false-reject shapes could not recur; reproducers saved: 125; 216 new reproducers in total, one hash recurring):
+
+| Seed | Logger | Mutants | exact | false_reject | false_accept | message_diff | mode_diff |
+|---|---|---|---|---|---|---|---|
+| 205 | cr6 | 1000 | 953 | 0 | 12 | 33 | 0 |
+| 206 | cr1000x | 600 | 571 | 0 | 6 | 19 | 3 |
+| 207 | cr300 | 600 | 562 | 0 | 3 | 35 | 0 |
+| 208 | cr350 | 600 | 576 | 0 | 2 | 21 | 0 |
+
+### False rejects (3, all minimised, all closed in the fix commits of this round)
+
+- `cr300/false_reject/08ef74be9238`: `End  Table` (also `End Table`) closes a table on all four
+  loggers; opencrbasic rejected `DataTable ... EndTable not matched.`.
+- `cr6/false_reject/ab0c3e6336e7`: `CS7500(...,999999999999,6)`: opencrbasic reported
+  `Invalid SDM Address: 255`, the real compiler accepts (a float32 / Long-range rule).
+- `cr6/false_reject/2a20e3cd2f86`: `Scan interval too short for measurement by 1 Sec.` reported
+  although the program is in SequentialMode, where the real compiler never reports it.
+
+### Other families seen (not all closed)
+
+False accepts with a clear single rule: `SubScan without Next SubScan.`, `Maximum() or Minimum()
+must precede SampleMaxMin().`, `Optional Count parameter must be type long.` for `TotalRun` and
+`StdDevRun`. A mode_diff: `Call never reached at run time.` (we said `Expr`). Not attempted this
+round (each needs a per-instruction model): `Temperature unit unsupported` and `Timeout: -1, out of
+range` / `Input channel ... out of range` on `CDM_*` instructions, `SampleFieldCal with no FieldCal in
+program.`, `Duplicate Alias` with a negative index, `Destination variable cannot be indexed`
+(CR350), `Illegal Matrix` (CR350), storage-space errors (CR350), plus the many help-corpus
+message-order families owned by other workers.
