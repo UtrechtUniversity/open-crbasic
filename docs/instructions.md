@@ -1446,3 +1446,12 @@ the written element on must hold `N` values or `<name> must be of length >= N.` 
 smaller `N` passes). `N` that is not a power of two gives `FFT N must be a non-zero power of 2.`
 plus the empty-table line in the real compiler and is not modelled. Reproducer: cr6 and cr300
 `false_accept/a05ccf2caf18`.
+
+### Therm107/108/109 `SettlingTime` on CR300/CR350 (fixture `therm_settling_time`)
+
+`Therm107`, `Therm108` and `Therm109` (position 5, `SettlingTime`, converted as C's `(long)`):
+`0` and any value from `10` up compile; every other value gives `Settling time <n> too short, min
+time is 10.` (`1`, `2`, `5`, `9`, `9.9` -> 9, `-1`; `1.5` -> 1). It follows the `Invalid fnotch
+value` warning of the same line, and is a `const_ranges` entry (new `allow` list for the lone
+accepted value `0`). Not probed on CR6/CR1000X (different parameter lists) or for other CR300
+measurement instructions. Reproducer: cr350 `false_accept/fed9e7c1ded9`.

@@ -1,0 +1,253 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-therm_settling_time-0",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-1",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-2",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,2,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 2 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-3",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 5 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-4",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,9,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 9 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-5",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-6",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,11,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-7",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,20,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-8",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,-1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time -1 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-9",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1.5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-10",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,9.9,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 9 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-11",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,10.5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-12",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm108 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-13",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm108 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-14",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm107 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr300-therm_settling_time-15",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm107 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-therm_settling_time-16",
+   "logger": "cr300",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1,250,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-0",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,0,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-1",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-2",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,2,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 2 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-3",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 5 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-4",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,9,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 9 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-5",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-6",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,11,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-7",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,20,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-8",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,-1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time -1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-9",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1.5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-10",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,9.9,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 9 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-11",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,10.5,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-12",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm108 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-13",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm108 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-14",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm107 (T(),2,1,Vx1,1,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  },
+  {
+   "id": "cr350-therm_settling_time-15",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm107 (T(),2,1,Vx1,10,15000,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-therm_settling_time-16",
+   "logger": "cr350",
+   "source": "Public T(4)\nBeginProg\n  Scan (1,Min,3,0)\n    Therm109 (T(),2,1,Vx1,1,250,1.8,32)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 4: Settling time 1 too short, min time is 10."
+  }
+ ]
+}

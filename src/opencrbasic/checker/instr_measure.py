@@ -88,6 +88,11 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
             if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
                 continue
             shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
+            if value in rule.get("allow", ()):
+                continue
+            if value in rule.get("warn_values", ()):
+                diags.warning(stmt.line, rule["warn_message"], stmt.file)
+                continue
             if shown is not None:
                 diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
 
