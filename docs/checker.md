@@ -3992,11 +3992,7 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   like a built-in function does not shadow it: bare uses print `Expression expects (`, `exp(1) = 2`
   prints `Invalid assignment in expression`, and these start the `Too many parameters` cascade.
   A scalar local indexed as the target (`Dim exp` then `exp(1) = 2`) gets only the `Invalid assignment`
-  line (no over-indexed fallback after it). Not modelled: an instruction name used as a call in an
-  expression (`X = Battery(X)`, `X = Delay(1)`, `X = PulseCount(1)`): the real compilers print
-  `Invalid symbol in expression: <stmt>.` (CR6/CR1000X) or `<name> is not defined.` plus
-  `Dimensions not declared: <stmt>` (CR300/CR350), but `X = SerialOut(1)` is `Expression expects ,`
-  and ours accepts these silently (instruction names sit in `_known_names`); family left open.
+  line (no over-indexed fallback after it). Instruction names as values: see "Round 6 parse fixes".
   Unfinished: bare function in `If`/`Do` conditions (`If Timer > 1`), CR6 scoping of a Sub-local.
 
 - **One dimension-count state for every CR300/CR350 consumer** (probed 2026-10-08, fixture
@@ -4007,6 +4003,17 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   `cr3xx.check_float_destinations` all use it (CR6/CR1000X keep the declared-variable simulation).
 
 ## Round 6 parse fixes (oracle, 2026-10-08, all four loggers)
+
+- **Instruction names are not values** (every `profile.instructions` name probed on CR6, CR1000X,
+  CR300; `X = N(1)`, `X = N`, `If N(1) Then`, `Delay(1,N(1),mSec)`): CR6/CR1000X `Invalid symbol in
+  expression: <stmt>.`, CR300/CR350 `N is not defined.` (+ `Dimensions not declared: <stmt>` for the
+  call form). Exceptions: `Randomize` (also a function; bare gives `Expression expects (`) and the
+  ten block keywords (`Case Do For Function If Scan Select Sub SubScan While`): bare compiles, the
+  call form is `Incomplete expression: <stmt>.` (not modelled; still accepted). `SerialOut` and
+  friends are functions, not in `profile.instructions`, so they keep `Expression expects ,`.
+  `_known_names` therefore admits only the block keywords from `profile.instructions`, plus
+  `CH400Status` when the program has that instruction (it names the table `Sample` reads). Fixture
+  `instr_name_in_expr.json`.
 
 - A bare call of a declared `Function` is one expression statement, not a `Sub` call with a tail:
   `F0()+Nope` -> CR6/CR1000X `Invalid symbol in expression:   F0()+Nope.`, CR300/CR350 `Nope is

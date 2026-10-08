@@ -661,6 +661,14 @@ def _if_condition_text_no_then(stmt: S.Stmt) -> str | None:
     return m.group(1) if m else None
 
 
+# Instruction names resolve in no expression position (`X = Battery(X)`, `If Delay(1) Then`,
+# `Battery`, argument positions) except the ones that are also functions (`Randomize`, which is in
+# `profile.functions` anyway) and the block keywords, whose real message is `Incomplete expression`
+# (oracle, all four loggers, 2026-10-08: every instruction name probed, `docs/checker.md`).
+_CONTROL_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "IF", "SCAN", "SELECT", "SUB",
+                               "SUBSCAN", "WHILE"})
+
+
 def _known_names(program: S.Program, profile) -> set[str]:
     """Every name a checked expression position may legally reference: this program's own
     declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
@@ -674,11 +682,14 @@ def _known_names(program: S.Program, profile) -> set[str]:
         symbols.declared_names(program)
         | set(profile.symbols)
         | set(profile.functions)
-        | set(profile.instructions)
+        | (set(profile.instructions) & _CONTROL_KEYWORDS)
         | symbols.system_table_names(program)
         | symbols.ess_variable_names(program)
         | _EXTRA_PREDEFINED_SYMBOLS
     )
+    if any(isinstance(st, S.Instruction) and st.keyword.upper() == "CH400STATUS"
+           for st in program.statements):
+        known.add("CH400STATUS")  # the instruction names the table `Sample(1, CH400Status, ...)` reads
     known -= _failed_consts(program, known)
     if profile.single_pass:
         known -= _unclosed_structure_variables(program)

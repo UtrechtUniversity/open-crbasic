@@ -1,0 +1,387 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-instr_name_in_expr-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Battery(X)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Delay(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = PulseCount(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = PulseCount(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = SerialOut(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     X = SerialOut(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Battery."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 + Battery(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = 1 + Battery(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Battery(1) Then X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1) ."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,Battery(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Scan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Randomize(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Alias(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Alias(1)."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = DataTable\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = DataTable."
+  },
+  {
+   "id": "cr6-instr_name_in_expr-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(1,Battery(1),mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Battery(X)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Delay(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = PulseCount(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = PulseCount(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = SerialOut(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     X = SerialOut(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Battery."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 + Battery(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = 1 + Battery(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Battery(1) Then X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1) ."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,Battery(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Scan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Randomize(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Alias(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Alias(1)."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = DataTable\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = DataTable."
+  },
+  {
+   "id": "cr1000x-instr_name_in_expr-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(1,Battery(1),mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Battery(1)."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-0",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared:     X = Battery(X)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay is not defined.\nline 4: Dimensions not declared:     X = Delay(1)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = PulseCount(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: PulseCount is not defined.\nline 4: Dimensions not declared:     X = PulseCount(1)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = SerialOut(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     X = SerialOut(1)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 + Battery(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared:     Y = 1 + Battery(1)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Battery(1) Then X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1) ."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-7",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,Battery(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1)."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-8",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Scan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-9",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Randomize(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-10",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Alias(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Alias is not defined.\nline 4: Dimensions not declared:     X = Alias(1)\n."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-11",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = DataTable\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is not defined."
+  },
+  {
+   "id": "cr300-instr_name_in_expr-12",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(1,Battery(1),mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1).\nline 4: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-0",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared:     X = Battery(X)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Delay is not defined.\nline 4: Dimensions not declared:     X = Delay(1)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = PulseCount(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: PulseCount is not defined.\nline 4: Dimensions not declared:     X = PulseCount(1)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = SerialOut(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     X = SerialOut(1)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Battery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 + Battery(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared:     Y = 1 + Battery(1)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Battery(1) Then X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1) ."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-7",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,Battery(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1)."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-8",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Scan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-9",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Randomize(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-10",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Alias(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Alias is not defined.\nline 4: Dimensions not declared:     X = Alias(1)\n."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-11",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X = DataTable\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is not defined."
+  },
+  {
+   "id": "cr350-instr_name_in_expr-12",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(1,Battery(1),mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Battery is not defined.\nline 4: Dimensions not declared: Battery(1).\nline 4: Too many parameters:  mSec."
+  }
+ ]
+}
