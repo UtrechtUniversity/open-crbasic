@@ -567,7 +567,9 @@ def _names_and_dims(known: set[str], ds: DimsState | None, stmt: S.Stmt | None, 
                     return True
             return False
         children = {S.Unary: lambda: [e.operand], S.Binary: lambda: [e.left, e.right],
-                    S.Member: lambda: [e.base, *(e.args or [])],
+                    S.Member: lambda: [*([] if isinstance(e.base, S.Name)
+                                         and e.base.name.upper() in known else [e.base]),
+                                       *(e.args or [])],
                     S.ArrayLiteral: lambda: e.items}.get(type(e))
         if children:
             for c in children():
@@ -693,7 +695,7 @@ def _known_names(program: S.Program, profile) -> set[str]:
                     _undefined_names(a, known) for a in src.args if a is not None))
             (failed if bad else valid).add(st.args[1].name.upper())
         known -= failed - valid
-    return KnownNames(known, tables=_value_less_tables(program))
+    return KnownNames(known, tables=_value_less_tables(program, profile))
 
 
 def _unclosed_structure_variables(program: S.Program) -> set[str]:
@@ -724,10 +726,14 @@ class KnownNames(set):
         self.tables = tables
 
 
-def _value_less_tables(program: S.Program) -> frozenset:
+def _value_less_tables(program: S.Program, profile=None) -> frozenset:
     tables = {st.args[0].name.upper() for st in program.statements
               if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
               and st.args and isinstance(st.args[0], S.Name)}
+    # `Status` and `Public` as a bare value are undefined on all four loggers, `Settings` on CR300/
+    # CR350 (oracle, 2026-10-08: `X = Status`, `Battery(Public)`; CR6/CR1000X accept `X = Settings`)
+    tables |= {"STATUS", "PUBLIC"} | ({"SETTINGS"} if profile is not None and profile.single_pass
+                                      else set())
     others = symbols.declared_variable_names(program) | {n.upper() for n in program.consts} | \
         {st.name.upper() for st in program.statements if isinstance(st, S.SubDef)}
     return frozenset(tables - others)

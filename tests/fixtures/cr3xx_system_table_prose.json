@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-cr3xx_system_table_prose-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo Status\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: foo Status\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nStatus foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: Status foo\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nStatus\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: Status\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPublic\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable not named."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPublic foo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = Status\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo Public\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Public is not defined.\nline 3: Invalid, or out of place expression: foo Public\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo ConstTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: ConstTable is not defined.\nline 3: Invalid, or out of place expression: foo ConstTable\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo Info\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Info is not defined.\nline 3: Invalid, or out of place expression: foo Info\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo Public.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo Public.x\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nStatus</a>\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: Status</a>\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nStatus foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: Status foo bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nStatus bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: Status bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_system_table_prose-13",
+   "logger": "cr300",
+   "source": "Public x As Long, s As String, y\nBeginProg\n  Scan (1,Sec,3,0)\n    EndIf\n    y=Round(Public.x,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 4: END IF without IF or END SELECT without SELECT.\nline 5: No Matching, or out of place ) in expression:     y=Round(Public.x,1,2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo Status\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: foo Status\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nStatus foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: Status foo\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nStatus\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: Status\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPublic\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable not named."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPublic foo\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = Status\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo Public\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Public is not defined.\nline 3: Invalid, or out of place expression: foo Public\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo ConstTable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: ConstTable is not defined.\nline 3: Invalid, or out of place expression: foo ConstTable\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo Info\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Info is not defined.\nline 3: Invalid, or out of place expression: foo Info\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo Public.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo Public.x\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nStatus</a>\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: Invalid, or out of place expression: Status</a>\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nStatus foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: Status foo bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nStatus bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Status is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: Status bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_system_table_prose-13",
+   "logger": "cr350",
+   "source": "Public x As Long, s As String, y\nBeginProg\n  Scan (1,Sec,3,0)\n    EndIf\n    y=Round(Public.x,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 4: END IF without IF or END SELECT without SELECT.\nline 5: No Matching, or out of place ) in expression:     y=Round(Public.x,1,2)\n."
+  }
+ ]
+}

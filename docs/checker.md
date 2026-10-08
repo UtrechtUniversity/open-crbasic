@@ -3969,3 +3969,11 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   `Delay(Nope,1)` print `Invalid symbol in expression: Nope.` alone; `PanelTemp(Nope)` keeps
   `Invalid or missing parameter.`): not modelled, those CR6/CR1000X cases still print both. Not
   modelled: `VoltDiff (Nope,1)` (`Too many parameters:  1.` after the name).
+
+- **System tables are not values** (fixtures `system_table_values.json`, `cr3xx_system_table_prose.json`):
+  a bare `Status` or `Public` used as a value (`X = Status`, `Battery(Public)`, prose `Status foo`) is
+  undefined on all four loggers, `Settings` too on CR300/CR350 (CR6/CR1000X accept `X = Settings`);
+  `Status.Battery` still resolves. They join the user `DataTable` names in `KnownNames.tables`
+  (`expressions._value_less_tables`); the `Member` walks of `_names_and_dims` and
+  `cr3xx._arity_walk` no longer report a table base. Prose after an alias of a cascade-dropped
+  declaration (`Alias AC_Pwr(1) = Real_Power` with `AC_Pwr` dropped) sees the alias name as undefined.

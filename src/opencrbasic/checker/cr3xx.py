@@ -318,6 +318,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 diags.items.insert(at, Diagnostic("error", stmt.line,
                                                   f"{stmt.args[0].name} not yet declared so cannot be aliased.",
                                                   stmt.file))
+                # the alias name is not registered either (prose that mentions it: `current`)
+                dropped_names.update(a.name.upper() for a in stmt.args[1:] if isinstance(a, S.Name))
                 continue
             if isinstance(stmt, S.SubDef):
                 tainted_subs.add(id(stmt))
@@ -1173,7 +1175,8 @@ def _arity_walk(expr: S.Expr | None, known: set[str], profile, state: dict) -> N
         _arity_walk(expr.left, known, profile, state)
         _arity_walk(expr.right, known, profile, state)
     elif isinstance(expr, S.Member):
-        _arity_walk(expr.base, known, profile, state)
+        if not (isinstance(expr.base, S.Name) and expr.base.name.upper() in known):
+            _arity_walk(expr.base, known, profile, state)  # (`Tb.x`: a table is fine as the base)
         for a in expr.args or []:
             _arity_walk(a, known, profile, state)
     elif isinstance(expr, S.ArrayLiteral):
