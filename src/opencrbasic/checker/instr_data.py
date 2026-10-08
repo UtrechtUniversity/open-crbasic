@@ -256,7 +256,8 @@ def check_table_structure(program: S.Program, profile: Profile,
     has_field = False
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
-            has_field = has_field or in_table  # a statement we could not parse may be the field
+            if isinstance(stmt, S.Unparsed):
+                has_field = has_field or in_table  # a line we could not parse may be the field
             continue
         kw = stmt.keyword.upper()
         if kw == "DATATABLE":

@@ -410,6 +410,11 @@ at the `EndTable`'s own line) and a saved fuzz reproducer for the "nothing at al
 (`tests/corpus/fuzz/cr6/false_accept/5d5ffec92ac4.json`, a `change_interval` mutant of a real CHM
 seed).
 
+Only an `Unparsed` line (which may be the missing field) suppresses the message. Parsed
+non-instruction lines inside the table (`X=1`, `Dim`, `Public`, `Const`, `Alias`, `Units`, a bare
+unknown name) do not: all four loggers report it (fixture `table_no_fields.json`, 2026-10-08), and
+CR6/CR1000X also still report the `Invalid, or out of place expression` for the bare name first.
+
 Deliberately does **not** reuse `result.tables`' already-computed field *count* the way
 `check_duplicate_fields` does (a `len(table.fields) == 0` test would have been simpler): `tables.py`
 does not yet derive output fields for several instructions this project already knows are real
