@@ -1366,3 +1366,12 @@ An unreachable `Call S(...)` or bare `S(...)` Sub invocation is named `Call` in 
 at run time.`, not `Expr` (oracle, all four loggers, 2026-10-08, fixture `r5_call_never_reached`);
 an inline `If ... Then Call S(1)` still gives no warning. Reproducer:
 `tests/corpus/fuzz/cr6/mode_diff/e52f75391e79.CR6`.
+
+### `Optional Count parameter must be type long.` for `TotalRun` and `StdDevRun`
+
+`check_avgrun_options` gave the message only for `AvgRun`. With a `RunReset` argument present,
+a Float or String variable as the sixth argument (`Count`) of `TotalRun`, and of `StdDevRun`
+(CR6/CR1000X only), gives it too (oracle, 2026-10-08, fixture `r5_running_count_type`). `MinRun`
+and `MaxRun` read their sixth argument differently (`Optional number of distinct instances
+...`) and are not changed; a decimal literal Count on CR300/CR350 is also rejected by the real
+compiler and is not modelled. Reproducer: `tests/corpus/fuzz/cr6/false_accept/a5c5a3813f44.CR6`.

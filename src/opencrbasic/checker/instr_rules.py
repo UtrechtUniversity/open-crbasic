@@ -989,6 +989,10 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
             continue
         kw = stmt.keyword.upper()
         args = list(stmt.args) + [None] * (8 - len(stmt.args))
+        if kw in ("TOTALRUN", "STDDEVRUN") and args[4] is not None \
+                and variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
+            # same Count message as `AvgRun` (oracle, CR6 and CR300, 2026-10-08)
+            diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
         if kw == "AVGRUN" and args[4] is not None:
             if variable_type(args[5]) in _AVGRUN_TYPE_ERROR:
                 diags.error(stmt.line, "Optional Count parameter must be type long.", stmt.file)
