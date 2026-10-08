@@ -1313,3 +1313,17 @@ Evidence and class counts: `docs/fuzz-findings.md` "Round 5". Every rule below i
 `End Table` (one or more spaces) is `EndTable` on all four loggers; a stray one reports
 `EndTable without DataTable.`. The parser maps `End` + `Table` to `ENDTABLE`. `End ConstTable`
 is not equivalent (`Illegal END or EXIT ConstTable.`, unchanged). Fixture `r5_end_table`.
+
+### SDM address constants beyond Long, and float constants
+
+`Invalid SDM Address: %d, must be 0 - 14.` (`check_sdm_address`) reads a constant in the
+CR6/CR1000X as follows (oracle, 2026-10-08, fixture `r5_sdm_address_float32`): an integer
+constant inside Long range is exact (`16777233` -> 17, `-2147483633` -> 15); a constant written
+with a decimal point or exponent, or an integer past Long, is rounded to float32 first
+(`16777233.0` -> 16, `2147483583.0` -> 128); a float32 outside Long range is accepted unchecked
+(`999999999999`, `4294967295`, `-2147483649`, `2147483647.0`, `3e9+15`, `-1e300`), except that a
+float32 overflow to +infinity (`1e300`) saturates to Long max and gives 255. `consteval` is
+float-valued throughout, so only a literal's own spelling (or a fractional result) marks a
+constant as float: an integer-valued expression that contains a decimal literal
+(`2147483520.0+15`; the real compiler says 128, we say 143) keeps the exact-integer reading.
+Reproducer: `tests/corpus/fuzz/cr6/false_reject/ab0c3e6336e7.CR6`.

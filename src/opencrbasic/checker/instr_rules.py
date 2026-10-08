@@ -11,6 +11,7 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 from __future__ import annotations
 
 import re
+import struct
 
 from .. import consteval
 from .. import syntax as S
@@ -920,6 +921,21 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
             continue
         if isinstance(value, bool) or not isinstance(value, (int, float)):
             continue
+        # A decimal constant, or an integer beyond Long, is a float32 first (`16777233.0` -> 16);
+        # a float32 outside Long range is accepted unchecked (oracle, CR6/CR1000X, 2026-10-08;
+        # docs/fuzz-findings.md "Round 5, SDM address").
+        # consteval is float-valued throughout, so only a literal's own spelling (`Number.value`)
+        # or a fractional result shows the constant is float-typed; an integer-valued expression
+        # in Long range keeps the exact-integer reading.
+        is_float = (isinstance(arg.value, float) if isinstance(arg, S.Number)
+                    else value != int(value) if abs(value) < 2**63 else True)
+        if is_float or not -2**31 <= value < 2**31:
+            try:
+                value = struct.unpack("f", struct.pack("f", value))[0]
+            except OverflowError:   # float32 +inf saturates to Long max (255); -inf is 0
+                value = 2**31 - 1 if value > 0 else 0
+            if not -2**31 <= value < 2**31:
+                continue
         address = int(value) & 0xFF
         if address >= 15:
             diags.error(stmt.line, f"Invalid SDM Address: {address}, must be 0 - 14.", stmt.file)

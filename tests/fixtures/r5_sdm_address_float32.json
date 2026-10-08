@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-sdm_address_float32-0",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,999999999999,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-1",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,4294967295,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-2",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-2147483649,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-3",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,3e9+15,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-4",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777233.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 16, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-5",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777232+1,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 17, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-6",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777233,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 17, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-7",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483647.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-8",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483647,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-9",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483583.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 128, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-10",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-2147483633.5,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-11",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,1e300,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-12",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-1e300,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sdm_address_float32-13",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,255,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr6-sdm_address_float32-14",
+   "logger": "cr6",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,14,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-0",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,999999999999,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-1",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,4294967295,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-2",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-2147483649,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-3",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,3e9+15,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-4",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777233.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 16, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-5",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777232+1,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 17, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-6",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,16777233,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 17, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-7",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483647.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-8",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483647,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-9",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,2147483583.0,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 128, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-10",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-2147483633.5,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-11",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,1e300,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-12",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,-1e300,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-13",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,255,6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid SDM Address: 255, must be 0 - 14."
+  },
+  {
+   "id": "cr1000x-sdm_address_float32-14",
+   "logger": "cr1000x",
+   "source": "Public irga(5)\nBeginProg\nScan(50,mSec,3,0)\nCS7500(irga(1),1,14,6)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}
