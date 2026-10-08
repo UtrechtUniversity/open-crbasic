@@ -119,6 +119,8 @@ def _display_name(stmt: S.Stmt, profile: Profile) -> str:
         keyword = stmt.keyword.upper() if isinstance(stmt, S.DoLoop) else "FOR"
         record = profile.instructions.get(keyword)
         return record["name"] if record else keyword
+    if isinstance(stmt, S.Call):
+        return "Call"   # `Call S(1)`, `S(1)`: oracle, CR6/CR300, 2026-10-08 (docs/fuzz-findings.md)
     return "Expr"
 
 
@@ -309,11 +311,11 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     # 2026-10-01: `Scan(100,mSec)` with `Delay(0,98,mSec)`, not `Delay(0,97,mSec)`).
     from .instr_measure import scan_delay_totals
     from .instr_rules import _US_PER_UNIT
-    busy = {id(scan) for scan, _end, (value, unit), total in scan_delay_totals(program, env)
-            if total and value * _US_PER_UNIT[unit] - total < 3000 and not sequential}
     # Not in SequentialMode (oracle, CR6, 2026-10-08; docs/fuzz-findings.md).
     from .instr_measure import is_sequential
     sequential = is_sequential(program, profile, env)
+    busy = {id(scan) for scan, _end, (value, unit), total in scan_delay_totals(program, env)
+            if total and value * _US_PER_UNIT[unit] - total < 3000 and not sequential}
     in_slow = False
     main_scan_index = 0
     for stmt in statements:

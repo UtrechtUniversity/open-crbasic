@@ -1359,3 +1359,10 @@ reports this at its own line, all four loggers (oracle, 2026-10-08, fixture
 `SampleMaxMin` line the real order is this message first (we put the symbol error first on
 CR6/CR1000X), and CR300/CR350 also print the undefined-name error that we gate out.
 Reproducer: `tests/corpus/fuzz/cr6/false_accept/cb214e9bc111.CR6`.
+
+### `Call never reached at run time.`
+
+An unreachable `Call S(...)` or bare `S(...)` Sub invocation is named `Call` in `%s never reached
+at run time.`, not `Expr` (oracle, all four loggers, 2026-10-08, fixture `r5_call_never_reached`);
+an inline `If ... Then Call S(1)` still gives no warning. Reproducer:
+`tests/corpus/fuzz/cr6/mode_diff/e52f75391e79.CR6`.
