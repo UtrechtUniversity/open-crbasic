@@ -1154,9 +1154,8 @@ textually before it (a `DNP` call alone is not enough; a `Sub` body, an inline `
 scan and a `DNPVariable` inside the scan above it all follow the same text order). CR6/CR1000X
 treat it as an aside, printed ahead of a same-line `DNPUpdate illegally occurs before BeginProg.`, that coexists with tier-B and tier-C findings on other lines and is hidden by a
 pass-1 error (`Battery()`); CR300/CR350 print it only when no earlier error exists (an undefined
-name or a bad `PortSet` port hides or replaces it). Not implemented: a `DNPVariable` that exists
-but is malformed or event-only (`Must assign group 1 before using group 2.` plus this line; any
-`DNPVariable` counts here), and the real compiler dropping the `DNPVariable never reached at run
+name or a bad `PortSet` port hides or replaces it). A `DNPVariable` of an event group whose
+static group is not assigned earlier is covered in "DNPVariable groups" below. Not implemented: the real compiler dropping the `DNPVariable never reached at run
 time.` warning when this error fires (a `DNPVariable` after the scan). `instr_rules.check_dnp_update`.
 
 ### PortBridge array shape (all four loggers)
@@ -1530,3 +1529,24 @@ dimensioned, must be m,q` when `Dest` is (`m`, `q` from the real `A` and `B`). M
 such an operand the shape `(-1, -1)` in `_matrix_dimension_errors`. A String *destination* has its
 own `Illegal destination variable type, expecting Float.` and a number as `A` its own cascade;
 both are left unchecked. Reproducers: cr350 `false_accept/90559e8e4db1`, `c65123ff7474`.
+
+### DNPVariable groups (all four loggers; fixtures `dnp_variable_a`, `dnp_variable_b`)
+
+`DNPVariable (Source, Swath, Group, ...)` with a constant `Group` (2026-10-08, identical on all
+four compilers), checked in `check_dnp_update`:
+
+- An event or frozen group needs its static group assigned by an *earlier* `DNPVariable` (any
+  source): `2` needs `1`, `22` needs `20`, `31` and `32` need `30`. Otherwise
+  `Must assign group <static> before using group <group>.` (each offending statement; the group is
+  then not counted as assigned). Every later `DNPUpdate` also gets `DNP3Statics and/or DNP3Events are
+  not defined`, unless the missing static group is assigned somewhere later in the program (32 then
+  30: only the first line).
+- Source type: groups `30` and `32` fail for a String or Boolean variable
+  (`For DNP3 group <g> variable must be of type Long.`; Float and Long compile, and a failed `30` still
+  counts as assigned, so `32` then fails the same way); groups `1` and `2` fail for a Float, Long
+  or String variable (`For DNP3 group <g> variable must be of type Boolean.`). A statement already
+  failing the "must assign" rule gets no type line.
+- Not modelled: `Illegal DNP3 group 42.` (other groups unprobed), the `Scan never reached at run
+  time.` warning on CR300/CR350 beside a failing `DNPVariable` (seen once), `DNPVariable` in
+  `Sub`s or with a non-constant group. Reproducers: cr6 `false_accept/d94ad3ccba51`, cr300
+  `false_accept/48e3374d062a`.

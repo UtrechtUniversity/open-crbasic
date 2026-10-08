@@ -1387,18 +1387,60 @@ def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> Non
                 diags.error(stmt.line, f"SPIOpen must precede {name}.", stmt.file)
 
 
-def check_dnp_update(program: S.Program, profile, diags: Diagnostics) -> None:
+# Event/frozen DNP3 groups and the static group a `DNPVariable` must have assigned before them.
+_DNP_BASE_GROUP = {2: 1, 22: 20, 31: 30, 32: 30}
+
+
+def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) -> None:
     """`DNPUpdate` with no `DNPVariable` textually before it -> `DNP3Statics and/or DNP3Events are
     not defined` (no period; docs/instructions.md). A `DNPVariable` of any kind counts, so a
-    malformed one under-reports."""
+    malformed one under-reports -- except a group whose static group is not assigned yet
+    (`Must assign group 30 before using group 32.`), after which every `DNPUpdate` gets the line
+    too unless the static group is assigned later in the program. Also the `DNPVariable` type rules (docs/instructions.md "DNPVariable groups")."""
     defined = False
+    failed_bases: list[int] = []     # static groups an event group was used before
+    assigned: set[int] = set()
+    types = symbols.declared_variable_types(program)
+    every_group = {_dnp_group(st, env) for st in program.statements
+                   if isinstance(st, S.Instruction) and st.keyword.upper() == "DNPVARIABLE"}
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             if kw == "DNPVARIABLE":
                 defined = True
-            elif kw == "DNPUPDATE" and not defined:
+                group = _dnp_group(stmt, env)
+                if group is None:
+                    continue
+                base = _DNP_BASE_GROUP.get(group)
+                if base is not None and base not in assigned:
+                    diags.error(stmt.line, f"Must assign group {base} before using group {group}.",
+                                stmt.file)
+                    failed_bases.append(base)
+                    continue
+                assigned.add(group)
+                src = stmt.args[0]
+                kind = types.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+                if group in (30, 32) and kind in ("STRING", "BOOLEAN"):
+                    diags.error(stmt.line, f"For DNP3 group {group} variable must be of type Long.",
+                                stmt.file)
+                elif group in (1, 2) and kind in ("FLOAT", "LONG", "STRING"):
+                    diags.error(stmt.line, f"For DNP3 group {group} variable must be of type Boolean.",
+                                stmt.file)
+            elif kw == "DNPUPDATE" and (not defined or any(b not in every_group
+                                                              for b in failed_bases)):
                 diags.error(stmt.line, "DNP3Statics and/or DNP3Events are not defined", stmt.file)
+
+
+def _dnp_group(stmt: S.Instruction, env) -> int | None:
+    """The constant integer `Group` (third argument) of a `DNPVariable`, else None."""
+    if env is None or len(stmt.args) < 3 or stmt.args[0] is None or stmt.args[2] is None:
+        return None
+    try:
+        value = consteval.value_of(stmt.args[2], env)
+    except consteval.NotConstant:
+        return None
+    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) \
+        and value == int(value) else None
 
 
 def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env) -> None:
@@ -1718,18 +1760,6 @@ def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) 
             diags.error(stmt.line, "A string or string variable is required", stmt.file)
 
 
-_SETTINGS_FIELD_KEYWORDS = {"SETSETTING": "Settings", "SETSTATUS": "Status or Settings"}
-
-
-def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) -> str | None:
-    """The text of a `SetSetting`/`SetStatus` name argument the compiler treats as constant: a
-    string literal, a String `Const`, or `+` of those. A call such as `CHR(9)` is not constant
-    there (oracle), so `consteval`'s own folding is not used. `None` for anything else."""
-    if arg is None or depth > 16:
-        return None
-    if isinstance(arg, S.String):
-        return arg.value
-    if isinstance(arg, S.Name):
 def _numeric_expression(expr: S.Expr | None, types: dict) -> bool:
     """A negated number or an arithmetic `+ - * / ^` of numbers and declared non-String variables
     (oracle 2026-10-08, CR300/CR350: `1+2`, `F+1` and `-1` are `A string or string variable is
@@ -1747,6 +1777,18 @@ def _numeric_expression(expr: S.Expr | None, types: dict) -> bool:
     return False
 
 
+_SETTINGS_FIELD_KEYWORDS = {"SETSETTING": "Settings", "SETSTATUS": "Status or Settings"}
+
+
+def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) -> str | None:
+    """The text of a `SetSetting`/`SetStatus` name argument the compiler treats as constant: a
+    string literal, a String `Const`, or `+` of those. A call such as `CHR(9)` is not constant
+    there (oracle), so `consteval`'s own folding is not used. `None` for anything else."""
+    if arg is None or depth > 16:
+        return None
+    if isinstance(arg, S.String):
+        return arg.value
+    if isinstance(arg, S.Name):
         value = env.consts.get(arg.name.upper())
         return value if isinstance(value, str) else None
     if isinstance(arg, S.Binary) and arg.op == "+":

@@ -334,7 +334,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
             _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
             _run_pass(instr_rules.check_pulsecount_channels, flat, profile, bounds)
-            _run_pass(instr_rules.check_dnp_update, flat, profile, leading)
+            _run_pass(instr_rules.check_dnp_update, flat, profile, leading, env)
             _run_pass(instr_rules.check_portbridge_array, flat, profile, bounds, env)
             _run_pass(instr_rules.check_cdm_address_types, flat, profile, bounds, env)
             _run_pass(instr_rules.check_avw200_scan_time, flat, profile, bounds, env)
@@ -412,7 +412,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
         if profile.single_pass:
-            _run_pass(instr_rules.check_dnp_update, _with_inline(program), profile, diags)
+            _run_pass(instr_rules.check_dnp_update, _with_inline(program), profile, diags, env)
             _run_pass(instr_rules.check_portbridge_array, _with_inline(program), profile, diags, env)
     if (not diags.errors or (profile.single_pass and all(
             d.message.startswith("Could not find ") for d in diags.errors))) and \
