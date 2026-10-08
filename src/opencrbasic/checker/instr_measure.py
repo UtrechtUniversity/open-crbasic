@@ -390,7 +390,10 @@ def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
         if (decl.type or "FLOAT").upper() != "STRING":
             bad = (decl.type or "FLOAT").upper() in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE")
         else:
-            size = _int_value(decl.string_size, env) if decl.string_size is not None else 24
+            size_expr = decl.string_size
+            if isinstance(size_expr, S.Binary) and size_expr.op == "=":
+                size_expr = size_expr.left  # `As String * 16 = {...}` parses the initializer in
+            size = _int_value(size_expr, env) if size_expr is not None else 24
             bad = size is not None and size < 96
     else:
         return

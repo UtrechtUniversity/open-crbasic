@@ -1506,7 +1506,8 @@ String variable of at least 96 characters (declared `As String * n`, `n` from 96
 String` is 24), else `Optional parameter must be an array of type string of length >= 100`
 (observed on both compilers 2026-10-08: `* 16`, `* 95`, a bare String, a Float, `F()` and the
 literal `"abc"` fail; `* 96`, `* 97`, `* 99`, `* 100`, `* 200` and `N100(2)` pass). It precedes
-the `GPS pps synchronization` line. A `StructureType` first argument keeps its own
+the `GPS pps synchronization` line. A declaration with an initializer (`As String * 16 = {...}`) counts the same (the parser keeps the
+`= {...}` inside `string_size`, which the check strips). A `StructureType` first argument keeps its own
 `Size of NMEASentences ...` check. Reproducer: cr1000x `false_accept/cb78fdc14db5`.
 
 ### `MQTTPublish` numeric payload expressions (CR300/CR350; fixture `mqtt_payload_expr`)
