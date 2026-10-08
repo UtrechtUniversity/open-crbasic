@@ -1348,3 +1348,14 @@ Next SubScan.` at the `NextScan` line, all four loggers (oracle, 2026-10-08, fix
 also reports `No Measurements in SubScan.` and a nested `SubScan` reports `Cannot Nest
 SubScans.`; neither is modelled, so only the measurement-bearing, unnested shape is exact there.
 Reproducer: `tests/corpus/fuzz/cr6/false_accept/b55ff67f8335.CR6`.
+
+### `Maximum() or Minimum() must precede SampleMaxMin().`
+
+Per `DataTable`, a `SampleMaxMin` with no earlier `Maximum` or `Minimum` in the same table
+reports this at its own line, all four loggers (oracle, 2026-10-08, fixture
+`r5_samplemaxmin_order`). Any earlier `Maximum`/`Minimum` suffices, whatever its variable; an
+`Average` or `WindVector` before it does not, and a `Maximum` after it does not. Pass 2 in
+`check_table_and_menu_placement`. Not matched: with an undefined name on the same
+`SampleMaxMin` line the real order is this message first (we put the symbol error first on
+CR6/CR1000X), and CR300/CR350 also print the undefined-name error that we gate out.
+Reproducer: `tests/corpus/fuzz/cr6/false_accept/cb214e9bc111.CR6`.

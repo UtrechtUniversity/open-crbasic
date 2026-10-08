@@ -428,6 +428,7 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
     "Display menus"). Returns the `(file, line)` pass 2 stops at (`EndSubMenu without SubMenu.`), if any."""
     in_table = False
     intervals = 0
+    has_maxmin = False
     menus = submenus = 0
     open_list = False      # the builder's insertion point; an empty `SubMenu` clears it
     levels: list[list[str]] = []
@@ -458,9 +459,14 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             continue
         kw = st.keyword.upper()
         if kw == "DATATABLE":
-            in_table, intervals = True, 0
+            in_table, intervals, has_maxmin = True, 0, False
         elif kw == "ENDTABLE":
             in_table = False
+        elif in_table and kw in ("MAXIMUM", "MINIMUM"):
+            has_maxmin = True
+        elif in_table and kw == "SAMPLEMAXMIN" and not has_maxmin:
+            # oracle, all four loggers, 2026-10-08 (docs/fuzz-findings.md "Round 5")
+            diags.error(st.line, "Maximum() or Minimum() must precede SampleMaxMin().", st.file)
         elif kw == "DATAINTERVAL" and in_table:
             intervals += 1
             if intervals == 2:
