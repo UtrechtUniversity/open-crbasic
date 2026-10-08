@@ -7,7 +7,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-NAMES = ["alias_flat_dup"]
+NAMES = ["alias_flat_dup", "routers_dest_index", "argos_error_dest"]
 CASES = [c for n in NAMES
          for c in json.loads((Path(__file__).parent / "fixtures" / f"{n}.json").read_text(encoding="utf-8"))["cases"]]
 

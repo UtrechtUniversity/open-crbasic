@@ -1,0 +1,85 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-argos_error_dest-0",
+   "logger": "cr6",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Errors)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr6-argos_error_dest-1",
+   "logger": "cr6",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Es)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-argos_error_dest-2",
+   "logger": "cr6",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Ea(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-argos_error_dest-3",
+   "logger": "cr6",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Ea)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-argos_error_dest-4",
+   "logger": "cr6",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Errors(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-argos_error_dest-0",
+   "logger": "cr1000x",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Errors)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  },
+  {
+   "id": "cr1000x-argos_error_dest-1",
+   "logger": "cr1000x",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Es)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-argos_error_dest-2",
+   "logger": "cr1000x",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Ea(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-argos_error_dest-3",
+   "logger": "cr1000x",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Ea)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-argos_error_dest-4",
+   "logger": "cr1000x",
+   "source": "Public Errors, Es As String * 20, Ea(3) As String * 20\nBeginProg\n  Scan (10,Sec,3,0)\n    ArgosError (Errors(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string variable destination is required"
+  }
+ ]
+}

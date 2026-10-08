@@ -1404,3 +1404,19 @@ and two out-of-range spellings of the same flat offset (`grid(1,10)`, `grid(4,1)
 offset below 1 is not matched (`grid(1,-5)` then `grid(0,1)`: no `Duplicate Alias`), so such
 indices keep the written tuple as key. Tuples longer than the declared dimensions keep the written
 tuple (not probed). Reproducers: cr6 `false_accept/c1a8075740f0`, `cd96d8abd0cc`, `df0fc0a86bcc`.
+
+### `RoutersNeighbors` destination and `ArgosError` type (fixtures `routers_dest_index`, `argos_error_dest`)
+
+`RoutersNeighbors` takes the whole Long array (all four loggers, 2026-10-08). Once the destination
+is a `Long`, a subscript that is a variable (`L(I)`), a binary expression (`L(1+0)`,
+`DestArray((1+2))`) or a literal of 2 or more (`L(2)`, `(1,2)`, `(2,1)`, `M(1,1,2)`) gives
+`Destination variable cannot be indexed`; `L`, `L()`, `L(1)`, `L(1.5)`, `L(-1)` and `(1,1)` compile.
+A non-Long destination still gives only `Destination variable must be type LONG`. Not modelled:
+`L(0)` (the real compiler also prints `Variable L out of bounds.` first), `Const` names as
+subscripts, parenthesised literals (the parser drops the parentheses). `RealTime(V(3))` and the
+other code-29 destinations give an out-of-bounds line instead, so the rule is `RoutersNeighbors`
+only (`var_types.py`). Reproducer: cr350 `false_accept/1465963db41a`.
+
+`ArgosError (Dest)` with a numeric variable (`Errors`, `Errors(1)`) gives `A string variable
+destination is required` on CR6/CR1000X; a String variable or String array element compiles.
+Reproducers: cr6 `false_accept/6aba4c3dfeb4`, `e4ee6f95bb9c`.

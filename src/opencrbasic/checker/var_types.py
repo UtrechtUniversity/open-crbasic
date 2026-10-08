@@ -151,6 +151,21 @@ def _same_type(dest: str, source: str) -> bool:
     return dest == source or (dest == "STRING" and source == "FLOAT")
 
 
+def _indexed_past_first(typer: "_Typer", dest: S.Expr) -> bool:
+    """`RoutersNeighbors` takes the whole array: a subscript that is a variable, a binary
+    expression or a literal of 2 or more is `Destination variable cannot be indexed` (oracle,
+    2026-10-08: `L(1)`, `L(1.5)`, `L(-1)` and `(1,1)` compile, `L(0)` adds an out-of-bounds line
+    and is not modelled). A subscript that is a `Const` name, or a parenthesised literal, is not
+    probed (the parser drops the parentheses, so `(1)` reads as `1`)."""
+    if not isinstance(dest, S.Index):
+        return False
+    for a in dest.args:
+        if isinstance(a, S.Binary) or (isinstance(a, S.Name) and typer.variable(a) is not None) \
+                or (isinstance(a, S.Number) and a.value >= 2):
+            return True
+    return False
+
+
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
     dims = None
@@ -175,6 +190,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if typer.variable(args[0]) is not None or isinstance(args[0], S.String):
                 if kind != "LONG":
                     message = "Destination variable must be type LONG"
+                elif _indexed_past_first(typer, args[0]):
+                    message = "Destination variable cannot be indexed"
+        elif kw == "ARGOSERROR" and args:
+            if typer.variable(args[0]) is not None and typer.of(args[0]) not in (None, "STRING"):
+                message = "A string variable destination is required"
         elif kw == "SORTSPAINDEXED" and len(args) > 2:
             dest, source = typer.of(args[0]), typer.of(args[2])
             if typer.variable(args[0]) is not None and dest and source and \

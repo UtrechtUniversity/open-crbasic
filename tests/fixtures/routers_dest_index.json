@@ -1,0 +1,779 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-routers_dest_index-0",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-1",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-2",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-3",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1.5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-4",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-5",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1+0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-6",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-7",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-8",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-9",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-10",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (R(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-11",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-12",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-13",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-14",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-15",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-16",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-17",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-18",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-19",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-routers_dest_index-20",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-21",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-22",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-23",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-24",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((3)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-25",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,(1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr6-routers_dest_index-26",
+   "logger": "cr6",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (V(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-0",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-1",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-2",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-3",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1.5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-4",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-5",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1+0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-6",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-7",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-8",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-9",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-10",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (R(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-11",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-12",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-13",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-14",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-15",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-16",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-17",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-18",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-19",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-routers_dest_index-20",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-21",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-22",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-23",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-24",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((3)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-25",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,(1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr1000x-routers_dest_index-26",
+   "logger": "cr1000x",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (V(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr300-routers_dest_index-0",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-1",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-2",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-3",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1.5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-4",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-5",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1+0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-6",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-7",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-8",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-9",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: Q(1)."
+  },
+  {
+   "id": "cr300-routers_dest_index-10",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (R(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-11",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-12",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-13",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-14",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-15",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-16",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: DestArray(1,1,1)."
+  },
+  {
+   "id": "cr300-routers_dest_index-17",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-18",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-19",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-routers_dest_index-20",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-21",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-22",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-23",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-24",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((3)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-25",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,(1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr300-routers_dest_index-26",
+   "logger": "cr300",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (V(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr350-routers_dest_index-0",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-1",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-2",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-3",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1.5))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-4",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-5",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L(1+0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-6",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-7",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (L())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-8",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-9",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (Q(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: Q(1)."
+  },
+  {
+   "id": "cr350-routers_dest_index-10",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (R(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-11",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-12",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-13",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-14",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-15",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-16",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared: DestArray(1,1,1)."
+  },
+  {
+   "id": "cr350-routers_dest_index-17",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-18",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1,2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-19",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (M(1,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-routers_dest_index-20",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I,1))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-21",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-22",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-23",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-24",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray((3)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-25",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (DestArray(1,(1+2)))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable cannot be indexed"
+  },
+  {
+   "id": "cr350-routers_dest_index-26",
+   "logger": "cr350",
+   "source": "Public V(5), DestArray(3,5) As Long, L(20) As Long, M(3,5,2) As Long, Q As Long, R(1) As Long, I As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    RoutersNeighbors (V(2))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  }
+ ]
+}
