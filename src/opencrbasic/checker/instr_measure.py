@@ -450,6 +450,17 @@ _OPENERS = frozenset({"SELECT", "WHILE"})
 _CLOSERS = frozenset({"ENDIF", "ENDSELECT", "NEXTSUBSCAN", "WEND"})
 
 
+def is_sequential(program: S.Program, profile: Profile, env: consteval.Env) -> bool:
+    """`mode.decide` == "Sequential"; a failure is left for the compile's own `mode.decide` call
+    to record (here it reads as Pipeline)."""
+    from .. import mode
+    try:
+        return mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
+                           lambda e: consteval.value_of(e, env)) == "Sequential"
+    except Exception:
+        return False
+
+
 def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnostics,
                             env: consteval.Env, zero: bool = False) -> None:
     """CR6/CR1000X: measurement delays (`Delay(0,...)`) in the main `Scan` that add up to its
@@ -465,6 +476,9 @@ def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnos
     if profile.name not in ("cr6", "cr1000x"):
         return
     from .instr_rules import _US_PER_UNIT
+    # SequentialMode never reports it (oracle, CR6/CR1000X, 2026-10-08; docs/fuzz-findings.md).
+    if is_sequential(program, profile, env):
+        return
     for _scan, end, (value, unit), total in scan_delay_totals(program, env, include_zero=zero):
         interval = value * _US_PER_UNIT[unit]
         if (interval == 0) == zero and total > 0 and total >= interval:

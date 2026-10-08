@@ -1327,3 +1327,15 @@ float-valued throughout, so only a literal's own spelling (or a fractional resul
 constant as float: an integer-valued expression that contains a decimal literal
 (`2147483520.0+15`; the real compiler says 128, we say 143) keeps the exact-integer reading.
 Reproducer: `tests/corpus/fuzz/cr6/false_reject/ab0c3e6336e7.CR6`.
+
+### SequentialMode: no scan-budget error, no busy-scan calibration warning
+
+`Scan interval too short for measurement by %d %s.` (`check_scan_delay_budget`) is reported only
+in PipelineMode; with SequentialMode (an explicit `SequentialMode`, or any trigger of
+`mode.decide`, such as a task instruction after `NextScan`) the real compiler accepts
+`Scan(1,Sec,0,0)` + `Delay(0,1,Sec)` silently. The "measurement delays leave under 3 mSec"
+branch of the background-calibration warning is likewise absent in SequentialMode (oracle, CR6
+and CR1000X for the budget, CR6 for the warning, 2026-10-08, fixture `r5_seq_scan_budget`). The
+interval-threshold branch of that warning is not changed. The mode is decided by
+`instr_measure.is_sequential`, which leaves a `mode.decide` failure to the compile's own call.
+Reproducer: `tests/corpus/fuzz/cr6/false_reject/2a20e3cd2f86.CR6`.
