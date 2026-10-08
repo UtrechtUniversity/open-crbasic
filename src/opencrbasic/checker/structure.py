@@ -774,7 +774,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                       if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC")
                       for v in st.vars}
 
-    for stmt in program.statements:
+    for pos, stmt in enumerate(program.statements):
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
 
@@ -900,9 +900,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     if stage == 1:
                         diags.error(stmt.line, _pass1_message(profile, S.Unparsed(
                             stmt.line, stmt.file, text=arg_text), kind), stmt.file, show_file=False)
-                verdict = (None if findings else _pass1_scan(stmt.text, operands, profile))
+                # a name declared further down is not yet known here: that statement is pass 2
+                # (oracle, CR6/CR1000X, 2026-10-08: `If TCTemp is <26` above `Public TCTemp`)
+                earlier = pass1_operands(dataclasses.replace(program, statements=program.statements[:pos]),
+                                         profile)
+                verdict = (None if findings else _pass1_scan(stmt.text, earlier, profile))
+                later = symbols.declared_variable_names(program) - symbols.declared_variable_names(
+                    dataclasses.replace(program, statements=program.statements[:pos]))
                 if verdict is None and stmt.reason == _UNCLOSED_PAREN_EXPR and \
-                        _unclosed_paren_kind(stmt.text, known) == "pass1":
+                        _unclosed_paren_kind(stmt.text, known - later) == "pass1":
                     verdict = ("pass1", "no_matching")
                 if verdict and verdict[0] == "pass1":
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
@@ -1354,6 +1360,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 if verdict == ("pass2", "symbol"):
                     diags.error(stmt.line, _pass1_message(profile, stmt, "symbol"), stmt.file,
                                 show_file=False)
+                elif verdict and verdict[0] == "pass1" and (verdict[1] != "fallback"
+                                                          or condition_part(stmt.text) is not None):
+                    diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
+                                show_file=False)
                 else:
                     diags.error(stmt.line, _leftover_message(profile, stmt), stmt.file,
                                 show_file=False)
@@ -1388,6 +1398,12 @@ _CLOSER_MESSAGES = {
     "FOR": ("FOR NEXT statement illegally has SCAN without NEXT SCAN.", "NEXT without FOR."),
     "DO": ("LOOP statement illegally has SCAN without NEXT SCAN.", "LOOP without DO."),
 }
+
+
+def _unparsed_opener(text: str) -> str | None:
+    if re.match(r"\s*IF\b.*\bTHEN\s*$", text, re.I | re.S):
+        return "IF"
+    return "DO" if re.match(r"\s*DO\s+(?:WHILE|UNTIL)\b", text, re.I) else None
 
 
 def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -1433,6 +1449,11 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
         elif kw in ("FOR", "DO"):
             push(kw)
             open_count[kw] += 1
+        elif isinstance(stmt, S.Unparsed) and (opener := _unparsed_opener(stmt.text)):
+            # an `If`/`Do` whose condition fails to parse still opens its block (oracle,
+            # CR6/CR1000X, 2026-10-08: `If Nope X Then` ... `EndIf` reports only the symbol)
+            push(opener)
+            open_count[opener] += 1
         elif kw in ("SCAN", "SUBSCAN"):
             push("SCAN")
             subscans += kw == "SUBSCAN"
@@ -1606,8 +1627,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             ctoks = [t for t in lexer.tokenize(cond, 0) if t.kind != "EOF"]
         except lexer.LexError:
             return None
-        return (_scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False)
-                if ctoks else None)
+        return (_scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
+                           cond=True) if ctoks else None)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
@@ -1726,7 +1747,8 @@ def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tu
 
 
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
-               start_operand: bool, unclosed: str | None = None) -> tuple[str, str] | None:
+               start_operand: bool, unclosed: str | None = None,
+               cond: bool = False) -> tuple[str, str] | None:
     unknown = ("pass2", "symbol" if assign else "fallback")
     unclosed = unclosed or ("no_matching" if assign else "fallback")
     parens: list[str] = []          # "call" or "group"
@@ -1766,6 +1788,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 pass
             elif t.kind == "OP" and t.text in _BINARY_OPS:
                 return ("pass1", "fallback")
+            elif cond and t.kind == "OP" and t.text == ",":
+                return ("pass1", "fallback")
             else:
                 return None
         else:
@@ -1775,6 +1799,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 parens.pop()
             elif t.kind == "OP" and t.text == ",":
                 if not parens:
+                    if cond:
+                        return ("pass1", "incomplete")
                     return None if assign else ("pass1", "fallback")
                 if parens[-1] != "call":
                     return ("pass1", "no_matching" if assign else "fallback")

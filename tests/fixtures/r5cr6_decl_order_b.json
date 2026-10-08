@@ -1,0 +1,102 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_decl_order_b-0",
+   "logger": "cr6",
+   "source": "If X Y Then\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-1",
+   "logger": "cr6",
+   "source": "If X is <26, Y Then\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-2",
+   "logger": "cr6",
+   "source": "X = Y +\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-3",
+   "logger": "cr6",
+   "source": "X Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-4",
+   "logger": "cr6",
+   "source": "X = Y Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-5",
+   "logger": "cr6",
+   "source": "While X Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-6",
+   "logger": "cr6",
+   "source": "Do While X Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-7",
+   "logger": "cr6",
+   "source": "Select Case X Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-8",
+   "logger": "cr6",
+   "source": "X Y +\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-9",
+   "logger": "cr6",
+   "source": "X +\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-10",
+   "logger": "cr6",
+   "source": "X = (Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-11",
+   "logger": "cr6",
+   "source": "If TCTemp is <26, the string\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_b-12",
+   "logger": "cr6",
+   "source": "While X Y\nPublic X, Y\nDim Q As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Banana not supported"
+  }
+ ]
+}

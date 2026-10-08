@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_decl_order_a-0",
+   "logger": "cr6",
+   "source": "If X Y Then\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y .\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-1",
+   "logger": "cr6",
+   "source": "If X is <26, Y Then\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X is <26, Y .\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-2",
+   "logger": "cr6",
+   "source": "X = Y +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = Y +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-3",
+   "logger": "cr6",
+   "source": "X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-4",
+   "logger": "cr6",
+   "source": "X = Y Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X = Y Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-5",
+   "logger": "cr6",
+   "source": "While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-6",
+   "logger": "cr6",
+   "source": "Do While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-7",
+   "logger": "cr6",
+   "source": "Select Case X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression:  X Y.\nline 1: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-8",
+   "logger": "cr6",
+   "source": "X Y +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X Y +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-9",
+   "logger": "cr6",
+   "source": "X +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-10",
+   "logger": "cr6",
+   "source": "X = (Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: X = (Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-11",
+   "logger": "cr6",
+   "source": "If TCTemp is <26, the string\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: TCTemp is <26, the string.\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_decl_order_a-12",
+   "logger": "cr6",
+   "source": "While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-0",
+   "logger": "cr1000x",
+   "source": "If X Y Then\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y .\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-1",
+   "logger": "cr1000x",
+   "source": "If X is <26, Y Then\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X is <26, Y .\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-2",
+   "logger": "cr1000x",
+   "source": "X = Y +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X = Y +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-3",
+   "logger": "cr1000x",
+   "source": "X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-4",
+   "logger": "cr1000x",
+   "source": "X = Y Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X = Y Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-5",
+   "logger": "cr1000x",
+   "source": "While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-6",
+   "logger": "cr1000x",
+   "source": "Do While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-7",
+   "logger": "cr1000x",
+   "source": "Select Case X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression:  X Y.\nline 1: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-8",
+   "logger": "cr1000x",
+   "source": "X Y +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X Y +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-9",
+   "logger": "cr1000x",
+   "source": "X +\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: X +.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-10",
+   "logger": "cr1000x",
+   "source": "X = (Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No Matching, or out of place ) in expression: X = (Y.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-11",
+   "logger": "cr1000x",
+   "source": "If TCTemp is <26, the string\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: TCTemp is <26, the string.\nline 1: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_decl_order_a-12",
+   "logger": "cr1000x",
+   "source": "While X Y\nPublic X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: X Y.\nline 1: WHILE illegally occurs before BeginProg."
+  }
+ ]
+}

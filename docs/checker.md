@@ -3860,3 +3860,11 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   modelled. `parser._include_extensions`.
 - **FileManage / RunProgram file names**: see `docs/instructions.md` "FileManage drive and DNP ComPort
   constants" (extension rule, `RunProgram` drive, first bad name only).
+- **Pass-1 scan knows only earlier declarations** (`r5cr6_decl_order_*`, `r5cr6_cond_comma`): the
+  CR6/CR1000X pass-1 statement scan resolves a name only if its `Public`/`Dim`/parameter declaration
+  comes before the statement. A statement whose first name is declared further down is a pass-2 finding
+  (hidden by any pass-1 error; with none, its message is the same pass-1-style text plus the
+  `Expr illegally occurs before BeginProg.` follow-up when it precedes `BeginProg`). Corpus: prose such
+  as `If TCTemp is <26, ...` above `Public TCTemp`. In a condition a top-level comma after an operand is
+  `Incomplete expression`, and one where an operand is expected is the generic fallback. An `If ... Then`
+  or `Do While|Until` whose condition does not parse still opens its block for the closer checks.
