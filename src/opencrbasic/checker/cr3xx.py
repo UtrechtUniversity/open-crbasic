@@ -98,8 +98,8 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         name = stmt.name.upper()
         if name not in _SERIAL_FUNCTIONS_WITH_COMPORT_ARG:
             continue
-        if name == _SERIALOPEN and not cr3 and not stmt.args:
-            diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)  # bare `SerialOpen[()]`
+        if name == _SERIALOPEN and not stmt.explicit and not stmt.args:
+            diags.error(stmt.line, "ComPort 0 illegal.", stmt.file)  # bare `SerialOpen[()]`, all four loggers (oracle, 2026-10-08)
         if _COMPORT_ARG_POSITION >= len(stmt.args) or stmt.args[_COMPORT_ARG_POSITION] is None:
             continue
         arg = stmt.args[_COMPORT_ARG_POSITION]
@@ -949,6 +949,24 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
         i += 1
     if changed:
         diags.items[:] = new_items
+
+
+def order_email_destination(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `A string variable destination is required` (`instr_rules.
+    check_emailrecv_destination`, a pass-1 style check) follows the statement's own `X is not
+    defined.` lines (oracle, 2026-10-08)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    items = diags.items
+    for i, d in enumerate(items):
+        if d.message != instr_rules._SERIALIN_DEST_MESSAGE:
+            continue
+        j = i + 1
+        while j < len(items) and (items[j].line, items[j].file) == (d.line, d.file) \
+                and items[j].message.endswith(_UNRESOLVED_SUFFIX):
+            j += 1
+        if j > i + 1:
+            items[i:j] = items[i + 1:j] + [d]
 
 
 def _echo_key(text: str) -> str:

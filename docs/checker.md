@@ -3931,3 +3931,13 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   reports no `bar`, we do); `X = 1 2`-style assignments with junk on CR300/CR350 print
   `Incomplete expression: <statement>` (`No Matching ...` inside parentheses), we print the generic
   `Invalid, or out of place expression`, because CR300/CR350 do not run `structure._pass1_scan`.
+
+- **Bare `SerialOpen` and `EmailSend`/`EmailRecv` on CR300/CR350** (fixtures
+  `cr3xx_bare_serial_email.json`, `cr3xx_email_names.json`): bare `SerialOpen`, `SerialOpen()`,
+  `SerialOpen(`, `SerialOpen ()` print `ComPort 0 illegal.` first on all four loggers (it was
+  CR6/CR1000X only; an explicit `Call SerialOpen` does not: `Sub SerialOpen not defined.`, not
+  modelled). `A string variable destination is required` (`instr_rules.check_emailrecv_destination`)
+  now runs on CR300/CR350 too, with the same argument rule plus: an undefined name in the
+  destination slots counts as bad there and the statement's `X is not defined.` lines come first
+  (`cr3xx.order_email_destination`). Not modelled: more than nine arguments (`Expression expects ,`,
+  also wrong on CR6), an undefined assignment target (`Nope = EmailSend`).

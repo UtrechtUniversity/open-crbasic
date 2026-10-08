@@ -1240,11 +1240,17 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
     exist and every argument from 9 on must be a String variable/element, else `A string variable destination is required` ahead of any arity message
     (docs/instructions.md#emailrecv-destination). Only literals, constants and non-String
     variables count as bad; expressions are left unchecked."""
-    if profile.name not in ("cr6", "cr1000x") or "EMAILRECV" not in profile.functions:
+    if "EMAILRECV" not in profile.functions:
         return
     types = _serialin_types(program, profile)
     from .expressions import _index_nodes, _known_names, _undefined_names
     known = _known_names(program, profile)
+
+    def bad(a):
+        # CR300/CR350 name the undefined variable first and still report the destination
+        # (oracle, 2026-10-08)
+        return _serialin_bad_destination(a, types) or (
+            profile.single_pass and isinstance(a, (S.Name, S.Index)) and a.name.upper() not in known)
     for stmt in program.statements:
         if isinstance(stmt, S.Assignment) and _undefined_names(stmt.target, known):
             continue  # an unresolved target is the generic `Invalid, or out of place expression`
@@ -1264,12 +1270,14 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
             continue
         tail = args[8:]
         if None in tail or (tail and not any(
-                not isinstance(a, (S.Binary, S.Unary)) and _serialin_bad_destination(a, types)
-                for a in tail)):
+                not isinstance(a, (S.Binary, S.Unary)) and bad(a) for a in tail)):
             continue
         key = (stmt.line, stmt.file)
         at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key),
                   len(diags.items))
+        while profile.single_pass and at < len(diags.items) and (diags.items[at].line, diags.items[at].file) == key \
+                and diags.items[at].message.endswith(" is not defined."):
+            at += 1
         new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
         if 6 <= len(args) < 9 and isinstance(stmt, S.Assignment):
             # The table `nargs` (6) leaves 6..8 arguments to this pass; fewer reach the arity check.
