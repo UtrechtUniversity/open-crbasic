@@ -4021,3 +4021,9 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   on `:`-joined lines by attributing a diagnostic to the statement whose text contains its echoed
   argument. Not modelled: when the too-many statement comes first the real output lists it first
   (statement order); ours lists per pass. Fixture `stmt_scope_suppress.json`.
+- CR300/CR350: the `Public.<name>` exemption of the unmatched-closer drop (`_hides_nothing`) reads
+  the statement text outside string literals: `X=Round("Public.x",1,2)` then a stray `EndIf`
+  reports only the arity error (oracle, 2026-10-08). Fixture `closer_public_lexical.json`. Known
+  gap, observed: the real rule is positional, not "before the first `)`" --
+  `Round(X,"b",Public.X,1,2)` and `Round(X,"(",Public.X)` (`Public.` in the third argument)
+  also hide the closer, while `Public.` within the first two arguments does not.

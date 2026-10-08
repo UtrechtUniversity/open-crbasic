@@ -1253,7 +1253,7 @@ def _hides_nothing(d) -> bool:
     # its first `)` on the line (oracle, 2026-10-04: `Round(Public.x,1,2)`, `Round(x,Public.T,2,3)`
     # hide nothing; `Round(x)+Public.T`, `FormatLong(x)`, `Floor(x,1)` hide the closers)
     if d.message.startswith(("No Matching, or out of place ) in expression", "Expression expects")):
-        text = d.message.split(":", 1)[-1].lower()
+        text = re.sub(r'"[^"]*"', lambda m: " " * len(m.group(0)), d.message.split(":", 1)[-1].lower())
         at = text.find("public.")
         return 0 <= at < (text.find(")") if ")" in text else len(text))
     return False
