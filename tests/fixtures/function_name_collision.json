@@ -51,31 +51,6 @@
       "reason": "Unrelated predefined-constant collision (`Float is a predefined CONST.`), outside the built-in function-name rule."
     }
   ],
-  "pending_observations": [
-    {
-      "id": "cr300-local-shadow-local_used",
-      "logger": "cr300",
-      "batch": "local-shadow",
-      "name": "local_used",
-      "program_filename": "t.CR6",
-      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
-      "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec.",
-      "reason": "Local bare-function resolution is not yet implemented."
-    },
-    {
-      "id": "cr350-local-shadow-local_used",
-      "logger": "cr350",
-      "batch": "local-shadow",
-      "name": "local_used",
-      "program_filename": "t.CR6",
-      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
-      "expected_exit": 1,
-      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec.",
-      "reason": "Local bare-function resolution is not yet implemented."
-    }
-  ]
-  ,
   "cases": [
     {
       "id": "cr6-name-public_exp",
@@ -856,6 +831,26 @@
       "source": "Public X, Y, Exp\nBeginProg\nEndProg\n",
       "expected_exit": 1,
       "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Exp already defined as an internal function."
+    },
+    {
+      "id": "cr300-local-shadow-local_used",
+      "logger": "cr300",
+      "batch": "local-shadow",
+      "name": "local_used",
+      "program_filename": "t.CR6",
+      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-local-shadow-local_used",
+      "logger": "cr350",
+      "batch": "local-shadow",
+      "name": "local_used",
+      "program_filename": "t.CR6",
+      "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nScan(1,Sec,3,1)\nCall Test\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n.\nline 8: Too many parameters:  Sec."
     }
   ]
 }

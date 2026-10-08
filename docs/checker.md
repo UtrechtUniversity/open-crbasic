@@ -3985,10 +3985,23 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   Not modelled: `Public Flag As Banana, R` should leave `R` unregistered.
 
 - **Function-named assignment targets and CR300/CR350 local shadows** (probed 2026-10-08 on all four
-  loggers, fixture NOT yet committed): `Sin = 1`/`Timer = X` -> `Expression expects ( : <stmt>`;
+  loggers, `tests/fixtures/function_assign_target.json`): `Sin = 1`/`Timer = X` -> `Expression expects ( : <stmt>`;
   `Rnd = 2`, `Sin(X) = 3`, `Round(1,2) = 3` -> `Invalid assignment in expression: <stmt>`;
   `Sin(1,2) = 3` -> `No Matching ...`; `Round(1) = 2` -> `Expression expects ,`; `Sin() = 3` ->
   generic (`expressions._function_target_message`). On CR300/CR350 a local `Dim exp`/parameter named
   like a built-in function does not shadow it: bare uses print `Expression expects (`, `exp(1) = 2`
   prints `Invalid assignment in expression`, and these start the `Too many parameters` cascade.
+  A scalar local indexed as the target (`Dim exp` then `exp(1) = 2`) gets only the `Invalid assignment`
+  line (no over-indexed fallback after it). Not modelled: an instruction name used as a call in an
+  expression (`X = Battery(X)`, `X = Delay(1)`, `X = PulseCount(1)`): the real compilers print
+  `Invalid symbol in expression: <stmt>.` (CR6/CR1000X) or `<name> is not defined.` plus
+  `Dimensions not declared: <stmt>` (CR300/CR350), but `X = SerialOut(1)` is `Expression expects ,`
+  and ours accepts these silently (instruction names sit in `_known_names`); family left open.
   Unfinished: bare function in `If`/`Do` conditions (`If Timer > 1`), CR6 scoping of a Sub-local.
+
+- **One dimension-count state for every CR300/CR350 consumer** (probed 2026-10-08, fixture
+  `tests/fixtures/dims_state_shared.json`): the first undefined name with more subscripts than the
+  running count stops a statement's walk (`Nope4=Nope(1)+S()` ignores `S()`), so the next statement
+  still reports `Dimensions not declared`. `expressions.program_dims` is the single entry point;
+  `structure.check_pass2`, `expressions.check`, the `For`/`Case`/`ElseIf` checks and
+  `cr3xx.check_float_destinations` all use it (CR6/CR1000X keep the declared-variable simulation).

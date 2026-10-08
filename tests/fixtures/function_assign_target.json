@@ -1,0 +1,415 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-function_assign_target-0",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nSin = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1."
+  },
+  {
+   "id": "cr6-function_assign_target-1",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nTimer = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer = X."
+  },
+  {
+   "id": "cr6-function_assign_target-2",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nRnd = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Rnd = 2."
+  },
+  {
+   "id": "cr6-function_assign_target-3",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nSin(X) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Sin(X) = 3."
+  },
+  {
+   "id": "cr6-function_assign_target-4",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nRound(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Round(1,2) = 3."
+  },
+  {
+   "id": "cr6-function_assign_target-5",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nSin(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2) = 3."
+  },
+  {
+   "id": "cr6-function_assign_target-6",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nRound(1) = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , : Round(1) = 2."
+  },
+  {
+   "id": "cr6-function_assign_target-7",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nSin() = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Sin() = 3."
+  },
+  {
+   "id": "cr6-function_assign_target-8",
+   "logger": "cr6",
+   "source": "Public X As Float\nBeginProg\nSin = 1 'c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1 ."
+  },
+  {
+   "id": "cr6-function_assign_target-9",
+   "logger": "cr6",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-function_assign_target-10",
+   "logger": "cr6",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp(1) = 2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-function_assign_target-11",
+   "logger": "cr6",
+   "source": "Public X As Float\nSub Test(exp)\nX = exp\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-function_assign_target-12",
+   "logger": "cr6",
+   "source": "Public X As Float\nSub Test(exp)\nexp = 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-function_assign_target-13",
+   "logger": "cr6",
+   "source": "Public X As Float\nSub Test(Sin As Long)\nX = Sin + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_assign_target-0",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nSin = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1."
+  },
+  {
+   "id": "cr1000x-function_assign_target-1",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nTimer = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer = X."
+  },
+  {
+   "id": "cr1000x-function_assign_target-2",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nRnd = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Rnd = 2."
+  },
+  {
+   "id": "cr1000x-function_assign_target-3",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nSin(X) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Sin(X) = 3."
+  },
+  {
+   "id": "cr1000x-function_assign_target-4",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nRound(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Round(1,2) = 3."
+  },
+  {
+   "id": "cr1000x-function_assign_target-5",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nSin(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2) = 3."
+  },
+  {
+   "id": "cr1000x-function_assign_target-6",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nRound(1) = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , : Round(1) = 2."
+  },
+  {
+   "id": "cr1000x-function_assign_target-7",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nSin() = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Sin() = 3."
+  },
+  {
+   "id": "cr1000x-function_assign_target-8",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nBeginProg\nSin = 1 'c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1 ."
+  },
+  {
+   "id": "cr1000x-function_assign_target-9",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_assign_target-10",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp(1) = 2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_assign_target-11",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nSub Test(exp)\nX = exp\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_assign_target-12",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nSub Test(exp)\nexp = 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-function_assign_target-13",
+   "logger": "cr1000x",
+   "source": "Public X As Float\nSub Test(Sin As Long)\nX = Sin + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-function_assign_target-0",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nSin = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1\n."
+  },
+  {
+   "id": "cr300-function_assign_target-1",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nTimer = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer = X\n."
+  },
+  {
+   "id": "cr300-function_assign_target-2",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nRnd = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Rnd = 2\n."
+  },
+  {
+   "id": "cr300-function_assign_target-3",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nSin(X) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Sin(X) = 3\n."
+  },
+  {
+   "id": "cr300-function_assign_target-4",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nRound(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Round(1,2) = 3\n."
+  },
+  {
+   "id": "cr300-function_assign_target-5",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nSin(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2) = 3\n."
+  },
+  {
+   "id": "cr300-function_assign_target-6",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nRound(1) = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , : Round(1) = 2\n."
+  },
+  {
+   "id": "cr300-function_assign_target-7",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nSin() = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Sin() = 3\n."
+  },
+  {
+   "id": "cr300-function_assign_target-8",
+   "logger": "cr300",
+   "source": "Public X As Float\nBeginProg\nSin = 1 'c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1 ."
+  },
+  {
+   "id": "cr300-function_assign_target-9",
+   "logger": "cr300",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n."
+  },
+  {
+   "id": "cr300-function_assign_target-10",
+   "logger": "cr300",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp(1) = 2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: exp(1) = 2\n."
+  },
+  {
+   "id": "cr300-function_assign_target-11",
+   "logger": "cr300",
+   "source": "Public X As Float\nSub Test(exp)\nX = exp\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : X = exp\n."
+  },
+  {
+   "id": "cr300-function_assign_target-12",
+   "logger": "cr300",
+   "source": "Public X As Float\nSub Test(exp)\nexp = 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : exp = 1\n."
+  },
+  {
+   "id": "cr300-function_assign_target-13",
+   "logger": "cr300",
+   "source": "Public X As Float\nSub Test(Sin As Long)\nX = Sin + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : X = Sin + 1\n."
+  },
+  {
+   "id": "cr350-function_assign_target-0",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nSin = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1\n."
+  },
+  {
+   "id": "cr350-function_assign_target-1",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nTimer = X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Timer = X\n."
+  },
+  {
+   "id": "cr350-function_assign_target-2",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nRnd = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Rnd = 2\n."
+  },
+  {
+   "id": "cr350-function_assign_target-3",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nSin(X) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Sin(X) = 3\n."
+  },
+  {
+   "id": "cr350-function_assign_target-4",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nRound(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid assignment in expression: Round(1,2) = 3\n."
+  },
+  {
+   "id": "cr350-function_assign_target-5",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nSin(1,2) = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: No Matching, or out of place ) in expression: Sin(1,2) = 3\n."
+  },
+  {
+   "id": "cr350-function_assign_target-6",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nRound(1) = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects , : Round(1) = 2\n."
+  },
+  {
+   "id": "cr350-function_assign_target-7",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nSin() = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Sin() = 3\n."
+  },
+  {
+   "id": "cr350-function_assign_target-8",
+   "logger": "cr350",
+   "source": "Public X As Float\nBeginProg\nSin = 1 'c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : Sin = 1 ."
+  },
+  {
+   "id": "cr350-function_assign_target-9",
+   "logger": "cr350",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp = 2\nX = exp + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( : exp = 2\n.\nline 5: Expression expects ( : X = exp + 1\n."
+  },
+  {
+   "id": "cr350-function_assign_target-10",
+   "logger": "cr350",
+   "source": "Public X As Float\nSub Test\nDim exp As Long\nexp(1) = 2\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: exp(1) = 2\n."
+  },
+  {
+   "id": "cr350-function_assign_target-11",
+   "logger": "cr350",
+   "source": "Public X As Float\nSub Test(exp)\nX = exp\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : X = exp\n."
+  },
+  {
+   "id": "cr350-function_assign_target-12",
+   "logger": "cr350",
+   "source": "Public X As Float\nSub Test(exp)\nexp = 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : exp = 1\n."
+  },
+  {
+   "id": "cr350-function_assign_target-13",
+   "logger": "cr350",
+   "source": "Public X As Float\nSub Test(Sin As Long)\nX = Sin + 1\nEndSub\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Expression expects ( : X = Sin + 1\n."
+  }
+ ]
+}

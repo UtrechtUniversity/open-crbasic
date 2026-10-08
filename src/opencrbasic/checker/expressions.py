@@ -1186,6 +1186,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue  # target itself unresolved: `structure.check_pass2`'s job entirely, above.
         if _multi_indexed_struct(stmt.target, struct_vars) or _multi_indexed_struct(stmt.value, struct_vars):
             continue  # already reported by `check_function_arity` (pass 1)
+        if profile.single_pass and _function_target_message(stmt, profile, frozenset()):
+            continue  # a function-named target (even a local scalar `exp(1) = 2`): same
         names = _undefined_names(stmt.value, known)
         whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
         if _over_indexed(stmt.target, dim_counts, 3 if whole_echo else None):
