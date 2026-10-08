@@ -175,6 +175,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
 # still a no-op when nothing in the file ever taints (no `_is_cascade_trigger` match and no
 # `Too many parameters:` message already present).
 _UNRESOLVED_SUFFIX = " is not defined."
+_LEFTOVER_LEAD_RE = re.compile(r"\s*(?:\(\s*([A-Za-z_]\w*)\s*[,(]|([A-Za-z_]\w*)\s*,)")
 _VARIABLE_ILLEGAL_PREFIX = "Variable illegal in Parameter:"
 _TOO_MANY_PREFIX = "Too many parameters:"
 
@@ -243,6 +244,17 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
+            lead = _LEFTOVER_LEAD_RE.match(stmt.text) if isinstance(stmt, S.Unparsed) else None
+            lead_name = (lead.group(1) or lead.group(2)) if lead else None
+            if lead_name and lead_name.upper() in dropped_names - registered_names:
+                # a missing-parameter leftover `(Name,1,...)` whose first name is a cascade-dropped
+                # declaration reports it first (oracle, CR300/CR350, 2026-10-08)
+                at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key
+                           and d.message.startswith(_GENERIC_FALLBACK_PREFIX)), None)
+                if at is not None:
+                    diags.items.insert(at, Diagnostic("error", stmt.line, profile.unresolved_symbol_message
+                                                      .format(name=lead_name), stmt.file))
+                continue
             if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
                     d.message.startswith("Could not find DataTable ") or (
@@ -737,8 +749,9 @@ _LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-
 # A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
 # declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
 _TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
-_LINE_OP_RUN_RE = re.compile(r"[-+*/^&<>=]+")
+_LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*[-+*/^&<>=]+[ \t]*)(?=[A-Za-z_0-9])|[-+*/^&<>=]+")
 _LINE_WS_RE = re.compile(r"[ \t]+")
+_LINE_PAREN_RE = re.compile(r"[ \t]*\(")
 
 
 def prose_known(program: S.Program, profile) -> set[str]:
@@ -746,7 +759,8 @@ def prose_known(program: S.Program, profile) -> set[str]:
     is reported (oracle, CR300, 2026-10-01: `foo Battery` -> `Battery is not defined.`, `foo Sin`
     and `foo Scan` are not)."""
     instruction_only = set(profile.instructions) - set(profile.symbols) - set(profile.functions)
-    return expressions._known_names(program, profile) - instruction_only
+    known = expressions._known_names(program, profile)
+    return set(known) - instruction_only - set(known.tables)
 
 
 def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
@@ -774,6 +788,13 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
         else:
             words.append(operand.group(0))
         if not extending:
+            break
+        paren = None if operand.group(0)[0].isdigit() else _LINE_PAREN_RE.match(text, pos)
+        if paren and len(words) == 1 and words[0].upper() not in known:
+            # `device (8 channels)`: the first word's parenthesis opens a second walk of the same
+            # shape, which ends at the first `)`, and nothing after it is examined
+            # (oracle, CR300, 2026-10-08).
+            words += _leading_unknown_words(text[paren.end():], known)
             break
         op_match = _LINE_OP_RUN_RE.match(text, pos) or _LINE_OP_WORD_RE.match(text, pos)
         if op_match:
@@ -930,6 +951,11 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
         diags.items[:] = new_items
 
 
+def _echo_key(text: str) -> str:
+    """An echoed statement compared with its `S.Unparsed` text (the echo drops outer parentheses)."""
+    return text.replace("(", "").replace(")", "").strip()
+
+
 def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger, and on a file with no `S.Unparsed`
     statement at all. Called from `checker/__init__.py`, right after `check_expr_cascade`, once
@@ -956,6 +982,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
     if not diags.items:
         return
     unparsed_lines = {(s.line, s.file) for s in program.statements if isinstance(s, S.Unparsed)}
+    # (a line with several `:`-separated statements echoes each one; only the Unparsed one counts)
+    unparsed_text = {(s.line, s.file, _echo_key(s.text)) for s in program.statements
+                     if isinstance(s, S.Unparsed)}
     if not unparsed_lines:
         return
     known: set[str] | None = None
@@ -964,7 +993,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
     for d in diags.items:
         if (d.severity == "error" and d.message.endswith(".")
                 and d.message.startswith(_GENERIC_FALLBACK_PREFIX)
-                and (d.line, d.file) in unparsed_lines):
+                and (d.line, d.file) in unparsed_lines
+                and (d.line, d.file, _echo_key(d.message[len(_GENERIC_FALLBACK_PREFIX):-1]))
+                in unparsed_text):
             if known is None:
                 known = prose_known(program, profile)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]

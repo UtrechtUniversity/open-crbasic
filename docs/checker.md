@@ -3899,3 +3899,35 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   still opens its block. **Bare condition keywords** (`r5cr6_bare_cond`): `If`, `ElseIf`, `Do While|Until`,
   `Loop While|Until`, `Case` alone are pass-1 `Invalid or missing expression.`; `If Then`, `If 'c` and
   `Select Case` alone echo an empty condition. Not modelled: bare `While` and `Select`.
+
+## CR300/CR350 round 5: prose and leftover lines (2026-10-08)
+
+Fixture `tests/fixtures/cr3xx_prose_words.json` (156 cases, all four loggers, real output). The help
+corpus puts example prose into the program, so these shapes are measured by `difftest --group chm`.
+
+- **Table names are not values.** A bare statement `Tb`, `Tb X`, `Tb (X,1)` naming a `DataTable`
+  prints `Tb is not defined.` first on CR300/CR350 (`structure._check_call_pass2`), and a table name
+  inside prose is reported as a word (`cr3xx.prose_known` removes `KnownNames.tables`). CR6/CR1000X
+  unchanged.
+- **Parenthesis after the first word.** An undefined first word followed by `(` opens a second walk
+  of the same "chain plus one peek word" shape, which ends at the first `)`; nothing after it is
+  examined (`device (8 channels)` -> `device`, `channels`; `device (foo bar baz)` -> `foo`, `bar`;
+  `device (foo bar) baz` -> not `baz`). A first word that is a predefined constant (`C1`, `True`,
+  `Sec`) opens no walk. Not modelled: a declared variable as first word (`X (foo bar)` reports
+  `foo`, `bar` on the real compilers), and a built-in function as first word (`Sin (A B)` ->
+  `No Matching, or out of place ) in expression: ...`, `Round (A B, 1)` -> `Expression expects ,`).
+- **Operators with surrounding blanks** join the chain like adjacent ones (`foo & bar baz qux`
+  names `foo`, `bar`, `baz`; also `+ - * / ^ < > <>`; `=` with blanks is an assignment shape and is
+  not modelled, the real message there is `Incomplete expression`).
+- **`:`-separated prose.** `Note: In this example` is two statements; the second used to be dropped
+  because the first statement's echo on the same line was taken for a pass-1 leftover
+  (`structure.check_pass2`, all loggers: CR6/CR1000X print the second `Invalid, or out of place
+  expression:  In this example...` too), and the leading-word lines were applied to both echoes
+  (`cr3xx.check_unknown_line_words` now matches the echo text with the statement).
+- **Leftover `(Name,...)` after a cascade-dropped declaration** (`cr3xx.check_too_many_cascade`): the
+  follow-up line of a missing-parameter instruction is preceded by `Name is not defined.` when
+  `Name` was a declaration dropped by the cascade; a name that was never declared keeps no extra line.
+- Skipped (seen, not modelled): a trailing call tail after an undefined call (`device (foo) bar`
+  reports no `bar`, we do); `X = 1 2`-style assignments with junk on CR300/CR350 print
+  `Incomplete expression: <statement>` (`No Matching ...` inside parentheses), we print the generic
+  `Invalid, or out of place expression`, because CR300/CR350 do not run `structure._pass1_scan`.

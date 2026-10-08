@@ -1153,6 +1153,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
     if env is None:
         env = consteval.Env(profile, dict(program.consts))
     subs = symbols.declared_subs(program)
+    pass1_count = len(diags.items)
     sub_params = {st.name.upper(): st for st in program.statements if isinstance(st, S.SubDef)}
     link_ctx = _LinkContext(
         {st.name.upper() for st in program.statements
@@ -1300,9 +1301,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 if stop is not None:
                     return stop
                 continue
-            if any((d.line, d.file) == (stmt.line, stmt.file) and
+            if any((d.line, d.file) == (stmt.line, stmt.file) and d.severity == "error" and
                    d.message.startswith((_FALLBACK_PREFIX, "Illegal Data parameter"))
-                   for d in diags.errors):
+                   for d in diags.items[:pass1_count]):
                 continue  # a missing-parameter leftover or `Data` line, reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
@@ -2187,7 +2188,8 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         # CR300/CR350 only (`profiles.py`'s own field docstring, `docs/loggers.md`): an extra
         # `{name} is not defined.` line right before the generic fallback below, and no
         # before-`BeginProg` follow-up/stop for this branch (unlike the two branches above).
-        if known is None or name not in known:  # a declared `x()` is not `not defined` (oracle, 2026-10-04)
+        if known is None or name not in known or name in getattr(known, "tables", ()):
+            # (a declared `x()` is not `not defined`, oracle 2026-10-04; a DataTable name is)
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name),
                         stmt.file)
         diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,

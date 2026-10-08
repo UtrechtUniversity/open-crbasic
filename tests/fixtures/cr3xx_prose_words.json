@@ -1,0 +1,1115 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cr3xx_prose_words-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (8 channels)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (8 channels)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (foo bar baz)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar baz)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (8 foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (8 foo bar)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (foo 8 bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo 8 bar)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (foo bar) baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar) baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (if foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (if foo bar)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice (foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-7",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\ndevice(foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device(foo bar)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-8",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nCR200(Y). In this\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: CR200(Y). In this."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-9",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nvalue (RMSVolts) of 50 elements\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: value (RMSVolts) of 50 elements."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-10",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nhigh (non zero). The data\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: high (non zero). The data."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-11",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nC1 (COM1 TX) to C4 (COM3 RX)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: C1 (COM1 TX) to C4 (COM3 RX)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-12",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nTrue (foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: True (foo bar)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-13",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nNote: In this example, the DecimalID and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Note.\nline 3: Invalid, or out of place expression:  In this example, the DecimalID and."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-14",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nNOTE: You must check whether\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: NOTE.\nline 3: Invalid, or out of place expression:  You must check whether."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-15",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo: bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo.\nline 3: Invalid, or out of place expression:  bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-16",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo bar: baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo bar.\nline 3: Invalid, or out of place expression:  baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-17",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo: bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo.\nline 3: Invalid, or out of place expression:  bar."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-18",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo & bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & bar baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-19",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo + bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo + bar baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-20",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo - bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo - bar baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-21",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo  &  bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo  &  bar baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-22",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo & 3 bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & 3 bar baz."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-23",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo & bar & baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & bar & baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-24",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nfoo <> bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo <> bar baz qux."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-25",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nString & Result Variable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: String & Result Variable."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-26",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nSave & Compile\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Save & Compile."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-27",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (X,1)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-28",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (Nope,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (Nope,1)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-29",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-30",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb X."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-31",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (X."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-32",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb = 1."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-33",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb foo bar\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb foo bar."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-34",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo Tb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: foo Tb."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-35",
+   "logger": "cr6",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(SetupResult,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: (SetupResult,0,1)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-36",
+   "logger": "cr6",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Q,0,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: (Q,0,1,2)."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-37",
+   "logger": "cr6",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Nope,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-cr3xx_prose_words-38",
+   "logger": "cr6",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\nSetupResult, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: SetupResult, 1, 2)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (8 channels)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (8 channels)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (foo bar baz)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar baz)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (8 foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (8 foo bar)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (foo 8 bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo 8 bar)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (foo bar) baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar) baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (if foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (if foo bar)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice (foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device (foo bar."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-7",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\ndevice(foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: device(foo bar)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-8",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nCR200(Y). In this\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: CR200(Y). In this."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-9",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nvalue (RMSVolts) of 50 elements\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: value (RMSVolts) of 50 elements."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-10",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nhigh (non zero). The data\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: high (non zero). The data."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-11",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nC1 (COM1 TX) to C4 (COM3 RX)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: C1 (COM1 TX) to C4 (COM3 RX)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-12",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nTrue (foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: True (foo bar)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-13",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nNote: In this example, the DecimalID and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Note.\nline 3: Invalid, or out of place expression:  In this example, the DecimalID and."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-14",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nNOTE: You must check whether\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: NOTE.\nline 3: Invalid, or out of place expression:  You must check whether."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-15",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo: bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo.\nline 3: Invalid, or out of place expression:  bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-16",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo bar: baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo bar.\nline 3: Invalid, or out of place expression:  baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-17",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo: bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo.\nline 3: Invalid, or out of place expression:  bar."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-18",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo & bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & bar baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-19",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo + bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo + bar baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-20",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo - bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo - bar baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-21",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo  &  bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo  &  bar baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-22",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo & 3 bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & 3 bar baz."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-23",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo & bar & baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo & bar & baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-24",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nfoo <> bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: foo <> bar baz qux."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-25",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nString & Result Variable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: String & Result Variable."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-26",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nSave & Compile\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Save & Compile."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-27",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (X,1)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-28",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (Nope,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (Nope,1)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-29",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-30",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb X."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-31",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb (X."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-32",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb = 1."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-33",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb foo bar\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tb foo bar."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-34",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo Tb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: foo Tb."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-35",
+   "logger": "cr1000x",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(SetupResult,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: (SetupResult,0,1)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-36",
+   "logger": "cr1000x",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Q,0,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: (Q,0,1,2)."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-37",
+   "logger": "cr1000x",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Nope,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-cr3xx_prose_words-38",
+   "logger": "cr1000x",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\nSetupResult, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter.\nline 6: Invalid, or out of place expression: SetupResult, 1, 2)."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (8 channels)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: channels is not defined.\nline 3: Invalid, or out of place expression: device (8 channels)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (foo bar baz)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar baz)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (8 foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (8 foo bar)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (foo 8 bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (foo 8 bar)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (foo bar) baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar) baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (if foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (if foo bar)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice (foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\ndevice(foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device(foo bar)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nCR200(Y). In this\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CR200 is not defined.\nline 3: Y is not defined.\nline 3: Invalid, or out of place expression: CR200(Y). In this\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nvalue (RMSVolts) of 50 elements\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: value is not defined.\nline 3: RMSVolts is not defined.\nline 3: Invalid, or out of place expression: value (RMSVolts) of 50 elements\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nhigh (non zero). The data\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: high is not defined.\nline 3: non is not defined.\nline 3: zero is not defined.\nline 3: Invalid, or out of place expression: high (non zero). The data\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nC1 (COM1 TX) to C4 (COM3 RX)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: C1 (COM1 TX) to C4 (COM3 RX)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nTrue (foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: True (foo bar)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-13",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nNote: In this example, the DecimalID and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Note is not defined.\nline 3: Invalid, or out of place expression: Note.\nline 3: In is not defined.\nline 3: this is not defined.\nline 3: Invalid, or out of place expression:  In this example, the DecimalID and\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-14",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nNOTE: You must check whether\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NOTE is not defined.\nline 3: Invalid, or out of place expression: NOTE.\nline 3: You is not defined.\nline 3: must is not defined.\nline 3: Invalid, or out of place expression:  You must check whether\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-15",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo: bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression:  bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-16",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo bar: baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: foo bar.\nline 3: baz is not defined.\nline 3: qux is not defined.\nline 3: Invalid, or out of place expression:  baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-17",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo: bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression:  bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-18",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo & bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo & bar baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-19",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo + bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo + bar baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-20",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo - bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo - bar baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-21",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo  &  bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo  &  bar baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-22",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo & 3 bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: foo & 3 bar baz\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-23",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo & bar & baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: qux is not defined.\nline 3: Invalid, or out of place expression: foo & bar & baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-24",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nfoo <> bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo <> bar baz qux\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-25",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nString & Result Variable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Result is not defined.\nline 3: Variable is not defined.\nline 3: Invalid, or out of place expression: String & Result Variable\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-26",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nSave & Compile\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Save is not defined.\nline 3: Compile is not defined.\nline 3: Invalid, or out of place expression: Save & Compile\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-27",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb (X,1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-28",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (Nope,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Nope is not defined.\nline 7: Invalid, or out of place expression: Tb (Nope,1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-29",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-30",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb X\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-31",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb (X\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-32",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-33",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb foo bar\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: foo is not defined.\nline 7: Invalid, or out of place expression: Tb foo bar\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-34",
+   "logger": "cr300",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo Tb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: foo is not defined.\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: foo Tb\n."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-35",
+   "logger": "cr300",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(SetupResult,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: SetupResult is not defined.\nline 6: Invalid, or out of place expression: SetupResult,0,1."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-36",
+   "logger": "cr300",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Q,0,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: Q is not defined.\nline 6: Invalid, or out of place expression: Q,0,1,2."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-37",
+   "logger": "cr300",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Nope,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression: Nope,0,1."
+  },
+  {
+   "id": "cr300-cr3xx_prose_words-38",
+   "logger": "cr300",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\nSetupResult, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: SetupResult is not defined.\nline 6: Invalid, or out of place expression: SetupResult, 1, 2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (8 channels)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: channels is not defined.\nline 3: Invalid, or out of place expression: device (8 channels)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (foo bar baz)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar baz)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (8 foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (8 foo bar)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (foo 8 bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (foo 8 bar)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (foo bar) baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar) baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (if foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: device (if foo bar)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice (foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device (foo bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\ndevice(foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: device is not defined.\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: device(foo bar)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nCR200(Y). In this\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: CR200 is not defined.\nline 3: Y is not defined.\nline 3: Invalid, or out of place expression: CR200(Y). In this\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nvalue (RMSVolts) of 50 elements\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: value is not defined.\nline 3: RMSVolts is not defined.\nline 3: Invalid, or out of place expression: value (RMSVolts) of 50 elements\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nhigh (non zero). The data\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: high is not defined.\nline 3: non is not defined.\nline 3: zero is not defined.\nline 3: Invalid, or out of place expression: high (non zero). The data\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nC1 (COM1 TX) to C4 (COM3 RX)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: C1 (COM1 TX) to C4 (COM3 RX)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nTrue (foo bar)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: True (foo bar)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-13",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nNote: In this example, the DecimalID and\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Note is not defined.\nline 3: Invalid, or out of place expression: Note.\nline 3: In is not defined.\nline 3: this is not defined.\nline 3: Invalid, or out of place expression:  In this example, the DecimalID and\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-14",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nNOTE: You must check whether\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: NOTE is not defined.\nline 3: Invalid, or out of place expression: NOTE.\nline 3: You is not defined.\nline 3: must is not defined.\nline 3: Invalid, or out of place expression:  You must check whether\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-15",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo: bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression:  bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-16",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo bar: baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: foo bar.\nline 3: baz is not defined.\nline 3: qux is not defined.\nline 3: Invalid, or out of place expression:  baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-17",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo: bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: foo.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression:  bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-18",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo & bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo & bar baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-19",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo + bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo + bar baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-20",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo - bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo - bar baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-21",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo  &  bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo  &  bar baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-22",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo & 3 bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: foo & 3 bar baz\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-23",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo & bar & baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: qux is not defined.\nline 3: Invalid, or out of place expression: foo & bar & baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-24",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nfoo <> bar baz qux\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: baz is not defined.\nline 3: Invalid, or out of place expression: foo <> bar baz qux\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-25",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nString & Result Variable\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Result is not defined.\nline 3: Variable is not defined.\nline 3: Invalid, or out of place expression: String & Result Variable\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-26",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nSave & Compile\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Save is not defined.\nline 3: Compile is not defined.\nline 3: Invalid, or out of place expression: Save & Compile\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-27",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb (X,1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-28",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (Nope,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Nope is not defined.\nline 7: Invalid, or out of place expression: Tb (Nope,1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-29",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-30",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb X\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-31",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: Tb (X\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-32",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-33",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTb foo bar\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Tb is not defined.\nline 7: foo is not defined.\nline 7: Invalid, or out of place expression: Tb foo bar\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-34",
+   "logger": "cr350",
+   "source": "Public X\nDataTable(Tb, true,-1)\n  Average (1,X,FP2,False)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo Tb\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: foo is not defined.\nline 7: Tb is not defined.\nline 7: Invalid, or out of place expression: foo Tb\n."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-35",
+   "logger": "cr350",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(SetupResult,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: SetupResult is not defined.\nline 6: Invalid, or out of place expression: SetupResult,0,1."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-36",
+   "logger": "cr350",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Q,0,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: Q is not defined.\nline 6: Invalid, or out of place expression: Q,0,1,2."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-37",
+   "logger": "cr350",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\n(Nope,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: Nope is not defined.\nline 6: Invalid, or out of place expression: Nope,0,1."
+  },
+  {
+   "id": "cr350-cr3xx_prose_words-38",
+   "logger": "cr350",
+   "source": "This is prose\nPublic SetupResult, Q\nBeginProg\n  Scan (60,Sec,3,0)\n    ArgosSetup\nSetupResult, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: This is not defined.\nline 1: Invalid, or out of place expression: This is prose\n.\nline 2: Too many parameters:  Q.\nline 4: Too many parameters:  Sec.\nline 5: ArgosSetup is not defined.\nline 5: Invalid, or out of place expression:     ArgosSetup\n.\nline 6: SetupResult is not defined.\nline 6: Invalid, or out of place expression: SetupResult, 1, 2)\n."
+  }
+ ]
+}
