@@ -1391,6 +1391,7 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path)
+    _include_extensions(diags, profile or _profile_for(path.name))
     _include_warning_drives(diags, profile or _profile_for(path.name))
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
@@ -1399,6 +1400,25 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
 
 
 _MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR|CRD|USB):", re.I)
+
+
+_MISSING_INCLUDE_RE = re.compile(r"^Cannot open include file  (.*)\.$", re.S)
+_INCLUDE_OWN_EXT = {"cr6": "CR6", "cr1000x": "CR1X"}
+
+
+def _include_extensions(diags: Diagnostics, profile: profiles.Profile) -> None:
+    """CR6/CR1000X: an include name whose text after the last `.` (none: empty) starts with neither
+    `crb` nor the logger's own program extension is an error, not a missing-file warning (oracle,
+    2026-10-08; docs/checker.md "Round 5 CR6/CR1000X help-corpus families")."""
+    own = _INCLUDE_OWN_EXT.get(profile.name)
+    if own is None:
+        return
+    for i, d in enumerate(diags.items):
+        m = _MISSING_INCLUDE_RE.match(d.message) if d.severity == "warning" else None
+        if m and not m.group(1).rpartition(".")[2].upper().startswith(("CRB", own)):
+            diags.items[i] = dataclasses.replace(
+                d, severity="error",
+                message=f"Include file {m.group(1)} must have valid program file extension.")
 
 
 def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> None:
@@ -1424,6 +1444,7 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
                profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(text, name, directory)
+    _include_extensions(diags, profile or _profile_for(name))
     _include_warning_drives(diags, profile or _profile_for(name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)

@@ -3852,3 +3852,11 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   `<If|WHILE|Do|SELECT> illegally occurs before BeginProg.`, not `Expr ...`. An unresolved `Select Case`
   still opens its block (no `Case outside Select.`/`EndSelect w/o Select`). Not modelled: `ElseIf`/`Case`
   there (`Case with no Select.`) and `Loop` (`LOOP without DO.`).
+- **Include file extension** (`r5cr6_include_ext`, CR6/CR1000X): the text after the last `.` of an
+  `Include`/`IncludeSection` name (empty with no `.`) must start with `crb` or the logger's own
+  extension (`cr6`/`cr1x`), else the error `Include file <name as written, drive included> must have
+  valid program file extension.` replaces the missing-file warning; every such include is reported and
+  compilation goes on. CR300/CR350 follow a different rule (a name without `.` passes) and are not
+  modelled. `parser._include_extensions`.
+- **FileManage / RunProgram file names**: see `docs/instructions.md` "FileManage drive and DNP ComPort
+  constants" (extension rule, `RunProgram` drive, first bad name only).

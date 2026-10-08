@@ -1,0 +1,491 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_include_ext-0",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr1x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr1x must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-1",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.CR6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.CR6."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-2",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-3",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-4",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-5",
+   "logger": "cr6",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-6",
+   "logger": "cr6",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.cr6."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-7",
+   "logger": "cr6",
+   "source": "Include \"CRD:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-8",
+   "logger": "cr6",
+   "source": "Include \"SD:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file SD:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-9",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr6x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.cr6x."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-10",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr1x\"\nInclude \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr1x must have valid program file extension.\nline 2: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-11",
+   "logger": "cr6",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-12",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z\nZ = Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-13",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension.\nline 2: Invalid Variable declaration Z."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-14",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension.\nline 2: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-15",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.crb\"\nInclude \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  inc.crb.\nline 2: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-16",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.txt\" 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-17",
+   "logger": "cr6",
+   "source": "Include  \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-18",
+   "logger": "cr6",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-19",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-20",
+   "logger": "cr6",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc. must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-21",
+   "logger": "cr6",
+   "source": "Include \"dir.x/inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file dir.x/inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-22",
+   "logger": "cr6",
+   "source": "Include \"dir.x/inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  dir.x/inc.crb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-23",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-24",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"CPU:inc.crb\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-25",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"CPU:inc\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-26",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"inc.cr6\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.cr6."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-27",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.CRB\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.CRB."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-28",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr300\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-29",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-30",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr3\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-31",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.crbb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crbb."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-32",
+   "logger": "cr6",
+   "source": "Include \"CPU:inc.cr6.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr6.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r5cr6_include_ext-33",
+   "logger": "cr6",
+   "source": "Include \"inc.txt.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.txt.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-0",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr1x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-1",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.CR6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-2",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-3",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-4",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-5",
+   "logger": "cr1000x",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-6",
+   "logger": "cr1000x",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-7",
+   "logger": "cr1000x",
+   "source": "Include \"CRD:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-8",
+   "logger": "cr1000x",
+   "source": "Include \"SD:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file SD:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-9",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr6x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr6x must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-10",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr1x\"\nInclude \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  inc.cr1x.\nline 2: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-11",
+   "logger": "cr1000x",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-12",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z\nZ = Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-13",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z Z\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension.\nline 2: Invalid Variable declaration Z."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-14",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.txt\"\nPublic Z As Banana\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension.\nline 2: Variable Type Banana not supported"
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-15",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.crb\"\nInclude \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Cannot open include file  inc.crb.\nline 2: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-16",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.txt\" 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-17",
+   "logger": "cr1000x",
+   "source": "Include  \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-18",
+   "logger": "cr1000x",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-19",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-20",
+   "logger": "cr1000x",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc. must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-21",
+   "logger": "cr1000x",
+   "source": "Include \"dir.x/inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file dir.x/inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-22",
+   "logger": "cr1000x",
+   "source": "Include \"dir.x/inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  dir.x/inc.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-23",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-24",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"CPU:inc.crb\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-25",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"CPU:inc\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-26",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"inc.cr6\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-27",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.CRB\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.CRB."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-28",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr300\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-29",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-30",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr3\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-31",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.crbb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.crbb."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-32",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:inc.cr6.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr6.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_include_ext-33",
+   "logger": "cr1000x",
+   "source": "Include \"inc.txt.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  inc.txt.crb."
+  }
+ ]
+}
