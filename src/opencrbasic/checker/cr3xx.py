@@ -1023,6 +1023,23 @@ def order_email_destination(program: S.Program, profile, diags: Diagnostics) -> 
             items[i:j] = items[i + 1:j] + [d]
 
 
+_SHORTFALL_MESSAGES = ("Invalid or missing parameter.", "Too few parameters in instruction.")
+
+
+def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: an undefined name among an instruction's arguments hides the too-few-arguments
+    message of the same statement (oracle, 2026-10-08: `PanelTemp(Nope)`, `Delay(1,Nope)`,
+    `VoltDiff (X,1,mV200,1)` print only the name lines)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    named = {(d.line, d.file) for d in diags.items
+             if d.severity == "error" and d.message.endswith(_UNRESOLVED_SUFFIX)}
+    if not named:
+        return
+    diags.items[:] = [d for d in diags.items if not (
+        d.severity == "error" and d.message in _SHORTFALL_MESSAGES and (d.line, d.file) in named)]
+
+
 def _echo_key(text: str) -> str:
     """An echoed statement compared with its `S.Unparsed` text (the echo drops outer parentheses)."""
     return text.replace("(", "").replace(")", "").strip()

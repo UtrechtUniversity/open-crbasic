@@ -538,6 +538,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.drop_block_closer_errors_after_errors, program, profile, diags)
     _run_pass(cr3xx.order_names_around_arity, program, profile, diags)
     _run_pass(cr3xx.order_email_destination, program, profile, diags)
+    _run_pass(cr3xx.drop_shortfall_with_names, program, profile, diags)
     _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
 

@@ -3960,3 +3960,12 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   on CR6/CR1000X, `Nope is not defined.` on CR300/CR350; lines with a comment or continuation are
   left alone). On a one-line `If c Then stmt` the condition's findings precede the inline
   statement's (`expressions.check`).
+
+- **Too-few-arguments message with an undefined name** (fixture `cr3xx_shortfall_names.json`,
+  CR300/CR350): `Invalid or missing parameter.` / `Too few parameters in instruction.` is dropped
+  when the same statement has an `X is not defined.` line (`cr3xx.drop_shortfall_with_names`;
+  `PanelTemp(Nope)`, `Delay(1,Nope)`, `VoltDiff (X,1,mV200,1)`). The same hiding applies on
+  CR6/CR1000X only for constant-family argument positions (`VoltDiff (X,Nope)`,
+  `Delay(Nope,1)` print `Invalid symbol in expression: Nope.` alone; `PanelTemp(Nope)` keeps
+  `Invalid or missing parameter.`): not modelled, those CR6/CR1000X cases still print both. Not
+  modelled: `VoltDiff (Nope,1)` (`Too many parameters:  1.` after the name).
