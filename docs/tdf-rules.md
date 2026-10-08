@@ -297,6 +297,17 @@ one `Temp_Max` field, `dim=3`).
   `interval=(0,0)` and the no-interval size formula (`instructiontimes_2.CR6`, fixture
   `solo_interval_auto_2000_bytes`); `-l` still prints `Interval:`.
 
+- Alias splitting only applies to a field whose `dim == Reps * element size` (fixture
+  `alias_unsplit_when_dim_not_reps`, oracle-confirmed): `Covariance(6,A,IEEE4,False,21)` is one
+  `dim=21` field named after the alias at the Source's first element (`First_Cov`; otherwise the
+  ordinary name), never split. `String` elements count `stored_len` bytes: with `Alias S(2)` on
+  `S(3) As String * 4`, the Public table and a `Sample(3,S,String)` give `S begin=1 dim=8`,
+  `Second begin=1 dim=8 subdims=[8]`, `S begin=17 dim=8`.
+- `FieldNames` names the *individual* outputs of the un-split field (fixture
+  `alias_fieldnames_individual_outputs`): each named output is a scalar (`begin=1`, `subdims=[]`,
+  also for `Sample(1,A(2),FP2)`); only the unnamed remainder then follows the alias decomposition
+  (`Sample(6,A)` + 2 names + `Alias A(3)`: `F1`,`F2`,`Mid`,`A begin=4 dim=3`).
+
 - An array source's field `subdims` is the *declared* shape whatever `reps` is
   (`Sample(3,A,FP2)` on `A(10)`: `[10]`; `Sample(24,M3D,FP2)`: `[2,3,4]`), and a multi-index
   `M(2,1)` has `begin` = row-major flat index (`4` for `M(2,3)`) (oracle-confirmed, fixture

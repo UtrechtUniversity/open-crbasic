@@ -592,9 +592,11 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
             full_shape = info.full_shape()
             group: list[TdfField] = []
             pos = 1
+            es = info.stored_len or 1   # String elements are stored_len bytes (docs/tdf-rules.md §9a)
             while pos <= array_size:
                 if pos in elements:
-                    f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, 1, [])
+                    f = TdfField(info.type_code, ro, elements[pos], [], "", "", "", 1, es,
+                                 [es] if info.stored_len else [])
                     f.alias_elem = True  # type: ignore[attr-defined]
                     f.alias_of = (v.name, pos)  # type: ignore[attr-defined]
                     group.append(f)
@@ -604,8 +606,8 @@ def _build_public_table(publics: list[S.VarDecl], var_info: dict[str, VarInfo],
                     while pos <= array_size and pos not in elements:
                         pos += 1
                     run_len = pos - run_start
-                    f = TdfField(info.type_code, ro, v.name, [], "", "", "", run_start,
-                                 run_len, list(full_shape))
+                    f = TdfField(info.type_code, ro, v.name, [], "", "", "",
+                                 (run_start - 1) * es + 1, run_len * es, list(full_shape))
                     group.append(f)
             fields.extend(group)
             for f in group:
@@ -781,6 +783,7 @@ class _OutField:
     placeholder: bool = False
     rng: tuple[int, int] | None = None
     unit_list: list | None = None   # per-element units when a FieldNames split must differ
+    splittable: bool = False  # dim == Reps * element size: follows the Source's alias decomposition
     struct_members: int = 0   # >0: field of a StructureType source (members per element)
     member: str = ""
 
@@ -811,11 +814,18 @@ def _type_bytes(type_code: int, dim_for_string: int = 0) -> int:
     return _TYPE_BYTES.get(type_code, 4)
 
 
-def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict) -> list[_OutField]:
+def _elem_size(f: "_OutField", info: VarInfo) -> int:
+    return info.stored_len if (info.stored_len and f.type_code == 11) else 1
+
+
+def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
+                    env: consteval.Env) -> list[_OutField]:
     """docs/tdf-rules.md §9a: an output field over an array that has element `Alias`es follows the
     Public table's field decomposition: one scalar field per aliased element (alias name + the
     instruction suffix, the alias' units), one field per un-aliased run (source name, `begin` =
-    run start in the array)."""
+    run start in the array). Only for fields with `dim == Reps * element size` (a `Covariance(6,A,...)`
+    output of 21 values is one field named after the alias at its first element, unsplit); a
+    `FieldNames`-named field is never split."""
     if not isinstance(src, (S.Name, S.Index)):
         return fields
     base = src.name.upper()
@@ -825,27 +835,41 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict)
     out = []
     declared = var_info[base].name
     for f in fields:
-        if f.name_only or not f.name.startswith(declared):
+        if f.name_only or f.renamed or not f.name.startswith(declared):
             out.append(f)
             continue
         suffix = f.name[len(declared):]
+        es = _elem_size(f, var_info[base])
         lo, hi = f.begin, f.begin + f.dim - 1
+        if not f.splittable:
+            # unsplit: named after the alias of the Source's first element, if it has one
+            first = (_source_shape(src, var_info, env, 1)[0] - 1) * es + 1
+            pos = 1
+            for g in groups:
+                n = es if getattr(g, "alias_elem", False) else g.dimension
+                if pos <= first < pos + n:
+                    if getattr(g, "alias_elem", False):
+                        f.name = g.name + suffix
+                    break
+                pos += n
+            out.append(f)
+            continue
         pos = 1
         for g in groups:
             if getattr(g, "alias_elem", False):
-                glo = ghi = pos
+                glo, ghi = pos, pos + es - 1
             else:
                 glo, ghi = g.begin_index, g.begin_index + g.dimension - 1
             pos = ghi + 1
             if ghi < lo or glo > hi:
                 continue
             if getattr(g, "alias_elem", False):
-                out.append(_OutField(g.name + suffix, f.type_code, f.read_only, f.processing, 1, 1,
-                                      [], g.units, renamed=f.renamed, rng=(glo, glo)))
+                out.append(_OutField(g.name + suffix, f.type_code, f.read_only, f.processing, 1, es,
+                                      list(g.subdims), g.units, rng=(glo, ghi)))
             else:
                 a, b = max(lo, glo), min(hi, ghi)
                 out.append(_OutField(f.name, f.type_code, f.read_only, f.processing, a, b - a + 1,
-                                      list(g.subdims), f.units, renamed=f.renamed, rng=(a, b)))
+                                      list(g.subdims), f.units, rng=(a, b)))
     return out
 
 
@@ -883,8 +907,7 @@ def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteva
                       rng=(1, _FFT_UNBOUNDED))
 
 
-def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
-                         env: consteval.Env, by_base: dict | None = None) -> list[_OutField]:
+def _alias_source(instr: S.Instruction, var_info: dict, by_display: dict, by_base: dict | None):
     if (by_base and len(instr.args) > 1 and isinstance(instr.args[1], S.Name)
             and instr.args[1].name.upper() not in var_info):
         # a Source that names an element Alias is that element of its array (docs/tdf-rules.md §9a)
@@ -896,12 +919,21 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
             args = list(instr.args)
             args[1] = S.Index(a.line, a.file, name=of[0], args=[idx])
             instr = dataclasses.replace(instr, args=args)
+    return instr
+
+
+def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
+                         env: consteval.Env, by_base: dict | None = None) -> list[_OutField]:
+    instr = _alias_source(instr, var_info, by_display, by_base)
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
         fields = _emit_output_fields_raw(instr, var_info, by_display, env)
-        if by_base:
-            fields = _split_by_alias(fields, instr.args[1] if len(instr.args) > 1 else None,
-                                      var_info, by_base)
+        if by_base and len(instr.args) > 1 and isinstance(instr.args[1], (S.Name, S.Index)):
+            info = var_info.get(instr.args[1].name.upper())
+            reps = _fold(instr.args[0], env, None)
+            if info is not None and isinstance(reps, (int, float)):
+                for f in fields:
+                    f.splittable = f.dim == int(reps) * _elem_size(f, info)
     src = instr.args[1] if len(instr.args) > 1 else None
     if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
             and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
@@ -1083,6 +1115,7 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         fields[0].name = name.strip()
         fields[0].renamed = True
         fields[0].placeholder = False
+        fields[0].begin, fields[0].subdims = 1, []
         if desc:
             fields[0].processing += ":" + desc
         return fields
@@ -1108,7 +1141,8 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
             rng = None if base.rng is None else (base.rng[0] + n_named, base.rng[1])
             out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
                                   base.begin + n_named, remaining, base.subdims, base.units,
-                                  name_only=base.name_only, placeholder=base.placeholder, rng=rng))
+                                  name_only=base.name_only, placeholder=base.placeholder, rng=rng,
+                                  splittable=base.splittable))
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")
@@ -1153,6 +1187,12 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
 
     out_fields: list[_OutField] = []
     pending: list[_OutField] = []
+    pending_src = None   # Source of `pending` when it is eligible for alias splitting (after FieldNames)
+
+    def split_pending():
+        if pending_src is not None and by_base:
+            return _split_by_alias(pending, pending_src, var_info, by_base, env)
+        return pending
 
     for s in dt.body:
         kw = _kw(s)
@@ -1174,18 +1214,20 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
         elif kw == "FIELDNAMES":
             if s.args and isinstance(s.args[0], S.String) and pending:
                 pending = _apply_fieldnames(pending, s.args[0].value)
-                out_fields.extend(pending)
-                pending = []
+                out_fields.extend(split_pending())
+                pending, pending_src = [], None
         elif kw in _OUTPUT_KEYWORDS:
             if pending:
-                out_fields.extend(pending)
+                out_fields.extend(split_pending())
+            s = _alias_source(s, var_info, by_display, by_base)
             pending = _emit_output_fields(s, var_info, by_display, env, by_base)
+            pending_src = s.args[1] if len(s.args) > 1 and not any(f.struct_members for f in pending) else None
         elif kw == "FFT":
             if pending:
-                out_fields.extend(pending)
-            pending = [_fft_field(s, var_info, by_display, env)]
+                out_fields.extend(split_pending())
+            pending, pending_src = [_fft_field(s, var_info, by_display, env)], None
     if pending:
-        out_fields.extend(pending)
+        out_fields.extend(split_pending())
 
     fields = []
     for of in out_fields:

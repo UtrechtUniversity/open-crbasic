@@ -126,5 +126,13 @@
  {
   "id": "other_table_field_source",
   "source": "Public x, y(3)\nUnits x = Volts\nUnits y = degC\nDataTable(H,1,10)\n  DataInterval(0,1,Hr,4)\n  Average(1,x,IEEE4,False)\n  Average(3,y(),IEEE4,False)\n  Sample(1,y(2),FP2)\nEndTable\nDataTable(T,1,10)\n  Sample(1,H.x_Avg,IEEE4)\n  Average(1,H.x_Avg,IEEE4,False)\n  Sample(1,H.y_Avg(2),FP2)\nEndTable\nDataTable(U,1,10)\n  Sample(2,H.y_Avg(),FP2)\nEndTable\nDataTable(V,1,10)\n  Sample(1,H.y,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable H\n    CallTable T\n    CallTable U\n    CallTable V\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "alias_unsplit_when_dim_not_reps",
+  "source": "Public A(6), S(3) As String * 4\nAlias A(1)=First\nAlias A(3)=Mid\nAlias S(2)=Second\nDataTable(T1,True,10)\n  Covariance(6,A,IEEE4,False,21)\nEndTable\nDataTable(T2,True,10)\n  Covariance(3,Mid,IEEE4,False,6)\nEndTable\nDataTable(T3,True,10)\n  Sample(3,S,String)\nEndTable\nDataTable(T4,True,10)\n  Sample(1,S(2),String)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "alias_fieldnames_individual_outputs",
+  "source": "Public A(6)\nAlias A(3)=Mid\nDataTable(T1,True,10)\n  Sample(6,A,FP2)\n  FieldNames(\"F1,F2,F3,F4,F5,F6\")\nEndTable\nDataTable(T2,True,10)\n  Sample(6,A,FP2)\n  FieldNames(\"F1,F2\")\nEndTable\nDataTable(T3,True,10)\n  Average(4,A(2),FP2,False)\n  FieldNames(\"F1\")\nEndTable\nDataTable(T4,True,10)\n  Sample(1,A(2),FP2)\n  FieldNames(\"F1\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n  NextScan\nEndProg\n"
  }
 ]
