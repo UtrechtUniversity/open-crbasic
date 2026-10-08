@@ -495,6 +495,9 @@ class _Parser:
                 spans.append((start_col, p.peek().col))
         elif not p.at_end():
             args, spans = self._parse_bare_arglist(p, line, file)
+        if kw == "END" and len(args) == 1 and isinstance(args[0], S.Name) and args[0].name.upper() == "TABLE":
+            # `End Table` is `EndTable` on all four loggers (oracle, 2026-10-08; docs/fuzz-findings.md).
+            return S.Instruction(line, file, keyword="ENDTABLE")
         return S.Instruction(line, file, keyword=kw, args=args, arg_spans=spans)
 
     def _absorb_trailing(self, p: _TokStream, args: list, spans: list, line: int, file: str,

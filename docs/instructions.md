@@ -1302,3 +1302,14 @@ Min units, and the compile still reports `Scan interval too short for measuremen
 The zero scans run ahead of the error-gated tier C and only when no error preceded the early
 checks. Reproducers fixed: cr6 `false_accept/27f8cf697cbc`, `8dd29dba276b`, `e17429a2a028`,
 `message_diff/9bee9eafb6c3`, `a715a6fa84f0`; cr1000x `false_accept/8fea44ceb325`, `ea6e49fbf407`.
+
+## Fuzz round 5 (seeds 201-208, 2026-10-08)
+
+Evidence and class counts: `docs/fuzz-findings.md` "Round 5". Every rule below is backed by
+`tests/fixtures/r5_*.json` (real-compiler output, `tests/test_fuzz_round5.py`).
+
+### `End Table`
+
+`End Table` (one or more spaces) is `EndTable` on all four loggers; a stray one reports
+`EndTable without DataTable.`. The parser maps `End` + `Table` to `ENDTABLE`. `End ConstTable`
+is not equivalent (`Illegal END or EXIT ConstTable.`, unchanged). Fixture `r5_end_table`.
