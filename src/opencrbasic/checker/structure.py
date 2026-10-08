@@ -1160,7 +1160,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
          if isinstance(st, S.SubDef) and st.keyword.upper() == "SUB"},
         bool(subs), links if links is not None else CallLinks())
     known = expressions._known_names(program, profile)
-    dims_ds = expressions.dims_state(program, known) if profile.single_pass else None
+    dims_ds = expressions.program_dims(program, profile, known) if profile.single_pass else None
     # Before the first `BeginProg` in expansion order (an included file has its own line numbers).
     seen_beginprog = False
 

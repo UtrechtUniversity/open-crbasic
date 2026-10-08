@@ -430,7 +430,7 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             continue
         if types is None:
             types, known = _variable_types(program), expressions._known_names(program, profile)
-            ds = expressions.dims_state(program)
+            ds = expressions.program_dims(program, profile, known)
         arg = stmt.args[0]
         if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
             continue  # a bare function name is `Expression expects (` instead (expressions.py)

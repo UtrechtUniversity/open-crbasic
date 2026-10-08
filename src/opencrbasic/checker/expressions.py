@@ -449,6 +449,12 @@ def _stmt_exprs(stmt: S.Stmt) -> list:
     return []
 
 
+def program_dims(program: S.Program, profile, known) -> DimsState:
+    """The one `DimsState` every consumer shares: single-pass loggers (CR300/CR350) stop a
+    statement at its first undefined name (`known`), the others simulate over declared variables."""
+    return dims_state(program, known if profile.single_pass else _NO_NAMES)
+
+
 def dims_state(program: S.Program, known=_NO_NAMES) -> DimsState:
     """`DimsState` for `program`: variable dimension counts, and the count at each statement's
     start, simulated over every statement in order (one-line `If` bodies included)."""
@@ -1052,7 +1058,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     """
     known = _known_names(program, profile)
     variable_names = symbols.declared_variable_names(program)
-    ds = dims_state(program)
+    ds = program_dims(program, profile, known)
     dim_counts = symbols.declared_dim_counts(
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
 
@@ -1914,7 +1920,7 @@ def _check_for_headers(program: S.Program, profile, diags: Diagnostics, known) -
     its matching `Next` line (`For j = 1 To 2` -> `j .`). CR300/CR350: per-name `%s is not
     defined.` on the `For` line in source order, plus `Dimensions not declared: j(1) .` for an
     undefined indexed loop variable."""
-    ds = dims_state(program)
+    ds = program_dims(program, profile, known)
     pending: list[tuple[S.For, str]] = []
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "NEXT" and pending and \
@@ -1957,7 +1963,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     when an `Is` comparison or an upper bound fails first): `Case 1, 2, Nope` -> three.
     CR300/CR350 print each undefined name; there a `Select Case` with an undefined name opens no
     block, so its `Case`s give `Case outside Select.` and its end `EndSelect w/o Select`."""
-    ds = dims_state(program)
+    ds = program_dims(program, profile, known)
     whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     orphans: list[bool] = []  # per open Select: True when CR300 did not open it
     for stmt in program.statements:
@@ -2022,7 +2028,7 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
     its arguments (oracle, 2026-10-01): CR6/CR1000X `Invalid symbol in expression: <statement>.`
     (indentation and trailing spaces kept); CR300/CR350 each name, then `Dimensions not declared:
     <statement>` when an undefined name is indexed."""
-    ds = dims_state(program)
+    ds = program_dims(program, profile, known)
     first_on_line: dict[tuple, S.Stmt] = {}
     for stmt in program.statements:
         first_on_line.setdefault((stmt.line, stmt.file), stmt)
