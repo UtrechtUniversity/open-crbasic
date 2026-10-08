@@ -1499,3 +1499,13 @@ All observed 2026-10-08 on both compilers; implemented as `measure.json` `const_
 Reproducers: cr6 `false_accept/40c80f5860fa`, `43812a224c7f`, `0196a07a009b`, `eef44a5842df`,
 `4cb038a7951b`; cr1000x `05d48966b713`, `7539be70e665`, `731dc3f88411` (the `MeasPEx` line needs
 `Reps 0` on `CDM_VoltDiff`).
+
+### `GPS` fifth argument (CR6/CR1000X; fixture `gps_nmea_strings`)
+
+`GPS (Dest, ComPort, Offset, Size, NMEAStrings)`: when the fifth argument is given it must be a
+String variable of at least 96 characters (declared `As String * n`, `n` from 96; a bare `As
+String` is 24), else `Optional parameter must be an array of type string of length >= 100`
+(observed on both compilers 2026-10-08: `* 16`, `* 95`, a bare String, a Float, `F()` and the
+literal `"abc"` fail; `* 96`, `* 97`, `* 99`, `* 100`, `* 200` and `N100(2)` pass). It precedes
+the `GPS pps synchronization` line. A `StructureType` first argument keeps its own
+`Size of NMEASentences ...` check. Reproducer: cr1000x `false_accept/cb78fdc14db5`.

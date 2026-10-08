@@ -8,7 +8,7 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 NAMES = ["alias_flat_dup", "routers_dest_index", "argos_error_dest", "samplefieldcal_a", "samplefieldcal_b", "ch400status", "fft_source_length",
-         "therm_settling_time", "cdm_ranges", "cdm_reps", "cdm_port_and_type"]
+         "therm_settling_time", "cdm_ranges", "cdm_reps", "cdm_port_and_type", "gps_nmea_strings"]
 CASES = [c for n in NAMES
          for c in json.loads((Path(__file__).parent / "fixtures" / f"{n}.json").read_text(encoding="utf-8"))["cases"]]
 

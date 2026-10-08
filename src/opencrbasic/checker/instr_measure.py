@@ -41,6 +41,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
             _check_excite_magnitude(stmt, measure, env, diags)
         if kw == "GPS" and "gps" in measure:
             _check_structure_members(stmt, program, measure["gps"], env, diags)
+            _check_gps_nmea(stmt, program, env, diags)
             _check_gps_port(stmt, measure["gps"], env, diags)
         if kw == "CH400STATUS" and "CH400STATUS" in profile.instructions:
             _check_ch400status(stmt, env, diags)
@@ -369,6 +370,33 @@ def _const_value(arg: S.Expr | None, env: consteval.Env):
 def _int_value(arg: S.Expr | None, env: consteval.Env) -> int | None:
     v = _const_value(arg, env)
     return int(v) if isinstance(v, (int, float)) and math.isfinite(v) else None
+
+
+def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
+                    diags: Diagnostics) -> None:
+    """`GPS`'s optional fifth argument must be a String variable of at least 96 characters
+    (declared size; 24 when none is given); docs/instructions.md#gps-ports."""
+    if len(stmt.args) < 5 or stmt.args[4] is None:
+        return
+    arg = stmt.args[4]
+    if isinstance(arg, S.String):
+        bad = True
+    elif isinstance(arg, (S.Name, S.Index)):
+        decl = next((v for st in program.statements if isinstance(st, S.Declaration)
+                     and st.kind in ("PUBLIC", "DIM", "STATIC") for v in st.vars
+                     if v.name.upper() == arg.name.upper()), None)
+        if decl is None:
+            return
+        if (decl.type or "FLOAT").upper() != "STRING":
+            bad = (decl.type or "FLOAT").upper() in ("FLOAT", "LONG", "BOOLEAN", "DOUBLE")
+        else:
+            size = _int_value(decl.string_size, env) if decl.string_size is not None else 24
+            bad = size is not None and size < 96
+    else:
+        return
+    if bad:
+        diags.error(stmt.line, "Optional parameter must be an array of type string of length >= 100",
+                    stmt.file)
 
 
 def _check_gps_port(stmt: S.Instruction, cfg: dict, env: consteval.Env,
