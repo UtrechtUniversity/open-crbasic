@@ -3829,3 +3829,12 @@ and `MoveBytes` share their first codes and differ), so it is the `_MULTI_REPORT
 Also: after an undefined name at a const-family position, the later `Illegal parameter ..., expecting
 constant integer.` (`PortSet`, `PortGet`, `SW12`, `CDM_SW*`, `SwVx`) is no longer printed
 (`check_const_int_args`).
+
+## Round 5 CR6/CR1000X help-corpus families (`tests/fixtures/r5cr6_*.json`)
+
+Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_families.py` runs them all.
+
+- **Indexed target in the pass-1 scan** (`r5cr6_indexed_target`): `A(2) = Y +` is a pass-1 `Invalid,
+  or out of place expression` like `X = Y +` (it is listed beside a later pass-1 error, e.g. a wrapped
+  `1` on the next line, while pass 2 is hidden). `_pass1_scan` skips a clean subscript and scans on;
+  `A(2)(1) = ...` and an unclean subscript stay unmodelled. CR6/CR1000X only.

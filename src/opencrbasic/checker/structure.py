@@ -1584,7 +1584,16 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         if u not in operands:
             return None
         if i < len(toks) and toks[i].kind == "OP" and toks[i].text == "(":
-            return None
+            # `A(2) = Y +`: scanned like a plain operand once its clean subscript is skipped
+            depth = 0
+            for j in range(i, len(toks)):
+                depth += (toks[j].text == "(") - (toks[j].text == ")") if toks[j].kind == "OP" else 0
+                if depth == 0:
+                    break
+            if depth or _scan_expr(toks[i + 1:j], 0, operands, functions, assign=True,
+                                   start_operand=False) is not None:
+                return None
+            i = j + 1
     elif first.kind in ("NUMBER", "STRING"):
         pass
     elif first.kind == "OP" and first.text == "-" and len(toks) > 1 and toks[1].kind == "NUMBER":

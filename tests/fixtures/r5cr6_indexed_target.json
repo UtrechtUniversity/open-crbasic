@@ -1,0 +1,113 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_indexed_target-0",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(2) = Y +.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-1",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(I) = Y +\nI\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(I) = Y +.\nline 5: Invalid, or out of place expression: I."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-2",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(1,2) = Y +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(1,2) = Y +.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-3",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = (Y\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: A(2) = (Y.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-4",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y )\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: A(2) = Y ).\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-5",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Nope +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr6-r5cr6_indexed_target-6",
+   "logger": "cr6",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-0",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(2) = Y +.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-1",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(I) = Y +\nI\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(I) = Y +.\nline 5: Invalid, or out of place expression: I."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-2",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(1,2) = Y +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: A(1,2) = Y +.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-3",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = (Y\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: A(2) = (Y.\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-4",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y )\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: A(2) = Y ).\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-5",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Nope +\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_indexed_target-6",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), Y\nDim I\nBeginProg\nA(2) = Y\n1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1."
+  }
+ ]
+}
