@@ -700,6 +700,10 @@ def _source_name(expr: S.Expr | None, var_info: dict[str, VarInfo] | None = None
     raw = None
     if isinstance(expr, (S.Name, S.Index)):
         raw = expr.name
+    elif (isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)) and var_info):
+        info = var_info.get(f"{expr.base.name}.{expr.member}".upper())
+        if info is not None:
+            return info.name
     if raw is None:
         return "Anonymous"
     if var_info is not None:
@@ -713,6 +717,10 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
                    reps: int) -> tuple[int, list[int]]:
     """(begin, subdims) for an output field's Source, per §3: subdims are the *declared* shape of the
     source array whatever `reps` is; begin is the 1-based row-major flat index of the first element."""
+    if isinstance(expr, S.Member) and isinstance(expr.base, (S.Name, S.Index)):
+        info = var_info.get(f"{expr.base.name}.{expr.member}".upper())
+        if info is not None:
+            return 1, list(info.shape)
     if isinstance(expr, (S.Index, S.Name)):
         info = var_info.get(expr.name.upper())
         array_shape = list(info.shape) if info and info.shape else ([reps] if isinstance(expr, S.Index) else [])
@@ -722,6 +730,8 @@ def _source_shape(expr: S.Expr | None, var_info: dict[str, VarInfo], env: conste
         if isinstance(expr, S.Index) and expr.args:
             idx = [_as_int(_fold(a, env, 1), 1) for a in expr.args]
             if info and info.shape and len(idx) == len(info.shape) > 1:
+                if not all(isinstance(a, (S.Number, S.Name)) for a in expr.args):
+                    return 1, array_shape  # docs/tdf-rules.md §9b: expression subscripts give begin=1
                 begin = 0
                 for k, v in enumerate(idx):
                     stride = 1
@@ -837,6 +847,40 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict)
                 out.append(_OutField(f.name, f.type_code, f.read_only, f.processing, a, b - a + 1,
                                       list(g.subdims), f.units, renamed=f.renamed, rng=(a, b)))
     return out
+
+
+def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteval.Env) -> "_OutField":
+    """`FFT(Source, DataType, N, Tint, Units, Option)` (docs/tdf-rules.md §9b): one read-only field
+    `<Source>[<flat element index if > 1>]_FFT`; layout by `Option mod 10`, description `FFT,N,<Tint seconds %.4e>,<Option mod 100>`.
+    A non-variable Source stays a name-only placeholder (no TDF field)."""
+    a = s.args
+    src = a[0] if a else None
+    placeholder = not isinstance(src, (S.Name, S.Index))
+    if placeholder:
+        return _OutField("Anonymous", 9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
+                          placeholder=True, rng=(1, _FFT_UNBOUNDED))
+    tname = getattr(a[1], "name", "") if len(a) > 1 else ""
+    n = _as_int(_fold(a[2], env, 1), 1) if len(a) > 2 else 1
+    tint = _fold(a[3], env, 0) if len(a) > 3 else 0
+    unit = str(getattr(a[4], "name", "")).upper() if len(a) > 4 else "SEC"
+    opt = _as_int(_fold(a[5], env, 0), 0) if len(a) > 5 else 0
+    half = n // 2 + 1
+    k = opt % 10
+    if k == 5:
+        dim, subdims = n, [n]
+    elif k in (1, 3, 4):
+        dim, subdims = half, [half]
+    elif k in (0, 2):
+        dim, subdims = 2 * half, [half, 2]
+    else:
+        dim, subdims = 2 * half, [half]
+    first, shape = _source_shape(src, var_info, env, 1)
+    if dim == 1:
+        subdims = shape
+    proc = "FFT,%d,%.4e,%d" % (n, float(tint) * _UNIT_SECONDS.get(unit, 1), opt % 100)
+    return _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", TYPE_CODES.get(tname.upper(), 9), True,
+                      proc, 1, dim, subdims, _units_for_source(src, var_info, by_display),
+                      rng=(1, _FFT_UNBOUNDED))
 
 
 def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
@@ -1137,17 +1181,9 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
                 out_fields.extend(pending)
             pending = _emit_output_fields(s, var_info, by_display, env, by_base)
         elif kw == "FFT":
-            # Name-only field (`_OutField.name_only`): FFT's TDF layout is not modelled here, but
-            # its `<Source>_FFT` name takes part in the duplicate-field-name check.
             if pending:
                 out_fields.extend(pending)
-            fft_expr = s.args[0] if s.args else None
-            fft_src = _source_name(fft_expr, var_info)
-            fft_placeholder = not isinstance(fft_expr, (S.Name, S.Index))
-            pending = [_OutField("Anonymous" if fft_placeholder else fft_src + "_FFT",
-                                  9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
-                                  placeholder=fft_placeholder,
-                                  rng=(1, _FFT_UNBOUNDED))]
+            pending = [_fft_field(s, var_info, by_display, env)]
     if pending:
         out_fields.extend(pending)
 
@@ -1313,6 +1349,11 @@ def build_tables(program: S.Program, profile, consts: dict):
         table, meta = _build_data_table(dt, env, var_info, by_display, scanned["called"], by_base)
         tables.append(table)
         data_table_metas.append((table, meta))
+        for f in table.fields:
+            # a later `Sample(1, Table.Field, ...)` source (§9b): named like the field, shaped like it
+            if f.type != 11:
+                var_info[f"{table.name}.{f.name}".upper()] = VarInfo(
+                    f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []), name=f.name)
 
     if scanned["data_tables"] or struct_tables:
         tables.append(_datatableinfo_table(len(scanned["data_tables"])))
@@ -1371,6 +1412,13 @@ def _explode_indices(subdims: list[int], drop_last: bool, begin: int = 1, dim: i
         strides[i] = acc
         acc *= dims[i]
     start = max(min(begin - 1, total - 1), 0)
+    if len(dims) == 1 and begin + dim - 1 > total and not drop_last:
+        # a rank-1 field longer than its subdim (FFT Option mod 10 = 6..9: dim 2*(N/2+1) over
+        # subdims [N/2+1]) lists its index running on past the subdim (docs/tdf-rules.md §9b)
+        start, count = max(begin - 1, 0), min(dim, _MAX_EXPLODE_COUNT)
+        for lin in range(start, start + count):
+            yield (lin + 1,)
+        return
     count = max(min(dim, total - start), 0)
     count = min(count, _MAX_EXPLODE_COUNT)
     for lin in range(start, start + count):

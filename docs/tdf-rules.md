@@ -315,6 +315,34 @@ one `Temp_Max` field, `dim=3`).
   source's for options 0-2 and `Deg` for 3-4; once `FieldNames` splits it, element units are
   option 0 `[spd,Deg,Deg]`, 1 `[spd,Deg]`, 2 `[spd,spd,Deg,Deg]`, 3 `[Deg]`, 4 `[Deg,Deg]`.
 
+## 9b. FFT fields, multi-dimensional subscripts, `Table.Field` sources (oracle-confirmed 2026-10-08)
+
+Evidence: `tests/fixtures/tdf_rules.json` cases `fft_layout`, `multidim_expression_subscript_begin`,
+`other_table_field_source`, and CHM `fft_1`, `cdmfftfilt_1`, `goestable_1`.
+
+- **`FFT(Source, DataType, N, Tint, Units, Option)`** emits one read-only field named
+  `<Source>[<flat element index>]_FFT` (the index is appended only when > 1: `v(1)` -> `v_FFT`,
+  `v(2)` -> `v2_FFT`, `m(2,3)` of `m(4,40)` -> `m43_FFT`). Type from `DataType` (FP2 7, IEEE4/Float 9,
+  Long 6, IEEE8 18, UINT2 2), `begin=1`, units of the source. Processing and description are both
+  `FFT,<N>,<Tint in seconds as %.4e>,<Option mod 100>` (`FFT,16,1.0000e-02,1`; hr/day/usec scale).
+  Layout depends on `Option mod 10`, `half = N/2 + 1`: 0 and 2: `dim=2*half`, `subdims=[half,2]`;
+  1, 3, 4: `dim=half`, `subdims=[half]`; 5 (inverse): `dim=N`, `subdims=[N]`; 6-9 (undocumented but
+  accepted): `dim=2*half`, `subdims=[half]`. `dim=1` (N=1) takes the source's declared shape. Option
+  100+k behaves as k; `N` must be a power of two (compiler error otherwise). `FieldNames` splits
+  an FFT field like any other (remainder keeps `begin` and `subdims`).
+- `-l` lists a rank-1 field longer than its subdim (options 6-9) with its index running on past the
+  subdim: `(1)..(34)` for `dim=34`, `subdims=[17]`.
+- **Multi-dimensional `Source` subscripts**: `begin` is the row-major flat index only when every
+  subscript is a plain numeric literal or a named constant. Any expression (`g(2,8/2)`,
+  `CC-5`, `-(-3)`, `4*1`) gives `begin=1`; 1-D subscripts always fold (`a(8/2)` -> `begin=4`).
+  Parentheses around a literal are transparent. This is why CHM `cdmfftfilt_1`'s
+  `Dest(1,FFT_LEN/2+2)` has `begin=1` and no out-of-bounds error.
+- **`Sample(n, Table.Field, ...)` where `Table` is an earlier DataTable**: the field is named like the
+  source field (`HR_DATA.battery_voltage_Avg` -> `battery_voltage_Avg`, `Average` of it ->
+  `x_Avg_Avg`), `begin=1` whatever subscript is given, `subdims` is the source field's shape, and
+  units are *not* inherited (`''`) -- except when the field name is also a `Public` variable (then
+  that variable's units).
+
 ## 10. Auto-allocated table size (`Size = -1`)
 
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower
