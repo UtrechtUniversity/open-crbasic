@@ -2880,12 +2880,22 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
 
     if name_collision:
         diags.error(stmt.line, name_collision, stmt.file)
-    if index_key is not None:
+    dedup_key = index_key
+    dims = all_dims.get(name_upper)
+    if index_key is not None and dims is not None and len(index_key) <= len(dims):
+        # collisions are by row-major flat offset, a bare name being element 1 (oracle,
+        # 2026-10-08: `grid(3,3)`: `grid(1,1)`/`grid(1)`/`grid`, `grid(1,2)`/`grid(2,-1)`); a
+        # flat offset below 1 keeps the written tuple (`grid(1,-5)` and `grid(0,1)` do not collide)
+        dims = tuple(max(d, 1) for d in dims)
+        flat = _alias_flat_offset((*index_key, *([1] * (len(dims) - len(index_key)))), dims)
+        if flat >= 1:
+            dedup_key = (flat,)
+    if dedup_key is not None:
         bucket = seen_alias_sources.setdefault(name_upper, set())
-        if index_key in bucket:
+        if dedup_key in bucket:
             diags.error(stmt.line, "Duplicate Alias", stmt.file)
         else:
-            bucket.add(index_key)
+            bucket.add(dedup_key)
 
     for rhs in stmt.args[1:]:
         if not isinstance(rhs, S.Name):

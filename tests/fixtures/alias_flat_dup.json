@@ -1,0 +1,611 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias_flat_dup-0",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-1",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-2",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-3",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(1,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr6-alias_flat_dup-4",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-5",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_flat_dup-6",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(1,5) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-7",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-8",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nAlias grid(1,2)=A3\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-9",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-10",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_flat_dup-11",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(3,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-12",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(1,6) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-13",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.5,2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-14",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,-5) = A1\nAlias grid(0,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr6-alias_flat_dup-15",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,10) = A1\nAlias grid(4,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-16",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-17",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-18",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-19",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a = A1\nAlias a(1.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr6-alias_flat_dup-20",
+   "logger": "cr6",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.9,2.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-0",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-1",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-2",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-3",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(1,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-4",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-5",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-6",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(1,5) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-7",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-8",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nAlias grid(1,2)=A3\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-9",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-10",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-11",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(3,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-12",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(1,6) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-13",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.5,2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-14",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,-5) = A1\nAlias grid(0,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-15",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,10) = A1\nAlias grid(4,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-16",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-17",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-18",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-19",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a = A1\nAlias a(1.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr1000x-alias_flat_dup-20",
+   "logger": "cr1000x",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.9,2.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias"
+  },
+  {
+   "id": "cr300-alias_flat_dup-0",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-1",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-2",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-3",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(1,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-4",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-5",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_flat_dup-6",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(1,5) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-7",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-8",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nAlias grid(1,2)=A3\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Duplicate Alias\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-9",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-10",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_flat_dup-11",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(3,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-12",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(1,6) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-13",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.5,2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-14",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,-5) = A1\nAlias grid(0,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-15",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,10) = A1\nAlias grid(4,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-16",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-17",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-18",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-19",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a = A1\nAlias a(1.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-alias_flat_dup-20",
+   "logger": "cr300",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.9,2.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-0",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-1",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-2",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid(1,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-3",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(1,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-4",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,1) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-5",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(3,-2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_flat_dup-6",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,2) = A1\nAlias grid(1,5) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-7",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-8",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,-1) = A2\nAlias grid(1,2)=A3\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 4: Duplicate Alias\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-9",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-10",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(2,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_flat_dup-11",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(3,0) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-12",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(2,3) = A1\nAlias grid(1,6) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-13",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.5,2) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-14",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,-5) = A1\nAlias grid(0,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-15",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,10) = A1\nAlias grid(4,1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Illegally dimensioned aliased name\nline 3: Illegally dimensioned aliased name\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-16",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,1) = A1\nAlias grid = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-17",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid = A1\nAlias grid(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-18",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a(1) = A1\nAlias a(1) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-19",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias a = A1\nAlias a(1.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-alias_flat_dup-20",
+   "logger": "cr350",
+   "source": "Public grid(3,3), a, b, c, d\nAlias grid(1,2) = A1\nAlias grid(1.9,2.9) = A2\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Duplicate Alias\nline 5: Too many parameters:  Sec."
+  }
+ ]
+}

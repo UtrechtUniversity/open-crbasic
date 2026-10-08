@@ -1388,3 +1388,19 @@ a Float or String variable as the sixth argument (`Count`) of `TotalRun`, and of
 and `MaxRun` read their sixth argument differently (`Optional number of distinct instances
 ...`) and are not changed; a decimal literal Count on CR300/CR350 is also rejected by the real
 compiler and is not modelled. Reproducer: `tests/corpus/fuzz/cr6/false_accept/a5c5a3813f44.CR6`.
+
+## Fuzz round 5 false accepts, second pass (2026-10-08)
+
+Rules below are backed by `tests/fixtures/<name>.json` (real-compiler output, all four loggers,
+`tests/test_fa_fixtures.py`).
+
+### `Duplicate Alias` collides by flat offset (fixture `alias_flat_dup`)
+
+The `Duplicate Alias` key was the written index tuple. The real compiler keys on the row-major
+flat offset (the one `Illegally dimensioned aliased name` bounds-checks), a bare name being
+element 1: on `Public grid(3,3)`, `grid(1,1)`, `grid(1)` and `grid` collide; so do `grid(1,2)` and
+`grid(2,-1)`, `grid(2,2)` and `grid(1,5)`, `grid(2,3)` and `grid(3,0)`, a scalar `a` and `a(1)`,
+and two out-of-range spellings of the same flat offset (`grid(1,10)`, `grid(4,1)`). A flat
+offset below 1 is not matched (`grid(1,-5)` then `grid(0,1)`: no `Duplicate Alias`), so such
+indices keep the written tuple as key. Tuples longer than the declared dimensions keep the written
+tuple (not probed). Reproducers: cr6 `false_accept/c1a8075740f0`, `cd96d8abd0cc`, `df0fc0a86bcc`.
