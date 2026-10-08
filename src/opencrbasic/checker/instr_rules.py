@@ -1702,7 +1702,7 @@ def check_mqtt_publish_payload(program: S.Program, profile, diags: Diagnostics) 
                 payload.name.upper() in string_consts or
                 types.get(payload.name.upper()) == "STRING"):
             continue
-        if isinstance(payload, (S.Number, S.Name)):
+        if isinstance(payload, (S.Number, S.Name)) or _numeric_expression(payload, types):
             diags.error(stmt.line, "A string or string variable is required", stmt.file)
 
 
@@ -1718,6 +1718,23 @@ def _constant_name_text(arg: S.Expr | None, env: consteval.Env, depth: int = 0) 
     if isinstance(arg, S.String):
         return arg.value
     if isinstance(arg, S.Name):
+def _numeric_expression(expr: S.Expr | None, types: dict) -> bool:
+    """A negated number or an arithmetic `+ - * / ^` of numbers and declared non-String variables
+    (oracle 2026-10-08, CR300/CR350: `1+2`, `F+1` and `-1` are `A string or string variable is
+    required`, `"a"+"b"` and `Payload+"x"` compile). Anything else, a function call included, is
+    left unchecked."""
+    if isinstance(expr, S.Number):
+        return True
+    if isinstance(expr, S.Name):
+        return types.get(expr.name.upper()) not in (None, "STRING")
+    if isinstance(expr, S.Unary):
+        return expr.op == "-" and _numeric_expression(expr.operand, types)
+    if isinstance(expr, S.Binary):
+        return expr.op in ("+", "-", "*", "/", "^") and _numeric_expression(expr.left, types) \
+            and _numeric_expression(expr.right, types)
+    return False
+
+
         value = env.consts.get(arg.name.upper())
         return value if isinstance(value, str) else None
     if isinstance(arg, S.Binary) and arg.op == "+":

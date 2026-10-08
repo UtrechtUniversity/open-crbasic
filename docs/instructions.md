@@ -1509,3 +1509,12 @@ String` is 24), else `Optional parameter must be an array of type string of leng
 literal `"abc"` fail; `* 96`, `* 97`, `* 99`, `* 100`, `* 200` and `N100(2)` pass). It precedes
 the `GPS pps synchronization` line. A `StructureType` first argument keeps its own
 `Size of NMEASentences ...` check. Reproducer: cr1000x `false_accept/cb78fdc14db5`.
+
+### `MQTTPublish` numeric payload expressions (CR300/CR350; fixture `mqtt_payload_expr`)
+
+The existing payload check only looked at a number or a name. Observed 2026-10-08 on CR300 and
+CR350: `1+2`, `(1+2)`, `F+1` and `-1` (arithmetic of numbers and non-String variables) give `A string
+or string variable is required` too, while `"a"+"b"`, `Payload+"x"` and a String array element
+compile. `(Payload)` (parenthesised String variable) and `Left(Payload,2)` also fail in the real
+compiler but are not modelled. `_numeric_expression` leaves everything else unchecked.
+Reproducer: cr350 `false_accept/439f82e4dea8`.

@@ -1,0 +1,127 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-mqtt_payload_expr-0",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",1+2,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-1",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",F+1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-2",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",\"a\"+\"b\",0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-3",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",-1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-4",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",Pa(1),0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-5",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",F,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-6",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",Payload+\"x\",0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-mqtt_payload_expr-7",
+   "logger": "cr300",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",(1+2),0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-0",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",1+2,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-1",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",F+1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-2",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",\"a\"+\"b\",0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-3",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",-1,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-4",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",Pa(1),0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-5",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",F,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-6",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",Payload+\"x\",0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-mqtt_payload_expr-7",
+   "logger": "cr350",
+   "source": "Public Result, Flag As Boolean, Payload As String = \"TestString\", F, Pa(2) As String\nBeginProg\n  Scan (1,Sec,0,0)\n    Result = MQTTPublish (\"TestTopic\",(1+2),0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A string or string variable is required"
+  }
+ ]
+}
