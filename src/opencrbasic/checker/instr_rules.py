@@ -1445,6 +1445,19 @@ def _delay_option(stmt: S.Instruction, env):
         return None
 
 
+def check_samplefieldcal(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`SampleFieldCal with no FieldCal in program.` on the first `SampleFieldCal` when the program
+    holds no `FieldCal` or `FieldCalStrain` call (docs/instructions.md "SampleFieldCal"); only the
+    first is reported."""
+    stmts = [st for st in program.statements if isinstance(st, S.Instruction)]
+    if any(st.keyword.upper() in ("FIELDCAL", "FIELDCALSTRAIN") for st in stmts):
+        return
+    for st in stmts:
+        if st.keyword.upper() == "SAMPLEFIELDCAL" and "SAMPLEFIELDCAL" in profile.instructions:
+            diags.error(st.line, "SampleFieldCal with no FieldCal in program.", st.file)
+            return
+
+
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
     """CR6/CR1000X CDM instructions with a constant `CDMType` and a `CPIAddress` (1..120);
     docs/instructions.md "CDM address and module type".

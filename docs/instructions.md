@@ -1420,3 +1420,14 @@ only (`var_types.py`). Reproducer: cr350 `false_accept/1465963db41a`.
 `ArgosError (Dest)` with a numeric variable (`Errors`, `Errors(1)`) gives `A string variable
 destination is required` on CR6/CR1000X; a String variable or String array element compiles.
 Reproducers: cr6 `false_accept/6aba4c3dfeb4`, `e4ee6f95bb9c`.
+
+### `SampleFieldCal with no FieldCal in program.` (fixtures `samplefieldcal_a`, `samplefieldcal_b`)
+
+A `SampleFieldCal` in a table, when the program holds no `FieldCal` (also inside a one-line `If`)
+call, gives this error at the first `SampleFieldCal` only (a second table's `SampleFieldCal` adds
+none), on all four loggers (2026-10-08). `LoadFieldCal` does not count. `FieldCalStrain` is treated
+as counting like `FieldCal` (its own probe was rejected for another reason, so this is
+unverified and can only under-report). When the table has no other output instruction the real
+compiler adds `Table <name> declared with no output fields.` at `EndTable`; that line belongs to
+the table checks and is not produced here, so fixtures only hold tables with another output.
+Reproducer: cr1000x `false_accept/0f0e2e02684b` (still differs by that second line).

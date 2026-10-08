@@ -450,6 +450,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): output-processing
         # instructions placed outside `DataTable...EndTable`, and an orphan `EndTable`.
         table_stop = _run_pass_capture(instr_data.check_table_structure, program, profile, diags)
+        _run_pass(instr_rules.check_samplefieldcal, _with_inline(program), profile, diags)
         if not early.items and not generic_errors:  # hidden by a `Scan` value error (oracle, CR6/CR1000X, 2026-10-03)
             _run_pass(instr_data.check_units_targets, program, profile, diags)
         # Also pass 2 (oracle-confirmed the same way, `docs/instructions.md`): `Range`/`SW12`/
