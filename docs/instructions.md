@@ -1518,3 +1518,15 @@ or string variable is required` too, while `"a"+"b"`, `Payload+"x"` and a String
 compile. `(Payload)` (parenthesised String variable) and `Left(Payload,2)` also fail in the real
 compiler but are not modelled. `_numeric_expression` leaves everything else unchecked.
 Reproducer: cr350 `false_accept/439f82e4dea8`.
+
+### `Illegal Matrix` operands (all four loggers; fixture `matrix_illegal`)
+
+`Matrix (Option, A, B, Dest)` (2026-10-08): an operand that is a String literal (`A` or `B`), a
+number as `B` (options 1-3) or a declared Float array of three dimensions (`A`, `B` or `Dest`)
+prints `Illegal Matrix` first, then the dimension messages that follow when that operand has a shape
+unlike every real one: options 1, 2, 4, 5 add `Illegal Matrix dimensioned`; option 3 adds `multiply A
+columns and B rows must be the same` when `A` or `B` is the bad one and `multiply result illegal
+dimensioned, must be m,q` when `Dest` is (`m`, `q` from the real `A` and `B`). Modelled by giving
+such an operand the shape `(-1, -1)` in `_matrix_dimension_errors`. A String *destination* has its
+own `Illegal destination variable type, expecting Float.` and a number as `A` its own cascade;
+both are left unchecked. Reproducers: cr350 `false_accept/90559e8e4db1`, `c65123ff7474`.

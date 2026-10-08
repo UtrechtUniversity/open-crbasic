@@ -1,0 +1,471 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-matrix_illegal-0",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-1",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,Tq3,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-2",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-3",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-4",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,Tq3,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr6-matrix_illegal-5",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,Tq3,A,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr6-matrix_illegal-6",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply result illegal dimensioned, must be 3,3"
+  },
+  {
+   "id": "cr6-matrix_illegal-7",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-8",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,A,0,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-9",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(5,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-10",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,\"fuzz\",B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-11",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,\"fuzz\",Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-12",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,\"fuzz\",0,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr6-matrix_illegal-13",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,\"fuzz\",B,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr6-matrix_illegal-14",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,\"fuzz\",Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr6-matrix_illegal-15",
+   "logger": "cr6",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,5,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-0",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-1",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,Tq3,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-2",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-3",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-4",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,Tq3,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-5",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,Tq3,A,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-6",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply result illegal dimensioned, must be 3,3"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-7",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-8",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,A,0,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-9",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(5,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-10",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,\"fuzz\",B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-11",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,\"fuzz\",Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-12",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,\"fuzz\",0,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-13",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,\"fuzz\",B,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-14",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,\"fuzz\",Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr1000x-matrix_illegal-15",
+   "logger": "cr1000x",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,5,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-0",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-1",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,Tq3,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-2",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-3",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-4",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,Tq3,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr300-matrix_illegal-5",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,Tq3,A,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr300-matrix_illegal-6",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply result illegal dimensioned, must be 3,3"
+  },
+  {
+   "id": "cr300-matrix_illegal-7",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-8",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,A,0,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-9",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(5,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-10",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,\"fuzz\",B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-11",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,\"fuzz\",Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-12",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,\"fuzz\",0,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr300-matrix_illegal-13",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,\"fuzz\",B,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr300-matrix_illegal-14",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,\"fuzz\",Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr300-matrix_illegal-15",
+   "logger": "cr300",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,5,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-0",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-1",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,Tq3,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-2",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(1,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-3",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,Tq3,B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-4",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,Tq3,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr350-matrix_illegal-5",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,Tq3,A,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr350-matrix_illegal-6",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,B,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply result illegal dimensioned, must be 3,3"
+  },
+  {
+   "id": "cr350-matrix_illegal-7",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-8",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,A,0,Tq3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-9",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(5,Tq3,0,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-10",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,\"fuzz\",B,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-11",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,\"fuzz\",Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-12",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(4,\"fuzz\",0,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  },
+  {
+   "id": "cr350-matrix_illegal-13",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,\"fuzz\",B,Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr350-matrix_illegal-14",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(3,A,\"fuzz\",Mul)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: multiply A columns and B rows must be the same"
+  },
+  {
+   "id": "cr350-matrix_illegal-15",
+   "logger": "cr350",
+   "source": "Dim A(3,3) = {1,2,3,4,5,6,7,8,9}\nDim B(3,3) = {1,2,0,0,1,1,2,0,1}\nDim Tq3(3,3,2), Dq3(3,3,2), V(3), Vb(2,2), Cl(3,4), R3(3,3)\nPublic Add(3,3), Mul(3,3), Big(4,4), Rr(3,4), R1(3)\nBeginProg\n  Scan (1,Sec,0,1)\n    Matrix(2,A,5,Add)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal Matrix\nline 7: Illegal Matrix dimensioned"
+  }
+ ]
+}

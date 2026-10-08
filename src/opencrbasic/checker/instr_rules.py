@@ -1100,21 +1100,33 @@ def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[in
         if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM", "STATIC"):
             for v in st.vars:
                 (repeated if v.name.upper() in seen else seen).add(v.name.upper())
-    return {n: (d[0], d[1] if len(d) == 2 else 1) for n, d in dims.items()
-            if len(d) <= 2 and types.get(n) == "FLOAT" and n not in repeated}
+    return {n: _ILLEGAL_MATRIX if len(d) > 2 else (d[0], d[1] if len(d) == 2 else 1)
+            for n, d in dims.items() if len(d) <= 3 and types.get(n) == "FLOAT" and n not in repeated}
+
+
+# Shape given to an operand the compiler calls `Illegal Matrix` (a String literal, an array of
+# three dimensions); it differs from every real shape, which reproduces the messages that follow.
+_ILLEGAL_MATRIX = (-1, -1)
 
 
 def _matrix_dimension_errors(option: int, args, shapes) -> list[str]:
     """`Matrix` operand dimension messages (oracle 2026-10-03, all four loggers,
     `docs/instructions.md` "Matrix dimensions"); empty unless every checked operand is a bare
-    Float variable of known shape (`B` is unused by options 4 and 5)."""
+    Float variable of known shape (`B` is unused by options 4 and 5). A String literal operand or an
+    array of three dimensions is `Illegal Matrix` (oracle 2026-10-08, `docs/instructions.md`)."""
     ops = [args[1], args[2], args[3]] if option <= 3 else [args[1], args[3]]
     shape = []
-    for a in ops:
-        if not isinstance(a, S.Name) or a.name.upper() not in shapes:
+    for i, a in enumerate(ops):
+        if (isinstance(a, S.String) and i < len(ops) - 1) or \
+                (isinstance(a, S.Number) and option <= 3 and i == 1):
+            # (a String destination has its own message; a number is only probed as `B`)
+            shape.append(_ILLEGAL_MATRIX)
+        elif isinstance(a, S.Name) and a.name.upper() in shapes:
+            shape.append(shapes[a.name.upper()])
+        else:
             return []
-        shape.append(shapes[a.name.upper()])
-    out = ["Matrix cannot be > 4X4" for sh in shape if max(sh) > 4]
+    out = ["Illegal Matrix"] if _ILLEGAL_MATRIX in shape else []
+    out += ["Matrix cannot be > 4X4" for sh in shape if max(sh) > 4]
     result = shape[-1]
     if option == 3:
         (m, n), (p, q) = shape[0], shape[1]
