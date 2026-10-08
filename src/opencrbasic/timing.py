@@ -67,6 +67,8 @@ alters `[Times]`.
 
 from __future__ import annotations
 
+import re
+
 from . import consteval, mode
 from . import syntax as S
 from .profiles import Profile
@@ -152,8 +154,8 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
             _paneltemp(stmt, env, lines)
         elif kw == "DELAY":
             _delay(stmt, env, lines, pipeline)
-        elif kw == "TCDIFF":
-            _tcdiff(stmt, env, lines)
+        elif kw in _MEASURE:
+            _measure(stmt, env, lines)
     return lines
 
 
@@ -185,10 +187,47 @@ def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: 
     lines.append(f"line {stmt.line}: Delay = {cost}")
 
 
-def _tcdiff(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
-    if len(stmt.args) < 9:
+# (reps, range, channel, flag, settle, integ) argument positions; `flag_adds` is True when the
+# flag (MeasOff / RevDiff) adds one measurement per rep to a single-ended / doubles a differential.
+_MEASURE = {
+    "VOLTSE": (1, 2, 3, 4, 5, 6, False),
+    "VOLTDIFF": (1, 2, 3, 4, 5, 6, True),
+    "TCSE": (1, 2, 3, 6, 7, 8, False),
+    "TCDIFF": (1, 2, 3, 6, 7, 8, True),
+}
+_PLAIN_RANGES = {800, 802, 804}
+_C_RANGES = {820, 822, 824}
+
+
+def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
+    """VoltSe/VoltDiff/TCSe/TCDiff (docs/cli.md "Voltage and thermocouple cost"). Not modelled
+    (no entry): AutoRange, non-constant arguments, negative settle/integ."""
+    ri, gi, ci, fi, si, ii, doubling = _MEASURE[stmt.keyword]
+    if len(stmt.args) <= ii:
         return
-    reps = _num(_const(stmt.args[1], env))
-    settling = _num(_const(stmt.args[8], env))
-    if reps == 1 and settling == 15000:
-        lines.append(f"line {stmt.line}: TCDiff = 2900")
+    reps, rng, flag, settle, integ = (_num(_const(stmt.args[k], env)) for k in (ri, gi, fi, si, ii))
+    chan = stmt.args[ci]
+    um = re.fullmatch(r"U(\d+)", chan.name.upper()) if isinstance(chan, S.Name) else None
+    u_chan = um is not None and (not doubling or int(um.group(1)) % 2 == 1)  # even U is no differential pair
+    if um is not None and not u_chan:
+        chan = S.Number(chan.line, value=0)
+    if not u_chan and _num(_const(chan, env)) is None:
+        return
+    if None in (reps, rng, flag, settle, integ) or reps < 1 or settle < 0 or integ < 0:
+        return
+    if rng not in _PLAIN_RANGES and rng not in _C_RANGES:
+        return
+    n = reps * (2 if flag else 1) if doubling else reps + (1 if flag else 0)
+    ks = int((24 * (settle or 500) + 127) // 256)
+    kx = 24 if integ == 0 else int((24e6 / integ + 128) // 256)
+    thirds = 32 * ks
+    extra = 0
+    if rng in _C_RANGES:
+        extra = 50 * reps
+        if u_chan:
+            thirds += 160
+    cost = int(140 + extra + n * (816 + -(-thirds // 3) + 32 * kx // 3)) // 100 * 100
+    lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
+
+
+_LABEL = {"VOLTSE": "VoltSe", "VOLTDIFF": "VoltDiff", "TCSE": "TCSe", "TCDIFF": "TCDiff"}

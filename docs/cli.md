@@ -122,8 +122,17 @@ actually appear in this repository's programs or the CHM sample were pursued.
 - A blank entry precedes every `Scan` line but the first; a `Scan` inside a `Sub`/`Function` is
   labelled `Scan: N (Subroutine)` (same counter; its body is timed like any span). Both branches of
   a single-line `If c Then a Else b` are timed (inline bodies are walked in order).
-- `TCDiff(..., Reps, ..., SettlingTime, ...)` with `Reps=1` and `SettlingTime=15000` (the only
-  shape exercised): `2900`.
+- `VoltSe`, `VoltDiff`, `TCSe`, `TCDiff` (Range 800/802/804 plain, 820/822/824 "C"; fitted on ~9,300
+  real points, 0 residual): with `ks = (24*s' + 127)//256` (`s' = settle`, 500 when 0),
+  `kx = (24e6/integ + 128)//256` (24 when `integ` is 0), `n` = measurements (`reps + flag` for
+  VoltSe/TCSe, `reps*(1+flag)` for VoltDiff/TCDiff, flag = MeasOff/RevDiff, any non-zero counts
+  as 1), the cost is `floor((140 + extra + n*(816 + ceil((32*ks + u)/3) + floor(32*kx/3)))/100)*100`.
+  `extra = 50*reps` for a C range, else 0; `u = 160` for a C range with a valid `U` channel
+  (`Un`; for differential instructions only odd `n` -- an even `Un` behaves as a numeric channel),
+  else 0. A plain range has no channel dependence. Any constant numeric channel (also out of range)
+  is "numeric". `integ` is the raw value (`_60Hz` is 60). Not modelled, so no entry: AutoRange
+  (810/830), non-constant reps/range/flag/settle/integ. Real constant K is anywhere in [140, 141)
+  (integer sums); 141 in the earlier fit was wrong at an exact boundary.
 - `[Times]` entries are gated on the same pass-1/pass-2 boundary the checker itself already uses
   (`checker/__init__.py`), not on the overall compile result: a program whose only error is a
   pass-2 check (e.g. a channel-range error) still gets a full `[Times]` section, including the
@@ -137,26 +146,14 @@ actually appear in this repository's programs or the CHM sample were pursued.
   (`[Times]in.CR6 -- Compile Failed!`, oracle-confirmed) -- `src/opencrbasic/cli.py` reproduces
   this exactly, rather than always inserting a separator.
 
-Investigated, not implemented: `VoltSe`'s own cost also depends on its `Reps` argument (1500,
-3000, 4400, 5800, 11500 for `Reps` 1/2/3/4/8, `SettlingTime=15000` fixed) but the successive
-deltas (1500/1400/1400/~1425) rule out a simple linear-in-`Reps` formula, and this was not
-pursued further (absent from every program in this repository). 91/100 CHM-sample files matched
-exactly after excluding the pre-existing checker verdict gaps below; the residual misses are the
-two `VoltSe` cases above plus five files where this project's own checker currently false-rejects
-a real instruction/function (`SWVX`, `UDPSocketOpen`/`Send`/`Recv`/`Close`, `Base64Encode`) that
-the real exe accepts -- a pre-existing checker gap unrelated to `-t` itself, not a timing bug.
+The residual CHM misses are checker verdict gaps (programs whose pass-1 error the checker does
+not find, so `-t` prints entries where the exe prints none), not timing rules.
 
 ### Oracle measurements not yet implemented (2026-10-08, CR6)
 
 From a reverted `timing.py` rewrite (unsafe for `...C` ranges and valid `U` channels). These
 correct or extend the rules above and are the starting point for the next `-t` round.
 
-- VoltSe/VoltDiff/TCSe/TCDiff: `floor((141 + n*P)/100)*100`, VoltSe `n = reps + MeasOff`,
-  VoltDiff `n = reps*(1+flag)`, `P = 816 + ceil(32/3*ks) + floor(32/3*kx)`,
-  `ks = (24*s' + 127)//256` (`s' = 500` when settle is 0), `kx = (24e6/x + 128)//256` (`kx = 24`
-  when integ is 0). Exact on all 1,584 sweep points for `mv5000`/`mv1000`/`mv200` with a numeric
-  channel. Not modelled: a `...C` range adds ~50 us per rep (numeric channels) or ~103 us per rep
-  (valid `U` channels); TCDiff/TCSe likewise +50 per rep; ExciteV/ACPower valid-channel regimes.
 - Closed forms: PulsePort `floor((2d+100)/100)*100`; PulseCount 100; Calibrate (2000, 7700) x3;
   CS616 `200+500*reps`; PeriodAvg `reps*timeout*1000+200`; MuxSelect `base + ch*(2000*pw+50)`
   (base 13000, or 100 when mode is 0; not timed in SequentialMode); ExciteV
