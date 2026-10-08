@@ -1686,11 +1686,14 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         return ("pass1", "fallback")
     nxt = toks[i]
     if nxt.kind == "OP" and nxt.text == "=" and first.kind == "IDENT":
-        return _scan_expr(toks, i + 1, operands, functions, assign=True, start_operand=False)
+        # (a plain target's value is read like a condition: a stray top-level comma is
+        # `Incomplete expression`; an indexed target's is not probed that way)
+        return _scan_expr(toks, i + 1, operands, functions, assign=True, start_operand=False,
+                          cond=i == 1)
     if nxt.kind in ("IDENT", "NUMBER", "STRING") and not (nxt.kind == "IDENT"
                                                          and nxt.upper in _BINARY_WORDS):
         return ("pass1", "fallback")
-    if nxt.kind == "OP" and nxt.text == ",":
+    if nxt.kind == "OP" and nxt.text in (",", ")"):
         return ("pass1", "fallback")
     if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
         return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)

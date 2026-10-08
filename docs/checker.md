@@ -3884,3 +3884,8 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   assignment) is a pass-1 `Invalid, or out of place expression: Y.`, so later pass-2-only findings are
   hidden. Gaps seen, not modelled: `If c Then Battery` (inline instruction arity) and the `declared but
   never called` warning for a table named in an inline `CallTable`.
+- **Stray `)` and `,`** (`r5cr6_stray_paren_comma`, CR6/CR1000X): `X )`, `X ) + 1`, `X ) )` are pass-1
+  `Invalid, or out of place expression` (not `Incomplete expression`); in `Y = 1, 2` / `Y = Z, W` /
+  `Y = Int(1), 2` a top-level comma after an operand is pass-1 `Incomplete expression`, and one where an
+  operand is expected (`Y = , 1`) the generic fallback (a name before the comma that does not resolve is
+  still pass 2). An indexed target (`A(1) = 1, 2`) keeps the pass-2 fallback.
