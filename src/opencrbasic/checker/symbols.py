@@ -312,7 +312,27 @@ def declared_names(program: S.Program) -> set[str]:
         m = _SNMP_VARIABLE_RE.match(getattr(stmt, "text", "") or "")
         if m:
             names.add(m.group(1).upper())
+        if isinstance(stmt, S.Unparsed) and stmt.reason.startswith("Invalid As clause: "):
+            names.update(_names_through_bad_as_clause(stmt))
     return names
+
+
+def _names_through_bad_as_clause(stmt: S.Unparsed) -> set[str]:
+    """`Public Q, Flag A s Boolean`: the variables up to and including the one with the invalid
+    `As` clause are registered, later ones are not (oracle, CR300, 2026-10-08)."""
+    m = re.match(r"(?i)\s*(?:Public|Dim|Static)\s+(.*)$", stmt.text or "", re.S)
+    if not m:
+        return set()
+    bad = re.escape(stmt.reason[len("Invalid As clause: "):].strip())
+    out: set[str] = set()
+    for item in m.group(1).split(","):
+        name = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)", item)
+        if not name:
+            break
+        out.add(name.group(1).upper())
+        if bad and re.search(rf"\b{bad}\b", item[name.end():]):
+            break
+    return out
 
 
 _SNMP_VARIABLE_RE = re.compile(r"(?i)\s*SNMPVariable\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)")

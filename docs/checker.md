@@ -3977,3 +3977,9 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   (`expressions._value_less_tables`); the `Member` walks of `_names_and_dims` and
   `cr3xx._arity_walk` no longer report a table base. Prose after an alias of a cascade-dropped
   declaration (`Alias AC_Pwr(1) = Real_Power` with `AC_Pwr` dropped) sees the alias name as undefined.
+
+- **Invalid `As` clause still registers names** (fixture `decl_bad_as_names.json`):
+  `Public Q, Flag A s Boolean` registers `Q` and `Flag` (the variables up to and including the bad
+  one; later ones are not registered), so later uses do not print `is not defined`
+  (`symbols._names_through_bad_as_clause`). Surfaced by the `If`-without-`Then` check above.
+  Not modelled: `Public Flag As Banana, R` should leave `R` unregistered.
