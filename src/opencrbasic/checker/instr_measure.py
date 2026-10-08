@@ -68,9 +68,12 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
         by_instr.setdefault(rule["instr"], []).append(rule)
     if not by_instr:
         return
+    from .instr_rules import cdm_null_module
     names = longconv.float_names(flat), longconv.literal_names(flat)
     for stmt in flat:
         if not isinstance(stmt, S.Instruction):
+            continue
+        if stmt.keyword.upper().startswith("CDM_") and cdm_null_module(stmt, env):
             continue
         for rule in by_instr.get(stmt.keyword.upper(), ()):
             raw = _raw_arg(stmt, rule["pos"], env)
@@ -85,14 +88,14 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
                 continue
             if "lower_gate" in rule and value < rule["lower_gate"]:
                 continue
-            if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
-                continue
-            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
             if value in rule.get("allow", ()):
                 continue
             if value in rule.get("warn_values", ()):
                 diags.warning(stmt.line, rule["warn_message"], stmt.file)
                 continue
+            if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
+                continue
+            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
             if shown is not None:
                 diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
 
@@ -164,14 +167,6 @@ def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
     return False
 
 
-def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: Diagnostics) -> None:
-    """CR300/CR350: a StructureType variable as the `SDI12Recorder` destination gives `Could not
-    find DataTable <argument text>.`; docs/instructions.md#sdi12recorder-structure-destination."""
-    dest = stmt.args[0] if stmt.args else None
-    if not isinstance(dest, (S.Name, S.Index)) or (isinstance(dest, S.Index) and None in dest.args):
-        return
-    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
-    if type_name is not None and any(
 def _check_ch400status(stmt: S.Instruction, env: consteval.Env, diags: Diagnostics) -> None:
     """`CH400Status(Interval, Units)`: the converted interval times the unit, in microseconds,
     must be a whole number of seconds; docs/instructions.md "CH400Status interval and FFT source length"."""
@@ -199,6 +194,14 @@ def _check_fft_source(stmt: S.Instruction, dims: dict, env: consteval.Env, diags
         diags.error(stmt.line, f"{stmt.args[0].name} must be of length >= {n}.", stmt.file)
 
 
+def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: Diagnostics) -> None:
+    """CR300/CR350: a StructureType variable as the `SDI12Recorder` destination gives `Could not
+    find DataTable <argument text>.`; docs/instructions.md#sdi12recorder-structure-destination."""
+    dest = stmt.args[0] if stmt.args else None
+    if not isinstance(dest, (S.Name, S.Index)) or (isinstance(dest, S.Index) and None in dest.args):
+        return
+    type_name = symbols.declared_variable_types(program).get(dest.name.upper())
+    if type_name is not None and any(
             isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" and st.args and
             isinstance(st.args[0], S.Name) and st.args[0].name.upper() == type_name
             for st in program.statements):

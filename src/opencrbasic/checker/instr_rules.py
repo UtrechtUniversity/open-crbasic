@@ -1419,6 +1419,7 @@ _CDM_ADDRESS_INSTRUCTIONS = frozenset({
     "CDM_BRHALF", "CDM_EXCITEV", "CDM_EXCITEI", "CDM_SW12", "CDM_SW5", "CDM_SWPOWER",
     "CDM_DELAY", "CDM_PULSEPORT", "CDM_MUXSELECT", "CDM_THERM107", "CDM_RESISTANCE",
     "CDM_ACPOWER", "CDM_CURRENTDIFF", "CDM_BRFULL6W", "CDM_BRHALF3W", "CDM_TCCOMP",
+    "CDM_PERIODAVG",
 })
 # `CDMType` values that name a module (the other values 0..65536 are the unnamed `NULL` module;
 # oracle sweep 0..299 on CR6 and CR1000X, spot values above).
@@ -1430,7 +1431,7 @@ _CDM_NULL_MODULE = {
     "CDM_PANELTEMP": [_CDM_ANALOG], "CDM_BRFULL6W": [_CDM_ANALOG], "CDM_BRHALF3W": [_CDM_ANALOG],
     "CDM_THERM107": [_CDM_ANALOG], "CDM_RESISTANCE": [_CDM_ANALOG],
     "CDM_BATTERY": ["CDM_Battery"], "CDM_DELAY": ["CDM_Delay"], "CDM_PULSEPORT": ["CDM_PulsePort"],
-    "CDM_TCCOMP": ["CDM_TCComp"], "CDM_ACPOWER": ["CDM_ACPower"],
+    "CDM_TCCOMP": ["CDM_TCComp"], "CDM_ACPOWER": ["CDM_ACPower"], "CDM_PERIODAVG": ["CDM_PeriodAvg"],
     "CDM_EXCITEV": ["CDM_Excite"], "CDM_EXCITEI": ["CDM_Excite"], "CDM_MUXSELECT": ["CDM_MuxSel"],
     "CDM_SW12": ["SW"], "CDM_SW5": ["SW"],
     "CDM_SWPOWER": ["CDM_SWPower", "SW"], "CDM_CURRENTDIFF": ["CDM_CurrentDiff", _CDM_ANALOG],
@@ -1458,6 +1459,31 @@ def check_samplefieldcal(program: S.Program, profile, diags: Diagnostics) -> Non
             return
 
 
+def _cdm_type_value(kind) -> int | None:
+    """A `CDMType` constant as the integer the compiler reads: a number truncates, a string is 0
+    (oracle: `"fuzz"` and `1.5` are the `NULL` module); `TRUE` and other values are not modelled."""
+    if isinstance(kind, bool):
+        return None
+    if isinstance(kind, str):
+        return 0
+    return int(kind) if isinstance(kind, (int, float)) and kind == kind and abs(kind) < 2 ** 31 else None
+
+
+def cdm_null_module(stmt: S.Instruction, env) -> bool:
+    """A constant `CDMType` that names no module on a CDM instruction that reports the `NULL`
+    module; such a statement gets no `const_ranges` diagnostic (oracle, `CDM_TCComp` and
+    `CDM_PeriodAvg`: only the module line)."""
+    kw = stmt.keyword.upper()
+    if kw not in _CDM_NULL_MODULE or not stmt.args:
+        return False
+    try:
+        kind = _cdm_type_value(consteval.value_of(stmt.args[0], env))
+    except consteval.NotConstant:
+        return False
+    return kind is not None and 0 <= kind <= 65536 and kind not in _CDM_NAMED_TYPES \
+        and (kw != "CDM_DELAY" or _delay_option(stmt, env) == 0)
+
+
 def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env) -> None:
     """CR6/CR1000X CDM instructions with a constant `CDMType` and a `CPIAddress` (1..120);
     docs/instructions.md "CDM address and module type".
@@ -1467,6 +1493,8 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
     - Otherwise a type that names no module (the `NULL` module) -> `<name> instruction not supported
       by module NULL.` (`SWPower` and `CurrentDiff` add a second line; `CDM_Delay` only for Option 0).
       The clash replaces it.
+    A constant `CPIAddress` outside 1..120 -> `CPI Address must be 1..120.`
+    first; the statement then counts as address 1 (docs/instructions.md "CPI address range").
     Non-constant arguments are skipped."""
     if profile.name not in ("cr6", "cr1000x"):
         return
@@ -1476,20 +1504,30 @@ def check_cdm_address_types(program: S.Program, profile, diags: Diagnostics, env
         if kw not in _CDM_ADDRESS_INSTRUCTIONS or len(stmt.args) < 2:
             continue
         try:
-            kind = consteval.value_of(stmt.args[0], env)
             address = consteval.value_of(stmt.args[1], env)
         except consteval.NotConstant:
             continue
-        if isinstance(address, bool) or not isinstance(address, (int, float)) \
-                or isinstance(kind, (bool, str)) or not isinstance(kind, (int, float)) \
-                or address != int(address) or not 1 <= address <= 120:
+        # The address converts as C's `(long)`; outside 1..120 (a string, `TRUE`, overflow) is
+        # `CPI Address must be 1..120.` and the statement then registers as address 1 (oracle).
+        address = consteval.to_long(address)
+        if not 1 <= address <= 120:
+            if kw != "CDM_PERIODAVG":  # its message is a `const_ranges` rule (printed last)
+                diags.error(stmt.line, "CPI Address must be 1..120.", stmt.file)
+            address = 1
+        try:
+            kind = consteval.value_of(stmt.args[0], env)
+        except consteval.NotConstant:
             continue
-        address = int(address)
+        if isinstance(kind, (bool, str)) or not isinstance(kind, (int, float)) or kind != int(kind):
+            # a string or fraction only gets the module line (its clash behaviour is not probed)
+            if cdm_null_module(stmt, env):
+                for name in _CDM_NULL_MODULE.get(kw, ()):
+                    diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
+            continue
         if first.setdefault(address, kind) != kind:
             diags.error(stmt.line, f"Address {address} already used with a different type CDM.",
                         stmt.file)
-        elif kind == int(kind) and 0 <= kind <= 65536 and int(kind) not in _CDM_NAMED_TYPES \
-                and (kw != "CDM_DELAY" or _delay_option(stmt, env) == 0):
+        elif cdm_null_module(stmt, env):
             for name in _CDM_NULL_MODULE.get(kw, ()):
                 diags.error(stmt.line, f"{name} instruction not supported by module NULL.", stmt.file)
 

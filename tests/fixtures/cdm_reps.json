@@ -1,0 +1,169 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-cdm_reps-0",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),0,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr6-cdm_reps-1",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cdm_reps-2",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),4,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cdm_reps-3",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1.5,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cdm_reps-4",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),0.5,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr6-cdm_reps-5",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltSe (VOLT116,1,V(),0,mv5000,1,1,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr6-cdm_reps-6",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_TCSE (CDM_A108,1,T(),0,mv200,1,TypeT,PT,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr6-cdm_reps-7",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_TCDiff (CDM_A108,1,T(),0,mv200,1,TypeT,PT,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr6-cdm_reps-8",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_BrHalf(CDM_A108,1,V(),0,mV1000,1,X1,1,1000,True,0,60,355,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)"
+  },
+  {
+   "id": "cr6-cdm_reps-9",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_Resistance(CDM_A108,1,V(),0,mV200,1,X1,1,2500,True,True,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)"
+  },
+  {
+   "id": "cr6-cdm_reps-10",
+   "logger": "cr6",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1,mv5000C,0,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Input channel: 0, out of range (1 - 16)."
+  },
+  {
+   "id": "cr1000x-cdm_reps-0",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),0,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr1000x-cdm_reps-1",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cdm_reps-2",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),4,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cdm_reps-3",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1.5,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cdm_reps-4",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),0.5,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr1000x-cdm_reps-5",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltSe (VOLT116,1,V(),0,mv5000,1,1,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr1000x-cdm_reps-6",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_TCSE (CDM_A108,1,T(),0,mv200,1,TypeT,PT,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr1000x-cdm_reps-7",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_TCDiff (CDM_A108,1,T(),0,mv200,1,TypeT,PT,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)\nline 4: MeasPEx: 0, must be greater than 0."
+  },
+  {
+   "id": "cr1000x-cdm_reps-8",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_BrHalf(CDM_A108,1,V(),0,mV1000,1,X1,1,1000,True,0,60,355,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)"
+  },
+  {
+   "id": "cr1000x-cdm_reps-9",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_Resistance(CDM_A108,1,V(),0,mV200,1,X1,1,2500,True,True,0,60,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Reps: 0, out of range (1 - 65536)"
+  },
+  {
+   "id": "cr1000x-cdm_reps-10",
+   "logger": "cr1000x",
+   "source": "Public V(4), T(4), X1v, PT\nBeginProg\n  Scan (1,Sec,100,0)\n    CDM_VoltDiff (VOLT116,1,V(),1,mv5000C,0,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Input channel: 0, out of range (1 - 16)."
+  }
+ ]
+}

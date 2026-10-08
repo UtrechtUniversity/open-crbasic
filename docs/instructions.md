@@ -1455,3 +1455,47 @@ time is 10.` (`1`, `2`, `5`, `9`, `9.9` -> 9, `-1`; `1.5` -> 1). It follows the 
 value` warning of the same line, and is a `const_ranges` entry (new `allow` list for the lone
 accepted value `0`). Not probed on CR6/CR1000X (different parameter lists) or for other CR300
 measurement instructions. Reproducer: cr350 `false_accept/fed9e7c1ded9`.
+
+### CDM value ranges (CR6/CR1000X; fixtures `cdm_ranges`, `cdm_reps`, `cdm_port_and_type`)
+
+All observed 2026-10-08 on both compilers; implemented as `measure.json` `const_ranges` entries
+(plus `check_cdm_address_types`), values converted as C's `(long)`.
+
+- **`CPIAddress` outside 1..120** (position 2): `CPI Address must be 1..120.` for every instruction
+  in the address family (`TCComp`, `PanelTemp`, `Battery`, `SW12`, `Delay`, ... all probed ones),
+  printed *before* the channel and unit messages of the same statement and before the module and
+  address-clash lines. Tested: `-1`, `0`, `121`, `127`, `128`, `255`, `256`, `257`, `300`, `376`, `1000`,
+  `65536`, `-5`, `0.5`, `TRUE`, a string, `99999999999` fail; `1`, `120`, `120.5` (-> 120) pass. The
+  statement then registers as **address 1** for the clash check (`TCComp(...,0,...)` then
+  `Battery(VOLT116,1,...)` gives `Address 1 already used with a different type CDM.`). A fractional
+  in-range address now registers as its truncation (`120.5` clashes with `120`). `CDM_PeriodAvg`
+  prints the same message **last** (after `Timeout`), so it is the final `const_ranges` entry.
+- **`CDM_TCComp` position 8**: `0`, `1`, `2` pass (`2.5` -> 2, `-0.5` -> 0, `1.9` -> 1); `-1` (also
+  `TRUE`, `-1.5`, `-1.9`) gives only `Warning: Open detection disabled.` (new `warn_values`); every
+  other value (`3`, `4`, `255`, `256`, `-2`, `-255`, a string, an overflow) gives `Temperature unit
+  unsupported. Must be 0 (Celsius), 1 (Fahrenheit), or 2 (Kelvin)`, after the channel message.
+- **`CDM_PeriodAvg`**: `Reps` (pos 4) 1..65536 -> `Reps: %d, out of range (1 - 65536).` (with a trailing
+  period here, none on the measurement instructions below); gain (pos 5) 0..3 else `Unrecognized
+  gain code!` (`3.9` passes, `4` and `-1` fail); channel (pos 6) 1..16 -> `Input channel: %d, out of
+  range (1 - 16).`; `Cycles` (pos 9) 1..16777215 -> `Cycles: %d, out of range (1 - 16777215).`;
+  `Timeout` (pos 10) 1..1000 -> `Timeout: %d, out of range (1 - 1000).` (`0.5` -> 0, a string and an
+  overflow show `-2147483648`). Several failures print in the order channel, Reps, gain, Cycles,
+  Timeout, CPI Address. `Timeout 1000` also gives `Insufficient time (1000 ms) ...` and `Reps` above
+  the destination size gives `Variable H out of bounds.`: neither is modelled.
+- **`Reps` (pos 4) on `CDM_VoltDiff`, `VoltSe`, `TCSE`, `TCDiff`, `BrHalf`, `Resistance`, `Therm107`**:
+  1..65536 else `Reps: %d, out of range (1 - 65536)` (no period); all but `BrHalf` and `Resistance` add
+  `MeasPEx: %d, must be greater than 0.` for a value below 1. `CDM_VoltDiff` position 6 (channel)
+  is 1..16 with the `Input channel` message; its `Reps cycle input beyond last channel!` follow-up
+  (seen for 17) is not modelled. Negative `Reps` also prints `Variable V out of bounds.` first, not
+  modelled, so fixtures hold only non-negative cases.
+- **`CDM_SW5` position 3** (port): 1 and 2 pass (`1.5`), anything else (`0`, `3`..`5`, `-1`, `TRUE`, a
+  string) gives `Unrecognized port!`.
+- **`CDMType` as a string or fraction** (`"fuzz"`, `1.5`) is the NULL module like `0` (`CDM_PulsePort`,
+  `TCComp`, `Battery` print `<name> instruction not supported by module NULL.`). A NULL-module
+  statement prints no other `const_ranges` line (`TCComp(0,1,...,25,...)`: only the module line).
+  `CDM_PeriodAvg` is a NULL-module and address-clash instruction too. `TRUE` as `CDMType` prints an
+  empty module name and is not modelled.
+
+Reproducers: cr6 `false_accept/40c80f5860fa`, `43812a224c7f`, `0196a07a009b`, `eef44a5842df`,
+`4cb038a7951b`; cr1000x `05d48966b713`, `7539be70e665`, `731dc3f88411` (the `MeasPEx` line needs
+`Reps 0` on `CDM_VoltDiff`).
