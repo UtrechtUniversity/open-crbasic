@@ -3953,3 +3953,10 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   operators only (`<> <= >=` or one of `+ - * / ^ & < > =`), so `Datalogger</title>` stops after
   `Datalogger`. Not modelled: `Timer is bar baz` reports `bar`, `baz` (`Sin is ...` reports none);
   `Not foo bar` is `Incomplete expression`.
+
+- **`If` without `Then`, and condition-before-body order** (fixture `if_condition_names.json`, all
+  four loggers): `If Nope = True` (no `Then`, accepted when the names resolve) reports like the
+  `Then` form with the rest of the line as the echo (`Invalid symbol in expression: Nope = True.`
+  on CR6/CR1000X, `Nope is not defined.` on CR300/CR350; lines with a comment or continuation are
+  left alone). On a one-line `If c Then stmt` the condition's findings precede the inline
+  statement's (`expressions.check`).

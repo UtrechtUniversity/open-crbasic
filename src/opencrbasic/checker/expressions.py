@@ -639,6 +639,20 @@ def _if_condition_text(stmt: S.Stmt) -> str | None:
         m = re.match(r"(?is)^\s*If\s(.*)$", stmt.text or "")
     return m.group(1) if m else None
 
+_IF_NO_THEN_RE = re.compile(r"(?is)^\s*If\s([^'_]*)$")
+
+
+def _if_condition_text_no_then(stmt: S.Stmt) -> str | None:
+    """`If Nope = True` with no `Then` (accepted when the names resolve): the echo is the rest of
+    the line (oracle, all four loggers, 2026-10-08). Lines with a comment or continuation are left
+    alone."""
+    text = stmt.text or ""
+    if re.search(r"(?i)\bThen\b", text):
+        return None
+    m = _IF_NO_THEN_RE.match(text)
+    return m.group(1) if m else None
+
+
 def _known_names(program: S.Program, profile) -> set[str]:
     """Every name a checked expression position may legally reference: this program's own
     declarations (`symbols.declared_names`), this logger's predefined symbols/functions/
@@ -1111,9 +1125,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         names = _undefined_names(stmt.cond, known)
         text = _if_condition_text(stmt)
+        if text is None:
+            text = _if_condition_text_no_then(stmt)
         if not names or text is None:
             continue
         names, dims = _names_and_dims(known, ds, stmt, (), stmt.cond)
+        before = len(diags.items)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {text}.", stmt.file)
         else:
@@ -1123,6 +1140,15 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
             if dims:
                 diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
+        if stmt.inline is not None:
+            # the condition precedes the inline statements' own findings on the same line
+            # (oracle, all four loggers, 2026-10-08)
+            at = next((i for i, d in enumerate(diags.items[:before])
+                       if (d.line, d.file) == (stmt.line, stmt.file)), None)
+            if at is not None:
+                moved = diags.items[before:]
+                del diags.items[before:]
+                diags.items[at:at] = moved
 
     # `Do While Nope` / `Loop Until (Nope <> 1)`: the condition after `While`/`Until`, like an
     # `If` condition (oracle, 2026-09-28: CR6 `Invalid symbol in expression: (Nope <> 1).`,

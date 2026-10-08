@@ -1,0 +1,387 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-if_condition_names-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = True."
+  },
+  {
+   "id": "cr6-if_condition_names-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = True ."
+  },
+  {
+   "id": "cr6-if_condition_names-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-if_condition_names-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope(1) = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope(1) = 1."
+  },
+  {
+   "id": "cr6-if_condition_names-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then X = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-if_condition_names-5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Nope."
+  },
+  {
+   "id": "cr6-if_condition_names-6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = Nope2\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = Nope2."
+  },
+  {
+   "id": "cr6-if_condition_names-7",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope  \nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope  ."
+  },
+  {
+   "id": "cr6-if_condition_names-8",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid, or out of place expression: Nope2 = 1.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-if_condition_names-9",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Nope2 = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Nope2 = Nope.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-if_condition_names-10",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = Nope3 Else Nope4 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid, or out of place expression: Nope2 = Nope3.\nline 4: Invalid, or out of place expression: Nope4 = 1.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-if_condition_names-11",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Battery(Nope2)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid symbol in expression: Nope2.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-if_condition_names-12",
+   "logger": "cr6",
+   "source": "junk and more\nPublic PR As Boolean = False\nPublic Q\nBeginProg\n  Scan (1,Sec,1,0)\n    If PR = True\n      Q = 1\n    EndIf\n    If PR Then Q = 1\n    If Q = 1 Then\n      PR = False\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: junk and more.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-if_condition_names-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = True."
+  },
+  {
+   "id": "cr1000x-if_condition_names-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = True ."
+  },
+  {
+   "id": "cr1000x-if_condition_names-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-if_condition_names-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope(1) = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope(1) = 1."
+  },
+  {
+   "id": "cr1000x-if_condition_names-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then X = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-if_condition_names-5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: X = Nope."
+  },
+  {
+   "id": "cr1000x-if_condition_names-6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = Nope2\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope = Nope2."
+  },
+  {
+   "id": "cr1000x-if_condition_names-7",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope  \nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope  ."
+  },
+  {
+   "id": "cr1000x-if_condition_names-8",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid, or out of place expression: Nope2 = 1.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-if_condition_names-9",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Nope2 = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Nope2 = Nope.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-if_condition_names-10",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = Nope3 Else Nope4 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid, or out of place expression: Nope2 = Nope3.\nline 4: Invalid, or out of place expression: Nope4 = 1.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-if_condition_names-11",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Battery(Nope2)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .\nline 4: Invalid symbol in expression: Nope2.\nline 5: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 5: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-if_condition_names-12",
+   "logger": "cr1000x",
+   "source": "junk and more\nPublic PR As Boolean = False\nPublic Q\nBeginProg\n  Scan (1,Sec,1,0)\n    If PR = True\n      Q = 1\n    EndIf\n    If PR Then Q = 1\n    If Q = 1 Then\n      PR = False\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: junk and more.\nline 1: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-if_condition_names-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope(1) = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Dimensions not declared: Nope(1) = 1."
+  },
+  {
+   "id": "cr300-if_condition_names-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then X = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = Nope2\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope  \nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Nope2 = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope2 is not defined.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = Nope3 Else Nope4 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined.\nline 4: Nope3 is not defined.\nline 4: Nope4 is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Battery(Nope2)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr300-if_condition_names-12",
+   "logger": "cr300",
+   "source": "junk and more\nPublic PR As Boolean = False\nPublic Q\nBeginProg\n  Scan (1,Sec,1,0)\n    If PR = True\n      Q = 1\n    EndIf\n    If PR Then Q = 1\n    If Q = 1 Then\n      PR = False\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: junk is not defined.\nline 1: more is not defined.\nline 1: Invalid, or out of place expression: junk and more\n.\nline 5: Too many parameters:  Sec.\nline 6: PR is not defined.\nline 7: Q is not defined.\nline 9: PR is not defined.\nline 9: Q is not defined.\nline 10: Q is not defined.\nline 11: PR is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = True Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope(1) = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Dimensions not declared: Nope(1) = 1."
+  },
+  {
+   "id": "cr350-if_condition_names-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then X = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope = Nope2\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope  \nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Nope2 = Nope\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope2 is not defined.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Nope2 = Nope3 Else Nope4 = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined.\nline 4: Nope3 is not defined.\nline 4: Nope4 is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Then Battery(Nope2)\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-if_condition_names-12",
+   "logger": "cr350",
+   "source": "junk and more\nPublic PR As Boolean = False\nPublic Q\nBeginProg\n  Scan (1,Sec,1,0)\n    If PR = True\n      Q = 1\n    EndIf\n    If PR Then Q = 1\n    If Q = 1 Then\n      PR = False\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: junk is not defined.\nline 1: more is not defined.\nline 1: Invalid, or out of place expression: junk and more\n.\nline 5: Too many parameters:  Sec.\nline 6: PR is not defined.\nline 7: Q is not defined.\nline 9: PR is not defined.\nline 9: Q is not defined.\nline 10: Q is not defined.\nline 11: PR is not defined."
+  }
+ ]
+}
