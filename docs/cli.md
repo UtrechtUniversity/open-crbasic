@@ -102,6 +102,14 @@ out to be a per-instruction, per-call-site formula (`thunk_FUN_00522e50`'s ~20 c
 single shared table) -- reimplementing all ~20 was not attempted; only the instructions that
 actually appear in this repository's programs or the CHM sample were pursued.
 
+- Gating: entries are printed only if pass 1 is clean (`cli._pass1_ok`) **and** no error is one of
+  `Invalid symbol in expression`, `Could not find variables`, `Include file ... must have valid
+  program file extension`, or any error located before `BeginProg` in the main file (prose lines
+  ahead of it). The real exe prints a bare `[Times]` for these although they are pass-2 findings
+  in our checker (CHM, CR6: 464/507 -> 503/507 exact; repo 16/16 unchanged). `-z`/`-l` are only
+  written for a successful compile, so they are unaffected. Not explained: `pointervariable_2`
+  (real prints no `[Times]` at all), `avgrun_4` (`Missing instance number`), `cdmbridgefilt_1`,
+  `fieldnames_2`.
 - A top-level `Scan(...)` statement (one that does not immediately follow a bare `SlowSequence`)
   opens a timed span, prints `Scan: N`, and closes at its matching `NextScan`; `N` is a 0-based
   count of such spans, **not** a time value (`sdmsio4_1.CR6`'s two sequential top-level `Scan`

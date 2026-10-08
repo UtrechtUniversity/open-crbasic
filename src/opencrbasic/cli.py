@@ -95,6 +95,23 @@ def _write_message_file(path: Path, lines: list[str]) -> None:
     path.write_bytes(_message_bytes(lines))
 
 
+_P1_HIDERS = ("Invalid symbol in expression", "Could not find variables")
+
+
+def _hides_times(program_ast, diags, main) -> bool:
+    """Errors that suppress `[Times]` entries though our checker raises them after pass 1
+    (`docs/cli.md` "-t"): undefined/invalid symbols, a missing include extension, and anything
+    reported before `BeginProg` (prose lines ahead of it)."""
+    begin = next((st.line for st in program_ast.statements
+                  if getattr(st, "keyword", "").upper() == "BEGINPROG"), None)
+    for d in diags.errors:
+        if d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message:
+            return True
+        if begin and d.line and d.line < begin and d.file in (None, main):
+            return True
+    return False
+
+
 def _pass1_ok(program_ast, profile, fallback: bool) -> bool:
     """Whether `checker/__init__.py`'s own pass 1 (structure/expressions/required-parameter
     checks) finds nothing wrong -- the same condition that module uses to gate pass 2 (instruction
@@ -184,7 +201,7 @@ def main(argv: list[str] | None = None) -> int:
             program_ast = None
 
     times_entries: list[str] = []
-    if opts["t"] and program_ast is not None and _pass1_ok(program_ast, profile, result.ok):
+    if opts["t"] and program_ast is not None and _pass1_ok(program_ast, profile, result.ok) and not _hides_times(program_ast, result.diagnostics, program.name):
         from . import timing
         try:
             times_entries = timing.times_lines(program_ast, profile, program.name)

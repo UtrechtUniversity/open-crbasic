@@ -72,6 +72,18 @@ def test_times_entries_survive_a_pass2_only_failure():
     assert "-- Compile Failed!" in expected  # the program itself does not compile
 
 
+def test_times_hidden_by_prose_before_beginprog(tmp_path):
+    """Real exe output (CR6Comp under Wine) for this program is exactly the expected bytes: errors
+    before `BeginProg` (and undefined symbols) suppress `[Times]` entries (docs/cli.md "-t")."""
+    (tmp_path / "t.CR6").write_bytes(
+        b"Some prose line\r\nPublic x\r\nBeginProg\r\nScan(1,Sec,0,0)\r\nPanelTemp(x,15000)\r\n"
+        b"NextScan\r\nEndProg\r\n")
+    _run(tmp_path, ["-t", "t.CR6", "o.msg"])
+    assert (tmp_path / "o.msg").read_bytes() == (
+        b"[Times]t.CR6 -- Compile Failed!\r\n\nline 1: Invalid, or out of place expression: "
+        b"Some prose line.\r\nline 1: Expr illegally occurs before BeginProg.\r\n")
+
+
 def test_no_message_file_flag(tmp_path):
     _stage(tmp_path)
     result = _run(tmp_path, ["--no-message-file", "sample.CR6"])
