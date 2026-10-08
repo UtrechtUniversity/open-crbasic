@@ -142,3 +142,29 @@ exactly after excluding the pre-existing checker verdict gaps below; the residua
 two `VoltSe` cases above plus five files where this project's own checker currently false-rejects
 a real instruction/function (`SWVX`, `UDPSocketOpen`/`Send`/`Recv`/`Close`, `Base64Encode`) that
 the real exe accepts -- a pre-existing checker gap unrelated to `-t` itself, not a timing bug.
+
+### Oracle measurements not yet implemented (2026-10-08, CR6)
+
+From a reverted `timing.py` rewrite (unsafe for `...C` ranges and valid `U` channels). These
+correct or extend the rules above and are the starting point for the next `-t` round.
+
+- `Delay` is timed only when `RepDelay == 0` and the program is in PipelineMode; units are
+  case-insensitive (the earlier "case-sensitive `mSec`" rule came from a `RepDelay=1` case).
+  Formula `floor((value*unit_us + 100)/100)*100` for uSec/mSec/Sec/Min, 32-bit wrap (100 Min
+  gives 1705032800).
+- Entries after the first `Scan` are preceded by a blank line; a `Scan` inside a Sub is
+  labelled `Scan: N (Subroutine)`. A single-line `If c Then stmt` body is timed (the parser drops
+  its `Else` part, `inline_else` is None).
+- VoltSe/VoltDiff/TCSe/TCDiff: `floor((141 + n*P)/100)*100`, VoltSe `n = reps + MeasOff`,
+  VoltDiff `n = reps*(1+flag)`, `P = 816 + ceil(32/3*ks) + floor(32/3*kx)`,
+  `ks = (24*s' + 127)//256` (`s' = 500` when settle is 0), `kx = (24e6/x + 128)//256` (`kx = 24`
+  when integ is 0). Exact on all 1,584 sweep points for `mv5000`/`mv1000`/`mv200` with a numeric
+  channel. Not modelled: a `...C` range adds ~50 us per rep (numeric channels) or ~103 us per rep
+  (valid `U` channels); TCDiff/TCSe likewise +50 per rep; ExciteV/ACPower valid-channel regimes.
+- Closed forms: PulsePort `floor((2d+100)/100)*100`; PulseCount 100; Calibrate (2000, 7700) x3;
+  CS616 `200+500*reps`; PeriodAvg `reps*timeout*1000+200`; MuxSelect `base + ch*(2000*pw+50)`
+  (base 13000, or 100 when mode is 0; not timed in SequentialMode); ExciteV
+  `floor((delay+100)/100)*100`; ACPower LineFrq 50/60 with U channels: 1000, then pairs
+  (51200, 34500) or (61200, 41100), pair count 1+reps, 3 or 6 for config 1, 2, 3.
+- Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, Therm107/108/109, AM25T,
+  Resistance.
