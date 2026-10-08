@@ -4017,8 +4017,15 @@ corpus puts example prose into the program, so these shapes are measured by `dif
 
 - A bare call of a declared `Function` is one expression statement, not a `Sub` call with a tail:
   `F0()+Nope` -> CR6/CR1000X `Invalid symbol in expression:   F0()+Nope.`, CR300/CR350 `Nope is
-  not defined.`; `F0()+1`, `Fn(1)+1`, `Fn(1)*2` compile. (`Fn(1) 1` / `F0() Nope`, a juxtaposed
-  tail, report `Incomplete expression: <stmt>.`; not modelled yet.) Fixture `func_expr_stmt.json`.
+  not defined.`; `F0()+1`, `Fn(1)+1`, `Fn(1)*2` compile. Fixture `func_expr_stmt.json`.
+- A juxtaposed tail after a `Function` call statement (`Fn(1) 1`, `Fn(1) Zork`, `F0() Nope`,
+  `Fn(1),1`, `Fn(1) (2)`, `Fn(1) "a"`, `Fn(1) 1, Zork`) is `Incomplete expression: <stmt>.` on all
+  four loggers (CR300/CR350 echo the raw line, `<stmt> | .`). Names: CR6/CR1000X print `Invalid
+  symbol in expression: <stmt>.` instead when an *argument* is undefined (`Fn(Zork) 1`) and never
+  name tail operands; CR300/CR350 print `<name> is not defined.` first for an undefined argument
+  and for a tail that starts with a bare name (`Fn(1) Zork, 1`), not for a tail starting `,` or
+  `(`, nor beyond the first operand. Not modelled (still generic `Invalid, or out of place`, real
+  is `Incomplete expression`): `Fn(1) 1 +`, `Fn(1)+1 2`. Fixture `func_juxtaposed_tail.json`.
 - A `Sub` tail splits arguments at top-level commas only: `Call Two(1) Round(2,0)` and
   `Two(1) Round(2,0), 3` (the latter: `Call to Two with 3 parameters, requires 2 arguments.`).
   Fixture `sub_tail_nested.json`.

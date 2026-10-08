@@ -209,6 +209,8 @@ class Call(Stmt):
     explicit: bool = False          # written with `Call`
     tail_ignored: bool = False      # `S()` followed by ignored trailing text
     tail_expr: "Expr | None" = None  # a `Function` call statement continued as one expression
+    juxtaposed: "list[Expr] | None" = None  # operands of a juxtaposed tail: `Fn(1) 1`
+    juxt_opaque: bool = False        # tail starts with `,` or `(`: `Fn(1),Zork`
 
 
 @dataclass

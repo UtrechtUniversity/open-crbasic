@@ -703,6 +703,19 @@ class _Parser:
             # and `Fn(1)+Zork` report the undefined name, `Fn(1)+1` compiles), not a Sub tail
             if p.at_end():
                 return S.Call(line, file, name=target.name, args=list(target.args), explicit=False)
+            t = p.peek()
+            if t.kind in ("IDENT", "NUMBER", "STRING") or (t.kind == "OP" and t.text in ("(", ",")):
+                # a juxtaposed tail (`Fn(1) 1`, `Fn(1),Zork`): `Incomplete expression` (oracle,
+                # 2026-10-08, all four loggers); its operands are still name-checked
+                juxt: list = []
+                comma = t.kind == "OP"  # `,` or `(`: tail names are not checked
+                while not p.at_end():
+                    if p.peek().kind == "OP" and p.peek().text == ",":
+                        p.i += 1
+                        continue
+                    juxt.append(self._parse_expr(p, line, file))
+                return S.Call(line, file, name=target.name, args=list(target.args),
+                              explicit=False, juxtaposed=juxt, juxt_opaque=comma)
             p.i = start
             expr = self._parse_expr(p, line, file)
             if not p.at_end():

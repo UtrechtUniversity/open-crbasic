@@ -1999,6 +1999,22 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
     """Undefined names in a `Sub` call's arguments, every argument (oracle, 2026-09-28: `Two(Q,
     Q2)` reports both). CR6/CR1000X echo the argument (`Invalid symbol in expression: Q+1.`);
     CR300/CR350 name each undefined name, plus `Dimensions not declared: Nope(1).`."""
+    if stmt.juxtaposed is not None:  # `Fn(1) Zork`: oracle 2026-10-08, all four loggers
+        arg_bad = [n for a in stmt.args for n in expressions._undefined_names(a, known)]
+        if profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            if arg_bad:  # an undefined argument wins; undefined tail names are never named
+                diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
+                return
+        else:  # names first; of the tail only a leading bare name is checked
+            tail = stmt.juxtaposed[:1] if not stmt.juxt_opaque and isinstance(
+                stmt.juxtaposed[0], S.Name) else []
+            bad = arg_bad + [n for a in tail for n in expressions._undefined_names(a, known)]
+            for name in dict.fromkeys(bad):
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                            stmt.file)
+        sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
+        diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file)
+        return
     if stmt.tail_expr is not None:  # `Fn(1)+Zork`: one expression statement
         bad = [n for a in [*stmt.args, stmt.tail_expr] for n in expressions._undefined_names(a, known)]
         if bad and profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:

@@ -1,0 +1,807 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-func_juxtaposed_tail-0",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Call Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nFn is not declared as a Subroutine."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-1",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-2",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() Nope."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-3",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) \"a\"."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-4",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-5",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (2)."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-6",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (Zork)."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-7",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) , 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) , 1, 2."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-8",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-9",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1 ."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-10",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, 2."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-11",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, Zork."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-12",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-13",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Fn(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Fn(2)."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-14",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) X."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-15",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-16",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork ."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-17",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork, 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-18",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork, Nope."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-19",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-20",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-21",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1,Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1,Zork."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-22",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),Zork."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-23",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork) 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-24",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork) Nope."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-25",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork),1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-26",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X=1 Then Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr6-func_juxtaposed_tail-27",
+   "logger": "cr6",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    X=1:Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-0",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Call Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nFn is not declared as a Subroutine."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-1",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-2",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() Nope."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-3",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) \"a\"."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-4",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-5",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (2)."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-6",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (Zork)."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-7",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) , 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) , 1, 2."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-8",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-9",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1 ."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-10",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, 2."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-11",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, Zork."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-12",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-13",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Fn(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Fn(2)."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-14",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) X."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-15",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-16",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork ."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-17",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork, 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-18",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork, Nope."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-19",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-20",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-21",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1,Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1,Zork."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-22",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),Zork."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-23",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork) 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-24",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork) Nope."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-25",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Invalid symbol in expression:     Fn(Zork),1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-26",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X=1 Then Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr1000x-func_juxtaposed_tail-27",
+   "logger": "cr1000x",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    X=1:Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-0",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Call Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nFn is not declared as a Subroutine."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-1",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() 1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-2",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Nope is not defined.\nline 10: Incomplete expression:     F0() Nope\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-3",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) \"a\"\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-4",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-5",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (2)\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-6",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (Zork)\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-7",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) , 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) , 1, 2\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-8",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-9",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1 ."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-10",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, 2\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-11",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, Zork\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-12",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-13",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Fn(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Fn(2)\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-14",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) X\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-15",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-16",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork ."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-17",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork, 1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-18",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork, Nope\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-19",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-20",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-21",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1,Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1,Zork\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-22",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),Zork\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-23",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(Zork) 1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-24",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Nope is not defined.\nline 10: Incomplete expression:     Fn(Zork) Nope\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-25",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(Zork),1\n."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-26",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X=1 Then Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr300-func_juxtaposed_tail-27",
+   "logger": "cr300",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    X=1:Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-0",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Call Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nFn is not declared as a Subroutine."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-1",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     F0() 1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-2",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    F0() Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Nope is not defined.\nline 10: Incomplete expression:     F0() Nope\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-3",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) \"a\"\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-4",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-5",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (2)\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-6",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) (Zork)\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-7",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) , 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) , 1, 2\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-8",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-9",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1 ."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-10",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, 2\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-11",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1, Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1, Zork\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-12",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) 1:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) 1."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-13",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Fn(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) Fn(2)\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-14",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1) X\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-15",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-16",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork ."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-17",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork, 1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-18",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork, Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork, Nope\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-19",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1) Zork:X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(1) Zork."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-20",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-21",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),1,Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),1,Zork\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-22",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(1),Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression:     Fn(1),Zork\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-23",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(Zork) 1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-24",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork) Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Nope is not defined.\nline 10: Incomplete expression:     Fn(Zork) Nope\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-25",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    Fn(Zork),1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Zork is not defined.\nline 10: Incomplete expression:     Fn(Zork),1\n."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-26",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    If X=1 Then Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1."
+  },
+  {
+   "id": "cr350-func_juxtaposed_tail-27",
+   "logger": "cr350",
+   "source": "Function Fn(a)\n  Fn = a\nEndFunction\nFunction F0()\n  F0 = 1\nEndFunction\nPublic X\nBeginProg\n  Scan (1,Sec,3,0)\n    X=1:Fn(1) 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: Fn(1) 1\n."
+  }
+ ]
+}
