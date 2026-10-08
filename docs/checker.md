@@ -3983,3 +3983,12 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   one; later ones are not registered), so later uses do not print `is not defined`
   (`symbols._names_through_bad_as_clause`). Surfaced by the `If`-without-`Then` check above.
   Not modelled: `Public Flag As Banana, R` should leave `R` unregistered.
+
+- **Function-named assignment targets and CR300/CR350 local shadows** (probed 2026-10-08 on all four
+  loggers, fixture NOT yet committed): `Sin = 1`/`Timer = X` -> `Expression expects ( : <stmt>`;
+  `Rnd = 2`, `Sin(X) = 3`, `Round(1,2) = 3` -> `Invalid assignment in expression: <stmt>`;
+  `Sin(1,2) = 3` -> `No Matching ...`; `Round(1) = 2` -> `Expression expects ,`; `Sin() = 3` ->
+  generic (`expressions._function_target_message`). On CR300/CR350 a local `Dim exp`/parameter named
+  like a built-in function does not shadow it: bare uses print `Expression expects (`, `exp(1) = 2`
+  prints `Invalid assignment in expression`, and these start the `Too many parameters` cascade.
+  Unfinished: bare function in `If`/`Do` conditions (`If Timer > 1`), CR6 scoping of a Sub-local.

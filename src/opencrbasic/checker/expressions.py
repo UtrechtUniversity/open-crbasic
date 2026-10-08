@@ -1553,7 +1553,7 @@ def _find_bare_function_ref(expr: S.Expr | None, profile, declared_variables: fr
     return False  # Number, String: no name to check
 
 
-def _bare_function_message(text: str, profile, whole_statement: bool) -> str:
+def _bare_function_message(text: str, profile, whole_statement: bool, at_eol: bool = True) -> str:
     # `whole_statement`: CR300/CR350 embed a literal newline before the closing `.` only when
     # `text` is the *whole* logical statement (`Call`/`Assignment`, matching `_arity_message`'s
     # own `_ARITY_TRAILING_NEWLINE_LOGGERS` convention for their arity messages) -- **not** for an
@@ -1561,7 +1561,7 @@ def _bare_function_message(text: str, profile, whole_statement: bool) -> str:
     # `cr300comp.exe`/`cr350comp.exe` gives the plain, single-line `Expression expects ( : Sin.`
     # (no embedded newline), while `X = Sin` alone gives `Expression expects ( :   X = Sin\n.`
     # (`docs/checker.md`).
-    if whole_statement and profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
+    if whole_statement and at_eol and profile.name in _ARITY_TRAILING_NEWLINE_LOGGERS:
         return f"Expression expects ( : {text}\n."
     return f"Expression expects ( : {text}."
 
@@ -1632,6 +1632,10 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
       alone rather than guessed at).
     """
     declared_variables = frozenset(symbols.declared_variable_names(program))
+    if profile.single_pass:
+        # CR300/CR350 accept a local `Dim exp` / parameter named like a built-in function but
+        # resolve its bare uses as the function (oracle, 2026-10-08)
+        declared_variables = declared_variables - frozenset(profile.functions)
     known: set[str] | None = None
     from . import structs, structure  # lazy: both import this module
     struct_types = structs._structure_members(program)
@@ -1679,10 +1683,10 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             # own argument list onto the next source line, all `Expression expects (`).
             if (not stmt.args and "(" not in stmt.text
                     and _is_bare_reference_problem(stmt.name, profile, declared_variables)):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
             if any(_find_bare_function_ref(a, profile, declared_variables) for a in stmt.args):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
             bad = next((i for i, a in enumerate(stmt.args) if _multi_indexed_struct(a, struct_vars)),
                        None)
@@ -1749,8 +1753,12 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                             stmt.file)
                 mine.append(diags.items[-1])
                 continue
+            target_message = _function_target_message(stmt, profile, declared_variables)
+            if target_message:
+                diags.error(stmt.line, target_message, stmt.file)
+                continue
             if _find_bare_function_ref(stmt.value, profile, declared_variables):
-                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True), stmt.file)
+                diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
             problem = _find_arity_problem(stmt.value, profile)
             struct_value = not problem and _multi_indexed_struct(stmt.value, struct_vars)
@@ -1778,6 +1786,34 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
         # CR300/CR350: any call-arity error in the file suppresses every structure-index one,
         # before or after it (oracle, 2026-10-03)
         diags.items[start:] = [d for d in diags.items[start:] if d not in mine]
+
+
+def _function_target_message(stmt: S.Assignment, profile, declared: frozenset[str]) -> str | None:
+    """An assignment whose target is a built-in function (oracle, all four loggers, 2026-10-08):
+    `Sin = 1` / `Timer = X` -> `Expression expects ( : <stmt>`; `Rnd = 2`, `Sin(X) = 3`,
+    `Round(1,2) = 3` -> `Invalid assignment in expression: <stmt>`; a call with a wrong argument
+    count gets that count's message (`Sin(1,2) = 3`, `Round(1) = 2`, `Sin() = 3`). Only arities
+    this module already trusts (`_call_arity_problem`, or exactly the table `nargs`) are reported."""
+    target = stmt.target
+    if stmt.compound or not isinstance(target, (S.Name, S.Index)):
+        return None
+    name = target.name.upper()
+    record = profile.functions.get(name)
+    if not record or name in declared:
+        return None
+    sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
+    if isinstance(target, S.Name):
+        if _is_bare_reference_problem(target.name, profile, declared):
+            return _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol)
+        return f"Invalid assignment in expression: {stmt.text}{sep}." \
+            if record.get("nargs") == 0 and not record.get("argspec") else None
+    problem = _call_arity_problem(target.name, target.args, profile)
+    if problem in ("few", "many", "empty"):
+        return _arity_message(problem, stmt.text, profile, stmt.at_eol, whole_statement=True)
+    if problem is None and None not in target.args and record.get("nargs") == len(target.args) \
+            and record.get("nargs"):
+        return f"Invalid assignment in expression: {stmt.text}{sep}."
+    return None
 
 
 def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) -> None:

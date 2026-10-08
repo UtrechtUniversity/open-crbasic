@@ -195,7 +195,7 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",
                                  "Invalid or missing parameter.",
                                  "Parameter must be a constant integer:",
-                                 "Invalid, or out of place expression:",
+                                 "Invalid, or out of place expression:", "Invalid assignment in expression:",
                                  "Illegal destination variable type", "Invalid Variable or Array:",
                                  "Cannot recursively call functions.", "Parameter must be integral.",
                                  "Interval (", "Illegally dimension: ", "Scan interval must be integrally divisible")
@@ -432,6 +432,8 @@ def check_float_destinations(program: S.Program, profile, diags: Diagnostics) ->
             types, known = _variable_types(program), expressions._known_names(program, profile)
             ds = expressions.dims_state(program)
         arg = stmt.args[0]
+        if isinstance(arg, S.Name) and arg.name.upper() in profile.functions:
+            continue  # a bare function name is `Expression expects (` instead (expressions.py)
         key = (stmt.line, stmt.file)
         undefined = [n for n in _expr_names(arg) if n.upper() not in known]
         expression = False
