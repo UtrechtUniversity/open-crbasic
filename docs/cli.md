@@ -115,10 +115,13 @@ actually appear in this repository's programs or the CHM sample were pursued.
   giving `1100`).
 - `PortSet(Port, State)` (exactly 2 arguments) and `Sw12`: always `= 100`. A 3-argument `PortSet`
   call (`spiwrite_1.CR6`) produces no entry.
-- `Delay(RepDelay, Value, Units)` with `Units` spelled exactly `mSec`: `Value*1000 + 100`. The
-  match is case-sensitive by one negative data point (`sdmsio4_1.CR6`'s `Delay (1,10,MSEC)`,
-  all-upper-case, produces nothing despite an otherwise identical shape) -- documented as an
-  uncertain inference, not a confirmed rule.
+- `Delay(RepDelay, Value, Units)`: timed only for `RepDelay == 0`, a non-zero `Value` and PipelineMode
+  (`mode.decide`); `Units` is case-insensitive (`uSec`/`mSec`/`Sec`/`Min`). Cost
+  `((Value*unit_us + 100) mod 2^32) // 100 * 100` (100 Min gives 1705032800). The earlier "literal
+  `mSec`" rule came from a `RepDelay=1` sample. Fixture-backed in `tests/test_timing.py`.
+- A blank entry precedes every `Scan` line but the first; a `Scan` inside a `Sub`/`Function` is
+  labelled `Scan: N (Subroutine)` (same counter; its body is timed like any span). Both branches of
+  a single-line `If c Then a Else b` are timed (inline bodies are walked in order).
 - `TCDiff(..., Reps, ..., SettlingTime, ...)` with `Reps=1` and `SettlingTime=15000` (the only
   shape exercised): `2900`.
 - `[Times]` entries are gated on the same pass-1/pass-2 boundary the checker itself already uses
@@ -148,13 +151,6 @@ the real exe accepts -- a pre-existing checker gap unrelated to `-t` itself, not
 From a reverted `timing.py` rewrite (unsafe for `...C` ranges and valid `U` channels). These
 correct or extend the rules above and are the starting point for the next `-t` round.
 
-- `Delay` is timed only when `RepDelay == 0` and the program is in PipelineMode; units are
-  case-insensitive (the earlier "case-sensitive `mSec`" rule came from a `RepDelay=1` case).
-  Formula `floor((value*unit_us + 100)/100)*100` for uSec/mSec/Sec/Min, 32-bit wrap (100 Min
-  gives 1705032800).
-- Entries after the first `Scan` are preceded by a blank line; a `Scan` inside a Sub is
-  labelled `Scan: N (Subroutine)`. A single-line `If c Then stmt` body is timed (the parser drops
-  its `Else` part, `inline_else` is None).
 - VoltSe/VoltDiff/TCSe/TCDiff: `floor((141 + n*P)/100)*100`, VoltSe `n = reps + MeasOff`,
   VoltDiff `n = reps*(1+flag)`, `P = 816 + ceil(32/3*ks) + floor(32/3*kx)`,
   `ks = (24*s' + 127)//256` (`s' = 500` when settle is 0), `kx = (24e6/x + 128)//256` (`kx = 24`

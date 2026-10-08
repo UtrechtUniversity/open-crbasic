@@ -67,7 +67,7 @@ alters `[Times]`.
 
 from __future__ import annotations
 
-from . import consteval
+from . import consteval, mode
 from . import syntax as S
 from .profiles import Profile
 
@@ -91,6 +91,14 @@ def _round_half_up(x: float) -> int:
     return int(x + 0.5)
 
 
+def _flatten(stmts):
+    for stmt in stmts:
+        yield stmt
+        if isinstance(stmt, S.If):
+            yield from _flatten(stmt.inline or [])
+            yield from _flatten(stmt.inline_else or [])
+
+
 def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[str]:
     """The `[Times]` section's entries (without the `[Times]` header itself), in program order.
 
@@ -99,17 +107,30 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
     """
     del main_file
     env = consteval.Env(profile, dict(program.consts))
+    try:
+        pipeline = mode.decide(program.statements, profile, lambda e: consteval.is_constant(e, env),
+                               lambda e: consteval.value_of(e, env)) == "Pipeline"
+    except Exception:
+        pipeline = False
     lines: list[str] = []
     scan_count = 0
-    inside = False       # within a top-level Scan(...)'s own span (see module docstring)
+    inside = False       # within a Scan(...)'s own span (see module docstring)
+    in_sub = False
     prev_kw = ""
-    for stmt in program.statements:
+    for stmt in _flatten(program.statements):
+        if isinstance(stmt, S.SubDef):
+            in_sub = True
+            continue
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword
+        if kw in ("ENDSUB", "ENDFUNCTION"):
+            in_sub = False
         if kw == "SCAN":
             if prev_kw != "SLOWSEQUENCE":
-                lines.append(f"line {stmt.line}: Scan: {scan_count}")
+                if scan_count:
+                    lines.append("")
+                lines.append(f"line {stmt.line}: Scan: {scan_count}" + (" (Subroutine)" if in_sub else ""))
                 scan_count += 1
                 inside = True
             else:
@@ -130,7 +151,7 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
         elif kw == "PANELTEMP":
             _paneltemp(stmt, env, lines)
         elif kw == "DELAY":
-            _delay(stmt, env, lines)
+            _delay(stmt, env, lines, pipeline)
         elif kw == "TCDIFF":
             _tcdiff(stmt, env, lines)
     return lines
@@ -147,20 +168,20 @@ def _paneltemp(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> Non
     lines.append(f"line {stmt.line}: PanelTemp = {cost}")
 
 
-def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
-    if len(stmt.args) < 3:
+_UNIT_US = {"USEC": 1, "MSEC": 1000, "SEC": 1000000, "MIN": 60000000}
+
+
+def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: bool) -> None:
+    # Timed only for RepDelay == 0 in PipelineMode; units case-insensitive (docs/cli.md).
+    if len(stmt.args) < 3 or not pipeline:
         return
     value = _num(_const(stmt.args[1], env))
     units = stmt.args[2]
-    # Case-sensitive on purpose: both confirmed matches spell it exactly `mSec`; the one
-    # available negative sample (`sdmsio4_1.CR6`'s `Delay (1,10,MSEC)`, all upper-case) produces
-    # no `[Times]` entry at all despite otherwise matching this shape, suggesting the exe's own
-    # recognition is a literal string compare, not a case-insensitive symbol lookup. One negative
-    # sample is thin evidence for a positive claim ("case-sensitive"), but it is why this does not
-    # use `.upper()` -- documented as a known-uncertain rule, not asserted with confidence.
-    if value is None or not isinstance(units, S.Name) or units.name != "mSec":
+    if _num(_const(stmt.args[0], env)) != 0 or not value:
         return
-    cost = int(round(value * 1000 + 100))
+    if not isinstance(units, S.Name) or units.name.upper() not in _UNIT_US:
+        return
+    cost = ((int(value * _UNIT_US[units.name.upper()]) + 100) & 0xFFFFFFFF) // 100 * 100
     lines.append(f"line {stmt.line}: Delay = {cost}")
 
 
