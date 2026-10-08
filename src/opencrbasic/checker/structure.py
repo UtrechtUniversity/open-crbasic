@@ -1999,6 +1999,15 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
     """Undefined names in a `Sub` call's arguments, every argument (oracle, 2026-09-28: `Two(Q,
     Q2)` reports both). CR6/CR1000X echo the argument (`Invalid symbol in expression: Q+1.`);
     CR300/CR350 name each undefined name, plus `Dimensions not declared: Nope(1).`."""
+    if stmt.tail_expr is not None:  # `Fn(1)+Zork`: one expression statement
+        bad = [n for a in [*stmt.args, stmt.tail_expr] for n in expressions._undefined_names(a, known)]
+        if bad and profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+            diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
+        else:
+            for name in dict.fromkeys(bad):
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                            stmt.file)
+        return
     m = re.match(r"\s*(?:call\s+)?" + re.escape(stmt.name) + r"\s*", stmt.text, re.I)
     if not m or not stmt.text[m.end():].startswith("("):
         return

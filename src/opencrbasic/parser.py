@@ -203,6 +203,9 @@ class _CondFrame:
     parent_ok: bool
 
 
+_FUNCTION_DEF_RE = re.compile(r"\s*Function\s+([A-Za-z_][A-Za-z0-9_]*)", re.I)
+
+
 class _Parser:
     def __init__(self, profile: profiles.Profile, diags: Diagnostics):
         self.profile = profile
@@ -212,11 +215,14 @@ class _Parser:
         self.program = S.Program(name="")
         self._done = False  # set once a top-level EndProg is seen; see `run()`
         self._in_struct = False  # inside StructureType ... EndStructureType
+        self.function_names: set[str] = set()
 
     # ------------------------------------------------------------ driver
 
     def run(self, lines: list[source.LogicalLine], name: str) -> tuple[S.Program, Diagnostics]:
         self.program.name = name
+        self.function_names = {m.group(1).upper() for ll in lines
+                               if (m := _FUNCTION_DEF_RE.match(ll.text))}
         skipped_include_depth = 0
         for ll in lines:
             if skipped_include_depth:
@@ -560,8 +566,13 @@ class _Parser:
             p.i = len(p.toks) - 1
             return True
         pieces: list[list[Token]] = [[]]
+        depth = 0
         for t in rest:
-            if t.kind == "OP" and t.text == ",":
+            if t.kind == "OP" and t.text == "(":
+                depth += 1
+            elif t.kind == "OP" and t.text == ")":
+                depth = max(0, depth - 1)
+            if t.kind == "OP" and t.text == "," and depth == 0:
                 pieces.append([])
             else:
                 pieces[-1].append(t)
@@ -652,6 +663,7 @@ class _Parser:
         # nothing further), which tolerates an unclosed paren at end-of-line just like `Call`/a
         # recognised instruction (oracle-confirmed) -- but only for *this* atom's own outermost
         # parens; anything nested inside it is parsed via `_parse_expr` and is strict again.
+        start = p.i
         target = self._parse_atom(p, line, file, strict=False)
         t = p.peek()
         if (t.kind == "OP" and t.text == "=" and isinstance(target, S.Index) and not target.args
@@ -686,6 +698,17 @@ class _Parser:
             return S.Declaration(line, file, kind="STRUCTUREMEMBER", vars=[var])
         if isinstance(target, S.Name):
             return S.Call(line, file, name=target.name, args=[], explicit=False)
+        if isinstance(target, S.Index) and target.name.upper() in self.function_names:
+            # a `Function` call statement is one expression (oracle, 2026-10-08: `F0()+Nope`
+            # and `Fn(1)+Zork` report the undefined name, `Fn(1)+1` compiles), not a Sub tail
+            if p.at_end():
+                return S.Call(line, file, name=target.name, args=list(target.args), explicit=False)
+            p.i = start
+            expr = self._parse_expr(p, line, file)
+            if not p.at_end():
+                raise _ParseError("expected an assignment or a call")
+            return S.Call(line, file, name=target.name, args=list(target.args), explicit=False,
+                          tail_expr=expr)
         if isinstance(target, S.Index):
             args = list(target.args)
             ignored = self._absorb_sub_tail(p, args, line, file)

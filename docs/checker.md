@@ -4005,3 +4005,13 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   still reports `Dimensions not declared`. `expressions.program_dims` is the single entry point;
   `structure.check_pass2`, `expressions.check`, the `For`/`Case`/`ElseIf` checks and
   `cr3xx.check_float_destinations` all use it (CR6/CR1000X keep the declared-variable simulation).
+
+## Round 6 parse fixes (oracle, 2026-10-08, all four loggers)
+
+- A bare call of a declared `Function` is one expression statement, not a `Sub` call with a tail:
+  `F0()+Nope` -> CR6/CR1000X `Invalid symbol in expression:   F0()+Nope.`, CR300/CR350 `Nope is
+  not defined.`; `F0()+1`, `Fn(1)+1`, `Fn(1)*2` compile. (`Fn(1) 1` / `F0() Nope`, a juxtaposed
+  tail, report `Incomplete expression: <stmt>.`; not modelled yet.) Fixture `func_expr_stmt.json`.
+- A `Sub` tail splits arguments at top-level commas only: `Call Two(1) Round(2,0)` and
+  `Two(1) Round(2,0), 3` (the latter: `Call to Two with 3 parameters, requires 2 arguments.`).
+  Fixture `sub_tail_nested.json`.

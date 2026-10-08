@@ -208,6 +208,7 @@ class Call(Stmt):
     args: list[Expr | None] = field(default_factory=list)
     explicit: bool = False          # written with `Call`
     tail_ignored: bool = False      # `S()` followed by ignored trailing text
+    tail_expr: "Expr | None" = None  # a `Function` call statement continued as one expression
 
 
 @dataclass
