@@ -149,15 +149,23 @@ actually appear in this repository's programs or the CHM sample were pursued.
 The residual CHM misses are checker verdict gaps (programs whose pass-1 error the checker does
 not find, so `-t` prints entries where the exe prints none), not timing rules.
 
-### Oracle measurements not yet implemented (2026-10-08, CR6)
+### Closed forms (CR6, 2026-10-08, oracle-fitted; fixtures in `tests/test_timing.py`)
 
-From a reverted `timing.py` rewrite (unsafe for `...C` ranges and valid `U` channels). These
-correct or extend the rules above and are the starting point for the next `-t` round.
+All need constant arguments (a variable gives no entry). Arithmetic is unsigned 32-bit with the
+result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996); `floor100(x)` is
+`x//100*100` in that arithmetic. Negative `d` is clamped to 0 for PulsePort/ExciteV.
 
-- Closed forms: PulsePort `floor((2d+100)/100)*100`; PulseCount 100; Calibrate (2000, 7700) x3;
-  CS616 `200+500*reps`; PeriodAvg `reps*timeout*1000+200`; MuxSelect `base + ch*(2000*pw+50)`
-  (base 13000, or 100 when mode is 0; not timed in SequentialMode); ExciteV
-  `floor((delay+100)/100)*100`; ACPower LineFrq 50/60 with U channels: 1000, then pairs
-  (51200, 34500) or (61200, 41100), pair count 1+reps, 3 or 6 for config 1, 2, 3.
-- Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, Therm107/108/109, AM25T,
-  Resistance.
+- `PulsePort(Port, d)`: `floor100(2d+100)`. `ExciteV(Chan, mV, d)`: `floor100(d+100)`.
+- `PulseCount`: 100 (no argument dependence). `Calibrate`: six entries, 2000 and 7700 three times
+  (any arguments). `CS616(.., Reps, ..)`: `200+500*Reps`.
+- `PeriodAvg(.., Reps, .., Timeout, ..)`: `int32(Reps*int(Timeout)*1000+200)`.
+- `MuxSelect(Clk, Reset, PW, Chan, Mode)`: PipelineMode only (no entry in SequentialMode);
+  `floor100(base + Chan*(2000*PW+50))`, base 13000, or 100 when `Mode` is 0.
+- `ACPower(.., Cfg, LineFrq, ChanV, .., ChanI, .., RepsI)`, LineFrq 50 or 60 only (55 prints other
+  values, not modelled): `1000`, then pairs `(head, x)`, head 61200 (50) / 51200 (60); `x` per
+  channel: `Un` 41100 / 34500, numeric 278300 / 231900 (50 / 60). Channel sequence: Cfg 1 `V` then
+  `I` x max(RepsI,0); Cfg 2 `V,I,I`; Cfg 3 `V,I,V,I,V,I`; any other Cfg `V,I`. ChanV supplies the
+  `V` term, ChanI the `I` terms.
+
+Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, Therm107/108/109, AM25T,
+Resistance, AutoRange for VoltSe & co (AutoRange adds ~1300 us at n=1, not fitted).

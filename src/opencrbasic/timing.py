@@ -156,6 +156,8 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
             _delay(stmt, env, lines, pipeline)
         elif kw in _MEASURE:
             _measure(stmt, env, lines)
+        elif kw in _CLOSED:
+            _closed(stmt, env, lines, pipeline)
     return lines
 
 
@@ -173,6 +175,17 @@ def _paneltemp(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> Non
 _UNIT_US = {"USEC": 1, "MSEC": 1000, "SEC": 1000000, "MIN": 60000000}
 
 
+def _signed32(x: int) -> int:
+    x &= 0xFFFFFFFF
+    return x - (1 << 32) if x >= 1 << 31 else x
+
+
+def _floor100(x: int) -> int:
+    """`x` rounded down to a multiple of 100 in unsigned 32-bit arithmetic, shown signed (a Delay
+    of -5 mSec prints -4996; docs/cli.md)."""
+    return _signed32((x & 0xFFFFFFFF) // 100 * 100)
+
+
 def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: bool) -> None:
     # Timed only for RepDelay == 0 in PipelineMode; units case-insensitive (docs/cli.md).
     if len(stmt.args) < 3 or not pipeline:
@@ -183,7 +196,7 @@ def _delay(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: 
         return
     if not isinstance(units, S.Name) or units.name.upper() not in _UNIT_US:
         return
-    cost = ((int(value * _UNIT_US[units.name.upper()]) + 100) & 0xFFFFFFFF) // 100 * 100
+    cost = _floor100(int(value * _UNIT_US[units.name.upper()]) + 100)
     lines.append(f"line {stmt.line}: Delay = {cost}")
 
 
@@ -231,3 +244,67 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
 
 
 _LABEL = {"VOLTSE": "VoltSe", "VOLTDIFF": "VoltDiff", "TCSE": "TCSe", "TCDIFF": "TCDiff"}
+
+
+def _args(stmt: S.Instruction, env: consteval.Env, *idx: int) -> list[float] | None:
+    if len(stmt.args) <= max(idx):
+        return None
+    vals = [_num(_const(stmt.args[i], env)) for i in idx]
+    return None if None in vals else vals
+
+
+def _chan_is_u(expr: S.Expr | None) -> bool:
+    return isinstance(expr, S.Name) and re.fullmatch(r"U\d+", expr.name.upper()) is not None
+
+
+def _closed(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline: bool) -> None:
+    """Instructions whose cost is a closed form of one or two constant arguments
+    (docs/cli.md "Closed forms"); no entry when an argument is not constant."""
+    kw = stmt.keyword
+    out: list[int] = []
+    label = _CLOSED[kw]
+    if kw == "PULSEPORT":
+        a = _args(stmt, env, 1)
+        out = [_floor100(2 * max(int(a[0]), 0) + 100)] if a else []
+    elif kw == "EXCITEV":
+        a = _args(stmt, env, 2)
+        out = [_floor100(max(int(a[0]), 0) + 100)] if a else []
+    elif kw == "PULSECOUNT":
+        out = [100] if _args(stmt, env, 1) else []
+    elif kw == "CALIBRATE":
+        out = [2000, 7700] * 3
+    elif kw == "CS616":
+        a = _args(stmt, env, 1)
+        out = [200 + 500 * int(a[0])] if a else []
+    elif kw == "PERIODAVG":
+        a = _args(stmt, env, 1, 7)
+        out = [_signed32(int(a[0]) * int(a[1]) * 1000 + 200)] if a else []
+    elif kw == "MUXSELECT":
+        a = _args(stmt, env, 2, 3, 4)
+        if a and pipeline:
+            base = 100 if a[2] == 0 else 13000
+            out = [_floor100(base + int(a[1]) * (2000 * int(a[0]) + 50))]
+    elif kw == "ACPOWER":
+        out = _acpower(stmt, env)
+    lines.extend(f"line {stmt.line}: {label} = {v}" for v in out)
+
+
+def _acpower(stmt: S.Instruction, env: consteval.Env) -> list[int]:
+    # Only LineFrq 50/60 was probed; other frequencies print different values (not modelled).
+    a = _args(stmt, env, 1, 2, 9)
+    if not a or len(stmt.args) < 10 or a[1] not in (50, 60):
+        return []
+    for k in (3, 6):
+        if not _chan_is_u(stmt.args[k]) and _num(_const(stmt.args[k], env)) is None:
+            return []
+    u_cost, n_cost = {50: (41100, 278300), 60: (34500, 231900)}[int(a[1])]
+    volt, cur = (u_cost if _chan_is_u(stmt.args[k]) else n_cost for k in (3, 6))
+    head = 61200 if a[1] == 50 else 51200
+    cfg = int(a[0])
+    seq = {2: [volt, cur, cur], 3: [volt, cur] * 3, 1: [volt] + [cur] * max(int(a[2]), 0)}.get(cfg, [volt, cur])
+    return [1000] + [v for x in seq for v in (head, x)]
+
+
+_CLOSED = {"PULSEPORT": "PulsePort", "EXCITEV": "ExciteV", "PULSECOUNT": "Pulsecount",
+           "CALIBRATE": "Calibrate", "CS616": "CS616", "PERIODAVG": "PeriodAvg",
+           "MUXSELECT": "MuxSelect", "ACPOWER": "ACPower"}
