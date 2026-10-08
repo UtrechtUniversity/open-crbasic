@@ -1,0 +1,53 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_inline_bare_b-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Y\nX = 0\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr6-r5cr6_inline_bare_b-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X."
+  },
+  {
+   "id": "cr6-r5cr6_inline_bare_b-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Nope."
+  },
+  {
+   "id": "cr6-r5cr6_inline_bare_b-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then 5\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr6-r5cr6_inline_bare_b-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Y Else X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y.\nline 5: Invalid, or out of place expression: X."
+  },
+  {
+   "id": "cr6-r5cr6_inline_bare_b-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then Y\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y."
+  }
+ ]
+}

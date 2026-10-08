@@ -1861,6 +1861,11 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
             diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                         show_file=False)
     for sub in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or []):
+        if (isinstance(sub, S.Call) and not sub.explicit and sub.name.upper() in operands
+                and sub.name.upper() not in profile.instructions
+                and sub.name.upper() not in profile.functions):
+            diags.error(sub.line, _out_of_place(profile, sub.text, sub.at_eol), sub.file,
+                        show_file=False)  # `If c Then Y`: a bare variable is a pass-1 error
         if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
             verdict = _pass1_scan(sub.text, operands, profile)
             if verdict and verdict[0] == "pass1":

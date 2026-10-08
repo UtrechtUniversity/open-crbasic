@@ -3880,3 +3880,7 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   the wrapped-continuation shape of `X = Y` / `+ 1 'comment` in the help corpus). A leading `+`/`-` with
   an expression is a pass-1 error when every name resolves, pass 2 when one does not. Not modelled: a
   lone `+`/`=`, `&`, `%`, `!`, `Not`.
+- **Bare variable after `Then`** (`r5cr6_inline_bare*`): `If c Then Y` (a declared variable, no
+  assignment) is a pass-1 `Invalid, or out of place expression: Y.`, so later pass-2-only findings are
+  hidden. Gaps seen, not modelled: `If c Then Battery` (inline instruction arity) and the `declared but
+  never called` warning for a table named in an inline `CallTable`.
