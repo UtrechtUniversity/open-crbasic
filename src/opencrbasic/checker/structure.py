@@ -1426,6 +1426,10 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
             diags.error(stmt.line, "Next SubScan without SubScan.", stmt.file)
         elif kw in ("NEXTSCAN", "NEXTSUBSCAN") or (kw == "NEXT" and word in ("SCAN", "SUBSCAN")):
             subscans -= kw == "NEXTSUBSCAN" or word == "SUBSCAN"
+            if kw == "NEXTSCAN" or word == "SCAN":
+                if subscans > 0:   # oracle, all four loggers, 2026-10-08 (docs/fuzz-findings.md)
+                    diags.error(stmt.line, "SubScan without Next SubScan.", stmt.file)
+                    subscans = 0
             # Removes the innermost `Scan` wherever it is; blocks opened inside it stay open
             # (oracle: `If X Then` / `NextScan` / `EndIf` compiles, a fuzz-found false reject).
             live = frames[:depth]

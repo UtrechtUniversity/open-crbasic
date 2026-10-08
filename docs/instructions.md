@@ -1339,3 +1339,12 @@ and CR1000X for the budget, CR6 for the warning, 2026-10-08, fixture `r5_seq_sca
 interval-threshold branch of that warning is not changed. The mode is decided by
 `instr_measure.is_sequential`, which leaves a `mode.decide` failure to the compile's own call.
 Reproducer: `tests/corpus/fuzz/cr6/false_reject/2a20e3cd2f86.CR6`.
+
+### `SubScan without Next SubScan.`
+
+A `NextScan` (or `Next Scan`) reached while a `SubScan` is still open reports `SubScan without
+Next SubScan.` at the `NextScan` line, all four loggers (oracle, 2026-10-08, fixture
+`r5_subscan_unclosed`; `check_block_closers`). On CR6/CR1000X a `SubScan` with no measurement
+also reports `No Measurements in SubScan.` and a nested `SubScan` reports `Cannot Nest
+SubScans.`; neither is modelled, so only the measurement-bearing, unnested shape is exact there.
+Reproducer: `tests/corpus/fuzz/cr6/false_accept/b55ff67f8335.CR6`.
