@@ -1,0 +1,2515 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_filemanage_ext-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.dat\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.dat invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-7",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-8",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-9",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr800\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr800 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-10",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-11",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-12",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crbx\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-13",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr2\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr2 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-14",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.csi\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.csi invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-15",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-16",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-17",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.crb.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-18",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU: invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-19",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-20",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a. invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-21",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CRD:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CRD:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-22",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-23",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-24",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-25",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-26",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-27",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\"+\"b\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1xb invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-28",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-29",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR1X\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR1X invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-30",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-31",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CPU."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-32",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-33",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"SD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-34",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-35",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-36",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-37",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-38",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-39",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4) : FileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-40",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,15000)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-41",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-42",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-43",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",True)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-44",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",&H4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-45",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-46",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-47",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nFileManage(\"SD:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-48",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"SD:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-49",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nRunProgram(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-50",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",1)\nFileManage(\"CPU:c.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-51",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Scan never reached at run time.\nline 6: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-52",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-53",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.c\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.c invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-54",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300x invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-55",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.Crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-56",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-57",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-58",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-59",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr9\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr9 invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-60",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cra\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cra invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-61",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-62",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-63",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-64",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-65",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",7)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-66",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-67",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-68",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-69",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-70",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-71",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-72",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-73",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",X)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-74",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(Status.SerialNumber,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-75",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-76",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb \",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-77",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:dir.x/a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:dir.x/a invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-78",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",11)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-79",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",15)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-80",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",19)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-81",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",23)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-82",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",27)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-83",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",31)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-84",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",35)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-85",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",39)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-86",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",127)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-87",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r5cr6_filemanage_ext-88",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR6 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.dat\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.dat invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-7",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-8",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-9",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr800\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr800 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-10",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-11",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6x invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-12",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crbx\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-13",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr2\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr2 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-14",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.csi\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.csi invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-15",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-16",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-17",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.crb.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-18",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU: invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-19",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-20",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a. invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-21",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CRD:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-22",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-23",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-24",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-25",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-26",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-27",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\"+\"b\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-28",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-29",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR1X\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-30",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-31",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CPU."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-32",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-33",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"SD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-34",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-35",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-36",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-37",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-38",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-39",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4) : FileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-40",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,15000)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-41",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-42",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-43",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",True)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-44",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",&H4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-45",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-46",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-47",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nFileManage(\"SD:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-48",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"SD:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-49",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nRunProgram(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-50",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",1)\nFileManage(\"CPU:c.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-51",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Scan never reached at run time.\nline 6: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-52",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-53",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.c\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.c invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-54",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300x invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-55",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.Crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-56",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-57",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-58",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-59",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr9\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr9 invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-60",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cra\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cra invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-61",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-62",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-63",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-64",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-65",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",7)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-66",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-67",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-68",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-69",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-70",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-71",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-72",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-73",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",X)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-74",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(Status.SerialNumber,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-75",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-76",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb \",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-77",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:dir.x/a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:dir.x/a invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-78",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",11)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-79",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",15)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-80",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",19)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-81",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",23)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-82",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",27)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-83",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",31)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-84",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",35)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-85",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",39)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-86",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",127)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-87",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r5cr6_filemanage_ext-88",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR6 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.dat\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.dat invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr800\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr800 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6x invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crbx\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-13",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr2\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr2 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-14",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.csi\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.csi invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-15",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-16",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-17",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.crb.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-18",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU: invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-19",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-20",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a. invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-21",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CRD:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-22",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-23",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-24",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-25",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-26",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-27",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\"+\"b\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1xb invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-28",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-29",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR1X\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR1X invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-30",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-31",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CPU."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-32",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-33",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"SD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-34",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-35",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",8)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-36",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-37",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-38",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-39",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4) : FileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-40",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,15000)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-41",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-42",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-43",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",True)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-44",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",&H4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-45",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-46",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-47",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nFileManage(\"SD:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-48",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"SD:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-49",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nRunProgram(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-50",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",1)\nFileManage(\"CPU:c.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-51",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Scan never reached at run time.\nline 6: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-52",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-53",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.c\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.c invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-54",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-55",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.Crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-56",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-57",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr350 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-58",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-59",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr9\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr9 invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-60",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cra\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cra invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-61",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-62",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-63",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-64",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-65",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",7)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-66",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-67",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-68",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-69",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-70",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-71",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-72",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-73",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",X)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-74",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(Status.SerialNumber,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-75",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-76",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb \",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-77",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:dir.x/a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:dir.x/a invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-78",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",11)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-79",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",15)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-80",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",19)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-81",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",23)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-82",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",27)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-83",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",31)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-84",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",35)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-85",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",39)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-86",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",127)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-87",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r5cr6_filemanage_ext-88",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR6 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.dat\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.dat invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr800\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr800 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6x invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crbx\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-13",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr2\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr2 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-14",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.csi\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.csi invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-15",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-16",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-17",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.crb.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-18",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU: invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-19",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-20",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a. invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-21",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CRD:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-22",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-23",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-24",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1x invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-25",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-26",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-27",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr1x\"+\"b\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr1xb invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-28",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.cr1x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-29",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.CR1X\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.CR1X invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-30",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-31",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CPU."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-32",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.tx."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-33",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"SD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-34",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-35",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CRD:a.crb\",8)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: CRD:."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-36",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"a.crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: a.cr."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-37",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-38",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-39",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4) : FileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-40",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,15000)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-41",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 5: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-42",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4.5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-43",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",True)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-44",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",&H4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-45",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-46",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-47",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nFileManage(\"SD:a.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:b.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-48",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"SD:a.txt\",4)\nFileManage(\"SD:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage invalid drive: SD:a."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-49",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nRunProgram(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-50",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nFileManage(\"CPU:b.txt\",1)\nFileManage(\"CPU:c.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-51",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",4)\nNextScan\nScan(1,Sec,0,0)\nFileManage(\"CPU:b.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Warning: Scan never reached at run time.\nline 6: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-52",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6.txt\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-53",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.c\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.c invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-54",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr300x\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr300x invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-55",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.Crb\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-56",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr6\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr6 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-57",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr350\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-58",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr3\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr3 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-59",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cr9\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cr9 invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-60",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.cra\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.cra invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-61",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-62",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-63",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-64",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-65",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",7)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-66",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",9)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-67",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-68",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-69",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-70",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-71",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-72",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",16)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-73",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\",X)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-74",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(Status.SerialNumber,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-75",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nRunProgram(\"CPU:a.txt\")\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-76",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.crb \",4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-77",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:dir.x/a\",4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:dir.x/a invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-78",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",11)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-79",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",15)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-80",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",19)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-81",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",23)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-82",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",27)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-83",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",31)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-84",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",35)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-85",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",39)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-86",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",127)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: FileManage name CPU:a.txt invalid extension."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-87",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r5cr6_filemanage_ext-88",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFileManage(\"CPU:a.txt\",-8)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

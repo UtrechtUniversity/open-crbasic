@@ -1010,8 +1010,16 @@ drive plus colon emits `FileManage invalid drive: <first four characters>.` (pro
 `SD:a`, `"a.crb"` -> `a.cr`, `"CPU"` -> `CPU`, `"CP"`, `""`; case-insensitive: `"cpu:a.crb"`
 compiles). Valid drives: CR6/CR1000X `CPU CRD USR USB`; **CR300/CR350 `CPU` only** (`CRD:`, `USR:`,
 `USB:` all rejected, fixture `tests/fixtures/filemanage_drives.json`). This deliberately models
-only the drive check, not the separate `FileManage name ... invalid extension.` diagnostics. It is
-a tier-C instruction check.
+the drive check and the extension rule below. It is a tier-C instruction check.
+
+`RunProgram` shares both checks (same messages, `FileManage ...` wording). **Extension** (all four
+loggers, fixture `tests/fixtures/r5cr6_filemanage_ext.json`, 2026-10-08): when the constant option
+(second argument, C-converted) has bit 1 or 2 set (`option & 6`: 2..7, 10, 100, -1, `True`; not 0, 1,
+8, 9, 16, 17, 24, 64, 1000 or -8), the text after the *last* `.` of the constant name, case-insensitive,
+must start with `crb` or the logger's own extension (`cr6`, `cr1x`, `cr300`, `cr350`; `cr6x` and
+`crbx` pass, `cr1`, `cr`, empty and a name without `.` do not), else `FileManage name <name> invalid
+extension.` Only the **first** bad `FileManage`/`RunProgram` of the program is reported, drive or
+extension (a later one is silent), and a bad drive hides the extension check of the same name.
 
 ### `TableFile` drive and file-type option (`measure.json` `tablefile`)
 

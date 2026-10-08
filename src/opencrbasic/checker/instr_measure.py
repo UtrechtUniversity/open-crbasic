@@ -25,6 +25,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     measure = profile.measure
     if not measure:
         return
+    file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -45,8 +46,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "TABLEFILE" and "tablefile" in measure:
             _check_tablefile(stmt, measure["tablefile"], env, diags)
         for rule in measure.get("string_prefixes", ()):
-            if kw == rule["instr"]:
-                _check_string_prefix(stmt, rule, env, diags)
+            if kw == rule["instr"] and not (file_reported and "ext" in rule):
+                file_reported = _check_string_prefix(stmt, rule, env, diags) or file_reported
 
 
 def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
@@ -127,17 +128,28 @@ def _raw_arg(stmt: S.Instruction, pos: int, env: consteval.Env):
 
 
 def _check_string_prefix(stmt: S.Instruction, rule: dict, env: consteval.Env,
-                         diags: Diagnostics) -> None:
+                         diags: Diagnostics) -> bool:
+    """A constant file name's drive (`prefixes`) and, for `FileManage`/`RunProgram` (`ext`), its
+    extension: with option bits 2 or 4 set the text after the last `.` must start with `crb` or
+    the logger's own program extension, else `FileManage name <name> invalid extension.`
+    (docs/instructions.md#filemanage-drive-and-dnp-comport-constants). True when it reported."""
     idx = rule["pos"] - 1
     if idx >= len(stmt.args) or stmt.args[idx] is None:
-        return
+        return False
     value = _const_value(stmt.args[idx], env)
     if not isinstance(value, str):
-        return
+        return False
     drive = value[:4]
-    if drive.upper() in (f"{p}:" for p in rule["prefixes"]):
-        return
-    diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
+    if drive.upper() not in (f"{p}:" for p in rule["prefixes"]):
+        diags.error(stmt.line, rule["message"].format(drive=drive), stmt.file)
+        return True
+    option = _int_value(stmt.args[1], env) if "ext" in rule and len(stmt.args) > 1 else None
+    if option is not None and abs(option) < 2 ** 31 and option & 6:
+        ext = value.strip().rpartition(".")[2].upper() if "." in value else ""
+        if not ext.startswith(("CRB", rule["ext"])):
+            diags.error(stmt.line, f"FileManage name {value} invalid extension.", stmt.file)
+            return True
+    return False
 
 
 def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: Diagnostics) -> None:
