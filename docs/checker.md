@@ -3868,3 +3868,9 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   as `If TCTemp is <26, ...` above `Public TCTemp`. In a condition a top-level comma after an operand is
   `Incomplete expression`, and one where an operand is expected is the generic fallback. An `If ... Then`
   or `Do While|Until` whose condition does not parse still opens its block for the closer checks.
+- **Trailing `.` on a name** (`r5cr6_trailing_dot`, CR6/CR1000X): `junk.` is one (unknown) name, not a
+  member access with a missing member, so `Histogram instruction.` is `Invalid or missing parameter.`
+  like `Histogram junk`. Parser: a `.` not followed by an identifier stays on the preceding plain name.
+  Still unmodelled: an instruction followed by adjacent-word junk (`PanelTemp the instruction`,
+  `Battery the end`, `Randomize junk.`), where the oracle reads each comma-separated chunk as an
+  expression (arity first, then `Invalid symbol in expression: <chunk>.`).
