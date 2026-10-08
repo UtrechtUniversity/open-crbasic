@@ -108,8 +108,14 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Branch `ocb-ranges` (no worktree): WIP commit `3228f99` holds unverified CDM range work
   (`checker/cdm.py`, `data/cdm.json`). CDM address/NULL-module rules have since landed on the main
   branch, so compare before finishing, or discard.
-- gpt-6.1-sol review of round 4 was started 2026-10-08 (`scratch/codex/review-round4.md`); act on
-  it next. Rounds 5 commits (`2db1a6c`..HEAD) not reviewed.
+- gpt-6.1-sol review of round 4 (`scratch/codex/review-round4.md`, 8 findings, not yet verified
+  against the oracle) is the next round's first work: Sub-tail rule applied to Function
+  expressions (`F0()+Nope` false accept, `Fn(1)+1` likely false reject); Sub tails split nested
+  call arguments at every comma (likely false reject); empty-field table hidden by any
+  non-instruction body line (false accept); TDF alias splitting truncates Covariance/String
+  outputs and breaks `FieldNames` (regression vs `b486ebf`); CR300/CR350 dims state not shared by
+  the instruction-expression consumer; same-line (not same-statement) suppression across `:`;
+  quoted `"Public.x"` triggering the closer exemption. Round 5 (`2db1a6c`..HEAD) not reviewed.
 - Branch `ocb-r5-cr3xx` commit `ebe8e93` (function-named assignment targets; CR300/CR350 local
   `Dim exp` resolves as the function) is NOT integrated: it has no fixture. Probed rules are in its
   commit/docs; build fixture `function_assign_target` (`Sin = 1`, `Timer = X`, `Rnd = 2`,
