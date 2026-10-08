@@ -3846,3 +3846,9 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   `Then` as operand) and an unparsable one-line `If c Then X = Y +` are pass-1 errors too. Unknown name
   in the condition stays pass 2. `structure.condition_part`, `_check_if_pass1`. `Select Case Nope +`
   (a lone symbol error) and `Case ... To|Is` are not modelled.
+- **Placement name of an unparsable condition** (`r5cr6_cond_placement`, `r5cr6_select_symbol`): before
+  `BeginProg`, an `If`/`While`/`Do While|Until`/`Select Case` whose condition has an unknown name (or is
+  prose: `If using this instruction ...`) reports `Invalid symbol in expression: <condition>.` then
+  `<If|WHILE|Do|SELECT> illegally occurs before BeginProg.`, not `Expr ...`. An unresolved `Select Case`
+  still opens its block (no `Case outside Select.`/`EndSelect w/o Select`). Not modelled: `ElseIf`/`Case`
+  there (`Case with no Select.`) and `Loop` (`LOOP without DO.`).

@@ -1,0 +1,267 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_cond_placement-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf X Y Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf X = 1 and Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = 1 and ."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope Y Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope +.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf using this thing, you\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: using this thing, you.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nWhile Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nWhile the code, ok\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: the code, ok.\nline 2: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nWhile X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nDo While Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nDo While Nope Y\nLoop\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nDo Until X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nLoop While X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nSelect Case X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression:  X Y."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nSelect Case Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nSelect Case Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-16",
+   "logger": "cr6",
+   "source": "Public X, Y\nSelect Case Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_cond_placement-17",
+   "logger": "cr6",
+   "source": "Public X, Y\nSelect Case Nope Y\nEndSelect\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf X Y Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf X = 1 and Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: X = 1 and ."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope Y Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope +\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope +.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf using this thing, you\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: using this thing, you.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nWhile Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nWhile the code, ok\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: the code, ok.\nline 2: WHILE illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nWhile X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDo While Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDo While Nope Y\nLoop\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope Y.\nline 2: Do illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDo Until X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nLoop While X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nSelect Case X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression:  X Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nSelect Case Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nSelect Case Nope Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nSelect Case Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope.\nline 2: SELECT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_cond_placement-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nSelect Case Nope Y\nEndSelect\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:  Nope Y.\nline 2: SELECT illegally occurs before BeginProg."
+  }
+ ]
+}

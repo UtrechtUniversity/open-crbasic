@@ -907,6 +907,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if verdict and verdict[0] == "pass1":
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
+                elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
+                    cond_depth += 1  # an unresolved `Select Case` still opens its block
+                    select_depth += 1
         elif (isinstance(stmt, S.Call) and profile.known_first_word_pass1 and not stmt.explicit
               and stmt.name.upper() not in profile.instructions
               and stmt.name.upper() not in profile.functions):
@@ -1367,7 +1370,12 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if not in_body_block and before_bp and not in_table:
                 # not inside a `DataTable` body (oracle, CR6/CR1000X, 2026-10-03: `FuzzVar = 1`
                 # there reports only the out-of-place line; a `ConstTable` body still adds this)
-                diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
+                head = re.match(r"\s*(IF|WHILE|DO|SELECT)\b", stmt.text, re.I)
+                record = profile.instructions.get(head.group(1).upper()) if head else None
+                # an unparsable `If`/`While`/`Do`/`Select` condition names its keyword (oracle,
+                # CR6/CR1000X, 2026-10-08: `If Nope Y Then` -> `If illegally occurs ...`)
+                display = record["name"] if record and profile.known_first_word_pass1 else "Expr"
+                diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
     link_ctx.links.cutoff = None
     return None
@@ -1598,10 +1606,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             ctoks = [t for t in lexer.tokenize(cond, 0) if t.kind != "EOF"]
         except lexer.LexError:
             return None
-        verdict = (_scan_expr(ctoks, 0, operands, profile.functions, assign=True,
-                              start_operand=False) if ctoks else None)
-        # (an unknown name after `Select Case` is a pass-1 symbol error that ends the scan: unmodelled)
-        return None if verdict == ("pass2", "symbol") and re.match(r"\s*SELECT", text, re.I) else verdict
+        return (_scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False)
+                if ctoks else None)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
