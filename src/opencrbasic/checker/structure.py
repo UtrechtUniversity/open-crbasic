@@ -927,6 +927,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
                 _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
                                    seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"))
+        if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
+            if known is None:
+                known = expressions._known_names(program, profile)
+                operands = pass1_operands(program, profile)
+            _check_if_pass1(stmt, operands, profile, diags)
+
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
@@ -1551,6 +1557,33 @@ def pass1_operands(program: S.Program, profile) -> set[str]:
     return names | set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
 
 
+_COND_HEAD = re.compile(r"\s*(?:IF|ELSEIF|WHILE|DO\s+WHILE|DO\s+UNTIL|LOOP\s+WHILE|LOOP\s+UNTIL|SELECT\s+CASE|CASE)\b(.*)$",
+                        re.I | re.S)
+_COND_THEN = re.compile(r"(.*?)\bTHEN\s*$", re.I | re.S)
+
+
+def condition_part(text: str) -> str | None:
+    """The condition text of an `If`/`ElseIf`/`While`/`Do While|Until`/`Loop While|Until` statement,
+    without its keyword and a closing `Then` (what the pass-1 expression messages echo, CR6/CR1000X
+    oracle 2026-10-08: `If X =` -> `Invalid, or out of place expression: X =.`, `If X Y Then` ->
+    `Incomplete expression: X Y .`). `None`: not such a statement, or text follows the `Then`."""
+    m = _COND_HEAD.match(text)
+    if not m:
+        return None
+    cond = m.group(1)
+    if not re.match(r"\s*SELECT", text, re.I):  # `Select Case` echoes the raw remainder
+        cond = cond.lstrip()
+    if re.match(r"\s*CASE\b", text, re.I) and re.search(r"\b(?:TO|IS)\b", cond, re.I):
+        return None
+    if re.match(r"\s*(?:IF|ELSEIF)\b", text, re.I):
+        t = _COND_THEN.match(cond)
+        if t:
+            return t.group(1)
+        if re.search(r"\bTHEN\b", cond, re.I):
+            return None
+    return cond
+
+
 def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
     """Replays the CR6/CR1000X pass-1 left-to-right statement scan (`docs/checker.md` "Pass-1
     fallback: statements that start with a known word") over an unparsable statement.
@@ -1559,6 +1592,16 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     kind)` when an unknown name comes first (the record is left for pass 2), or `None` for a shape
     not oracle-probed. `kind` names the message: `fallback`, `incomplete`, `no_matching`,
     `symbol`."""
+    cond = condition_part(text)
+    if cond is not None:
+        try:
+            ctoks = [t for t in lexer.tokenize(cond, 0) if t.kind != "EOF"]
+        except lexer.LexError:
+            return None
+        verdict = (_scan_expr(ctoks, 0, operands, profile.functions, assign=True,
+                              start_operand=False) if ctoks else None)
+        # (an unknown name after `Select Case` is a pass-1 symbol error that ends the scan: unmodelled)
+        return None if verdict == ("pass2", "symbol") and re.match(r"\s*SELECT", text, re.I) else verdict
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
@@ -1756,13 +1799,44 @@ def _bare_function_needs_paren(name: str, functions: dict) -> bool:
         record["nargs"] > 0 or bool(record.get("argspec")))
 
 
+def _mentions_then(node) -> bool:
+    if isinstance(node, S.Name):
+        return node.name.upper() == "THEN"
+    if dataclasses.is_dataclass(node):
+        return any(_mentions_then(getattr(node, f.name)) for f in dataclasses.fields(node)
+                   if f.name not in ("line", "file"))
+    return isinstance(node, list) and any(_mentions_then(n) for n in node)
+
+
+def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> None:
+    """Pass-1 messages of an `If`/`ElseIf` the parser accepted: a dangling operator before `Then`
+    (`If X = Then`, parsed with `Then` as the operand) is the pass-1 expression error on the
+    condition alone; an unparsable one-line `If ... Then X = Y +` reports its statement
+    (oracle, CR6/CR1000X, 2026-10-08)."""
+    if _mentions_then(stmt.cond):
+        cond = condition_part(stmt.text)
+        verdict = _pass1_scan(stmt.text, operands, profile) if cond is not None else None
+        if verdict and verdict[0] == "pass1":
+            diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
+                        show_file=False)
+    for sub in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or []):
+        if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
+            verdict = _pass1_scan(sub.text, operands, profile)
+            if verdict and verdict[0] == "pass1":
+                diags.error(sub.line, _pass1_message(profile, sub, verdict[1]), sub.file,
+                            show_file=False)
+
+
 def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
+    text = condition_part(stmt.text)
+    if text is None or kind == "expects_paren":
+        text = stmt.text
     return {
-        "fallback": _out_of_place(profile, stmt.text, getattr(stmt, "at_eol", True)),
-        "incomplete": f"Incomplete expression: {stmt.text}.",
-        "no_matching": f"No Matching, or out of place ) in expression: {stmt.text}.",
-        "symbol": f"Invalid symbol in expression: {stmt.text}.",
-        "expects_paren": f"Expression expects ( : {stmt.text}.",
+        "fallback": _out_of_place(profile, text, getattr(stmt, "at_eol", True)),
+        "incomplete": f"Incomplete expression: {text}.",
+        "no_matching": f"No Matching, or out of place ) in expression: {text}.",
+        "symbol": f"Invalid symbol in expression: {text}.",
+        "expects_paren": f"Expression expects ( : {text}.",
     }[kind]
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:

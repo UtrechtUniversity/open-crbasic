@@ -3838,3 +3838,11 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   or out of place expression` like `X = Y +` (it is listed beside a later pass-1 error, e.g. a wrapped
   `1` on the next line, while pass 2 is hidden). `_pass1_scan` skips a clean subscript and scans on;
   `A(2)(1) = ...` and an unclean subscript stay unmodelled. CR6/CR1000X only.
+- **Condition statements, pass 1** (`r5cr6_condition_echo`): for `If`, `ElseIf`, `While`, `Do While|Until`,
+  `Loop While|Until`, `Select Case` and a simple `Case`, the pass-1 expression messages (`Invalid, or out
+  of place expression`, `Incomplete expression`, `No Matching, or out of place )`) echo the *condition
+  only* (keyword and a closing `Then` removed; `Select Case` echoes the raw remainder, leading blank
+  included; an `If` echo keeps the blank before `Then`). `If X = Then` / `ElseIf Y + Then` (parsed with
+  `Then` as operand) and an unparsable one-line `If c Then X = Y +` are pass-1 errors too. Unknown name
+  in the condition stays pass 2. `structure.condition_part`, `_check_if_pass1`. `Select Case Nope +`
+  (a lone symbol error) and `Case ... To|Is` are not modelled.
