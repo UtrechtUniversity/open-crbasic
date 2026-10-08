@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_bare_cond-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Then\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf 'c\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nElseIf\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo While\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo Until\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo\nLoop While\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo\nLoop Until\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case X\nCase\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case X\nCase Else\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nCase\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_bare_cond-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nFor\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Then\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf 'c\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nElseIf\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo While\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo Until\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo\nLoop While\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nDo\nLoop Until\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case X\nCase\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nSelect Case X\nCase Else\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nCase\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_bare_cond-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nFor\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  }
+ ]
+}

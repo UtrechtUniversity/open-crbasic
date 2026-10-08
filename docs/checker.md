@@ -3889,3 +3889,13 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   `Y = Int(1), 2` a top-level comma after an operand is pass-1 `Incomplete expression`, and one where an
   operand is expected (`Y = , 1`) the generic fallback (a name before the comma that does not resolve is
   still pass 2). An indexed target (`A(1) = 1, 2`) keeps the pass-2 fallback.
+- **Statements before `BeginProg` with an undefined name** (`r5cr6_fn_stmt_before_bp`): a built-in
+  function written as a statement (`FileClose(Nope)`, `Timer(Nope,1,0)`) reports `Invalid symbol in
+  expression: <statement>.` before its own `Expr illegally occurs before BeginProg.` (it was hidden by
+  that placement error); not when an earlier statement of the line owns the placement error.
+- **`If` without `Then`** (`r5cr6_if_no_then*`): the condition runs to the end of the statement (a
+  trailing comment or `:` leaves the blank), so an unknown name gives `Invalid symbol in expression:
+  <condition>.` (the missing-`EndIf` message is then not printed); an `If` whose condition does not parse
+  still opens its block. **Bare condition keywords** (`r5cr6_bare_cond`): `If`, `ElseIf`, `Do While|Until`,
+  `Loop While|Until`, `Case` alone are pass-1 `Invalid or missing expression.`; `If Then`, `If 'c` and
+  `Select Case` alone echo an empty condition. Not modelled: bare `While` and `Select`.

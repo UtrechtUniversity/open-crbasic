@@ -634,6 +634,9 @@ def _if_condition_text(stmt: S.Stmt) -> str | None:
     """The echo the real compilers use for an `If` condition: the text between `If ` and `Then`,
     trailing space included (oracle: `If X > 1 And Nope Then` -> `X > 1 And Nope .`)."""
     m = _IF_COND_RE.match(stmt.text or "")
+    if m is None and isinstance(stmt, S.If) and stmt.inline is None:
+        # no `Then`: the condition runs to the end of the statement (oracle, 2026-10-08)
+        m = re.match(r"(?is)^\s*If\s(.*)$", stmt.text or "")
     return m.group(1) if m else None
 
 def _known_names(program: S.Program, profile) -> set[str]:
@@ -1950,11 +1953,19 @@ def _check_function_statements(program: S.Program, profile, diags: Diagnostics, 
     (indentation and trailing spaces kept); CR300/CR350 each name, then `Dimensions not declared:
     <statement>` when an undefined name is indexed."""
     ds = dims_state(program)
+    first_on_line: dict[tuple, S.Stmt] = {}
+    for stmt in program.statements:
+        first_on_line.setdefault((stmt.line, stmt.file), stmt)
     for stmt in program.statements:
         if not isinstance(stmt, S.Call) or stmt.explicit or stmt.name.upper() not in profile.functions:
             continue
         names = [n for a in stmt.args for n in _undefined_names(a, known)]
-        if not names or any((d.line, d.file) == (stmt.line, stmt.file) for d in diags.errors):
+        # (its own `Expr illegally occurs before BeginProg.` does not hide it, unless an earlier
+        # statement of the line owns that placement error: `X = 1 : Timer(Nope,1,0)`)
+        if not names or any((d.line, d.file) == (stmt.line, stmt.file)
+                            and not (d.message == "Expr illegally occurs before BeginProg."
+                                     and first_on_line[(stmt.line, stmt.file)] is stmt)
+                            for d in diags.errors):
             continue  # (`SerialOpen(COMC1,...)` is already reported by `cr3xx.check`)
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)

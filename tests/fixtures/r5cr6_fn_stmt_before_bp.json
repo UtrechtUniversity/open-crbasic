@@ -1,0 +1,239 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nFileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nFileClose (Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose (Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-2",
+   "logger": "cr6",
+   "source": "Public X, Y\n  FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:   FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nX = FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nFileClose(X)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nTimer(Nope,1,0)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(Nope,1,0).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf Nope Then Y = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nIf X = 1 Then FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nRandomize(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: Randomize illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nInt(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Int(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nX = 1 : FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nFileClose(Nope) : X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope) .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nFileClose(Nope) : FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope) .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r5cr6_fn_stmt_before_bp-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nTimer(Nope,1,0) 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(Nope,1,0) .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nFileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nFileClose (Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose (Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\n  FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression:   FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nX = FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: X = FileClose(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nFileClose(X)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nTimer(Nope,1,0)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(Nope,1,0).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope Then\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf Nope Then Y = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope .\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nIf X = 1 Then FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nRandomize(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.\nline 2: Randomize illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInt(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Int(Nope).\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nX = 1 : FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nFileClose(Nope) : X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope) .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nFileClose(Nope) : FileClose(Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: FileClose(Nope) .\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r5cr6_fn_stmt_before_bp-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nTimer(Nope,1,0) 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Timer(Nope,1,0) .\nline 2: Expr illegally occurs before BeginProg."
+  }
+ ]
+}

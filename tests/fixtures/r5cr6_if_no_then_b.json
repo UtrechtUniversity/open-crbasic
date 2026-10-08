@@ -1,0 +1,253 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_if_no_then_b-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 : Y = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Y Else\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Else Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Thn."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Then2."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Th en\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Th en."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Y = 1 Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y = 1 Then."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope Thn."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Thn\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope Thn."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Thn\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Thn."
+  },
+  {
+   "id": "cr6-r5cr6_if_no_then_b-16",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then X = 1 Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 Thn."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 : Y = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing expression."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Y Else\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Else Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Thn."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Then2."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Th en\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Th en."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then Y = 1 Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y = 1 Then."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope Thn."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Thn\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope Thn."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Thn\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Thn."
+  },
+  {
+   "id": "cr1000x-r5cr6_if_no_then_b-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Then X = 1 Thn\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 Thn."
+  }
+ ]
+}

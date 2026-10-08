@@ -1401,7 +1401,7 @@ _CLOSER_MESSAGES = {
 
 
 def _unparsed_opener(text: str) -> str | None:
-    if re.match(r"\s*IF\b.*\bTHEN\s*$", text, re.I | re.S):
+    if re.match(r"\s*IF\b", text, re.I) and not re.search(r"\bTHEN\s*\S", text, re.I):
         return "IF"
     return "DO" if re.match(r"\s*DO\s+(?:WHILE|UNTIL)\b", text, re.I) else None
 
@@ -1630,8 +1630,14 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             ctoks = [t for t in lexer.tokenize(cond, 0) if t.kind != "EOF"]
         except lexer.LexError:
             return None
-        return (_scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
-                           cond=True) if ctoks else None)
+        if not ctoks:
+            # a bare keyword has no expression at all (oracle, CR6/CR1000X, 2026-10-08); `If Then`,
+            # `If 'c` and `Select Case` echo the empty condition
+            if text == text.rstrip() and not re.search(r"\bTHEN\b|^\s*SELECT", text, re.I):
+                return ("pass1", "missing_expr")
+            return ("pass1", "fallback")
+        return _scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
+                          cond=True)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
@@ -1886,6 +1892,7 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
         "no_matching": f"No Matching, or out of place ) in expression: {text}.",
         "symbol": f"Invalid symbol in expression: {text}.",
         "expects_paren": f"Expression expects ( : {text}.",
+        "missing_expr": "Invalid or missing expression.",
     }[kind]
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
