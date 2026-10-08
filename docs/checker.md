@@ -4015,3 +4015,9 @@ corpus puts example prose into the program, so these shapes are measured by `dif
 - A `Sub` tail splits arguments at top-level commas only: `Call Two(1) Round(2,0)` and
   `Two(1) Round(2,0), 3` (the latter: `Call to Two with 3 parameters, requires 2 arguments.`).
   Fixture `sub_tail_nested.json`.
+- The CR6/CR1000X "earlier parameter-kind error hides `Too many parameters`" suppression is
+  per statement: `PortSet(C1,1,x):PortSet(C1,1,1,2)` -> `Illegal parameter x, expecting constant
+  integer.` then `Too many parameters:  2.` (also with `Variable illegal in Parameter`). Modelled
+  on `:`-joined lines by attributing a diagnostic to the statement whose text contains its echoed
+  argument. Not modelled: when the too-many statement comes first the real output lists it first
+  (statement order); ours lists per pass. Fixture `stmt_scope_suppress.json`.

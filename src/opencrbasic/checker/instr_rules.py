@@ -421,12 +421,29 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         # CR6/CR1000X: an earlier parameter-kind error on the statement hides it (oracle,
         # 2026-10-04: `PortSet(C1,1,x,y)`, `PortSet(x,1,y,z)`, `Delay(1,x,y,z)`)
-        if not profile.single_pass and any(
-                d.line == stmt.line and d.file == stmt.file and d.message.startswith(
-                    ("Illegal parameter ", "Variable illegal in Parameter"))
-                for d in diags.items):
+        if not profile.single_pass and _earlier_error_in_stmt(
+                program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")):
             continue
         diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+
+
+def _earlier_error_in_stmt(program: S.Program, stmt, diags: Diagnostics, prefixes: tuple) -> bool:
+    """A `prefixes` error on `stmt`'s line that belongs to `stmt` itself. On a `:`-joined line
+    (oracle, 2026-10-08, CR6/CR1000X: `PortSet(C1,1,x):PortSet(C1,1,1,2)` still reports `Too many
+    parameters:  2.`) a diagnostic belongs to the statement whose text contains its echoed
+    argument; a single-statement line keeps the plain line match."""
+    here = [d for d in diags.items if d.line == stmt.line and d.file == stmt.file
+            and d.message.startswith(prefixes)]
+    if not here:
+        return False
+    if sum(1 for o in program.statements if (o.file, o.line) == (stmt.file, stmt.line)) < 2:
+        return True
+    for d in here:
+        echo = re.sub(r"^(?:Illegal parameter |[^:]*: )|(?:, expecting constant integer)?\.$", "",
+                      d.message).strip()
+        if echo in stmt.text:
+            return True
+    return False
 
 
 def check_essinitialize_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -1123,10 +1140,8 @@ def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: c
         record = profile.instructions.get(kw)
         if not record or kw in ("DO", "LOOP", "ELSE"):
             continue
-        if not profile.single_pass and any(
-                (d.file, d.line) == (stmt.file, stmt.line) and d.message.startswith(
-                    ("Invalid symbol in expression", "Variable illegal in Parameter"))
-                for d in diags.errors):
+        if not profile.single_pass and _earlier_error_in_stmt(
+                program, stmt, diags, ("Invalid symbol in expression", "Variable illegal in Parameter")):
             continue  # CR6/CR1000X: an earlier const-family error on the line ends the statement
         for i, code in enumerate(record["params"][:len(stmt.args)]):
             arg = stmt.args[i]
