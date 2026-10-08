@@ -1,0 +1,533 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r5cr6_leading_operator-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= -1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = -1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n* 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: * 2."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n/ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: / 2."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n< 3\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: < 3."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n<> 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: <> 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n> 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: > 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n>= 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: >= 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n<= 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: <= 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n& \"a\"\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: & \"a\".\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-10",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n^ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ^ 2."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-11",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n\\\\ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \\\\ 2."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-12",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-13",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- X\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - X."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-14",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n-1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: -1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-15",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- Y + 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - Y + 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-16",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n, x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: , x."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-17",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n) x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ) x."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-18",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n. x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: . x."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-19",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= Y\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = Y."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-20",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ Y\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + Y."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-21",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + Nope.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-22",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = Nope."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-23",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n* Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: * Nope."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-24",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n-Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: -Nope.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-25",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nmod 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: mod 2."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-26",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nand 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: and 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-27",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nor X\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: or X."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-28",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nxor 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: xor 1."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-29",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n$ x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: $ x.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-30",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n: x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:  x."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-31",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n; x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ; x."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-32",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y\n+ 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-33",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y\n+ 1 'c\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-34",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then\nX = Y\n+ 1 'c\nsuccessful\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-35",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y +\nY 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Y +.\nline 6: Invalid, or out of place expression: Y ."
+  },
+  {
+   "id": "cr6-r5cr6_leading_operator-36",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nLoop Until X\n= -1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: = -1 ."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= -1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = -1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n* 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: * 2."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n/ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: / 2."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n< 3\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: < 3."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n<> 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: <> 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n> 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: > 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n>= 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: >= 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n<= 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: <= 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n& \"a\"\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: & \"a\".\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n^ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ^ 2."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n\\\\ 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \\\\ 2."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- X\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - X."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n-1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: -1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n- Y + 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: - Y + 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n, x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: , x."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n) x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ) x."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n. x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: . x."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= Y\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ Y\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + Y."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n+ Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: + Nope.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n= Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: = Nope."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n* Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: * Nope."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n-Nope\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: -Nope.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nmod 2\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: mod 2."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nand 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: and 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nor X\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: or X."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nxor 1\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: xor 1."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n$ x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: $ x.\nline 6: Invalid, or out of place expression: successful."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n: x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:  x."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\n; x\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: ; x."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y\n+ 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y\n+ 1 'c\nsuccessful\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nIf X = 1 Then\nX = Y\n+ 1 'c\nsuccessful\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: + 1 ."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nX = Y +\nY 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Y +.\nline 6: Invalid, or out of place expression: Y ."
+  },
+  {
+   "id": "cr1000x-r5cr6_leading_operator-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim I\nBeginProg\nScan(1,Sec,0,0)\nLoop Until X\n= -1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: = -1 ."
+  }
+ ]
+}

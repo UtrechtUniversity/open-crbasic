@@ -3874,3 +3874,9 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   Still unmodelled: an instruction followed by adjacent-word junk (`PanelTemp the instruction`,
   `Battery the end`, `Randomize junk.`), where the oracle reads each comma-separated chunk as an
   expression (arity first, then `Invalid symbol in expression: <chunk>.`).
+- **Statement starting with an operator** (`r5cr6_leading_operator`, CR6/CR1000X): `+ 1`, `= -1`, `* 2`,
+  `<> 1`, `^ 2`, `, x`, `) x`, `. x`, `; x` followed by anything is a pass-1 `Invalid, or out of place
+  expression: <text>.` (a later bare word such as `successful` on the next line is then hidden, which is
+  the wrapped-continuation shape of `X = Y` / `+ 1 'comment` in the help corpus). A leading `+`/`-` with
+  an expression is a pass-1 error when every name resolves, pass 2 when one does not. Not modelled: a
+  lone `+`/`=`, `&`, `%`, `!`, `Not`.

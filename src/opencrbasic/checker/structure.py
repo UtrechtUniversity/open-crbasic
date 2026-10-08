@@ -1613,6 +1613,9 @@ def condition_part(text: str) -> str | None:
     return cond
 
 
+_LEADING_OPS = frozenset({"=", "*", "/", "<", "<>", ">", ">=", "<=", "^", "\\", ",", ")", ".", ";"})
+
+
 def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
     """Replays the CR6/CR1000X pass-1 left-to-right statement scan (`docs/checker.md` "Pass-1
     fallback: statements that start with a known word") over an unparsable statement.
@@ -1671,6 +1674,12 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     elif first.kind == "OP" and first.text == "(":
         verdict = _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False)
         return ("pass1", "fallback") if verdict == ("pass1", "incomplete") else verdict
+    elif first.kind == "OP" and len(toks) > 1 and first.text in _LEADING_OPS:
+        # a statement starting with a binary operator (`+ 1`, `= -1`, `< 3`, `, x`) is a pass-1
+        # error whatever follows (oracle, CR6/CR1000X, 2026-10-08)
+        return ("pass1", "fallback")
+    elif first.kind == "OP" and len(toks) > 1 and first.text in ("+", "-"):
+        return _scan_expr(toks, 1, operands, functions, assign=False, start_operand=False)
     else:
         return None
     if i == len(toks):
