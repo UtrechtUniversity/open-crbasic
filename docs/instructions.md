@@ -1431,3 +1431,18 @@ unverified and can only under-report). When the table has no other output instru
 compiler adds `Table <name> declared with no output fields.` at `EndTable`; that line belongs to
 the table checks and is not produced here, so fixtures only hold tables with another output.
 Reproducer: cr1000x `false_accept/0f0e2e02684b` (still differs by that second line).
+
+### CH400Status interval and FFT source length (fixtures `ch400status`, `fft_source_length`)
+
+`CH400Status (Interval, Units)` (CR6/CR1000X, 2026-10-08): `Interval` converts as C's `(long)` and
+is multiplied by the unit in microseconds; a result that is not a whole number of seconds gives
+`CH400Status update interval must be an integer multiple of 1 second.` (`1,msec`, `500,msec`,
+`&HFF,msec`, `1,usec`, `1500000,usec` fail; `1000,msec`, `10,Sec`, `1,Min`, `0,Sec`, `-1,Sec`,
+`2.5,Sec` pass). Reproducer: cr6 `false_accept/b9b9135057c4`.
+
+`FFT (Source, Res, N, ...)` (all four loggers): with `N` a constant power of two, the source from
+the written element on must hold `N` values or `<name> must be of length >= N.` (`x(16)` with
+`N=32`; `x(2)` of a 16-array with `N=16`; `z(2,1)` of a 4x4 with `N=16`; `z` whole passes, a
+smaller `N` passes). `N` that is not a power of two gives `FFT N must be a non-zero power of 2.`
+plus the empty-table line in the real compiler and is not modelled. Reproducer: cr6 and cr300
+`false_accept/a05ccf2caf18`.

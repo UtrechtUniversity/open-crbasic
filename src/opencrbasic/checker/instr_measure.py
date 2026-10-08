@@ -25,6 +25,7 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     measure = profile.measure
     if not measure:
         return
+    dims = None
     file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -41,6 +42,12 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "GPS" and "gps" in measure:
             _check_structure_members(stmt, program, measure["gps"], env, diags)
             _check_gps_port(stmt, measure["gps"], env, diags)
+        if kw == "CH400STATUS" and "CH400STATUS" in profile.instructions:
+            _check_ch400status(stmt, env, diags)
+        if kw == "FFT" and "FFT" in profile.instructions:
+            if dims is None:
+                dims = symbols.declared_all_dims(program, env)
+            _check_fft_source(stmt, dims, env, diags)
         if kw == "SDI12RECORDER" and profile.single_pass:
             _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
@@ -160,6 +167,33 @@ def _check_sdi12_structure_dest(stmt: S.Instruction, program: S.Program, diags: 
         return
     type_name = symbols.declared_variable_types(program).get(dest.name.upper())
     if type_name is not None and any(
+def _check_ch400status(stmt: S.Instruction, env: consteval.Env, diags: Diagnostics) -> None:
+    """`CH400Status(Interval, Units)`: the converted interval times the unit, in microseconds,
+    must be a whole number of seconds; docs/instructions.md "CH400Status interval and FFT source length"."""
+    if len(stmt.args) < 2:
+        return
+    value, unit = _int_value(stmt.args[0], env), _const_value(stmt.args[1], env)
+    if value is None or not isinstance(unit, (int, float)) or int(unit) not in _DELAY_US_PER_UNIT:
+        return
+    if value * _DELAY_US_PER_UNIT[int(unit)] % 1_000_000:
+        diags.error(stmt.line, "CH400Status update interval must be an integer multiple of 1 second.",
+                    stmt.file)
+
+
+def _check_fft_source(stmt: S.Instruction, dims: dict, env: consteval.Env, diags: Diagnostics) -> None:
+    """`FFT(Source, Res, N, ...)`: the source from the given element on must hold `N` values
+    (`N` a power of two), else `<name> must be of length >= N.`"""
+    if len(stmt.args) < 3 or not isinstance(stmt.args[0], (S.Name, S.Index)):
+        return
+    n = _int_value(stmt.args[2], env)
+    shape = dims.get(stmt.args[0].name.upper())
+    if n is None or n < 1 or n & (n - 1) or shape is None:
+        return
+    offset = _flat_offset(stmt.args[0], shape)
+    if offset is not None and math.prod(shape) - offset < n:
+        diags.error(stmt.line, f"{stmt.args[0].name} must be of length >= {n}.", stmt.file)
+
+
             isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE" and st.args and
             isinstance(st.args[0], S.Name) and st.args[0].name.upper() == type_name
             for st in program.statements):

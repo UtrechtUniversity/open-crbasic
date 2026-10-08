@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-08",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-ch400status-0",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-1",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(10,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-2",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr6-ch400status-3",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(500,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr6-ch400status-4",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1000,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-5",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1500,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr6-ch400status-6",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(&HFF,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr6-ch400status-7",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(0,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-8",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1,Min)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-9",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(2.5,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-10",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(-1,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-11",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr6-ch400status-12",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1000000,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-ch400status-13",
+   "logger": "cr6",
+   "source": "Public count\nCH400Status(1500000,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-0",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-1",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(10,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-2",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-3",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(500,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-4",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1000,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-5",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1500,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-6",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(&HFF,msec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-7",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(0,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-8",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1,Min)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-9",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(2.5,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-10",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(-1,Sec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-11",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  },
+  {
+   "id": "cr1000x-ch400status-12",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1000000,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ch400status-13",
+   "logger": "cr1000x",
+   "source": "Public count\nCH400Status(1500000,usec)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: CH400Status update interval must be an integer multiple of 1 second."
+  }
+ ]
+}
