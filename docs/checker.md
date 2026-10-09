@@ -4192,3 +4192,12 @@ when a `'` comment was stripped off the line. It ends the compile: **nothing aft
 reported**, pass-1 errors included (`checker.check` drops later diagnostics of the file). Errors
 before it stay. Not modelled: `#If 1 abc` (`Invalid symbol in expression: 1 abc.`) and `X = 1 #1`
 (`Invalid symbol in expression: X = 1 #1.`).
+
+### A lone `_` continuation line (CR6/CR1000X)
+
+A physical line consisting only of `_` (blanks allowed before it) joins the next line **verbatim**:
+the blanks before the `_` plus the next line unstripped, no separator (`    _` / `X Y` echoes
+`    X Y`; `  _` / `  X Y` echoes eight blanks). After another lone `_` line the earlier blanks are
+dropped (`_`/`_`/`X Y` echoes `X Y`). Other continuations (text before the `_`) are unchanged.
+Fixture `lone_underscore_join.json` (`source._Loader.load_text`). Fixes the leading blank in the
+`CDM_VW300Config(...)` leftover-line echo of `rainflowsample2_1.CR6`.

@@ -233,7 +233,13 @@ class _Loader:
                     return out
                 stripped = _strip_comment(raw_line)
                 had_comment = len(stripped) != len(raw_line)
-                text = prefix + " " + stripped.lstrip(" \t")
+                if prefix.strip():
+                    text = prefix + " " + stripped.lstrip(" \t")
+                else:
+                    # a lone `_`: the blanks before it and the next line verbatim, no separator
+                    # (oracle, 2026-10-10, `docs/checker.md` "Round 7")
+                    lone = _is_continuation(stripped)[0] and not _is_continuation(stripped)[1].strip()
+                    text = stripped if lone else text.rstrip(" \t")[:-1] + stripped
             if text.strip() == "":
                 i += 1
                 continue
