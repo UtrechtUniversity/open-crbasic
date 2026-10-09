@@ -132,7 +132,7 @@ actually appear in this repository's programs or the CHM sample were pursued.
   a single-line `If c Then a Else b` are timed (inline bodies are walked in order).
 - `VoltSe`, `VoltDiff`, `TCSe`, `TCDiff` (Range 800/802/804 plain, 820/822/824 "C"; fitted on ~9,300
   real points, 0 residual): with `ks = (24*s' + 127)//256` (`s' = settle`, 500 when 0),
-  `kx = (24e6/integ + 128)//256` (24 when `integ` is 0), `n` = measurements (`reps + flag` for
+  `kx = max(1, (24e6/integ + 128)//256)` (24 when `integ` is 0; the floor of 1 applies from `integ` 187501 up, oracle-confirmed to 1e8), `n` = measurements (`reps + flag` for
   VoltSe/TCSe, `reps*(1+flag)` for VoltDiff/TCDiff, flag = MeasOff/RevDiff, any non-zero counts
   as 1), the cost is `floor((140 + extra + n*(816 + ceil((32*ks + u)/3) + floor(32*kx/3)))/100)*100`.
   `extra = 50*reps` for a C range, else 0; `u = 160` for a C range with a valid `U` channel
@@ -175,5 +175,10 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `I` x max(RepsI,0); Cfg 2 `V,I,I`; Cfg 3 `V,I,V,I,V,I`; any other Cfg `V,I`. ChanV supplies the
   `V` term, ChanI the `I` terms.
 
-Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, Therm107/108/109, AM25T,
+- `Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset)`: the VoltSe cost
+  with `n = 2*Reps` on a plain range, no channel dependence (any SEChan/VxChan form; 2,400 real
+  points over Reps 1..200, Settle 0..400, Integ 0..300000, 0 residual). Reps < 1 and negative
+  Settle/Integ are not modelled.
+
+Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, AM25T,
 Resistance, AutoRange for VoltSe & co (AutoRange adds ~1300 us at n=1, not fitted).

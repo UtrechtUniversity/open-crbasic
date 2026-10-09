@@ -95,6 +95,8 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
             _delay(stmt, env, lines, pipeline)
         elif kw in _MEASURE:
             _measure(stmt, env, lines)
+        elif kw in _THERM:
+            _therm(stmt, env, lines)
         elif kw in _CLOSED:
             _closed(stmt, env, lines, pipeline)
     return lines
@@ -170,16 +172,32 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
     if rng not in _PLAIN_RANGES and rng not in _C_RANGES:
         return
     n = reps * (2 if flag else 1) if doubling else reps + (1 if flag else 0)
-    ks = int((24 * (settle or 500) + 127) // 256)
-    kx = 24 if integ == 0 else int((24e6 / integ + 128) // 256)
-    thirds = 32 * ks
     extra = 0
+    thirds_u = 0
     if rng in _C_RANGES:
         extra = 50 * reps
         if u_chan:
-            thirds += 160
-    cost = int(140 + extra + n * (816 + -(-thirds // 3) + 32 * kx // 3)) // 100 * 100
+            thirds_u = 160
+    cost = _meas_cost(n, settle, integ, extra, thirds_u)
     lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
+
+
+def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0) -> int:
+    ks = int((24 * (settle or 500) + 127) // 256)
+    kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
+    return int(140 + extra + n * (816 + -(-(32 * ks + thirds_u) // 3) + 32 * kx // 3)) // 100 * 100
+
+
+# Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset): two measurements per
+# rep, plain range, no channel dependence (docs/cli.md "Thermistor cost").
+_THERM = {"THERM107": "Therm107", "THERM108": "Therm108", "THERM109": "Therm109"}
+
+
+def _therm(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
+    a = _args(stmt, env, 1, 4, 5)
+    if a is None or a[0] < 1 or a[1] < 0 or a[2] < 0:
+        return
+    lines.append(f"line {stmt.line}: {_THERM[stmt.keyword]} = {_meas_cost(2 * a[0], a[1], a[2])}")
 
 
 _LABEL = {"VOLTSE": "VoltSe", "VOLTDIFF": "VoltDiff", "TCSE": "TCSe", "TCDIFF": "TCDiff"}
