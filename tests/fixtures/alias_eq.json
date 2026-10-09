@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias_eq-0",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr6-alias_eq-1",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr6-alias_eq-2",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) = 'c\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr6-alias_eq-3",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)\n= lat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(1)\n.\nline 3: Invalid, or out of place expression: = lat."
+  },
+  {
+   "id": "cr6-alias_eq-4",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: X."
+  },
+  {
+   "id": "cr6-alias_eq-5",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias X =\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: X."
+  },
+  {
+   "id": "cr6-alias_eq-6",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =  \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr6-alias_eq-7",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)  =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1)  ."
+  },
+  {
+   "id": "cr6-alias_eq-8",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(1)\n."
+  },
+  {
+   "id": "cr6-alias_eq-9",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(7) uSecond to rTime(7)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(7) uSecond to rTime(7)\n."
+  },
+  {
+   "id": "cr6-alias_eq-10",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(7) uSecond\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: rTime(7) uSecond\n."
+  },
+  {
+   "id": "cr6-alias_eq-11",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(7)\nuSecond\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: rTime(7)\n."
+  },
+  {
+   "id": "cr6-alias_eq-12",
+   "logger": "cr6",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(1) =\nYear\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: rTime(1) ."
+  },
+  {
+   "id": "cr1000x-alias_eq-0",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr1000x-alias_eq-1",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr1000x-alias_eq-2",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) = 'c\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr1000x-alias_eq-3",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)\n= lat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(1)\n.\nline 3: Invalid, or out of place expression: = lat."
+  },
+  {
+   "id": "cr1000x-alias_eq-4",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: X."
+  },
+  {
+   "id": "cr1000x-alias_eq-5",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias X =\nlat\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: X."
+  },
+  {
+   "id": "cr1000x-alias_eq-6",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1) =  \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1) ."
+  },
+  {
+   "id": "cr1000x-alias_eq-7",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)  =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: gd(1)  ."
+  },
+  {
+   "id": "cr1000x-alias_eq-8",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(1)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(1)\n."
+  },
+  {
+   "id": "cr1000x-alias_eq-9",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias gd(7) uSecond to rTime(7)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: gd(7) uSecond to rTime(7)\n."
+  },
+  {
+   "id": "cr1000x-alias_eq-10",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(7) uSecond\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: rTime(7) uSecond\n."
+  },
+  {
+   "id": "cr1000x-alias_eq-11",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(7)\nuSecond\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Need '=' in alias definition: rTime(7)\n."
+  },
+  {
+   "id": "cr1000x-alias_eq-12",
+   "logger": "cr1000x",
+   "source": "Public gd(15), X, rTime(9)\nAlias rTime(1) =\nYear\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nothing after '=' in alias definition: rTime(1) ."
+  }
+ ]
+}

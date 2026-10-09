@@ -55,6 +55,8 @@ _CONST_BAD_VALUE = "Const bad value: "
 # `Do`/`Loop` followed by something other than `While`/`Until`: `reason` is this prefix plus the
 # pass-1 message (`parser._parse_doloop`; oracle, 2026-10-10, all four loggers)
 _DO_LOOP_PARAM = "Do/Loop parameter: "
+# `Alias <target> =` with nothing after the `=` (`parser._parse_alias`; oracle, 2026-10-10)
+_ALIAS_NOTHING_AFTER_EQ = "Alias nothing after '='"
 # `parser.py`'s `_parse_for`: a `For` header with no `=`, no `To`, or nothing after `To`. All four
 # loggers, pass 1: `Invalid or missing parameter.` (docs/checker.md "Round 4 (CR6/CR1000X ...)").
 _FOR_MISSING = "For missing parameter"
@@ -1348,7 +1350,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM)) or \
+                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                                      _ALIAS_NOTHING_AFTER_EQ)) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
             if stmt.reason == _UNCLOSED_PAREN_EXPR:
@@ -1606,7 +1609,8 @@ def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
-                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM))
+                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                                      _ALIAS_NOTHING_AFTER_EQ))
                 or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
 
 _BINARY_WORDS = frozenset({"MOD", "OR", "XOR", "AND", "IMP", "EQV"})
@@ -1660,6 +1664,36 @@ def condition_part(text: str) -> str | None:
 
 
 _LEADING_OPS = frozenset({"=", "*", "/", "<", "<>", ">", ">=", "<=", "^", "\\", ",", ")", ".", ";"})
+
+
+def _invalid_assignment(toks) -> bool:
+    """`6 = X`, `"a" = X`, `-1 = X`, `X + 1 = 2`: the first top-level `=` follows something that is
+    not a variable (a literal, or an expression with a binary operator) -> pass-1 `Invalid
+    assignment in expression: <stmt>.` (oracle, CR6/CR1000X, 2026-10-10; `(X) = 1` is not this)."""
+    depth, lhs = 0, []
+    for t in toks:
+        if t.kind == "OP" and t.text in ("(", "{"):
+            depth += 1
+        elif t.kind == "OP" and t.text in (")", "}"):
+            depth -= 1
+        elif t.kind == "OP" and t.text == "=" and depth == 0:
+            break
+        lhs.append(t)
+    else:
+        return False
+    if not lhs or lhs[0].kind == "OP" and lhs[0].text != "-":
+        return False
+    if len(lhs) == 1 or (lhs[0].text == "-" and len(lhs) == 2):
+        return lhs[-1].kind in ("NUMBER", "STRING")
+    depth = 0
+    for t in lhs:
+        if t.kind == "OP" and t.text == "(":
+            depth += 1
+        elif t.kind == "OP" and t.text == ")":
+            depth -= 1
+        elif depth == 0 and t.kind == "OP" and t.text in _BINARY_OPS and t is not lhs[0]:
+            return True
+    return False
 
 
 def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
@@ -1732,8 +1766,11 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                 return None
             i = j + 1
     elif first.kind in ("NUMBER", "STRING"):
-        pass
+        if _invalid_assignment(toks):
+            return ("pass1", "invalid_assignment")
     elif first.kind == "OP" and first.text == "-" and len(toks) > 1 and toks[1].kind == "NUMBER":
+        if _invalid_assignment(toks):
+            return ("pass1", "invalid_assignment")
         i = 2
     elif first.kind == "OP" and first.text in ("{", "}"):
         return ("pass1", "fallback")  # a stray brace (oracle, CR6/CR1000X, 2026-10-10)
@@ -1762,6 +1799,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     if nxt.kind == "OP" and nxt.text in (",", ")", "}"):
         return ("pass1", "fallback")
     if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
+        if first.kind == "IDENT" and nxt.kind == "OP" and _invalid_assignment(toks):
+            return ("pass1", "invalid_assignment")
         return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
     return None
 
@@ -1953,6 +1992,7 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
         "symbol": f"Invalid symbol in expression: {text}.",
         "expects_paren": f"Expression expects ( : {text}.",
         "missing_expr": "Invalid or missing expression.",
+        "invalid_assignment": f"Invalid assignment in expression: {stmt.text}.",
     }[kind]
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -2012,7 +2052,8 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
             continue
         if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM)) or \
+                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                                      _ALIAS_NOTHING_AFTER_EQ)) or \
                 nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
             continue  # already reported by `check_pass1`
         if known is None:
@@ -3081,6 +3122,13 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
         if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As\s+\w+)?", rest, re.I):
             diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)
+        return
+    if stmt.reason == _ALIAS_NOTHING_AFTER_EQ:
+        body = stmt.text.lstrip()[5:]
+        target = body[:body.find("=")].lstrip()
+        if "(" not in target:
+            target = target.strip()
+        diags.error(stmt.line, f"Nothing after '=' in alias definition: {target}.", stmt.file)
         return
     if stmt.reason.startswith(_DO_LOOP_PARAM):
         diags.error(stmt.line, stmt.reason[len(_DO_LOOP_PARAM):], stmt.file)

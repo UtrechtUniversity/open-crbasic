@@ -1,0 +1,141 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-invalid_assignment-0",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = estimated\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = estimated."
+  },
+  {
+   "id": "cr6-invalid_assignment-1",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = X."
+  },
+  {
+   "id": "cr6-invalid_assignment-2",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = 1."
+  },
+  {
+   "id": "cr6-invalid_assignment-3",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    \"a\" = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     \"a\" = X."
+  },
+  {
+   "id": "cr6-invalid_assignment-4",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X + 1 = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     X + 1 = 2."
+  },
+  {
+   "id": "cr6-invalid_assignment-5",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    -1 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     -1 = X."
+  },
+  {
+   "id": "cr6-invalid_assignment-6",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    1.5 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     1.5 = X."
+  },
+  {
+   "id": "cr6-invalid_assignment-7",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = X = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = X = 3."
+  },
+  {
+   "id": "cr6-invalid_assignment-8",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    (Y = X + X) Results in\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     (Y = X + X) Results in."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-0",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = estimated\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = estimated."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-1",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = X."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-2",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = 1."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-3",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    \"a\" = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     \"a\" = X."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-4",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X + 1 = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     X + 1 = 2."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-5",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    -1 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     -1 = X."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-6",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    1.5 = X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     1.5 = X."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-7",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    6 = X = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid assignment in expression:     6 = X = 3."
+  },
+  {
+   "id": "cr1000x-invalid_assignment-8",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    (Y = X + X) Results in\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     (Y = X + X) Results in."
+  }
+ ]
+}

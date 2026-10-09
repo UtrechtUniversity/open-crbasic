@@ -4201,3 +4201,24 @@ the blanks before the `_` plus the next line unstripped, no separator (`    _` /
 dropped (`_`/`_`/`X Y` echoes `X Y`). Other continuations (text before the `_`) are unchanged.
 Fixture `lone_underscore_join.json` (`source._Loader.load_text`). Fixes the leading blank in the
 `CDM_VW300Config(...)` leftover-line echo of `rainflowsample2_1.CR6`.
+
+### `Alias <target> =` with nothing after it, and a target followed by junk (all four loggers)
+
+Oracle 2026-10-10 (`alias_eq.json`, CR6/CR1000X; CR300/CR350 print the same `Alias` text but have
+other, existing gaps in that file's other lines):
+
+- `Alias gd(1) =` (also with a comment, blanks, or the name on the next line) ->
+  `Nothing after '=' in alias definition: <target>.`: an indexed target is echoed as written up to
+  the `=`, blanks included (`gd(1) .`, `gd(1)  .`), a plain name trimmed (`Alias X =` -> `X.`).
+- `Alias gd(7) uSecond to rTime(7)`, `Alias rTime(7) uSecond` (no `=` at all, junk after the
+  target) -> `Need '=' in alias definition: <rest of the line>\n.`, like the target-alone form.
+  (The parser used to let the "unexpected trailing input" reason override it.)
+
+### `Invalid assignment in expression` (CR6/CR1000X)
+
+Oracle 2026-10-10 (`invalid_assignment.json`): a statement whose first top-level `=` follows a
+literal (`6 = X`, `"a" = X`, `-1 = X`, `1.5 = X`, `6 = X = 3`) or a known variable plus a binary
+operator (`X + 1 = 2`) is pass-1 `Invalid assignment in expression: <stmt>.`, which hides pass-2
+errors. Not modelled: `X(1) + 1 = 2` (real: invalid assignment; ours: generic), `(X = 1) foo`
+(real: `Incomplete expression`), `(X) = 1` (real: accepted), and the help-corpus sentence
+`(Double = Double + Double) Results in Double-Precison` (`DoublePrecArith_1.CR6`).

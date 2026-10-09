@@ -1149,7 +1149,11 @@ class _Parser:
             # line, no `_` continuation) -- a distinct reason from the fully-empty case above so
             # `checker/structure.py` can echo the oracle-confirmed embedded-newline shape
             # (`docs/checker.md` "Echo quirk"): `Need '=' in alias definition: rTime(1)\n.`.
+            while not p.at_end():
+                p.next()  # junk after the target belongs to the same message
             return S.Unparsed(line, file, text="", reason="Alias target with no '='")
+        if p.at_end():
+            return S.Unparsed(line, file, text="", reason="Alias nothing after '='")
         if p.peek().kind == "IDENT":
             # Each comma-separated item is one name (optionally indexed); anything after it up to
             # the next comma is ignored (oracle, all four loggers, 2026-09-27: `= Spare2_1  3`,
