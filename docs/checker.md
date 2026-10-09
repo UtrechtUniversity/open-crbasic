@@ -4182,3 +4182,13 @@ is hidden exactly when the statement is pass 1):
   integer.`; a lone number or negative number (`Do 5`, `Do -1`, `Loop 5`) -> `Invalid or missing
   expression.`. Not modelled: `Do 5, 6` (real `Invalid, or out of place expression: , 6.`).
   CR300/CR350 `Do While` / `Do While X X` echo differently (existing gap).
+
+### `#`-led statements: `Unknown instruction`, and the compile stops
+
+All four loggers (oracle 2026-10-10, `hash_unknown_instruction.json`): a statement starting with `#`
+that is not a preprocessor directive (`#1 abc`, `#Foo`, `# 1 abc`, `#Define X 1`, a bare `#`)
+is `Unknown instruction: <statement as written, leading blanks kept>\n.`, with the `\n` dropped
+when a `'` comment was stripped off the line. It ends the compile: **nothing after its line is
+reported**, pass-1 errors included (`checker.check` drops later diagnostics of the file). Errors
+before it stay. Not modelled: `#If 1 abc` (`Invalid symbol in expression: 1 abc.`) and `X = 1 #1`
+(`Invalid symbol in expression: X = 1 #1.`).

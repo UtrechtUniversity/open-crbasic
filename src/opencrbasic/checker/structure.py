@@ -1325,7 +1325,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"{display} illegally occurs before BeginProg.", stmt.file)
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
-            if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS:
+            if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
+                    or is_hash_statement(stmt):
                 continue
             bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
             if bare is not None:
@@ -1595,9 +1596,14 @@ def _unclosed_paren_kind(text: str, known: set[str]) -> str:
 
 
 
+def is_hash_statement(stmt: S.Unparsed) -> bool:
+    """A statement starting with `#` that no preprocessor directive claimed: `Unknown instruction`."""
+    return stmt.text.lstrip().startswith("#")
+
+
 def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     """An `Unparsed` statement no specific pass-1 diagnosis claims (`_check_unparsed_pass1`)."""
-    return not (stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
+    return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
                 or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM))
