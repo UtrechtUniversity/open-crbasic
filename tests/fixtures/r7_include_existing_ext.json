@@ -1,0 +1,215 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r7_include_existing_ext-0",
+   "logger": "cr6",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-1",
+   "logger": "cr6",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-2",
+   "logger": "cr6",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-3",
+   "logger": "cr6",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr1x must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-4",
+   "logger": "cr6",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-5",
+   "logger": "cr6",
+   "source": "IncludeSection(\"a\",\"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-6",
+   "logger": "cr6",
+   "source": "Include \"inc.txt\"\nBeginProg\nX=1\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-7",
+   "logger": "cr6",
+   "source": "Include \"inc.txt\"\nPublic Y\nBeginProg\nY=X\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-8",
+   "logger": "cr6",
+   "source": "#If False\nInclude \"inc.txt\"\n#EndIf\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_include_existing_ext-9",
+   "logger": "cr6",
+   "source": "BeginProg\nEndProg\nInclude \"inc.txt\"\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-0",
+   "logger": "cr1000x",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-1",
+   "logger": "cr1000x",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-2",
+   "logger": "cr1000x",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-3",
+   "logger": "cr1000x",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-4",
+   "logger": "cr1000x",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-5",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"a\",\"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-6",
+   "logger": "cr1000x",
+   "source": "Include \"inc.txt\"\nBeginProg\nX=1\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-7",
+   "logger": "cr1000x",
+   "source": "Include \"inc.txt\"\nPublic Y\nBeginProg\nY=X\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-8",
+   "logger": "cr1000x",
+   "source": "#If False\nInclude \"inc.txt\"\n#EndIf\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_include_existing_ext-9",
+   "logger": "cr1000x",
+   "source": "BeginProg\nEndProg\nInclude \"inc.txt\"\n",
+   "siblings": {
+    "inc.txt": "Public X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

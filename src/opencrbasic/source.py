@@ -54,7 +54,7 @@ class LogicalLine:
     # CR300/CR350 newline quirk (`checker/structure.py`'s `_out_of_place`) tell a statement that
     # truly runs to the physical end of line from one a trailing comment cut short (oracle-
     # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
-    kind: str = "code"       # code | overflow | include_begin | include_end | include_warning
+    kind: str = "code"       # code | overflow | include_begin | include_end | include_warning | include_error
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -109,9 +109,10 @@ def _resolve_include_path(spec: str, directory: Path | None) -> Path | None:
 class _Loader:
     """Turns one file's raw text into `LogicalLine`s, expanding includes as it goes."""
 
-    def __init__(self, directory: Path | None, diags: Diagnostics):
+    def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None):
         self.directory = directory
         self.diags = diags
+        self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
 
     def load_file(self, path: Path, *, section: str | None, in_include: bool,
@@ -176,6 +177,8 @@ class _Loader:
         m = _INCLUDE_SECTION_RE.match(text)
         if m:
             name, spec = m.group(1), m.group(2)
+            if self._bad_extension(spec):
+                return [self._extension_error(spec, line, filename, section)]
             target = _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
@@ -188,12 +191,26 @@ class _Loader:
                 self.diags.error(line, "Include file within an Include file is illegal.", filename)
                 return []
             spec = m.group(1)
+            if self._bad_extension(spec):
+                return [self._extension_error(spec, line, filename, section)]
             target = _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
             included = self.load_file(target, section=None, in_include=True, display=spec.strip())
             return self._include_lines(included, line, filename, section)
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
+
+    def _bad_extension(self, spec: str) -> bool:
+        """CR6/CR1000X: an include name whose text after the last `.` (none: empty) starts with
+        neither `crb` nor the logger's own extension is an error whether or not the file exists, and
+        an existing file contributes nothing (oracle, 2026-10-08/10)."""
+        return self.own_ext is not None and not spec.rpartition(".")[2].upper().startswith(
+            ("CRB", self.own_ext))
+
+    @staticmethod
+    def _extension_error(spec: str, line: int, filename: str, section: str | None) -> LogicalLine:
+        return LogicalLine(f"Include file {spec} must have valid program file extension.", line,
+                           filename, section, kind="include_error")
 
     @staticmethod
     def _missing(spec: str, line: int, filename: str, section: str | None) -> LogicalLine:
@@ -209,18 +226,19 @@ class _Loader:
                 LogicalLine("", line, filename, section, kind="include_end")]
 
 
-def load_program(path: Path) -> tuple[list[LogicalLine], Diagnostics]:
+def load_program(path: Path, own_ext: str | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags)
+    loader = _Loader(path.parent, diags, own_ext)
     lines = loader.load_file(path, section=None, in_include=False)
     return lines, diags
 
 
-def load_text(text: str, name: str = "t.cr6", directory: Path | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+def load_text(text: str, name: str = "t.cr6", directory: Path | None = None,
+              own_ext: str | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Like `load_program`, for source text that may not be on disk (`directory` resolves includes)."""
     diags = Diagnostics()
-    loader = _Loader(directory, diags)
+    loader = _Loader(directory, diags, own_ext)
     lines = loader.load_text(text, name, section=None, in_include=False)
     return lines, diags

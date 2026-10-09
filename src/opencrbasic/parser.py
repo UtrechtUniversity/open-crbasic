@@ -237,9 +237,10 @@ class _Parser:
                 continue
             if ll.kind == "include_end":
                 continue
-            if ll.kind == "include_warning":
+            if ll.kind in ("include_warning", "include_error"):
                 if self._active():
-                    self.diags.warning(ll.line, ll.text, ll.file)
+                    (self.diags.warning if ll.kind == "include_warning" else self.diags.error)(
+                        ll.line, ll.text, ll.file)
                 continue
             if ll.kind == "overflow":
                 self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)
@@ -1436,10 +1437,9 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     `.CR6` file always folded against the CR6 profile regardless of `--logger`, silently baking a
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
-    lines, diags = source.load_program(path)
+    lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name))
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
-    _include_extensions(diags, profile or _profile_for(path.name))
     _include_warning_drives(diags, profile or _profile_for(path.name))
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags
@@ -1448,23 +1448,7 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
 _MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR|CRD|USB):", re.I)
 
 
-_MISSING_INCLUDE_RE = re.compile(r"^Cannot open include file  (.*)\.$", re.S)
 _INCLUDE_OWN_EXT = {"cr6": "CR6", "cr1000x": "CR1X"}
-
-
-def _include_extensions(diags: Diagnostics, profile: profiles.Profile) -> None:
-    """CR6/CR1000X: an include name whose text after the last `.` (none: empty) starts with neither
-    `crb` nor the logger's own program extension is an error, not a missing-file warning (oracle,
-    2026-10-08; docs/checker.md "Round 5 CR6/CR1000X help-corpus families")."""
-    own = _INCLUDE_OWN_EXT.get(profile.name)
-    if own is None:
-        return
-    for i, d in enumerate(diags.items):
-        m = _MISSING_INCLUDE_RE.match(d.message) if d.severity == "warning" else None
-        if m and not m.group(1).rpartition(".")[2].upper().startswith(("CRB", own)):
-            diags.items[i] = dataclasses.replace(
-                d, severity="error",
-                message=f"Include file {m.group(1)} must have valid program file extension.")
 
 
 def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> None:
@@ -1489,10 +1473,10 @@ def _set_last_line(program: S.Program, parser: "_Parser", main_text: str) -> Non
 def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = None,
                profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
-    lines, diags = source.load_text(text, name, directory)
+    lines, diags = source.load_text(
+        text, name, directory, _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
-    _include_extensions(diags, profile or _profile_for(name))
     _include_warning_drives(diags, profile or _profile_for(name))
     _set_last_line(program, parser, text)
     return program, diags
