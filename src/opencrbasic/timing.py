@@ -1,6 +1,6 @@
 """`-t`: the `[Times]` section CR6Comp writes to the message file -- one `line N: <label>` per
-timed statement. Every rule, its evidence and the instructions still unmodelled (AutoRange, Br*,
-Therm*, AM25T, Resistance, ACPower at other line frequencies) are in `docs/cli.md` "Timing output
+timed statement. Every rule, its evidence and the instructions still unmodelled (AM25T, ACPower at
+other line frequencies) are in `docs/cli.md` "Timing output
 (-t)"; coverage is only what oracle probing established, anything else prints no entry.
 """
 
@@ -153,6 +153,7 @@ _MEASURE = {
 }
 _PLAIN_RANGES = {800, 802, 804}
 _C_RANGES = {820, 822, 824}
+_AUTO_RANGES = {810, 830}   # AutoRange, AutoRangeC
 
 
 def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
@@ -171,23 +172,26 @@ def _measure(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
         return
     if None in (reps, rng, flag, settle, integ) or reps < 1 or settle < 0 or integ < 0:
         return
-    if rng not in _PLAIN_RANGES and rng not in _C_RANGES:
+    auto = rng in _AUTO_RANGES
+    if rng not in _PLAIN_RANGES and rng not in _C_RANGES and not auto:
         return
     n = reps * (2 if flag else 1) if doubling else reps + (1 if flag else 0)
     extra = 0
     thirds_u = 0
-    if rng in _C_RANGES:
+    if rng in _C_RANGES or rng == 830:
         extra = 50 * reps
         if u_chan:
             thirds_u = 160
-    cost = _meas_cost(n, settle, integ, extra, thirds_u)
+    cost = _meas_cost(n, settle, integ, extra, thirds_u, (n if doubling else reps) if auto else 0)
     lines.append(f"line {stmt.line}: {_LABEL[stmt.keyword]} = {cost}")
 
 
-def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0) -> int:
+def _meas_cost(n: float, settle: float, integ: float, extra: int = 0, thirds_u: int = 0, auto_reps: int = 0) -> int:
     ks = int((24 * (settle or 500) + 127) // 256)
     kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
-    return int(140 + extra + n * (816 + -(-(32 * ks + thirds_u) // 3) + 32 * kx // 3)) // 100 * 100
+    settle_part = -(-(32 * ks + thirds_u) // 3)
+    # AutoRange adds one settle-only pass per rep, 1 us cheaper than a measurement's (docs/cli.md).
+    return int(140 + extra + n * (816 + settle_part + 32 * kx // 3) + auto_reps * (815 + settle_part)) // 100 * 100
 
 
 # Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset): two measurements per

@@ -138,8 +138,8 @@ actually appear in this repository's programs or the CHM sample were pursued.
   `extra = 50*reps` for a C range, else 0; `u = 160` for a C range with a valid `U` channel
   (`Un`; for differential instructions only odd `n` -- an even `Un` behaves as a numeric channel),
   else 0. A plain range has no channel dependence. Any constant numeric channel (also out of range)
-  is "numeric". `integ` is the raw value (`_60Hz` is 60). Not modelled, so no entry: AutoRange
-  (810/830), non-constant reps/range/flag/settle/integ. Real constant K is anywhere in [140, 141)
+  is "numeric". `integ` is the raw value (`_60Hz` is 60). Not modelled, so no entry: non-constant
+  reps/range/flag/settle/integ. Real constant K is anywhere in [140, 141)
   (integer sums); 141 in the earlier fit was wrong at an exact boundary.
 - `[Times]` entries are gated on the same pass-1/pass-2 boundary the checker itself already uses
   (`checker/__init__.py`), not on the overall compile result: a program whose only error is a
@@ -175,6 +175,11 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `I` x max(RepsI,0); Cfg 2 `V,I,I`; Cfg 3 `V,I,V,I,V,I`; any other Cfg `V,I`. ChanV supplies the
   `V` term, ChanI the `I` terms.
 
+- AutoRange / AutoRangeC (810/830) for the four instructions above (1,200 randomised real points,
+  0 residual): C-ness as for 820/822/824 (AutoRangeC is the C form), plus one settle-only term per
+  measurement pass, `auto_reps*(815 + ceil((32*ks + u)/3))` inside the same `floor100`, with
+  `auto_reps = reps` for VoltSe/TCSe (a MeasOff flag does not add one) and `n` for
+  VoltDiff/TCDiff (RevDiff doubles it).
 - `Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset)`: the VoltSe cost
   with `n = 2*Reps` on a plain range, no channel dependence (any SEChan/VxChan form; ~4,000 real
   points over Reps 1..200, Settle 0..400, Integ 0..300000, 0 residual). Reps < 1 and negative
