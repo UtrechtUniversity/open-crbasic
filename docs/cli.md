@@ -169,11 +169,15 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
 - `PeriodAvg(.., Reps, .., Timeout, ..)`: `int32(Reps*int(Timeout)*1000+200)`.
 - `MuxSelect(Clk, Reset, PW, Chan, Mode)`: PipelineMode only (no entry in SequentialMode);
   `floor100(base + Chan*(2000*PW+50))`, base 13000, or 100 when `Mode` is 0.
-- `ACPower(.., Cfg, LineFrq, ChanV, .., ChanI, .., RepsI)`, LineFrq 50 or 60 only (55 prints other
-  values, not modelled): `1000`, then pairs `(head, x)`, head 61200 (50) / 51200 (60); `x` per
+- `ACPower(.., Cfg, LineFrq, ChanV, .., ChanI, .., RepsI)`, LineFrq 50 or 60: `1000`, then pairs `(head, x)`, head 61200 (50) / 51200 (60); `x` per
   channel: `Un` 41100 / 34500, numeric 278300 / 231900 (50 / 60). Channel sequence: Cfg 1 `V` then
   `I` x max(RepsI,0); Cfg 2 `V,I,I`; Cfg 3 `V,I,V,I,V,I`; any other Cfg `V,I`. ChanV supplies the
   `V` term, ChanI the `I` terms.
+  Any other whole LineFrq `f >= 1` (a fraction is truncated, `f < 1` errors in the real exe; 1..400
+  dense plus 500..100000 and 900 random calls, 0 residual) keeps the entry layout but uses
+  `head = 1200 + 1000*(2000//f)` and, with `q = 1000//f`, `x = floor100(1003*q + 2171)` for a `Un`
+  channel, `floor100(2021*q + 2160)` for a numeric one (the numeric constant is only bounded to
+  2160..2163 by the data; integer `x` boundaries do not distinguish them).
 
 - AutoRange / AutoRangeC (810/830) for the four instructions above (1,200 randomised real points,
   0 residual): C-ness as for 820/822/824 (AutoRangeC is the C form), plus one settle-only term per
@@ -199,4 +203,4 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `ExmV` (below 20 or above 2500, `Minimum Excitation is 20mV.` / `Excitation exceeds 2500.`) hides
   all entries in the real exe but our checker does not raise it (verdict gap, not a timing rule).
 
-Timed but not probed: AM25T, AutoRange for VoltSe & co (AutoRange adds ~1300 us at n=1, not fitted).
+Timed but not probed: AM25T.

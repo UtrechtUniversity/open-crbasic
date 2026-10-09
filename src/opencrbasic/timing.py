@@ -1,6 +1,5 @@
 """`-t`: the `[Times]` section CR6Comp writes to the message file -- one `line N: <label>` per
-timed statement. Every rule, its evidence and the instructions still unmodelled (AM25T, ACPower at
-other line frequencies) are in `docs/cli.md` "Timing output
+timed statement. Every rule, its evidence and the instructions still unmodelled (AM25T) are in `docs/cli.md` "Timing output
 (-t)"; coverage is only what oracle probing established, anything else prints no entry.
 """
 
@@ -307,16 +306,23 @@ def _closed(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline:
 
 
 def _acpower(stmt: S.Instruction, env: consteval.Env) -> list[int]:
-    # Only LineFrq 50/60 was probed; other frequencies print different values (not modelled).
+    # LineFrq 50/60 are special; any other whole-number frequency (a fraction is truncated) follows
+    # the closed form of docs/cli.md "ACPower"; below 1 Hz the real exe reports an error.
     a = _args(stmt, env, 1, 2, 9)
-    if not a or len(stmt.args) < 10 or a[1] not in (50, 60):
+    if not a or len(stmt.args) < 10 or not 1 <= a[1] < 1e6:
         return []
     for k in (3, 6):
         if not _chan_is_u(stmt.args[k]) and _num(_const(stmt.args[k], env)) is None:
             return []
-    u_cost, n_cost = {50: (41100, 278300), 60: (34500, 231900)}[int(a[1])]
+    f = int(a[1])
+    if f in (50, 60):
+        u_cost, n_cost = {50: (41100, 278300), 60: (34500, 231900)}[f]
+        head = 61200 if f == 50 else 51200
+    else:
+        q = 1000 // f
+        u_cost, n_cost = (1003 * q + 2171) // 100 * 100, (2021 * q + 2160) // 100 * 100
+        head = 1200 + 1000 * (2000 // f)
     volt, cur = (u_cost if _chan_is_u(stmt.args[k]) else n_cost for k in (3, 6))
-    head = 61200 if a[1] == 50 else 51200
     cfg = int(a[0])
     seq = {2: [volt, cur, cur], 3: [volt, cur] * 3, 1: [volt] + [cur] * max(int(a[2]), 0)}.get(cfg, [volt, cur])
     return [1000] + [v for x in seq for v in (head, x)]
