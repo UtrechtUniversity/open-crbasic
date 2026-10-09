@@ -54,7 +54,7 @@ class LogicalLine:
     # CR300/CR350 newline quirk (`checker/structure.py`'s `_out_of_place`) tell a statement that
     # truly runs to the physical end of line from one a trailing comment cut short (oracle-
     # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
-    kind: str = "code"       # code | overflow | include_begin | include_end
+    kind: str = "code"       # code | overflow | include_begin | include_end | include_warning
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -178,8 +178,7 @@ class _Loader:
             name, spec = m.group(1), m.group(2)
             target = _resolve_include_path(spec, self.directory)
             if target is None:
-                self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
-                return []
+                return [self._missing(spec, line, filename, section)]
             included = self.load_file(target, section=name, in_include=in_include,
                                       display=spec.strip())
             return self._include_lines(included, line, filename, section)
@@ -191,11 +190,17 @@ class _Loader:
             spec = m.group(1)
             target = _resolve_include_path(spec, self.directory)
             if target is None:
-                self.diags.warning(line, f"Cannot open include file  {spec}.", filename)
-                return []
+                return [self._missing(spec, line, filename, section)]
             included = self.load_file(target, section=None, in_include=True, display=spec.strip())
             return self._include_lines(included, line, filename, section)
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
+
+    @staticmethod
+    def _missing(spec: str, line: int, filename: str, section: str | None) -> LogicalLine:
+        """A missing include is a marker the parser reports only if it reads that far: text after
+        `EndProg` or in an inactive `#If` branch is never looked at (oracle, 2026-10-10)."""
+        return LogicalLine(f"Cannot open include file  {spec}.", line, filename, section,
+                           kind="include_warning")
 
     @staticmethod
     def _include_lines(included: list[LogicalLine], line: int, filename: str,

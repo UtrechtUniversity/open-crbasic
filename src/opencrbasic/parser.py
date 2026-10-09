@@ -237,6 +237,10 @@ class _Parser:
                 continue
             if ll.kind == "include_end":
                 continue
+            if ll.kind == "include_warning":
+                if self._active():
+                    self.diags.warning(ll.line, ll.text, ll.file)
+                continue
             if ll.kind == "overflow":
                 self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)
                 break
@@ -1433,10 +1437,10 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path)
-    _include_extensions(diags, profile or _profile_for(path.name))
-    _include_warning_drives(diags, profile or _profile_for(path.name))
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
+    _include_extensions(diags, profile or _profile_for(path.name))
+    _include_warning_drives(diags, profile or _profile_for(path.name))
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags
 
@@ -1486,9 +1490,9 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
                profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(text, name, directory)
-    _include_extensions(diags, profile or _profile_for(name))
-    _include_warning_drives(diags, profile or _profile_for(name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
+    _include_extensions(diags, profile or _profile_for(name))
+    _include_warning_drives(diags, profile or _profile_for(name))
     _set_last_line(program, parser, text)
     return program, diags

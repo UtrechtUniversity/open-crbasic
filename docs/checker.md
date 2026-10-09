@@ -3858,6 +3858,10 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   valid program file extension.` replaces the missing-file warning; every such include is reported and
   compilation goes on. CR300/CR350 follow a different rule (a name without `.` passes) and are not
   modelled. `parser._include_extensions`.
+- **Include diagnostics are positional** (`r7_include_cutoff`, all four loggers): a missing-include
+  warning or extension error is reported only if the compiler reads the line -- an `Include` after the
+  first `EndProg` or inside an inactive `#If` branch is silent. The loader leaves an `include_warning`
+  marker line and `parser._Parser.run` emits it when active; `_include_extensions` runs after parsing.
 - **FileManage / RunProgram file names**: see `docs/instructions.md` "FileManage drive and DNP ComPort
   constants" (extension rule, `RunProgram` drive, first bad name only).
 - **Pass-1 scan knows only earlier declarations** (`r5cr6_decl_order_*`, `r5cr6_cond_comma`): the
