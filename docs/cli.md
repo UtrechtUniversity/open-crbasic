@@ -104,12 +104,12 @@ actually appear in this repository's programs or the CHM sample were pursued.
 
 - Gating: entries are printed only if pass 1 is clean (`cli._pass1_ok`) **and** no error is one of
   `Invalid symbol in expression`, `Could not find variables`, `Include file ... must have valid
-  program file extension`, or any error located before `BeginProg` in the main file (prose lines
-  ahead of it). The real exe prints a bare `[Times]` for these although they are pass-2 findings
-  in our checker (CHM, CR6: 464/507 -> 503/507 exact; repo 16/16 unchanged). `-z`/`-l` are only
-  written for a successful compile, so they are unaffected. Not explained: `pointervariable_2`
-  (real prints no `[Times]` at all), `avgrun_4` (`Missing instance number`), `cdmbridgefilt_1`,
-  `fieldnames_2`.
+  program file extension`, or `Expr illegally occurs before BeginProg.` (prose lines ahead of
+  `BeginProg`). The real exe prints a bare `[Times]` for these although they are pass-2 findings
+  in our checker. Any other error positioned before `BeginProg` (inside a `Sub`, a `DataTable`)
+  does not hide entries (`avgrun_4`, `cdmbridgefilt_1`, `fieldnames_2`; CHM, CR6: 503/507 ->
+  506/507 exact; repo 16/16). Not explained: `pointervariable_2` (real prints no `[Times]` at
+  all).
 - A top-level `Scan(...)` statement (one that does not immediately follow a bare `SlowSequence`)
   opens a timed span, prints `Scan: N`, and closes at its matching `NextScan`; `N` is a 0-based
   count of such spans, **not** a time value (`sdmsio4_1.CR6`'s two sequential top-level `Scan`

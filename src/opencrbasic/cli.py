@@ -100,14 +100,11 @@ _P1_HIDERS = ("Invalid symbol in expression", "Could not find variables")
 
 def _hides_times(program_ast, diags, main) -> bool:
     """Errors that suppress `[Times]` entries though our checker raises them after pass 1
-    (`docs/cli.md` "-t"): undefined/invalid symbols, a missing include extension, and anything
-    reported before `BeginProg` (prose lines ahead of it)."""
-    begin = next((st.line for st in program_ast.statements
-                  if getattr(st, "keyword", "").upper() == "BEGINPROG"), None)
+    (`docs/cli.md` "-t"): undefined/invalid symbols, a missing include extension, and prose lines ahead of
+    `BeginProg` (`Expr illegally occurs before BeginProg.`)."""
     for d in diags.errors:
-        if d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message:
-            return True
-        if begin and d.line and d.line < begin and d.file in (None, main):
+        if (d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message
+                or d.message == "Expr illegally occurs before BeginProg."):
             return True
     return False
 
