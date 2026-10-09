@@ -1,0 +1,239 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX=Nope : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : X=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : PanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX=Nope\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nPanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nPanelTemp(Nope)\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : PanelTemp(X) : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-13",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-14",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_shortfall_order-15",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nPanelTemp(X)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX=Nope : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : X=1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : PanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX=Nope\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nPanelTemp(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X)\nPanelTemp(Nope)\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope) : PanelTemp(X) : PanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-13",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(X) : X=Nope\nPanelTemp(X)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 3: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-14",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_shortfall_order-15",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nPanelTemp(Nope)\nPanelTemp(X)\nX=Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 5: Nope is not defined."
+  }
+ ]
+}

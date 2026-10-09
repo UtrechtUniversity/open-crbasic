@@ -3857,7 +3857,7 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   extension (`cr6`/`cr1x`), else the error `Include file <name as written, drive included> must have
   valid program file extension.` replaces the missing-file warning; every such include is reported and
   compilation goes on. CR300/CR350 follow a different rule (a name without `.` passes) and are not
-  modelled (existing `.txt`/no-extension files on CR300/CR350 also fail on a bad extension, observed, not modelled). The rule applies to an *existing* file too (`r7_include_existing_ext`): it is rejected the same way and contributes nothing. `source._Loader._bad_extension`.
+  modelled (existing `.txt` or `.cr6` files on CR300/CR350 also fail on a bad extension and contribute nothing; observed, not modelled). The rule applies to an *existing* file too (`r7_include_existing_ext`): it is rejected the same way and contributes nothing. `source._Loader._bad_extension`.
 - **Include diagnostics are positional** (`r7_include_cutoff`, all four loggers): a missing-include
   warning or extension error is reported only if the compiler reads the line -- an `Include` after the
   first `EndProg` or inside an inactive `#If` branch is silent. The loader leaves an `include_warning`
@@ -3967,7 +3967,10 @@ corpus puts example prose into the program, so these shapes are measured by `dif
 
 - **Too-few-arguments message with an undefined name** (fixture `cr3xx_shortfall_names.json`,
   CR300/CR350): `Invalid or missing parameter.` / `Too few parameters in instruction.` is dropped
-  when the same statement has an `X is not defined.` line (`cr3xx.drop_shortfall_with_names`;
+  when the same statement, or any *later* statement (same line after a `:`, or a later line), has an
+  `X is not defined.` line; a shortfall of an earlier statement stays (`r7_cr3xx_shortfall_order`:
+  `PanelTemp(X) : X=Nope` keeps it, `X=Nope : PanelTemp(X)` and `X=Nope`/`PanelTemp(X)` on the next
+  line drop it; `cr3xx.drop_shortfall_with_names`;
   `PanelTemp(Nope)`, `Delay(1,Nope)`, `VoltDiff (X,1,mV200,1)`). The same hiding applies on
   CR6/CR1000X only for constant-family argument positions (`VoltDiff (X,Nope)`,
   `Delay(Nope,1)` print `Invalid symbol in expression: Nope.` alone; `PanelTemp(Nope)` keeps

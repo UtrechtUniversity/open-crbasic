@@ -1031,17 +1031,53 @@ _SHORTFALL_MESSAGES = ("Invalid or missing parameter.", "Too few parameters in i
 
 
 def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR300/CR350: an undefined name among an instruction's arguments hides the too-few-arguments
-    message of the same statement (oracle, 2026-10-08: `PanelTemp(Nope)`, `Delay(1,Nope)`,
-    `VoltDiff (X,1,mV200,1)` print only the name lines)."""
+    """CR300/CR350: an undefined name hides the too-few-arguments message of its own statement and
+    of every later statement, but not of an earlier one (oracle, 2026-10-08/10: `PanelTemp(Nope)`,
+    `Delay(1,Nope)`, `VoltDiff (X,1,mV200,1)` print only the name lines; `PanelTemp(X) : X=Nope`,
+    `PanelTemp(X)` then `PanelTemp(Nope)` keep the first shortfall; `X=Nope : PanelTemp(X)` and
+    `X=Nope` then `PanelTemp(X)` on the next line hide it)."""
     if profile.name not in ("cr300", "cr350"):
         return
     named = {(d.line, d.file) for d in diags.items
              if d.severity == "error" and d.message.endswith(_UNRESOLVED_SUFFIX)}
     if not named:
         return
-    diags.items[:] = [d for d in diags.items if not (
-        d.severity == "error" and d.message in _SHORTFALL_MESSAGES and (d.line, d.file) in named)]
+    stmts = program.statements
+    known = expressions._known_names(program, profile)
+
+    def has_names(stmt) -> bool:
+        exprs = (stmt.args if isinstance(stmt, S.Instruction)
+                 else [stmt.target, stmt.value] if isinstance(stmt, S.Assignment) else [])
+        return any(expressions._undefined_names(e, known) for e in exprs)
+
+    def is_short(stmt) -> bool:
+        record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
+        return record is not None and len(stmt.args) < instr_rules._required_count(
+            instr_rules._real_params(record["params"]))
+
+    first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named and has_names(st)),
+                 None)
+    if first is None:
+        first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named), None)
+    if first is None:
+        return
+    first_key = (stmts[first].line, stmts[first].file)
+
+    seen: collections.Counter = collections.Counter()  # shortfall diagnostics met per line
+
+    def hidden(d: Diagnostic) -> bool:
+        if d.severity != "error" or d.message not in _SHORTFALL_MESSAGES:
+            return False
+        key = (d.line, d.file)
+        idxs = [i for i, st in enumerate(stmts) if (st.line, st.file) == key]
+        short = [i for i in idxs if is_short(stmts[i])]
+        nth = seen[key]
+        seen[key] += 1
+        if not idxs or (not short and key == first_key):
+            return True
+        return (short[nth] if nth < len(short) else (short or idxs)[0]) >= first
+
+    diags.items[:] = [d for d in diags.items if not hidden(d)]
 
 
 def _echo_key(text: str) -> str:
