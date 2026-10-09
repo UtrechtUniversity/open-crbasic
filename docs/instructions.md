@@ -747,6 +747,16 @@ numeric argument of a chm example to 99: 0 for `SDMX50`; 1 for `EC100`, `EC100Co
 `LI7700`, `SDMCD16AC`, `SDMCD16Mask`, `SDMIO16`, `SDMSIO4` and `SDMSW8A`. Not measured: `SDMAO4`,
 `SDMAO4A`, `SDMCVO4`, `SDMINT8`, `SDMCAN`. `SerialInRecord`/`SerialOutBlock` reach the same
 check only for SDM ports.
+
+**Float typing of the address** (`r7_sdm_float_typing`, CR6/CR1000X, 2026-10-10): the float32 rule
+(a float-typed address goes through float32; one outside Long range is accepted unchecked) follows
+the *type* of the constant expression: a decimal literal, `Const` of one (also through `Const B=A`),
+unary `+`/`-`, and any `+ - * \\ MOD` with a float operand are float; `/`, `^` and `Int()` are always
+float; `Abs` keeps its operand's type. `2147483647`, `2147483646+1`, `Abs(2147483647)` and
+`2147483647 MOD 3000000000` stay Long (`255`); `+2147483647.0`, `2147483647.0*1`, `Int(2147483647)`,
+`2147483647/1` are accepted. `consteval.is_float`; a float-typed `Const` is stored as `CFloat` (an
+integer-typed one as `int`) so the typing survives the checker's `dict(program.consts)` copies.
+Bitwise and shift operators are not probed and keep the old value-based reading.
 ## SerialIn destination
 
 The supplied four compiler versions require `SerialIn`'s first argument to be a String

@@ -971,7 +971,8 @@ class _Parser:
             return S.Unparsed(line, file, text="", reason="Const without '='")
         node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype, value_span=value_span)
         try:
-            self.env.define(name_tok.text, consteval.value_of(value, self.env))
+            self.env.define(name_tok.text, consteval.value_of(value, self.env),
+                            consteval.is_float(value, self.env))
         except consteval.NotConstant:
             pass
         return node

@@ -25,6 +25,10 @@ class NotConstant(Exception):
     """Raised when an expression (or a name within it) has no compile-time value."""
 
 
+class CFloat(float):
+    """A `Const` value known to be float-typed."""
+
+
 @dataclass
 class Env:
     """Constants known so far (definition order doesn't matter; last `define` wins) plus the
@@ -38,7 +42,15 @@ class Env:
     consts: dict[str, object] = field(default_factory=dict)
     section: str | None = None
 
-    def define(self, name: str, value: object) -> None:
+    def define(self, name: str, value: object, is_float: bool | None = None) -> None:
+        """`is_float` (see `is_float`) travels with the stored value, so the `dict(consts)` copies
+        the checker makes keep it: `CFloat` is float-typed, an `int` integer-typed, a plain float
+        not established."""
+        if is_float and isinstance(value, float):
+            value = CFloat(value)
+        elif is_float is False and isinstance(value, float) and value == value and abs(value) < 2**63 \
+                and value == int(value):
+            value = int(value)
         self.consts[name.upper()] = value
 
     def child(self, section: str | None) -> "Env":
@@ -134,6 +146,33 @@ def value_of(expr: S.Expr | None, env: Env) -> object:
         args = [value_of(a, env) for a in expr.args]
         return fn(args)
     raise NotConstant(f"{type(expr).__name__} has no constant value")
+
+
+def is_float(expr: S.Expr, env: Env) -> bool | None:
+    """Whether a constant expression is float-typed (a decimal literal, `Const` of one, or any
+    `+ - * \\ MOD` with a float operand; `/`, `^` and `Int()` are always float, `Abs` keeps its
+    operand's type -- oracle, CR6, 2026-10-10, SDM address probes). `None`: not established."""
+    if isinstance(expr, S.Number):
+        return isinstance(expr.value, float)
+    if isinstance(expr, S.Name):
+        upper = expr.name.upper()
+        if upper in env.consts:
+            v = env.consts[upper]
+            return True if isinstance(v, CFloat) else False if isinstance(v, int) else None
+        sym = env.profile.symbols.get(upper)
+        return None if sym is None else isinstance(sym["value"], float)
+    if isinstance(expr, S.Unary) and expr.op in ("-", "+"):
+        return is_float(expr.operand, env)
+    if isinstance(expr, S.Binary) and expr.op in ("/", "^"):
+        return True
+    if isinstance(expr, S.Binary) and expr.op in ("+", "-", "*", "\\", "MOD"):
+        sides = [is_float(expr.left, env), is_float(expr.right, env)]
+        return True if True in sides else None if None in sides else False
+    if isinstance(expr, S.Index) and expr.name.upper() == "INT":
+        return True
+    if isinstance(expr, S.Index) and expr.name.upper() == "ABS" and len(expr.args) == 1:
+        return is_float(expr.args[0], env)
+    return None
 
 
 def truthy(v: object) -> bool:
