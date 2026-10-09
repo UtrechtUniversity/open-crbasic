@@ -176,9 +176,22 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `V` term, ChanI the `I` terms.
 
 - `Therm107/108/109(Dest, Reps, SEChan, VxChan, Settle, Integ, Mult, Offset)`: the VoltSe cost
-  with `n = 2*Reps` on a plain range, no channel dependence (any SEChan/VxChan form; 2,400 real
+  with `n = 2*Reps` on a plain range, no channel dependence (any SEChan/VxChan form; ~4,000 real
   points over Reps 1..200, Settle 0..400, Integ 0..300000, 0 residual). Reps < 1 and negative
   Settle/Integ are not modelled.
 
-Timed but not probed: BrHalf, BrHalf3W/4W, BrFull, BrFull6W, AM25T,
-Resistance, AutoRange for VoltSe & co (AutoRange adds ~1300 us at n=1, not fitted).
+- Bridge instructions (BrHalf, BrHalf3W, BrHalf4W, BrFull, BrFull6W, Resistance; ~2,400 randomised
+  real points each over reps, both ranges, channel form, MeasPEx, ExmV 100..2500, RevDiff, RevEx,
+  settle, integ; 0 residual). Reps are split into groups of `max(MeasPEx, 1)`; each group prints
+  one entry `floor100(140 + extra + n*(816 + ceil((32*ks + u)/3) + floor(32*kx/3)))` (the VoltSe
+  form) with `n = g * base * (1+RevDiff) * (1+RevEx)` (`g` reps in the group, any non-zero flag is
+  1; `base` 1 for BrHalf/BrFull/Resistance, 2 for BrHalf3W/BrHalf4W/BrFull6W; no RevDiff for the
+  Half forms). A C range (either range of the 4W/6W forms) adds `extra = 50*g*base` and, for a
+  `Un` channel (any n for the single-ended BrHalf forms, odd n only for differential), `u = 160`.
+  Resistance has no range dependence and prints two entries per group, first the cost with
+  `g = 1`. Resistance is only modelled for `MeasPEx >= 1` (negative/zero values behave
+  irregularly). Reps < 1, reps > 1000 and non-constant arguments give no entry. An out-of-range
+  `ExmV` (below 20 or above 2500, `Minimum Excitation is 20mV.` / `Excitation exceeds 2500.`) hides
+  all entries in the real exe but our checker does not raise it (verdict gap, not a timing rule).
+
+Timed but not probed: AM25T, AutoRange for VoltSe & co (AutoRange adds ~1300 us at n=1, not fitted).

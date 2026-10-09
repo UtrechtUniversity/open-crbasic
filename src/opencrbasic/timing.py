@@ -97,6 +97,8 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
             _measure(stmt, env, lines)
         elif kw in _THERM:
             _therm(stmt, env, lines)
+        elif kw in _BRIDGE:
+            _bridge(stmt, env, lines)
         elif kw in _CLOSED:
             _closed(stmt, env, lines, pipeline)
     return lines
@@ -201,6 +203,60 @@ def _therm(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
 
 
 _LABEL = {"VOLTSE": "VoltSe", "VOLTDIFF": "VoltDiff", "TCSE": "TCSe", "TCDIFF": "TCDiff"}
+
+
+# Bridge instructions: (label, first range, second range or None, channel, MeasPEx, RevDiff or
+# None, RevEx, settle, integ, base measurements per rep, single-ended, no range dependence,
+# entry pairs). Argument positions after `Dest` (docs/cli.md "Bridge cost").
+_BRIDGE = {
+    "BRHALF": ("BrHalf", 2, None, 3, 5, None, 7, 8, 9, 1, True, False),
+    "BRHALF3W": ("BrHalf3W", 2, None, 3, 5, None, 7, 8, 9, 2, True, False),
+    "BRHALF4W": ("BrHalf4W", 2, 3, 4, 6, 8, 9, 10, 11, 2, False, False),
+    "BRFULL": ("BrFull", 2, None, 3, 5, 7, 8, 9, 10, 1, False, False),
+    "BRFULL6W": ("BrFull6W", 2, 3, 4, 6, 8, 9, 10, 11, 2, False, False),
+    "RESISTANCE": ("Resistance", 2, None, 3, 5, 7, 8, 9, 10, 1, False, True),
+}
+
+
+def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
+    label, g1, g2, ci, mpi, rdi, rei, si, ii, base, single, resistance = _BRIDGE[stmt.keyword]
+    if len(stmt.args) <= ii:
+        return
+    idx = [1, g1, mpi, rei, si, ii] + ([g2] if g2 else []) + ([rdi] if rdi else [])
+    vals = [_num(_const(stmt.args[k], env)) for k in idx]
+    if None in vals:
+        return
+    reps, rng, mp, rev_ex, settle, integ = vals[:6]
+    rest = vals[6:]
+    rng2 = rest.pop(0) if g2 else rng
+    rev_diff = rest.pop(0) if rdi else 0
+    chan = stmt.args[ci]
+    if not _chan_is_u(chan) and _num(_const(chan, env)) is None:
+        return
+    if reps < 1 or reps > 1000 or settle < 0 or integ < 0:
+        return
+    c_range = False
+    for r in (rng, rng2):
+        if r not in _PLAIN_RANGES and r not in _C_RANGES:
+            return
+        c_range |= r in _C_RANGES
+    if resistance:
+        c_range = False
+        if mp < 1:
+            return
+    u = 0
+    if c_range and _chan_is_u(chan) and (single or int(re.fullmatch(r"U(\d+)", chan.name.upper()).group(1)) % 2 == 1):
+        u = 160
+    per = base * (2 if rev_diff else 1) * (2 if rev_ex else 1)
+    group = max(int(mp), 1)
+    left = int(reps)
+    while left > 0:
+        g = min(group, left)
+        left -= g
+        if resistance:
+            lines.append(f"line {stmt.line}: {label} = {_meas_cost(per, settle, integ)}")
+        extra = 50 * g * base if c_range else 0
+        lines.append(f"line {stmt.line}: {label} = {_meas_cost(g * per, settle, integ, extra, u)}")
 
 
 def _args(stmt: S.Instruction, env: consteval.Env, *idx: int) -> list[float] | None:
