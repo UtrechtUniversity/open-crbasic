@@ -134,5 +134,17 @@
  {
   "id": "alias_fieldnames_individual_outputs",
   "source": "Public A(6)\nAlias A(3)=Mid\nDataTable(T1,True,10)\n  Sample(6,A,FP2)\n  FieldNames(\"F1,F2,F3,F4,F5,F6\")\nEndTable\nDataTable(T2,True,10)\n  Sample(6,A,FP2)\n  FieldNames(\"F1,F2\")\nEndTable\nDataTable(T3,True,10)\n  Average(4,A(2),FP2,False)\n  FieldNames(\"F1\")\nEndTable\nDataTable(T4,True,10)\n  Sample(1,A(2),FP2)\n  FieldNames(\"F1\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable T2\n    CallTable T3\n    CallTable T4\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "dtype_const_expr",
+  "source": "Public A(16), Q1, Q2, Q3, Q4, Y As Long, Z\nConst DT = FP2\nDataTable(T,True,-1)\n  FFT(A(),FP2+0,16,0.01,Sec,1)\n  Sample(1,Y,UINT4)\n  Sample(1,Z,DT)\n  Average(1,Q1,DT,False)\n  Average(1,Q2,FP2+0,False)\n  Maximum(1,Q3,DT,False,False)\n  Covariance(3,A(2),FP2+0,False,3)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "indexed_source_names",
+  "source": "Public A(8), B(8), C(8), D(8), E1(8), F(8), G(8), H(8), W(8), V(8), M(8), Mo(8), S(8), Ba(8)\nDataTable(T,True,-1)\n  Average(1,A(2),FP2,False)\n  Median(1,B(3),10,FP2,False)\n  Moment(1,C(3),2,FP2,False)\n\n  Histogram(E1(3),FP2,False,4,10,1,0,10)\n  Covariance(3,F(3),FP2,False,3)\n  WindVector(1,W(3),V(3),FP2,False,0,0,0)\n  StdDev(1,G(3),FP2,False)\n  Maximum(1,H(3),FP2,False,False)\n  SampleMaxMin(1,D(3),FP2,False)\n  Totalize(1,S(3),FP2,False)\n  FFT(M(3),FP2,4,0.01,Sec,1)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "indexed_alias_source_names",
+  "source": "Public A(8), B(2,4), C(8), W(8), V(8), D(8), E1(8)\nAlias A(2) = AA\nAlias C(3) = CA\nAlias W(2) = WA\nAlias D(4) = DA\nDataTable(T,True,-1)\n  Covariance(2,A(2),FP2,False,3)\n  Covariance(2,B(2,2),FP2,False,3)\n  Covariance(2,CA,FP2,False,3)\n  WindVector(1,WA,V(2),FP2,False,0,0,0)\n  FFT(B(2,1),FP2,4,0.01,Sec,1)\n  FFT(DA,FP2,4,0.01,Sec,1)\n  Histogram(DA,FP2,False,4,10,1,0,10)\n  Average(1,E1(3),FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
  }
 ]

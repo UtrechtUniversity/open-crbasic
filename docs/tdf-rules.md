@@ -31,7 +31,7 @@ string, description string, begin index (`u32` BE), dimension (`u32` BE), sub-di
 
 Type codes seen (all **oracle-confirmed** via `Sample(...)`/`Public ... As ...` and matched to
 `data/symbols.json`): `2`=UINT2, `6`=LONG, `7`=FP2, `9`=IEEE4, `11`=ASCII/STRING, `14`=NSEC,
-`17`=BOOL8, `18`=IEEE8, `28`=BOOLEAN. Not directly observed in a table field: UINT1, UINT4,
+`17`=BOOL8, `18`=IEEE8, `28`=BOOLEAN, `3`=UINT4 (oracle 2026-10-10: `Sample(1,Y,UINT4)`). Not directly observed: UINT1,
 FP3/FP4 (symbols exist in `data/symbols.json` but no field of that type was produced in these
 experiments — **guess** that they encode the same way).
 
@@ -353,6 +353,17 @@ Evidence: `tests/fixtures/tdf_rules.json` cases `fft_layout`, `multidim_expressi
   `x_Avg_Avg`), `begin=1` whatever subscript is given, `subdims` is the source field's shape, and
   units are *not* inherited (`''`) -- except when the field name is also a `Public` variable (then
   that variable's units).
+
+### DataType argument and indexed sources (oracle-confirmed 2026-10-10)
+
+- The `DataType` argument of every output instruction is resolved by constant value, not by
+  spelling: `FP2+0` and a named `Const DT = FP2` give type 7 like `FP2` (predefined data-type
+  symbols equal the TDF codes; UINT4 is 3). FFT, Average, Maximum, Sample, Covariance probed.
+- A Source that is an array element other than the first appends its flat 1-based index to the
+  field name for `FFT`, `Covariance`, `Histogram` and `WindVector` (`Covariance(3,A(2),..)` ->
+  `A2_Cov`, `B(2,2)` of a 2x4 array -> `B6_Cov`); `Average`/`Median`/`Moment`/`StdDev`/`Maximum`/
+  `Totalize`/`SampleMaxMin` carry no index (they use `begin`). When the element has an `Alias`
+  the field is named after the alias with no index (`AA_Cov`, `WA_WVc`).
 
 ## 10. Auto-allocated table size (`Size = -1`)
 
@@ -718,7 +729,7 @@ snippets are reconstructable from the description (all are plain CRBasic, no tri
     get the same "called" flag bit `0x1000` as an ordinary `CallTable`d table — §10 top — but this
     was not oracle-tested), `Alias` "swath" form (`Alias VariableName(1) = AliasName(5)` aliasing
     multiple elements on one line) — not tested.
-12. UINT1, UINT4, FP3, FP4 field type-code bytes in the TDF — not produced in any experiment
+12. UINT1, FP3, FP4 field type-code bytes in the TDF — not produced in any experiment
     (UINT1 requires Reps divisible by 2 and a UINT1-typed source, not attempted).
 13. The exact struct-offset semantics of `FUN_004eab30`'s per-table rate/weight fields (this
     session identified offset `+0x1c` bit `0x1000` = "called" with certainty — corroborated by the

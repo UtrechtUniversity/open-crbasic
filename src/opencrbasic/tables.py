@@ -25,13 +25,22 @@ DATA = Path(__file__).resolve().parent / "data"
 # ---------------------------------------------------------------- type codes (§1, §8)
 
 # TDF field type byte. Confirmed by oracle: 2 UINT2, 6 LONG, 7 FP2, 9 IEEE4, 11 ASCII, 14 NSEC,
-# 17 BOOL8, 18 IEEE8, 28 BOOLEAN. UINT1/UINT4 are guesses (never produced in an experiment; see
+# 17 BOOL8, 18 IEEE8, 28 BOOLEAN. UINT4=3 oracle-confirmed, UINT1 a guess (never produced; see
 # docs/tdf-rules.md open question 12).
 TYPE_CODES = {
     "FLOAT": 9, "IEEE4": 9, "FP2": 7, "LONG": 6, "BOOLEAN": 28, "BOOL8": 17,
     "STRING": 11, "DOUBLE": 18, "IEEE8": 18, "UINT2": 2, "NSEC": 14,
-    "UINT1": 1, "UINT4": 4,
+    "UINT1": 1, "UINT4": 3,
 }
+
+
+def _dtype_code(expr: S.Expr | None, env: consteval.Env) -> int:
+    """TDF type code of an output instruction's DataType argument. A constant expression or named
+    `Const` resolves through its value (the predefined data-type symbols equal the TDF codes)."""
+    if isinstance(expr, S.Name) and expr.name.upper() in TYPE_CODES:
+        return TYPE_CODES[expr.name.upper()]
+    v = _fold(expr, env, None)
+    return int(v) if isinstance(v, (int, float)) and v in TYPE_CODES.values() else 9
 
 _UNIT_SECONDS = {"USEC": 1e-6, "MSEC": 1e-3, "SEC": 1, "MIN": 60, "HR": 3600, "DAY": 86400}
 _UNIT_NS = {"USEC": 1_000, "MSEC": 1_000_000, "SEC": 1_000_000_000,
@@ -838,7 +847,7 @@ def _split_by_alias(fields: list[_OutField], src, var_info: dict, by_base: dict,
         if f.name_only or f.renamed or not f.name.startswith(declared):
             out.append(f)
             continue
-        suffix = f.name[len(declared):]
+        suffix = f.name[len(declared):].lstrip("0123456789")  # drop the flat-index digits (_idx_suffix)
         es = _elem_size(f, var_info[base])
         lo, hi = f.begin, f.begin + f.dim - 1
         if not f.splittable:
@@ -883,7 +892,6 @@ def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteva
     if placeholder:
         return _OutField("Anonymous", 9, True, "FFT", 1, _FFT_UNBOUNDED, [], name_only=True,
                           placeholder=True, rng=(1, _FFT_UNBOUNDED))
-    tname = getattr(a[1], "name", "") if len(a) > 1 else ""
     n = _as_int(_fold(a[2], env, 1), 1) if len(a) > 2 else 1
     tint = _fold(a[3], env, 0) if len(a) > 3 else 0
     unit = str(getattr(a[4], "name", "")).upper() if len(a) > 4 else "SEC"
@@ -902,9 +910,16 @@ def _fft_field(s: S.Instruction, var_info: dict, by_display: dict, env: consteva
     if dim == 1:
         subdims = shape
     proc = "FFT,%d,%.4e,%d" % (n, float(tint) * _UNIT_SECONDS.get(unit, 1), opt % 100)
-    return _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", TYPE_CODES.get(tname.upper(), 9), True,
+    return _OutField(_source_name(src, var_info) + (str(first) if first > 1 else "") + "_FFT", (_dtype_code(a[1], env) if len(a) > 1 else 9), True,
                       proc, 1, dim, subdims, _units_for_source(src, var_info, by_display),
                       rng=(1, _FFT_UNBOUNDED))
+
+
+def _idx_suffix(src: S.Expr | None, var_info: dict, env: consteval.Env) -> str:
+    """Flat first-element index appended to the source name when the Source is an array element
+    other than the first (FFT, Covariance, Histogram, WindVector; docs/tdf-rules.md §9b)."""
+    first, _ = _source_shape(src, var_info, env, 1)
+    return str(first) if first > 1 else ""
 
 
 def _alias_source(instr: S.Instruction, var_info: dict, by_display: dict, by_base: dict | None):
@@ -981,8 +996,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
     a = instr.args
 
     def type_of(idx):
-        name = getattr(a[idx], "name", None) if idx < len(a) else None
-        return TYPE_CODES.get((name or "").upper(), 9)
+        return _dtype_code(a[idx], env) if idx < len(a) else 9
 
     def reps_of():
         return _as_int(_fold(a[0], env, 1), 1) if a else 1
@@ -1063,7 +1077,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         tcode = type_of(2)
         n_cov = _as_int(_fold(a[4], env, 1), 1) if len(a) > 4 else 1
         units = _units_for_source(src, var_info, by_display)
-        return [_OutField(_source_name(src, var_info) + "_Cov", tcode, True, "Cov", 1, n_cov,
+        return [_OutField(_source_name(src, var_info) + _idx_suffix(src, var_info, env) + "_Cov", tcode, True, "Cov", 1, n_cov,
                            [] if n_cov == 1 else [n_cov], units)]
 
     if kw == "WINDVECTOR":
@@ -1075,7 +1089,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         # per-element units by Output option (docs/tdf-rules.md §9a): speed units, then "Deg"
         ulist = {0: [units, "Deg", "Deg"], 1: [units, "Deg"], 2: [units, units, "Deg", "Deg"],
                  3: ["Deg"], 4: ["Deg", "Deg"]}.get(output_opt, [units] * dim)
-        f = _OutField(_source_name(speed, var_info) + "_WVc", tcode, True, "WVc", 1, dim,
+        f = _OutField(_source_name(speed, var_info) + _idx_suffix(speed, var_info, env) + "_WVc", tcode, True, "WVc", 1, dim,
                       [] if dim == 1 else [dim], ulist[0])
         f.unit_list = ulist
         return [f]
@@ -1089,7 +1103,7 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
         uplim = _fold(a[7], env, 0.0) if len(a) > 7 else 0.0
         tag = f"Hst,{bins},{float(wtval):.4e},{float(lolim):.4e},{float(uplim):.4e}"
         units = _units_for_source(bin_select, var_info, by_display)
-        return [_OutField(_source_name(bin_select, var_info) + "_Hst", tcode, True, tag, 1, bins,
+        return [_OutField(_source_name(bin_select, var_info) + _idx_suffix(bin_select, var_info, env) + "_Hst", tcode, True, tag, 1, bins,
                            [] if bins == 1 else [bins], units)]
 
     return []
