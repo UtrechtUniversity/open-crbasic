@@ -106,11 +106,83 @@ def _resolve_include_path(spec: str, directory: Path | None) -> Path | None:
     return None
 
 
+_DECL_START_RE = re.compile(r"^\s*(?:Public|Dim)\b", re.IGNORECASE)
+
+
+def _mask_strings(text: str) -> str:
+    return re.sub(r'"[^"]*"', lambda m: "s" * len(m.group()), text)
+
+
+def _split_top_commas(text: str) -> list[str]:
+    parts, depth, start = [], 0, 0
+    for k, ch in enumerate(_mask_strings(text)):
+        if ch in "({":
+            depth += 1
+        elif ch in ")}":
+            depth -= 1
+        elif ch == "," and depth == 0:
+            parts.append(text[start:k])
+            start = k + 1
+    parts.append(text[start:])
+    return parts
+
+
+def _pull_decl_initializer(text: str, physical: list[str], i: int):
+    """CR6/CR1000X `Public`/`Dim` initializer line pulling (oracle, 2026-10-10, `docs/checker.md`
+    "Round 7 CR6/CR1000X help-corpus families"): a declaration ending in `=` pulls the next line
+    into itself, and a brace list ending in `,` or `{` keeps pulling; every pulled line is
+    consumed without advancing the reported line counter. Returns `(text, i, pulls, bad)`; `bad`
+    is `(message, variable)` when the pulled line opens with `{` after a trailing `=` on an array."""
+    pulls = 0
+    n = len(physical)
+
+    def next_text() -> tuple[str, str] | None:
+        if i + pulls + 1 >= n:
+            return None
+        raw = physical[i + pulls + 1]
+        stripped = _strip_comment(raw)
+        return None if stripped.strip() == "" else (raw, stripped)
+
+    masked = _mask_strings(text).rstrip()
+    if masked.endswith("=") and not masked.endswith(("<=", ">=")):
+        nxt = next_text()
+        if nxt is None:
+            return text, i, 0, None
+        raw, stripped = nxt
+        head = text.rstrip()[:-1].rstrip()
+        body = stripped.lstrip(" \t")
+        names = _split_top_commas(head)
+        first = names[-1]
+        if len(names) == 1:
+            first = re.sub(r"^\s*(?:Public|Dim)\b", "", first, count=1, flags=re.I)
+        m = re.match(r"\s*(\w+)\s*(\(?)", first)
+        if body.startswith("{") and m and m.group(2):
+            seg = _split_top_commas(body)
+            echo = seg[0] + ("\n" if len(seg) == 1 and len(stripped) == len(raw) else "")
+            kind = ("Invalid, or out of place expression" if seg[0].strip() == "{"
+                    else "Incomplete expression")
+            return head, i + 1, 1, (f"{kind}: {echo}.", m.group(1))
+        return head + " = " + body, i + 1, 1, None
+    while True:
+        m = _mask_strings(text).rstrip()
+        after = m[m.rfind("=") + 1:] if "=" in m else ""
+        if not (after.count("{") > after.count("}") and m.endswith((",", "{"))):
+            break
+        nxt = next_text()
+        if nxt is None:
+            break
+        text = text.rstrip() + " " + nxt[1].lstrip(" \t")
+        pulls += 1
+    return text, i + pulls, pulls, None
+
+
 class _Loader:
     """Turns one file's raw text into `LogicalLine`s, expanding includes as it goes."""
 
-    def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None):
+    def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None,
+                 pull_init: bool = False):
         self.directory = directory
+        self.pull_init = pull_init
         self.diags = diags
         self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
@@ -134,13 +206,14 @@ class _Loader:
         out: list[LogicalLine] = []
         i = 0
         n = len(physical)
+        shift = 0
         while i < n:
             start_line = i + 1
             raw_line = physical[i]
             buffer_text = raw_line
             # The buffer includes an LF when present; see docs/frontend.md#source-line-buffer.
             if len(buffer_text) + (i < n - 1) > 510:
-                out.append(LogicalLine("", start_line, filename, section, kind="overflow"))
+                out.append(LogicalLine("", start_line - shift, filename, section, kind="overflow"))
                 break
             text = _strip_comment(raw_line)
             had_comment = len(text) != len(raw_line)
@@ -156,7 +229,7 @@ class _Loader:
                 raw_line = physical[i]
                 buffer_text += raw_line
                 if len(buffer_text) + (i < n - 1) > 510:
-                    out.append(LogicalLine("", last_line, filename, section, kind="overflow"))
+                    out.append(LogicalLine("", last_line - shift, filename, section, kind="overflow"))
                     return out
                 stripped = _strip_comment(raw_line)
                 had_comment = len(stripped) != len(raw_line)
@@ -164,9 +237,20 @@ class _Loader:
             if text.strip() == "":
                 i += 1
                 continue
+            pulls = 0
+            if self.pull_init and _DECL_START_RE.match(text):
+                text, i, pulls, bad = _pull_decl_initializer(text, physical, i)
+                if pulls:
+                    had_comment = len(_strip_comment(physical[i])) != len(physical[i])
+                if bad:
+                    self.diags.error(last_line - shift, bad[0], filename)
+                    self.diags.error(last_line - shift,
+                                     f"Variable initialization of {bad[1]} has bad syntax.", filename)
             out.extend(
-                self._expand_or_keep(text, last_line, filename, section, in_include, had_comment)
+                self._expand_or_keep(text, last_line - shift, filename, section, in_include,
+                                     had_comment)
             )
+            shift += pulls
             i += 1
         return out
 
@@ -226,19 +310,20 @@ class _Loader:
                 LogicalLine("", line, filename, section, kind="include_end")]
 
 
-def load_program(path: Path, own_ext: str | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+def load_program(path: Path, own_ext: str | None = None,
+                 pull_init: bool = False) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags, own_ext)
+    loader = _Loader(path.parent, diags, own_ext, pull_init)
     lines = loader.load_file(path, section=None, in_include=False)
     return lines, diags
 
 
 def load_text(text: str, name: str = "t.cr6", directory: Path | None = None,
-              own_ext: str | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+              own_ext: str | None = None, pull_init: bool = False) -> tuple[list[LogicalLine], Diagnostics]:
     """Like `load_program`, for source text that may not be on disk (`directory` resolves includes)."""
     diags = Diagnostics()
-    loader = _Loader(directory, diags, own_ext)
+    loader = _Loader(directory, diags, own_ext, pull_init)
     lines = loader.load_text(text, name, section=None, in_include=False)
     return lines, diags

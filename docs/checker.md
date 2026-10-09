@@ -4121,3 +4121,38 @@ overflows (timing family, owned elsewhere).
 Open (CR300/CR350 chm, not established): `Dim A(8)` followed by a lone `=` line (the declaration
 continues across the line), `Function ... As` header cascade, `Loop While I>0 and`,
 `For ... Step-1`, `X (foo) bar` (names `foo` only when text follows the parenthesis).
+
+## Round 7 CR6/CR1000X help-corpus families
+
+### `Public`/`Dim` initializer line pulling (CR6/CR1000X; `source._pull_decl_initializer`)
+
+Oracle, 2026-10-10 (CR6 and CR1000X identical; CR300/CR350 differ and are untouched):
+
+- A `Public`/`Dim` line ending in `=` pulls the next line into the declaration. A pulled line that
+  is not blank is read as the initializer: `Dim D As Long =` / `5`, `Public D As String * 4 =` /
+  `"ab"`, `Public D(2) As Long =` / `1, 2` compile. **Every pulled line is consumed without
+  advancing the reported line counter**: every later diagnostic in the file is reported one line
+  earlier per pulled line (`source.py` subtracts a running `shift`).
+- A brace list whose line ends in `,` or `{` keeps pulling while the braces are unbalanced
+  (`{ 1,` / `1,` / `1 }` and `{` / `1,` / `2 }` compile; `{ 1, 2` / `}` does not pull, the `}` is a
+  stray statement).
+- Exception: `=` at end of line followed by a line starting with `{`, on an **array** variable
+  (`D(2)`), is `Incomplete expression: <that line>\n.` (the echo is the first top-level comma
+  segment; the `\n` only when it is the whole line and no comment was stripped; a bare `{` gives
+  `Invalid, or out of place expression: {\n.`), then `Variable initialization of <var> has bad
+  syntax.`, both on the declaration line. The brace line does not keep pulling, so its continuation
+  lines are ordinary statements (`Invalid, or out of place expression: 1,.`). A scalar
+  (`Public D As Long =` / `{ 5 }`) compiles.
+- Not modelled: a blank pulled line (`Invalid, or out of place expression: \n.`), a pulled line
+  that is a statement (`Dim D As Long =` / `Public X` -> `Invalid symbol in expression: Public
+  X\n.`, ours has no `\n`), and a comment-only pulled line (real compiler page-faults).
+- A stray `}` (`}`, `3 }`) is `Invalid, or out of place expression: <stmt>.` in pass 1 on
+  CR6/CR1000X (`_pass1_scan`); `3 ]` is too, not modelled.
+
+### `Const <name> =` with an empty or operator-ending value
+
+All four loggers: `Const A =` (also at end of line, value on the next line), `Const A As Long =`,
+`Const A = 5 +` (also `-`, `/`, `*`, `^`, `2 + 3 *`) -> `Invalid, or out of place expression:
+<value>.` (value from its first character, trailing blanks kept, comment stripped), not `Const with
+no assignment.`, which stays for a missing `=`. Not modelled: `Const A = *`. Fixture
+`init_pull.json` (CR6/CR1000X).

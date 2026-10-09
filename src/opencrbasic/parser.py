@@ -944,6 +944,7 @@ class _Parser:
 
     def _parse_const(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()
+        eq_at = None
         try:
             name_tok = p.expect_ident()
             vtype = None
@@ -958,6 +959,7 @@ class _Parser:
                     p.next()
                     self._parse_expr(p, line, file)
             p.expect_op("=")
+            eq_at = p.i
             value_start_col = p.peek().col
             value = self._parse_expr(p, line, file)
             value_span = (value_start_col, p.peek().col)
@@ -968,6 +970,14 @@ class _Parser:
             # `Const ToAddr As` / `String = "..."`, truncated further into the grammar). The real
             # compiler reports the same message either way (oracle-confirmed, `docs/checker.md`),
             # so this doesn't try to distinguish how far through its own grammar it got.
+            if eq_at is not None:
+                # `=` seen, value empty or ending in a binary operator: `Invalid, or out of place
+                # expression: <value>.` (oracle, 2026-10-10, docs/checker.md "Round 7")
+                rest = p.toks[eq_at:]
+                if rest[0].kind == "EOF" or (rest[-2].kind == "OP" and rest[-2].text in "+-*/^"
+                                             and len(rest[-2].text) == 1):
+                    value = p.seg_text[rest[0].col:] if rest[0].kind != "EOF" else ""
+                    return S.Unparsed(line, file, text="", reason="Const bad value: " + value)
             return S.Unparsed(line, file, text="", reason="Const without '='")
         node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype, value_span=value_span)
         try:
@@ -1438,12 +1448,18 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     `.CR6` file always folded against the CR6 profile regardless of `--logger`, silently baking a
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
-    lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name))
+    lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
+                                       _pulls_init(profile or _profile_for(path.name)))
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
     _include_warning_drives(diags, profile or _profile_for(path.name))
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags
+
+
+def _pulls_init(profile: profiles.Profile) -> bool:
+    """CR6/CR1000X pull the line after a `Public`/`Dim` initializer's `=`/`,` into the declaration."""
+    return profile.name in ("cr6", "cr1000x")
 
 
 _MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR|CRD|USB):", re.I)
@@ -1475,7 +1491,8 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
                profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(
-        text, name, directory, _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name))
+        text, name, directory, _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name),
+        _pulls_init(profile or _profile_for(name)))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
     _include_warning_drives(diags, profile or _profile_for(name))

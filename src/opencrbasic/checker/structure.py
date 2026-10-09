@@ -49,6 +49,9 @@ _UNITS_WITHOUT_EQ = "Units without '='"
 # partway through its own grammar, `rectpolar_1.CR6`/`sprintf_4.CR6`); `Alias` echoes an (empty
 # when no target at all was parsed) trailing target, like `Units`.
 _CONST_WITHOUT_EQ = "Const without '='"
+# `=` seen, value empty or ending in a binary operator: `reason` is this prefix plus the raw value
+# (the caller overwrites `Unparsed.text`)
+_CONST_BAD_VALUE = "Const bad value: "
 # `parser.py`'s `_parse_for`: a `For` header with no `=`, no `To`, or nothing after `To`. All four
 # loggers, pass 1: `Invalid or missing parameter.` (docs/checker.md "Round 4 (CR6/CR1000X ...)").
 _FOR_MISSING = "For missing parameter"
@@ -1341,7 +1344,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                    stmt.reason.startswith(_INVALID_AS_CLAUSE) or \
+                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE)) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
             if stmt.reason == _UNCLOSED_PAREN_EXPR:
@@ -1594,7 +1597,7 @@ def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     return not (stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
-                or stmt.reason.startswith(_INVALID_AS_CLAUSE)
+                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE))
                 or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
 
 _BINARY_WORDS = frozenset({"MOD", "OR", "XOR", "AND", "IMP", "EQV"})
@@ -1711,6 +1714,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         pass
     elif first.kind == "OP" and first.text == "-" and len(toks) > 1 and toks[1].kind == "NUMBER":
         i = 2
+    elif first.kind == "OP" and first.text == "}":
+        return ("pass1", "fallback")  # a stray closing brace (oracle, CR6/CR1000X, 2026-10-10)
     elif first.kind == "OP" and first.text == "(":
         verdict = _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False)
         return ("pass1", "fallback") if verdict == ("pass1", "incomplete") else verdict
@@ -1733,7 +1738,7 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     if nxt.kind in ("IDENT", "NUMBER", "STRING") and not (nxt.kind == "IDENT"
                                                          and nxt.upper in _BINARY_WORDS):
         return ("pass1", "fallback")
-    if nxt.kind == "OP" and nxt.text in (",", ")"):
+    if nxt.kind == "OP" and nxt.text in (",", ")", "}"):
         return ("pass1", "fallback")
     if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
         return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
@@ -1986,7 +1991,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
             continue
         if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                nxt.reason.startswith(_INVALID_AS_CLAUSE) or \
+                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE)) or \
                 nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
             continue  # already reported by `check_pass1`
         if known is None:
@@ -3055,6 +3060,10 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
         if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As\s+\w+)?", rest, re.I):
             diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)
+        return
+    if stmt.reason.startswith(_CONST_BAD_VALUE):
+        diags.error(stmt.line, f"Invalid, or out of place expression: "
+                    f"{stmt.reason[len(_CONST_BAD_VALUE):]}.", stmt.file)
         return
     if stmt.reason == _FOR_MISSING:
         diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
