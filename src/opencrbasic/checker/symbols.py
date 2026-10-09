@@ -226,8 +226,11 @@ def declared_dim_counts(program: S.Program, strings: bool = False) -> dict[str, 
                 if (v.type or "").upper() == "STRING":
                     strings_seen.add(name)
                 if ((v.type or "").upper() == "STRING" and not strings) or \
-                        re.search(r"(?i)\b" + re.escape(v.name) + r"\s*\(\s*\)", stmt.text):
+                        (not strings and re.search(r"(?i)\b" + re.escape(v.name) + r"\s*\(\s*\)",
+                                                   stmt.text)):
                     # a String takes a character subscript (`Buf(1,1,I)`); `A()` is its own error
+                    # on CR6/CR1000X, a scalar to CR300/CR350 (`Public A()`, `X = A(1)` ->
+                    # `Dimensions not declared`, oracle 2026-10-10)
                     ambiguous.add(name)
                 elif counts.setdefault(name, len(v.dims)) != len(v.dims):
                     ambiguous.add(name)

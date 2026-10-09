@@ -818,6 +818,19 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
             struct_members.update(v.name.upper() for v in stmt.vars)
             _check_member_types(stmt, structs_seen, profile, diags)
+            if known is None:
+                known = expressions._known_names(program, profile)
+                operands = pass1_operands(program, profile)
+            # a member's dimensions and initializer resolve like a declaration's (oracle, all
+            # four loggers, 2026-10-10: `FuzzVar = Nope` inside `StructureType`)
+            if stmt.vars and any(v.init or v.dims or v.string_size is not None for v in stmt.vars):
+                top = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+                       and st.kind != "STRUCTUREMEMBER" for v in st.vars}
+                member_only = {v.name.upper() for st in program.statements
+                               if isinstance(st, S.Declaration) and st.kind == "STRUCTUREMEMBER"
+                               for v in st.vars} - top - set(program.consts)
+                _check_decl_exprs(stmt, known - member_only, decl_variables, profile, diags,
+                                  struct_types)
         elif (in_struct or in_sub) and kw == "READONLY":
             # In a structure or `Sub`/`Function` body, `ReadOnly` resolves against the global
             # variables declared so far, plus the structure's own earlier members; neither a
@@ -1023,11 +1036,19 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
     order `Scan without NextScan.`, `FOR without NEXT.`, `DO without LOOP.`, `IF or SELECT without
     EndIf or EndSelect.` (`docs/checker.md` "Unclosed blocks")."""
     last_line = program.last_line or (program.statements[-1].line if program.statements else 1)
+    sub_open = False
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            sub_open = True
+        elif _ends_sub(st, _keyword(st)):
+            sub_open = False
     if not any(_keyword(st) == "BEGINPROG" for st in program.statements):
         # Only when passes 1 and 2 are clean (oracle, CR6: a program with no `BeginProg` and a
         # bad `Y=EXP()` line reports that line's fallback and `Expr illegally occurs before
         # BeginProg.`, never `No BeginProg in Program.`).
         diags.error(last_line, "No BeginProg in Program.")
+        if sub_open:
+            diags.error(last_line, "Sub ... EndSub not matched.")
         return
     depth = {"SCAN": 0, "FOR": 0, "DO": 0, "IF": 0}
     in_table = False
@@ -1064,6 +1085,11 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
         if depth[kind] > 0:
             diags.error(last_line, message)
             reported = True
+    if sub_open:
+        # a `Sub`/`Function` with no `EndSub`/`EndFunction` (a `BeginProg` inside it is accepted)
+        # follows the block messages, all four loggers (oracle, 2026-10-10)
+        diags.error(last_line, "Sub ... EndSub not matched.")
+        return
     if reported:
         return
     menus = 0
@@ -2567,6 +2593,8 @@ def _report_decl_expr(expr, echo: str, known: set[str], variables: set[str], pro
 _VARIABLE_TYPES = frozenset({"FLOAT", "LONG", "BOOLEAN", "STRING", "DOUBLE", "UINT1"})
 _EMPTY_DIMS_AS_RE = re.compile(r"(?i)\s*\(\s*\)(\s*As)\b")
 _AS_TYPE_RE = re.compile(r"(?i)\bAs\s+([A-Za-z_][A-Za-z0-9_]*)")
+_STRING_SIZE_RE = re.compile(r"(?i)\bAs\s+String\s*\* ?([^=]*)", re.S)
+_EMPTY_DIMS_INIT_RE = re.compile(r"\s*\(\s*\)(\s*)=")
 _TYPED_DIMS_RE = re.compile(r"(?i)\s*As\s+[A-Za-z_][A-Za-z0-9_]*\s*(?=\()")
 
 
@@ -2618,6 +2646,15 @@ def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnosti
             diags.warning(stmt.line, "Attempt to initialize variable out of bounds.", stmt.file)
 
 
+def _adjacent_literals(text: str) -> bool:
+    """Two literals side by side (`1  0`, `1 "a"`): the pass-1 `Incomplete expression`."""
+    try:
+        kinds = [t.kind for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return False
+    return any(a == "NUMBER" and b in ("NUMBER", "STRING") for a, b in zip(kinds, kinds[1:]))
+
+
 def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str], profile,
                       diags: Diagnostics, struct_types: frozenset[str] = frozenset(),
                       stop_at: int | None = None) -> int | None:
@@ -2627,11 +2664,12 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     a variable -> `Variable illegal in Parameter: Y.`; `Public B As Long = Nope * 2` -> `Invalid
     symbol in expression: Nope * 2.` then `Variable initialization of B has bad syntax.`"""
     body = stmt.text.lstrip()
-    body = body[len(body.split(None, 1)[0]):] if body else ""
+    if stmt.kind != "STRUCTUREMEMBER":
+        body = body[len(body.split(None, 1)[0]):] if body else ""
     segments = _split_top(body)
     if len(segments) != len(stmt.vars):
         return None
-    unsupported = False
+    unsupported = empty_eq = False
     for index, (v, seg) in enumerate(zip(stmt.vars, segments)):
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
@@ -2655,8 +2693,23 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             if m and m.group(1).upper() == v.type and not (profile.single_pass and unsupported):
                 diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
                 unsupported = True  # CR300/CR350 stop at the first one in a statement
+        if v.type == "STRING" and v.string_size is not None and (
+                m := _STRING_SIZE_RE.search(seg)) and _adjacent_literals(m.group(1)):
+            # `Public S As String * 1  0` -> `Incomplete expression: 1  0.` (echo: everything after
+            # the `*`, untrimmed), all four loggers (oracle, 2026-10-10); CR300/CR350 stop there
+            diags.error(stmt.line, f"Incomplete expression: {m.group(1)}.", stmt.file)
+            if profile.single_pass:
+                if index + 2 < len(stmt.vars):
+                    diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                stmt.file)
+                return index
         rest_at = name_at + len(v.name)
         rest = seg[rest_at:]
+        if (m := _EMPTY_DIMS_INIT_RE.match(rest)) and not (profile.single_pass and empty_eq):
+            # `Dim A() = {1,2}` -> `Invalid, or out of place expression:  =.` (echo: the blanks
+            # after `)` and the `=`), all four loggers (oracle, 2026-10-10); CR300/CR350 stop there
+            diags.error(stmt.line, f"Invalid, or out of place expression: {m.group(1)}=.", stmt.file)
+            empty_eq = True  # CR300/CR350 report only the first
         typed_dims = _TYPED_DIMS_RE.match(rest)
         if v.dims and (rest.lstrip().startswith("(") or typed_dims):
             # `Public A(Nope)` and `Public A As Float(Nope)` alike (oracle, 2026-09-28)

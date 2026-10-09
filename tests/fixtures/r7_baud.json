@@ -1,0 +1,499 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r7_baud-0",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-1",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-2",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-3",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-4",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 599 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-5",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 300 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-6",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -1 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-7",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-8",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 460801 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-9",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2147483647 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-10",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-11",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-12",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-13",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-14",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 599 is illegal baud rate."
+  },
+  {
+   "id": "cr6-r7_baud-15",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_baud-16",
+   "logger": "cr6",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-0",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-1",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-2",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-3",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-4",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 599 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-5",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 300 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-6",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -1 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-7",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-8",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 460801 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-9",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 2147483647 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-10",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-11",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-12",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: -2147483648 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-13",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 1 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-14",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: 599 is illegal baud rate."
+  },
+  {
+   "id": "cr1000x-r7_baud-15",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_baud-16",
+   "logger": "cr1000x",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r7_baud-0",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-1",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-2",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-3",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-4",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-5",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-6",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-7",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-8",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-9",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-10",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-11",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-12",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-13",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-14",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-15",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr300-r7_baud-16",
+   "logger": "cr300",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: ComC1 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-0",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,9600,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-1",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,0,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-2",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,1234,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-3",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,600,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-4",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,599,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-5",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,300,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-6",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,-1,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-7",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,460800,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-8",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,460801,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-9",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,2147483647,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-10",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,2147483648,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-11",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,999999999999,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-12",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,-2147483649,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-13",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,1.5,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-14",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,599.9,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-15",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: COMSDC7 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,COMSDC7,0.5,0,\"97550000\",\"\",40,60,Abort)\n."
+  },
+  {
+   "id": "cr350-r7_baud-16",
+   "logger": "cr350",
+   "source": "Public Result As Long, Abort As Boolean\nBeginProg\n  Scan(1,Sec,0,0)\n    ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ModemCallBack is not defined.\nline 4: ComC1 is not defined.\nline 4: Invalid, or out of place expression:     ModemCallBack(Result,ComC1,300,0,\"97550000\",\"\",40,60,Abort)\n."
+  }
+ ]
+}

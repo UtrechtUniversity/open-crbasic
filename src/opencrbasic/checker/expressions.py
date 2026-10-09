@@ -319,10 +319,27 @@ _FUNCTION_CONST_INTEGER_STRING_ARGS = {
     "TIMER": frozenset({1}),
 }
 _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
+# Argument positions that must be an integer constant: a string, `NAN`, a float literal (`1.0`) or an
+# integer beyond 32 bits is `Parameter must be a constant integer` (oracle, all four loggers,
+# 2026-10-10: `TCPOpen(Addr,6785,"fuzz")`; an integer constant expression and `Hr` compile)
+_CONST_INTEGER_BAD_ARGS = {"TCPOPEN": 2}
+
+
+def _not_constant_integer(arg) -> bool:
+    if isinstance(arg, S.String):
+        return True
+    if isinstance(arg, S.Name):
+        return arg.name.upper() == "NAN"
+    if isinstance(arg, S.Number):
+        return isinstance(arg.value, float) or not -2**31 <= arg.value < 2**31
+    return False
 _INCOMPLETE_OVERFLOW = {"ABS": 1, "MQTTPUBLISH": 4}
 # Observed (min, max) argument counts where they differ from the table's `nargs`, keyed by that
 # profile `nargs` (oracle, 2026-10-03, all four loggers).
 _ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}}
+# Argument counts a call accepts when they are not one range, keyed by profile `nargs` (oracle,
+# 2026-10-10, all four loggers): `HTTPPut` takes 4, 8 or 9 (2, 3, 5, 6, 7 are `few`, 10+ `many`).
+_ARITY_ALLOWED = {"HTTPPUT": {5: frozenset({4, 8, 9})}}
 
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
 # embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`
@@ -1150,6 +1167,12 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         text = _if_condition_text(stmt)
         if text is None:
             text = _if_condition_text_no_then(stmt)
+        if text is not None and not names and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS and \
+                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+            # CR300/CR350: `If Q(1) Then` for a scalar `Q` (or `Public Q()`), `If Z(1,1) = 1 Then`
+            # for `Public Z(3)` -> `Dimensions not declared: Q(1) .` (oracle, 2026-10-10)
+            diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
+            continue
         if not names or text is None:
             continue
         names, dims = _names_and_dims(known, ds, stmt, (), stmt.cond)
@@ -1181,6 +1204,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             continue
         names = _undefined_names(stmt.cond, known)
         m = re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
+        if m and not names and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS and \
+                _over_indexed(stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+            diags.error(stmt.line, dimensions_message(m.group(1), profile, False), stmt.file)
+            continue
         if not names or not m:
             continue
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
@@ -1427,6 +1454,9 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if any(i < len(args) and isinstance(args[i], S.String)
            for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
+    if (i := _CONST_INTEGER_BAD_ARGS.get(upper)) is not None and i < n and \
+            _not_constant_integer(args[i]):
+        return "constint"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):
         return "constint"
@@ -1436,6 +1466,8 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
         # `X = Int()`, `SerialFlush()`: the generic fallback on the whole statement, pass 1, all
         # four loggers (oracle, 2026-09-27).
         return "empty"
+    if allowed := _ARITY_ALLOWED.get(upper, {}).get(nargs):
+        return None if n in allowed else "few" if n < max(allowed) else "many"
     if bounds := _ARITY_RANGE.get(upper, {}).get(nargs):
         return "few" if n < bounds[0] else "many" if n > bounds[1] else None
     if n < nargs and _ARITY_MIN_SAFE.get(name.upper()) == nargs:
@@ -1990,6 +2022,10 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
         if isinstance(stmt, S.ElseIf):
             names = _undefined_names(stmt.cond, known)
             text = _if_condition_text(stmt)
+            if text is not None and not names and not whole_echo and _over_indexed(
+                    stmt.cond, symbols.declared_dim_counts(program, strings=True)):
+                diags.error(stmt.line, dimensions_message(text, profile, False), stmt.file)
+                continue
             if not names or text is None:
                 continue
             if whole_echo:

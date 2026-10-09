@@ -483,6 +483,32 @@ _SNMP_SPACED_OID = re.compile(
     re.I,
 )
 _SNMP_OID_DEST = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*(\d+(?:\.\d+)*)\s*,", re.I)
+_SNMP_TAIL = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*[^,]+,\s*\d+(?:\.\d+)*\s*,", re.I)
+_SNMP_TYPES = frozenset({"INTEGER", "COUNTER", "STRING", "TIMETICKS", "OPAQUE", "GAUGE", "FLOAT"})
+
+
+def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`ModemCallBack(R,COMSDC7,<baud>,...)` -> `<baud> is illegal baud rate.` unless the baud,
+    truncated toward zero (outside 32 bits it becomes -2147483648), is 0 or 600..460800 (oracle, CR6/CR1000X,
+    2026-10-10: 599, 300, 460801 and 2^31-1 fail; 1234, 100000 and 0.5 pass; 2^31 and wider
+    give -2147483648). Only the COMSDC7 port was probed (`ComC1,300` passes)."""
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "MODEMCALLBACK"
+                and "MODEMCALLBACK" in profile.instructions and len(stmt.args) > 2):
+            continue
+        port, arg = stmt.args[1], stmt.args[2]
+        if not (isinstance(port, S.Name) and port.name.upper() == "COMSDC7"):
+            continue
+        sign = 1
+        if isinstance(arg, S.Unary) and arg.op == "-":
+            sign, arg = -1, arg.operand
+        if not (isinstance(arg, S.Number) and isinstance(arg.value, (int, float))):
+            continue
+        baud = int(sign * arg.value)
+        if not -2**31 <= baud < 2**31:
+            baud = -2**31
+        if baud != 0 and not 600 <= baud <= 460800:
+            diags.error(stmt.line, f"{baud} is illegal baud rate.", stmt.file)
 
 
 def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -498,6 +524,32 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
         if match:
             diags.error(stmt.line, f"Too many parameters:  {match.group(1)}.", stmt.file)
             continue
+        match = _SNMP_TAIL.match(stmt.text)
+        if match:
+            # `SNMPVariable(V,1.3.6.1.4,Float,RONLY,1)` -> `Too many parameters:  1.`; a Type that
+            # is not an SNMP type ends the list one argument earlier (`Nope,RONLY`), all four
+            # loggers (oracle, 2026-10-10); an `RWRITE` access also takes the Valid argument
+            starts, depth, quoted, begin = [], 0, False, match.end()
+            for i in range(match.end(), len(stmt.text)):
+                c = stmt.text[i]
+                if c == '"':
+                    quoted = not quoted
+                elif not quoted:
+                    depth += (c == "(") - (c == ")")
+                    if depth < 0:
+                        break
+                    if c == "," and depth == 0:
+                        starts.append(begin)
+                        begin = i + 1
+            starts.append(begin)
+            ends = [b - 1 for b in starts[1:]] + [None]
+            words = [stmt.text[b:e].strip().upper() for b, e in zip(starts, ends)]
+            allowed = 1 if words[0] not in _SNMP_TYPES else 2
+            if allowed == 2 and len(words) > 1 and words[1] == "RWRITE":
+                allowed = 3  # RWRITE takes the Valid argument
+            if len(starts) > allowed and (token := _next_simple_token(stmt.text[starts[allowed]:])):
+                diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
+                continue
         match = _SNMP_OID_DEST.match(stmt.text)
         if match:
             oid = match.group(1)

@@ -4049,3 +4049,45 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   gap, observed: the real rule is positional, not "before the first `)`" --
   `Round(X,"b",Public.X,1,2)` and `Round(X,"(",Public.X)` (`Public.` in the third argument)
   also hide the closer, while `Public.` within the first two arguments does not.
+
+## Round 7 fuzz false accepts (oracle, 2026-10-10; fixtures `tests/fixtures/r7_*.json`)
+
+All rules observed on the real compilers; "all four" means CR6, CR1000X, CR300, CR350 agree.
+
+- **Adjacent literals in a string size** (`r7_decl`): `Public S As String * 1  0` -> `Incomplete
+  expression: 1  0.`, all four. The echo is everything after the `*` minus one leading blank,
+  cut at an `=` (`* 1 0 = "a"` echoes `1 0 `), kept to a trailing `as long`. CR6/CR1000X report
+  every variable, CR300/CR350 stop at the first (then `Too many parameters:  <var two on>.`).
+  `1 Nope` is a different message (undefined-name family) and is not modelled.
+- **Empty dimensions with an initializer** (`r7_decl`, `r7_struct`): `Dim A() = {1,2}` ->
+  `Invalid, or out of place expression:  =.` (echo: the blanks after `)` plus `=`) before the
+  out-of-bounds warning, all four; CR300/CR350 report the first variable only and carry on with
+  the initializer checks. The dup-name ordering with this message is not modelled.
+- **StructureType members** (`r7_struct`): `FuzzVar = Nope` / `FuzzVar = FuzzVar + 1` resolve
+  like a declaration initializer (`Invalid symbol in expression: ...` + `Variable initialization
+  of FuzzVar has bad syntax.`; CR300/CR350 `X is not defined.`, `Variable illegal in Parameter:`
+  ...); members of any structure are not known names inside the initializer.
+- **`SNMPVariable` argument count** (`r7_snmp`): dotted-OID statements (parsed as `Unparsed`) take
+  `Name, OID, Type[, Access]`; a Type that is not an SNMP type ends the list at 3 and the next
+  argument is `Too many parameters:  <arg>.`; `RWRITE` access also takes a fifth (Valid)
+  argument, `RONLY` does not (`Float,RONLY,1` -> `Too many parameters:  1.`).
+- **`ModemCallBack` baud** (`r7_baud`, CR6/CR1000X): `<n> is illegal baud rate.` on `COMSDC7`
+  unless the truncated value is 0 or 600..460800; outside 32 bits the value prints as
+  `-2147483648`. Only `COMSDC7` is modelled (`ComC1,300` passes; `COMRS232,300` fails; string
+  and `Hr` arguments also fail, not modelled).
+- **Unclosed `Sub`/`Function`** (`r7_sub`): `Sub ... EndSub not matched.` on the last line
+  (`EndProg`, or the last line without one), after the unclosed-block messages and after
+  `No BeginProg in Program.`; a `BeginProg` inside the open Sub is accepted.
+- **`HTTPPut` argument count** (`r7_httpput`): 4, 8 or 9 arguments compile; 1-3, 5-7 are
+  `Expression expects , :`, 10+ `No Matching, or out of place )`.
+- **`TCPOpen` third argument** (`r7_tcpopen`): a string, `NAN`, a float literal (`1.0`) or an
+  integer beyond 32 bits is `Parameter must be a constant integer:`; `Hr`, `-1`, `1+1`, `True`
+  compile. A declared variable or string constant here is also an error (not modelled).
+- **CR300/CR350 over-indexed declared variables** (`r7_dims`): `Public A()` counts as a scalar,
+  so `A(1)` is `Dimensions not declared`; the message now also covers `If`/`ElseIf`/`Do While`
+  conditions (`Dimensions not declared: Q(1) .`, `If` echo keeps the blank before `Then`), and it
+  starts the `Too many parameters` cascade like the other declaration-class errors.
+
+Not done: the CR300/CR350 storage limit (`Unable to allocate enough data table space`), and the
+CR300/CR350 `Cannot autoallocate memory for DataTable` that appears when a scan interval
+overflows (timing family, owned elsewhere).

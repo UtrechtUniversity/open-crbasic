@@ -198,7 +198,8 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "
                                  "Invalid, or out of place expression:", "Invalid assignment in expression:",
                                  "Illegal destination variable type", "Invalid Variable or Array:",
                                  "Cannot recursively call functions.", "Parameter must be integral.",
-                                 "Interval (", "Illegally dimension: ", "Scan interval must be integrally divisible")
+                                 "Interval (", "Illegally dimension: ", "Scan interval must be integrally divisible",
+                                 "Dimensions not declared:")
 
 
 def _is_cascade_trigger(diag) -> bool:

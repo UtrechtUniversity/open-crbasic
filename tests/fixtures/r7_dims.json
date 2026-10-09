@@ -1,0 +1,443 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r7_dims-0",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-1",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-2",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1) + Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-3",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Z(1) = Flag(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-4",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-5",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) = 1 Then\nY = 1\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-6",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Y = 1 Then\nY = 2\nElseIf Q(1) = 1 Then\nY = 3\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-7",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Q(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-8",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Z(1,1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-9",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Do While Q(1) = 1\nY = 1\nLoop\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-10",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag()\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-11",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-12",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-13",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_dims-14",
+   "logger": "cr6",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  GetVariables(Y,ComRS232,0,1,0000,0,\"TempDat\",\"Temp()\",Z(),10)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-0",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-1",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-2",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1) + Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-3",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Z(1) = Flag(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-4",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-5",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) = 1 Then\nY = 1\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-6",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Y = 1 Then\nY = 2\nElseIf Q(1) = 1 Then\nY = 3\nEndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-7",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Q(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-8",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Z(1,1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-9",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Do While Q(1) = 1\nY = 1\nLoop\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-10",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag()\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-11",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-12",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-13",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_dims-14",
+   "logger": "cr1000x",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  GetVariables(Y,ComRS232,0,1,0000,0,\"TempDat\",\"Temp()\",Z(),10)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r7_dims-0",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1)\n."
+  },
+  {
+   "id": "cr300-r7_dims-1",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1,1)\n."
+  },
+  {
+   "id": "cr300-r7_dims-2",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1) + Z(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1) + Z(1)\n."
+  },
+  {
+   "id": "cr300-r7_dims-3",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Z(1) = Flag(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Z(1) = Flag(1)\n."
+  },
+  {
+   "id": "cr300-r7_dims-4",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) ."
+  },
+  {
+   "id": "cr300-r7_dims-5",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) = 1 Then\nY = 1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) = 1 ."
+  },
+  {
+   "id": "cr300-r7_dims-6",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Y = 1 Then\nY = 2\nElseIf Q(1) = 1 Then\nY = 3\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Dimensions not declared: Q(1) = 1 ."
+  },
+  {
+   "id": "cr300-r7_dims-7",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Q(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Q(1) ."
+  },
+  {
+   "id": "cr300-r7_dims-8",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Z(1,1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Z(1,1) ."
+  },
+  {
+   "id": "cr300-r7_dims-9",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Do While Q(1) = 1\nY = 1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Q(1) = 1."
+  },
+  {
+   "id": "cr300-r7_dims-10",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag()\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r7_dims-11",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r7_dims-12",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r7_dims-13",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) ."
+  },
+  {
+   "id": "cr300-r7_dims-14",
+   "logger": "cr300",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  GetVariables(Y,ComRS232,0,1,0000,0,\"TempDat\",\"Temp()\",Z(),10)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_dims-0",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1)\n."
+  },
+  {
+   "id": "cr350-r7_dims-1",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1,1)\n."
+  },
+  {
+   "id": "cr350-r7_dims-2",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag(1) + Z(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Y = Flag(1) + Z(1)\n."
+  },
+  {
+   "id": "cr350-r7_dims-3",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Z(1) = Flag(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared:   Z(1) = Flag(1)\n."
+  },
+  {
+   "id": "cr350-r7_dims-4",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) ."
+  },
+  {
+   "id": "cr350-r7_dims-5",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) = 1 Then\nY = 1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) = 1 ."
+  },
+  {
+   "id": "cr350-r7_dims-6",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Y = 1 Then\nY = 2\nElseIf Q(1) = 1 Then\nY = 3\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Dimensions not declared: Q(1) = 1 ."
+  },
+  {
+   "id": "cr350-r7_dims-7",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Q(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Q(1) ."
+  },
+  {
+   "id": "cr350-r7_dims-8",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Z(1,1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Z(1,1) ."
+  },
+  {
+   "id": "cr350-r7_dims-9",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Do While Q(1) = 1\nY = 1\nLoop\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Q(1) = 1."
+  },
+  {
+   "id": "cr350-r7_dims-10",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag()\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_dims-11",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Flag\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_dims-12",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  Y = Z(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_dims-13",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  If Flag(1) Then Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Dimensions not declared: Flag(1) ."
+  },
+  {
+   "id": "cr350-r7_dims-14",
+   "logger": "cr350",
+   "source": "Public Flag()\nPublic Q, Y\nPublic Z(3)\nPublic W(2,2)\nBeginProg\n  GetVariables(Y,ComRS232,0,1,0000,0,\"TempDat\",\"Temp()\",Z(),10)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
