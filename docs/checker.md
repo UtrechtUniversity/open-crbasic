@@ -3970,7 +3970,7 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   when the same statement, or any *later* statement (same line after a `:`, or a later line), has an
   `X is not defined.` line; a shortfall of an earlier statement stays (`r7_cr3xx_shortfall_order`:
   `PanelTemp(X) : X=Nope` keeps it, `X=Nope : PanelTemp(X)` and `X=Nope`/`PanelTemp(X)` on the next
-  line drop it; `cr3xx.drop_shortfall_with_names`;
+  line drop it; a statement written with no argument at all (`X=Nope`, then `PanelTemp`) is never hidden; prose lines (`S.Unparsed`) hide only their own line's; `cr3xx.drop_shortfall_with_names`;
   `PanelTemp(Nope)`, `Delay(1,Nope)`, `VoltDiff (X,1,mV200,1)`). The same hiding applies on
   CR6/CR1000X only for constant-family argument positions (`VoltDiff (X,Nope)`,
   `Delay(Nope,1)` print `Invalid symbol in expression: Nope.` alone; `PanelTemp(Nope)` keeps

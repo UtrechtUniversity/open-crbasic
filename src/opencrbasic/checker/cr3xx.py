@@ -1032,7 +1032,7 @@ _SHORTFALL_MESSAGES = ("Invalid or missing parameter.", "Too few parameters in i
 
 def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: an undefined name hides the too-few-arguments message of its own statement and
-    of every later statement, but not of an earlier one (oracle, 2026-10-08/10: `PanelTemp(Nope)`,
+    of every later statement written with arguments, but not of an earlier one (oracle, 2026-10-08/10: `PanelTemp(Nope)`,
     `Delay(1,Nope)`, `VoltDiff (X,1,mV200,1)` print only the name lines; `PanelTemp(X) : X=Nope`,
     `PanelTemp(X)` then `PanelTemp(Nope)` keep the first shortfall; `X=Nope : PanelTemp(X)` and
     `X=Nope` then `PanelTemp(X)` on the next line hide it)."""
@@ -1057,11 +1057,11 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
 
     first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named and has_names(st)),
                  None)
-    if first is None:
-        first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named), None)
-    if first is None:
-        return
-    first_key = (stmts[first].line, stmts[first].file)
+    # A line whose name errors come from no instruction/assignment (prose, `S.Unparsed`) keeps the
+    # per-line rule: it hides only its own line's shortfall.
+    with_names = {(st.line, st.file) for st in stmts if has_names(st)}
+    line_only = named - with_names
+    first_key = None if first is None else (stmts[first].line, stmts[first].file)
 
     seen: collections.Counter = collections.Counter()  # shortfall diagnostics met per line
 
@@ -1073,9 +1073,13 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
         short = [i for i in idxs if is_short(stmts[i])]
         nth = seen[key]
         seen[key] += 1
-        if not idxs or (not short and key == first_key):
+        if key in line_only or (key in named and (not idxs or (not short and key == first_key))):
             return True
-        return (short[nth] if nth < len(short) else (short or idxs)[0]) >= first
+        if first is None:
+            return False
+        cand = short[nth] if nth < len(short) else (short or idxs)[0]
+        # A statement written with no argument at all is never hidden (`X=Nope` then `PanelTemp`).
+        return cand >= first and bool(getattr(stmts[cand], "args", True))
 
     diags.items[:] = [d for d in diags.items if not hidden(d)]
 
