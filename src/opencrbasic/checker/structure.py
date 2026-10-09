@@ -851,6 +851,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         declared_kinds.get(a.name.upper()) not in ("VAR", "ALIAS"):
                     diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
 
+        if profile.known_first_word_pass1 and _block_keyword_call(stmt):
+            cond = re.match(r"\s*(?:ELSEIF|IF)\s(.*?)THEN", stmt.text, re.I | re.S) \
+                if isinstance(stmt, (S.If, S.ElseIf)) else None
+            diags.error(stmt.line, "Incomplete expression: "
+                        f"{cond.group(1) if cond else stmt.text}.", stmt.file, show_file=False)
         if isinstance(stmt, S.Instruction):
             # Oracle, all four loggers, 2026-10-02: pass 1, in line order. Every `ConstTable`
             # after the first (open or not) is `Only one ConstTable allowed.`; the counter of
@@ -1979,6 +1984,24 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
             if verdict and verdict[0] == "pass1":
                 diags.error(sub.line, _pass1_message(profile, sub, verdict[1]), sub.file,
                             show_file=False)
+
+
+_CALLED_BLOCK_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "SCAN", "SELECT", "SUB",
+                                    "SUBSCAN", "WHILE"})
+
+
+def _block_keyword_call(stmt: S.Stmt) -> bool:
+    """A block keyword used as a function in a value (`Y = Scan(1)`, `1 + SubScan(1)`, `If Scan(1)
+    Then`) is a pass-1 `Incomplete expression: <stmt>.` (oracle, CR6/CR1000X, 2026-10-10; the bare
+    keyword compiles, `If(...)` is the real function)."""
+    if isinstance(stmt, S.Assignment):
+        exprs = [stmt.value]
+    elif isinstance(stmt, (S.If, S.ElseIf)):
+        exprs = [stmt.cond]
+    else:
+        return False
+    return any(i.name.upper() in _CALLED_BLOCK_KEYWORDS
+               for e in exprs for i in expressions._index_nodes(e))
 
 
 def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:

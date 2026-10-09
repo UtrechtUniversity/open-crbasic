@@ -4222,3 +4222,15 @@ operator (`X + 1 = 2`) is pass-1 `Invalid assignment in expression: <stmt>.`, wh
 errors. Not modelled: `X(1) + 1 = 2` (real: invalid assignment; ours: generic), `(X = 1) foo`
 (real: `Incomplete expression`), `(X) = 1` (real: accepted), and the help-corpus sentence
 `(Double = Double + Double) Results in Double-Precison` (`DoublePrecArith_1.CR6`).
+
+### Block keywords used as functions (CR6/CR1000X)
+
+Oracle 2026-10-10 (`block_keyword_call.json`; CR300/CR350 give the same text plus their
+`Too many parameters:  Sec.` cascade and are not modelled): `Case Do For Function Scan Select Sub
+SubScan While` followed by `(` inside an assignment value or an `If`/`ElseIf` condition
+(`Y = Scan(1)`, `Y = 1 + SubScan(1)`, `Y = Scan (1)`, `If X = Scan(1) Then Y = 1`) is a pass-1
+`Incomplete expression: <stmt>.` (an `If` echoes its condition text up to `Then`, trailing blank
+included), so it hides every pass-2 finding; the bare keyword (`Y = Scan`) and the other block words
+(`NextScan(1)`, `Loop(1)`) keep their old results (`Invalid symbol in expression`). Not modelled:
+`Y = If(1)` (real `Incomplete expression`), the unclosed `Y = Scan(`. Implemented as
+`structure._block_keyword_call`, called per statement from `check_pass1`.
