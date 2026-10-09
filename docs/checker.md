@@ -3985,6 +3985,7 @@ corpus puts example prose into the program, so these shapes are measured by `dif
   `cr3xx._arity_walk` no longer report a table base. Prose after an alias of a cascade-dropped
   declaration (`Alias AC_Pwr(1) = Real_Power` with `AC_Pwr` dropped) sees the alias name as undefined.
 
+- **Array dimensions do not end the registration scan** (`r7_bad_as_array_dims`, CR300/CR350): the declaration is split on top-level commas only, so `Public Q(2,3), R, Flag A s Boolean` registers `Q`, `R` and `Flag`.
 - **Invalid `As` clause still registers names** (fixture `decl_bad_as_names.json`):
   `Public Q, Flag A s Boolean` registers `Q` and `Flag` (the variables up to and including the bad
   one; later ones are not registered), so later uses do not print `is not defined`
