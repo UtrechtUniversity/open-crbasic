@@ -847,6 +847,16 @@ class _Parser:
             tok = p.next()
             cond_kind = tok.upper
             cond = self._parse_expr(p, line, file)
+        elif not p.at_end():
+            # `Do X`/`Loop "a"`: the word is read as an instruction parameter (oracle, 2026-10-10)
+            t = p.peek(1) if p.is_op("(") and p.peek(1).kind == "IDENT" else p.peek()
+            if t.kind in ("IDENT", "STRING"):
+                raise _ParseError(f"Do/Loop parameter: Illegal parameter {t.text}, "
+                                  "expecting constant integer.")
+            if (t.kind == "NUMBER" and p.peek(1).kind == "EOF") or (
+                    t.kind == "OP" and t.text == "-" and p.peek(1).kind == "NUMBER"
+                    and p.peek(2).kind == "EOF"):
+                raise _ParseError("Do/Loop parameter: Invalid or missing expression.")
         return S.DoLoop(line, file, keyword=which, cond_kind=cond_kind, cond=cond)
 
     # ---- Case -----------------------------------------------------------

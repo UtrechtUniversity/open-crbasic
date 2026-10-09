@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-brace_statement-0",
+   "logger": "cr6",
+   "source": "{ 1 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1 }.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-1",
+   "logger": "cr6",
+   "source": "{ 1, 2\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1, 2.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-2",
+   "logger": "cr6",
+   "source": "{\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-3",
+   "logger": "cr6",
+   "source": "{ 1, 2,\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1, 2,.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-4",
+   "logger": "cr6",
+   "source": "=\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-5",
+   "logger": "cr6",
+   "source": "= 5\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: = 5.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-6",
+   "logger": "cr6",
+   "source": "Dim A(2)\n=\n{ 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }.\nline 8: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-7",
+   "logger": "cr6",
+   "source": "Dim A(2)\n= { 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = { 1, 2 }.\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-8",
+   "logger": "cr6",
+   "source": "Dim A(2)\n{ 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: { 1, 2 }.\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-9",
+   "logger": "cr6",
+   "source": "Dim A(2)\n=\n{ 1,\n2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,.\nline 4: Invalid, or out of place expression: 2 }.\nline 9: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-10",
+   "logger": "cr6",
+   "source": "Dim A(2)\n=\n5\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5.\nline 8: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-11",
+   "logger": "cr6",
+   "source": "Dim A(2)\n=\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-12",
+   "logger": "cr6",
+   "source": "{ 1 } + 2\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1 } + 2.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr6-brace_statement-13",
+   "logger": "cr6",
+   "source": "X = { 1 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-0",
+   "logger": "cr1000x",
+   "source": "{ 1 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1 }.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-1",
+   "logger": "cr1000x",
+   "source": "{ 1, 2\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1, 2.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-2",
+   "logger": "cr1000x",
+   "source": "{\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-3",
+   "logger": "cr1000x",
+   "source": "{ 1, 2,\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1, 2,.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-4",
+   "logger": "cr1000x",
+   "source": "=\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-5",
+   "logger": "cr1000x",
+   "source": "= 5\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: = 5.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-6",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n=\n{ 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }.\nline 8: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-7",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n= { 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = { 1, 2 }.\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-8",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n{ 1, 2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: { 1, 2 }.\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-9",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n=\n{ 1,\n2 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,.\nline 4: Invalid, or out of place expression: 2 }.\nline 9: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-10",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n=\n5\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5.\nline 8: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-11",
+   "logger": "cr1000x",
+   "source": "Dim A(2)\n=\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-12",
+   "logger": "cr1000x",
+   "source": "{ 1 } + 2\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { 1 } + 2.\nline 6: Variable Type Nope not supported"
+  },
+  {
+   "id": "cr1000x-brace_statement-13",
+   "logger": "cr1000x",
+   "source": "X = { 1 }\nPublic X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nPublic Bad1 As Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Variable Type Nope not supported"
+  }
+ ]
+}

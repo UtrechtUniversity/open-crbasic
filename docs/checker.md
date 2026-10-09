@@ -4170,3 +4170,15 @@ is hidden exactly when the statement is pass 1):
   `X here " + X`) is pass 1 because the scan fails at the adjacent name before the string; with an
   unknown first name (`foo here "`) it stays pass 2. Block keywords, functions and instructions as
   the first word are excluded (`If X = 1 Then X = "abc`).
+
+### Brace-led statements; `Do`/`Loop` with a parameter
+
+- CR6/CR1000X (oracle 2026-10-10, `brace_statement.json`): a statement starting with `{` (`{ 1 }`,
+  `{ 1, 2`, `{`, `{ 1 } + 2`) is a pass-1 `Invalid, or out of place expression: <stmt>.`; `X = { 1 }`
+  and a bare `=` are silent. After `Dim A(2)` / `=` / `{ 1, 2 }` only the `{` line is reported.
+- All four loggers (`do_loop_param.json`): `Do`/`Loop` followed by anything but `While`/`Until`
+  reads the word as an instruction parameter: an identifier or string (also behind one `(`), `Do X`,
+  `Do X = 1`, `Do "abc"`, `Do (X)`, `Loop X` -> `Illegal parameter <word>, expecting constant
+  integer.`; a lone number or negative number (`Do 5`, `Do -1`, `Loop 5`) -> `Invalid or missing
+  expression.`. Not modelled: `Do 5, 6` (real `Invalid, or out of place expression: , 6.`).
+  CR300/CR350 `Do While` / `Do While X X` echo differently (existing gap).
