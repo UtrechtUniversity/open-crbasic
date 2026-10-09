@@ -1677,8 +1677,18 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                           cond=True)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
-    except lexer.LexError:
-        return None
+    except lexer.LexError as e:
+        # an unterminated string: the left-to-right scan has already failed on what precedes it
+        # (`X here " + 1`, `string here "`; oracle, CR6/CR1000X, 2026-10-10)
+        if e.message != "unterminated string" or text[e.col:e.col + 1] != '"':
+            return None
+        head = [t for t in lexer.tokenize(text[:e.col], 0) if t.kind != "EOF"]
+        if len(head) < 2 or head[0].kind != "IDENT" or head[1].kind != "IDENT" \
+                or head[0].upper not in operands or head[1].upper in _BINARY_WORDS \
+                or head[0].upper in profile.functions or head[0].upper in profile.instructions \
+                or head[0].upper in ("IF", "ELSEIF", "WHILE", "UNTIL", "SELECT", "CASE", "FOR"):
+            return None
+        return ("pass1", "fallback")
     if not toks:
         return None
     functions = profile.functions
@@ -1708,6 +1718,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                     break
             if depth or _scan_expr(toks[i + 1:j], 0, operands, functions, assign=True,
                                    start_operand=False) is not None:
+                if u in profile.symbols and not depth:
+                    return ("pass1", "fallback")  # `C1 (COM1 TX) to C4`, a predefined symbol
                 return None
             i = j + 1
     elif first.kind in ("NUMBER", "STRING"):

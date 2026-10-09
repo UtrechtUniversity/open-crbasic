@@ -4156,3 +4156,17 @@ All four loggers: `Const A =` (also at end of line, value on the next line), `Co
 <value>.` (value from its first character, trailing blanks kept, comment stripped), not `Const with
 no assignment.`, which stays for a missing `=`. Not modelled: `Const A = *`. Fixture
 `init_pull.json` (CR6/CR1000X).
+
+### Pass-1 fallback: predefined symbol with a subscript, name pair before an unterminated string
+
+CR6/CR1000X, oracle 2026-10-10 (`pass1_symbol_paren_string.json`; a preceding pass-2 `X = Nope + 1`
+is hidden exactly when the statement is pass 1):
+
+- A statement starting with a **predefined symbol** (`C1`, `U1`) followed by `(`... whose contents
+  do not scan clean (`C1 (COM1 TX) to C4 (COM3 RX)`, `U1 (a b)`, `C1 (COM1 TX)`) is a pass-1
+  `Invalid, or out of place expression`. A declared variable in the same position (`X (COM1 TX) to
+  C4`) stays pass 2 (`_pass1_scan`).
+- A statement `<known operand> <name> ... "` ending in an unterminated string (`string here " + X`,
+  `X here " + X`) is pass 1 because the scan fails at the adjacent name before the string; with an
+  unknown first name (`foo here "`) it stays pass 2. Block keywords, functions and instructions as
+  the first word are excluded (`If X = 1 Then X = "abc`).

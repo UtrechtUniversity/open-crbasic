@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-pass1_symbol_paren_string-0",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (COM1 TX) to C4 (COM3 RX)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (COM1 TX) to C4 (COM3 RX)."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-1",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (x)."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-2",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 x\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 x."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-3",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-4",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    U1 (a b)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     U1 (a b)."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-5",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (COM1 TX)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (COM1 TX)."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-6",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X (COM1 TX) to C4\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     X (COM1 TX) to C4."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-7",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here \" + X."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-8",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-9",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here there\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here there."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-10",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    foo here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     foo here \" + X."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-11",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    foo here \"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     foo here \"."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-12",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     X here \" + X."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-13",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    If X = 1 Then X = \"abc\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: String without end quote\nline 8: Invalid, or out of place expression: X = \"abc:endif."
+  },
+  {
+   "id": "cr6-pass1_symbol_paren_string-14",
+   "logger": "cr6",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X Y \" abc\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     X Y \" abc."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-0",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (COM1 TX) to C4 (COM3 RX)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (COM1 TX) to C4 (COM3 RX)."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-1",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (x)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (x)."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-2",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 x\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 x."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-3",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-4",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    U1 (a b)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     U1 (a b)."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-5",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    C1 (COM1 TX)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     C1 (COM1 TX)."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-6",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X (COM1 TX) to C4\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     X (COM1 TX) to C4."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-7",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here \" + X."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-8",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-9",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    string here there\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     string here there."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-10",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    foo here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     foo here \" + X."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-11",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    foo here \"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     X = Nope + 1.\nline 8: Invalid, or out of place expression:     foo here \"."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-12",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X here \" + X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     X here \" + X."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-13",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    If X = 1 Then X = \"abc\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: String without end quote\nline 8: Invalid, or out of place expression: X = \"abc:endif."
+  },
+  {
+   "id": "cr1000x-pass1_symbol_paren_string-14",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable(T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n    X Y \" abc\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:     X Y \" abc."
+  }
+ ]
+}
