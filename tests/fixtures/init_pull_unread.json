@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-init_pull_unread-0",
+   "logger": "cr6",
+   "source": "#If False\nPublic A(2) =\n{1,2}\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-1",
+   "logger": "cr6",
+   "source": "#If False\nPublic A(2) = {\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-2",
+   "logger": "cr6",
+   "source": "Public A(2) = {1,\n2}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-3",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr6-init_pull_unread-4",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{5}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-5",
+   "logger": "cr6",
+   "source": "Public A(2) = {\n1,2}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-6",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{5,\n6}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: {5,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 6}."
+  },
+  {
+   "id": "cr6-init_pull_unread-7",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{ 5\n}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: }."
+  },
+  {
+   "id": "cr6-init_pull_unread-8",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr6-init_pull_unread-9",
+   "logger": "cr6",
+   "source": "Dim D As Long = {\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-10",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n{ ' c\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { .\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr6-init_pull_unread-11",
+   "logger": "cr6",
+   "source": "Public A(2) =\n{\n1,2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of A has bad syntax.\nline 2: Invalid, or out of place expression: 1,2}."
+  },
+  {
+   "id": "cr6-init_pull_unread-12",
+   "logger": "cr6",
+   "source": "BeginProg\nEndProg\nPublic A(2) =\n{1,2}\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-init_pull_unread-13",
+   "logger": "cr6",
+   "source": "BeginProg\nEndProg\nPublic A(2) = {\n#EndIf\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-0",
+   "logger": "cr1000x",
+   "source": "#If False\nPublic A(2) =\n{1,2}\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-1",
+   "logger": "cr1000x",
+   "source": "#If False\nPublic A(2) = {\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-2",
+   "logger": "cr1000x",
+   "source": "Public A(2) = {1,\n2}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-3",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-4",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{5}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-5",
+   "logger": "cr1000x",
+   "source": "Public A(2) = {\n1,2}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-6",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{5,\n6}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: {5,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 6}."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-7",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{ 5\n}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: }."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-8",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-9",
+   "logger": "cr1000x",
+   "source": "Dim D As Long = {\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-10",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n{ ' c\n5}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: { .\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 5}."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-11",
+   "logger": "cr1000x",
+   "source": "Public A(2) =\n{\n1,2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: {\n.\nline 1: Variable initialization of A has bad syntax.\nline 2: Invalid, or out of place expression: 1,2}."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-12",
+   "logger": "cr1000x",
+   "source": "BeginProg\nEndProg\nPublic A(2) =\n{1,2}\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-init_pull_unread-13",
+   "logger": "cr1000x",
+   "source": "BeginProg\nEndProg\nPublic A(2) = {\n#EndIf\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

@@ -4491,3 +4491,17 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   <value>` a top-level comma ends the statement and the rest is ignored (`Const A = 1, B = 2` compiles, `B`
   stays undefined). Not modelled: `Const = X` (`CONST needs assignment.`), `Const = "a"` / `-1` / `1.5`
   (`Invalid variable or constant name: ...`), `Const = X = 1`, `Const = X Y`.
+
+## Round 8 review 7: initializer pull is applied only where text is read (oracle, 2026-10-10; `tests/fixtures/init_pull_unread.json`)
+
+- CR6/CR1000X: `Public A(2) =` / `{1,2}` inside an inactive `#If` or after `EndProg` is accepted and
+  pulls nothing (so `Public A(2) = {` cannot swallow a following `#EndIf`). The loader still pulls
+  tentatively, but the `LogicalLine` keeps the lines as written (`unpulled`) and the bad-initializer
+  messages (`bad_init`); the parser reports them only for a line it reads, and otherwise restores
+  the written lines and the line numbering (`parser._Parser.run`).
+- A scalar `Dim D As Long =` whose pulled `{` line is unbalanced and ends in `,` or `{` is the same
+  bad-syntax pair as the array case (`{` -> `Invalid, or out of place expression`, `{5,` ->
+  `Incomplete expression`); the continuation lines are not folded in (`5}` is reported on its own).
+  A complete `{5}` or `{ 5` is accepted.
+- Not done: CR300/CR350 also pull (`Public A(2) = {1,` / `2}` compiles clean there), but `_pulls_init` is
+  still CR6/CR1000X only.

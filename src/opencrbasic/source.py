@@ -55,6 +55,9 @@ class LogicalLine:
     # truly runs to the physical end of line from one a trailing comment cut short (oracle-
     # confirmed, `docs/loggers.md` "Generic fallback echo on CR300/CR350").
     kind: str = "code"       # code | overflow | include_begin | include_end | include_warning | include_error
+    pulls: int = 0           # CR6/CR1000X initializer pull: physical lines folded into `text`
+    unpulled: "list[LogicalLine] | None" = None  # the lines as written, for when `text` is not read
+    bad_init: tuple[str, str] | None = None      # (message, variable) reported only when read
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -156,7 +159,8 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int):
         if len(names) == 1:
             first = re.sub(r"^\s*(?:Public|Dim)\b", "", first, count=1, flags=re.I)
         m = re.match(r"\s*(\w+)\s*(\(?)", first)
-        if body.startswith("{") and m and m.group(2):
+        unbal = body.count("{") > body.count("}") and _mask_strings(body).rstrip().endswith((",", "{"))
+        if body.startswith("{") and m and (m.group(2) or unbal):
             seg = _split_top_commas(body)
             echo = seg[0] + ("\n" if len(seg) == 1 and len(stripped) == len(raw) else "")
             kind = ("Invalid, or out of place expression" if seg[0].strip() == "{"
@@ -246,6 +250,7 @@ class _Loader:
                 i += 1
                 continue
             pulls = 0
+            orig = text
             if self.pull_init and _DECL_START_RE.match(text) and (
                     self.pull_limit is None or in_include or i < self.pull_limit):
                 start = i
@@ -254,14 +259,17 @@ class _Loader:
                     self.pull_log.append((start, last_line - shift))
                 if pulls:
                     had_comment = len(_strip_comment(physical[i])) != len(physical[i])
-                if bad:
-                    self.diags.error(last_line - shift, bad[0], filename)
-                    self.diags.error(last_line - shift,
-                                     f"Variable initialization of {bad[1]} has bad syntax.", filename)
-            out.extend(
-                self._expand_or_keep(text, last_line - shift, filename, section, in_include,
-                                     had_comment)
-            )
+            new = self._expand_or_keep(text, last_line - shift, filename, section, in_include,
+                                       had_comment)
+            if pulls and len(new) == 1 and new[0].kind == "code":
+                # the parser decides whether this text is read (not in an inactive #If, not after
+                # EndProg; oracle, 2026-10-10) and otherwise restores the lines as written
+                base = last_line - shift - pulls
+                new[0].pulls, new[0].bad_init = pulls, bad
+                new[0].unpulled = [LogicalLine(orig, base, filename, section)] + [
+                    LogicalLine(_strip_comment(physical[last_line - 1 + k]), base + k, filename,
+                                section) for k in range(1, pulls + 1)]
+            out.extend(new)
             shift += pulls
             i += 1
         return out

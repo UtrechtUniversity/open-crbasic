@@ -28,6 +28,7 @@ handling.
 
 from __future__ import annotations
 
+import collections
 import dataclasses
 
 import re
@@ -232,7 +233,16 @@ class _Parser:
             probe.run(lines, name)
             self.function_names = probe.function_names
         skipped_include_depth = 0
-        for ll in lines:
+        todo = collections.deque(lines)
+        unshift = 0  # physical lines of unread (inactive) initializer pulls given back
+        while todo:
+            ll = todo.popleft()
+            if unshift:
+                ll = dataclasses.replace(ll, line=ll.line + unshift)
+            if ll.unpulled is not None and not skipped_include_depth and not self._active():
+                todo.extendleft(reversed(ll.unpulled))
+                unshift += ll.pulls
+                continue
             if skipped_include_depth:
                 if ll.kind == "include_begin":
                     skipped_include_depth += 1
@@ -266,6 +276,10 @@ class _Parser:
             self.env.section = ll.section
             if self._collect and (m := _FUNCTION_DEF_RE.match(ll.text)):
                 self.function_names.add(m.group(1).upper())
+            if ll.bad_init:
+                self.diags.error(ll.line, ll.bad_init[0], ll.file)
+                self.diags.error(ll.line, f"Variable initialization of {ll.bad_init[1]} has bad syntax.",
+                                 ll.file)
             self._parse_line(ll)
             if self._done:
                 # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
