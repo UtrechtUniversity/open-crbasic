@@ -1027,7 +1027,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                             "number.", stmt.file)
             elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
                 _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
-                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"))
+                                   seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"), profile)
         if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
             diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
         if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
@@ -3199,7 +3199,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
                        dim0_sizes: dict[str, int], all_dims: dict[str, tuple[int, ...]],
                        seen_alias_names: set[str],
                        seen_alias_sources: dict[str, set[tuple]],
-                       name_collision: str | None = None) -> None:
+                       name_collision: str | None = None, profile=None) -> None:
     """Four `Alias <name>(<index>) = <target>` checks, all pass 1/unconditional (oracle-confirmed
     each accumulates with an unrelated, later `Variable not named.` in the same file, and, being
     pass 1, all suppress every pass-2 check the same way any other pass-1 error already does -- no
@@ -3294,6 +3294,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         return
 
     index_key: tuple | None = ()  # scalar `name` (bare, no parens): one implicit index position
+    base = total = None
     if isinstance(target, S.Index):
         index_key = ()
         for a in target.args:
@@ -3319,10 +3320,28 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
             # 2026-10-03: `Alias W(5)` on `W(4,5)` fails, `Alias W(2,4)` on `W(2,3,4)` fails,
             # `Alias W(1,4)` compiles).
             padded = (*index_key, *([1] * (len(dims) - len(index_key))))
-            if not (1 <= _alias_flat_offset(padded, dims) <= total):
+            base = _alias_flat_offset(padded, dims)
+            if not (1 <= base <= total):
                 diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+    elif index_key == () and dim0_sizes.get(name_upper) is not None and all_dims.get(name_upper):
+        dims = tuple(max(d, 1) for d in all_dims[name_upper])
+        base, total = 1, 1
+        for d in dims:
+            total *= d
 
-    if name_collision:
+    first = stmt.args[1] if len(stmt.args) > 1 else None
+    if total is not None and isinstance(first, S.Index) and len(first.args) != 1 \
+            and not (getattr(stmt, "alias_item_junk", None) or [True])[0]:
+        # `Alias Foo = Zed()` / `Zed(2,3)`: as for an empty-parenthesis target (oracle, round 9)
+        diags.error(stmt.line, "Need closing )", stmt.file)
+        diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+        return
+    sizes = _alias_name_sizes(stmt, env) if total is not None else None
+    cur = base
+    if sizes is not None and not _alias_dim_ok(stmt, diags, cur, sizes[0], total, False):
+        return
+    predefined = bool(name_collision) and name_collision.endswith("predefined CONST.")
+    if predefined:  # before `Duplicate Alias`, `already declared` after it (oracle, round 9)
         diags.error(stmt.line, name_collision, stmt.file)
     dedup_key = index_key
     dims = all_dims.get(name_upper)
@@ -3340,17 +3359,94 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
             diags.error(stmt.line, "Duplicate Alias", stmt.file)
         else:
             bucket.add(dedup_key)
+    if name_collision and not predefined:
+        diags.error(stmt.line, name_collision, stmt.file)
 
-    for rhs in stmt.args[1:]:
-        if not isinstance(rhs, S.Name):
+    lead = _alias_name_lead(stmt)
+    for k, rhs in enumerate(stmt.args[1:]):
+        if sizes is not None and k:
+            cur += sizes[k - 1]
+            if not _alias_dim_ok(stmt, diags, cur, sizes[k], total):
+                return
+            if isinstance(rhs, S.Name) and profile and symbols.is_reserved_predefined_name(rhs.name, profile):
+                diags.error(stmt.line, f"{rhs.name} is a predefined CONST.", stmt.file)
+        if not (isinstance(rhs, S.Name) or (sizes is not None and isinstance(rhs, S.Index))):
             continue
         rhs_upper = rhs.name.upper()
         if name_collision and rhs is stmt.args[1] and not name_collision.endswith("predefined CONST."):
             continue  # a colliding first name is never registered as an alias
         if rhs_upper in seen_alias_names:
-            diags.error(stmt.line, f"Duplicate Alias Name: {rhs.name}.", stmt.file)
+            # (the echo is the written name with its dimension and, after a comma, its blank)
+            written = lead[k] if k < len(lead) else ("", rhs.name)
+            diags.error(stmt.line, f"Duplicate Alias Name: {written[0]}{written[1]}.", stmt.file)
         else:
             seen_alias_names.add(rhs_upper)
+    if sizes is not None and (stmt.text or "").rstrip().endswith(",") and \
+            not 1 <= cur + sizes[-1] <= total:
+        # a trailing comma is one more, empty, name
+        diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+
+
+def _alias_name_sizes(stmt: S.Instruction, env: consteval.Env) -> list[int] | None:
+    """Element count of each name of `Alias Var = n1, n2(3), ...` (a bare name is 1, `n(k)` is
+    `int(k)`), or None when a name is not a bare/singly-dimensioned constant or has trailing junk
+    (not probed; the dimension checks are then skipped)."""
+    junk = getattr(stmt, "alias_item_junk", None)
+    names = stmt.args[1:]
+    if not names or junk is None or any(junk) or len(junk) != len(names):
+        return None
+    out = []
+    for a in names:
+        if isinstance(a, S.Name):
+            out.append(1)
+        elif isinstance(a, S.Index) and len(a.args) == 1 and a.args[0] is not None:
+            try:
+                v = consteval.value_of(a.args[0], env)
+            except consteval.NotConstant:
+                return None
+            if not isinstance(v, (int, float)) or isinstance(v, bool):
+                return None
+            out.append(int(v))
+        else:
+            return None
+    return out
+
+
+def _alias_dim_ok(stmt: S.Instruction, diags: Diagnostics, cur: int, n: int, total: int,
+                  check_start: bool = True) -> bool:
+    """One name of an `Alias Var = n1, n2(3), ...` list starting at element `cur` of a variable of
+    `total` elements (oracle, round 9, docs/checker.md "Alias name lists"): `Illegally
+    dimensioned aliased name` when `cur` is outside 1..total (the first name's own is reported by
+    the caller, `check_start` False), then `Alias is illegally dimensioned.` when `n` < 1 or, for
+    `cur` >= 0, `n` > total + cur - 1; False after that second message (it ends the statement)."""
+    if check_start and not 1 <= cur <= total:
+        diags.error(stmt.line, "Illegally dimensioned aliased name", stmt.file)
+    if n < 1 or (cur >= 1 and n > total + cur - 1):
+        diags.error(stmt.line, "Alias is illegally dimensioned.", stmt.file)
+        return False
+    return True
+
+
+def _alias_name_lead(stmt: S.Instruction) -> list[tuple[str, str]]:
+    """`(blanks after the comma, written name)` for each name of the list (`Duplicate Alias Name:
+    <blanks><name>.` echoes both, `Zed(2)` with its dimension); empty list when it cannot be split."""
+    text = stmt.text or ""
+    eq = text.find("=")
+    if eq < 0:
+        return []
+    parts, depth, cur = [], 0, ""
+    for ch in text[eq + 1:]:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    parts.append(cur)
+    return [("" if k == 0 else p[:len(p) - len(p.lstrip())], p.strip()) for k, p in enumerate(parts)]
 
 
 def _after_keyword(stmt: S.Unparsed) -> str:

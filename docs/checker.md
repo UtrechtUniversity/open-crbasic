@@ -4755,3 +4755,25 @@ Fixture `portget_order_wrap.json`.
   outside Long is shown as `-2147483648` (`3000000000`). Previously false rejects. Probed for
   `PortGet` 95..109, 196..221, 396..415, 596..615, 1196..1215 and singles; `PortSet`/`CS616` at
   400/412/413/1000. `SPIOpen`/`TimerInput`/I2C/SDI-12 port kinds are not touched. CR1000X unchanged.
+
+### Alias name lists (all four loggers, round 9, 2026-10-10)
+
+Fixture `alias_name_lists.json` (the cases ours does not match are dropped from it, see below).
+`Alias Var = n1, n2(3), ...` aliases consecutive elements of `Var`: `N` is its element count and
+`cur` the element a name starts at (`Var`'s own flat index for the first, then the previous names'
+sizes added; a bare name is 1, `n(k)` is `int(k)`). Per name, in order: `Illegally dimensioned
+aliased name` when `cur` is outside 1..N (the first name's was already reported; several names
+each report), then `Alias is illegally dimensioned.` when `k < 1` or, for `cur >= 1`, `k > N + cur
+- 1` (so `Y(3)`: `Y = Zed(4)` fails, `Y = Zed, Q(4)` compiles, `Q(5)` fails); that message ends
+the statement (the earlier names stay registered, a failing first name registers nothing, so no
+`Duplicate Alias` follows). `Alias Foo = Zed,` (a trailing comma) is one more empty name. Later
+names also report `X is a predefined CONST.` in name order (`Alias Y = Zed, Sec`); an existing
+variable as a later name compiles. `Duplicate Alias Name:` echoes the written name with its
+dimension and the blanks after the comma (`Duplicate Alias Name:  Zed.` for `Zed, Zed`), and a
+dimensioned name registers its base name. Order of the first name's findings: its start/dimension
+messages, `X is a predefined CONST.`, `Duplicate Alias`, `X already declared as a variable.`,
+`Duplicate Alias Name`. `Alias is illegally dimensioned.` now starts the CR300/CR350 `Too many
+parameters` cascade (`cr3xx._DECLARATION_TRIGGER_PREFIXES`). `structure._check_alias_dims`,
+`_alias_dim_ok`. Not modelled (items with text after the name, `Zed(2) = 5`, `Zed(2)(3)`, `Zed.W(2)`,
+`Zed(Q)`, `Alias Foo = 2Zed`) and the pre-existing CR300/CR350 difference that real prints no
+`Too many parameters` after `already declared as a variable.`.

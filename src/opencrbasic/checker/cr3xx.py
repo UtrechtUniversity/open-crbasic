@@ -200,7 +200,7 @@ _DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared
                          "Missing variable name.", "; cannot be numeric.",
                          "Too few parameters in instruction.", "Const with no assignment.",
                          " unknown Const type")
-_DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Invalid Variable declaration",
+_DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "Need closing )", "Illegal END or EXIT ", "Illegally dimensioned aliased name", "Alias is illegally dimensioned.", "Invalid Variable declaration",
                                  "EndSelect w/o Select", "EndStructure without Structure", "String without end quote",
                                  "Call argument required", "No Matching, or out of place )",
                                  "Expression expects ", "Incomplete expression:", "ESS variable ",

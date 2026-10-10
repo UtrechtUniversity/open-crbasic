@@ -1309,11 +1309,14 @@ class _Parser:
             # `= A1 B1` only `A1`) -- a fuzz-found false reject.
             rhs = []
             junk = False
+            item_junk: list[bool] = []
             while not p.at_end() and p.peek().kind == "IDENT":
                 rhs.append(self._parse_atom(p, line, file))
+                item_junk.append(False)
                 depth = 0
                 while not p.at_end() and not (depth == 0 and p.is_op(",")):
                     junk = junk or len(rhs) == 1
+                    item_junk[-1] = True
                     tok = p.next()
                     if tok.kind == "OP" and tok.text == "(":
                         depth += 1
@@ -1326,6 +1329,7 @@ class _Parser:
                 p.next()
             inst = S.Instruction(line, file, keyword="ALIAS", args=[lhs, *rhs])
             inst.alias_junk = junk  # something follows the first name (`= Sp 3`, `= Sp As Long`)
+            inst.alias_item_junk = item_junk  # per name; the dimension checks skip such items
             return inst
         rhs = [self._parse_expr(p, line, file)]
         while p.is_op(","):
