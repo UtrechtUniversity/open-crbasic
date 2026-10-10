@@ -2185,9 +2185,13 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
         if bad and profile.name in expressions._WHOLE_EXPR_ECHO_LOGGERS:
             diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
         else:
-            for name in dict.fromkeys(bad):
+            names, dims = expressions._names_and_dims(known, None, stmt, (), stmt.tail_expr)
+            for name in dict.fromkeys(names):
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                             stmt.file)
+            if dims:
+                diags.error(stmt.line, expressions.dimensions_message(
+                    stmt.text, profile, True, stmt.at_eol), stmt.file)
         return
     m = re.match(r"\s*(?:call\s+)?" + re.escape(stmt.name) + r"\s*", stmt.text, re.I)
     if not m or not stmt.text[m.end():].startswith("("):

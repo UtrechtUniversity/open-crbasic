@@ -4299,3 +4299,15 @@ Oracle 2026-10-10, all four loggers (`func_word_operator_tail.json`): `Fn(1) MOD
 `Fn(1) Y` stay `Incomplete expression`; a dangling `Fn(1) MOD` is `Invalid, or out of place
 expression`. The parser sends a leading word operator to the expression path, not the juxtaposed
 tail (`_WORD_BINARY_OPS`). `Fn(1) AND X Y` (real `Incomplete expression`) is still not modelled.
+
+### `Function` call statement continued as an expression is checked like an assignment value
+
+Oracle 2026-10-10, all four loggers (`func_expr_tail_checks.json`): `Fn(1)+Sin` (`Expression
+expects (`), `Fn(1)+Sin(1,2)` and `Fn(1)+Fn(1,2)` (`No Matching, or out of place ) in expression`),
+`Fn(1)+Sin()` and `Fn(1)+Fn()` get the same message as `X = <same expression>`. CR300/CR350 also
+print `Dimensions not declared` for `Fn(1)+X(1,2)`, `Fn(1)+X(1)` (scalar `X`) and an undefined
+indexed name (`Fn(1)+Zork(1)`, after `Zork is not defined.`). `Call.tail_expr` is therefore used
+as the checked expression in the bare-function/arity pass, the user-Function count pass,
+`_stmt_exprs` (dims simulation), `_report_call_arg_names` and the over-index loop. Not modelled:
+`Fn(X(1,2))` / `Fn(Zork(1))` argument forms on CR300/CR350 (real adds `Dimensions not declared` with the
+whole-statement echo).

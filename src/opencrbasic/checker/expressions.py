@@ -461,6 +461,8 @@ def _stmt_exprs(stmt: S.Stmt) -> list:
         return [stmt.cond]
     if isinstance(stmt, S.For):
         return [stmt.var, stmt.start, stmt.end, stmt.step]
+    if isinstance(stmt, S.Call) and stmt.tail_expr is not None:
+        return [stmt.tail_expr]
     if isinstance(stmt, (S.Instruction, S.Call)):
         return list(stmt.args)
     return []
@@ -1233,6 +1235,13 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
     struct_vars = _struct_var_names(program)
     for stmt in program.statements:
+        if (isinstance(stmt, S.Call) and stmt.tail_expr is not None
+                and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS
+                and not _undefined_names(stmt.tail_expr, known)
+                and _over_indexed(stmt.tail_expr, dim_counts)):
+            # CR300/CR350: `Fn(1)+X(1,2)` is checked like `Y = Fn(1)+X(1,2)` (oracle, 2026-10-10)
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
+                        stmt.file)
         if not isinstance(stmt, S.Assignment):
             continue
         if _undefined_names(stmt.target, known):
@@ -1745,7 +1754,10 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     and _is_bare_reference_problem(stmt.name, profile, declared_variables)):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
-            if any(_find_bare_function_ref(a, profile, declared_variables) for a in stmt.args):
+            # a `Function` call statement continued as an expression (`Fn(1)+Sin`) is checked as
+            # the whole expression, like `X = Fn(1)+Sin` (oracle, 2026-10-10)
+            call_exprs = [stmt.tail_expr] if stmt.tail_expr is not None else stmt.args
+            if any(_find_bare_function_ref(a, profile, declared_variables) for a in call_exprs):
                 diags.error(stmt.line, _bare_function_message(stmt.text, profile, whole_statement=True, at_eol=stmt.at_eol), stmt.file)
                 continue
             bad = next((i for i, a in enumerate(stmt.args) if _multi_indexed_struct(a, struct_vars)),
@@ -1758,7 +1770,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue
             problem = _call_arity_problem(stmt.name, stmt.args, profile)
             if not problem:
-                for a in stmt.args:
+                for a in call_exprs:
                     problem = _find_arity_problem(a, profile)
                     if problem:
                         break
@@ -1931,6 +1943,9 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
         elif isinstance(stmt, S.Call) and not stmt.explicit:
             # `F1(1,2)` as a statement echoes the whole line like `X = F1(1,2)` (oracle,
             # 2026-10-02, all four loggers, `docs/checker.md` "Function argument counts").
+            if stmt.tail_expr is not None and (kind := problem(stmt.tail_expr)):
+                report(stmt, kind, stmt.text, True)
+                return
             fn = functions.get(stmt.name.upper())
             bare = not stmt.args and not (stmt.text or "").lstrip()[len(stmt.name):].lstrip().startswith("(")
             if fn is not None and not bare:  # a bare `Fn` (no parentheses) is accepted (oracle)
