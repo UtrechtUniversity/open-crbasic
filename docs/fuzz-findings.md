@@ -412,3 +412,23 @@ range` / `Input channel ... out of range` on `CDM_*` instructions, `SampleFieldC
 program.`, `Duplicate Alias` with a negative index, `Destination variable cannot be indexed`
 (CR350), `Illegal Matrix` (CR350), storage-space errors (CR350), plus the many help-corpus
 message-order families owned by other workers.
+
+## Round 9: fresh seeds 301-308 (2026-10-10)
+
+New seeds (previous: 0, 1, 42-54, 100, 201-208), 250 mutants each, `--workers 2`. Counts are the
+tool's classify-phase tallies; `oracle_error` mutants (real-compiler page fault or timeout, no
+verdict) are excluded from every class. 125 reproducers saved (hash-named, not edited afterwards).
+
+| Seed | Logger | exact | false_reject | false_accept | message_diff | mode_diff | oracle_error |
+|---|---|---|---|---|---|---|---|
+| 301 | cr6 | 234 | 1 | 4 | 11 | 0 | 2 |
+| 302 | cr6 | 240 | 0 | 0 | 10 | 0 | 1 |
+| 303 | cr1000x | 231 | 0 | 6 | 12 | 0 | 3 |
+| 304 | cr1000x | 246 | 0 | 0 | 3 | 0 | 2 |
+| 305 | cr300 | 238 | 0 | 3 | 8 | 1 | 3 |
+| 306 | cr300 | 237 | 0 | 1 | 12 | 0 | 2 |
+| 307 | cr350 | 240 | 0 | 0 | 10 | 0 | 2 |
+| 308 | cr350 | 239 | 0 | 2 | 9 | 0 | 4 |
+
+No crash, hang, or implementation_exception in any run. Fix status is recorded in the sections
+that follow as each family is closed.
