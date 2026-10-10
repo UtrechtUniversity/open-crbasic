@@ -1721,6 +1721,16 @@ _COND_HEAD = re.compile(r"\s*(?:IF|ELSEIF|WHILE|DO\s+WHILE|DO\s+UNTIL|LOOP\s+WHI
 _COND_THEN = re.compile(r"(.*?)\bTHEN\s*$", re.I | re.S)
 
 
+_INLINE_IF = re.compile(r"\s*(?:IF|ELSEIF)\b(.*?)\bTHEN\b\s*\S", re.I | re.S)
+
+
+def inline_if_condition(text: str) -> str | None:
+    """The condition of a one-line `If c Then stmt` (what `condition_part` leaves out: text follows
+    the `Then`), left-trimmed; `None` for any other statement."""
+    m = _INLINE_IF.match(text)
+    return m.group(1).lstrip() if m else None
+
+
 def condition_part(text: str) -> str | None:
     """The condition text of an `If`/`ElseIf`/`While`/`Do While|Until`/`Loop While|Until` statement,
     without its keyword and a closing `Then` (what the pass-1 expression messages echo, CR6/CR1000X

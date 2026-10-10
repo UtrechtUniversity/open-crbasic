@@ -382,7 +382,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                                   or not d.message.startswith("Incomplete expression:")]
                 continue
             m = (re.search(r"(?i)\b(?:While|Until)\b\s*(.*)$", stmt.text or "")
-                 if isinstance(stmt, S.DoLoop) and stmt.cond is not None else None)
+                 if isinstance(stmt, S.DoLoop) and stmt.cond is not None else
+                 re.match(r"(?i)\s*(?:do|loop)\s+(?:while|until)\b\s*(.*\S.*)$", stmt.text or "")
+                 if isinstance(stmt, S.Unparsed) else None)  # (`Do Until X >`: unparsable too)
             if m:
                 # a `Do`/`Loop` condition is rewritten like a second argument (oracle, CR300,
                 # 2026-10-04: `Loop Until X=-1` -> `Too many parameters:  X.`)
@@ -1262,7 +1264,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
             if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
-                    and not (structure.condition_part(text) or "").strip():
+                    and not (structure.condition_part(text) or "").strip() \
+                    and not structure.inline_if_condition(text):
                 # `Battery sensor using the`: the instruction reads the prose as its argument
                 # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
                 # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
@@ -1287,6 +1290,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions))
             cond_text = structure.condition_part(text)
             cond_text = cond_text if cond_text and cond_text.strip() else None
+            if cond_text is None and re.match(r"(?i)\s*if\b", text):
+                cond_text = structure.inline_if_condition(text) or None  # (a one-line `If`'s condition)
             words = _leading_unknown_words(text if cond_text is None else cond_text, here, callables)
             if needs_paren:
                 # the operands after a parenthesis-less function are named (oracle, CR300,
@@ -1319,7 +1324,16 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 # or out of place )`), whatever names precede them
                 cond = structure.condition_part(stmt.text)
                 cond = cond if cond and cond.strip() else None
-                verdict = (structure._pass1_scan(stmt.text, structure._Everything(), profile)
+                scan_text = stmt.text
+                inline = structure.inline_if_condition(stmt.text) if cond is None else None
+                if inline:
+                    # `If X Y Then Y = 1`: an unreadable condition is reported alone, as for a block
+                    # `If` (oracle, CR300/CR350 and CR6, 2026-10-10)
+                    scan_text = "If " + inline + "Then"
+                    first = structure._pass1_scan(scan_text, structure._Everything(), profile)
+                    if first and first[0] == "pass1" and first[1] in ("incomplete", "no_matching", "fallback"):
+                        cond = inline
+                verdict = (structure._pass1_scan(scan_text, structure._Everything(), profile)
                            if cond is not None
                            or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
                            else None)  # (prose stays generic)
@@ -1564,3 +1578,26 @@ def order_block_keyword_calls(program: S.Program, profile, diags: Diagnostics) -
         rest = [d for d in keep if (d.line, d.file) != key]
         rest[first:first] = group  # (`first` counts only earlier other-line items: all kept)
         diags.items[:] = rest
+
+
+def fix_then_operand(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: an `If` whose condition runs into its `Then` (`If X = Then`, `If X + Then`) is
+    the condition's own syntax error, not `Then is not defined.` (oracle, 2026-10-10; the same
+    message CR6/CR1000X give from `structure._check_if_pass1`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not (isinstance(stmt, (S.If, S.ElseIf)) and structure._mentions_then(stmt.cond)):
+            continue
+        verdict = structure._pass1_scan(stmt.text, structure._Everything(), profile)
+        if not (verdict and verdict[0] == "pass1"):
+            continue
+        key = (stmt.line, stmt.file)
+        hits = [i for i, d in enumerate(diags.items)
+                if (d.line, d.file) == key and d.message == profile.unresolved_symbol_message.format(name="Then")]
+        if not hits:
+            continue
+        message = structure._pass1_message(profile, dataclasses.replace(stmt, at_eol=False), verdict[1])
+        diags.items[hits[0]] = dataclasses.replace(diags.items[hits[0]], message=message)
+        for i in reversed(hits[1:]):
+            del diags.items[i]

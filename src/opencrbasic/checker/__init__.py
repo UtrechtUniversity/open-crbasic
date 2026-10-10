@@ -580,6 +580,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.check_too_many_cascade, _with_inline(program), profile, diags)
     _run_pass(cr3xx.drop_compound_target_repeat, program, profile, diags)
     _run_pass(cr3xx.order_block_keyword_calls, program, profile, diags)
+    _run_pass(cr3xx.fix_then_operand, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)

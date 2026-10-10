@@ -4669,3 +4669,20 @@ declared array and `Fn(Zork)` are unchanged. CR6/CR1000X are unaffected (`Invali
 <statement>.` already matched). Not modelled: an argument-count mismatch together with a subscripted undefined name
 (`Fn(Zork(1), 2)` prints no arity line, `Fn(1, Zork(1))` only the arity line) and `Call Fn(...)`.
 `structure._report_call_arg_names`, `expressions.check`.
+
+## Round 9, CR300/CR350: unreadable `Do`/`Loop`/`If` conditions (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_do_if_cond.json`)
+
+- Inside the cascade (an undefined-name error earlier in the file), `Do Until X >`, `Do While X >=`,
+  `Loop Until X >`, `Do Until X <> `, `Do Until (X >` are `Too many parameters:  X.` like a parsable condition
+  (`Loop Until X=-1`); before, the unparsable ones kept the generic out-of-place line. `cr3xx.check_too_many_cascade`.
+- A one-line `If c Then stmt` with an unreadable condition reports the condition alone, as a block `If` does
+  (`If X Y Then Y = 1` -> `Incomplete expression: X Y .`; likewise `X = `, `X + `, `X, Y`, `X ) `), with the
+  undefined names of the condition before it (`If Nope Y Then`, `If X Nope Then`) and the one-line body still
+  checked after it (`Y = Nope` / `Nope = 1` / `Y = Nope(1)` / `Y = 1 Else Y = Nope`: `Nope is not defined.` etc.).
+  The body is parsed as if the condition were fine (`parser._inline_body_after_bad_condition`); the condition
+  text is `structure.inline_if_condition`. CR6/CR1000X print the same condition-only message but their
+  one-line forms are still wrong (not touched).
+- A block `If X = Then` / `If X + Then` (the `Then` read as an operand) is `Invalid, or out of place expression:
+  X = .` instead of `Then is not defined.` (`cr3xx.fix_then_operand`).
+
+Not modelled: `ElseIf X Y Then Y = 1` (one-line `ElseIf`: an extra `ElseIf is not defined.`).

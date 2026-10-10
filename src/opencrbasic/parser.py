@@ -387,11 +387,28 @@ class _Parser:
             # CR300, 2026-10-01: `If X Then X = 1 : Foo(1)`).
             in_inline_if = in_inline_if or (isinstance(stmt, S.If) and stmt.inline is not None)
             self.program.statements.append(stmt)
+            if isinstance(stmt, S.Unparsed) and self.profile.single_pass:
+                self.program.statements.extend(self._inline_body_after_bad_condition(stmt, seg_text_raw))
             # A `Const` just parsed is folded into `self.env` inside `_parse_const` itself, so
             # later statements/#If on the same or a later line see it.
             if isinstance(stmt, S.Instruction) and stmt.keyword == "ENDPROG":
                 self._done = True
                 return
+
+    def _inline_body_after_bad_condition(self, stmt: S.Unparsed, seg_text_raw: str) -> list[S.Stmt]:
+        """CR300/CR350: `If X Y Then Y = Nope` reports the unreadable condition and still checks the
+        one-line body (oracle, 2026-10-10: `Nope is not defined.` follows). Returns the body's
+        statements, parsed as if the condition were fine."""
+        m = re.match(r"(?is)\s*If\b.*?\bThen\b(\s*\S.*)$", seg_text_raw)
+        if not m or not stmt.reason.startswith("expected THEN"):
+            return []
+        probe = self._parse_text_segment("If 1 Then" + m.group(1), stmt.line, stmt.file)
+        if not isinstance(probe, S.If) or not probe.inline:
+            return []
+        body = list(probe.inline) + list(probe.inline_else or [])
+        for st in body:
+            st.at_eol = False
+        return body
 
     def _parse_text_segment(self, seg_text_raw: str, line: int, file: str) -> S.Stmt:
         try:

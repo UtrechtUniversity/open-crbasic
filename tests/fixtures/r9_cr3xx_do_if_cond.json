@@ -1,0 +1,729 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-0",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-1",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X > \nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-2",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo While X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-3",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X > 1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-4",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >=\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-5",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop Until X >\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-6",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop While X >\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-7",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop Until X > 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-8",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >\nLoop\nDo Until Y >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X.\nline 7: Too many parameters:  Y."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-9",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X <> \nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-10",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-11",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until (X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-12",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-13",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-14",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-15",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Z Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y Z ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-16",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X, Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X, Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-17",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nElseIf X Y Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-18",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Then Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-19",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X = Y Z Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Z is not defined.\nline 5: Incomplete expression: X = Y Z ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-20",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf Nope Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Nope is not defined.\nline 5: Incomplete expression: Nope Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-21",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Nope Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Nope is not defined.\nline 5: Incomplete expression: X Nope ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-22",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-23",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then\nY = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-24",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-25",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then\nY = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-26",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Y = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-27",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-28",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-29",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X + Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X + ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-30",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X + Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X + ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-31",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Z Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y Z ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-32",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X, Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X, Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-33",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Incomplete expression: Nope Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-34",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Nope Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Incomplete expression: X Nope ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-35",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X ) Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X ) ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-36",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X ) Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X ) ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-37",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-38",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then 'c\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-39",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-40",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-41",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope = Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-42",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-43",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope + Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-44",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Dimensions not declared: Y = Nope(1)."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-45",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope(1) = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope(1) = 2."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-46",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Sin(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-47",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 : Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-48",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Nope = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-49",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope."
+  },
+  {
+   "id": "cr300-r9_cr3xx_do_if_cond-50",
+   "logger": "cr300",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then Nope = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-0",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-1",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X > \nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-2",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo While X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-3",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X > 1\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-4",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >=\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-5",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop Until X >\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-6",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop While X >\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-7",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo\nLoop Until X > 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 6: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-8",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X >\nLoop\nDo Until Y >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X.\nline 7: Too many parameters:  Y."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-9",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until X <> \nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-10",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-11",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nDo Until (X >\nLoop\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-12",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-13",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-14",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-15",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Y Z Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y Z ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-16",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X, Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X, Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-17",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nElseIf X Y Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-18",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Then Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-19",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X = Y Z Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Z is not defined.\nline 5: Incomplete expression: X = Y Z ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-20",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf Nope Y Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Nope is not defined.\nline 5: Incomplete expression: Nope Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-21",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nY = Nope\nIf X Nope Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Nope is not defined.\nline 5: Incomplete expression: X Nope ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-22",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-23",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then\nY = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-24",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-25",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then\nY = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-26",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Y = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-27",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-28",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf (X Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (X ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-29",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X + Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X + ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-30",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X + Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X + ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-31",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Z Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y Z ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-32",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X, Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X, Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-33",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf Nope Y Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Incomplete expression: Nope Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-34",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Nope Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Incomplete expression: X Nope ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-35",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X ) Then Y = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X ) ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-36",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X ) Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X ) ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-37",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 'c\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-38",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then 'c\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-39",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-40",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-41",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope = Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-42",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-43",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope + Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Nope2 is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-44",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Nope(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Dimensions not declared: Y = Nope(1)."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-45",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope(1) = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope(1) = 2."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-46",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = Sin(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-47",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 : Y = Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-48",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Y = 1 Else Nope = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-49",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X Y Then Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y .\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope."
+  },
+  {
+   "id": "cr350-r9_cr3xx_do_if_cond-50",
+   "logger": "cr350",
+   "source": "Public X,Y\nBeginProg\nScan(1,Sec,0,0)\nIf X = Then Nope = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X = .\nline 4: Nope is not defined."
+  }
+ ]
+}
