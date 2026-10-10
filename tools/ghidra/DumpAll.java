@@ -8,7 +8,7 @@ public class DumpAll extends GhidraScript {
     public void run() throws Exception {
         DecompInterface d = new DecompInterface();
         d.openProgram(currentProgram);
-        PrintWriter pw = new PrintWriter(new FileWriter("/opt/re/out/decomp.c"));
+        PrintWriter pw = new PrintWriter(new FileWriter(getScriptArgs().length > 0 ? getScriptArgs()[0] : "/opt/re/out/decomp.c"));
         FunctionIterator it = currentProgram.getFunctionManager().getFunctions(true);
         int n = 0;
         while (it.hasNext()) {

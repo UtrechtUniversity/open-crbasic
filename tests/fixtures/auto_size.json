@@ -1,0 +1,148 @@
+{
+ "observation_date": "2026-10-10",
+ "compiler": {
+  "exe": "CR6Comp.exe",
+  "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+ },
+ "cases": [
+  {
+   "id": "lapses10_fp2",
+   "source": "Public V(1) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(1,V(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 2059767
+   }
+  },
+  {
+   "id": "lapses20_float32_rounding",
+   "source": "Public V(1) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,20)\n  Sample(1,V(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 2059688
+   }
+  },
+  {
+   "id": "lapses100_float32_rounding",
+   "source": "Public V(1) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,100)\n  Sample(1,V(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 2059058
+   }
+  },
+  {
+   "id": "lapses0_like_event",
+   "source": "Public V(3) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,0)\n  Sample(3,V(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 190368
+   }
+  },
+  {
+   "id": "lapses255_b200",
+   "source": "Public V(100) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,255)\n  Sample(100,V(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 20585
+   }
+  },
+  {
+   "id": "one_record_fits_no_lapses_term",
+   "source": "Public V(130) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,10)\n  Sample(130,V(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 7812
+   }
+  },
+  {
+   "id": "cardout_skips_lapses_term",
+   "source": "Public V(9) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,0,mSec,10)\n  CardOut(0,-1)\n  Sample(9,V(),IEEE4)\nEndTable\nBeginProg\n  Scan(50,mSec,3,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 114435
+   }
+  },
+  {
+   "id": "interval_5min",
+   "source": "Public V(8) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,5,Min,10)\n  Sample(8,V(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 128766
+   }
+  },
+  {
+   "id": "multi_1",
+   "source": "Public V0(5) As Float\nPublic V1(2) As Float\nPublic V2(20) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,0,Sec,10)\n  Sample(5,V0(),FP2)\nEndTable\nDataTable(T1,True,-1)\n  DataEvent(0,V0(1)>0,0,0)\n  Sample(2,V1(),Long)\nEndTable\nDataTable(T2,True,-1)\n  DataInterval(0,5,Sec,1)\n  Sample(20,V2(),Long)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 116856,
+    "T1": 116856,
+    "T2": 2337
+   }
+  },
+  {
+   "id": "multi_2",
+   "source": "Public V0(8) As Float\nPublic V1(1) As Float\nPublic V2(5) As Float\nPublic V3(1) As Float\nDataTable(T0,True,-1)\n  DataEvent(0,V0(1)>0,0,0)\n  Sample(8,V0(),FP2)\nEndTable\nDataTable(T1,True,-1)\n  DataEvent(0,V0(1)>0,0,0)\n  Sample(1,V1(),IEEE4)\nEndTable\nDataTable(T2,True,-1)\n  DataInterval(0,10,Sec,10)\n  CardOut(0,-1)\n  Sample(5,V2(),IEEE4)\nEndTable\nDataTable(T3,True,-1)\n  DataEvent(0,V0(1)>0,0,0)\n  Sample(1,V3(),FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 58042,
+    "T1": 58042,
+    "T2": 5804,
+    "T3": 58042
+   }
+  },
+  {
+   "id": "multi_3",
+   "source": "Public V0(130) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,30,Sec,255)\n  Sample(130,V0(),Long)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 7812
+   }
+  },
+  {
+   "id": "multi_4",
+   "source": "Public V0(60) As Float\nPublic V1(8) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,10,Sec,0)\n  Sample(60,V0(),IEEE4)\nEndTable\nDataTable(T1,True,-1)\n  DataInterval(0,2,Hr,1)\n  Sample(8,V1(),FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 16336,
+    "T1": 63
+   }
+  },
+  {
+   "id": "multi_5",
+   "source": "Public V0(130) As Float\nPublic V1(2) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,30,Min,10)\n  Sample(130,V0(),FP2)\nEndTable\nDataTable(T1,True,-1)\n  DataInterval(0,2,Day,10)\n  Sample(2,V1(),FP2)\nEndTable\nBeginProg\n  Scan(10,mSec,0,0)\n    CallTable T0\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 15759,
+    "T1": 252
+   }
+  },
+  {
+   "id": "multi_7",
+   "source": "Public V0(1) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Day,10)\n  Sample(1,V0(),FP2)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 2059767
+   }
+  },
+  {
+   "id": "multi_9",
+   "source": "Public V0(20) As Float\nPublic V1(1) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,5,Day,3)\n  Sample(20,V0(),IEEE4)\nEndTable\nDataTable(T1,True,-1)\n  DataEvent(0,V0(1)>0,0,0)\n  Sample(1,V1(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n    CallTable T1\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 2,
+    "T1": 209402
+   }
+  },
+  {
+   "id": "multi_10",
+   "source": "Public V0(2) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,1,Sec,10)\n  CardOut(0,-1)\n  Sample(2,V0(),IEEE4)\nEndTable\nBeginProg\n  Scan(100,mSec,0,0)\n    CallTable T0\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 514961
+   }
+  },
+  {
+   "id": "multi_13",
+   "source": "Public V0(60) As Float\nPublic V1(3) As Float\nPublic V2(3) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,10,Sec,10)\n  Sample(60,V0(),FP2)\nEndTable\nDataTable(T1,True,-1)\n  DataInterval(0,5,Sec,1)\n  Sample(3,V1(),IEEE4)\nEndTable\nDataTable(T2,True,-1)\n  DataInterval(0,10,Min,10)\n  Sample(3,V2(),IEEE4)\nEndTable\nBeginProg\n  Scan(10,mSec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 28492,
+    "T1": 56985,
+    "T2": 474
+   }
+  },
+  {
+   "id": "multi_15",
+   "source": "Public V0(20) As Float\nPublic V1(3) As Float\nPublic V2(5) As Float\nPublic V3(5) As Float\nDataTable(T0,True,-1)\n  DataInterval(0,2,Sec,255)\n  Sample(20,V0(),Long)\nEndTable\nDataTable(T1,True,-1)\n  DataInterval(0,1,Sec,10)\n  CardOut(0,-1)\n  Sample(3,V1(),FP2)\nEndTable\nDataTable(T2,True,-1)\n  DataInterval(0,30,Day,3)\n  Sample(5,V2(),IEEE4)\nEndTable\nDataTable(T3,True,-1)\n  DataInterval(0,60,Hr,3)\n  Sample(5,V3(),IEEE4)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T0\n    CallTable T1\n    CallTable T2\n    CallTable T3\n  NextScan\nEndProg\n",
+   "expected_sizes": {
+    "T0": 44671,
+    "T1": 89343,
+    "T2": 2,
+    "T3": 2
+   }
+  }
+ ]
+}

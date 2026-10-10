@@ -372,6 +372,31 @@ Evidence: `tests/fixtures/tdf_rules.json` cases `fft_layout`, `multidim_expressi
 
 ## 10. Auto-allocated table size (`Size = -1`)
 
+**Unified model (2026-10-10, supersedes the three fitted pools below).** Re-reading the finalisation
+loop (`FUN_004eab30`) and the malloc probe `FUN_00508f40` (a binary search that returns
+`2**22 - 1 = 4,194,303` when every allocation succeeds) gives one algorithm for every table mix,
+implemented in `tables._resolve_auto_sizes` (all arithmetic in 32-bit float):
+
+- Per called auto table: `b` = bytes per record, `w` = its own `DataInterval` interval in seconds
+  (kept even for `Lapses = 0` or a record too big for two; a `DataInterval(0,0,...)` or `DataEvent`
+  table uses the enclosing `Scan` interval), `L` = `Lapses` (0 for a table without one).
+  `dflt = floor(1008/b)` if `L != 0` and that is at least 2, else `dflt = 1` and `L = 0`.
+  `t8 = dflt*b + 16`.
+- `reserved = 4096 + sum( (2048//t8 + (dflt==1) + (1 if t8 < 1024 else 3)) * t8 + (L*16//b + 1)*b )`;
+  the last term only when `L != 0` and the table has no `CardOut`/`TableFile` (this replaces the old
+  "+160/b records for CardOut" bonus; `Lapses = 10` gives the 160). `rate = sum(t8/(dflt*w))`.
+- `duration = (4194303 - reserved) / rate`. A table with `duration <= w` is forced to 2 records and
+  leaves the pool (rate and its first reserved term removed, duration recomputed), in table order.
+- Otherwise `size = max(trunc(duration / w), 2, dflt)`.
+
+The earlier "off by one" (`floor(q) - e`, 81 of 242 sizes in `scratch/tdf-sweep`) was the missing
+`Lapses` term plus the `float32` truncation. Evidence: all 242 sweep sizes, `Lapses` 0..255 on five
+record widths, 395 random 1-4 table programs against the real compiler (0 differences), and the
+CHM corpus (`tdftest` 207/208, was 202/208). `tests/fixtures/auto_size.json`. Not covered: huge
+intervals (an interval in `Day` above about 10^4 days overflows and sizes as 1 s), `Lapses < 0`,
+the `0x4000000` table flag (4096-byte probe buffer), a table with `DataEvent` and a real interval.
+The sections below are kept as history.
+
 **Fully decompiled and exact** (2026-09-26 pass, superseding the "partially decompiled, lower
 confidence for the mixed-regime pool magnitude" note this section previously carried; see
 `docs/binary.md` for the method). Mechanism read from `FUN_004eab30` (the table finalisation loop)
