@@ -2827,6 +2827,16 @@ shape after an operand-led non-assignment is the fallback, never `Incomplete`/`N
 (`X + 1 foo`, `X + 1 )`, `X and (X foo)`, `1 + 1 foo`). CR300/CR350 also print the string line,
 after the `is not defined.` lines; not modelled. Unrelated: CR6 accepts `X = 1 ;`.
 
+### Statement left open inside a built-in function call (CR6/CR1000X, 2026-10-10)
+
+Oracle (`unclosed_call_count.json`, 29 cases x 2 loggers, pass 1): by the argument count `n` of the
+innermost open built-in call against its `nargs` N: no trailing comma and `n < N` (`Round(X`,
+`FileOpen (S, "r"`, `Round(Left(S`) is `Expression expects , : <stmt>.`; a trailing comma with
+`n <= N` counting the missing argument (`Round(X,`, `FileOpen (S,`, `Left(S,`) is the fallback
+`Invalid, or out of place expression: <stmt>.`; every other count stays `No Matching, or out of
+place )` (`Sin(X,`, `Left(S, 1,`, `FileOpen (S, "r", 0`). `Abs` is left alone (`X = Abs(X` compiles,
+`Abs(X, 1` is `Incomplete expression`). `structure._unclosed_call_message`.
+
 ## Subscript counts (2026-09-28)
 
 Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_counts.py`):

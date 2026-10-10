@@ -996,8 +996,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if verdict and verdict[0] == "pass1":
                     for message in _unparsed_string_messages(stmt, program, profile):
                         diags.error(stmt.line, message, stmt.file)
-                    diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
-                                show_file=False)
+                    diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1], earlier),
+                                stmt.file, show_file=False)
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
                     select_depth += 1
@@ -1460,8 +1460,10 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         # CR300/CR350: `Y = (1` -> `Y is not defined.` first (oracle, 2026-10-01)
                         diags.error(stmt.line, profile.unresolved_symbol_message.format(
                             name=target.group(1)), stmt.file, show_file=False)
-                    diags.error(stmt.line, _no_matching(profile, stmt.text, stmt.at_eol),
-                                stmt.file, show_file=False)
+                    diags.error(stmt.line, _unclosed_call_message(
+                        profile, stmt.text, stmt.at_eol, pass1_operands(program, profile))
+                        or _no_matching(profile, stmt.text, stmt.at_eol),
+                        stmt.file, show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
                 sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file,
@@ -2295,7 +2297,47 @@ def _block_keyword_call(stmt: S.Stmt) -> bool:
                for e in exprs for i in expressions._index_nodes(e))
 
 
-def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
+def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str]) -> str | None:
+    """CR6/CR1000X: a statement left open inside a built-in function call, by that call's own
+    argument count N (oracle, 2026-10-10, `unclosed_call_count.json`): `Round(X` (fewer than N,
+    no trailing comma) is `Expression expects , : <stmt>.`; a trailing comma with at most N
+    arguments counting the missing one (`Round(X,`, `FileOpen (S,`) is the fallback; anything
+    else stays `No Matching, or out of place )`. None: not this shape (`Abs`, which also accepts
+    an unclosed call, is left alone)."""
+    if not profile.known_first_word_pass1:
+        return None
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return None
+    if not toks or toks[-1].text == "(":
+        return None
+    stack: list[list] = []   # [function record or None, arguments so far]
+    for j, t in enumerate(toks):
+        if t.kind != "OP":
+            continue
+        if t.text == "(":
+            prev = toks[j - 1] if j else None
+            rec = profile.functions.get(prev.upper) if prev is not None and prev.kind == "IDENT" \
+                and prev.upper not in operands and prev.upper != "ABS" else None
+            stack.append([rec, 1])
+        elif t.text == ")" and stack:
+            stack.pop()
+        elif t.text == "," and stack:
+            stack[-1][1] += 1
+    if not stack or not stack[-1][0] or not stack[-1][0].get("nargs"):
+        return None
+    count, nargs = stack[-1][1], stack[-1][0]["nargs"]
+    if toks[-1].text == ",":
+        return _out_of_place(profile, text, at_eol) if count <= nargs else None
+    return f"Expression expects , : {text}." if count < nargs else None
+
+
+def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None = None) -> str:
+    if kind == "no_matching" and operands is not None and condition_part(stmt.text) is None \
+            and (refined := _unclosed_call_message(profile, stmt.text, getattr(stmt, "at_eol", True),
+                                                   operands)) is not None:
+        return refined
     text = condition_part(stmt.text)
     if text is None or kind == "expects_paren":
         text = stmt.text

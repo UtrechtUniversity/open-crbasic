@@ -1,0 +1,421 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unclosed_call_count-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\",\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: H = FileOpen (S, \"r\",."
+  },
+  {
+   "id": "cr6-unclosed_call_count-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expression expects , : H = FileOpen (S, \"r\"."
+  },
+  {
+   "id": "cr6-unclosed_call_count-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = Round(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: X = Round(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = Sin(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: X = Sin(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: H = FileOpen (S,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\", 0,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\", 0,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\", 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0."
+  },
+  {
+   "id": "cr6-unclosed_call_count-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : H = FileOpen (S."
+  },
+  {
+   "id": "cr6-unclosed_call_count-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: H = FileOpen (."
+  },
+  {
+   "id": "cr6-unclosed_call_count-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Round(X."
+  },
+  {
+   "id": "cr6-unclosed_call_count-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(."
+  },
+  {
+   "id": "cr6-unclosed_call_count-12",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X, 1,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(X, 1,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Left(S,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-14",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Left(S, 1."
+  },
+  {
+   "id": "cr6-unclosed_call_count-15",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Left(S."
+  },
+  {
+   "id": "cr6-unclosed_call_count-16",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = Left(S, 1) + Left(S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: S = Left(S, 1) + Left(S,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-17",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 + Round(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = 1 + Round(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-18",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X, Sin(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(X, Sin(."
+  },
+  {
+   "id": "cr6-unclosed_call_count-19",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Sin(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(Sin(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-20",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sin(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(X."
+  },
+  {
+   "id": "cr6-unclosed_call_count-21",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Int(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Int(X."
+  },
+  {
+   "id": "cr6-unclosed_call_count-22",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sin(X, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(X, 1."
+  },
+  {
+   "id": "cr6-unclosed_call_count-23",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S, 1) + Round(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Left(S, 1) + Round(X."
+  },
+  {
+   "id": "cr6-unclosed_call_count-24",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Left(S, 1), \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(Left(S, 1), ."
+  },
+  {
+   "id": "cr6-unclosed_call_count-25",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Left(S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Round(Left(S."
+  },
+  {
+   "id": "cr6-unclosed_call_count-26",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nFoo(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Foo(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-27",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Foo(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Foo(X,."
+  },
+  {
+   "id": "cr6-unclosed_call_count-28",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\",\n0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: H = FileOpen (S, \"r\",.\nline 6: Invalid, or out of place expression: 0)."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\",\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: H = FileOpen (S, \"r\",."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expression expects , : H = FileOpen (S, \"r\"."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = Round(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: X = Round(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = Sin(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: X = Sin(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: H = FileOpen (S,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nH = FileOpen (S, \"r\", 0,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\", 0,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\", 0\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: H = FileOpen (S, \"r\", 0."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : H = FileOpen (S."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: H = FileOpen (."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Round(X."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-12",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X, 1,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(X, 1,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Left(S,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-14",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Left(S, 1."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-15",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Left(S."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-16",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = Left(S, 1) + Left(S,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: S = Left(S, 1) + Left(S,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-17",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 + Round(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = 1 + Round(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-18",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(X, Sin(\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(X, Sin(."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-19",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Sin(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Round(Sin(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-20",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sin(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(X."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-21",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Int(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Int(X."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-22",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sin(X, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = Sin(X, 1."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-23",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Left(S, 1) + Round(X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Left(S, 1) + Round(X."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-24",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Left(S, 1), \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X = Round(Left(S, 1), ."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-25",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Round(Left(S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expression expects , : X = Round(Left(S."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-26",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nFoo(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Foo(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-27",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Foo(X,\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Foo(X,."
+  },
+  {
+   "id": "cr1000x-unclosed_call_count-28",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nH = FileOpen (S, \"r\",\n0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: H = FileOpen (S, \"r\",.\nline 6: Invalid, or out of place expression: 0)."
+  }
+ ]
+}
