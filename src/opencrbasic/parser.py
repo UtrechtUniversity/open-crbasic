@@ -234,14 +234,14 @@ class _Parser:
             self.function_names = probe.function_names
         skipped_include_depth = 0
         todo = collections.deque(lines)
-        unshift = 0  # physical lines of unread (inactive) initializer pulls given back
+        unshift: dict[str, int] = {}  # per file: physical lines of unread (inactive) initializer pulls given back
         while todo:
             ll = todo.popleft()
-            if unshift:
-                ll = dataclasses.replace(ll, line=ll.line + unshift)
+            if unshift.get(ll.file):
+                ll = dataclasses.replace(ll, line=ll.line + unshift[ll.file])
             if ll.unpulled is not None and not skipped_include_depth and not self._active():
                 todo.extendleft(reversed(ll.unpulled))
-                unshift += ll.pulls
+                unshift[ll.file] = unshift.get(ll.file, 0) + ll.pulls
                 continue
             if skipped_include_depth:
                 if ll.kind == "include_begin":

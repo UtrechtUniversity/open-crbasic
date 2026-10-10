@@ -4512,6 +4512,8 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   tentatively, but the `LogicalLine` keeps the lines as written (`unpulled`) and the bad-initializer
   messages (`bad_init`); the parser reports them only for a line it reads, and otherwise restores
   the written lines and the line numbering (`parser._Parser.run`).
+  The restored line count is per file: an include's inactive pull must not move the main file's line
+  numbers (fixture `r8_include_unshift.json`, all four loggers).
 - A scalar `Dim D As Long =` whose pulled `{` line is unbalanced and ends in `,` or `{` is the same
   bad-syntax pair as the array case (`{` -> `Invalid, or out of place expression`, `{5,` ->
   `Incomplete expression`); the continuation lines are not folded in (`5}` is reported on its own).
