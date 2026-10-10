@@ -25,7 +25,6 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
     measure = profile.measure
     if not measure:
         return
-    dims = None
     file_reported = False  # only the first bad `FileManage`/`RunProgram` file name is reported
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
@@ -46,9 +45,8 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         if kw == "CH400STATUS" and "CH400STATUS" in profile.instructions:
             _check_ch400status(stmt, env, diags)
         if kw == "FFT" and "FFT" in profile.instructions:
-            if dims is None:
-                dims = symbols.declared_all_dims(program, env)
-            _check_fft_source(stmt, dims, env, diags)
+            _check_fft_source(stmt, symbols.declared_all_dims(symbols.scoped_view(program, stmt), env),
+                              env, diags)
         if kw == "SDI12RECORDER" and profile.single_pass:
             _check_sdi12_structure_dest(stmt, program, diags)
         if kw == "TABLEFILE" and "tablefile" in measure:
@@ -382,7 +380,7 @@ def _check_gps_nmea(stmt: S.Instruction, program: S.Program, env: consteval.Env,
     if isinstance(arg, S.String):
         bad = True
     elif isinstance(arg, (S.Name, S.Index)):
-        decl = next((v for st in program.statements if isinstance(st, S.Declaration)
+        decl = next((v for st in reversed(symbols.scoped_view(program, stmt).statements) if isinstance(st, S.Declaration)
                      and st.kind in ("PUBLIC", "DIM", "STATIC") for v in st.vars
                      if v.name.upper() == arg.name.upper()), None)
         if decl is None:

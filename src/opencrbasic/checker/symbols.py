@@ -5,6 +5,7 @@ bare (no-`Call`-keyword) name is a legal statement. Rules and oracle evidence: `
 from __future__ import annotations
 
 import re
+from types import SimpleNamespace
 
 from .. import consteval
 from .. import syntax as S
@@ -242,6 +243,23 @@ def declared_dim_counts(program: S.Program, strings: bool = False) -> dict[str, 
 class DimCounts(dict):
     """`declared_dim_counts`'s result; `.strings` names the String variables it includes."""
     strings: frozenset = frozenset()
+
+
+def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
+    """`program` restricted to the declarations visible at `stmt`: everything outside `Sub`/`Function`
+    bodies plus `stmt`'s own routine's body. Other routines' local `Dim`s are dropped, and the
+    routine's own sit later in the list so a local shadows a global (last declaration wins)."""
+    tagged, owner, cur = [], None, None
+    for st in program.statements:
+        if isinstance(st, S.SubDef):
+            cur = st
+        elif isinstance(st, S.Instruction) and st.keyword.upper() in ("ENDSUB", "ENDFUNCTION"):
+            cur = None
+        if st is stmt:
+            owner = cur
+        tagged.append((st, cur))
+    stmts = [st for st, c in tagged if c is None] + [st for st, c in tagged if c is not None and c is owner]
+    return SimpleNamespace(statements=stmts)
 
 
 def declared_all_dims(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, ...]]:

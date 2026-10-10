@@ -1,0 +1,57 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-scope_gps-0",
+   "logger": "cr6",
+   "source": "Sub Local\n Dim N(2) As String * 16\nEndSub\nPublic Dest(44),N(2) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr6-scope_gps-1",
+   "logger": "cr6",
+   "source": "Sub Local\n Dim N(2) As String * 100\nEndSub\nPublic Dest(44),N(2) As String * 16\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional parameter must be an array of type string of length >= 100\nline 7: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr6-scope_gps-2",
+   "logger": "cr6",
+   "source": "Public Dest(44),N(2) As String * 16\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional parameter must be an array of type string of length >= 100\nline 4: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-scope_gps-0",
+   "logger": "cr1000x",
+   "source": "Sub Local\n Dim N(2) As String * 16\nEndSub\nPublic Dest(44),N(2) As String * 100\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scope_gps-1",
+   "logger": "cr1000x",
+   "source": "Sub Local\n Dim N(2) As String * 100\nEndSub\nPublic Dest(44),N(2) As String * 16\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Optional parameter must be an array of type string of length >= 100"
+  },
+  {
+   "id": "cr1000x-scope_gps-2",
+   "logger": "cr1000x",
+   "source": "Public Dest(44),N(2) As String * 16\nBeginProg\n  Scan(1,Sec,0,0)\n    GPS(Dest(),COMC1,0,100,N())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Optional parameter must be an array of type string of length >= 100"
+  }
+ ]
+}
