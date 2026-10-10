@@ -4401,3 +4401,12 @@ Fixtures `double_literal_r.json` (all four loggers), `paren_assign.json` (CR6/CR
   `Int4`, `PI`, which are plain unknown names) on the left is pass 1 `Invalid assignment in expression:
   <stmt>.`; a declared variable on the left keeps `Incomplete expression: <stmt>.` for words after the group
   (`(D = D) x`). Not modelled: `(D = D) + 1` compiles; `(D(1) = 1) x` is `Incomplete`.
+
+### `CallTable <word> <rest>` statement form (CR6/CR1000X, 2026-10-10)
+
+Fixture `calltable_statement.json`. Without parentheses the first word is the table and the rest is a second
+argument, `CallTable(Tab, <rest>)`: `CallTable instruction is used to transfer` -> `Invalid, or out of place
+expression: is used to transfer.` (`calltable_1`), `Tab junk` -> `Invalid symbol in expression: junk.`,
+`Tab 1 2` -> `Incomplete expression: 1 2.`, a third comma part -> `Too many parameters:  <its first token>.`
+(`_instruction_arg_findings`; the table word is never resolved as a variable). Not modelled: `CallTable
+Tab(junk)` (symbol error for the subscript).

@@ -1885,11 +1885,17 @@ def _instruction_arg_findings(text: str, operands: set[str], profile,
             toks[1].kind == "OP" and toks[1].text in ("=", ".")):
         token = instr_rules._next_simple_token(text[toks[0].col + len(toks[0].text):])
         return [(3, f"Too many parameters:  {token}.", "")] if token else []
+    if toks[0].upper == "CALLTABLE" and len(toks) > 2 and toks[1].kind == "IDENT" \
+            and toks[2].kind != "OP":
+        # `CallTable Tab is used`: the table is the first word, the rest is a second argument
+        # (oracle, CR6/CR1000X, 2026-10-10)
+        cut = toks[1].col + len(toks[1].text)
+        return _instruction_arg_findings(text[:cut] + "," + text[cut:], operands, profile, variables)
     paren = toks[1].kind == "OP" and toks[1].text == "("
     if paren and (len(toks) < 3 or not (toks[-1].kind == "OP" and toks[-1].text == ")")):
         return []
     if not paren and (toks[1].kind == "OP" or toks[0].upper in _STATEMENT_FORM_EXCLUDED
-                      or not instr_rules.plain_expression_params(profile.instructions[toks[0].upper]["params"])):
+                      or (toks[0].upper != "CALLTABLE" and not instr_rules.plain_expression_params(profile.instructions[toks[0].upper]["params"]))):
         return []       # statement form `Kw a b, c` is read like `Kw(a b, c)` (oracle, 2026-10-10)
     args: list[tuple[list, str]] = []
     depth, cur = 0, []
@@ -1911,6 +1917,8 @@ def _instruction_arg_findings(text: str, operands: set[str], profile,
         if paren:
             return []
         args.append((cur, text[start:].lstrip()))
+    if toks[0].upper == "CALLTABLE" and len(args) > 2 and instr_rules._next_simple_token(args[2][1]):
+        return [(3, f"Too many parameters:  {instr_rules._next_simple_token(args[2][1])}.", "")]
     bad = ("incomplete", "no_matching")
     syntax = [(_scan_expr(t, 0, _Everything(), profile.functions, assign=True, start_operand=False)
                if t else None, t, txt) for t, txt in args]
@@ -1920,15 +1928,15 @@ def _instruction_arg_findings(text: str, operands: set[str], profile,
                else v, t, txt) for v, t, txt in syntax]
     bad = bad + ("fallback",)
     if any(v is not None and not (v[0] == "pass1" and v[1] in bad) for v, _, _ in syntax) or \
-            not any(v is not None for v, _, _ in syntax):
+            not (any(v is not None for v, _, _ in syntax) or toks[0].upper == "CALLTABLE"):
         return []
     out: list[tuple[int, str, str]] = []
     record = profile.instructions[toks[0].upper]
     short = instr_rules.shortfall_message(record, len(args))
     params = instr_rules._real_params(record["params"])
     for i, (v, arg_toks, arg_text) in enumerate(syntax):
-        if not arg_toks:
-            continue
+        if not arg_toks or (i == 0 and toks[0].upper == "CALLTABLE"):
+            continue        # (a table name is no variable)
         code = params[i] % 100 if i < len(params) else None
         if _scan_expr(arg_toks, 0, operands, profile.functions, assign=True,
                       start_operand=False) == ("pass2", "symbol"):
