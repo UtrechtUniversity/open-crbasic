@@ -203,6 +203,7 @@ class _CondFrame:
     parent_ok: bool
 
 
+_WORD_BINARY_OPS = {"MOD", "AND", "OR", "XOR", "EQV", "IMP"}  # `Fn(1) MOD 2` is one expression
 _FUNCTION_DEF_RE = re.compile(r"\s*Function\s+([A-Za-z_][A-Za-z0-9_]*)", re.I)
 
 
@@ -725,7 +726,8 @@ class _Parser:
             if p.at_end():
                 return S.Call(line, file, name=target.name, args=list(target.args), explicit=False)
             t = p.peek()
-            if t.kind in ("IDENT", "NUMBER", "STRING") or (t.kind == "OP" and t.text in ("(", ",")):
+            if (t.kind in ("IDENT", "NUMBER", "STRING") and t.upper not in _WORD_BINARY_OPS) or (
+                    t.kind == "OP" and t.text in ("(", ",")):
                 # a juxtaposed tail (`Fn(1) 1`, `Fn(1),Zork`): `Incomplete expression` (oracle,
                 # 2026-10-08, all four loggers); its operands are still name-checked
                 juxt: list = []

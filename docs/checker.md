@@ -4291,3 +4291,11 @@ Oracle 2026-10-10, all four loggers (`function_names_active.json`): a `Function 
 first `EndProg`, or inside an inactive `#If`, does not make an earlier `Two(1) Round(2,0)` a
 `Function` call (the program defines `Sub Two(A,B)`; it compiles). `parser._Parser.run` finds the
 names with a throwaway pass over the lines, so only definitions the real pass reads count.
+
+### Word operators after a `Function` call statement
+
+Oracle 2026-10-10, all four loggers (`func_word_operator_tail.json`): `Fn(1) MOD 2`, `AND`, `OR`,
+`XOR`, `EQV`, `IMP` (any case) continue the call as one expression and compile; `Fn(1) NOT X` and
+`Fn(1) Y` stay `Incomplete expression`; a dangling `Fn(1) MOD` is `Invalid, or out of place
+expression`. The parser sends a leading word operator to the expression path, not the juxtaposed
+tail (`_WORD_BINARY_OPS`). `Fn(1) AND X Y` (real `Incomplete expression`) is still not modelled.
