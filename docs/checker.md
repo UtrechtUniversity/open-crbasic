@@ -4541,7 +4541,10 @@ extra parameters. With `RONLY` the word itself is the excess parameter (`Too man
   the body is not at the line end) and ends the compile; `syntax.hash_statement` finds it.
 - The cutoff also drops the parser findings of later lines (`#Foo` / `#Else` / `Include "bad.txt"`
   reports only `#Foo`): `Program.hash_cut` is the parser's diagnostic count when the `#` statement
-  was parsed.
+  was parsed -- after the whole line, so `#Foo : Public X` then `#Else` also reports only `#Foo`.
+- Inline statements after the `#` one are dropped too (`If True Then #Foo Else X=Scan(1)` reports only
+  `#Foo`, `syntax.cut_after_hash`). Fixture `r8_hash_cut.json`, all four loggers. Not modelled:
+  `#If True : #Foo : #EndIf` on one line (`#If with no #Endif`).
 
 ## Round 8 review 7: bad-As recovery splits at top-level commas (oracle, 2026-10-10; `tests/fixtures/bad_as_nested_dims.json`)
 

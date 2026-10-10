@@ -194,7 +194,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # statement is reported (oracle, 2026-10-10: `#a` then `#b` -> only `#a`)
     stop = next((i for i, st in enumerate(program.statements) if S.hash_statement(st)), None)
     if stop is not None:
-        program = dataclasses.replace(program, statements=program.statements[:stop + 1])
+        program = dataclasses.replace(program, statements=[*program.statements[:stop],
+                                                           S.cut_after_hash(program.statements[stop])])
         if program.hash_cut is not None:
             del diags.items[program.hash_cut:]  # parser findings of later lines
     env = consteval.Env(profile, dict(program.consts))

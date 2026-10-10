@@ -8,6 +8,7 @@ original compiler does, and is checked by `opencrbasic.structure`. Every node ca
 
 from __future__ import annotations
 
+import dataclasses
 from dataclasses import dataclass, field
 
 
@@ -233,6 +234,20 @@ def hash_statement(st: "Stmt") -> "Unparsed | None":
         if (h := hash_statement(sub)) is not None:
             return h
     return None
+
+
+def cut_after_hash(st: "Stmt") -> "Stmt":
+    """`st` without the inline statements that follow its `#...` statement (and without the `Else`
+    body when the `#...` is in the `Then` body): the compile stops there."""
+    then, other = getattr(st, "inline", None) or [], getattr(st, "inline_else", None) or []
+    for body, name in ((then, "inline"), (other, "inline_else")):
+        k = next((i for i, sub in enumerate(body) if hash_statement(sub)), None)
+        if k is not None:
+            fields = {name: body[:k] + [cut_after_hash(body[k])]}
+            if name == "inline":
+                fields["inline_else"] = []
+            return dataclasses.replace(st, **fields)
+    return st
 
 
 @dataclass

@@ -280,9 +280,10 @@ class _Parser:
                 self.diags.error(ll.line, ll.bad_init[0], ll.file)
                 self.diags.error(ll.line, f"Variable initialization of {ll.bad_init[1]} has bad syntax.",
                                  ll.file)
+            before = len(self.program.statements)
             self._parse_line(ll)
-            if self.program.hash_cut is None and self.program.statements and \
-                    S.hash_statement(self.program.statements[-1]):
+            if self.program.hash_cut is None and any(
+                    S.hash_statement(st) for st in self.program.statements[before:]):
                 self.program.hash_cut = len(self.diags.items)
             if self._done:
                 # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
