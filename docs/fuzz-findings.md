@@ -482,3 +482,22 @@ Reproducer `cr1000x/false_accept/03ecff3743a0` (`Const myString As String2 = "12
 - Not done: a bad type together with a malformed value (`Const a As Foo = `, `= 1 +`) still gives
   the value message; `Const y As Foo = 1` for an existing variable `y` misses the later `Invalid
   assignment in expression` (same pre-existing gap as plain `Const y = 1`).
+
+### R9 not closed (evidence in the saved reproducers)
+
+- Excess arguments (`Too many parameters:  <arg>.`) on instructions outside `check_too_many`'s
+  eligible parameter kinds: `cr1000x/false_accept/d84de83e43ed` (`FFT`), `cr300/false_accept/
+  dc989f733972` (`SampleMaxMin`), `f4771af98130`. Needs per-instruction evidence.
+- A String or negative `Scan` interval together with `IfTime`/`TimeIntoInterval`: the real
+  compilers report `Scan interval must be integrally divisible into interval.` (e.g.
+  `Scan("fuzz",Sec,3,0)` with `IfTime(0,24,Hr)`, but not with `IfTime(0,5,Min)`; `Scan(-1,Sec)`
+  fails only for a sub-second `IfTime`), CR6/CR1000X replacing the interval message. The effective
+  scan step is not derivable from these probes (`cr300/false_accept/1376c224f200`).
+- `Measurement Delay Exceeds 60 min.` (`CDM_Delay`, `cr6/false_accept/f2c51b769e04`), `Variable
+  rt2 out of bounds.` / paren-dimension arrays (`cr6/false_accept/2435be9885e1`,
+  `cr350/false_accept/73c3fc153711`), `FieldCal Mult` (`cr1000x/false_accept/11dd65c2d832`),
+  `Parameter must be a constant integer` for `SerialOpen` (`cr300/false_accept/7be9f5d53b3a`),
+  `Expression expects ,` for an `FTPClient` call (`cr350/false_accept/1b3ba52e3818`), `If without
+  EndIf inside of Sub` (`cr1000x/false_accept/9ec2e021b721`).
+- The 52 message_diff reproducers are mostly extra or missing follow-on lines in undefined-name
+  cascades and structure messages (`No BeginProg` vs a specific first error), not triaged.
