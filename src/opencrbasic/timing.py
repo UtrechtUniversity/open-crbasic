@@ -326,7 +326,7 @@ def _closed(stmt: S.Instruction, env: consteval.Env, lines: list[str], pipeline:
         a = _args(stmt, env, 1)
         out = [200 + 500 * int(a[0])] if a else []
     elif kw == "PERIODAVG":
-        a = _args(stmt, env, 1, 7)
+        a = _args(stmt, env, 1, 5 if env.profile.name in ("cr300", "cr350") else 7)
         out = [_signed32(int(a[0]) * int(a[1]) * 1000 + 200)] if a else []
     elif kw == "MUXSELECT":
         a = _args(stmt, env, 2, 3, 4)

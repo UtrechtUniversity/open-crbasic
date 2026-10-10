@@ -166,7 +166,8 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
 - `PulsePort(Port, d)`: `floor100(2d+100)`. `ExciteV(Chan, mV, d)`: `floor100(d+100)`.
 - `PulseCount`: 100 (no argument dependence). `Calibrate`: six entries, 2000 and 7700 three times
   (any arguments). `CS616(.., Reps, ..)`: `200+500*Reps`.
-- `PeriodAvg(.., Reps, .., Timeout, ..)`: `int32(Reps*int(Timeout)*1000+200)`.
+- `PeriodAvg(.., Reps, .., Timeout, ..)`: `int32(Reps*int(Timeout)*1000+200)`. Timeout is argument 8 on CR6/CR1000X and
+  argument 6 on CR300/CR350 (eight-argument layout; fixtures `periodavg_cr*_timeout_arg*`).
 - `MuxSelect(Clk, Reset, PW, Chan, Mode)`: PipelineMode only (no entry in SequentialMode);
   `floor100(base + Chan*(2000*PW+50))`, base 13000, or 100 when `Mode` is 0.
 - `ACPower(.., Cfg, LineFrq, ChanV, .., ChanI, .., RepsI)`, LineFrq 50 or 60: `1000`, then pairs `(head, x)`, head 61200 (50) / 51200 (60); `x` per
