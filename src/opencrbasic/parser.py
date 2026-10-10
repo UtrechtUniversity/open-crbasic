@@ -1615,7 +1615,7 @@ def _profile_for(name: str) -> profiles.Profile:
 
 
 def parse_file(path: Path | str, profile: profiles.Profile | None = None,
-               pull_limit: int | None = None) -> tuple[S.Program, Diagnostics]:
+               pull_limit: tuple[int, ...] | None = None) -> tuple[S.Program, Diagnostics]:
     """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical
     default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
     `compiler.compile_file`'s own `profile` argument) so `Const` folding during parsing (predefined
@@ -1630,6 +1630,7 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
     program.pull_log = pull_log
+    program.pull_site = diags.pull_site
     _include_warning_drives(diags, profile or _profile_for(path.name))
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags

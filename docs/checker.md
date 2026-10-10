@@ -4514,6 +4514,12 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   the written lines and the line numbering (`parser._Parser.run`).
   The restored line count is per file: an include's inactive pull must not move the main file's line
   numbers (fixture `r8_include_unshift.json`, all four loggers).
+- CR300/CR350 pull gating (an earlier error disables later pulls, `compiler.compile_file`) compares
+  positions in the expanded source, not bare line numbers: an error in an include counts as at its
+  `Include` line followed by its own line (`source._Loader.site`), and pulls inside includes are gated
+  the same way (fixture `r8_include_pull_gate.json`). Not modelled: the real `Invalid, or out of place
+  expression: ...` for a line of an include carries the `<file>` prefix (CR6 and CR300), which
+  `show_file=False` suppresses, so cases that print it are not in the fixture.
 - A scalar `Dim D As Long =` whose pulled `{` line is unbalanced and ends in `,` or `{` is the same
   bad-syntax pair as the array case (`{` -> `Invalid, or out of place expression`, `{5,` ->
   `Incomplete expression`); the continuation lines are not folded in (`5}` is reported on its own).

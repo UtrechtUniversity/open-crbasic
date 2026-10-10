@@ -176,9 +176,11 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         limit = None
         for _ in range(16):
             log = getattr(result.program_ast, "pull_log", None) or []
-            errs = [d.line for d in result.diagnostics.items if d.severity == "error" and d.line
+            site = getattr(result.program_ast, "pull_site", {})
+            errs = [(*site.get(d.file, ()), d.line) for d in result.diagnostics.items
+                    if d.severity == "error" and d.line
                     and not d.message.endswith("illegally occurs before BeginProg.")]
-            bad = next((start for start, line in log if any(e < line for e in errs)), None)
+            bad = next((start for start, end in log if any(e < end for e in errs)), None)
             if bad is None or (limit is not None and bad >= limit):
                 break
             limit = bad

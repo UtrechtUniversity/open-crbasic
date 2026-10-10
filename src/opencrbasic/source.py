@@ -189,8 +189,9 @@ class _Loader:
                  pull_init: bool = False, cr3xx_exts: tuple[str, ...] | None = None):
         self.directory = directory
         self.pull_init = pull_init
-        self.pull_limit: int | None = None  # pulls only at physical indexes below this (CR300/CR350)
-        self.pull_log: list[tuple[int, int]] = []  # (physical index, reported line) of top-level pulls
+        self.pull_limit: tuple[int, ...] | None = None  # pulls only at positions below this (CR300/CR350)
+        self.pull_log: list[tuple[tuple[int, ...], tuple[int, ...]]] = []  # (position, end position) of pulls
+        self.site: dict[str, tuple[int, ...]] = {}  # included file -> position of its Include line
         self.diags = diags
         self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
         self.cr3xx_exts = cr3xx_exts  # CR300/CR350 only: the extensions an include may load
@@ -254,12 +255,12 @@ class _Loader:
                 continue
             pulls = 0
             orig = text
+            pos = (*self.site.get(filename, ()), start_line - shift)
             if self.pull_init and _DECL_START_RE.match(text) and (
-                    self.pull_limit is None or in_include or i < self.pull_limit):
-                start = i
+                    self.pull_limit is None or pos < self.pull_limit):
                 text, i, pulls, bad = _pull_decl_initializer(text, physical, i)
-                if pulls and not in_include:
-                    self.pull_log.append((start, last_line - shift))
+                if pulls:
+                    self.pull_log.append((pos, (*self.site.get(filename, ()), last_line - shift)))
                 if pulls:
                     had_comment = len(_strip_comment(physical[i])) != len(physical[i])
             new = self._expand_or_keep(text, last_line - shift, filename, section, in_include,
@@ -289,6 +290,7 @@ class _Loader:
             target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
+            self.site.setdefault(spec.strip(), (*self.site.get(filename, ()), line))
             included = self.load_file(target, section=name, in_include=in_include,
                                       display=spec.strip())
             return self._include_lines(included, line, filename, section)
@@ -303,6 +305,7 @@ class _Loader:
             target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
+            self.site.setdefault(spec.strip(), (*self.site.get(filename, ()), line))
             included = self.load_file(target, section=None, in_include=True, display=spec.strip())
             return self._include_lines(included, line, filename, section)
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
@@ -345,7 +348,7 @@ class _Loader:
 
 
 def load_program(path: Path, own_ext: str | None = None,
-                 pull_init: bool = False, pull_limit: int | None = None,
+                 pull_init: bool = False, pull_limit: tuple[int, ...] | None = None,
                  cr3xx_exts: tuple[str, ...] | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
@@ -354,6 +357,7 @@ def load_program(path: Path, own_ext: str | None = None,
     loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
     diags.pull_log = loader.pull_log
+    diags.pull_site = loader.site
     return lines, diags
 
 
