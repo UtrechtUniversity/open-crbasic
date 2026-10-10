@@ -12,6 +12,7 @@ import dataclasses
 
 import re
 
+from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from . import expressions, instr_rules, structure, symbols
@@ -59,7 +60,7 @@ _BAUDS = frozenset({0, 600, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 76800, 
                     460800})
 
 
-def _check_baud(stmt: S.Call, profile, diags: Diagnostics) -> None:
+def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None = None) -> None:
     if len(stmt.args) < 2 or not (isinstance(stmt.args[0], S.Name)
                                   and stmt.args[0].name.upper() == "COMRS232"):
         return
@@ -68,7 +69,16 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics) -> None:
     if isinstance(arg, S.Unary) and arg.op == "-":
         sign, arg = -1, arg.operand
     if not (isinstance(arg, S.Number) and isinstance(arg.value, int)):
-        return
+        # a constant expression is evaluated (oracle, all four loggers, 2026-10-10: `Hr` -> `4 is
+        # illegal baud rate.`, `Hr+1` -> 5, `True` -> -1, `uSec` -> 0 is fine; a string is accepted)
+        try:
+            value = consteval.value_of(stmt.args[1], consteval.Env(profile, dict(consts or {})))
+        except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+            return
+        if isinstance(arg, S.Number) or isinstance(value, str) or value != int(value):
+            return
+        arg, sign = S.Number(stmt.line, stmt.file, abs(int(value)), str(abs(int(value)))), (
+            -1 if value < 0 else 1)
     baud = sign * arg.value
     if not -2**31 <= baud < 2**31:
         return  # `Parameter must be integral.` instead (`checker/intervals.py`)
@@ -109,7 +119,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                         stmt.file)
         if name != _SERIALOPEN:
             continue
-        _check_baud(stmt, profile, diags)
+        _check_baud(stmt, profile, diags, program.consts)
         is_variable = bool(expressions._variable_refs(arg, variable_names))
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
@@ -274,6 +284,12 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
         if tainted:
+            if (isinstance(stmt, S.Call) and stmt.name.upper() == "SERIALOPEN" and len(stmt.args) > 1
+                    and isinstance(stmt.args[1], (S.Unary, S.Binary))):
+                # a negative or computed baud is swallowed once the cascade has started, a plain
+                # illegal one still prints (oracle, CR300/CR350, 2026-10-10)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
+                                  or not d.message.endswith(" is illegal baud rate.")]
             lead = _LEFTOVER_LEAD_RE.match(stmt.text) if isinstance(stmt, S.Unparsed) else None
             lead_name = (lead.group(1) or lead.group(2)) if lead else None
             if lead_name and lead_name.upper() in dropped_names - registered_names:

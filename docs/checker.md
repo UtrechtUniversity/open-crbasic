@@ -4451,3 +4451,10 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   after the cascade dropped `X`'s declaration print `X is not defined.` before the verdict
   (`cr3xx._reword_prose` also matches the condition-only echo). Not modelled: `Do Until X >` in a
   cascade is `Too many parameters:  X.`; `If X Y` omits `X`.
+- **`SerialOpen`/`ModemCallBack` baud from a constant** (oracle 2026-10-10; `r8_cr3xx_baud*.json`,
+  `r8_cr3xx_modemcb.json`): the baud is evaluated as a constant expression: `Hr` -> `4 is illegal baud
+  rate.`, `Sec` 2, `mSec` 1, `Min` 3, `Day` 5, `Hr+1` 5, `True` -1; `uSec`/`False` (0) pass. A
+  `ModemCallBack` string baud is `-2147483648 is illegal baud rate.` (SerialOpen accepts a string).
+  `ModemCallBack` with other than 9 arguments reports only the count error (the literal baud line used
+  to be added). CR300/CR350 after the `Too many parameters` cascade started: a negative or computed
+  `SerialOpen` baud is swallowed (`-115200`, `Hr+1`), `Hr`, `12345` still print.

@@ -538,7 +538,7 @@ def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) ->
     give -2147483648). Only the COMSDC7 port was probed (`ComC1,300` passes)."""
     for stmt in program.statements:
         if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "MODEMCALLBACK"
-                and "MODEMCALLBACK" in profile.instructions and len(stmt.args) > 2):
+                and "MODEMCALLBACK" in profile.instructions and len(stmt.args) == 9):  # (a wrong count reports only the count, oracle 2026-10-10)
             continue
         port, arg = stmt.args[1], stmt.args[2]
         if not (isinstance(port, S.Name) and port.name.upper() == "COMSDC7"):
@@ -547,7 +547,18 @@ def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) ->
         if isinstance(arg, S.Unary) and arg.op == "-":
             sign, arg = -1, arg.operand
         if not (isinstance(arg, S.Number) and isinstance(arg.value, (int, float))):
-            continue
+            # a constant expression or string (oracle, CR6/CR1000X, 2026-10-10: `Hr` -> 4, `Hr+1`
+            # -> 5, `True` -> -1 are illegal, `uSec` -> 0 passes; a string becomes -2147483648)
+            try:
+                value = consteval.value_of(stmt.args[2], consteval.Env(profile, dict(program.consts)))
+            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+                continue
+            if isinstance(arg, S.Number):
+                continue
+            if isinstance(value, str):
+                diags.error(stmt.line, f"{-2**31} is illegal baud rate.", stmt.file)
+                continue
+            arg, sign = S.Number(stmt.line, stmt.file, abs(int(value)), str(abs(int(value)))), (-1 if value < 0 else 1)
         baud = int(sign * arg.value)
         if not -2**31 <= baud < 2**31:
             baud = -2**31
