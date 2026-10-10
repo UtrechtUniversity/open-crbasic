@@ -74,29 +74,63 @@ def check_const_ranges(flat: list, profile: Profile, diags: Diagnostics, env: co
             continue
         if stmt.keyword.upper().startswith("CDM_") and cdm_null_module(stmt, env):
             continue
+        tccomp = bool(stmt.args) and stmt.keyword.upper() == "CDM_TCCOMP" and \
+            _int_value(stmt.args[0], env) == 224
         for rule in by_instr.get(stmt.keyword.upper(), ()):
-            raw = _raw_arg(stmt, rule["pos"], env)
-            if raw is None:
-                continue
-            if "invalid_raw" in rule:
-                if _matches_invalid_raw(raw, rule["invalid_raw"]):
-                    diags.error(stmt.line, rule["message"].format(value=consteval.to_long(raw)), stmt.file)
-                continue
-            value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
-            if value is None:
-                continue
-            if "lower_gate" in rule and value < rule["lower_gate"]:
-                continue
-            if value in rule.get("allow", ()):
-                continue
-            if value in rule.get("warn_values", ()):
-                diags.warning(stmt.line, rule["warn_message"], stmt.file)
-                continue
-            if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
-                continue
-            shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
-            if shown is not None:
-                diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
+            if tccomp and rule["pos"] == 5:
+                _tccomp_before_channel(stmt, env, profile, names, diags)
+            _apply_const_rule(stmt, rule, env, profile, names, diags)
+            if tccomp and rule["pos"] == 5:
+                _tccomp_after_channel(stmt, env, profile, names, diags)
+
+
+def _tccomp_before_channel(stmt, env, profile, names, diags) -> None:
+    """`CDM_TCComp(TEMP120, ...)`: a negative channel first gives `Burst measurements unsupported,
+    input channel must be > 0!` (oracle, CR6/CR1000X, 2026-10-10; docs/instructions.md "CPI
+    measurement time")."""
+    channel = _long_arg(stmt, 5, {}, env, profile, names)
+    if channel is not None and channel < 0:
+        diags.error(stmt.line, "Burst measurements unsupported, input channel must be > 0!", stmt.file)
+
+
+def _tccomp_after_channel(stmt, env, profile, names, diags) -> None:
+    """After the channel message: `Reps cycle beyond last channel!` when `channel - 1 + Reps > 20`
+    (a channel outside 1..20 counts as 1), then `Thermocouple type unsupported.` for a type
+    outside 0..7."""
+    channel, reps = (_long_arg(stmt, pos, {}, env, profile, names) for pos in (5, 4))
+    if channel is not None and reps is not None:
+        if not 1 <= channel <= 20:
+            channel = 1
+        if channel - 1 + reps > 20:
+            diags.error(stmt.line, "Reps cycle beyond last channel!", stmt.file)
+    tc_type = _long_arg(stmt, 6, {}, env, profile, names)
+    if tc_type is not None and not 0 <= tc_type <= 7:
+        diags.error(stmt.line, "Thermocouple type unsupported.", stmt.file)
+
+
+def _apply_const_rule(stmt, rule, env, profile, names, diags) -> None:
+    raw = _raw_arg(stmt, rule["pos"], env)
+    if raw is None or (rule.get("skip_strings") and isinstance(raw, str)):
+        return
+    if "invalid_raw" in rule:
+        if _matches_invalid_raw(raw, rule["invalid_raw"]):
+            diags.error(stmt.line, rule["message"].format(value=consteval.to_long(raw)), stmt.file)
+        return
+    value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
+    if value is None:
+        return
+    if "lower_gate" in rule and value < rule["lower_gate"]:
+        return
+    if value in rule.get("allow", ()):
+        return
+    if value in rule.get("warn_values", ()):
+        diags.warning(stmt.line, rule["warn_message"], stmt.file)
+        return
+    if value in rule["values"] if "values" in rule else rule["min"] <= value <= rule["max"]:
+        return
+    shown = _long_arg(stmt, rule.get("show", rule["pos"]), rule, env, profile, names)
+    if shown is not None:
+        diags.error(stmt.line, rule["message"].format(value=shown), stmt.file)
 
 
 def _matches_invalid_raw(value: object, invalid: dict) -> bool:
@@ -635,6 +669,126 @@ def scan_delay_totals(program: S.Program, env: consteval.Env, include_zero: bool
                 total += int(value * _US_PER_UNIT[unit]) * repeat
 
 
+def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,
+                   env: consteval.Env) -> None:
+    """CR6/CR1000X: a `Scan` shorter than the CPI measurement time of a module -> `Insufficient
+    time (%d ms) for measurements from CPI address %d (needs at least %d ms).`, on the program's
+    last line, only when the compile has no other error (docs/instructions.md "CPI measurement
+    time"). The binary walks the module list in order of first use; for each module it totals the
+    module's time in every scan holding CDM instructions, keeps per scan the (first) module with
+    the largest total so far, and then reports every such scan whose interval is below that
+    figure, so a program with k modules can print up to k lines per scan, naming the leader so far.
+    Modelled: `CDM_TCComp(TEMP120, ...)`, `Reps*430+275` microseconds rounded up to 100 us per
+    statement, summed per address and rounded up to whole ms. Every occurrence counts once wherever
+    it sits (loops, `If` branches, `Select` cases in SequentialMode). A `SubScan(Interval,Units,n)`
+    body counts n times at `Interval` spacing (zero: its own length); an interval shorter than the
+    body gives `SubScan interval too short for measurements from CPI address %d by %d uSec.` first.
+    Programs with any other CDM instruction, an unreadable instruction or a SubScan form not
+    probed are skipped whole."""
+    if profile.name not in ("cr6", "cr1000x") or not program.statements:
+        return
+    from .instr_rules import _US_PER_UNIT, _scan_raw
+    scans: list[dict] = []      # {"ms": interval, "times": {addr: 100 us units}, "short": [(addr, by)]}
+    order: list[int] = []       # CPI addresses in order of first use
+    scan: dict | None = None
+    sub: tuple[int, int] | None = None   # open SubScan: (count, interval in 100 us units)
+    sub_start: dict[int, int] = {}
+    sequential = is_sequential(program, profile, env)
+    depth = 0                            # open If/For/Do/Select blocks
+    items: list[tuple[S.Stmt, bool]] = []
+    for stmt in program.statements:
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        text = stmt.text or ""
+        if isinstance(stmt, S.For) or (isinstance(stmt, S.DoLoop) and stmt.keyword == "DO") or \
+                (isinstance(stmt, S.If) and stmt.inline is None) or kw in _OPENERS:
+            items.append((stmt, depth > 0))
+            depth += 1
+            continue
+        if (kw == "NEXT" and not re.match(r"(?i)\s*Next\s+(Sub)?Scan\b", text)) or \
+                (isinstance(stmt, S.DoLoop) and stmt.keyword == "LOOP") or kw in _CLOSERS - {"NEXTSUBSCAN"} \
+                or (kw == "END" and re.match(r"(?i)\s*End\s+(If|Select)\b", text)):
+            depth = max(depth - 1, 0)
+        items.append((stmt, depth > 0))
+        if isinstance(stmt, S.If):
+            items += [(child, True) for child in (stmt.inline or []) + (stmt.inline_else or [])]
+    for stmt, conditional in items:
+        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
+        text = stmt.text or ""
+        if kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", text):
+            kw = "NEXTSCAN"
+        elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+SubScan\b", text):
+            kw = "NEXTSUBSCAN"
+        if kw.startswith("CDM_") and kw != "CDM_TCCOMP" or kw == "CPIADDMODULE2":
+            return
+        if kw == "SCAN":
+            raw = _scan_raw(stmt, env)
+            if raw is None:
+                return
+            scan = {"ms": raw[0] * _US_PER_UNIT[raw[1]] // 1000, "times": {}, "short": []}
+            scans.append(scan)
+        elif scan is None:
+            continue
+        elif kw == "NEXTSCAN":
+            if sub is not None:
+                return
+            scan = None
+        elif kw == "SUBSCAN":
+            args = [_value(a, env) for a in stmt.args]
+            count = args[2] if len(args) == 3 else None
+            step = 0
+            if not isinstance(count, int) or isinstance(count, bool) or count < 1 or sub is not None:
+                return
+            if args[0] != 0:
+                unit = _US_PER_UNIT.get(args[1]) if isinstance(args[1], int) else None
+                if unit is None or not isinstance(args[0], (int, float)) or args[0] <= 0:
+                    return
+                step = int(args[0]) * unit // 100
+                if sequential and step <= 10:   # "SequentialMode SubScan interval must be > 1 mS."
+                    return
+                if step * count > scan["ms"] * 10:   # "Product of SubScan interval and iterations ..."
+                    return
+            sub = (count, step)
+            sub_start = dict(scan["times"])
+        elif kw == "NEXTSUBSCAN":
+            if sub is None:
+                return
+            count, step = sub
+            for addr, units in list(scan["times"].items()):
+                length = units - sub_start.get(addr, 0)
+                if length > 0:
+                    if step and length > step:
+                        scan["short"].append((addr, (length - step) * 100))
+                    scan["times"][addr] = units + (step or length) * (count - 1)
+            sub = None
+        elif kw == "CDM_TCCOMP":
+            module, addr, reps = (_int_value(stmt.args[i], env) if i < len(stmt.args) else None
+                                  for i in (0, 1, 3))
+            if module != 224 or addr is None or not 1 <= addr <= 120 or reps is None or reps < 1:
+                return
+            if conditional and not sequential:   # "not allowed inside of a conditional statement"
+                return
+            if addr not in order:
+                order.append(addr)
+            scan["times"][addr] = scan["times"].get(addr, 0) + -(-(reps * 430 + 275) // 100)
+    last = program.statements[-1].line
+    leader: dict[int, tuple[int, int]] = {}   # scan index -> (ms needed, address)
+    for addr in order:
+        for i, sc in enumerate(scans):
+            if not sc["times"]:
+                continue
+            for a, by in sc["short"]:
+                if a == addr:
+                    diags.error(last, f"SubScan interval too short for measurements from CPI "
+                                f"address {a} by {by} uSec.")
+            need = -(-sc["times"].get(addr, 0) // 10)
+            if need > leader.get(i, (0, 0))[0]:
+                leader[i] = (need, addr)
+        for i, sc in enumerate(scans):
+            if i in leader and sc["ms"] < leader[i][0]:
+                diags.error(last, f"Insufficient time ({sc['ms']} ms) for measurements from CPI "
+                            f"address {leader[i][1]} (needs at least {leader[i][0]} ms).")
+
+
 def _value(expr: S.Expr | None, env: consteval.Env) -> object | None:
     if expr is None or not consteval.is_constant(expr, env):
         return None
@@ -754,7 +908,16 @@ def check_dest_bounds(program: S.Program, profile: Profile, diags: Diagnostics,
             return False
         return negative or need > total - offset
 
+    names = longconv.float_names(program.statements), longconv.literal_names(program.statements)
     for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CDM_TCCOMP" and \
+                len(stmt.args) > 3 and isinstance(stmt.args[2], (S.Name, S.Index)):
+            # Reps (fourth) of the destination (third); negative Reps overruns too (oracle, CR6/
+            # CR1000X, 2026-10-10; docs/instructions.md "CPI measurement time")
+            reps = longconv.long_value(stmt.args[3], env, profile, *names)
+            if reps is not None and overruns(stmt.args[2], reps, reps < 0, ("FLOAT",)):
+                diags.error(stmt.line, f"Variable {stmt.args[2].name} out of bounds.", stmt.file)
+            continue
         if not isinstance(stmt, S.Instruction) or not stmt.args or \
                 not isinstance(stmt.args[0], (S.Name, S.Index)):
             continue

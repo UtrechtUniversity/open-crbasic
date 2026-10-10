@@ -633,6 +633,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `check_background_calibration` docstring has the oracle evidence). Independent of
         # `tables_hook`'s own availability, so called ahead of that guard rather than inside it.
         _run_pass(warnings.check_background_calibration, program, profile, diags, env)
+        _run_pass(instr_measure.check_cpi_time, program, profile, diags, env)
         try:
             from .. import tables_hook
         except ImportError:

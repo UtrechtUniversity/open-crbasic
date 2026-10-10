@@ -316,6 +316,8 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     # Not in SequentialMode (oracle, CR6, 2026-10-08; docs/fuzz-findings.md).
     from .instr_measure import is_sequential
     sequential = is_sequential(program, profile, env)
+    if sequential:  # no warning at all in SequentialMode (oracle, CR6/CR1000X, 2026-10-10)
+        return
     busy = {id(scan) for scan, _end, (value, unit), total in scan_delay_totals(program, env)
             if total and value * _US_PER_UNIT[unit] - total < 3000 and not sequential}
     in_slow = False

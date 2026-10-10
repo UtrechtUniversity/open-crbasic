@@ -1,0 +1,701 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-one-module-short",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr1000x-one-module-short",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr6-one-module-exact",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(8,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-one-module-exact",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(8,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-one-module-short-by-one",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(5,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (5 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr1000x-one-module-short-by-one",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(5,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Insufficient time (5 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr6-reps2-needs2",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 2 ms)."
+  },
+  {
+   "id": "cr1000x-reps2-needs2",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 2 ms)."
+  },
+  {
+   "id": "cr6-reps13-needs6",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),13,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr1000x-reps13-needs6",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),13,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr6-reps1-fits",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),1,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-reps1-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),1,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-same-address-sums-100us",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(2,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,5,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 12: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr1000x-same-address-sums-100us",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(2,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,5,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 12: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr6-two-addresses-leader-so-far",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 13: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 3 ms).\nline 13: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr1000x-two-addresses-leader-so-far",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 13: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 13: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 3 ms).\nline 13: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr6-two-addresses-tie-keeps-first",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 12: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 3 ms).\nline 12: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr1000x-two-addresses-tie-keeps-first",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,2,Temp(1),6,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 12: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 12: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 3 ms).\nline 12: Insufficient time (1 ms) for measurements from CPI address 2 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr6-two-scans",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  Scan(2,mSec,200,0)\n    CDM_TCComp(TEMP120,2,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: Scan never reached at run time.\nline 15: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 15: Warning: When Main Sequence Scan 2 is running, background calibration will be disabled.\nline 15: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms).\nline 15: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms).\nline 15: Insufficient time (2 ms) for measurements from CPI address 2 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr1000x-two-scans",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  Scan(2,mSec,200,0)\n    CDM_TCComp(TEMP120,2,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: Scan never reached at run time.\nline 15: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 15: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms).\nline 15: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms).\nline 15: Insufficient time (2 ms) for measurements from CPI address 2 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr6-subscan-repeat",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(2,mSec,200,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 13: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 4 ms)."
+  },
+  {
+   "id": "cr1000x-subscan-repeat",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(2,mSec,200,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 13: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 4 ms)."
+  },
+  {
+   "id": "cr6-subscan-fits",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 13: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-subscan-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-subscan-plus-outside",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 14: Insufficient time (4 ms) for measurements from CPI address 1 (needs at least 5 ms)."
+  },
+  {
+   "id": "cr1000x-subscan-plus-outside",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    SubScan(0,0,3)\n    CDM_TCComp(TEMP120,1,Temp(1),2,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 14: Insufficient time (4 ms) for measurements from CPI address 1 (needs at least 5 ms)."
+  },
+  {
+   "id": "cr6-subscan-interval-too-short",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(20,mSec,200,0)\n    SubScan(1,mSec,3)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: SubScan interval too short for measurements from CPI address 1 by 1900 uSec."
+  },
+  {
+   "id": "cr1000x-subscan-interval-too-short",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(20,mSec,200,0)\n    SubScan(1,mSec,3)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 13: SubScan interval too short for measurements from CPI address 1 by 1900 uSec."
+  },
+  {
+   "id": "cr6-subscan-interval-too-short-and-total",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    SubScan(1,mSec,3)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 13: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 13: SubScan interval too short for measurements from CPI address 1 by 1900 uSec.\nline 13: Insufficient time (4 ms) for measurements from CPI address 1 (needs at least 5 ms)."
+  },
+  {
+   "id": "cr1000x-subscan-interval-too-short-and-total",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(4,mSec,200,0)\n    SubScan(1,mSec,3)\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    NextSubScan\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 13: SubScan interval too short for measurements from CPI address 1 by 1900 uSec.\nline 13: Insufficient time (4 ms) for measurements from CPI address 1 (needs at least 5 ms)."
+  },
+  {
+   "id": "cr6-sequential-if-counts",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(2,mSec,200,0)\n    If I=1 Then\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    Else\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    EndIf\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 16: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr1000x-sequential-if-counts",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(2,mSec,200,0)\n    If I=1 Then\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    Else\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    EndIf\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 16: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 6 ms)."
+  },
+  {
+   "id": "cr6-sequential-for-counts",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    For I=1 To 3\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    Next I\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 14: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr1000x-sequential-for-counts",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    For I=1 To 3\n    CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    Next I\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 14: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr6-sequential-inline-if",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(2,mSec,200,0)\n    If I=1 Then CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr1000x-sequential-inline-if",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(2,mSec,200,0)\n    If I=1 Then CDM_TCComp(TEMP120,1,Temp(1),6,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 12: Insufficient time (2 ms) for measurements from CPI address 1 (needs at least 3 ms)."
+  },
+  {
+   "id": "cr6-sequential-no-background-warning",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),1,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-sequential-no-background-warning",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),1,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-sequential-short",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr1000x-sequential-short",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  SequentialMode\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 12: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr6-slow-sequence",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(100,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 28: Insufficient time (100 ms) for measurements from CPI address 1 (needs at least 101 ms)."
+  },
+  {
+   "id": "cr1000x-slow-sequence",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(100,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 28: Insufficient time (100 ms) for measurements from CPI address 1 (needs at least 101 ms)."
+  },
+  {
+   "id": "cr6-slow-sequence-fits",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(100,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow-sequence-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1000,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CallTable Test\n  NextScan\n  SlowSequence\n  Scan(100,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-reps-fraction",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16.7,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr1000x-reps-fraction",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16.7,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 8 ms)."
+  },
+  {
+   "id": "cr6-variable-out-of-bounds",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(10),8,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Temp out of bounds."
+  },
+  {
+   "id": "cr1000x-variable-out-of-bounds",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(10),8,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable Temp out of bounds."
+  },
+  {
+   "id": "cr6-variable-fits",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(10),7,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 4 ms)."
+  },
+  {
+   "id": "cr1000x-variable-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(10),7,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 11: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled.\nline 11: Insufficient time (1 ms) for measurements from CPI address 1 (needs at least 4 ms)."
+  },
+  {
+   "id": "cr6-negative-reps-out-of-bounds",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,-1,2,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Temp out of bounds."
+  },
+  {
+   "id": "cr1000x-negative-reps-out-of-bounds",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,-1,2,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable Temp out of bounds."
+  },
+  {
+   "id": "cr6-scalar-destination-reps2",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,DestBR,2,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable DestBR out of bounds."
+  },
+  {
+   "id": "cr1000x-scalar-destination-reps2",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,DestBR,2,1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable DestBR out of bounds."
+  },
+  {
+   "id": "cr6-reps-cycle-beyond-last-channel",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,2,20,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Reps cycle beyond last channel!"
+  },
+  {
+   "id": "cr1000x-reps-cycle-beyond-last-channel",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,2,20,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Reps cycle beyond last channel!"
+  },
+  {
+   "id": "cr6-channel-error-then-reps-cycle",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,21,21,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Input channel: 21, out of range (1 - 20).\nline 8: Reps cycle beyond last channel!"
+  },
+  {
+   "id": "cr1000x-channel-error-then-reps-cycle",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,21,21,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Input channel: 21, out of range (1 - 20).\nline 8: Reps cycle beyond last channel!"
+  },
+  {
+   "id": "cr6-burst-channel",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,1,-1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Burst measurements unsupported, input channel must be > 0!\nline 8: Input channel: -1, out of range (1 - 20)."
+  },
+  {
+   "id": "cr1000x-burst-channel",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,1,-1,TypeT,1,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Burst measurements unsupported, input channel must be > 0!\nline 8: Input channel: -1, out of range (1 - 20)."
+  },
+  {
+   "id": "cr6-all-argument-errors",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,20,25,9,1,5)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Input channel: 25, out of range (1 - 20).\nline 8: Thermocouple type unsupported.\nline 8: Temperature unit unsupported. Must be 0 (Celsius), 1 (Fahrenheit), or 2 (Kelvin)"
+  },
+  {
+   "id": "cr1000x-all-argument-errors",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,20,25,9,1,5)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Input channel: 25, out of range (1 - 20).\nline 8: Thermocouple type unsupported.\nline 8: Temperature unit unsupported. Must be 0 (Celsius), 1 (Fahrenheit), or 2 (Kelvin)"
+  },
+  {
+   "id": "cr6-oob-before-unit-and-warning",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,17,1,TypeT,1,-1)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Warning: Open detection disabled."
+  },
+  {
+   "id": "cr1000x-oob-before-unit-and-warning",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp,17,1,TypeT,1,-1)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Variable Temp out of bounds.\nline 8: Warning: Open detection disabled."
+  },
+  {
+   "id": "cr6-other-error-hides-time",
+   "logger": "cr6",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    x=1\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     x=1."
+  },
+  {
+   "id": "cr1000x-other-error-hides-time",
+   "logger": "cr1000x",
+   "source": "Public Temp(16), DestBR, I\nDataTable (Test,1,-1)\n  DataInterval (0,1,Sec,10)\n  Sample (1,DestBR,FP2)\nEndTable\nBeginProg\n  Scan(1,mSec,200,0)\n    CDM_TCComp(TEMP120,1,Temp(1),16,1,TypeT,1,0)\n    x=1\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     x=1."
+  },
+  {
+   "id": "cr6-cpispeed-50",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(50)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-50",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(50)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-125",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(125)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-125",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(125)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-250",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(250)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-250",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(250)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-500",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(500)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-500",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(500)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-1000",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(1000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-1000",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(1000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-1000_9",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(1000.9)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-1000_9",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(1000.9)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-49_9",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(49.9)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-49_9",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(49.9)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-999",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(999)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-999",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(999)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-0",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(0)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-0",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(0)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-neg1",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(-1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-neg1",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(-1)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-2000",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(2000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-2000",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(2000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-256",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(256)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-256",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(256)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-65586",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(65586)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-65586",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(65586)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-TRUE",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(TRUE)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-TRUE",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(TRUE)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr6-cpispeed-string-not-checked",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(\"a\")\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-cpispeed-string-not-checked",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(\"a\")\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-cpispeed-twice",
+   "logger": "cr6",
+   "source": "BeginProg\n  CPISpeed(2000)\n  CPISpeed(3000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid CPI bit rate.\nline 3: Invalid CPI bit rate."
+  },
+  {
+   "id": "cr1000x-cpispeed-twice",
+   "logger": "cr1000x",
+   "source": "BeginProg\n  CPISpeed(2000)\n  CPISpeed(3000)\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 2: Invalid CPI bit rate.\nline 3: Invalid CPI bit rate."
+  }
+ ]
+}

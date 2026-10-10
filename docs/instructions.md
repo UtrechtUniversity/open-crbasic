@@ -1573,3 +1573,54 @@ not a multiple of 10000 uSec (50 mSec and 150 mSec compile that check), `Maximum
 and mSec/uSec floored to seconds (`86400999` mSec compiles), and it precedes the BufferOption/Count
 messages. A value outside Long counts as -2147483648 for the `multiple of 1mSec` check. Cases the
 fixture drops (ours differs): see the fixture-prune count in the commit. CR300/CR350 untouched.
+
+### CPI measurement time and `CPISpeed` (CR6/CR1000X; fixture `cpi_time`)
+
+Found by decompiling the end-of-compile pass of CR6Comp (`FUN_0041ce90`, tracer in `docs/binary.md`)
+and then verified on the real compilers 2026-10-10 (98 fixture cases, audited 0 differing; Reps 1..20
+and a second-address sweep exact on CR6 and CR1000X).
+
+- **`CPISpeed(Rate)`**: the constant, converted as C's `(long)`, must be one of `50`, `125`, `250`,
+  `500`, `1000` (the binary's table of five), else `Invalid CPI bit rate.` on the statement's line
+  (`1000.9` passes, `999`, `0`, `-1`, `TRUE`, `256`, `65586`, `2000` fail, each bad statement
+  reports). A string or a variable is not checked. Implemented as a `const_ranges` rule
+  (`skip_strings`).
+- **`Insufficient time (%d ms) for measurements from CPI address %d (needs at least %d ms).`**, at the
+  program's last line, only when the compile has no other error. The scan interval in whole
+  milliseconds (`value*unit/1000`) must be at least the module time. The time of `CDM_TCComp(TEMP120,
+  ...)` is `Reps*430+275` microseconds, rounded up to 100 us per statement, summed per CPI address
+  over the scan, then rounded up to whole milliseconds (Reps 2..16: 2,2,2,3,3,4,4,5,5,6,6,6,7,7,8 ms).
+  `CPISpeed`, the thermocouple type, the integration argument and the unit do not change it. In the
+  binary this value is the return of `FUN_004228a0` (stored in the instruction record, divided by
+  100 and rounded up with `FUN_00413750`); the other CDM measurement instructions use
+  `FUN_00411750` (not modelled).
+- **Every occurrence counts once**, wherever it sits: inside `For`, `While`, `If` (both branches),
+  `Select` cases and a one-line `If` (SequentialMode; in PipeLineMode a conditional `CDM_TCComp` is
+  an error of its own, unmodelled, and the pass stays silent). Slow-sequence scans behave as main
+  scans (100 ms scan with 14 `Reps 16` statements needs 101 ms; 13 fit).
+- **`SubScan(Interval,Units,n)`** around the statements: the body counts `n` times; with Interval 0
+  back to back (`(n-1)*body` added), otherwise `(n-1)*Interval` is added (Interval in 100 us units,
+  truncated). A body longer than Interval gives `SubScan interval too short for measurements from
+  CPI address %d by %d uSec.` (body minus interval, in uSec) first. Not modelled, and the pass
+  stays silent: `Product of SubScan interval and iterations must be less than Main Scan interval.`,
+  `SequentialMode SubScan interval must be > 1 mS.` (<= 1 ms), nested or non-constant SubScans.
+- **Several modules** (the binary walks the module list in order of first use): for each module it
+  totals that module in every scan holding CDM instructions, keeps per scan the first module with
+  the strictly largest total so far, then reports every scan whose interval is below that leader.
+  Hence k addresses print up to k lines per scan, each naming the leader so far: addresses 1 (3 ms)
+  then 2 (6 ms) print `address 1 needs 3` then `address 2 needs 6`; addresses 2 then 1 with equal
+  times print `address 2` twice; two scans with one module each print the first scan's line twice.
+  Any other CDM instruction or `CPIAddModule2` in the program makes the pass silent (their times
+  and module-list effect are unprobed).
+- **`SequentialMode` never prints the `background calibration will be disabled` warning** (also
+  for `Scan(1,mSec)` with no CDM instruction; CR6 and CR1000X, 2026-10-10). The earlier model only
+  skipped the delay-budget cause of it.
+- **`CDM_TCComp(TEMP120, ...)` argument checks found on the way** (all in one statement, in this
+  order): `CPI Address must be 1..120.`; `Variable <dest> out of bounds.` when `Reps` exceeds the
+  destination from its start (third argument) or is negative (a string or overflow counts as
+  negative; `-0.5` is 0 and passes; scalar destination holds 1); `Burst measurements unsupported,
+  input channel must be > 0!` for a negative channel; `Input channel: %d, out of range (1 - 20).`;
+  `Reps cycle beyond last channel!` when `channel-1+Reps > 20` (an out-of-range channel counts as 1,
+  so `Reps 21` fails with channel 21 too); `Thermocouple type unsupported.` outside 0..7; the unit
+  message. Known order gap: an out-of-range CPI address together with an out-of-bounds destination
+  prints the bounds line first here, last on the real compiler.
