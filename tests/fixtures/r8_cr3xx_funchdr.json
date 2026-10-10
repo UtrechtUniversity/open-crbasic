@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r8_cr3xx_funchdr-0",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!, rst As Long) As String * 40\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-1",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!, b, rst) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  b.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-2",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  As.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-3",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a, rst As Long)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-4",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a(), rst As Long)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-5",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a(2,3) As Long, rst)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-6",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F()\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-7",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F( ) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-8",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_funchdr-9",
+   "logger": "cr300",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long, b As Long, c)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  b.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-0",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!, rst As Long) As String * 40\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-1",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!, b, rst) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  b.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-2",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long!) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  As.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-3",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a, rst As Long)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-4",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a(), rst As Long)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-5",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a(2,3) As Long, rst)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  rst.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-6",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F()\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-7",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F( ) As Long\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-8",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_funchdr-9",
+   "logger": "cr350",
+   "source": "Public Tx(-1), Ty(2), Tz(0)\nFunction F(a As Long, b As Long, c)\n  Return 1\nEndFunction\nPublic X\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public Tx(-1), Ty(2), Tz(0)\n\nline 1: Too many parameters:  Tz.\nline 2: Too many parameters:  b.\nline 7: Too many parameters:  Sec.\nline 8: X is not defined."
+  }
+ ]
+}

@@ -4439,3 +4439,8 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   expression: X >.`, `X Y` -> `Incomplete expression: X Y.`), echoed without the line-end newline, names
   of the condition first. They no longer take the "instruction reads the prose" path
   (`Incomplete expression: While X >.`). `cr3xx.check_unknown_line_words`. An empty condition keeps the old path.
+- **`Too many parameters` on a `Sub`/`Function` header after the cascade started** (CR300/CR350,
+  `r8_cr3xx_funchdr.json`): with two or more parameters the echo is the *second parameter's name*
+  (`(a As Long!, rst As Long) As Long` -> `rst`, `(a, b, c)` -> `b`); with one parameter it stays
+  the second token (`(a As Long!) As Long` -> `As`); with no parameters (`F( ) As Long`) nothing is
+  printed. `cr3xx.check_too_many_cascade`.

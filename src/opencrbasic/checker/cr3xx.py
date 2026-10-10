@@ -328,6 +328,25 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 # `... As.`: the second token after the name (oracle, 2026-09-28)
                 m = re.search(r"\((.*)$", stmt.text or "")  # `(x) As Long` -> x, As
                 tokens = [t for t in re.split(r"[\s,()=]+", m.group(1)) if t] if m else []
+                if m:
+                    # with two or more parameters the second parameter's name is echoed (oracle,
+                    # CR300, 2026-10-10: `(a As Long!, rst As Long)` -> `rst`, not `As`)
+                    parts, depth, cur = [], 0, ""
+                    for ch in m.group(1):
+                        depth += (ch == "(") - (ch == ")")
+                        if depth < 0:
+                            break
+                        if ch == "," and depth == 0:
+                            parts.append(cur)
+                            cur = ""
+                        else:
+                            cur += ch
+                    parts.append(cur)
+                    second = re.match(r"[\s]*([^\s,()=]+)", parts[1]) if len(parts) > 1 else None
+                    if second:
+                        tokens = [tokens[0] if tokens else "", second.group(1)]
+                    elif len(parts) == 1 and not parts[0].strip():
+                        tokens = []  # `F( ) As Long`: no parameters, nothing to echo
                 if len(tokens) >= 2:
                     diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                     diags.error(stmt.line, f"Too many parameters:  {tokens[1]}.", stmt.file)
