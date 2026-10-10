@@ -168,10 +168,11 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
 def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
     # `Unknown instruction: #...` ends the compile on all four loggers: nothing after that
     # statement is reported (oracle, 2026-10-10: `#a` then `#b` -> only `#a`)
-    stop = next((i for i, st in enumerate(program.statements)
-                 if isinstance(st, S.Unparsed) and st.text.lstrip().startswith("#")), None)
+    stop = next((i for i, st in enumerate(program.statements) if S.hash_statement(st)), None)
     if stop is not None:
         program = dataclasses.replace(program, statements=program.statements[:stop + 1])
+        if program.hash_cut is not None:
+            del diags.items[program.hash_cut:]  # parser findings of later lines
     env = consteval.Env(profile, dict(program.consts))
 
     _run_pass(structure.check_pass1, program, profile, diags, env)

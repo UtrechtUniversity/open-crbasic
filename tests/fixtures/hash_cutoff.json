@@ -1,0 +1,331 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-hash_cutoff-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr6-hash_cutoff-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\n#Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 : #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction:  #Foo."
+  },
+  {
+   "id": "cr6-hash_cutoff-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 Else #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr6-hash_cutoff-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nX=Scan(1)\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr6-hash_cutoff-5",
+   "logger": "cr6",
+   "source": "#Foo\n#Else\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-6",
+   "logger": "cr6",
+   "source": "#Foo\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-7",
+   "logger": "cr6",
+   "source": "#Foo\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-8",
+   "logger": "cr6",
+   "source": "#Foo\nPublic A(2) = {\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-9",
+   "logger": "cr6",
+   "source": "#Foo\nPublic X As Bad\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr6-hash_cutoff-10",
+   "logger": "cr6",
+   "source": "#Foo\nX = = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\n#Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 : #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction:  #Foo."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 Else #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nX=Scan(1)\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-5",
+   "logger": "cr1000x",
+   "source": "#Foo\n#Else\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-6",
+   "logger": "cr1000x",
+   "source": "#Foo\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-7",
+   "logger": "cr1000x",
+   "source": "#Foo\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-8",
+   "logger": "cr1000x",
+   "source": "#Foo\nPublic A(2) = {\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-9",
+   "logger": "cr1000x",
+   "source": "#Foo\nPublic X As Bad\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr1000x-hash_cutoff-10",
+   "logger": "cr1000x",
+   "source": "#Foo\nX = = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr300-hash_cutoff-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\n#Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 : #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction:  #Foo."
+  },
+  {
+   "id": "cr300-hash_cutoff-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 Else #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr300-hash_cutoff-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nX=Scan(1)\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr300-hash_cutoff-5",
+   "logger": "cr300",
+   "source": "#Foo\n#Else\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-6",
+   "logger": "cr300",
+   "source": "#Foo\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-7",
+   "logger": "cr300",
+   "source": "#Foo\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-8",
+   "logger": "cr300",
+   "source": "#Foo\nPublic A(2) = {\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-9",
+   "logger": "cr300",
+   "source": "#Foo\nPublic X As Bad\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr300-hash_cutoff-10",
+   "logger": "cr300",
+   "source": "#Foo\nX = = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr350-hash_cutoff-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\n#Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 : #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction:  #Foo."
+  },
+  {
+   "id": "cr350-hash_cutoff-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=1 Else #Foo\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr350-hash_cutoff-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nIf True Then #Foo\nX=Scan(1)\nNextScan\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Unknown instruction: #Foo."
+  },
+  {
+   "id": "cr350-hash_cutoff-5",
+   "logger": "cr350",
+   "source": "#Foo\n#Else\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-6",
+   "logger": "cr350",
+   "source": "#Foo\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-7",
+   "logger": "cr350",
+   "source": "#Foo\n#EndIf\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-8",
+   "logger": "cr350",
+   "source": "#Foo\nPublic A(2) = {\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-9",
+   "logger": "cr350",
+   "source": "#Foo\nPublic X As Bad\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  },
+  {
+   "id": "cr350-hash_cutoff-10",
+   "logger": "cr350",
+   "source": "#Foo\nX = = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #Foo\n."
+  }
+ ]
+}

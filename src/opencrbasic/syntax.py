@@ -224,11 +224,23 @@ class Unparsed(Stmt):
     reason: str = ""
 
 
+def hash_statement(st: "Stmt") -> "Unparsed | None":
+    """The `#...` statement that ends the compile (`Unknown instruction`): `st` itself or one in
+    an inline `If` body."""
+    if isinstance(st, Unparsed):
+        return st if st.text.lstrip().startswith("#") else None
+    for sub in (getattr(st, "inline", None) or []) + (getattr(st, "inline_else", None) or []):
+        if (h := hash_statement(sub)) is not None:
+            return h
+    return None
+
+
 @dataclass
 class Program:
     name: str
     statements: list[Stmt] = field(default_factory=list)
     last_line: int = 0      # `EndProg`'s line, else the main file's last physical line
+    hash_cut: int | None = None  # parser diagnostics kept: those before the first `#...` statement ends
     consts: dict[str, object] = field(default_factory=dict)   # name (upper) -> resolved value,
     # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
     # this (via `consteval.Env`) instead of re-walking the program to rebuild it.

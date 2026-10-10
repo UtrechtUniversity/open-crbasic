@@ -4511,3 +4511,15 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
 All four loggers: with `RWRITE`, a fifth argument starting `RANGES `/`VALUES ` owns every remaining
 comma (`RANGES 0,65535`, `VALUES 1,2,3,4,5,6,...`, even `RANGES 0,65535,7`) and is not counted as
 extra parameters. With `RONLY` the word itself is the excess parameter (`Too many parameters:  VALUES.`).
+
+## Round 8 review 7: inline `If` bodies in pass 1 and the `#` cutoff (oracle, 2026-10-10; `tests/fixtures/inline_block_keyword.json`, `tests/fixtures/hash_cutoff.json`)
+
+- CR6/CR1000X: `If True Then X=Scan(1)` (also after `Else`, after `:`) is the same pass-1 `Incomplete
+  expression: X=Scan(1).` as the standalone statement (`_check_if_pass1` runs `_block_keyword_call`
+  on inline bodies). CR300/CR350 print it for the standalone form too and that is not implemented
+  (`known_first_word_pass1` is false there; reproducer still differs).
+- All four: `If True Then #Foo` (also after `Else`/`:`) is `Unknown instruction: #Foo.` (no newline echo,
+  the body is not at the line end) and ends the compile; `syntax.hash_statement` finds it.
+- The cutoff also drops the parser findings of later lines (`#Foo` / `#Else` / `Include "bad.txt"`
+  reports only `#Foo`): `Program.hash_cut` is the parser's diagnostic count when the `#` statement
+  was parsed.

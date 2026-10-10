@@ -281,6 +281,9 @@ class _Parser:
                 self.diags.error(ll.line, f"Variable initialization of {ll.bad_init[1]} has bad syntax.",
                                  ll.file)
             self._parse_line(ll)
+            if self.program.hash_cut is None and self.program.statements and \
+                    S.hash_statement(self.program.statements[-1]):
+                self.program.hash_cut = len(self.diags.items)
             if self._done:
                 # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
                 # the oracle: garbage (even unlexable text, even a second full program) after it

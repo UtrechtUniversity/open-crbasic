@@ -1005,6 +1005,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             elif not _check_alias_index_names(stmt, known, decl_variables, profile, diags):
                 _check_alias_dims(stmt, diags, env, dim0_sizes, all_dims, seen_alias_names,
                                    seen_alias_sources, declared_kinds.get(f"#{id(stmt)}"))
+        if isinstance(stmt, S.If) and (hashed := S.hash_statement(stmt)) is not None:
+            diags.error(hashed.line, _junk_init_findings(hashed, profile)[0], hashed.file)
         if profile.known_first_word_pass1 and isinstance(stmt, (S.If, S.ElseIf)):
             if known is None:
                 known = expressions._known_names(program, profile)
@@ -2115,6 +2117,8 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
                 and sub.name.upper() not in profile.functions):
             diags.error(sub.line, _out_of_place(profile, sub.text, sub.at_eol), sub.file,
                         show_file=False)  # `If c Then Y`: a bare variable is a pass-1 error
+        if profile.known_first_word_pass1 and _block_keyword_call(sub):
+            diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file, show_file=False)
         if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
             verdict = _pass1_scan(sub.text, operands, profile)
             if verdict and verdict[0] == "pass1":
