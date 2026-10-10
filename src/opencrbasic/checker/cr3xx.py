@@ -1336,8 +1336,10 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 verdict = (structure._pass1_scan(scan_text, structure._Everything(), profile)
                            if cond is not None
                            or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
+                           or re.match(r"\s*(?:\d[\w.]*|-\s*\d[\w.]*|\"[^\"]*\")\s*=", stmt.text)
                            else None)  # (prose stays generic)
-                head = {"incomplete": "Incomplete expression: ",
+                head = {"invalid_assignment": "Invalid assignment in expression: ",
+                        "incomplete": "Incomplete expression: ",
                         "no_matching": "No Matching, or out of place ) in expression: "}.get(
                             verdict[1] if verdict and verdict[0] == "pass1" else None)
                 call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)\)?\s*$", stmt.text)
@@ -1601,3 +1603,18 @@ def fix_then_operand(program: S.Program, profile, diags: Diagnostics) -> None:
         diags.items[hits[0]] = dataclasses.replace(diags.items[hits[0]], message=message)
         for i in reversed(hits[1:]):
             del diags.items[i]
+
+
+def order_invalid_assignments(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the undefined names of an assignment come before its `Invalid assignment in
+    expression:` line (oracle, 2026-10-10: `Sec = Nope`, `6 = estimated`), which pass 1 emitted first."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for key in {(d.line, d.file) for d in diags.items if d.message.startswith("Invalid assignment in expression:")}:
+        own = [d for d in diags.items if (d.line, d.file) == key]
+        marks = [d for d in own if d.message.startswith("Invalid assignment in expression:")]
+        group = [d for d in own if d not in marks] + marks
+        first = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == key)
+        rest = [d for d in diags.items if (d.line, d.file) != key]
+        rest[first:first] = group
+        diags.items[:] = rest

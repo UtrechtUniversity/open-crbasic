@@ -4686,3 +4686,13 @@ declared array and `Fn(Zork)` are unchanged. CR6/CR1000X are unaffected (`Invali
   X = .` instead of `Then is not defined.` (`cr3xx.fix_then_operand`).
 
 Not modelled: `ElseIf X Y Then Y = 1` (one-line `ElseIf`: an extra `ElseIf is not defined.`).
+
+## Round 9, CR300/CR350: `Invalid assignment in expression` (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_invalid_assign.json`)
+
+The CR6/CR1000X pass-1 rule (a predefined symbol, a number or a string as the assignment target) holds on
+CR300/CR350 with their usual echo: `Sec = 3`, `String = "x"`, `Double = Double + Double`, `True = 1`, `Float = 2`,
+`NAN = 1`, `uSec = 1`, `6 = 1`, `"a" = 1`, `-1 = 2`, `1.5 = X` -> `Invalid assignment in expression: <statement>`
+with the line-end newline before the `.` (none for a `:` segment, a one-line `If` body or a trailing comment).
+The undefined names of the statement come first (`Sec = Nope`, `6 = estimated`). Only the symbols the logger itself
+defines count (`mV1000 = 1` and `Pi = 3` are `... is not defined.` there). `Sec(1) = 3` is still wrong on every
+logger. `structure.check_pass1`, `cr3xx.order_invalid_assignments`.

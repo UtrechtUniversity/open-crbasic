@@ -996,7 +996,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
                     select_depth += 1
-        elif (isinstance(stmt, S.Assignment) and profile.known_first_word_pass1
+        elif (isinstance(stmt, S.Assignment) and (profile.known_first_word_pass1 or profile.single_pass)
               and isinstance(stmt.target, S.Name)
               and stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
               and stmt.target.name.upper() not in profile.instructions
@@ -1037,6 +1037,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if _block_keyword_call(sub):
                     diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file,
                                 show_file=False)
+                elif (isinstance(sub, S.Assignment) and isinstance(sub.target, S.Name)
+                      and sub.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+                      and sub.target.name.upper() not in profile.instructions
+                      and sub.target.name.upper() not in symbols.declared_variable_names(program)):
+                    diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
+                                                         "invalid_assignment"), sub.file, show_file=False)
 
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
@@ -2214,7 +2220,8 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str) -> str:
         "symbol": f"Invalid symbol in expression: {text}.",
         "expects_paren": f"Expression expects ( : {text}.",
         "missing_expr": "Invalid or missing expression.",
-        "invalid_assignment": f"Invalid assignment in expression: {stmt.text}.",
+        "invalid_assignment": "Invalid assignment in expression: "
+                              f"{stmt.text}{chr(10) if profile.fallback_echo_newline and getattr(stmt, 'at_eol', True) else ''}.",
     }[kind]
 
 def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics) -> None:
