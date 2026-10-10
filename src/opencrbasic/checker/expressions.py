@@ -1732,7 +1732,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     if in_table:
                         table_mine.append(diags.items[-1])
                     break
-                if _find_bare_function_ref(arg, profile, declared_variables):
+                if kw not in ("ALIAS", "UNITS") and _find_bare_function_ref(arg, profile, declared_variables):
                     msg = _bare_function_message(_arg_text(stmt, i), profile, whole_statement=False)
                     diags.error(stmt.line, msg, stmt.file)
                     break

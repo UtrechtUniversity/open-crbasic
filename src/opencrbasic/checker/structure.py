@@ -2710,6 +2710,10 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                         declared[f"#{id(stmt)}"] = f"{a.name} already declared as a variable."
                     elif prior == "CONST":
                         declared[f"#{id(stmt)}"] = f"{a.name} is already declared as a CONST."
+                    elif profile and symbols.is_reserved_predefined_name(a.name, profile):
+                        # `Alias X = Sec` (oracle, all four loggers, 2026-10-10); the name is
+                        # still registered as an alias (`Duplicate Alias Name` follows)
+                        declared[f"#{id(stmt)}"] = f"{a.name} is a predefined CONST."
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ESSVARIABLES" and profile:
         # declares its table's variables: a later `Public essBatteryStatus` -> `already declared
         # as a variable.` (oracle, 2026-10-01; `checker/ess.py`)
@@ -3233,7 +3237,7 @@ def _check_alias_dims(stmt: S.Instruction, diags: Diagnostics, env: consteval.En
         if not isinstance(rhs, S.Name):
             continue
         rhs_upper = rhs.name.upper()
-        if name_collision and rhs is stmt.args[1]:
+        if name_collision and rhs is stmt.args[1] and not name_collision.endswith("predefined CONST."):
             continue  # a colliding first name is never registered as an alias
         if rhs_upper in seen_alias_names:
             diags.error(stmt.line, f"Duplicate Alias Name: {rhs.name}.", stmt.file)

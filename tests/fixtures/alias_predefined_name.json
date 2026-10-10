@@ -1,0 +1,1031 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-alias_predefined_name-0",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-1",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=U1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: U1 is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-2",
+   "logger": "cr6",
+   "source": "Public X\nAlias A(2)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_predefined_name-3",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-4",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-5",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Float\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-6",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=String\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-7",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=FP2\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FP2 is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-8",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=NAN\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-9",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=mV5000\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: mV5000 is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-10",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=ComC1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComC1 is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-11",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-12",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-13",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Month\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-14",
+   "logger": "cr6",
+   "source": "Public X\nAlias A(2)=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_predefined_name-15",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Foo\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-16",
+   "logger": "cr6",
+   "source": "Public X\nPublic Y\nAlias X=Y\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+  },
+  {
+   "id": "cr6-alias_predefined_name-17",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-18",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-19",
+   "logger": "cr6",
+   "source": "Public X\nAlias Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_predefined_name-20",
+   "logger": "cr6",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-21",
+   "logger": "cr6",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-22",
+   "logger": "cr6",
+   "source": "Public X\nUnits X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-23",
+   "logger": "cr6",
+   "source": "Public X\nUnits Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Sin, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr6-alias_predefined_name-24",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Sin(1)\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-25",
+   "logger": "cr6",
+   "source": "Public X\nAlias X=Timer\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-alias_predefined_name-26",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-27",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias Q=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr6-alias_predefined_name-28",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr6-alias_predefined_name-29",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 4: Sec is a predefined CONST.\nline 4: Duplicate Alias\nline 4: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr6-alias_predefined_name-30",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Long\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-31",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=String\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-32",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X = sec : Alias Z = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST.\nline 2: Sec is a predefined CONST.\nline 2: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr6-alias_predefined_name-33",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nPublic Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec already declared as a variable.\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-34",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nZ = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-alias_predefined_name-35",
+   "logger": "cr6",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Y=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Y not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-0",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-1",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=U1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-2",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias A(2)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-3",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-4",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-5",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Float\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-6",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=String\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-7",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=FP2\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FP2 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-8",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=NAN\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-9",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=mV5000\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: mV5000 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-10",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=ComC1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ComC1 is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-11",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-12",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-13",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Month\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-14",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias A(2)=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-15",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Foo\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-16",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic Y\nAlias X=Y\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-17",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-18",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-19",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-20",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-21",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-22",
+   "logger": "cr1000x",
+   "source": "Public X\nUnits X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-23",
+   "logger": "cr1000x",
+   "source": "Public X\nUnits Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Sin, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-24",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Sin(1)\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-25",
+   "logger": "cr1000x",
+   "source": "Public X\nAlias X=Timer\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-26",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-27",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias Q=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-28",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-29",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 4: Sec is a predefined CONST.\nline 4: Duplicate Alias\nline 4: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-30",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Long\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-31",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=String\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-32",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X = sec : Alias Z = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST.\nline 2: Sec is a predefined CONST.\nline 2: Duplicate Alias Name: Sec."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-33",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nPublic Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec already declared as a variable.\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-34",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nZ = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-alias_predefined_name-35",
+   "logger": "cr1000x",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Y=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Y not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_predefined_name-0",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-1",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=U1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-2",
+   "logger": "cr300",
+   "source": "Public X\nAlias A(2)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_predefined_name-3",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-4",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-5",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Float\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Float is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-6",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=String\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-7",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=FP2\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FP2 is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-8",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=NAN\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-9",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=mV5000\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-10",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=ComC1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-11",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-12",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-13",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Month\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-14",
+   "logger": "cr300",
+   "source": "Public X\nAlias A(2)=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_predefined_name-15",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Foo\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-16",
+   "logger": "cr300",
+   "source": "Public X\nPublic Y\nAlias X=Y\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+  },
+  {
+   "id": "cr300-alias_predefined_name-17",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-18",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-19",
+   "logger": "cr300",
+   "source": "Public X\nAlias Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr300-alias_predefined_name-20",
+   "logger": "cr300",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-21",
+   "logger": "cr300",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr300-alias_predefined_name-22",
+   "logger": "cr300",
+   "source": "Public X\nUnits X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-23",
+   "logger": "cr300",
+   "source": "Public X\nUnits Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Sin, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr300-alias_predefined_name-24",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Sin(1)\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-25",
+   "logger": "cr300",
+   "source": "Public X\nAlias X=Timer\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-alias_predefined_name-26",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-27",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias Q=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q not yet declared so cannot be aliased.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-28",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-29",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 4: Sec is a predefined CONST.\nline 4: Duplicate Alias\nline 4: Duplicate Alias Name: Sec.\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-30",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Long\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-31",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=String\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-32",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X = sec : Alias Z = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST.\nline 2: Sec is a predefined CONST.\nline 2: Duplicate Alias Name: Sec.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-33",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nPublic Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-34",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nZ = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-alias_predefined_name-35",
+   "logger": "cr300",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Y=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Y not yet declared so cannot be aliased.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-0",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-1",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=U1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-2",
+   "logger": "cr350",
+   "source": "Public X\nAlias A(2)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_predefined_name-3",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-4",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-5",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Float\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Float is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-6",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=String\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-7",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=FP2\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: FP2 is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-8",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=NAN\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-9",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=mV5000\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-10",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=ComC1\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-11",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-12",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-13",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Month\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-14",
+   "logger": "cr350",
+   "source": "Public X\nAlias A(2)=Long\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: A not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_predefined_name-15",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Foo\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-16",
+   "logger": "cr350",
+   "source": "Public X\nPublic Y\nAlias X=Y\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Y already declared as a variable."
+  },
+  {
+   "id": "cr350-alias_predefined_name-17",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-18",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Exp\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-19",
+   "logger": "cr350",
+   "source": "Public X\nAlias Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sin not yet declared so cannot be aliased."
+  },
+  {
+   "id": "cr350-alias_predefined_name-20",
+   "logger": "cr350",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-21",
+   "logger": "cr350",
+   "source": "Public X\nPublic Q(3)\nAlias Q(1)=Sec\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr350-alias_predefined_name-22",
+   "logger": "cr350",
+   "source": "Public X\nUnits X=Sin\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-23",
+   "logger": "cr350",
+   "source": "Public X\nUnits Sin=X\nBeginProg\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Can't assign units to Sin, it must be declared Public or referenced as a source in a Data Table."
+  },
+  {
+   "id": "cr350-alias_predefined_name-24",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Sin(1)\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-25",
+   "logger": "cr350",
+   "source": "Public X\nAlias X=Timer\nBeginProg\nEndProg\n\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-alias_predefined_name-26",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-27",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias Q=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Q not yet declared so cannot be aliased.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-28",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-29",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Z=Sec\nAlias X=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 3: Duplicate Alias Name: Sec.\nline 4: Sec is a predefined CONST.\nline 4: Duplicate Alias\nline 4: Duplicate Alias Name: Sec.\nline 6: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-30",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Long\nAlias Z=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Long is a predefined CONST.\nline 3: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-31",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=String\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String is a predefined CONST.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-32",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X = sec : Alias Z = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: sec is a predefined CONST.\nline 2: Sec is a predefined CONST.\nline 2: Duplicate Alias Name: Sec.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-33",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nPublic Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-34",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nZ = Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-alias_predefined_name-35",
+   "logger": "cr350",
+   "source": "Public X, Z\nAlias X=Sec\nAlias Y=Sec\nBeginProg\nZ = Nope\nEndProg\n\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sec is a predefined CONST.\nline 3: Y not yet declared so cannot be aliased.\nline 5: Nope is not defined."
+  }
+ ]
+}

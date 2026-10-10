@@ -4540,3 +4540,20 @@ expression: Fn(2,3).`; CR300/CR350: `Dimensions not declared`, `Variable illegal
 `COMSDC7,599`, and `If True Then X=Scan(1)`, and full entries for a pass-2-only error. Known
 remaining difference (pre-existing): `X = Y` with `Y` undefined prints `Scan: 0` on the real
 compiler; ours prints none (`_P1_HIDERS`).
+
+## Round 8 review 7: predefined constants as Alias names (oracle, 2026-10-10; `tests/fixtures/alias_predefined_name.json`)
+
+All four loggers: `Alias X = Sec` (the alias name after `=`, case-insensitive, first comma item) is
+`Sec is a predefined CONST.` using the declaration namespace (`symbols.is_reserved_predefined_name`:
+`U1`, `String`, `FP2`, `mV5000`/`ComC1` on CR6/CR1000X only, `Long`/`Float` on CR300/CR350 only; `NAN`,
+`Month` and CR6/CR1000X `Long`/`Float` are accepted). It follows the dimension error and precedes
+`Duplicate Alias` / `Duplicate Alias Name`; unlike an `already declared` collision the name is still
+registered (a second `Alias Z = Sec` adds `Duplicate Alias Name: Sec.`). It is a pass-1 error: on
+CR6/CR1000X it hides a later `Invalid symbol in expression`, on CR300/CR350 it does not hide the
+`... is not defined.` line.
+
+False rejects found on the way and fixed: a built-in function name on either side of `Alias` / in
+`Units` (`Alias X = Sin`, `Alias Sin = X`, `Units Sin = X`) is not an `Expression expects (` error.
+Not done (still differ): `Alias X = Y(2)` / `Sec(2)` (`Alias is illegally dimensioned.`), comma
+junk after the alias name (`Alias X = Sin, Z` -> `Illegally dimensioned aliased name`), and the order of
+`Duplicate Alias` against `already declared as a variable` for a repeated source.
