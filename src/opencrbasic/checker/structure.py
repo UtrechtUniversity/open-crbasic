@@ -53,6 +53,8 @@ _CONST_WITHOUT_EQ = "Const without '='"
 # (the caller overwrites `Unparsed.text`)
 _CONST_BAD_VALUE = "Const bad value: "
 _CONST_BAD_NAME = "Const bad name: "
+_CONST_LEAD = "Const lead: "
+_CONST_LEAD_NAME = "Const lead: name "
 # `Do`/`Loop` followed by something other than `While`/`Until`: `reason` is this prefix plus the
 # pass-1 message (`parser._parse_doloop`; oracle, 2026-10-10, all four loggers)
 _DO_LOOP_PARAM = "Do/Loop parameter: "
@@ -1401,7 +1403,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
+                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM, _CONST_LEAD,
                                       _ALIAS_NOTHING_AFTER_EQ)) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
@@ -1670,7 +1672,7 @@ def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
-                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
+                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM, _CONST_LEAD,
                                       _ALIAS_NOTHING_AFTER_EQ))
                 or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
 
@@ -2245,7 +2247,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
             continue
         if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
+                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM, _CONST_LEAD,
                                       _ALIAS_NOTHING_AFTER_EQ)) or \
                 nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
             continue  # already reported by `check_pass1`
@@ -2693,6 +2695,19 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
                     return index
+    elif isinstance(stmt, S.Unparsed) and stmt.reason.startswith(_CONST_LEAD_NAME):
+        # `Const = X`: the name is checked as in a declaration (not registered), then `CONST needs
+        # assignment.` (oracle, 2026-10-10)
+        name = stmt.reason[len(_CONST_LEAD_NAME):]
+        prior = declared.get(name.upper())
+        if profile and name.upper() in profile.functions:
+            symbols.report_function_name_collision(stmt, name, profile, diags)
+        elif not (profile and symbols.report_predefined_name_collision(stmt, name, profile, diags)):
+            if prior in ("VAR", "ALIAS"):
+                diags.error(stmt.line, f"{name} already declared as a variable.", stmt.file)
+            elif prior == "CONST":
+                diags.error(stmt.line, f"{name} is already declared as a CONST.", stmt.file)
+        diags.error(stmt.line, "CONST needs assignment.", stmt.file)
     elif isinstance(stmt, S.ConstDecl):
         if profile and stmt.name.upper() in profile.functions:
             symbols.report_function_name_collision(stmt, stmt.name, profile, diags)
@@ -3348,6 +3363,12 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         return
     if stmt.reason.startswith(_DO_LOOP_PARAM):
         diags.error(stmt.line, stmt.reason[len(_DO_LOOP_PARAM):], stmt.file)
+        return
+    if stmt.reason.startswith(_CONST_LEAD_NAME):
+        return  # `Const = X`: reported with the name checks (`_check_duplicate_declaration`)
+    if stmt.reason.startswith(_CONST_LEAD):  # `Const = "a"`: messages joined by newlines
+        for message in stmt.reason[len(_CONST_LEAD):].split("\n"):
+            diags.error(stmt.line, message, stmt.file)
         return
     if stmt.reason.startswith(_CONST_BAD_NAME):
         diags.error(stmt.line, f"Const name {stmt.reason[len(_CONST_BAD_NAME):]} illegal, starts with a number.",

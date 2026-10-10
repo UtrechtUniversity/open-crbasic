@@ -4618,3 +4618,23 @@ trailing comma does not pull the next line (`1,` / `2` -> `Invalid, or out of pl
 A same-line `Public D(2) As Long = 1, 2` is a different rule (`Variable name 2 illegal, starts with a number.`)
 and is not modelled, nor are a pulled line starting with a comma, a parenthesised `(1, 2)` and the newline
 in the `1 2` echo. `source._pull_decl_initializer`.
+
+## Round 9, `Const = X`: a leading `=` (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_const_lead_eq.json`)
+
+All four loggers (the CR300/CR350 undefined-name wording aside, which the normal paths already give). `Const =`
+skips the `=`s and reads the next item as the name:
+
+- `Const = X` (a name, nothing after) -> `CONST needs assignment.` after the usual name checks (`X already
+  declared as a variable.`, `X is already declared as a CONST.`, `Sec is a predefined CONST.`, `Sin already
+  defined as an internal function.`); the name is not registered. `Const = X = 1`, `Const = X Y`,
+  `Const = X, Y`, `Const = X "a"`, `Const = X(1)` read the rest as the value as if the `=` were not there
+  (`Y is not defined.` / `Invalid symbol in expression: Y.`, clean).
+- A string, `-1`, `1.5`, `.5`, `&H10`, `*`: `Invalid variable or constant name: <item>.`, then `CONST needs
+  assignment.` when nothing follows; for a digit-first item (`1.5`) `Const name 1.5 illegal, starts with a
+  number.` instead, also with text after it. Text after a non-digit item gives only the first line
+  (`= "a" + 1`, `= -1 = 3`, `= * 3`). `= ,` / `= , X` is `CONST needs assignment.`; `= =` is `Const with no
+  assignment.`. A plain integer or `1e5` is the existing `Const name 1 illegal` path.
+
+Not modelled: `Const = (1)` / `(X)` (the parentheses are stripped), `Const = X As Long`, `Const = a b c` /
+`X Y Z` (two juxtaposed items), `Const = $`. `parser._parse_const`, `structure._check_duplicate_declaration`,
+`_check_unparsed_pass1`.

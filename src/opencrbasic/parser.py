@@ -999,6 +999,38 @@ class _Parser:
     def _parse_const(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()
         eq_at = None
+        lead = False
+        if p.is_op("="):
+            # `Const = X ...`: the leading `=` is skipped (oracle, 2026-10-10, `docs/checker.md`
+            # "Round 9"); a first item that cannot be a name is its own message
+            j = p.i
+            while p.is_op("="):
+                p.next()
+            tok, after = p.peek(), p.peek(1)
+            if tok.kind == "EOF":
+                return S.Unparsed(line, file, text="", reason="Const without '='")
+            if tok.kind == "IDENT" and not (after.kind == "IDENT" and after.upper == "AS"):
+                lead = True
+            elif tok.kind == "OP" and tok.text == ",":
+                p.i = len(p.toks) - 1
+                return S.Unparsed(line, file, text="", reason="Const lead: CONST needs assignment.")
+            elif (tok.kind == "STRING" or (tok.kind == "OP" and tok.text == "*") or (tok.kind == "NUMBER" and not tok.text.isdigit()
+                                           and "E" not in tok.text.upper().lstrip("&"))
+                  or (tok.kind == "OP" and tok.text == "-" and after.kind == "NUMBER")):
+                if tok.kind == "OP" and tok.text == "-":
+                    text = tok.text + after.text
+                    rest_at = 2
+                else:
+                    text, rest_at = tok.text, 1
+                msgs = [f"Invalid variable or constant name: {text}."]
+                if text[0].isdigit():
+                    msgs.append(f"Const name {text} illegal, starts with a number.")
+                elif p.peek(rest_at).kind == "EOF":
+                    msgs.append("CONST needs assignment.")
+                p.i = len(p.toks) - 1
+                return S.Unparsed(line, file, text="", reason="Const lead: " + "\n".join(msgs))
+            else:
+                p.i = j
         try:
             name_tok = p.expect_ident()
             vtype = None
@@ -1012,7 +1044,14 @@ class _Parser:
                 if vtype == "STRING" and p.is_op("*"):
                     p.next()
                     self._parse_expr(p, line, file)
-            p.expect_op("=")
+            if lead and p.at_end():
+                return S.Unparsed(line, file, text="", reason="Const lead: name " + name_tok.text)
+            if lead and p.is_op(","):
+                p.next()  # (`Const = X, Y`: `Y` is the value)
+            elif lead and not p.is_op("="):
+                pass  # (`Const = X Y`: `Y` is the value)
+            else:
+                p.expect_op("=")
             eq_at = p.i
             value_start_col = p.peek().col
             value = self._parse_expr(p, line, file)

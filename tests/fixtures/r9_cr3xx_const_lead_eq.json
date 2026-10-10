@@ -1,0 +1,1227 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-0",
+   "logger": "cr300",
+   "source": "Const = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-1",
+   "logger": "cr300",
+   "source": "Const = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\".\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-2",
+   "logger": "cr300",
+   "source": "Const = -1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-3",
+   "logger": "cr300",
+   "source": "Const = 1.5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-4",
+   "logger": "cr300",
+   "source": "Const = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-5",
+   "logger": "cr300",
+   "source": "Const = X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-6",
+   "logger": "cr300",
+   "source": "Const = X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-7",
+   "logger": "cr300",
+   "source": "Const = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-8",
+   "logger": "cr300",
+   "source": "Const = \"a\" + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-9",
+   "logger": "cr300",
+   "source": "Const = Z = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-10",
+   "logger": "cr300",
+   "source": "Const = *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-11",
+   "logger": "cr300",
+   "source": "Const = X + \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: + ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-12",
+   "logger": "cr300",
+   "source": "Const =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-13",
+   "logger": "cr300",
+   "source": "Const = \"a\" \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-14",
+   "logger": "cr300",
+   "source": "Const = \"a\" = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-15",
+   "logger": "cr300",
+   "source": "Const = \"a\" 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-16",
+   "logger": "cr300",
+   "source": "Const = -1 + 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-17",
+   "logger": "cr300",
+   "source": "Const = -1 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-18",
+   "logger": "cr300",
+   "source": "Const = 1.5 = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-19",
+   "logger": "cr300",
+   "source": "Const = 1.5 + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-20",
+   "logger": "cr300",
+   "source": "Const = * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-21",
+   "logger": "cr300",
+   "source": "Const = X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-22",
+   "logger": "cr300",
+   "source": "Const = X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-23",
+   "logger": "cr300",
+   "source": "Const = X=Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-24",
+   "logger": "cr300",
+   "source": "Const = 1e5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1e5 illegal, starts with a number."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-25",
+   "logger": "cr300",
+   "source": "Const = .5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: .5.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-26",
+   "logger": "cr300",
+   "source": "Const = &H10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: &H10.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-27",
+   "logger": "cr300",
+   "source": "Const = True\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: True is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-28",
+   "logger": "cr300",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-29",
+   "logger": "cr300",
+   "source": "Const = X \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-30",
+   "logger": "cr300",
+   "source": "Const = X Y = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-31",
+   "logger": "cr300",
+   "source": "Const = =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-32",
+   "logger": "cr300",
+   "source": "Const = = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-33",
+   "logger": "cr300",
+   "source": "Const = , X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-34",
+   "logger": "cr300",
+   "source": "Const = Sin\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-35",
+   "logger": "cr300",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-36",
+   "logger": "cr300",
+   "source": "Const = Sec = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-37",
+   "logger": "cr300",
+   "source": "Const = Sin = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-38",
+   "logger": "cr300",
+   "source": "Const = X\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-39",
+   "logger": "cr300",
+   "source": "Public X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-40",
+   "logger": "cr300",
+   "source": "Const = X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-41",
+   "logger": "cr300",
+   "source": "Const Y = 1\nConst = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is already declared as a CONST.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr300-r9_cr3xx_const_lead_eq-42",
+   "logger": "cr300",
+   "source": "Const = BeginProg\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-0",
+   "logger": "cr350",
+   "source": "Const = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-1",
+   "logger": "cr350",
+   "source": "Const = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\".\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-2",
+   "logger": "cr350",
+   "source": "Const = -1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-3",
+   "logger": "cr350",
+   "source": "Const = 1.5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-4",
+   "logger": "cr350",
+   "source": "Const = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-5",
+   "logger": "cr350",
+   "source": "Const = X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-6",
+   "logger": "cr350",
+   "source": "Const = X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-7",
+   "logger": "cr350",
+   "source": "Const = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-8",
+   "logger": "cr350",
+   "source": "Const = \"a\" + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-9",
+   "logger": "cr350",
+   "source": "Const = Z = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-10",
+   "logger": "cr350",
+   "source": "Const = *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-11",
+   "logger": "cr350",
+   "source": "Const = X + \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: + ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-12",
+   "logger": "cr350",
+   "source": "Const =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-13",
+   "logger": "cr350",
+   "source": "Const = \"a\" \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-14",
+   "logger": "cr350",
+   "source": "Const = \"a\" = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-15",
+   "logger": "cr350",
+   "source": "Const = \"a\" 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-16",
+   "logger": "cr350",
+   "source": "Const = -1 + 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-17",
+   "logger": "cr350",
+   "source": "Const = -1 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-18",
+   "logger": "cr350",
+   "source": "Const = 1.5 = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-19",
+   "logger": "cr350",
+   "source": "Const = 1.5 + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-20",
+   "logger": "cr350",
+   "source": "Const = * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-21",
+   "logger": "cr350",
+   "source": "Const = X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-22",
+   "logger": "cr350",
+   "source": "Const = X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-23",
+   "logger": "cr350",
+   "source": "Const = X=Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-24",
+   "logger": "cr350",
+   "source": "Const = 1e5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1e5 illegal, starts with a number."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-25",
+   "logger": "cr350",
+   "source": "Const = .5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: .5.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-26",
+   "logger": "cr350",
+   "source": "Const = &H10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: &H10.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-27",
+   "logger": "cr350",
+   "source": "Const = True\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: True is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-28",
+   "logger": "cr350",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-29",
+   "logger": "cr350",
+   "source": "Const = X \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-30",
+   "logger": "cr350",
+   "source": "Const = X Y = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Y is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-31",
+   "logger": "cr350",
+   "source": "Const = =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-32",
+   "logger": "cr350",
+   "source": "Const = = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-33",
+   "logger": "cr350",
+   "source": "Const = , X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-34",
+   "logger": "cr350",
+   "source": "Const = Sin\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-35",
+   "logger": "cr350",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-36",
+   "logger": "cr350",
+   "source": "Const = Sec = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-37",
+   "logger": "cr350",
+   "source": "Const = Sin = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-38",
+   "logger": "cr350",
+   "source": "Const = X\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-39",
+   "logger": "cr350",
+   "source": "Public X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-40",
+   "logger": "cr350",
+   "source": "Const = X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-41",
+   "logger": "cr350",
+   "source": "Const Y = 1\nConst = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is already declared as a CONST.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr350-r9_cr3xx_const_lead_eq-42",
+   "logger": "cr350",
+   "source": "Const = BeginProg\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-0",
+   "logger": "cr6",
+   "source": "Const = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-1",
+   "logger": "cr6",
+   "source": "Const = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\".\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-2",
+   "logger": "cr6",
+   "source": "Const = -1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-3",
+   "logger": "cr6",
+   "source": "Const = 1.5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-4",
+   "logger": "cr6",
+   "source": "Const = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-5",
+   "logger": "cr6",
+   "source": "Const = X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-6",
+   "logger": "cr6",
+   "source": "Const = X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-7",
+   "logger": "cr6",
+   "source": "Const = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-8",
+   "logger": "cr6",
+   "source": "Const = \"a\" + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-9",
+   "logger": "cr6",
+   "source": "Const = Z = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-10",
+   "logger": "cr6",
+   "source": "Const = *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-11",
+   "logger": "cr6",
+   "source": "Const = X + \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: + ."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-12",
+   "logger": "cr6",
+   "source": "Const =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-13",
+   "logger": "cr6",
+   "source": "Const = \"a\" \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-14",
+   "logger": "cr6",
+   "source": "Const = \"a\" = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-15",
+   "logger": "cr6",
+   "source": "Const = \"a\" 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-16",
+   "logger": "cr6",
+   "source": "Const = -1 + 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-17",
+   "logger": "cr6",
+   "source": "Const = -1 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-18",
+   "logger": "cr6",
+   "source": "Const = 1.5 = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-19",
+   "logger": "cr6",
+   "source": "Const = 1.5 + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-20",
+   "logger": "cr6",
+   "source": "Const = * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-21",
+   "logger": "cr6",
+   "source": "Const = X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-22",
+   "logger": "cr6",
+   "source": "Const = X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-23",
+   "logger": "cr6",
+   "source": "Const = X=Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-24",
+   "logger": "cr6",
+   "source": "Const = 1e5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1e5 illegal, starts with a number."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-25",
+   "logger": "cr6",
+   "source": "Const = .5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: .5.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-26",
+   "logger": "cr6",
+   "source": "Const = &H10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: &H10.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-27",
+   "logger": "cr6",
+   "source": "Const = True\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: True is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-28",
+   "logger": "cr6",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-29",
+   "logger": "cr6",
+   "source": "Const = X \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-30",
+   "logger": "cr6",
+   "source": "Const = X Y = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y = 2."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-31",
+   "logger": "cr6",
+   "source": "Const = =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-32",
+   "logger": "cr6",
+   "source": "Const = = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-33",
+   "logger": "cr6",
+   "source": "Const = , X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-34",
+   "logger": "cr6",
+   "source": "Const = Sin\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-35",
+   "logger": "cr6",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-36",
+   "logger": "cr6",
+   "source": "Const = Sec = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-37",
+   "logger": "cr6",
+   "source": "Const = Sin = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-38",
+   "logger": "cr6",
+   "source": "Const = X\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-39",
+   "logger": "cr6",
+   "source": "Public X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-40",
+   "logger": "cr6",
+   "source": "Const = X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-41",
+   "logger": "cr6",
+   "source": "Const Y = 1\nConst = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is already declared as a CONST.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr6-r9_cr3xx_const_lead_eq-42",
+   "logger": "cr6",
+   "source": "Const = BeginProg\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-0",
+   "logger": "cr1000x",
+   "source": "Const = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-1",
+   "logger": "cr1000x",
+   "source": "Const = \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\".\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-2",
+   "logger": "cr1000x",
+   "source": "Const = -1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-3",
+   "logger": "cr1000x",
+   "source": "Const = 1.5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-4",
+   "logger": "cr1000x",
+   "source": "Const = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-5",
+   "logger": "cr1000x",
+   "source": "Const = X Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-6",
+   "logger": "cr1000x",
+   "source": "Const = X, Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-7",
+   "logger": "cr1000x",
+   "source": "Const = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-8",
+   "logger": "cr1000x",
+   "source": "Const = \"a\" + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-9",
+   "logger": "cr1000x",
+   "source": "Const = Z = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-10",
+   "logger": "cr1000x",
+   "source": "Const = *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-11",
+   "logger": "cr1000x",
+   "source": "Const = X + \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: + ."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-12",
+   "logger": "cr1000x",
+   "source": "Const =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-13",
+   "logger": "cr1000x",
+   "source": "Const = \"a\" \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-14",
+   "logger": "cr1000x",
+   "source": "Const = \"a\" = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-15",
+   "logger": "cr1000x",
+   "source": "Const = \"a\" 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: \"a\"."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-16",
+   "logger": "cr1000x",
+   "source": "Const = -1 + 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-17",
+   "logger": "cr1000x",
+   "source": "Const = -1 = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: -1."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-18",
+   "logger": "cr1000x",
+   "source": "Const = 1.5 = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-19",
+   "logger": "cr1000x",
+   "source": "Const = 1.5 + 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: 1.5.\nline 1: Const name 1.5 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-20",
+   "logger": "cr1000x",
+   "source": "Const = * 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: *."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-21",
+   "logger": "cr1000x",
+   "source": "Const = X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-22",
+   "logger": "cr1000x",
+   "source": "Const = X = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-23",
+   "logger": "cr1000x",
+   "source": "Const = X=Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-24",
+   "logger": "cr1000x",
+   "source": "Const = 1e5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const name 1e5 illegal, starts with a number."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-25",
+   "logger": "cr1000x",
+   "source": "Const = .5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: .5.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-26",
+   "logger": "cr1000x",
+   "source": "Const = &H10\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid variable or constant name: &H10.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-27",
+   "logger": "cr1000x",
+   "source": "Const = True\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: True is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-28",
+   "logger": "cr1000x",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-29",
+   "logger": "cr1000x",
+   "source": "Const = X \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-30",
+   "logger": "cr1000x",
+   "source": "Const = X Y = 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Y = 2."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-31",
+   "logger": "cr1000x",
+   "source": "Const = =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-32",
+   "logger": "cr1000x",
+   "source": "Const = = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-33",
+   "logger": "cr1000x",
+   "source": "Const = , X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-34",
+   "logger": "cr1000x",
+   "source": "Const = Sin\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-35",
+   "logger": "cr1000x",
+   "source": "Const = Sec\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST.\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-36",
+   "logger": "cr1000x",
+   "source": "Const = Sec = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sec is a predefined CONST."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-37",
+   "logger": "cr1000x",
+   "source": "Const = Sin = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Sin already defined as an internal function."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-38",
+   "logger": "cr1000x",
+   "source": "Const = X\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-39",
+   "logger": "cr1000x",
+   "source": "Public X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-40",
+   "logger": "cr1000x",
+   "source": "Const = X\nConst = X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-41",
+   "logger": "cr1000x",
+   "source": "Const Y = 1\nConst = Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Y is already declared as a CONST.\nline 2: CONST needs assignment."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_const_lead_eq-42",
+   "logger": "cr1000x",
+   "source": "Const = BeginProg\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: CONST needs assignment."
+  }
+ ]
+}
