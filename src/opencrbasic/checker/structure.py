@@ -876,11 +876,12 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 and (echo := _for_header_incomplete(stmt.text, profile)) is not None:
             diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file, show_file=False)
             continue
-        if profile.known_first_word_pass1 and _block_keyword_call(stmt):
+        if (profile.known_first_word_pass1 or profile.single_pass) and _block_keyword_call(stmt):
             cond = re.match(r"\s*(?:ELSEIF|IF)\s(.*?)THEN", stmt.text, re.I | re.S) \
                 if isinstance(stmt, (S.If, S.ElseIf)) else None
+            sep = "\n" if not cond and profile.fallback_echo_newline and getattr(stmt, "at_eol", False) else ""
             diags.error(stmt.line, "Incomplete expression: "
-                        f"{cond.group(1) if cond else stmt.text}.", stmt.file, show_file=False)
+                        f"{cond.group(1) if cond else stmt.text}{sep}.", stmt.file, show_file=False)
         if isinstance(stmt, S.Instruction):
             # Oracle, all four loggers, 2026-10-02: pass 1, in line order. Every `ConstTable`
             # after the first (open or not) is `Only one ConstTable allowed.`; the counter of
@@ -1012,6 +1013,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
             _check_if_pass1(stmt, operands, profile, diags)
+        elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
+            for sub in (stmt.inline or []) + (stmt.inline_else or []):
+                if _block_keyword_call(sub):
+                    diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file,
+                                show_file=False)
 
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):

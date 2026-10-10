@@ -1522,3 +1522,45 @@ def drop_compound_target_repeat(program: S.Program, profile, diags: Diagnostics)
                 if (d.line, d.file) == (stmt.line, stmt.file) and d.message == message]
         if len(same) >= 2:
             del diags.items[same[1]]
+
+
+_CALL_KEYWORD_RE = re.compile(r"\b(?:CASE|DO|FOR|FUNCTION|SCAN|SELECT|SUB|SUBSCAN|WHILE)\s*\(", re.I)
+
+
+def order_block_keyword_calls(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: a block keyword used as a function (`Y = Scan(1)`) ends the statement's name
+    resolution at that call. The names before it are reported (`Q = Scan(1)`, `Y = Q + Scan(1)`,
+    `If Q = 1 Then Y = Scan(1)`: `Q is not defined.`) ahead of its `Incomplete expression`;
+    names inside or after it are not (`Y = Scan(Q)`, `Y = Scan(1) + Q`, `Y = Scan(Zork(1))`, no
+    `Dimensions not declared` either). An indexed target that is not a declared array is the
+    generic `Invalid, or out of place expression:` instead, with no `Incomplete`. Oracle, CR300/CR350, 2026-10-10."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, (S.Assignment, S.If, S.ElseIf)):
+            continue
+        key = (stmt.line, stmt.file)
+        m = _CALL_KEYWORD_RE.search(stmt.text or "")
+        marks = [d for d in diags.items if (d.line, d.file) == key
+                 and d.message.startswith("Incomplete expression:")]
+        if not (m and marks):
+            continue
+        if any((d.line, d.file) == key and d.message.startswith("Invalid, or out of place expression:")
+               for d in diags.items):  # `Q(1) = Scan(1)`, an undeclared or scalar indexed target
+            diags.items[:] = [d for d in diags.items if d not in marks]
+            continue
+        before = {w.upper() for w in re.findall(r"[A-Za-z_]\w*", stmt.text[:m.start()])}
+        keep = []
+        for d in diags.items:
+            if (d.line, d.file) == key:
+                name = re.fullmatch(r"(\w+) is not defined\.", d.message)
+                if d.message.startswith("Dimensions not declared") or (
+                        name and name.group(1).upper() not in before):
+                    continue
+            keep.append(d)
+        group = [d for d in keep if (d.line, d.file) == key]
+        group = [d for d in group if d not in marks] + [d for d in group if d in marks]
+        first = next(i for i, d in enumerate(keep) if (d.line, d.file) == key)
+        rest = [d for d in keep if (d.line, d.file) != key]
+        rest[first:first] = group  # (`first` counts only earlier other-line items: all kept)
+        diags.items[:] = rest

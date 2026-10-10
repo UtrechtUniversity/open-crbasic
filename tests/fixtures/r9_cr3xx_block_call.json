@@ -1,0 +1,1037 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-cr3xx_block_keyword_call-0",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-1",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-2",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then X=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-3",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=SubScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=SubScan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-4",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Do(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Do(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-5",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=For(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=For(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-6",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=While(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=While(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-7",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Select(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Select(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-8",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Sub(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Sub(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-9",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Function(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Function(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-10",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Case(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Case(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-11",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Next(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Next is not defined.\nline 4: Dimensions not declared: X=Next(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-12",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Loop(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Loop is not defined.\nline 4: Dimensions not declared: X=Loop(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-13",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Wend(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Wend is not defined.\nline 4: Dimensions not declared: X=Wend(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-14",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Else(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Else is not defined.\nline 4: Dimensions not declared: X=Else(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-15",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndProg(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndProg is not defined.\nline 4: Dimensions not declared: X=EndProg(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-16",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=BeginProg(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: BeginProg is not defined.\nline 4: Dimensions not declared: X=BeginProg(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-17",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Dim(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dim is not defined.\nline 4: Dimensions not declared: X=Dim(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-18",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Const(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Const is not defined.\nline 4: Dimensions not declared: X=Const(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-19",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Exit(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Exit is not defined.\nline 4: Dimensions not declared: X=Exit(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-20",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Return(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return is not defined.\nline 4: Dimensions not declared: X=Return(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-21",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Call(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Call is not defined.\nline 4: Dimensions not declared: X=Call(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-22",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Alias(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Alias is not defined.\nline 4: Dimensions not declared: X=Alias(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-23",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Units(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Units is not defined.\nline 4: Dimensions not declared: X=Units(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-24",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Then(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Then is not defined.\nline 4: Dimensions not declared: X=Then(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-25",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Step(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Step is not defined.\nline 4: Dimensions not declared: X=Step(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-26",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=NextScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NextScan is not defined.\nline 4: Dimensions not declared: X=NextScan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-27",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndSub(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSub is not defined.\nline 4: Dimensions not declared: X=EndSub(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-28",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=DataTable(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is not defined.\nline 4: Dimensions not declared: X=DataTable(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-29",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndTable(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable is not defined.\nline 4: Dimensions not declared: X=EndTable(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-30",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Include(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Include is not defined.\nline 4: Dimensions not declared: X=Include(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-31",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Dim(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dim is not defined.\nline 4: Dimensions not declared: X=Dim(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-32",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=1+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=1+Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-33",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(1) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-34",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(1)=1 Then\nY=1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1)=1 ."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-35",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nElseIf Scan(1) Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-36",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nY=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n.\nline 5: Q is not defined."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-37",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nY=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n.\nline 5: Incomplete expression: Y=Scan(2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-38",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1,2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-39",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-40",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan()\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan()\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-41",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Do(1)+2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Do(1)+2\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-42",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1) Zork\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1) Zork\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-43",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-44",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Sub(Scan(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Sub(Scan(1))\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-45",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=SubScan(Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=SubScan(Y)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-46",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Abs(Scan(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Abs(Scan(1))\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-47",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(Q)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(Q)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-48",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Select(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Select(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-49",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then X=Select(1) Else Y=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Select(1).\nline 4: Incomplete expression: Y=Scan(2)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-50",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=1 Else Y=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(2)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-51",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nSample(1,Scan(1),FP2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-52",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Case(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Case(2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-53",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Function(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Function(2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-54",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=While(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=While(2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-55",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Q+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Q+Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-56",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(1)+Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)+Q\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-57",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(R)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(R)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-58",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(Zork(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(Zork(1))\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-59",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q=1 Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-60",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Q=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-61",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=Scan(R)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(R)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-62",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-63",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(Q) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(Q) ."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-64",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q+Scan(1) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q+Scan(1) ."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-65",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(1)\nR=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)\n.\nline 5: R is not defined.\nline 5: Incomplete expression: R=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-66",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-67",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-68",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(1)\nQ(1)=Q(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)\n.\nline 5: Q is not defined.\nline 5: Invalid, or out of place expression: Q(1)=Q(2)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-69",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Q(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-70",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-71",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nA(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: A(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr300-cr3xx_block_keyword_call-72",
+   "logger": "cr300",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nA(1)=Q(1)+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: A(1)=Q(1)+Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-0",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-1",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-2",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then X=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-3",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=SubScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=SubScan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-4",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Do(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Do(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-5",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=For(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=For(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-6",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=While(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=While(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-7",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Select(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Select(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-8",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Sub(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Sub(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-9",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Function(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Function(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-10",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Case(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Case(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-11",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Next(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Next is not defined.\nline 4: Dimensions not declared: X=Next(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-12",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Loop(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Loop is not defined.\nline 4: Dimensions not declared: X=Loop(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-13",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Wend(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Wend is not defined.\nline 4: Dimensions not declared: X=Wend(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-14",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Else(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Else is not defined.\nline 4: Dimensions not declared: X=Else(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-15",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndProg(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndProg is not defined.\nline 4: Dimensions not declared: X=EndProg(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-16",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=BeginProg(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: BeginProg is not defined.\nline 4: Dimensions not declared: X=BeginProg(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-17",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Dim(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dim is not defined.\nline 4: Dimensions not declared: X=Dim(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-18",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Const(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Const is not defined.\nline 4: Dimensions not declared: X=Const(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-19",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Exit(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Exit is not defined.\nline 4: Dimensions not declared: X=Exit(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-20",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Return(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Return is not defined.\nline 4: Dimensions not declared: X=Return(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-21",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Call(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Call is not defined.\nline 4: Dimensions not declared: X=Call(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-22",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Alias(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Alias is not defined.\nline 4: Dimensions not declared: X=Alias(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-23",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Units(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Units is not defined.\nline 4: Dimensions not declared: X=Units(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-24",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Then(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Then is not defined.\nline 4: Dimensions not declared: X=Then(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-25",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Step(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Step is not defined.\nline 4: Dimensions not declared: X=Step(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-26",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=NextScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: NextScan is not defined.\nline 4: Dimensions not declared: X=NextScan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-27",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndSub(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndSub is not defined.\nline 4: Dimensions not declared: X=EndSub(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-28",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=DataTable(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: DataTable is not defined.\nline 4: Dimensions not declared: X=DataTable(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-29",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=EndTable(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndTable is not defined.\nline 4: Dimensions not declared: X=EndTable(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-30",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Include(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Include is not defined.\nline 4: Dimensions not declared: X=Include(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-31",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Dim(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dim is not defined.\nline 4: Dimensions not declared: X=Dim(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-32",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=1+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=1+Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-33",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(1) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-34",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(1)=1 Then\nY=1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1)=1 ."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-35",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nElseIf Scan(1) Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-36",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nY=Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n.\nline 5: Q is not defined."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-37",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1)\nY=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1)\n.\nline 5: Incomplete expression: Y=Scan(2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-38",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1,2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-39",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-40",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan()\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan()\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-41",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Do(1)+2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Do(1)+2\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-42",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Scan(1) Zork\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Scan(1) Zork\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-43",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-44",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Sub(Scan(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Sub(Scan(1))\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-45",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=SubScan(Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=SubScan(Y)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-46",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX=Abs(Scan(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Abs(Scan(1))\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-47",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(Q)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(Q)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-48",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Select(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Select(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-49",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then X=Select(1) Else Y=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X=Select(1).\nline 4: Incomplete expression: Y=Scan(2)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-50",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=1 Else Y=Scan(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(2)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-51",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nSample(1,Scan(1),FP2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-52",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Case(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Case(2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-53",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Function(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Function(2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-54",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=While(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=While(2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-55",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Q+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Q+Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-56",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(1)+Q\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)+Q\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-57",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(R)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(R)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-58",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(Zork(1))\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(Zork(1))\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-59",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q=1 Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-60",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Q=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-61",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Y=Scan(R)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(R)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-62",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q Then Y=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Y=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-63",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Scan(Q) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Scan(Q) ."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-64",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf Q+Scan(1) Then Y=1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q+Scan(1) ."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-65",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ=Scan(1)\nR=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: Q=Scan(1)\n.\nline 5: R is not defined.\nline 5: Incomplete expression: R=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-66",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-67",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nX(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-68",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nY=Scan(1)\nQ(1)=Q(2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: Y=Scan(1)\n.\nline 5: Q is not defined.\nline 5: Invalid, or out of place expression: Q(1)=Q(2)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-69",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nIf X=1 Then Q(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-70",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nQ(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Invalid, or out of place expression: Q(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-71",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nA(1)=Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: A(1)=Scan(1)\n."
+  },
+  {
+   "id": "cr350-cr3xx_block_keyword_call-72",
+   "logger": "cr350",
+   "source": "Public X,Y,A(3)\nBeginProg\nScan(1,Sec,0,0)\nA(1)=Q(1)+Scan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression: A(1)=Q(1)+Scan(1)\n."
+  }
+ ]
+}

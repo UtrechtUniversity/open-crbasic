@@ -4503,8 +4503,6 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   bad-syntax pair as the array case (`{` -> `Invalid, or out of place expression`, `{5,` ->
   `Incomplete expression`); the continuation lines are not folded in (`5}` is reported on its own).
   A complete `{5}` or `{ 5` is accepted.
-- Not done: CR300/CR350 also pull (`Public A(2) = {1,` / `2}` compiles clean there), but `_pulls_init` is
-  still CR6/CR1000X only.
 
 ## Round 8 review 7: SNMPVariable Valid constraint commas (oracle, 2026-10-10; `tests/fixtures/snmp_valid_constraint.json`)
 
@@ -4577,3 +4575,18 @@ on all four loggers (`tests/fixtures/member_index_compile_stage.json`):
   index error (not modelled).
 
 Implemented by holding these diagnostics aside after pass 1 (`held_member` in `checker/__init__.py`).
+
+## Round 9, CR300/CR350: block keyword used as a function (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_block_call.json`)
+
+`Y = Scan(1)` (also `Case`, `Do`, `For`, `Function`, `Select`, `Sub`, `SubScan`, `While`, any nesting:
+`Y = Abs(Scan(1))`, `1 + Do(1)`, `If Scan(1) Then`, an inline `If c Then Y = Scan(1) Else ...`) is the same
+`Incomplete expression: <stmt>.` as CR6/CR1000X, with the CR300/CR350 echo: a standalone statement keeps the
+raw line terminator (`...Scan(1)` newline `.`), an inline `If` branch or a condition does not. The CR300/CR350 name
+resolution stops at the call: undefined names before it, target included, are reported first
+(`Q = Scan(1)`, `Y = Q + Scan(1)`, `If Q = 1 Then Y = Scan(1)`: `Q is not defined.` then the
+Incomplete line); names inside or after it (`Y = Scan(Q)`, `Y = Scan(1) + Q`, `Scan(Zork(1))`) are not
+reported, and neither is `Dimensions not declared`. An indexed target that is not a declared array
+(`Q(1) = Scan(1)`, `X(1) = ...` on a scalar) is the generic `Invalid, or out of place expression:` with no
+Incomplete line (`A(1) = Scan(1)` on a declared array is Incomplete). Code:
+`structure.check_pass1` (ungated for `single_pass`), `cr3xx.order_block_keyword_calls`.
+Not done (CR6 differs too): `X = If(1)` and `X = Until(1)` (Incomplete), `X = To(1)`, `X = Public(1)`.
