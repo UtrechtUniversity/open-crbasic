@@ -4472,7 +4472,7 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   is an ordinary statement and the declaration is silent. `compiler.compile_file` compiles again with
   `pull_limit` set below the first affected declaration (the loader logs the pulls it made in
   `Program.pull_log`). Not modelled: whether an error inside an earlier pulled declaration also stops
-  later pulls; `Public D(2) As Long =` / `1, 2` is rejected by us on every logger (pre-existing).
+  later pulls; `Public D(2) As Long =` / `1, 2` is fixed in "Round 9, pulled initializer lines".
 - **`For` without `=` and short instructions on a shared line** (CR300/CR350, `r8_cr3xx_for_missing.json`,
   `r8_cr3xx_shortfall_line.json`): `For more: foo` keeps `Invalid or missing parameter.` ahead of the
   names of the following segment (names never hide it; it prints after names of an earlier segment:
@@ -4607,3 +4607,14 @@ file contributes nothing). The extension is the text after the last `.` (none: e
 
 `source._Loader._bad_extension` / `_unloadable`, `parser._CR3XX_INCLUDE_EXTS`. The pass-through and 5-character
 rule are fitted to the probed extensions; the real compiler's table was not read.
+
+## Round 9, pulled initializer lines are cut at the first top-level comma (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_pull_comma.json`)
+
+All four loggers: when a `Public`/`Dim` ending in `=` pulls the next line, only the text before that line's first
+top-level comma (outside parentheses, braces and strings) is the initializer; the rest of the line is dropped
+unread. `Public D(2) As Long =` / `1, 2` and `1, 2, 3`, `1, X`, `1,`, `1, (` compile clean; the names after
+the comma are not declared (`... =` / `1, E` then `Public E` is not a redeclaration, `E = 1` is not defined); a
+trailing comma does not pull the next line (`1,` / `2` -> `Invalid, or out of place expression: 2.`).
+A same-line `Public D(2) As Long = 1, 2` is a different rule (`Variable name 2 illegal, starts with a number.`)
+and is not modelled, nor are a pulled line starting with a comma, a parenthesised `(1, 2)` and the newline
+in the `1 2` echo. `source._pull_decl_initializer`.

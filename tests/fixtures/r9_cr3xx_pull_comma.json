@@ -1,0 +1,1059 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-0",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-1",
+   "logger": "cr300",
+   "source": "Public D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-2",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-3",
+   "logger": "cr300",
+   "source": "Public D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-4",
+   "logger": "cr300",
+   "source": "Public D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-5",
+   "logger": "cr300",
+   "source": "Public D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-6",
+   "logger": "cr300",
+   "source": "Public D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-7",
+   "logger": "cr300",
+   "source": "Public D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-8",
+   "logger": "cr300",
+   "source": "Public D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-9",
+   "logger": "cr300",
+   "source": "Dim D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-10",
+   "logger": "cr300",
+   "source": "Dim D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-11",
+   "logger": "cr300",
+   "source": "Dim D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-12",
+   "logger": "cr300",
+   "source": "Dim D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-13",
+   "logger": "cr300",
+   "source": "Dim D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-14",
+   "logger": "cr300",
+   "source": "Dim D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-15",
+   "logger": "cr300",
+   "source": "Dim D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-16",
+   "logger": "cr300",
+   "source": "Dim D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-17",
+   "logger": "cr300",
+   "source": "Dim D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-18",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, 2, 3\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-19",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1,2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-20",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1 , 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-21",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, X\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-22",
+   "logger": "cr300",
+   "source": "Public D(2) =\n1, E, F\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-23",
+   "logger": "cr300",
+   "source": "Public D(2), E =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-24",
+   "logger": "cr300",
+   "source": "Public D As Long, E As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-25",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, E\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-26",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, E\nE = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-27",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, Q As Long\nPublic Q\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-28",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-29",
+   "logger": "cr300",
+   "source": "Public D As String * 5 =\n\"a\", \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-30",
+   "logger": "cr300",
+   "source": "Public D As String =\n\"a, b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-31",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1, (\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-32",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1,\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-33",
+   "logger": "cr300",
+   "source": "Public D As Long =\n1,\n2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 2\n."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-34",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, 2\nD(1)=3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-35",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_pull_comma-36",
+   "logger": "cr300",
+   "source": "Public D(2) As Long =\n1, 2, 3\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-0",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-1",
+   "logger": "cr350",
+   "source": "Public D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-2",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-3",
+   "logger": "cr350",
+   "source": "Public D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-4",
+   "logger": "cr350",
+   "source": "Public D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-5",
+   "logger": "cr350",
+   "source": "Public D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-6",
+   "logger": "cr350",
+   "source": "Public D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-7",
+   "logger": "cr350",
+   "source": "Public D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-8",
+   "logger": "cr350",
+   "source": "Public D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-9",
+   "logger": "cr350",
+   "source": "Dim D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-10",
+   "logger": "cr350",
+   "source": "Dim D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-11",
+   "logger": "cr350",
+   "source": "Dim D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-12",
+   "logger": "cr350",
+   "source": "Dim D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-13",
+   "logger": "cr350",
+   "source": "Dim D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-14",
+   "logger": "cr350",
+   "source": "Dim D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-15",
+   "logger": "cr350",
+   "source": "Dim D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-16",
+   "logger": "cr350",
+   "source": "Dim D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-17",
+   "logger": "cr350",
+   "source": "Dim D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-18",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, 2, 3\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-19",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1,2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-20",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1 , 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-21",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, X\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-22",
+   "logger": "cr350",
+   "source": "Public D(2) =\n1, E, F\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-23",
+   "logger": "cr350",
+   "source": "Public D(2), E =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-24",
+   "logger": "cr350",
+   "source": "Public D As Long, E As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-25",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, E\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-26",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, E\nE = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-27",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, Q As Long\nPublic Q\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-28",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-29",
+   "logger": "cr350",
+   "source": "Public D As String * 5 =\n\"a\", \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-30",
+   "logger": "cr350",
+   "source": "Public D As String =\n\"a, b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-31",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1, (\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-32",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1,\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-33",
+   "logger": "cr350",
+   "source": "Public D As Long =\n1,\n2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 2\n."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-34",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, 2\nD(1)=3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-35",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_pull_comma-36",
+   "logger": "cr350",
+   "source": "Public D(2) As Long =\n1, 2, 3\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-0",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-1",
+   "logger": "cr6",
+   "source": "Public D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-2",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-3",
+   "logger": "cr6",
+   "source": "Public D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-4",
+   "logger": "cr6",
+   "source": "Public D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-5",
+   "logger": "cr6",
+   "source": "Public D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-6",
+   "logger": "cr6",
+   "source": "Public D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-7",
+   "logger": "cr6",
+   "source": "Public D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-8",
+   "logger": "cr6",
+   "source": "Public D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-9",
+   "logger": "cr6",
+   "source": "Dim D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-10",
+   "logger": "cr6",
+   "source": "Dim D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-11",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-12",
+   "logger": "cr6",
+   "source": "Dim D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-13",
+   "logger": "cr6",
+   "source": "Dim D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-14",
+   "logger": "cr6",
+   "source": "Dim D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-15",
+   "logger": "cr6",
+   "source": "Dim D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-16",
+   "logger": "cr6",
+   "source": "Dim D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-17",
+   "logger": "cr6",
+   "source": "Dim D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-18",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, 2, 3\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-19",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1,2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-20",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1 , 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-21",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, X\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-22",
+   "logger": "cr6",
+   "source": "Public D(2) =\n1, E, F\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-23",
+   "logger": "cr6",
+   "source": "Public D(2), E =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-24",
+   "logger": "cr6",
+   "source": "Public D As Long, E As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E already declared as a variable."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-25",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, E\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-26",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, E\nE = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: E = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-27",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, Q As Long\nPublic Q\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-28",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-29",
+   "logger": "cr6",
+   "source": "Public D As String * 5 =\n\"a\", \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-30",
+   "logger": "cr6",
+   "source": "Public D As String =\n\"a, b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-31",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1, (\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-32",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1,\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-33",
+   "logger": "cr6",
+   "source": "Public D As Long =\n1,\n2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 2."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-34",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, 2\nD(1)=3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-35",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_pull_comma-36",
+   "logger": "cr6",
+   "source": "Public D(2) As Long =\n1, 2, 3\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-0",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-1",
+   "logger": "cr1000x",
+   "source": "Public D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-2",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-3",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-4",
+   "logger": "cr1000x",
+   "source": "Public D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-5",
+   "logger": "cr1000x",
+   "source": "Public D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-6",
+   "logger": "cr1000x",
+   "source": "Public D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-7",
+   "logger": "cr1000x",
+   "source": "Public D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-8",
+   "logger": "cr1000x",
+   "source": "Public D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-9",
+   "logger": "cr1000x",
+   "source": "Dim D(2) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-10",
+   "logger": "cr1000x",
+   "source": "Dim D(3) As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-11",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-12",
+   "logger": "cr1000x",
+   "source": "Dim D(2) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-13",
+   "logger": "cr1000x",
+   "source": "Dim D(3) As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-14",
+   "logger": "cr1000x",
+   "source": "Dim D As Float =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-15",
+   "logger": "cr1000x",
+   "source": "Dim D(2) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-16",
+   "logger": "cr1000x",
+   "source": "Dim D(3) =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-17",
+   "logger": "cr1000x",
+   "source": "Dim D =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-18",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, 2, 3\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-19",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1,2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-20",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1 , 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-21",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, X\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-22",
+   "logger": "cr1000x",
+   "source": "Public D(2) =\n1, E, F\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-23",
+   "logger": "cr1000x",
+   "source": "Public D(2), E =\n1, 2\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-24",
+   "logger": "cr1000x",
+   "source": "Public D As Long, E As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: E already declared as a variable."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-25",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, E\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-26",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, E\nE = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: E = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-27",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, Q As Long\nPublic Q\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-28",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-29",
+   "logger": "cr1000x",
+   "source": "Public D As String * 5 =\n\"a\", \"b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-30",
+   "logger": "cr1000x",
+   "source": "Public D As String =\n\"a, b\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-31",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1, (\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-32",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1,\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-33",
+   "logger": "cr1000x",
+   "source": "Public D As Long =\n1,\n2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: 2."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-34",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, 2\nD(1)=3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-35",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, 2\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_pull_comma-36",
+   "logger": "cr1000x",
+   "source": "Public D(2) As Long =\n1, 2, 3\nPublic E\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

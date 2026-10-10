@@ -166,6 +166,8 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int):
             kind = ("Invalid, or out of place expression" if seg[0].strip() == "{"
                     else "Incomplete expression")
             return head, i + 1, 1, (f"{kind}: {echo}.", m.group(1))
+        if not body.startswith("{"):
+            body = _split_top_commas(body)[0]  # the rest of the pulled line is dropped, unread
         return head + " = " + body, i + 1, 1, None
     while True:
         m = _mask_strings(text).rstrip()
