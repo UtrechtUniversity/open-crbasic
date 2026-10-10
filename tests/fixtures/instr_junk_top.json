@@ -1,0 +1,183 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-instr_junk_top-0",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_top-1",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg, EndProg (Begin Program, End Program)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  EndProg."
+  },
+  {
+   "id": "cr6-instr_junk_top-2",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  the."
+  },
+  {
+   "id": "cr6-instr_junk_top-3",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-instr_junk_top-4",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-instr_junk_top-5",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nNextScan junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_top-6",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nNextScan, junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_top-7",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nNextScan the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  the."
+  },
+  {
+   "id": "cr6-instr_junk_top-8",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan to calibrate\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: to calibrate."
+  },
+  {
+   "id": "cr6-instr_junk_top-9",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nfoo bar\nSlowSequence to calibrate\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: to calibrate."
+  },
+  {
+   "id": "cr6-instr_junk_top-10",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nCalibrate Y junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: Y junk."
+  },
+  {
+   "id": "cr6-instr_junk_top-11",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBattery the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: the end.\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg, EndProg (Begin Program, End Program)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  EndProg."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  the."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg 1 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nNextScan junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nNextScan, junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nNextScan the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  the."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan to calibrate\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: to calibrate."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nfoo bar\nSlowSequence to calibrate\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: to calibrate."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nCalibrate Y junk\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Incomplete expression: Y junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_top-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBattery the end\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: the end.\nline 2: Battery illegally occurs before BeginProg."
+  }
+ ]
+}

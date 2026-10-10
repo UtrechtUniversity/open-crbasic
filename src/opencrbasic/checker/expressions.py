@@ -1099,6 +1099,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
         record = profile.instructions.get(stmt.keyword.upper())
         if not record:
             continue
+        if stmt.keyword.upper() == "SLOWSEQUENCE" and profile.name in ("cr6", "cr1000x"):
+            continue  # `SlowSequence junk` compiles: its argument is never resolved (oracle, 2026-10-10)
         positions = _position_kinds(record["params"], stmt.keyword)
         if (positions and stmt.keyword.upper() == "SERIALOPEN" and stmt.args and stmt.args[0]
                 and profile.name in _WHOLE_EXPR_ECHO_LOGGERS

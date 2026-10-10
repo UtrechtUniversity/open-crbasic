@@ -4328,3 +4328,36 @@ wording for `If ... Then` and `Do While` on CR300/CR350). Implemented by `parser
 in an assignment target subscript (`A(1 To 2) = 3`), and string-literal operands (`"a" To "b"` is
 `String is illegal here`; ours stays a generic reject); `Y = TO` (a bare `TO` value, real `Invalid`)
 is still accepted.
+
+## Round 8 CR6/CR1000X: instruction followed by junk (2026-10-10)
+
+Fixtures `instr_junk_args.json`, `instr_junk_top.json`, `tests/test_instr_junk.py` (CR6 and CR1000X
+identical; CR300/CR350 untouched).
+
+- **Statement form is the paren form.** `Kw a b, c d` (no `(`) is read as `Kw(a b, c d)` by
+  `_instruction_arg_findings`: adjacent operands are `Incomplete expression: <arg>.`, a first
+  unresolved name is `Invalid symbol in expression: <arg>.` (then the `<Name> illegally occurs
+  before BeginProg.` line). Skipped for instructions with a raw-text parameter (`plain_expression_params`)
+  and for `If`/`For`/`Call`/... (`_STATEMENT_FORM_EXCLUDED`).
+- **Arity before names, except for destinations.** A statement short of required parameters whose
+  unresolved name sits in a destination argument (codes 8/27/29) is only `Invalid or missing
+  parameter.` (`PanelTemp the instruction`, `PanelTemp(the instruction)`); with the name in an
+  expression/constant argument it is only the `Invalid symbol` (`Delay(junk)`, `Scan junk`; the
+  shortfall line is dropped, `instr_rules.check`). `SlowSequence junk` compiles (its argument is
+  never resolved). Short by one with a stage-1 `Incomplete` on a two-argument call also prints the
+  shortfall (`Delay(1, 2 3)`); one argument gives only the `Incomplete` (`Delay 1 2`).
+- **Constant-only arguments** (codes 1/5/20/38) resolve every name first: `15000 junk` is `Invalid
+  symbol`, not `Incomplete`; a declared variable in a malformed constant argument adds `Variable
+  illegal in Parameter: <arg>.` (`Delay X Y`, `PanelTemp(X, X Y)`).
+- **Argument starting with `To`/`Is`/a binary word** (`Scan to x`, `Randomize and 3`,
+  `Calibrate(to x)`): pass 1 `Invalid, or out of place expression: <arg>.` (the keyword is not
+  echoed; no before-`BeginProg` line). This hides an earlier prose line's pass-2 error
+  (`calibrate_1`).
+- **Parameterless instructions** (`instr_rules.ZERO_PARAM_INSTRUCTIONS`: `BeginProg`, `EndProg`,
+  `NextScan`, `ExitScan`, `Restore`, `Wend`, ... probed one by one, both `Name junk` and `Name(1)`):
+  any argument is pass 1 `Too many parameters:  <first simple token>.` (`BeginProg, EndProg (Begin
+  Program, End Program)` -> `EndProg`). Not `EndIf`/`EndSelect`, whose closer messages interact.
+- Not modelled: `Delay(1, junk)` (`Invalid or missing parameter.` instead of the symbol),
+  `Randomize X, to x` (`Too many parameters:  to.`), `Calibrate X, to x` (`Illegal parameter to,
+  expecting constant integer.`), a lone `to`/`or` argument (`Calibrate to`), and the unreachable-code
+  warning name for these pass-1 statements.

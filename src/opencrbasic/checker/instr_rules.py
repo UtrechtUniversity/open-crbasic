@@ -256,6 +256,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
     in the file" (oracle evidence there), which covers this case for free.
     """
     outside = {k for k, in_sub in misplaced_returns(program).items() if not in_sub}
+    known = _known_names(program, profile)
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction) or id(stmt) in outside:
             continue
@@ -270,6 +271,13 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         if missing_code in _TOLERANT_CODES:
             continue
         if profile.name in ("cr6", "cr1000x"):
+            # an unresolved name in an argument other than a destination (8/27/29) or a code 28
+            # is reported as `Invalid symbol`, and the shortfall is not (oracle, 2026-10-10)
+            kinds = _type_code_kinds()
+            if any(a is not None and params[i] % 100 not in (8, 27, 28, 29)
+                   and kinds.get(params[i] % 100) in _TOO_MANY_SAFE_KINDS
+                   and _undefined_names(a, known) for i, a in enumerate(stmt.args[:len(params)])):
+                continue
             _report_constant_destinations(stmt, record, params, program, profile, diags)
         kind = _type_code_kinds().get(missing_code - 100 if missing_code >= 100 else missing_code)
         if kind in _TOO_FEW_PARAMS_KINDS:
@@ -277,6 +285,17 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         else:
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
     _check_unterminated_string_param(program, profile, diags)
+
+
+def shortfall_message(record: dict, given: int) -> str | None:
+    """The message for a statement of `given` arguments that is short of `record`'s required
+    parameters (the rule `check` applies to a parsed `S.Instruction`), else None."""
+    params = _real_params(record["params"])
+    if given >= _required_count(params) or params[given] in _TOLERANT_CODES:
+        return None
+    kind = _type_code_kinds().get(params[given] - 100 if params[given] >= 100 else params[given])
+    return "Too few parameters in instruction." if kind in _TOO_FEW_PARAMS_KINDS \
+        else "Invalid or missing parameter."
 
 
 def _report_constant_destinations(stmt: S.Instruction, record: dict, params: list, program,
@@ -334,6 +353,15 @@ _TOO_MANY_EXTRA = frozenset({"DATATABLE", "CALLTABLE", "SAMPLE", "AVERAGE", "MAX
                              "TOTALIZE", "STDDEV", "MEDIAN", "SENDTABLEDEF", "ESSINITIALIZE",
                              "WINDVECTOR"})
 
+# Parameterless instructions (`params == []`): any argument is `Too many parameters:  <first token>.`
+# (oracle, CR6/CR1000X, 2026-10-10, each probed as `Name junk` and `Name(1)`). Not `EndIf`/
+# `EndSelect` (block-closer messages come with it), nor the custom-parsed `Const`/`Data`/`Alias`/...
+ZERO_PARAM_INSTRUCTIONS = frozenset({
+    "BEGINPROG", "ENDPROG", "NEXTSCAN", "NEXTSUBSCAN", "EXITSCAN", "CONTINUESCAN", "EXITDO",
+    "EXITFOR", "EXITSUB", "ABORTSCAN", "PRESERVEVARIABLES", "PROCHIPRI", "ENDPROCHIPRI", "LEDOFF",
+    "CARDFLUSH", "OPENINTERVAL", "TABLEHIDE", "RESTORE", "PIPELINEMODE", "ANGLEDEGREES", "WEND",
+    "RESTART", "DEBUGBREAK", "ALLOWSPECIALCOMMS", "PULSECOUNTRESET"})
+
 _TOO_MANY_SAFE_KINDS = frozenset({
     "const_expr", "expr", "const_expr_only", "bool_expr", "variable_or_array", "expr_or_name",
     "expr_typed", "expr_special", "expr_pair", "datatype_kw", "const_int_kw", "next_kw",
@@ -382,6 +410,16 @@ def _too_many_eligible(params: list[int]) -> bool:
     return True
 
 
+_RAW_TEXT_KINDS = frozenset({"identifier", "deferred_text", "raw_line_text", "expr_marker", "type_name",
+                             "sub_params", "for_header", "expr_list"})
+
+
+def plain_expression_params(params: list[int]) -> bool:
+    """No parameter reads raw text (so every comma-separated chunk is an ordinary expression)."""
+    kinds = _type_code_kinds()
+    return bool(params) and not any(kinds.get(c % 100) in _RAW_TEXT_KINDS for c in params)
+
+
 def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
     """`Too many parameters:  %s.` (note the two spaces before `%s`, oracle-confirmed verbatim,
     `docs/type-codes.md`) when an `Instruction` statement's parsed argument list runs *past* its
@@ -407,7 +445,9 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         # loggers (oracle, 2026-09-27), although its name parameter is not an eligible kind; so is
         # `CallTable` (`CallTable(T,X,Y)` -> `Too many parameters:  Y.`, 2026-09-28).
         if not record or not (_too_many_eligible(record["params"])
-                              or stmt.keyword.upper() in _TOO_MANY_EXTRA):
+                              or stmt.keyword.upper() in _TOO_MANY_EXTRA
+                              or (profile.name in ("cr6", "cr1000x")
+                                  and stmt.keyword.upper() in ZERO_PARAM_INSTRUCTIONS)):
             continue
         max_count = len(_real_params(record["params"]))
         if len(stmt.args) <= max_count:

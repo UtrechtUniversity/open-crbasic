@@ -944,11 +944,14 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if known is None:
                     known = expressions._known_names(program, profile)
                     operands = pass1_operands(program, profile)
-                findings = _instruction_arg_findings(stmt.text, operands, profile)
+                findings = _instruction_arg_findings(stmt.text, operands, profile,
+                                                     symbols.declared_variable_names(program))
                 for stage, kind, arg_text in findings:
                     if stage == 1:
                         diags.error(stmt.line, _pass1_message(profile, S.Unparsed(
                             stmt.line, stmt.file, text=arg_text), kind), stmt.file, show_file=False)
+                    elif stage == 3:
+                        diags.error(stmt.line, kind, stmt.file)
                 # a name declared further down is not yet known here: that statement is pass 2
                 # (oracle, CR6/CR1000X, 2026-10-08: `If TCTemp is <26` above `Public TCTemp`)
                 earlier = pass1_operands(dataclasses.replace(program, statements=program.statements[:pos]),
@@ -1407,14 +1410,17 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                             show_file=False)
             else:
                 findings = (_instruction_arg_findings(stmt.text, pass1_operands(program, profile),
-                                                      profile)
+                                                      profile, symbols.declared_variable_names(program))
                             if profile.known_first_word_pass1 else [])
                 if findings:
-                    # stage-1 findings were reported in pass 1 (`check_pass1`)
+                    # stage-1 and stage-3 findings were reported in pass 1 (`check_pass1`)
                     if findings[0][0] == 2:
                         diags.error(stmt.line, f"Invalid symbol in expression: {findings[0][2]}.",
                                     stmt.file, show_file=False)
-                        ikw = stmt.text.split("(")[0].strip().upper()
+                        for stage, message, _ in findings[1:]:
+                            if stage == 5:
+                                diags.error(stmt.line, message, stmt.file)
+                        ikw = re.match(r"\s*(\w*)", stmt.text).group(1).upper()
                         record = profile.instructions.get(ikw)
                         if (record and not in_body_block and not in_table and not in_decl_block
                                 and before_bp and ikw in profile.before_beginprog):
@@ -1834,7 +1840,8 @@ class _Everything:
         return True
 
 
-def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tuple[int, str, str]]:
+def _instruction_arg_findings(text: str, operands: set[str], profile,
+                              variables=frozenset()) -> list[tuple[int, str, str]]:
     """CR6/CR1000X `Keyword(arg, arg, ...)` whose arguments cannot be parsed (`Sample(1,x,FP  2)`,
     `Scan(1,S  ec,3,1)`): the instruction is still recognised, and each argument is read as an
     expression on its own, left to right (oracle, 2026-10-03). Returns `(stage, kind, arg text)`:
@@ -1846,14 +1853,23 @@ def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tu
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
         return []
-    if len(toks) < 3 or toks[0].kind != "IDENT" or toks[0].upper not in profile.instructions \
-            or toks[0].upper in parser._RAW_NAME_FIRST \
-            or not (toks[1].kind == "OP" and toks[1].text == "(") \
-            or not (toks[-1].kind == "OP" and toks[-1].text == ")"):
+    if len(toks) < 2 or toks[0].kind != "IDENT" or toks[0].upper not in profile.instructions \
+            or toks[0].upper in parser._RAW_NAME_FIRST:
         return []
+    if toks[0].upper in instr_rules.ZERO_PARAM_INSTRUCTIONS and len(toks) > 1 and not (
+            toks[1].kind == "OP" and toks[1].text in ("=", ".")):
+        token = instr_rules._next_simple_token(text[toks[0].col + len(toks[0].text):])
+        return [(3, f"Too many parameters:  {token}.", "")] if token else []
+    paren = toks[1].kind == "OP" and toks[1].text == "("
+    if paren and (len(toks) < 3 or not (toks[-1].kind == "OP" and toks[-1].text == ")")):
+        return []
+    if not paren and (toks[1].kind == "OP" or toks[0].upper in _STATEMENT_FORM_EXCLUDED
+                      or not instr_rules.plain_expression_params(profile.instructions[toks[0].upper]["params"])):
+        return []       # statement form `Kw a b, c` is read like `Kw(a b, c)` (oracle, 2026-10-10)
     args: list[tuple[list, str]] = []
-    depth, cur, start = 0, [], toks[1].col + 1
-    for t in toks[2:]:
+    depth, cur = 0, []
+    start = toks[1].col + 1 if paren else toks[1].col
+    for t in toks[2:] if paren else toks[1:]:
         if t.kind == "OP" and t.text == "(":
             depth += 1
         elif t.kind == "OP" and t.text == ")":
@@ -1867,23 +1883,55 @@ def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tu
             continue
         cur.append(t)
     else:
-        return []
+        if paren:
+            return []
+        args.append((cur, text[start:].lstrip()))
     bad = ("incomplete", "no_matching")
     syntax = [(_scan_expr(t, 0, _Everything(), profile.functions, assign=True, start_operand=False)
                if t else None, t, txt) for t, txt in args]
+    # an argument starting with `To`/`Is`/a binary word is `Invalid, or out of place expression:
+    # <arg>.` (oracle, 2026-10-10: `Scan to x`, `Randomize and 3`, `Calibrate(to x)`)
+    syntax = [(("pass1", "fallback") if t and t[0].kind == "IDENT" and t[0].upper in _START_ERROR_WORDS
+               else v, t, txt) for v, t, txt in syntax]
+    bad = bad + ("fallback",)
     if any(v is not None and not (v[0] == "pass1" and v[1] in bad) for v, _, _ in syntax) or \
             not any(v is not None for v, _, _ in syntax):
         return []
     out: list[tuple[int, str, str]] = []
-    for v, arg_toks, arg_text in syntax:
+    record = profile.instructions[toks[0].upper]
+    short = instr_rules.shortfall_message(record, len(args))
+    params = instr_rules._real_params(record["params"])
+    for i, (v, arg_toks, arg_text) in enumerate(syntax):
         if not arg_toks:
             continue
+        code = params[i] % 100 if i < len(params) else None
         if _scan_expr(arg_toks, 0, operands, profile.functions, assign=True,
                       start_operand=False) == ("pass2", "symbol"):
+            if short and not out and code in _DEFERRED_DEST_CODES:
+                return [(3, short, "")]     # a destination is resolved after the arity check
             return out or [(2, "symbol", arg_text)]
+        if v is not None and v[1] != "fallback" and not out and code in _CONST_ONLY_CODES and any(
+                t.kind == "IDENT" and t.upper not in operands and t.upper not in profile.functions
+                and t.upper not in _BINARY_WORDS and t.upper != "NOT" for t in arg_toks):
+            # a constant-only argument resolves every name first: `Invalid symbol`, not `Incomplete`
+            after = [(5, f"Variable illegal in Parameter: {arg_text}.", "")] if any(
+                t.kind == "IDENT" and t.upper in variables for t in arg_toks) else []
+            return [(2, "symbol", arg_text)] + after
         if v is not None:
             out.append((1, v[1], arg_text))
+            # the parameter's own kind rejects the malformed argument too (oracle, 2026-10-10)
+            if code in _CONST_ONLY_CODES and any(t.kind == "IDENT" and t.upper in variables
+                                                 for t in arg_toks):
+                out.append((3, f"Variable illegal in Parameter: {arg_text}.", ""))
+    if short and out and len(args) >= 2 and all(o[0] == 1 for o in out):
+        out.append((3, short, ""))      # (one argument short of two: not with a single argument)
     return out
+
+
+_STATEMENT_FORM_EXCLUDED = frozenset({"IF", "ELSEIF", "WHILE", "DO", "LOOP", "SELECT", "CASE", "FOR",
+                                      "NEXT", "CALL", "RETURN", "EXIT"})
+_DEFERRED_DEST_CODES = frozenset({8, 27, 29})
+_CONST_ONLY_CODES = frozenset({1, 5, 20, 38})
 
 
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,

@@ -1,0 +1,421 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-instr_junk_args-0",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp the instruction\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-instr_junk_args-1",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(the instruction)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-instr_junk_args-2",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp the, 15000\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the."
+  },
+  {
+   "id": "cr6-instr_junk_args-3",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp X, 15000 junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: 15000 junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-4",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X, X Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Variable illegal in Parameter: X Y."
+  },
+  {
+   "id": "cr6-instr_junk_args-5",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp X, 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-instr_junk_args-6",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nBattery the end\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the end."
+  },
+  {
+   "id": "cr6-instr_junk_args-7",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay the instruction\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the instruction."
+  },
+  {
+   "id": "cr6-instr_junk_args-8",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-instr_junk_args-9",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Variable illegal in Parameter: X Y."
+  },
+  {
+   "id": "cr6-instr_junk_args-10",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1, 2 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 2 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-instr_junk_args-11",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(1, X Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-instr_junk_args-12",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-13",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(junk, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-14",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nScan(1,Sec,junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-15",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-instr_junk_args-16",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize(X junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-17",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize and 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: and 3."
+  },
+  {
+   "id": "cr6-instr_junk_args-18",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize to x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x."
+  },
+  {
+   "id": "cr6-instr_junk_args-19",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nScan(to x)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x.\nline 4: Variable illegal in Parameter: to x."
+  },
+  {
+   "id": "cr6-instr_junk_args-20",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1, to x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-instr_junk_args-21",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nSlowSequence 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-instr_junk_args-22",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nExitScan junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-23",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nExitScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-instr_junk_args-24",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nLEDOff junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-25",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRestore junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-26",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nWend junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-27",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nCardFlush junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr6-instr_junk_args-28",
+   "logger": "cr6",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nAbortScan junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp the instruction\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(the instruction)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp the, 15000\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp X, 15000 junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: 15000 junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X, X Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Variable illegal in Parameter: X Y."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp X, 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nBattery the end\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the end."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay the instruction\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: the instruction."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay X Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Variable illegal in Parameter: X Y."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1, 2 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 2 3.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(1, X Y)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay(junk, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nScan(1,Sec,junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize(X junk)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize and 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: and 3."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRandomize to x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nScan(to x)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x.\nline 4: Variable illegal in Parameter: to x."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nDelay 1, to x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: to x.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nSlowSequence 1 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nExitScan junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nExitScan(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nLEDOff junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nRestore junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nWend junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nCardFlush junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  },
+  {
+   "id": "cr1000x-instr_junk_args-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y(3)\nBeginProg\nScan(1,Sec,0,0)\nAbortScan junk\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  junk."
+  }
+ ]
+}
