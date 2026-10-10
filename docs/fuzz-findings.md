@@ -432,3 +432,12 @@ verdict) are excluded from every class. 125 reproducers saved (hash-named, not e
 
 No crash, hang, or implementation_exception in any run. Fix status is recorded in the sections
 that follow as each family is closed.
+
+### R9 false reject closed: `CHR()` of an out-of-byte-range constant
+
+`cr6/false_reject/b48d6843b286` (`Const LF = CHR(-1)`): all four real compilers accept `CHR()` in a
+`Const` expression for negative, `>255`, `5000000000`, `1e300` and `2147483648` arguments
+(`tests/fixtures/r9_chr_arg.json`, audited 0 differing). `consteval._fn_chr` raised on a negative
+or non-Unicode argument, which surfaced as `Invalid, or out of place expression`. It now takes the
+low byte (the value of the resulting string is not otherwise observable). Not covered: `CHR(-1/0)`
+reports `Divide by zero in expression: CHR(-1/0).` on the real compiler, which we do not emit.
