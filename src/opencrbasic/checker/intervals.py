@@ -37,8 +37,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if kw == "SCAN":
-            raw = instr_rules._scan_raw(stmt, env)
-            scan = _split(raw[0] * instr_rules._US_PER_UNIT[raw[1]]) if raw else None
+            scan = _scan_step(stmt, env)
             continue
         if kw in ("NEXTSCAN", "SUBSCAN", "NEXTSUBSCAN") or isinstance(stmt, S.SubDef):
             scan = None
@@ -150,7 +149,7 @@ def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env,
         return
     if i_sec < 3601:
         interval, tinto = i_sec * 10000 + _cdiv(i_us, 100), t_sec * 10000 + _cdiv(t_us, 100)
-        step = scan[0] * 10000 + _cdiv(scan[1], 100)
+        step = _wrap32(scan[0] * 10000 + _cdiv(scan[1], 100))
     else:
         interval, tinto, step = i_sec, t_sec, scan[0]
         if i_us or t_us:
@@ -159,6 +158,18 @@ def _check_call(call: S.Index, scan, stmt: S.Stmt, diags: Diagnostics, env,
     if step and (_cmod(interval, step) or _cmod(tinto, step)):
         diags.error(stmt.line, "Scan interval must be integrally divisible into interval.",
                     stmt.file)
+
+
+def _scan_step(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:
+    """Seconds and microseconds the compiler keeps of a constant `Scan` interval, valid or not
+    (`instr_rules.scan_split`; oracle, all four loggers, 2026-10-10: `Scan("fuzz",Sec,...)` is
+    -2^31 s, whose step in 100 us wraps to 0 and so passes `IfTime(0,5,Min)` but not `(0,24,Hr)`)."""
+    return instr_rules.scan_split(stmt, env)
+
+
+def _wrap32(n: int) -> int:
+    n &= 0xFFFFFFFF
+    return n - 2**32 if n >= 2**31 else n
 
 
 def _split(total_us: int) -> tuple[int, int]:

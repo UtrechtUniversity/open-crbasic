@@ -1,0 +1,2207 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-iftime-_fuzz__Sec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Sec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Sec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Sec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Sec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Sec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Sec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Sec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Sec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Sec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Sec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Sec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Sec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Sec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Sec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Sec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Sec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1_Sec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1_Sec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1_Sec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Sec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1_Sec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1_Sec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1_Sec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Sec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_1_Sec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_1_Sec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_1_Sec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_1_Sec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1_Sec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1_Sec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1_Sec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_5_Sec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_5_Sec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_5_Sec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_5_Sec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_5_Sec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_5_Sec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_5_Sec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_5_Sec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_5_Sec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_5_Sec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_5_Sec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_5_Sec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_5_Sec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_5_Sec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_5_Sec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_5_Sec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-5,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_1000_mSec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1000_mSec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1000_mSec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1000_mSec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1000_mSec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1000_mSec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1000_mSec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1000_mSec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1000_mSec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_1000_mSec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_1000_mSec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_1000_mSec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_1000_mSec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1000_mSec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1000_mSec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1000_mSec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1000,mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__mSec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__mSec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__mSec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__mSec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__mSec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__mSec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__mSec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__mSec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__mSec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__mSec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__mSec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__mSec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__mSec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__mSec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_fuzz__mSec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__mSec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",mSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Min_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Min_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Min_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Min_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Min_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Min_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Min_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Min_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Min_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Min_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Min_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Min_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__Min_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__Min_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__Min_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__Min_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Min_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1_Min_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1_Min_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1_Min_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Min_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-iftime-_1_Min_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-iftime-_1_Min_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-_1_Min_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-_1_Min_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_1_Min_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_1_Min_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_1_Min_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_1_Min_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_1_Min_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_1_Min_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_1_Min_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,Min,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__uSec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__uSec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__uSec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__uSec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__uSec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__uSec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__uSec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__uSec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__uSec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__uSec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__uSec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__uSec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-_fuzz__uSec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-_fuzz__uSec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-_fuzz__uSec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-_fuzz__uSec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",uSec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-1_Sec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-iftime-1_Sec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-iftime-1_Sec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-1_Sec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-1_Sec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-iftime-1_Sec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-iftime-1_Sec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-1_Sec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-1_Sec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-1_Sec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-1_Sec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-1_Sec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-1_Sec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-iftime-1_Sec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-iftime-1_Sec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-iftime-1_Sec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-iftime-7_Sec_3_0-0_24_Hr",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-7_Sec_3_0-0_24_Hr",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-7_Sec_3_0-0_24_Hr",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-7_Sec_3_0-0_24_Hr",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,24,Hr) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-7_Sec_3_0-0_5_Min",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-7_Sec_3_0-0_5_Min",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-7_Sec_3_0-0_5_Min",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-7_Sec_3_0-0_5_Min",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,5,Min) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-7_Sec_3_0-0_500_mSec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-7_Sec_3_0-0_500_mSec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-7_Sec_3_0-0_500_mSec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-7_Sec_3_0-0_500_mSec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,500,mSec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-iftime-7_Sec_3_0-0_2_Sec",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr1000x-iftime-7_Sec_3_0-0_2_Sec",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr300-iftime-7_Sec_3_0-0_2_Sec",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr350-iftime-7_Sec_3_0-0_2_Sec",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(7,Sec,3,0)\n    If IfTime(0,2,Sec) Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 4: Scan interval must be integrally divisible into interval."
+  },
+  {
+   "id": "cr6-wrap-99999999999_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-99999999999_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-99999999999_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-99999999999_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-99999999999_Sec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-wrap-99999999999_Sec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-wrap-99999999999_Sec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-99999999999_Sec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-99999999999_Hr_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-99999999999_Hr_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-99999999999_Hr_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-99999999999_Hr_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-99999999999_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-wrap-99999999999_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-wrap-99999999999_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-wrap-99999999999_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-wrap-99999999999_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-99999999999_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr300-wrap-99999999999_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-wrap-99999999999_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(99999999999,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-wrap-3000000000_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(3000000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-3000000000_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(3000000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-3000000000_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(3000000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-3000000000_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(3000000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-2147483647_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-wrap-2147483647_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr300-wrap-2147483647_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-2147483647_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-2147483647_Hr_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-wrap-2147483647_Hr_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr300-wrap-2147483647_Hr_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-2147483647_Hr_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-2147483647_Day_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-wrap-2147483647_Day_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr300-wrap-2147483647_Day_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-2147483647_Day_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(2147483647,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-100000000_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(100000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-wrap-100000000_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(100000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr300-wrap-100000000_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(100000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr350-wrap-100000000_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(100000000,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-wrap-71582788_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(71582788,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-wrap-71582788_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(71582788,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr300-wrap-71582788_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(71582788,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-71582788_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(71582788,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-71582789_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(71582789,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-wrap-71582789_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(71582789,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-wrap-71582789_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(71582789,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-71582789_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(71582789,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-_fuzz__Hr_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-_fuzz__Hr_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-_fuzz__Hr_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-_fuzz__Hr_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Hr,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-_fuzz__Day_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-_fuzz__Day_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-_fuzz__Day_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-_fuzz__Day_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(\"fuzz\",Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-_2147483648_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-2147483648,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-_2147483648_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-2147483648,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-_2147483648_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-2147483648,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-_2147483648_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-2147483648,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-_2147483649_Min_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-2147483649,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-wrap-_2147483649_Min_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-2147483649,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-wrap-_2147483649_Min_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-2147483649,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-_2147483649_Min_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-2147483649,Min,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-wrap-_100_Day_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-100,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-wrap-_100_Day_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-100,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-wrap-_100_Day_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-100,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-wrap-_100_Day_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-100,Day,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-15_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-15_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-15_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-15_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-5_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(5,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 5: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-limits-5_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(5,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-5_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(5,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-5_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(5,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-9_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(9,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-9_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(9,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-9_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(9,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-9_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(9,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-10_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(10,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-10_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(10,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-10_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(10,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-10_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(10,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-11_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(11,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-11_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(11,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-11_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(11,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-11_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(11,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-11000_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(11000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-11000_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(11000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-11000_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(11000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-11000_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(11000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-15000_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(15000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-15000_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(15000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-15000_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(15000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-15000_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(15000,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-9500_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(9500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-9500_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(9500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr300-limits-9500_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(9500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-9500_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(9500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-1500_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-1500_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-1500_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-1500_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-1005_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1005,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-1005_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1005,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-1005_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1005,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-1005_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1005,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-1_Sec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-1_Sec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-1_Sec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-1_Sec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-100_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(100,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 100uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-100_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(100,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 100uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-limits-100_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(100,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-100_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(100,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-0_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(0,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-0_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(0,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-limits-0_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(0,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-0_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(0,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-_1_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-_1_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-limits-_1_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-_1_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-_15_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -15000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-_15_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -15000uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-limits-_15_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-_15_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-15,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-_1500_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-limits-_1500_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr300-limits-_1500_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-_1500_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1500,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-_1500_uSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(-1500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1500uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-limits-_1500_uSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(-1500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1500uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr300-limits-_1500_uSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(-1500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-_1500_uSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(-1500,uSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  },
+  {
+   "id": "cr6-limits-86401_Sec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(86401,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-limits-86401_Sec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(86401,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr300-limits-86401_Sec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(86401,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr350-limits-86401_Sec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(86401,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-limits-86400001_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(86400001,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-86400001_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(86400001,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-86400001_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(86400001,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-86400001_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(86400001,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-86401_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(86401,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-86401_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(86401,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-86401_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(86401,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR300 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr350-limits-86401_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(86401,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR350 -- Compile Failed!\n\nline 3: Scans > 10mSec must be a multiple of 10mSec."
+  },
+  {
+   "id": "cr6-limits-100000_mSec_3_0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan(100000,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-limits-100000_mSec_3_0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan(100000,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-limits-100000_mSec_3_0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(100000,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR300 -- Compiled OK."
+  },
+  {
+   "id": "cr350-limits-100000_mSec_3_0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(100000,mSec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR350 -- Compiled OK."
+  }
+ ]
+}

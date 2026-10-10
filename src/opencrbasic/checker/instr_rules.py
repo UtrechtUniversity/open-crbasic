@@ -687,7 +687,7 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
             slow = True
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SCAN":
             continue
-        raw_us = None
+        split = None
         for idx, label in ((0, "Interval"), (2, "BufferOption"), (3, "Count")):
             if idx >= len(stmt.args) or stmt.args[idx] is None:
                 continue
@@ -701,48 +701,19 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
             if _is_negative_or_invalid(value):
                 diags.error(stmt.line, f"Scan {label} parameter must be a non-negative integer", stmt.file)
             if idx == 0:
-                raw_us = _scan_min_interval(stmt, diags, env)
-                if _scan_over_a_day(stmt, env):
+                split = _scan_min_interval(stmt, diags, env)
+                if split and split[0] > 86400 and not (split[0] == 0 and split[1] < 1000) and _crem(split[1], 1000) == 0:
                     diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
-        if slow and raw_us is not None:
+        if slow and split is not None:
+            raw_us = split[0] * 1_000_000 + split[1]
             # a Scan after `SlowSequence` (oracle, CR6/CR1000X, round 9, docs/instructions.md
             # "Slow scan intervals"), after the BufferOption/Count messages
             if -1_000_000 < raw_us < 100_000:
                 diags.error(stmt.line, "Slow Scan interval must be >= 100mSec.", stmt.file)
             if raw_us % 10_000:
                 diags.error(stmt.line, "Slow Scan interval must be a multiple of 100mSec.", stmt.file)
-            if _scan_over_a_day(stmt, env):
+            if split[0] > 86400:
                 diags.error(stmt.line, "Maximum Slow Scan interval is 1 Day.", stmt.file)
-
-
-_SECS_PER_UNIT = {2: 1, 3: 60, 4: 3600, 5: 86400}
-
-
-def _scan_over_a_day(stmt: S.Instruction, env: consteval.Env) -> bool:
-    """The interval, in whole seconds as a signed 32-bit integer (`Scan(2000000000,Day,..)` wraps,
-    `Scan(1000000000,Min,..)` too; `86400999` mSec is 86400 s), is over 86400 (oracle, CR6/CR1000X,
-    round 9)."""
-    args = stmt.args
-    if len(args) < 2 or args[0] is None or args[1] is None or \
-            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
-        return False
-    try:
-        value = consteval.value_of(args[0], env)
-        unit = consteval.value_of(args[1], env)
-    except consteval.NotConstant:
-        return False
-    if isinstance(value, str) or isinstance(unit, (str, bool)) or not isinstance(value, (int, float)):
-        return False
-    v = consteval.to_long(value)
-    if unit == 1:
-        secs = v // 1000
-    elif unit == 0:
-        secs = v // 1_000_000
-    elif unit in _SECS_PER_UNIT:
-        secs = (v * _SECS_PER_UNIT[unit] + 2**31) % 2**32 - 2**31
-    else:
-        return False
-    return secs > 86400
 
 
 # `Scan`/`DataInterval`'s `Units` argument folds (via `consteval`, `profile.symbols`) to this 0..5
@@ -750,7 +721,7 @@ def _scan_over_a_day(stmt: S.Instruction, env: consteval.Env) -> bool:
 _US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
 
 
-def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env) -> int | None:
+def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env) -> tuple[int, int] | None:
     """`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
     (round 6, CR6/CR1000X only, same `FUN_00468900` family as `check_scan_params` above -- oracle-
     confirmed ungated the same way, fires alongside unrelated errors both before and after it in
@@ -785,41 +756,79 @@ def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.E
     do not; `Scan(-1000001,uSec,..)` gets the multiple-of message). Only `Interval` (position 0) -- no oracle evidence either message
     applies to `BufferOption`/`Count`.
     """
-    args = stmt.args
-    interval = args[0] if args else None
-    units = args[1] if len(args) > 1 else None
-    if interval is None or units is None:
+    split = scan_split(stmt, env)
+    if split is None:
         return None
-    if not (consteval.is_constant(interval, env) and consteval.is_constant(units, env)):
+    sec, us = split
+    if sec == 0 and us < 1000:
+        diags.error(stmt.line, f"Scan {us}uSec invalid must be at least 1mSec.", stmt.file)
+    elif _crem(us, 1000) != 0:
+        diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
+    return split
+
+
+def _crem(a: int, b: int) -> int:
+    """C `%`: the remainder takes the sign of the dividend."""
+    return a - b * (abs(a) // abs(b) * (1 if (a >= 0) == (b > 0) else -1))
+
+
+def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | None:
+    """Whole seconds and microseconds the compiler makes of a constant `Scan` interval
+    (`FUN_005082c0`, all four loggers identical): the value converted as a `long` (a string, NaN
+    or overflow is -2^31), then in 32-bit C arithmetic `uSec` -> `/1000000`, `%1000000`; `mSec` ->
+    `/1000`, `%1000*1000`; `Sec` itself; `Min`, `Hr`, `Day` times 60, 3600, 86400 (wrapping); any
+    other unit 0. No validity check: a negative, string or wrapped interval is used as it is
+    (oracle, 2026-10-10; `docs/instructions.md` "Scan interval arithmetic")."""
+    args = stmt.args
+    if len(args) < 2 or args[0] is None or args[1] is None or \
+            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
         return None
     try:
-        value = consteval.value_of(interval, env)
-        unit = consteval.value_of(units, env)
+        value, unit = consteval.value_of(args[0], env), consteval.value_of(args[1], env)
     except consteval.NotConstant:
         return None
-    if isinstance(value, str) or not isinstance(value, (int, float)):
-        return None
-    # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01); a value
-    # outside Long is -2147483648 (`Scan(86401000000,uSec,..)` is `multiple of 1mSec`, round 9)
-    us_per_unit = _US_PER_UNIT.get(unit, 0) if not isinstance(unit, bool) else 0
-    raw_us = consteval.to_long(value) * us_per_unit
-    if -1_000_000 < raw_us < 1000:
-        diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
-    elif raw_us % 1000 != 0:
-        diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
-    return raw_us
+    n = consteval.to_long(-1 if value is True else 0 if value is False else value)
+    unit = unit if isinstance(unit, (int, float)) and not isinstance(unit, bool) else None
+    if unit is None or int(unit) not in _US_PER_UNIT:
+        return 0, 0
+    unit = int(unit)
+    if unit == 0:
+        sec = _cdiv(n, 1_000_000)
+        return sec, n - sec * 1_000_000
+    if unit == 1:
+        sec = _cdiv(n, 1000)
+        return sec, (n - sec * 1000) * 1000
+    if unit == 2:
+        return n, 0
+    wrapped = (n * {3: 60, 4: 3600, 5: 86400}[unit]) & 0xFFFFFFFF
+    return (wrapped - 2**32 if wrapped >= 2**31 else wrapped), 0
+
+
+def _cdiv(a: int, b: int) -> int:
+    q = abs(a) // abs(b)
+    return q if (a >= 0) == (b > 0) else -q
 
 
 def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`Maximum Scan interval is 1 Day.` on a `Scan` longer than 86400 s, all four loggers (oracle,
     2026-09-27: `Scan(86401,Sec,...)`, `Scan(1441,Min,...)`, `Scan(2,Day,...)`; `Scan(1,Day,...)`
-    is accepted). An interval past `INT32_MAX` gets no such message."""
+    is accepted), from the seconds/microseconds of `scan_split` (32-bit: `Scan(2147483647,Min,..)`
+    wraps negative and passes). CR6/CR1000X say it only when the interval is a whole number of
+    mSec and not already under 1 mSec; CR300/CR350 add `Scans > 10mSec must be a multiple of
+    10mSec.` for an interval of one second or more, or 10 mSec or more, that is not a multiple
+    of 10 mSec, instead (decompiled `Scan` code, oracle 2026-10-10: `Scan(15,mSec)` fails,
+    `Scan(10,mSec)`, `Scan(9500,uSec)`, `Scan(1500,mSec)` pass)."""
     if profile.name in _SCAN_VALUE_CHECK_LOGGERS:
-        return  # folded into `check_scan_params` (message order, seconds model)
+        return  # folded into `check_scan_params` (message order)
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SCAN":
-            raw = _scan_raw(stmt, env)
-            if raw is not None and raw[0] * _US_PER_UNIT[raw[1]] > 86_400_000_000:
+            split = scan_split(stmt, env)
+            if split is None:
+                continue
+            sec, us = split
+            if (sec != 0 or us >= 10000) and _crem(us, 10000) != 0:
+                diags.error(stmt.line, "Scans > 10mSec must be a multiple of 10mSec.", stmt.file)
+            elif (sec != 0 or us >= 10000) and sec > 86400:
                 diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
 
 

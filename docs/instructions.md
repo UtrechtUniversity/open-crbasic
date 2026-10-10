@@ -1687,3 +1687,35 @@ scan/instruction programs per logger exact except the listed gaps). Implementati
   Known gaps: the CR1000X threshold is a fit (it matches 11 `fN1` values for `VoltSe` and
   `AutoRange` at 250 Hz is 2 above the real boundary); the exact mechanism in the binary was not
   found.
+
+### Scan interval arithmetic and `IfTime` (all four loggers; fixture `scan_interval`)
+
+Decompiled `Scan` code (CR6Comp `FUN_00468900`, cr300comp `FUN_0050b470`, both through the shared
+unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (312 cases, audited
+0 differing). Closes the round-9 `IfTime`/`TimeIntoInterval` items of `docs/fuzz-findings.md`.
+
+- **Conversion**: the interval is converted as a `long` (a string, NaN or a value past Long range
+  is -2^31, a fraction truncates), then in 32-bit C arithmetic: `uSec` `/1000000`, `%1000000`;
+  `mSec` `/1000`, `%1000*1000`; `Sec` as is; `Min`, `Hr`, `Day` times 60, 3600, 86400 with
+  wrap-around; any other unit 0. Nothing validates this: the seconds and microseconds are used as
+  they come out, and stay in force after the interval's own error. `Scan("fuzz",Min,..)`,
+  `Scan(99999999999,Hr,..)` and `Scan(3000000000,Min,..)` are 0 seconds; `Scan(2147483647,Min,..)`
+  is -60 s, `Scan(71582789,Min,..)` is 44 s.
+- **CR6/CR1000X** messages after `Scan Interval parameter must be a non-negative integer`:
+  seconds 0 and microseconds under 1000 -> `Scan <us>uSec invalid must be at least 1mSec.` (the
+  microsecond part, which is why wrapped Min/Hr/Day intervals say `0uSec`); else microseconds not a
+  multiple of 1000 -> `Scans must be a multiple of 1mSec.`; else seconds over 86400 ->
+  `Maximum Scan interval is 1 Day.` (a wrapped interval therefore passes, and warns about
+  background calibration, since the interval is negative).
+- **CR300/CR350** have no such messages. For seconds not 0 or microseconds from 10000: microseconds
+  not a multiple of 10000 -> `Scans > 10mSec must be a multiple of 10mSec.` (`Scan(15,mSec)`,
+  `Scan(1005,mSec)`, `Scan(86401,mSec)`, `Scan(86400001,mSec)`; `Scan(10,mSec)`, `Scan(9500,uSec)`,
+  `Scan(1500,mSec)` pass), else seconds over 86400 -> `Maximum Scan interval is 1 Day.`.
+- **`IfTime`/`TimeIntoInterval` inside a `Scan`** (`checker/intervals.py`) use the same seconds
+  and microseconds: the scan step is `sec*10000 + us/100` in 32-bit wrap (100 us units), or `sec`
+  when the call's interval passes 3600 s; a nonzero step that does not divide both values gives
+  `Scan interval must be integrally divisible into interval.`, with C's sign rules for `%`. So
+  `Scan("fuzz",Sec,..)` (step 0 in 100 us units, -2^31 s above an hour) fails `IfTime(0,24,Hr)` but
+  not `(0,5,Min)`; `Scan(-1,Sec,..)` (step -10000) fails only sub-second intervals; `Scan(-5,Sec,..)`
+  also `(0,2,Sec)`; `Scan("fuzz",uSec,..)` (step -21474836) fails every `IfTime`. On CR6/CR1000X
+  this pass-1 error hides the scan's own pass-2 messages (`Scan Interval parameter ...`).

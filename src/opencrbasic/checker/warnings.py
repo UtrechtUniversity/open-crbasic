@@ -349,25 +349,16 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
             )
 
 
-# `Scan`'s `Units` argument folds (via `consteval`, `profile.symbols`) to this 0..5 code
-# (`data/symbols.json`: `usec`=0 .. `day`=5); milliseconds per unit, used only to test against
-# `background_calibration.json`'s whole-millisecond threshold.
-_MS_PER_UNIT = {0: 0.001, 1: 1, 2: 1000, 3: 60000, 4: 3_600_000, 5: 86_400_000}
-
-
 def _scan_interval_ms(stmt: S.Instruction, env: consteval.Env) -> float | None:
-    args = stmt.args
-    if len(args) < 2 or args[0] is None or args[1] is None:
+    """The `Scan` interval in milliseconds as the compiler holds it (100 us units from the 32-bit
+    seconds/microseconds of `instr_rules.scan_split`, so a wrapped `Scan(2147483647,Min,..)` is
+    negative and counts as shorter than any threshold)."""
+    split = instr_rules.scan_split(stmt, env)
+    if split is None:
         return None
-    try:
-        value = consteval.value_of(args[0], env)
-        unit = consteval.value_of(args[1], env)
-    except consteval.NotConstant:
-        return None
-    ms_per_unit = _MS_PER_UNIT.get(unit)
-    if ms_per_unit is None or not isinstance(value, (int, float)):
-        return None
-    return value * ms_per_unit
+    units = split[0] * 10000 + (abs(split[1]) // 100) * (1 if split[1] >= 0 else -1)
+    units &= 0xFFFFFFFF
+    return (units - 2**32 if units >= 2**31 else units) / 10
 
 
 def _check_fnotch(program: S.Program, profile: Profile, diags: Diagnostics, env: consteval.Env) -> None:
