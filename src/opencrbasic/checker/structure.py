@@ -1816,7 +1816,7 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                 return ("pass1", "missing_expr")
             return ("pass1", "fallback")
         return _scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
-                          cond=True, to_ok=bool(re.match(r"\s*SELECT", text, re.I)))
+                          cond=True, to_ok=bool(re.match(r"\s*(?:SELECT|IF|ELSEIF)\b", text, re.I)))
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError as e:

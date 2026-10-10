@@ -4323,10 +4323,20 @@ operator at the same level on either side (`X < 1 To 2`, `1 To 2 = 3`, `Y = X = 
 `Do While` conditions reject it (`Incomplete expression: <cond>.`; ours still rejects with other
 wording for `If ... Then` and `Do While` on CR300/CR350). Implemented by `parser._parse_relational`
 (`_to_ok`, set only while parsing an assignment value or `Select Case`) and `structure._scan_expr`
-(`to_ok`). Not modelled: `To` in instruction arguments (`Scan(1 To 2,...)`, `Sample(1,X To Y,FP2)`),
-in an assignment target subscript (`A(1 To 2) = 3`), and string-literal operands (`"a" To "b"` is
-`String is illegal here`; ours stays a generic reject); `Y = TO` (a bare `TO` value, real `Invalid`)
-is still accepted.
+(`to_ok`). `Y = TO` (a bare `TO` value, real `Invalid`) is still accepted.
+
+Round 9 (2026-10-10, fixtures `to_args`, `to_scan`, `to_tables`, all four loggers except
+`to_scan`: CR6/CR1000X): `_to_ok` is also set for instruction arguments (`Scan(1 To 2,..)`,
+`Sample(1,X To Y,FP2)`, `PanelTemp(X To Y,250)`, `Move(A(1),1 To 2,..)`), an assignment target's
+subscripts (`A(1 To 2) = 3`), a `Const` value, and `If`/`ElseIf` conditions (`If X To 2 Then`
+compiles; `If X = 1 To 2` and two `To` are `Incomplete expression: <cond> .`, block form only: the
+inline form still prints the generic message). A `To` of two constants is the constant 0
+(`Scan(1 To 2,Sec,..)` -> `Scan 0uSec invalid`, `Scan(1,Sec To Min,..)` -> `Scan 1uSec invalid`,
+`PortGet(X,5 To 2)` -> `Invalid port 0`, `Const K = 5 To 2` is 0, `consteval._binary`); with a
+variable operand the argument is not a constant (`Variable illegal in Parameter: X To 2`). A String
+on the *right* of `To` is `String is illegal here` (alone: `"a" To "b"`, `3 To "b"`, `S To S`,
+`Len("a" To "b")`; `var_types._string_operand_messages`); a String on the left compiles
+(`"a" To 3`, `S To 3`).
 
 ## Round 8 CR6/CR1000X: instruction followed by junk (2026-10-10)
 

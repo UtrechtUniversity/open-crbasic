@@ -1,0 +1,295 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-to_scan-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1 To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-to_scan-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(5 To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-to_scan-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec To Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-to_scan-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0 To 1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0 To 1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(X To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X To 2."
+  },
+  {
+   "id": "cr6-to_scan-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(100 To 200,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-to_scan-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X = 1 To 2 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X = 1 To 2 ."
+  },
+  {
+   "id": "cr6-to_scan-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If (X To 2) Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 = 1 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X To 2 = 1 ."
+  },
+  {
+   "id": "cr6-to_scan-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    While X To 2\n Y = 1\n Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X < 1 Then Y = 1 Else Y = 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1 Else Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-15",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n Y = 1\n ElseIf X To 2 Then\n Y = 2\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-16",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n Y = 1\n ElseIf X = 3 To 2 Then\n Y = 2\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: X = 3 To 2 ."
+  },
+  {
+   "id": "cr6-to_scan-17",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-18",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If \"a\" To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_scan-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If 1 To \"a\" Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_scan-0",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1 To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-to_scan-1",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(5 To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-to_scan-2",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec To Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-to_scan-3",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0 To 1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-4",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0 To 1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-5",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(X To 2,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X To 2."
+  },
+  {
+   "id": "cr1000x-to_scan-6",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(100 To 200,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-to_scan-7",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-8",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-9",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X = 1 To 2 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X = 1 To 2 ."
+  },
+  {
+   "id": "cr1000x-to_scan-10",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If (X To 2) Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-11",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 = 1 Then\n Y = 1\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X To 2 = 1 ."
+  },
+  {
+   "id": "cr1000x-to_scan-12",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    While X To 2\n Y = 1\n Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-13",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X < 1 Then Y = 1 Else Y = 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-14",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1 Else Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-15",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n Y = 1\n ElseIf X To 2 Then\n Y = 2\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-16",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n Y = 1\n ElseIf X = 3 To 2 Then\n Y = 2\n EndIf\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Incomplete expression: X = 3 To 2 ."
+  },
+  {
+   "id": "cr1000x-to_scan-17",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-18",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If \"a\" To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_scan-19",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If 1 To \"a\" Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: String is illegal here"
+  }
+ ]
+}

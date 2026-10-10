@@ -133,7 +133,10 @@ def _string_operand_messages(typer: "_Typer", stmt: S.Stmt) -> list[str]:
             if not isinstance(node, S.Binary):
                 continue
             left, right = typer.of(node.left) == "STRING", typer.of(node.right) == "STRING"
-            if node.op in _STRING_ILLEGAL_OPS and (left or right):
+            if node.op == "TO":  # a String on the right only (`S To 3` compiles); round 9
+                if right:
+                    found.append(["String is illegal here"])
+            elif node.op in _STRING_ILLEGAL_OPS and (left or right):
                 found.append(["String is illegal here"])
             elif node.op in _STRING_ARITH_OPS and (left or right):
                 found.append((["Illegal String operand"] if left else []) +

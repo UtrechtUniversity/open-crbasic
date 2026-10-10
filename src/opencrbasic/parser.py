@@ -531,6 +531,13 @@ class _Parser:
         return self._parse_assignment_or_call(p, line, file)
 
     def _parse_generic_instruction(self, p: _TokStream, line: int, file: str, kw: str) -> S.Stmt:
+        outer, self._to_ok = self._to_ok, True  # `To` in arguments compiles (docs/checker.md)
+        try:
+            return self._parse_generic_instruction_args(p, line, file, kw)
+        finally:
+            self._to_ok = outer
+
+    def _parse_generic_instruction_args(self, p: _TokStream, line: int, file: str, kw: str) -> S.Stmt:
         p.next()
         args: list[S.Expr | None] = []
         spans: list[tuple[int, int] | None] = []
@@ -725,7 +732,11 @@ class _Parser:
         # recognised instruction (oracle-confirmed) -- but only for *this* atom's own outermost
         # parens; anything nested inside it is parsed via `_parse_expr` and is strict again.
         start = p.i
-        target = self._parse_atom(p, line, file, strict=False)
+        outer, self._to_ok = self._to_ok, True  # `A(1 To 2) = 3` compiles
+        try:
+            target = self._parse_atom(p, line, file, strict=False)
+        finally:
+            self._to_ok = outer
         t = p.peek()
         if (t.kind == "OP" and t.text == "=" and isinstance(target, S.Index) and not target.args
                 and p.toks[p.i + 1].kind == "EOF"):
@@ -799,7 +810,11 @@ class _Parser:
 
     def _parse_if(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # IF
-        cond = self._parse_expr(p, line, file)
+        outer, self._to_ok = self._to_ok, True  # `If X To 2 Then` compiles (oracle, round 9)
+        try:
+            cond = self._parse_expr(p, line, file)
+        finally:
+            self._to_ok = outer
         then_tok = None
         if p.is_ident("THEN"):
             then_tok = p.next()
@@ -869,7 +884,11 @@ class _Parser:
 
     def _parse_elseif(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # ELSEIF
-        cond = self._parse_expr(p, line, file)
+        outer, self._to_ok = self._to_ok, True
+        try:
+            cond = self._parse_expr(p, line, file)
+        finally:
+            self._to_ok = outer
         if p.is_ident("THEN"):
             p.next()
         return S.ElseIf(line, file, cond=cond)
@@ -1071,7 +1090,11 @@ class _Parser:
                 p.expect_op("=")
             eq_at = p.i
             value_start_col = p.peek().col
-            value = self._parse_expr(p, line, file)
+            outer, self._to_ok = self._to_ok, True  # `Const K = 5 To 2` is 0 (oracle, round 9)
+            try:
+                value = self._parse_expr(p, line, file)
+            finally:
+                self._to_ok = outer
             value_span = (value_start_col, p.peek().col)
             if p.is_op(","):
                 p.i = len(p.toks) - 1  # a top-level comma ends the statement, the rest is ignored
@@ -1387,8 +1410,6 @@ class _Parser:
             p.next()
             right = self._parse_not(p, line, file) if p.is_ident("NOT") else self._parse_shift(
                 p, line, file)
-            if isinstance(left, S.String) or isinstance(right, S.String):
-                raise _ParseError("string operand of To")
             return S.Binary(line, file, "TO", left, right)
         while p.peek().kind == "OP" and p.peek().text in _RELOPS:
             op = p.next().text

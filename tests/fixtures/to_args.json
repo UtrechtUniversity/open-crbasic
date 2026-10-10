@@ -1,0 +1,1479 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-to_args-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = Y To."
+  },
+  {
+   "id": "cr6-to_args-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = To Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = To Y."
+  },
+  {
+   "id": "cr6-to_args-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(A(1),0,A(2),0,1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,250 To 300)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X To Y,250)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1 To 2,A(3),1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(X To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-15",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-16",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-17",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-18",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-20",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-21",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Y + (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-22",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-23",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 3 To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-24",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = S To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-25",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" + \"b\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-26",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1) To A(2) To A(3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(1) To A(2) To A(3)."
+  },
+  {
+   "id": "cr6-to_args-27",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-28",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = 1 To 2 To 3."
+  },
+  {
+   "id": "cr6-to_args-29",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 + 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-30",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-31",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2, 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = ABS(1 To 2, 3)."
+  },
+  {
+   "id": "cr6-to_args-32",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = S To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-33",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     S = \"a\" To."
+  },
+  {
+   "id": "cr6-to_args-34",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(\"a\" To \"b\")\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-35",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(S To S)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr6-to_args-36",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,5 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-37",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-38",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-39",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,(5 To 2))\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-40",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-41",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-42",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3+1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-43",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,100 To 105)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-44",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 205)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-45",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3 To 203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-46",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = K\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-47",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 7 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_args-48",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,Y To 5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable illegal in Parameter: Y To 5."
+  },
+  {
+   "id": "cr6-to_args-49",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port 0, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-to_args-50",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: K2."
+  },
+  {
+   "id": "cr6-to_args-51",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K+203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-0",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-1",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-2",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-3",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-4",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-5",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-6",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = Y To."
+  },
+  {
+   "id": "cr1000x-to_args-7",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = To Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = To Y."
+  },
+  {
+   "id": "cr1000x-to_args-8",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(A(1),0,A(2),0,1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-9",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,250 To 300)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-10",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X To Y,250)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-11",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1 To 2,A(3),1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-12",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-13",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(X To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-14",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-15",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-16",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-17",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-18",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-19",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-20",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-21",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Y + (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-22",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-23",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 3 To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-24",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = S To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-25",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" + \"b\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-26",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1) To A(2) To A(3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(1) To A(2) To A(3)."
+  },
+  {
+   "id": "cr1000x-to_args-27",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-28",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = 1 To 2 To 3."
+  },
+  {
+   "id": "cr1000x-to_args-29",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 + 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-30",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-31",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2, 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = ABS(1 To 2, 3)."
+  },
+  {
+   "id": "cr1000x-to_args-32",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = S To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-33",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     S = \"a\" To."
+  },
+  {
+   "id": "cr1000x-to_args-34",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(\"a\" To \"b\")\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-35",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(S To S)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr1000x-to_args-36",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,5 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-37",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-38",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-39",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,(5 To 2))\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-40",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-41",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-42",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3+1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-43",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,100 To 105)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-44",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 205)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-45",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3 To 203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-46",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = K\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-47",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 7 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_args-48",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,Y To 5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable illegal in Parameter: Y To 5."
+  },
+  {
+   "id": "cr1000x-to_args-49",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr1000x-to_args-50",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid symbol in expression: K2."
+  },
+  {
+   "id": "cr1000x-to_args-51",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K+203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port."
+  },
+  {
+   "id": "cr300-to_args-0",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-1",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-2",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-3",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-4",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-5",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-6",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = Y To\n."
+  },
+  {
+   "id": "cr300-to_args-7",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = To Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = To Y\n."
+  },
+  {
+   "id": "cr300-to_args-8",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(A(1),0,A(2),0,1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-9",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,250 To 300)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr300-to_args-10",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X To Y,250)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Illegal destination variable type, expecting Float.\nline 9: Too many parameters:  250."
+  },
+  {
+   "id": "cr300-to_args-11",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1 To 2,A(3),1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-12",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-13",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(X To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-14",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-15",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-16",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-17",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-18",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-19",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-20",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-21",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Y + (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-22",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-23",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 3 To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-24",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = S To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-25",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" + \"b\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-26",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1) To A(2) To A(3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(1) To A(2) To A(3)\n."
+  },
+  {
+   "id": "cr300-to_args-27",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-28",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = 1 To 2 To 3\n."
+  },
+  {
+   "id": "cr300-to_args-29",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 + 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-30",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-31",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2, 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = ABS(1 To 2, 3)\n."
+  },
+  {
+   "id": "cr300-to_args-32",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = S To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-33",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     S = \"a\" To\n."
+  },
+  {
+   "id": "cr300-to_args-34",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(\"a\" To \"b\")\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-35",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(S To S)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr300-to_args-36",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,5 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-37",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-38",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-39",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,(5 To 2))\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-40",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-41",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-42",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3+1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-43",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,100 To 105)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-44",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 205)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-45",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3 To 203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-46",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = K\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-47",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 7 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-48",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,Y To 5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable illegal in Parameter: Y To 5."
+  },
+  {
+   "id": "cr300-to_args-49",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_args-50",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: K2 is not defined.\nline 9: Variable illegal in Parameter: K2."
+  },
+  {
+   "id": "cr300-to_args-51",
+   "logger": "cr300",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K+203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 203"
+  },
+  {
+   "id": "cr350-to_args-0",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-1",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-2",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-3",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-4",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-5",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-6",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = Y To\n."
+  },
+  {
+   "id": "cr350-to_args-7",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = To Y\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     X = To Y\n."
+  },
+  {
+   "id": "cr350-to_args-8",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(A(1),0,A(2),0,1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-9",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,250 To 300)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-to_args-10",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X To Y,250)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Illegal destination variable type, expecting Float.\nline 9: Too many parameters:  250."
+  },
+  {
+   "id": "cr350-to_args-11",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1 To 2,A(3),1)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-12",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-13",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = SQR(X To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-14",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1 To 2) + 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-15",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-16",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-17",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-18",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1 To 2) = A(3 To 4)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-19",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    A(X To 2) = 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-20",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    If X To 2 Then Y = 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-21",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Y + (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-22",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-23",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 3 To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-24",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = S To \"b\"\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-25",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = \"a\" + \"b\" To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-26",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = A(1) To A(2) To A(3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = A(1) To A(2) To A(3)\n."
+  },
+  {
+   "id": "cr350-to_args-27",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = (1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-28",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = 1 To 2 To 3\n."
+  },
+  {
+   "id": "cr350-to_args-29",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = 1 To 2 + 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-30",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-31",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = ABS(1 To 2, 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Incomplete expression:     Y = ABS(1 To 2, 3)\n."
+  },
+  {
+   "id": "cr350-to_args-32",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = S To 3\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-33",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    S = \"a\" To\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     S = \"a\" To\n."
+  },
+  {
+   "id": "cr350-to_args-34",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(\"a\" To \"b\")\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-35",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Len(S To S)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: String is illegal here"
+  },
+  {
+   "id": "cr350-to_args-36",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,5 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-37",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-38",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-39",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,(5 To 2))\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-40",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-41",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-42",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3+1 To 3)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-43",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,100 To 105)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-44",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,203 To 205)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-45",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3 To 203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-46",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = K\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-47",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 7 To 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_args-48",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,Y To 5)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Variable illegal in Parameter: Y To 5."
+  },
+  {
+   "id": "cr350-to_args-49",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 0"
+  },
+  {
+   "id": "cr350-to_args-50",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K2)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: K2 is not defined.\nline 9: Variable illegal in Parameter: K2."
+  },
+  {
+   "id": "cr350-to_args-51",
+   "logger": "cr350",
+   "source": "Public A(10), X, Y\nPublic S As String * 20\nConst K = 5 To 2\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,K+203)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid port specified 203"
+  }
+ ]
+}
