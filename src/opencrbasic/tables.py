@@ -792,6 +792,7 @@ class _OutField:
     placeholder: bool = False
     rng: tuple[int, int] | None = None
     unit_list: list | None = None   # per-element units when a FieldNames split must differ
+    elem: int = 1  # bytes per element when splittable (a stored String element is stored_len)
     splittable: bool = False  # dim == Reps * element size: follows the Source's alias decomposition
     struct_members: int = 0   # >0: field of a StructureType source (members per element)
     member: str = ""
@@ -943,12 +944,13 @@ def _emit_output_fields(instr: S.Instruction, var_info: dict, by_display: dict,
     fields = _emit_struct_fields(instr, var_info, env)
     if fields is None:
         fields = _emit_output_fields_raw(instr, var_info, by_display, env)
-        if by_base and len(instr.args) > 1 and isinstance(instr.args[1], (S.Name, S.Index)):
+        if len(instr.args) > 1 and isinstance(instr.args[1], (S.Name, S.Index)):
             info = var_info.get(instr.args[1].name.upper())
             reps = _fold(instr.args[0], env, None)
             if info is not None and isinstance(reps, (int, float)):
                 for f in fields:
-                    f.splittable = f.dim == int(reps) * _elem_size(f, info)
+                    f.elem = _elem_size(f, info)
+                    f.splittable = f.dim == int(reps) * f.elem
     src = instr.args[1] if len(instr.args) > 1 else None
     if instr.keyword.upper() == "SAMPLE" and isinstance(src, S.Name) \
             and src.name.upper() == "CH400STATUS" and "CH400STATUS" not in var_info:
@@ -1133,30 +1135,44 @@ def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
         if desc:
             fields[0].processing += ":" + desc
         return fields
-    if len(fields) == 1 and fields[0].dim > 1:
-        # One name per repetition (§9, exp #33/#37): split a single Reps>1 field into scalar
-        # fields. Fewer names than Reps (oracle-confirmed, SbdPayload_tester.CR6:
-        # `Average(2,FinApp_Neutrons(),...) FieldNames("Neutrons")` on a 2-element array) renames
-        # only the first len(parts) elements individually and leaves the rest as one field under
-        # the original default name, keeping the source array's full declared subdims.
-        base = fields[0]
+    if any(f.dim > 1 and f.splittable for f in fields) or (len(fields) == 1 and fields[0].dim > 1):
+        # One name per repetition across the instruction's output fields in order (§9, exp #33/#37;
+        # `Minimum(2,A,...,True)` + "M1,M2,T1,T2" names the Min then the TMn elements): each named
+        # element is its own field and a field the names run out in keeps the remainder under the
+        # original default name with the source array's full declared subdims (oracle-confirmed,
+        # SbdPayload_tester.CR6: `Average(2,FinApp_Neutrons(),...) FieldNames("Neutrons")`).
         out = []
-        n_named = min(len(parts), base.dim)
-        for i in range(n_named):
-            name, _, desc = parts[i].partition(":")
-            proc = base.processing + (":" + desc if desc else "")
-            rng = None if base.rng is None else (base.rng[0] + i, base.rng[0] + i)
-            u = base.unit_list[i] if base.unit_list and i < len(base.unit_list) else base.units
-            out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
-                                  1, 1, [], u, renamed=True,
-                                  name_only=base.name_only, placeholder=False, rng=rng))
-        remaining = base.dim - n_named
-        if remaining > 0:
-            rng = None if base.rng is None else (base.rng[0] + n_named, base.rng[1])
-            out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
-                                  base.begin + n_named, remaining, base.subdims, base.units,
-                                  name_only=base.name_only, placeholder=base.placeholder, rng=rng,
-                                  splittable=base.splittable))
+        names = list(parts)
+        for base in fields:
+            if not names:
+                out.append(base)
+                continue
+            if not (base.dim > 1 and (base.splittable or len(fields) == 1)):
+                name, _, desc = names.pop(0).partition(":")
+                base.name = name.strip()
+                base.renamed = True
+                base.placeholder = False
+                if desc:
+                    base.processing += ":" + desc
+                out.append(base)
+                continue
+            es = base.elem if base.splittable else 1
+            n_named = min(len(names), base.dim // es)
+            for i in range(n_named):
+                name, _, desc = names.pop(0).partition(":")
+                proc = base.processing + (":" + desc if desc else "")
+                rng = None if base.rng is None else (base.rng[0] + i * es, base.rng[0] + (i + 1) * es - 1)
+                u = base.unit_list[i] if base.unit_list and i < len(base.unit_list) else base.units
+                out.append(_OutField(name.strip(), base.type_code, base.read_only, proc,
+                                      1, es, [es] if es > 1 else [], u, renamed=True,
+                                      name_only=base.name_only, placeholder=False, rng=rng))
+            remaining = base.dim - n_named * es
+            if remaining > 0:
+                rng = None if base.rng is None else (base.rng[0] + n_named * es, base.rng[1])
+                out.append(_OutField(base.name, base.type_code, base.read_only, base.processing,
+                                      base.begin + n_named * es, remaining, base.subdims, base.units,
+                                      name_only=base.name_only, placeholder=base.placeholder, rng=rng,
+                                      splittable=base.splittable, elem=base.elem))
         return out
     for f, part in zip(fields, parts):
         name, _, desc = part.partition(":")

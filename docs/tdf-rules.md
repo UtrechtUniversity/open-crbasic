@@ -307,6 +307,11 @@ one `Temp_Max` field, `dim=3`).
   `alias_fieldnames_individual_outputs`): each named output is a scalar (`begin=1`, `subdims=[]`,
   also for `Sample(1,A(2),FP2)`); only the unnamed remainder then follows the alias decomposition
   (`Sample(6,A)` + 2 names + `Alias A(3)`: `F1`,`F2`,`Mid`,`A begin=4 dim=3`).
+  Names are consumed per element across the instruction's output fields in order (fixtures
+  `fieldnames_multifield_*`, `fieldnames_string_alias_remainder`): `Minimum(2,A,FP2,False,True)` +
+  `"M1,M2,T1,T2"` is four scalar fields, with `"M1"` alone it is `M1`, the rest of `Min`
+  (alias-split) and the whole `TMn` field. A named String element keeps its stored size
+  (`dim=8 subdims=[8]`).
 
 - An array source's field `subdims` is the *declared* shape whatever `reps` is
   (`Sample(3,A,FP2)` on `A(10)`: `[10]`; `Sample(24,M3D,FP2)`: `[2,3,4]`), and a multi-index

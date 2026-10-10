@@ -146,5 +146,21 @@
  {
   "id": "indexed_alias_source_names",
   "source": "Public A(8), B(2,4), C(8), W(8), V(8), D(8), E1(8)\nAlias A(2) = AA\nAlias C(3) = CA\nAlias W(2) = WA\nAlias D(4) = DA\nDataTable(T,True,-1)\n  Covariance(2,A(2),FP2,False,3)\n  Covariance(2,B(2,2),FP2,False,3)\n  Covariance(2,CA,FP2,False,3)\n  WindVector(1,WA,V(2),FP2,False,0,0,0)\n  FFT(B(2,1),FP2,4,0.01,Sec,1)\n  FFT(DA,FP2,4,0.01,Sec,1)\n  Histogram(DA,FP2,False,4,10,1,0,10)\n  Average(1,E1(3),FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_multifield_elements_noalias",
+  "source": "Public A(2)\nDataTable(T,True,10)\n  Minimum(2,A,FP2,False,True)\n  FieldNames(\"M1,M2,T1,T2\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_multifield_partial_alias",
+  "source": "Public A(2)\nDataTable(T,True,10)\n  Minimum(2,A,FP2,False,True)\n  FieldNames(\"M1\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_multifield_alias_split_names",
+  "source": "Public A(2)\nAlias A(1)=First\nDataTable(T,True,10)\n  Minimum(2,A,FP2,False,True)\n  FieldNames(\"M1,M2,T1,T2\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
+ },
+ {
+  "id": "fieldnames_string_alias_remainder",
+  "source": "Public S(3) As String * 4\nAlias S(2)=Second\nDataTable(T,True,10)\n  Sample(3,S,String)\n  FieldNames(\"F1\")\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n"
  }
 ]
