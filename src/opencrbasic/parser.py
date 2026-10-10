@@ -1413,8 +1413,12 @@ class _Parser:
             # of it, once per operand; a string literal operand is a different error (oracle,
             # 2026-10-10: `String is illegal here`)
             p.next()
-            right = self._parse_not(p, line, file) if p.is_ident("NOT") else self._parse_shift(
-                p, line, file)
+            nots = []
+            while p.is_ident("NOT"):  # a `Not` operand is not a relational: `1 To Not 2 To 3` is incomplete
+                nots.append(p.next())
+            right = self._parse_shift(p, line, file)
+            for tok in reversed(nots):
+                right = S.Unary(tok.line, file, "NOT", right)
             return S.Binary(line, file, "TO", left, right)
         while p.peek().kind == "OP" and p.peek().text in _RELOPS:
             op = p.next().text

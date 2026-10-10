@@ -4792,3 +4792,10 @@ parameters` cascade (`cr3xx._DECLARATION_TRIGGER_PREFIXES`). `structure._check_a
 `_alias_dim_ok`. Not modelled (items with text after the name, `Zed(2) = 5`, `Zed(2)(3)`, `Zed.W(2)`,
 `Zed(Q)`, `Alias Foo = 2Zed`) and the pre-existing CR300/CR350 difference that real prints no
 `Too many parameters` after `already declared as a variable.`.
+
+## Round 8 review 8: `Not` right of `To` (oracle, 2026-10-10; `tests/fixtures/r8_to_not.json`)
+
+All four loggers: the operand after `To` may be preceded by any number of `Not`, but it is a shift-level
+operand, not a relational: `X = 1 To Not 2 To 3`, `1 To Not 2 < 3` and `1 To Not 2 = 3` are `Incomplete
+expression`, while `1 To Not Not 2`, `1 To Not 2 + 1`, `1 To Not 2 << 1`, `1 To Not 2 And 3` compile.
+Not modelled (pre-existing false reject): `X = 1 + Not 2 To 3` compiles.
