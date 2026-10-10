@@ -218,7 +218,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # for the oracle evidence and the safe allow-lists). Also pass 1, unconditional -- oracle-
     # confirmed the same way as the two calls just above (`docs/checker.md`).
     _run_pass(var_types.check_ctype, program, profile, diags)
-    _run_pass(expressions.check_function_arity, _with_inline(program), profile, diags)
+    held_member: list = []  # compile-stage `Member` index errors, see `pass1_errors` below
+    _run_pass(expressions.check_function_arity, _with_inline(program), profile, diags, held_member)
     # Ungated on CR6/CR1000X (unlike step 2 below): reachability/background-calibration/fnotch all
     # oracle-confirmed to fire even when the file has other errors elsewhere (`checker/warnings.py`,
     # `docs/instructions.md`). **Not** shared by CR300/CR350 (`profile.early_warnings_gated`,
@@ -254,6 +255,16 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     def before_cutoff(diagnostic) -> bool:  # tier B (below) redefines it once a stop is known
         return True
 
+    held_items: list = []
+    if held_member:
+        # A table/status field with 3+ indices fails in the statement's compile (pass 2), not in
+        # pass 1: it neither stops pass 2 nor hides the placement error, but any pass-1 error hides
+        # it, and it is only reached up to the first placement stop (oracle, all four loggers,
+        # 2026-10-10; message tracer: pass-1 frames for `Sin(1,2)`, compile frames for these).
+        held_items = [d for d in diags.items if any(d is h for h in held_member)]
+        diags.items[:] = [d for d in diags.items if not any(d is h for h in held_member)]
+        if diags.errors:
+            held_items = []
     pass1_errors = bool(diags.errors)
     result.pass1_errors = pass1_errors
     generic_errors: list = []  # pass-2 argument/expression findings (CR6/CR1000X: no tier-C gate)
@@ -406,6 +417,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         _run_pass(structure.check_data_table_placement, program, profile, diags)
 
     late_start = len(diags.items)
+    late_stop = None
     if profile.single_pass and all(d.message.startswith("Could not find ")
                                    for d in diags.errors):
         # CR300/CR350: runs unless an earlier finding other than an unknown `CallTable` table
@@ -432,11 +444,26 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # warning; `DO without LOOP.` and a `CallTable` placement error do not).
         _run_pass(warnings.check_early, program, profile, diags, env)
         stop = _run_pass_capture(structure.check_scan_placement_late, program, profile, diags)
+        late_stop = stop
         if stop is not None:
             # The walk ends there, so later warnings are never printed (oracle: `SetSetting`
             # before `BeginProg` hides an fnotch warning further down).
             diags.items = [d for d in diags.items if d.severity != "warning" or
                            d.file != stop[0] or d.line <= stop[1]]
+    if profile.single_pass:
+        held_items = [d for d in held_items if late_stop is None or d.line <= late_stop[1]]
+        if any(not d.message.endswith("illegally occurs before BeginProg.") for d in diags.errors):
+            held_items = []
+    else:
+        held_items = [d for d in held_items if before_cutoff(d)]
+    # (the failed statement's own undefined-symbol findings are not reported: the index error
+    # aborts its compile -- `LoggerID=Status.StationName(1,1,Nope)`, oracle, cr6)
+    own = {(d.file, d.line) for d in held_items}
+    diags.items[:] = [d for d in diags.items if not (
+        (d.file, d.line) in own and d.severity == "error" and (
+            d.message.startswith("Invalid symbol in expression") or d.message.endswith("is not defined.")))]
+    diags.items.extend(held_items)
+    generic_errors += held_items
     # CR300/CR350: these late errors do not start the `Too many parameters` cascade (oracle:
     # `Sample (1,Nope,FP2)` gives only `Nope is not defined.`).
     diags.items[late_start:] = [dataclasses.replace(d, cascade=False) for d in diags.items[late_start:]]

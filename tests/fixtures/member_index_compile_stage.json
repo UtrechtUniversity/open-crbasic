@@ -1,0 +1,177 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "status_field_assign_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,\"fuzz\")\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,\"fuzz\").\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "status_field_assign_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,\"fuzz\")\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,\"fuzz\").\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "status_field_assign_cr300",
+   "logger": "cr300",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,\"fuzz\")\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,\"fuzz\")\n.\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "status_field_assign_cr350",
+   "logger": "cr350",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,\"fuzz\")\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,\"fuzz\")\n.\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "table_field_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Tb.x(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Tb.x(1,1,1).\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "table_field_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Tb.x(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Tb.x(1,1,1).\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "table_field_cr300",
+   "logger": "cr300",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Tb.x(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Tb.x(1,1,1)\n.\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "table_field_cr350",
+   "logger": "cr350",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Tb.x(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Tb.x(1,1,1)\n.\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "instruction_arg_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nDelay(0,Status.TimeStamp(1,1,1),Sec)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: Status.TimeStamp(1,1,1).\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "instruction_arg_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nDelay(0,Status.TimeStamp(1,1,1),Sec)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: Status.TimeStamp(1,1,1).\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "instruction_arg_cr300",
+   "logger": "cr300",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nDelay(0,Status.TimeStamp(1,1,1),Sec)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: Status.TimeStamp(1,1,1).\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "instruction_arg_cr350",
+   "logger": "cr350",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nDelay(0,Status.TimeStamp(1,1,1),Sec)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: Status.TimeStamp(1,1,1).\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "hidden_by_pass1_arity_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Sin(1,2) + Status.TimeStamp(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Sin(1,2) + Status.TimeStamp(1,1,1)."
+  },
+  {
+   "id": "hidden_by_pass1_arity_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Sin(1,2) + Status.TimeStamp(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Sin(1,2) + Status.TimeStamp(1,1,1)."
+  },
+  {
+   "id": "hidden_by_pass1_arity_cr300",
+   "logger": "cr300",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Sin(1,2) + Status.TimeStamp(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Sin(1,2) + Status.TimeStamp(1,1,1)\n.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "hidden_by_pass1_arity_cr350",
+   "logger": "cr350",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Sin(1,2) + Status.TimeStamp(1,1,1)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Sin(1,2) + Status.TimeStamp(1,1,1)\n.\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "other_statement_pass1_error_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,1)\nx = Sin(1,2)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: x = Sin(1,2)."
+  },
+  {
+   "id": "other_statement_pass1_error_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,1)\nx = Sin(1,2)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: x = Sin(1,2)."
+  },
+  {
+   "id": "other_statement_pass1_error_cr300",
+   "logger": "cr300",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,1)\nx = Sin(1,2)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: x = Sin(1,2)\n.\nline 9: Too many parameters:  1."
+  },
+  {
+   "id": "other_statement_pass1_error_cr350",
+   "logger": "cr350",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,1)\nx = Sin(1,2)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: x = Sin(1,2)\n.\nline 9: Too many parameters:  1."
+  },
+  {
+   "id": "undefined_arg_cr6",
+   "logger": "cr6",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,Nope)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,Nope).\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "undefined_arg_cr1000x",
+   "logger": "cr1000x",
+   "source": "Public x\nPublic y(3)\nDataTable(Tb,1,10)\n  Sample(1,x,FP2)\nEndTable\nx = Status.TimeStamp(1,1,Nope)\nBeginProg\n  Delay(0,1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: No Matching, or out of place ) in expression: x = Status.TimeStamp(1,1,Nope).\nline 6: Expr illegally occurs before BeginProg."
+  }
+ ]
+}

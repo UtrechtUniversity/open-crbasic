@@ -1538,8 +1538,10 @@ def _find_arity_problem(expr: S.Expr | None, profile) -> str | None:
     if isinstance(expr, S.Member):
         if expr.args is not None and len(expr.args) > 2:
             # a table field takes at most (index, records back): `Tb.X(1,1,1)`, `Public.V(1,1,1)`
-            # -> `No Matching, or out of place )` (oracle, all four loggers, 2026-10-01)
-            return "many"
+            # -> `No Matching, or out of place )` (oracle, all four loggers, 2026-10-01). Raised by
+            # the pass-2 compile of the statement, not by pass 1 (message tracer, 2026-10-10), so
+            # `check_function_arity` reports it through `held`.
+            return "many_member"
         return _find_arity_problem(expr.base, profile)
     if isinstance(expr, S.ArrayLiteral):
         for item in expr.items:
@@ -1672,7 +1674,13 @@ def _multi_indexed_struct(expr: S.Expr | None, struct_vars: frozenset[str]) -> b
     return False
 
 
-def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> None:
+def _hold(held: list | None, diags: Diagnostics, problem: str) -> None:
+    if held is not None and problem == "many_member":
+        held.append(diags.items[-1])
+
+
+def check_function_arity(program: S.Program, profile, diags: Diagnostics,
+                         held: list | None = None) -> None:
     """Built-in function call arity (`Expression expects , : %s.` / `No Matching, or out of place )
     in expression: %s.`) *and* a bare function-name reference with no argument list at all
     (`Expression expects ( : %s.`, `_is_bare_reference_problem`/`_find_bare_function_ref`) --
@@ -1747,8 +1755,11 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile),
                                 stmt.file)
                     break
+                if problem == "many_member" and table_only:
+                    break  # the "must be used inside a table declaration" error wins
                 if problem:
                     diags.error(stmt.line, _arity_message(problem, _arg_text(stmt, i), profile, False), stmt.file)
+                    _hold(held, diags, problem)
                     break
         elif isinstance(stmt, S.Call):
             # A bare call with no argument list at all (`TCPOpen` alone, no trailing `(`
@@ -1790,6 +1801,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
                     continue
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
                                                             whole_statement=True), stmt.file)
+                _hold(held, diags, problem)
         elif isinstance(stmt, S.If):
             # All four loggers, pass 1 (oracle, 2026-09-27): `If TimeIsBetween(0,15,60,sec,1) Then`
             # -> `No Matching, or out of place ) in expression: TimeIsBetween(0,15,60,sec,1) .`
@@ -1852,6 +1864,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics) -> Non
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
                                                             whole_statement=True), stmt.file)
+                _hold(held, diags, problem)
                 if struct_value:
                     mine.append(diags.items[-1])
     if not profile.single_pass and table_mine:

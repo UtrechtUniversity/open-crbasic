@@ -4557,3 +4557,23 @@ False rejects found on the way and fixed: a built-in function name on either sid
 Not done (still differ): `Alias X = Y(2)` / `Sec(2)` (`Alias is illegally dimensioned.`), comma
 junk after the alias name (`Alias X = Sin, Z` -> `Illegally dimensioned aliased name`), and the order of
 `Duplicate Alias` against `already declared as a variable` for a repeated source.
+
+## Compile-stage `Member` index error (2026-10-10, message tracer)
+
+`x = Status.TimeStamp(1,1,"fuzz")`, `Tb.x(1,1,1)`, `Public.y(1,1,1)` (a table or status field with
+three or more indices) print `No Matching, or out of place ) in expression: ...` from the statement's
+pass-2 compile (tracer frames `0x5c8435` in cr300, `0x4b5d34` via the compile driver in CR6), whereas
+`Sin(1,2)` fails in pass 1 (frames in the statement parser) and leaves no record. Consequences, probed
+on all four loggers (`tests/fixtures/member_index_compile_stage.json`):
+
+- the statement still gets its `X illegally occurs before BeginProg.` (`Expr`, `Delay`, ...) and no
+  `Too many parameters` cascade follows on CR300/CR350;
+- any pass-1 error elsewhere hides it (`x = Sin(1,2) + Status.TimeStamp(1,1,1)`, or a second
+  statement `x = Sin(1,2)`); on CR300/CR350 any non-placement error hides it;
+- it is only reached up to the first placement stop; the statement's own undefined-symbol finding is
+  not printed (CR6/CR1000X; CR300/CR350 with an undefined argument still differ, not modelled);
+- `Sample(1,Status.TimeStamp(1,1,1),FP2)` outside a table prints only `Sample must be used inside a
+  table declaration.`; a second statement on the same line (`x = 1 : x = Status.X(1,1,1)`) prints no
+  index error (not modelled).
+
+Implemented by holding these diagnostics aside after pass 1 (`held_member` in `checker/__init__.py`).
