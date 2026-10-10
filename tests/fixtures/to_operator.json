@@ -1,0 +1,1647 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-to_operator-0",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Fn(1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Fn(1 To 2)."
+  },
+  {
+   "id": "cr6-to_operator-1",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  I = 1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-2",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Select Case 1 To 5\nCase 1 To 3\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-3",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  While X = 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 To 2."
+  },
+  {
+   "id": "cr6-to_operator-4",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 12)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-5",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = (1 To 2 To 3)."
+  },
+  {
+   "id": "cr6-to_operator-6",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) + (3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-7",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-8",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = (1 To)."
+  },
+  {
+   "id": "cr6-to_operator-9",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = -1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-10",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 + 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-11",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 TO 12 : Y = 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-12",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = 1 To."
+  },
+  {
+   "id": "cr6-to_operator-13",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To (2 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-14",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To -2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-15",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 12 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 12 To."
+  },
+  {
+   "id": "cr6-to_operator-16",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 + 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-17",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2 To 3."
+  },
+  {
+   "id": "cr6-to_operator-18",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2, 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2, 3."
+  },
+  {
+   "id": "cr6-to_operator-19",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To NOT 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-20",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-21",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   X = 1 To Zork."
+  },
+  {
+   "id": "cr6-to_operator-22",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 to 12 : Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-23",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 2, 1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-24",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-25",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2 To 3)."
+  },
+  {
+   "id": "cr6-to_operator-26",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-27",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2, 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2, 3)."
+  },
+  {
+   "id": "cr6-to_operator-28",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1) To Cos(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-29",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = To 3."
+  },
+  {
+   "id": "cr6-to_operator-30",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Y To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = Y To."
+  },
+  {
+   "id": "cr6-to_operator-31",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Zork To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   X = Zork To 12."
+  },
+  {
+   "id": "cr6-to_operator-32",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y += 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-33",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1 To 12)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = (X = 1 To 12)."
+  },
+  {
+   "id": "cr6-to_operator-34",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1) To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-35",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-36",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To (X = 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-37",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 3."
+  },
+  {
+   "id": "cr6-to_operator-38",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 < 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 < 3."
+  },
+  {
+   "id": "cr6-to_operator-39",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 = 3."
+  },
+  {
+   "id": "cr6-to_operator-40",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 And 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-41",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 To."
+  },
+  {
+   "id": "cr6-to_operator-42",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 \\x27c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   Y = 1 To 2 \\x27c."
+  },
+  {
+   "id": "cr6-to_operator-43",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2) \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2) ."
+  },
+  {
+   "id": "cr6-to_operator-44",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Y = 1 To To 2."
+  },
+  {
+   "id": "cr6-to_operator-45",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(1 To 2) To A(3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-46",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = A(X = 1 To 2)."
+  },
+  {
+   "id": "cr6-to_operator-47",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = NOT 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-48",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = Sin(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = Sin(X = 1 To 2)."
+  },
+  {
+   "id": "cr6-to_operator-49",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X * 2 To 3 Mod 4\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-50",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X < 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X < 1 To 2."
+  },
+  {
+   "id": "cr6-to_operator-51",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X << 1 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-52",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X <> 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X <> 1 To 2."
+  },
+  {
+   "id": "cr6-to_operator-53",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-54",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-to_operator-55",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X = 1 To 12."
+  },
+  {
+   "id": "cr6-to_operator-56",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X >= 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X >= 1 To 2."
+  },
+  {
+   "id": "cr6-to_operator-57",
+   "logger": "cr6",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X Mod 2 To 3 ^ 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Fn(1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Fn(1 To 2)."
+  },
+  {
+   "id": "cr1000x-to_operator-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  I = 1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Select Case 1 To 5\nCase 1 To 3\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  While X = 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 To 2."
+  },
+  {
+   "id": "cr1000x-to_operator-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 12)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = (1 To 2 To 3)."
+  },
+  {
+   "id": "cr1000x-to_operator-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) + (3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = (1 To)."
+  },
+  {
+   "id": "cr1000x-to_operator-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = -1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 + 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 TO 12 : Y = 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = 1 To."
+  },
+  {
+   "id": "cr1000x-to_operator-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To (2 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To -2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 12 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 12 To."
+  },
+  {
+   "id": "cr1000x-to_operator-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 + 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2 To 3."
+  },
+  {
+   "id": "cr1000x-to_operator-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2, 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2, 3."
+  },
+  {
+   "id": "cr1000x-to_operator-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To NOT 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   X = 1 To Zork."
+  },
+  {
+   "id": "cr1000x-to_operator-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 to 12 : Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 2, 1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2 To 3)."
+  },
+  {
+   "id": "cr1000x-to_operator-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2, 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2, 3)."
+  },
+  {
+   "id": "cr1000x-to_operator-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1) To Cos(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = To 3."
+  },
+  {
+   "id": "cr1000x-to_operator-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Y To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = Y To."
+  },
+  {
+   "id": "cr1000x-to_operator-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Zork To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   X = Zork To 12."
+  },
+  {
+   "id": "cr1000x-to_operator-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y += 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1 To 12)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = (X = 1 To 12)."
+  },
+  {
+   "id": "cr1000x-to_operator-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1) To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To (X = 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-37",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 3."
+  },
+  {
+   "id": "cr1000x-to_operator-38",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 < 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 < 3."
+  },
+  {
+   "id": "cr1000x-to_operator-39",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 = 3."
+  },
+  {
+   "id": "cr1000x-to_operator-40",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 And 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-41",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 To."
+  },
+  {
+   "id": "cr1000x-to_operator-42",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 \\x27c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   Y = 1 To 2 \\x27c."
+  },
+  {
+   "id": "cr1000x-to_operator-43",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2) \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2) ."
+  },
+  {
+   "id": "cr1000x-to_operator-44",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Y = 1 To To 2."
+  },
+  {
+   "id": "cr1000x-to_operator-45",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(1 To 2) To A(3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-46",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = A(X = 1 To 2)."
+  },
+  {
+   "id": "cr1000x-to_operator-47",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = NOT 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-48",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = Sin(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = Sin(X = 1 To 2)."
+  },
+  {
+   "id": "cr1000x-to_operator-49",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X * 2 To 3 Mod 4\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-50",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X < 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X < 1 To 2."
+  },
+  {
+   "id": "cr1000x-to_operator-51",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X << 1 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-52",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X <> 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X <> 1 To 2."
+  },
+  {
+   "id": "cr1000x-to_operator-53",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-54",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-to_operator-55",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X = 1 To 12."
+  },
+  {
+   "id": "cr1000x-to_operator-56",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X >= 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X >= 1 To 2."
+  },
+  {
+   "id": "cr1000x-to_operator-57",
+   "logger": "cr1000x",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X Mod 2 To 3 ^ 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-to_operator-0",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Fn(1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fn is not defined.\nline 4: Invalid, or out of place expression:   Fn(1 To 2)\n."
+  },
+  {
+   "id": "cr300-to_operator-1",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  I = 1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-2",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Select Case 1 To 5\nCase 1 To 3\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-3",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  While X = 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 To 2."
+  },
+  {
+   "id": "cr300-to_operator-4",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 12)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-5",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = (1 To 2 To 3)\n."
+  },
+  {
+   "id": "cr300-to_operator-6",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) + (3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-7",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-8",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = (1 To)\n."
+  },
+  {
+   "id": "cr300-to_operator-9",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = -1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-10",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 + 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-11",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 TO 12 : Y = 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-12",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = 1 To\n."
+  },
+  {
+   "id": "cr300-to_operator-13",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To (2 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-14",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To -2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-15",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 12 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 12 To\n."
+  },
+  {
+   "id": "cr300-to_operator-16",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 + 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-17",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2 To 3\n."
+  },
+  {
+   "id": "cr300-to_operator-18",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2, 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2, 3\n."
+  },
+  {
+   "id": "cr300-to_operator-19",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To NOT 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-20",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-21",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-to_operator-22",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 to 12 : Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-23",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 2, 1 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:   X = A(1 To 2, 1 To 3)\n."
+  },
+  {
+   "id": "cr300-to_operator-24",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-25",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2 To 3)\n."
+  },
+  {
+   "id": "cr300-to_operator-26",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-27",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2, 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2, 3)\n."
+  },
+  {
+   "id": "cr300-to_operator-28",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1) To Cos(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-29",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = To 3\n."
+  },
+  {
+   "id": "cr300-to_operator-30",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Y To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = Y To\n."
+  },
+  {
+   "id": "cr300-to_operator-31",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Zork To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-to_operator-32",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y += 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-33",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1 To 12)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = (X = 1 To 12)\n."
+  },
+  {
+   "id": "cr300-to_operator-34",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1) To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-35",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-36",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To (X = 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-37",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 3\n."
+  },
+  {
+   "id": "cr300-to_operator-38",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 < 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 < 3\n."
+  },
+  {
+   "id": "cr300-to_operator-39",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 = 3\n."
+  },
+  {
+   "id": "cr300-to_operator-40",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 And 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-41",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 To\n."
+  },
+  {
+   "id": "cr300-to_operator-42",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 \\x27c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x27c is not defined."
+  },
+  {
+   "id": "cr300-to_operator-43",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2) \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2) \n."
+  },
+  {
+   "id": "cr300-to_operator-44",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Y = 1 To To 2\n."
+  },
+  {
+   "id": "cr300-to_operator-45",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(1 To 2) To A(3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-46",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = A(X = 1 To 2)\n."
+  },
+  {
+   "id": "cr300-to_operator-47",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = NOT 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-48",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = Sin(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = Sin(X = 1 To 2)\n."
+  },
+  {
+   "id": "cr300-to_operator-49",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X * 2 To 3 Mod 4\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-50",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X < 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X < 1 To 2\n."
+  },
+  {
+   "id": "cr300-to_operator-51",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X << 1 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-52",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X <> 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X <> 1 To 2\n."
+  },
+  {
+   "id": "cr300-to_operator-53",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-54",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-to_operator-55",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X = 1 To 12\n."
+  },
+  {
+   "id": "cr300-to_operator-56",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X >= 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X >= 1 To 2\n."
+  },
+  {
+   "id": "cr300-to_operator-57",
+   "logger": "cr300",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X Mod 2 To 3 ^ 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-0",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Fn(1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fn is not defined.\nline 4: Invalid, or out of place expression:   Fn(1 To 2)\n."
+  },
+  {
+   "id": "cr350-to_operator-1",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  I = 1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-2",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Select Case 1 To 5\nCase 1 To 3\nEndSelect\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-3",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  While X = 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X = 1 To 2."
+  },
+  {
+   "id": "cr350-to_operator-4",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 12)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-5",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = (1 To 2 To 3)\n."
+  },
+  {
+   "id": "cr350-to_operator-6",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) + (3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-7",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To 2) To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-8",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = (1 To)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = (1 To)\n."
+  },
+  {
+   "id": "cr350-to_operator-9",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = -1 To 12\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-10",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 + 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-11",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 TO 12 : Y = 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-12",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = 1 To\n."
+  },
+  {
+   "id": "cr350-to_operator-13",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To (2 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-14",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To -2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-15",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 12 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 12 To\n."
+  },
+  {
+   "id": "cr350-to_operator-16",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 + 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-17",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2 To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2 To 3\n."
+  },
+  {
+   "id": "cr350-to_operator-18",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To 2, 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   X = 1 To 2, 3\n."
+  },
+  {
+   "id": "cr350-to_operator-19",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To NOT 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-20",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Y\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-21",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 To Zork\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-to_operator-22",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = 1 to 12 : Y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-23",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 2, 1 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Dimensions not declared:   X = A(1 To 2, 1 To 3)\n."
+  },
+  {
+   "id": "cr350-to_operator-24",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = A(1 To 3)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-25",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2 To 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2 To 3)\n."
+  },
+  {
+   "id": "cr350-to_operator-26",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-27",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1 To 2, 3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   X = Sin(1 To 2, 3)\n."
+  },
+  {
+   "id": "cr350-to_operator-28",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Sin(1) To Cos(2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-29",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = To 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = To 3\n."
+  },
+  {
+   "id": "cr350-to_operator-30",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Y To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   X = Y To\n."
+  },
+  {
+   "id": "cr350-to_operator-31",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  X = Zork To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-to_operator-32",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y += 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-33",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1 To 12)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = (X = 1 To 12)\n."
+  },
+  {
+   "id": "cr350-to_operator-34",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = (X = 1) To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-35",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-36",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To (X = 2)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-37",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 3\n."
+  },
+  {
+   "id": "cr350-to_operator-38",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 < 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 < 3\n."
+  },
+  {
+   "id": "cr350-to_operator-39",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 = 3\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 = 3\n."
+  },
+  {
+   "id": "cr350-to_operator-40",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 And 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-41",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 To\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2 To\n."
+  },
+  {
+   "id": "cr350-to_operator-42",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2 \\x27c\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: x27c is not defined."
+  },
+  {
+   "id": "cr350-to_operator-43",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To 2) \nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = 1 To 2) \n."
+  },
+  {
+   "id": "cr350-to_operator-44",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = 1 To To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:   Y = 1 To To 2\n."
+  },
+  {
+   "id": "cr350-to_operator-45",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(1 To 2) To A(3 To 4)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-46",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = A(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = A(X = 1 To 2)\n."
+  },
+  {
+   "id": "cr350-to_operator-47",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = NOT 1 To 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-48",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = Sin(X = 1 To 2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:   Y = Sin(X = 1 To 2)\n."
+  },
+  {
+   "id": "cr350-to_operator-49",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X * 2 To 3 Mod 4\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-50",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X < 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X < 1 To 2\n."
+  },
+  {
+   "id": "cr350-to_operator-51",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X << 1 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-52",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X <> 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X <> 1 To 2\n."
+  },
+  {
+   "id": "cr350-to_operator-53",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-54",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 And 2 To 3\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-to_operator-55",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X = 1 To 12\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X = 1 To 12\n."
+  },
+  {
+   "id": "cr350-to_operator-56",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X >= 1 To 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:   Y = X >= 1 To 2\n."
+  },
+  {
+   "id": "cr350-to_operator-57",
+   "logger": "cr350",
+   "source": "Public X, Y, I\nPublic A(20)\nBeginProg\n  Y = X Mod 2 To 3 ^ 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

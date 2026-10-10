@@ -218,6 +218,7 @@ class _Parser:
         self._in_struct = False  # inside StructureType ... EndStructureType
         self.function_names: set[str] = set()
         self._collect = False
+        self._to_ok = False  # `To` as a binary operator: assignment values and `Select Case`
 
     # ------------------------------------------------------------ driver
 
@@ -659,7 +660,11 @@ class _Parser:
     def _parse_select(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # SELECT
         p.expect_ident("CASE")
-        expr = self._parse_expr(p, line, file)
+        self._to_ok = True
+        try:
+            expr = self._parse_expr(p, line, file)
+        finally:
+            self._to_ok = False
         return S.Instruction(line, file, keyword="SELECT", args=[expr])
 
     def _parse_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
@@ -695,7 +700,11 @@ class _Parser:
             return S.Call(line, file, name=target.name, args=[], explicit=False, tail_ignored=True)
         if t.kind == "OP" and (t.text == "=" or t.text in _COMPOUND_OPS):
             op_tok = p.next()
-            value = self._parse_expr(p, line, file)
+            self._to_ok = True  # `X = 1 To 12`, `X += 1 To 12` (oracle, 2026-10-10)
+            try:
+                value = self._parse_expr(p, line, file)
+            finally:
+                self._to_ok = False
             if op_tok.text != "=":
                 base_op = op_tok.text[0]
                 value = S.Binary(op_tok.line, file, base_op, target, value)
@@ -1279,6 +1288,16 @@ class _Parser:
 
     def _parse_relational(self, p: _TokStream, line: int, file: str) -> S.Expr:
         left = self._parse_shift(p, line, file)
+        if self._to_ok and p.is_ident("TO"):
+            # `To`: a binary operator between comparison and shift, no comparison on either side
+            # of it, once per operand; a string literal operand is a different error (oracle,
+            # 2026-10-10: `String is illegal here`)
+            p.next()
+            right = self._parse_not(p, line, file) if p.is_ident("NOT") else self._parse_shift(
+                p, line, file)
+            if isinstance(left, S.String) or isinstance(right, S.String):
+                raise _ParseError("string operand of To")
+            return S.Binary(line, file, "TO", left, right)
         while p.peek().kind == "OP" and p.peek().text in _RELOPS:
             op = p.next().text
             right = self._parse_shift(p, line, file)

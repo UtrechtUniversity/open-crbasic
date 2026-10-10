@@ -4257,9 +4257,7 @@ Oracle 2026-10-10 (`for_header_incomplete.json`): the text after `To` splits at 
 expression: <half>.` (trailing blanks kept; one line, hides pass 2): `For I = 5 To 1 Step-1`
 (`1 Step-1`), `Step(-1)`, `... To 12 Step` (`12 Step`), `Step 2 3` (`2 3`), `Step -1 X` (`-1 X`),
 `To 1 Stepper`. `Step -1` and `Step - 1` compile. `structure._for_header_incomplete`. Observed, not
-modelled: `To` is accepted as a binary operator in assignment values, parentheses, subscripts and
-instruction arguments (`I = 1 To 12`, `X = (1 To 12)` compile) but not in `If` conditions (`If X = 1
-To 12 Then` -> `Incomplete expression: X = 1 To 12 .`); ours still rejects the first group.
+modelled here, see "`To` as a binary operator" below.
 
 ### `String *` with no size
 
@@ -4311,3 +4309,22 @@ as the checked expression in the bare-function/arity pass, the user-Function cou
 `_stmt_exprs` (dims simulation), `_report_call_arg_names` and the over-index loop. Not modelled:
 `Fn(X(1,2))` / `Fn(Zork(1))` argument forms on CR300/CR350 (real adds `Dimensions not declared` with the
 whole-statement echo).
+
+### `To` as a binary operator
+
+Oracle 2026-10-10, all four loggers (`to_operator.json`): outside `For` headers and `Case` lists, `To`
+is a binary operator in assignment values (`=` and compound), `Select Case`, parentheses, call
+arguments and subscripts of a value (`I = 1 To 12`, `X = (1 To 12)`, `X = Sin(1 To 2)`,
+`X = A(1 To 3)`, `Y = 1 To NOT 2` compile); it binds between comparison and `+`/`Mod` (`Y = X Mod 2 To
+3 ^ 2` compiles). Rules: at most one `To` per parenthesis level and argument (`1 To 2 To 3` ->
+`Incomplete expression`, inside parentheses or a call `No Matching, or out of place )`); no comparison
+operator at the same level on either side (`X < 1 To 2`, `1 To 2 = 3`, `Y = X = 1 To 12` ->
+`Incomplete expression`; `(X = 1) To 2` and `X = 1 And 2 To 3` compile); a dangling `X = 1 To` is
+`Invalid, or out of place expression`; an undefined operand is reported as usual. `If`, `While`,
+`Do While` conditions reject it (`Incomplete expression: <cond>.`; ours still rejects with other
+wording for `If ... Then` and `Do While` on CR300/CR350). Implemented by `parser._parse_relational`
+(`_to_ok`, set only while parsing an assignment value or `Select Case`) and `structure._scan_expr`
+(`to_ok`). Not modelled: `To` in instruction arguments (`Scan(1 To 2,...)`, `Sample(1,X To Y,FP2)`),
+in an assignment target subscript (`A(1 To 2) = 3`), and string-literal operands (`"a" To "b"` is
+`String is illegal here`; ours stays a generic reject); `Y = TO` (a bare `TO` value, real `Invalid`)
+is still accepted.

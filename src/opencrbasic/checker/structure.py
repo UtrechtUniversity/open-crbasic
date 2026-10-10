@@ -1740,7 +1740,7 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                 return ("pass1", "missing_expr")
             return ("pass1", "fallback")
         return _scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
-                          cond=True)
+                          cond=True, to_ok=bool(re.match(r"\s*SELECT", text, re.I)))
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError as e:
@@ -1888,7 +1888,11 @@ def _instruction_arg_findings(text: str, operands: set[str], profile) -> list[tu
 
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None,
-               cond: bool = False) -> tuple[str, str] | None:
+               cond: bool = False, to_ok: bool = True) -> tuple[str, str] | None:
+    """(`to_ok`: `To` is a binary operator, once per parenthesis level and argument; everywhere but
+    `If`/`While`/`Do`/`Loop` conditions, oracle 2026-10-10, all four loggers.)"""
+    to_levels: set[int] = set()
+    rel_levels: set[int] = set()  # levels holding a comparison; none may sit beside a `To`
     unknown = ("pass2", "symbol" if assign else "fallback")
     unclosed = unclosed or ("no_matching" if assign else "fallback")
     parens: list[str] = []          # "call" or "group"
@@ -1913,10 +1917,14 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                         expect_operand = False
                     else:
                         parens.append("call")
+                        to_levels.discard(len(parens))
+                        rel_levels.discard(len(parens))
                         i += 1
                 elif u in operands:
                     if opens:
                         parens.append("call")
+                        to_levels.discard(len(parens))
+                        rel_levels.discard(len(parens))
                         i += 1
                     else:
                         expect_operand = False
@@ -1924,6 +1932,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return unknown
             elif t.kind == "OP" and t.text == "(":
                 parens.append("group")
+                to_levels.discard(len(parens))
+                rel_levels.discard(len(parens))
             elif t.kind == "OP" and t.text in ("-", "+"):
                 pass
             elif t.kind == "OP" and t.text in _BINARY_OPS:
@@ -1938,6 +1948,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return ("pass1", "incomplete")
                 parens.pop()
             elif t.kind == "OP" and t.text == ",":
+                to_levels.discard(len(parens))
+                rel_levels.discard(len(parens))
                 if not parens:
                     if cond:
                         return ("pass1", "incomplete")
@@ -1946,13 +1958,25 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return ("pass1", "no_matching" if assign else "fallback")
                 expect_operand = True
             elif t.kind == "OP" and t.text in _BINARY_OPS:
+                if to_ok and t.text in ("=", "<>", "<", ">", "<=", ">="):
+                    if len(parens) in to_levels:
+                        return ("pass1", "no_matching" if parens else "incomplete")
+                    rel_levels.add(len(parens))
                 expect_operand = True
             elif t.kind == "IDENT" and t.upper in _BINARY_WORDS:
+                if t.upper != "MOD":
+                    to_levels.discard(len(parens))
+                    rel_levels.discard(len(parens))
+                expect_operand = True
+            elif (to_ok and t.kind == "IDENT" and t.upper == "TO" and len(parens) not in to_levels
+                  and len(parens) not in rel_levels):
+                to_levels.add(len(parens))
                 expect_operand = True
             elif t.kind in ("IDENT", "NUMBER", "STRING"):
                 # an operand right after an operand: inside a plain `( )` group the real
                 # compiler calls the group unmatched (oracle, 2026-10-03)
-                return ("pass1", "no_matching" if parens and parens[-1] == "group" else "incomplete")
+                return ("pass1", "no_matching" if parens and (
+                    parens[-1] == "group" or (to_ok and t.upper == "TO")) else "incomplete")
             else:
                 return None
         i += 1
