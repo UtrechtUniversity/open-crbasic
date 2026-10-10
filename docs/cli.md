@@ -106,7 +106,11 @@ actually appear in this repository's programs or the CHM sample were pursued.
   `Invalid symbol in expression`, `Could not find variables`, `Include file ... must have valid
   program file extension`, or `Expr illegally occurs before BeginProg.` (prose lines ahead of
   `BeginProg`). The real exe prints a bare `[Times]` for these although they are pass-2 findings
-  in our checker. Any other error positioned before `BeginProg` (inside a `Sub`, a `DataTable`)
+  in our checker. Round 9 (fixture `timing_symbol_gate.json`): `Invalid symbol in expression` hides
+  the entries only when it is ahead of `BeginProg` and not inside a `Sub`/`Function` body or an
+  assignment (a table instruction argument such as `Minimum(1,Nope,..)`, prose lines); `X = Nope`
+  and `Randomize(Nope)` in the scan, in a `Sub` or `X = Nope` in a table body still print
+  `Scan: 0` and the rest (`cli._hides_times`). Any other error positioned before `BeginProg` (inside a `Sub`, a `DataTable`)
   does not hide entries (`avgrun_4`, `cdmbridgefilt_1`, `fieldnames_2`; CHM, CR6: 503/507 ->
   506/507 exact; repo 16/16). Not explained: `pointervariable_2` (real prints no `[Times]` at
   all).

@@ -1,0 +1,585 @@
+{
+ "observation_date": "2026-10-10",
+ "compiler": {
+  "exe": "CR6Comp.exe",
+  "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+ },
+ "cases": [
+  {
+   "id": "timing_symbol_gate-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope + 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Nope = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Nope = 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n    X = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PanelTemp = 1100\r\nline 4: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = Nope(1).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = A(11)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Sqr(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Sqr(Nope).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If Nope Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope .",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Foo.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n    PortSet(Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n    PortSet(1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid port 1, use C1..C4 or U1..U12.",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PanelTemp = 1100\r\nline 4: PanelTemp = 1100\r\nline 5: PortSet = 100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X =.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X = 1 +.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-15",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X += Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X += Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-16",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     A(1) = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-17",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    A(Nope) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(Nope) = 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-18",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = A(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = A(Nope).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \"a\" + Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = \"a\" + Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-20",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Call Foo(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 4: Sub Foo not defined.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-21",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Select Case Nope\n    Case 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-22",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    For I = 1 To Nope\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 5: Invalid symbol in expression: I .",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-23",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While Nope\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-24",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While Nope\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-25",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Nope,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-26",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope.Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-27",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope()\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope().",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-28",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope(1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope(1,2).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-29",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X = 1 Then Y = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Y = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-30",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X = 1 Then\n    Y = Nope\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     Y = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-31",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y\n    X = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression:     X = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-32",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n    Nope = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression:     Nope = 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PanelTemp = 1100\r\nline 4: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-33",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope : Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope .",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-34",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-35",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Nope(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Nope(1).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-36",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope + Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope + Foo.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-37",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Y + Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = Y + Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-38",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = A(1) + Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     A(1) = A(1) + Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-39",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Timer(Nope,Sec,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Timer(Nope,Sec,0).",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-40",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Randomize(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-41",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-42",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = Nope1 Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = Nope1 Nope2.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-43",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-44",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-45",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Randomize(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-46",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1,Nope,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-47",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-48",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Nope = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Nope = 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-49",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    A(Nope) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(Nope) = 1.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-50",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Move(A(1),1,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-51",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,Nope,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-52",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,1,Nope,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-53",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(Nope,1,mV5000,1,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 4: Invalid channel 1, must use U1..U12.",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: VoltSe = 10700\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-54",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Therm107(X,1,Nope,1,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-55",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-56",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SW12(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-57",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-58",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.\nline 4: Invalid port 1, use C1..C4 or U1..U12.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-59",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOpen(Nope,9600,0,0,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: ComPort 0 illegal.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-60",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Sample(1,X,FP2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Sample must be used inside a table declaration.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-61",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    DataInterval(0,Nope,Sec,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-62",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    MoveBytes(X,0,Y,0,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-63",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nSub S\n  X = Nope\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   X = Nope.",
+   "expected_times": "\r\nline 6: Scan: 0\r\nline 7: PanelTemp = 1100\r\nline 7: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-64",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nSub S\n  Randomize(Nope)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 6: Scan: 0\r\nline 7: PanelTemp = 1100\r\nline 7: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-65",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nFunction F\n  Return Nope\nEndFunction\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_times": "\r\nline 6: Scan: 0\r\nline 7: PanelTemp = 1100\r\nline 7: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-66",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nDataTable(T,1,1)\n  Sample(1,Nope,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-67",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nDataTable(T,1,1)\n  Sample(1,X,FP2)\n  X = Nope\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:   X = Nope.",
+   "expected_times": "\r\nline 7: Scan: 0\r\nline 8: PanelTemp = 1100\r\nline 8: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-68",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nDataTable(T,1,1)\n  Sample(1,X,FP2)\nEndTable\nPublic Z = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope.\nline 5: Variable initialization of Z has bad syntax.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-69",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nConst K = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope.",
+   "expected_times": ""
+  },
+  {
+   "id": "timing_symbol_gate-70",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nAlias X = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_times": "\r\nline 4: Scan: 0\r\nline 5: PanelTemp = 1100\r\nline 5: PanelTemp = 1100\r\n"
+  },
+  {
+   "id": "timing_symbol_gate-71",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nUnits X = Nope\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.",
+   "expected_times": "\r\nline 4: Scan: 0\r\nline 5: PanelTemp = 1100\r\nline 5: PanelTemp = 1100\r\n"
+  }
+ ]
+}

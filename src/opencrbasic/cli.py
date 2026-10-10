@@ -21,6 +21,7 @@ import sys
 from pathlib import Path
 
 from . import __version__, profiles
+from . import syntax as S
 
 
 def _parse(argv: list[str]):
@@ -95,16 +96,35 @@ def _write_message_file(path: Path, lines: list[str]) -> None:
     path.write_bytes(_message_bytes(lines))
 
 
-_P1_HIDERS = ("Invalid symbol in expression", "Could not find variables")
+_P1_HIDERS = ("Could not find variables",)
+_SYMBOL = "Invalid symbol in expression"
 
 
 def _hides_times(program_ast, diags, main) -> bool:
     """Errors that suppress `[Times]` entries though our checker raises them after pass 1
     (`docs/cli.md` "-t"): undefined/invalid symbols, a missing include extension, and prose lines ahead of
-    `BeginProg` (`Expr illegally occurs before BeginProg.`)."""
+    `BeginProg` (`Expr illegally occurs before BeginProg.`). An undefined symbol hides them only
+    ahead of `BeginProg` and outside a `Sub`/`Function` body and an assignment (a table
+    instruction's argument, a prose line): `X = Nope` in the program or a table body,
+    `Randomize(Nope)` in a `Sub` or the scan still print (oracle, round 9)."""
+    stmts = program_ast.statements
+    begin = next((st for st in stmts if getattr(st, "keyword", "").upper() == "BEGINPROG"), None)
+    keep: set[tuple[str, int]] = set()  # lines whose symbol error does not hide
+    in_sub = False
+    for st in stmts:
+        kw = getattr(st, "keyword", "").upper()
+        if isinstance(st, S.SubDef):
+            in_sub = True
+        if in_sub or isinstance(st, S.Assignment):
+            keep.add((st.file, st.line))
+        if kw in ("ENDSUB", "ENDFUNCTION"):
+            in_sub = False
     for d in diags.errors:
         if (d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message
                 or d.message == "Expr illegally occurs before BeginProg."):
+            return True
+        if d.message.startswith(_SYMBOL) and (begin is None or d.file != begin.file
+                                              or d.line < begin.line) and (d.file, d.line) not in keep:
             return True
     return False
 
