@@ -886,7 +886,7 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
                             stmt.file)
                 if is_const_family:  # (oracle, CR300, 2026-10-03: `Delay(Nope(1),2,Sec)`)
                     diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.",
-                                stmt.file)
+                                stmt.file, stmt=stmt)
                     return True
                 if i + 1 < len(stmt.args) and stmt.args[i + 1] is not None:
                     from .instr_rules import _next_simple_token
@@ -913,7 +913,8 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         if is_const_family:
             var_refs = _variable_refs(arg, variable_names)
             if names or var_refs:
-                diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file)
+                diags.error(stmt.line, f"Variable illegal in Parameter: {_arg_text(stmt, i)}.", stmt.file,
+                            stmt=stmt)
                 return True
 
         return bool(names)

@@ -439,6 +439,10 @@ def _earlier_error_in_stmt(program: S.Program, stmt, diags: Diagnostics, prefixe
     if sum(1 for o in program.statements if (o.file, o.line) == (stmt.file, stmt.line)) < 2:
         return True
     for d in here:
+        if d.stmt:  # raised by a tagged emitter: exact statement identity, not echo text
+            if d.stmt == id(stmt):
+                return True
+            continue
         echo = re.sub(r"^(?:Illegal parameter |[^:]*: )|(?:, expecting constant integer)?\.$", "",
                       d.message).strip()
         if echo in stmt.text:
@@ -1217,7 +1221,7 @@ def check_const_int_args(program: S.Program, profile, diags: Diagnostics, env: c
                 continue
             echo = "-" if re.match(r"-\s", text) else text
             diags.error(stmt.line, f"Illegal parameter {echo}, expecting constant integer.",
-                        stmt.file)
+                        stmt.file, stmt=stmt)
 
 
 def _strip_parens(text: str) -> str:

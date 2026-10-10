@@ -37,6 +37,7 @@ class Diagnostic:
     show_file: bool = True  # whether an origin outside `main_file` gets a `<file>` prefix; see
     # this module's docstring for the two oracle-confirmed exceptions that set this False.
     cascade: bool = True    # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
+    stmt: int = field(default=0, compare=False)  # id() of the statement that raised it, when tagged
 
     def cr6comp(self, main_file: str = "", drive_prefix: bool = False) -> str:
         if self.severity == "warning":
@@ -68,8 +69,9 @@ class Diagnostic:
 class Diagnostics:
     items: list[Diagnostic] = field(default_factory=list)
 
-    def error(self, line: int, message: str, file: str = "", show_file: bool = True) -> None:
-        self.items.append(Diagnostic("error", line, message, file, show_file))
+    def error(self, line: int, message: str, file: str = "", show_file: bool = True,
+              stmt: object = None) -> None:
+        self.items.append(Diagnostic("error", line, message, file, show_file, stmt=id(stmt) if stmt else 0))
 
     def warning(self, line: int, message: str, file: str = "") -> None:
         self.items.append(Diagnostic("warning", line, message, file))
