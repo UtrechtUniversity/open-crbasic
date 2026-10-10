@@ -374,6 +374,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # already emitted above, the same after-the-fact pattern `check_too_many_cascade` below
         # also uses.
         _run_pass(cr3xx.check_unknown_line_words, flat, profile, diags)
+        _run_pass(cr3xx.check_for_header, flat, profile, diags)  # (`For ... To 1 Step-1`)
         # CR300/CR350 only (a no-op on every other logger, `checker/cr3xx.py`): one `%s is not
         # defined.` line per undefined bare-name argument of an `S.Call` that itself resolved to
         # nothing, spliced in between that call's own `{name} is not defined.` line (`structure.

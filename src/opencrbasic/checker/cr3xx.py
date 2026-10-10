@@ -1125,6 +1125,40 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
     diags.items[:] = [d for d in diags.items if not hidden(d)]
 
 
+def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: a `For` header whose `To`/`Step` half has adjacent operands (`structure.
+    _for_header_incomplete`, CR6 pass 1) prints the half's leading undefined words after the
+    `From` expression's, then `Incomplete expression: <half>.` (oracle, CR300/CR350, 2026-10-10:
+    `To 1 Step-1` -> `Step is not defined.`, `Nope To 12 Step-1` -> `Nope`, `Step`, then the line;
+    `Step-Nope` names only `Step`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    known = None
+    for stmt in program.statements:
+        text = getattr(stmt, "text", None) or ""
+        if not re.match(r"\s*For\s", text, re.I):
+            continue
+        echo = structure._for_header_incomplete(text, profile)
+        if echo is None:
+            continue
+        key = (stmt.line, stmt.file)
+        own = [d for d in diags.items if (d.line, d.file) == key]
+        if not all(d.message.endswith(_UNRESOLVED_SUFFIX) or d.message.startswith(
+                (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:")) for d in own):
+            continue
+        if known is None:
+            known = prose_known(program, profile)
+        here = known - declared_later(first_declarations(program), stmt.line, stmt.file)
+        start = structure._FOR_TO_RE.match(text).start(1)
+        eq = re.search(r"=(.*?)\sTo\s", text[:start], re.I | re.S)
+        words = (_leading_unknown_words(eq.group(1), here) if eq else []) + _leading_unknown_words(echo, here)
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), len(diags.items))
+        diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+        diags.items[at:at] = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
+                                         stmt.file, True) for w in words] + [
+            Diagnostic("error", stmt.line, f"Incomplete expression: {echo}.", stmt.file)]
+
+
 def _echo_key(text: str) -> str:
     """An echoed statement compared with its `S.Unparsed` text (the echo drops outer parentheses)."""
     return text.replace("(", "").replace(")", "").strip()

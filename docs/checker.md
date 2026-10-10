@@ -4458,3 +4458,8 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   `ModemCallBack` with other than 9 arguments reports only the count error (the literal baud line used
   to be added). CR300/CR350 after the `Too many parameters` cascade started: a negative or computed
   `SerialOpen` baud is swallowed (`-115200`, `Hr+1`), `Hr`, `12345` still print.
+- **`For` header with a bad `To`/`Step` half on CR300/CR350** (`r8_cr3xx_for_header.json`; the CR6/CR1000X
+  rule above applies): the `From` expression's undefined words, then the bad half's leading
+  undefined words (`1 Step-1` -> `Step`, `1 X` -> `X`, `Step-Nope` -> `Step` only), then `Incomplete
+  expression: <half>.` with no line-end newline. `cr3xx.check_for_header`. Not modelled: the `To`
+  keyword inside an assignment value (`I = 1 To 12` compiles; ours still rejects it, `fornext_1.CR6`).
