@@ -4474,3 +4474,11 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   `pull_limit` set below the first affected declaration (the loader logs the pulls it made in
   `Program.pull_log`). Not modelled: whether an error inside an earlier pulled declaration also stops
   later pulls; `Public D(2) As Long =` / `1, 2` is rejected by us on every logger (pre-existing).
+- **`For` without `=` and short instructions on a shared line** (CR300/CR350, `r8_cr3xx_for_missing.json`,
+  `r8_cr3xx_shortfall_line.json`): `For more: foo` keeps `Invalid or missing parameter.` ahead of the
+  names of the following segment (names never hide it; it prints after names of an earlier segment:
+  `X = Nope : For example`). `Invalid or missing parameter.` is itself a cascade trigger: a later
+  instruction with exactly one argument that is short (`Delay(1)` then `PanelTemp(X)`) loses its
+  shortfall, and on one line only the first shortfall prints (`PanelTemp(X) : Delay(1)` -> one line;
+  `PanelTemp(X) : Delay(1,Nope)` -> the shortfall, then `Too many parameters:  Nope.`). `X=Nope :
+  PanelTemp` prints `Nope` before the shortfall. `cr3xx.check_too_many_cascade`, `drop_shortfall_with_names`.

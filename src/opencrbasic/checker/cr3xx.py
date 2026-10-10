@@ -212,6 +212,13 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "
                                  "Dimensions not declared:")
 
 
+def _is_short_instruction(stmt, profile) -> bool:
+    """An instruction call written with fewer arguments than it requires."""
+    record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
+    return record is not None and len(stmt.args) < instr_rules._required_count(
+        instr_rules._real_params(record["params"]))
+
+
 def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and diag.cascade and (
         diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
@@ -386,6 +393,19 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                                                   f"Too many parameters:  {text}.", stmt.file))
                 rewritten.add(id(stmt))
                 continue
+            trigger_short = (taint_at < index and (program.statements[taint_at].line,
+                                                   program.statements[taint_at].file) == key
+                             and _is_short_instruction(program.statements[taint_at], profile))
+            kept_shortfall = [d for d in diags.items if (d.line, d.file) == key
+                              and d.message in _SHORTFALL_MESSAGES][:1] if trigger_short else []
+            if (isinstance(stmt, S.Instruction) and len(stmt.args) == 1
+                    and _is_short_instruction(stmt, profile)):
+                # a short instruction after the cascade started has no second argument to echo and
+                # its own shortfall disappears (oracle, CR300, 2026-10-10: `Delay(1)` then
+                # `PanelTemp(X)` prints one line; on a shared line the trigger's own line stays)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key
+                                  or d.message not in _SHORTFALL_MESSAGES or any(d is k for k in kept_shortfall)]
+                continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
                     and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE")):
@@ -398,8 +418,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 at = next((i for i, d in enumerate(diags.items)
                            if d.file == stmt.file and d.line > stmt.line), len(diags.items))
-                diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  f"Too many parameters:  {text}.", stmt.file))
+                diags.items[at:at] = kept_shortfall
+                diags.items.insert(at + len(kept_shortfall), Diagnostic(
+                    "error", stmt.line, f"Too many parameters:  {text}.", stmt.file))
                 rewritten.add(id(stmt))
             continue
         if any(_is_cascade_trigger(d) for d in existing):
@@ -1111,6 +1132,9 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
             return False
         key = (d.line, d.file)
         idxs = [i for i, st in enumerate(stmts) if (st.line, st.file) == key]
+        if any(isinstance(stmts[i], S.Unparsed) and stmts[i].reason == structure._FOR_MISSING
+               for i in idxs):
+            return False  # a `For` without `=` is never hidden by names (oracle, CR300, 2026-10-10)
         short = [i for i in idxs if is_short(stmts[i])]
         nth = seen[key]
         seen[key] += 1
@@ -1123,6 +1147,25 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
         return cand >= first and bool(getattr(stmts[cand], "args", True))
 
     diags.items[:] = [d for d in diags.items if not hidden(d)]
+    # a `For` without `=` or a short instruction that ends a line whose earlier segment named
+    # undefined words prints after them (oracle, CR300/CR350, 2026-10-10: `X=Nope : PanelTemp`)
+    for i, st in enumerate(stmts):
+        if not ((isinstance(st, S.Unparsed) and st.reason == structure._FOR_MISSING)
+                or is_short(st)):
+            continue
+        key = (st.line, st.file)
+        if i + 1 < len(stmts) and (stmts[i + 1].line, stmts[i + 1].file) == key:
+            continue
+        if not any((o.line, o.file) == key and has_names(o) for o in stmts[:i]):
+            continue
+        if any((o.line, o.file) == key and o is not st and (is_short(o) or (
+                isinstance(o, S.Unparsed) and o.reason == structure._FOR_MISSING)) for o in stmts):
+            continue  # (only a line's single shortfall moves)
+        moved = [d for d in diags.items if (d.line, d.file) == key and d.message in _SHORTFALL_MESSAGES]
+        if moved:
+            at = max(j for j, d in enumerate(diags.items) if (d.line, d.file) == key)
+            diags.items[:] = [d for d in diags.items if d is not moved[0]]
+            diags.items.insert(at, moved[0])
 
 
 def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:

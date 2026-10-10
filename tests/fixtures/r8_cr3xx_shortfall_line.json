@@ -1,0 +1,295 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X=Nope : PanelTemp\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X=Nope : PanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : X=Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp : X=Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : PanelTemp(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-9",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-10",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : PanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-11",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-12",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-13",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1,2,3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-14",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPortSet(C1,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-15",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nX = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-16",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-17",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPanelTemp(X,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-18",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r8_cr3xx_shortfall_line-19",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nBattery(X,Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  Y."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X=Nope : PanelTemp\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    X=Nope : PanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : X=Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp : X=Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : PanelTemp(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-9",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1) : Delay(1) : Delay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-10",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : PanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-11",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-12",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    PanelTemp(X) : Delay(1) : Delay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 4: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-13",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1,2,3,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-14",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPortSet(C1,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-15",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nX = Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Nope is not defined."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-16",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nDelay(1,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-17",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPanelTemp(X,1,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-18",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nPanelTemp(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r8_cr3xx_shortfall_line-19",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(1)\nBattery(X,Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter.\nline 5: Too many parameters:  Y."
+  }
+ ]
+}
