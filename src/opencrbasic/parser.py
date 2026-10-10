@@ -335,9 +335,12 @@ class _Parser:
         segments = _split_text_segments(ll.text)
         last_idx = len(segments) - 1
         in_inline_if = False
+        colon_if = False
         for idx, seg_text_raw in enumerate(segments):
             if not seg_text_raw.strip():
                 continue
+            if colon_if and re.fullmatch(r"\s*(?:Else|EndIf|End\s+If)\s*", seg_text_raw, re.I):
+                continue  # inside `If c Then : ...` these are part of the one-line If
             # Only the segment that is both last on its physical line (nothing after it split off
             # by a top-level `:`) and not followed by a stripped `'` comment truly reaches that
             # line's real end -- see `Stmt.at_eol`'s docstring.
@@ -348,6 +351,11 @@ class _Parser:
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
             stmt.at_eol = at_eol
+            if (isinstance(stmt, S.If) and stmt.inline is None and idx < last_idx
+                    and self.profile.name in ("cr6", "cr1000x")
+                    and re.search(r"\bThen\s*$", seg_text_raw, re.I)):
+                stmt.inline = []  # `If X Then : Y = 1` is a one-line If (oracle, 2026-10-10)
+                colon_if = True
             # Segments after a one-line `If` belong to its body: no newline in the echo (oracle,
             # CR300, 2026-10-01: `If X Then X = 1 : Foo(1)`).
             in_inline_if = in_inline_if or (isinstance(stmt, S.If) and stmt.inline is not None)

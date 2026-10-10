@@ -1,0 +1,155 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unmatched_loop_elseif-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LOOP statement illegally has SCAN without NEXT SCAN.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Loop While Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LOOP statement illegally has SCAN without NEXT SCAN.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ElseIf Nope Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case with no Select."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n    ElseIf Nope Then\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n    EndIf\n    ElseIf Nope Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Case with no Select."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do\n    Loop\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LOOP statement illegally has SCAN without NEXT SCAN.\nline 6: LOOP without DO."
+  },
+  {
+   "id": "cr6-unmatched_loop_elseif-9",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LOOP statement illegally has SCAN without NEXT SCAN.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Loop While Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: LOOP statement illegally has SCAN without NEXT SCAN.\nline 4: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ElseIf Nope Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Case with no Select."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n    ElseIf Nope Then\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Nope ."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    If X Then\n    EndIf\n    ElseIf Nope Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Case with no Select."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do\n    Loop\n    Loop Until Nope\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: LOOP statement illegally has SCAN without NEXT SCAN.\nline 6: LOOP without DO."
+  },
+  {
+   "id": "cr1000x-unmatched_loop_elseif-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope\n    Loop\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  }
+ ]
+}

@@ -1199,7 +1199,15 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     # `Do While Nope` / `Loop Until (Nope <> 1)`: the condition after `While`/`Until`, like an
     # `If` condition (oracle, 2026-09-28: CR6 `Invalid symbol in expression: (Nope <> 1).`,
     # CR300 `Nope is not defined.`).
+    open_do = 0
     for stmt in program.statements:
+        if isinstance(stmt, S.DoLoop):
+            if stmt.keyword.upper() == "DO":
+                open_do += 1
+            elif open_do:
+                open_do -= 1
+            elif profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
+                continue  # `Loop Until Nope` with no `Do`: only `LOOP without DO.` (oracle, 2026-10-10)
         if not isinstance(stmt, S.DoLoop) or stmt.cond is None:
             continue
         names = _undefined_names(stmt.cond, known)
@@ -2009,6 +2017,7 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
     ds = program_dims(program, profile, known)
     whole_echo = profile.name in _WHOLE_EXPR_ECHO_LOGGERS
     orphans: list[bool] = []  # per open Select: True when CR300 did not open it
+    open_ifs = 0
     for stmt in program.statements:
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
         if kw == "SELECT":
@@ -2019,7 +2028,13 @@ def _check_elseif_and_case(program: S.Program, profile, diags: Diagnostics, know
             if orphans and orphans.pop():
                 diags.error(stmt.line, "EndSelect w/o Select", stmt.file)
             continue
+        if isinstance(stmt, S.If) and stmt.inline is None:
+            open_ifs += 1
+        elif kw == "ENDIF" or (kw == "END" and re.match(r"(?i)\s*End\s+If\b", stmt.text or "")):
+            open_ifs = max(0, open_ifs - 1)
         if isinstance(stmt, S.ElseIf):
+            if whole_echo and not open_ifs:
+                continue  # `ElseIf Nope Then` with no `If`: only `Case with no Select.`
             names = _undefined_names(stmt.cond, known)
             text = _if_condition_text(stmt)
             if text is not None and not names and not whole_echo and _over_indexed(

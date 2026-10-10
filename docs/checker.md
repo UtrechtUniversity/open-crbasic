@@ -4234,3 +4234,18 @@ included), so it hides every pass-2 finding; the bare keyword (`Y = Scan`) and t
 (`NextScan(1)`, `Loop(1)`) keep their old results (`Invalid symbol in expression`). Not modelled:
 `Y = If(1)` (real `Incomplete expression`), the unclosed `Y = Scan(`. Implemented as
 `structure._block_keyword_call`, called per statement from `check_pass1`.
+
+### `If c Then :` is a one-line If; unmatched `Loop`/`ElseIf` conditions are not resolved (CR6/CR1000X)
+
+Oracle 2026-10-10:
+
+- `If X Then : Y = 1`, `If X Then :`, `If X Then : Y = 1 : Y = 2` compile with no `EndIf`: a colon
+  after `Then` makes it a one-line If, and a bare `Else` / `EndIf` / `End If` segment after it is
+  part of it (`If X Then : Y = 1 : Else : Y = 2`, `If X = 1 Then : EndIf` compile). `If X = 1 : Y = 2`
+  (no `Then`) is unchanged (`IF or SELECT without EndIf or EndSelect.`). `parser._parse_line`;
+  fixture `colon_if.json`.
+- A `Loop While|Until Nope` with no open `Do` gives only `LOOP without DO.` (plus its placement
+  companion), no `Invalid symbol`; likewise an `ElseIf Nope Then` with no open block-form `If`
+  gives only `Case with no Select.`. Matched ones still report the symbol. Fixture
+  `unmatched_loop_elseif.json`. Not modelled: a stray `Case Nope` is `Case with no Select.` in the
+  real compiler (ours `Case outside Select.`).
