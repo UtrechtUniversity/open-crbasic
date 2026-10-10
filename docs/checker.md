@@ -4416,3 +4416,14 @@ Tab(junk)` (symbol error for the subscript).
 Fixture `exitscan_inline_if.json`. `If F Then ExitScan` / `... Else ExitScan` inside an infinite `Scan(...,0)`
 counts as an `ExitScan` in the body: the statement after `NextScan` gets no `never reached` warning
 (`warnings._scan_span` only looked at top-level statements; `scannextscan_3`).
+
+### Predefined symbol as an assignment target; `Const X As` (2026-10-10)
+
+Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_as_only.json` (all four).
+- `Sec = 3`, `C1 = 3`, `TRUE = 1`, `NAN = 1`, `FP2 = X`, `String = "x"`, `Long = 3`, `Long += 3` (a plain
+  target that is a predefined symbol or type word, not a declared variable) is pass 1 `Invalid assignment in
+  expression: <stmt>.` We used to accept it. `PI`, `Status`, `Single` are plain unknown names
+  (`Invalid, or out of place expression`). Not modelled: `Long == 3` (also `Invalid assignment`), `Long(1) = 3`,
+  `Long.Y = 3`.
+- `Const A As` with nothing after `As` also prints `Too many parameters:  A.` after `Const with no assignment.`
+  (all four loggers), like `Const A As Long` (`sprintf_4`).

@@ -1,0 +1,169 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-symbol_assignment-0",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nSec = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: Sec = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-1",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nC1 = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: C1 = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-2",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nTRUE = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: TRUE = 1."
+  },
+  {
+   "id": "cr6-symbol_assignment-3",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNAN = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: NAN = 1."
+  },
+  {
+   "id": "cr6-symbol_assignment-4",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFP2 = X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: FP2 = X."
+  },
+  {
+   "id": "cr6-symbol_assignment-5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPI = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: PI = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nStatus = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Status = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-7",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nSingle = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Single = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-8",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nString = \"x\"\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: String = \"x\"."
+  },
+  {
+   "id": "cr6-symbol_assignment-9",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nLong = 3\nX = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: Long = 3."
+  },
+  {
+   "id": "cr6-symbol_assignment-10",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nLong += 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: Long += 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-0",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nSec = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: Sec = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-1",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nC1 = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: C1 = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-2",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nTRUE = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: TRUE = 1."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-3",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nNAN = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: NAN = 1."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-4",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nFP2 = X\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: FP2 = X."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nPI = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: PI = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nStatus = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Status = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-7",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nSingle = 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: Single = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-8",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nString = \"x\"\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: String = \"x\"."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-9",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nX = 1\nLong = 3\nX = 2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid assignment in expression: Long = 3."
+  },
+  {
+   "id": "cr1000x-symbol_assignment-10",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nLong += 3\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: Long += 3."
+  }
+ ]
+}

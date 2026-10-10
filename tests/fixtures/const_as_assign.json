@@ -1,0 +1,43 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-const_as_assign-0",
+   "logger": "cr6",
+   "source": "Const ToAddr As\nString = \"name@gmail.com\"\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  ToAddr.\nline 2: Invalid assignment in expression: String = \"name@gmail.com\"."
+  },
+  {
+   "id": "cr6-const_as_assign-1",
+   "logger": "cr6",
+   "source": "Const A As\nLong = 3\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  A.\nline 2: Invalid assignment in expression: Long = 3."
+  },
+  {
+   "id": "cr1000x-const_as_assign-0",
+   "logger": "cr1000x",
+   "source": "Const ToAddr As\nString = \"name@gmail.com\"\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  ToAddr.\nline 2: Invalid assignment in expression: String = \"name@gmail.com\"."
+  },
+  {
+   "id": "cr1000x-const_as_assign-1",
+   "logger": "cr1000x",
+   "source": "Const A As\nLong = 3\nPublic X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  A.\nline 2: Invalid assignment in expression: Long = 3."
+  }
+ ]
+}

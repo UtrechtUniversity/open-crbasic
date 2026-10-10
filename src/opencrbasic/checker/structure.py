@@ -974,6 +974,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
                     select_depth += 1
+        elif (isinstance(stmt, S.Assignment) and profile.known_first_word_pass1
+              and isinstance(stmt.target, S.Name)
+              and stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+              and stmt.target.name.upper() not in profile.instructions
+              and stmt.target.name.upper() not in symbols.declared_variable_names(program)):
+            # `Sec = 3`, `String = "x"`: a predefined symbol cannot be assigned (oracle, CR6/CR1000X,
+            # 2026-10-10)
+            diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file,
+                        show_file=False)
         elif (isinstance(stmt, S.Call) and profile.known_first_word_pass1 and not stmt.explicit
               and stmt.name.upper() not in profile.instructions
               and stmt.name.upper() not in profile.functions):
@@ -3296,7 +3305,7 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
             diags.error(stmt.line, "Invalid, or out of place expression: .", stmt.file)
             return
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
-        if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As\s+\w+)?", rest, re.I):
+        if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As(?:\s+\w+)?)?\s*", rest, re.I):
             diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)
         return
     if stmt.reason == _ALIAS_NOTHING_AFTER_EQ:
