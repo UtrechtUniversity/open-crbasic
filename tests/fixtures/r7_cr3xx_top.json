@@ -1,0 +1,1115 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r7_cr3xx_top-0",
+   "logger": "cr6",
+   "source": "# 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: # 1\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-1",
+   "logger": "cr6",
+   "source": "#1 ________________________\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 ________________________\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-2",
+   "logger": "cr6",
+   "source": "#1 abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 abc\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-3",
+   "logger": "cr6",
+   "source": "#a\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #a\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-4",
+   "logger": "cr6",
+   "source": "#abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #abc\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-5",
+   "logger": "cr6",
+   "source": "#b\nPublic S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-6",
+   "logger": "cr6",
+   "source": "Const\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-7",
+   "logger": "cr6",
+   "source": "Const X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-8",
+   "logger": "cr6",
+   "source": "Const X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-9",
+   "logger": "cr6",
+   "source": "Const X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-10",
+   "logger": "cr6",
+   "source": "Const X =   1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-11",
+   "logger": "cr6",
+   "source": "Const X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-12",
+   "logger": "cr6",
+   "source": "Const X = 1 2 + 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 + 3."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-13",
+   "logger": "cr6",
+   "source": "Const X = 1 2, Y = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-14",
+   "logger": "cr6",
+   "source": "Const X As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-15",
+   "logger": "cr6",
+   "source": "Const X As Long =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-16",
+   "logger": "cr6",
+   "source": "Const X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-17",
+   "logger": "cr6",
+   "source": "Const X=1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-18",
+   "logger": "cr6",
+   "source": "Dim A(2) = {1 2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-19",
+   "logger": "cr6",
+   "source": "Dim S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-20",
+   "logger": "cr6",
+   "source": "Public A(2) As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-21",
+   "logger": "cr6",
+   "source": "Public S As String\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-22",
+   "logger": "cr6",
+   "source": "Public S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-23",
+   "logger": "cr6",
+   "source": "Public S As String * 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-24",
+   "logger": "cr6",
+   "source": "Public S As String * , T As String * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-25",
+   "logger": "cr6",
+   "source": "Public S As String * ,T\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-26",
+   "logger": "cr6",
+   "source": "Public S As String * 100, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-27",
+   "logger": "cr6",
+   "source": "Public S As String * 5, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-28",
+   "logger": "cr6",
+   "source": "Public S As String *\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-29",
+   "logger": "cr6",
+   "source": "Public S As String *\nPublic T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-30",
+   "logger": "cr6",
+   "source": "Public S As String, T\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-31",
+   "logger": "cr6",
+   "source": "Public X = 1 \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 \"a\".\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-32",
+   "logger": "cr6",
+   "source": "Public X = 1 2 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-33",
+   "logger": "cr6",
+   "source": "Public X = 1 2 , Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-34",
+   "logger": "cr6",
+   "source": "Public X = 1 2, Y = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax.\nline 1: Incomplete expression: 3 4.\nline 1: Variable initialization of Y has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-35",
+   "logger": "cr6",
+   "source": "Public X = {1 2, 3}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-36",
+   "logger": "cr6",
+   "source": "Public X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-37",
+   "logger": "cr6",
+   "source": "Public X\nX = 1\nPublic S As String *\nPublic T As String *\nPublic U As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size of string missing.\nline 4: Size of string missing.\nline 5: Size of string missing."
+  },
+  {
+   "id": "cr6-r7_cr3xx_top-38",
+   "logger": "cr6",
+   "source": "Public Y, X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-0",
+   "logger": "cr1000x",
+   "source": "# 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: # 1\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-1",
+   "logger": "cr1000x",
+   "source": "#1 ________________________\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 ________________________\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-2",
+   "logger": "cr1000x",
+   "source": "#1 abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 abc\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-3",
+   "logger": "cr1000x",
+   "source": "#a\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #a\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-4",
+   "logger": "cr1000x",
+   "source": "#abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #abc\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-5",
+   "logger": "cr1000x",
+   "source": "#b\nPublic S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-6",
+   "logger": "cr1000x",
+   "source": "Const\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-7",
+   "logger": "cr1000x",
+   "source": "Const X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-8",
+   "logger": "cr1000x",
+   "source": "Const X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-9",
+   "logger": "cr1000x",
+   "source": "Const X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-10",
+   "logger": "cr1000x",
+   "source": "Const X =   1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-11",
+   "logger": "cr1000x",
+   "source": "Const X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-12",
+   "logger": "cr1000x",
+   "source": "Const X = 1 2 + 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 + 3."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-13",
+   "logger": "cr1000x",
+   "source": "Const X = 1 2, Y = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-14",
+   "logger": "cr1000x",
+   "source": "Const X As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-15",
+   "logger": "cr1000x",
+   "source": "Const X As Long =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-16",
+   "logger": "cr1000x",
+   "source": "Const X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-17",
+   "logger": "cr1000x",
+   "source": "Const X=1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-18",
+   "logger": "cr1000x",
+   "source": "Dim A(2) = {1 2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-19",
+   "logger": "cr1000x",
+   "source": "Dim S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-20",
+   "logger": "cr1000x",
+   "source": "Public A(2) As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-21",
+   "logger": "cr1000x",
+   "source": "Public S As String\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-22",
+   "logger": "cr1000x",
+   "source": "Public S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-23",
+   "logger": "cr1000x",
+   "source": "Public S As String * 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-24",
+   "logger": "cr1000x",
+   "source": "Public S As String * , T As String * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-25",
+   "logger": "cr1000x",
+   "source": "Public S As String * ,T\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-26",
+   "logger": "cr1000x",
+   "source": "Public S As String * 100, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-27",
+   "logger": "cr1000x",
+   "source": "Public S As String * 5, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-28",
+   "logger": "cr1000x",
+   "source": "Public S As String *\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-29",
+   "logger": "cr1000x",
+   "source": "Public S As String *\nPublic T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-30",
+   "logger": "cr1000x",
+   "source": "Public S As String, T\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-31",
+   "logger": "cr1000x",
+   "source": "Public X = 1 \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 \"a\".\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-32",
+   "logger": "cr1000x",
+   "source": "Public X = 1 2 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-33",
+   "logger": "cr1000x",
+   "source": "Public X = 1 2 , Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-34",
+   "logger": "cr1000x",
+   "source": "Public X = 1 2, Y = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax.\nline 1: Incomplete expression: 3 4.\nline 1: Variable initialization of Y has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-35",
+   "logger": "cr1000x",
+   "source": "Public X = {1 2, 3}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-36",
+   "logger": "cr1000x",
+   "source": "Public X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-37",
+   "logger": "cr1000x",
+   "source": "Public X\nX = 1\nPublic S As String *\nPublic T As String *\nPublic U As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size of string missing.\nline 4: Size of string missing.\nline 5: Size of string missing."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_top-38",
+   "logger": "cr1000x",
+   "source": "Public Y, X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-0",
+   "logger": "cr300",
+   "source": "# 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: # 1\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-1",
+   "logger": "cr300",
+   "source": "#1 ________________________\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 ________________________\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-2",
+   "logger": "cr300",
+   "source": "#1 abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 abc\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-3",
+   "logger": "cr300",
+   "source": "#a\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #a\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-4",
+   "logger": "cr300",
+   "source": "#abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #abc\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-5",
+   "logger": "cr300",
+   "source": "#b\nPublic S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-6",
+   "logger": "cr300",
+   "source": "Const\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-7",
+   "logger": "cr300",
+   "source": "Const X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-8",
+   "logger": "cr300",
+   "source": "Const X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-9",
+   "logger": "cr300",
+   "source": "Const X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-10",
+   "logger": "cr300",
+   "source": "Const X =   1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-11",
+   "logger": "cr300",
+   "source": "Const X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-12",
+   "logger": "cr300",
+   "source": "Const X = 1 2 + 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 + 3."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-13",
+   "logger": "cr300",
+   "source": "Const X = 1 2, Y = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-14",
+   "logger": "cr300",
+   "source": "Const X As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-15",
+   "logger": "cr300",
+   "source": "Const X As Long =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-16",
+   "logger": "cr300",
+   "source": "Const X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-17",
+   "logger": "cr300",
+   "source": "Const X=1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-18",
+   "logger": "cr300",
+   "source": "Dim A(2) = {1 2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-19",
+   "logger": "cr300",
+   "source": "Dim S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-20",
+   "logger": "cr300",
+   "source": "Public A(2) As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-21",
+   "logger": "cr300",
+   "source": "Public S As String\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-22",
+   "logger": "cr300",
+   "source": "Public S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-23",
+   "logger": "cr300",
+   "source": "Public S As String * 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-24",
+   "logger": "cr300",
+   "source": "Public S As String * , T As String * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-25",
+   "logger": "cr300",
+   "source": "Public S As String * ,T\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-26",
+   "logger": "cr300",
+   "source": "Public S As String * 100, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-27",
+   "logger": "cr300",
+   "source": "Public S As String * 5, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-28",
+   "logger": "cr300",
+   "source": "Public S As String *\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-29",
+   "logger": "cr300",
+   "source": "Public S As String *\nPublic T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-30",
+   "logger": "cr300",
+   "source": "Public S As String, T\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-31",
+   "logger": "cr300",
+   "source": "Public X = 1 \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 \"a\".\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-32",
+   "logger": "cr300",
+   "source": "Public X = 1 2 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-33",
+   "logger": "cr300",
+   "source": "Public X = 1 2 , Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-34",
+   "logger": "cr300",
+   "source": "Public X = 1 2, Y = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-35",
+   "logger": "cr300",
+   "source": "Public X = {1 2, 3}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-36",
+   "logger": "cr300",
+   "source": "Public X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-37",
+   "logger": "cr300",
+   "source": "Public X\nX = 1\nPublic S As String *\nPublic T As String *\nPublic U As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size of string missing."
+  },
+  {
+   "id": "cr300-r7_cr3xx_top-38",
+   "logger": "cr300",
+   "source": "Public Y, X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-0",
+   "logger": "cr350",
+   "source": "# 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: # 1\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-1",
+   "logger": "cr350",
+   "source": "#1 ________________________\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 ________________________\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-2",
+   "logger": "cr350",
+   "source": "#1 abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #1 abc\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-3",
+   "logger": "cr350",
+   "source": "#a\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #a\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-4",
+   "logger": "cr350",
+   "source": "#abc\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #abc\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-5",
+   "logger": "cr350",
+   "source": "#b\nPublic S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-6",
+   "logger": "cr350",
+   "source": "Const\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-7",
+   "logger": "cr350",
+   "source": "Const X\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-8",
+   "logger": "cr350",
+   "source": "Const X =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-9",
+   "logger": "cr350",
+   "source": "Const X = \nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-10",
+   "logger": "cr350",
+   "source": "Const X =   1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-11",
+   "logger": "cr350",
+   "source": "Const X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-12",
+   "logger": "cr350",
+   "source": "Const X = 1 2 + 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2 + 3."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-13",
+   "logger": "cr350",
+   "source": "Const X = 1 2, Y = 3\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-14",
+   "logger": "cr350",
+   "source": "Const X As Long\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Const with no assignment.\nline 1: Too many parameters:  X."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-15",
+   "logger": "cr350",
+   "source": "Const X As Long =\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-16",
+   "logger": "cr350",
+   "source": "Const X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-17",
+   "logger": "cr350",
+   "source": "Const X=1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-18",
+   "logger": "cr350",
+   "source": "Dim A(2) = {1 2}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-19",
+   "logger": "cr350",
+   "source": "Dim S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-20",
+   "logger": "cr350",
+   "source": "Public A(2) As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-21",
+   "logger": "cr350",
+   "source": "Public S As String\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-22",
+   "logger": "cr350",
+   "source": "Public S As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-23",
+   "logger": "cr350",
+   "source": "Public S As String * 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-24",
+   "logger": "cr350",
+   "source": "Public S As String * , T As String * 5\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-25",
+   "logger": "cr350",
+   "source": "Public S As String * ,T\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-26",
+   "logger": "cr350",
+   "source": "Public S As String * 100, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-27",
+   "logger": "cr350",
+   "source": "Public S As String * 5, T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-28",
+   "logger": "cr350",
+   "source": "Public S As String *\n#b\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing.\nline 2: Unknown instruction: #b\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-29",
+   "logger": "cr350",
+   "source": "Public S As String *\nPublic T As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-30",
+   "logger": "cr350",
+   "source": "Public S As String, T\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-31",
+   "logger": "cr350",
+   "source": "Public X = 1 \"a\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 \"a\".\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-32",
+   "logger": "cr350",
+   "source": "Public X = 1 2 'c\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-33",
+   "logger": "cr350",
+   "source": "Public X = 1 2 , Y\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-34",
+   "logger": "cr350",
+   "source": "Public X = 1 2, Y = 3 4\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-35",
+   "logger": "cr350",
+   "source": "Public X = {1 2, 3}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-36",
+   "logger": "cr350",
+   "source": "Public X As Long = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-37",
+   "logger": "cr350",
+   "source": "Public X\nX = 1\nPublic S As String *\nPublic T As String *\nPublic U As String *\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Size of string missing."
+  },
+  {
+   "id": "cr350-r7_cr3xx_top-38",
+   "logger": "cr350",
+   "source": "Public Y, X = 1 2\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: 1 2.\nline 1: Variable initialization of X has bad syntax."
+  }
+ ]
+}

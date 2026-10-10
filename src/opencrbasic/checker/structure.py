@@ -904,6 +904,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             pass
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
+            for message in _junk_init_findings(stmt, profile):
+                if message == "Size of string missing." and profile.single_pass and any(
+                        d.message == message for d in diags.items):
+                    continue  # CR300/CR350 report the first one only (oracle, 2026-10-10)
+                diags.error(stmt.line, message, stmt.file)
             if profile.known_first_word_pass1 and _is_generic_unparsed(stmt):
                 if known is None:
                     known = expressions._known_names(program, profile)
@@ -1333,6 +1338,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 continue  # a missing-parameter leftover or `Data` line, reported in pass 1
             if instr_rules.unterminated_string_shape(stmt, profile, subs):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
+            if _junk_init_findings(stmt, profile):
+                continue  # reported in pass 1 (`_junk_init_findings`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
                     stmt.reason.startswith(_INVALID_AS_CLAUSE) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
@@ -2733,6 +2740,15 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                 continue
             init_text = eq[1]
             stripped = init_text.lstrip()
+            if _adjacent_literals(init_text) and not stripped.startswith("{"):
+                # `Public X As Long = 1 2` (the `As` clause swallowed the junk), as in
+                # `_junk_init_findings`
+                diags.error(stmt.line, f"Incomplete expression: {init_text.strip()}.", stmt.file)
+                diags.error(stmt.line, f"Variable initialization of {v.name} has bad syntax.",
+                            stmt.file)
+                if profile.single_pass:
+                    return index
+                continue
             if stripped.startswith("{"):
                 items = _group_items(init_text, len(init_text) - len(stripped))
             else:
@@ -2970,6 +2986,43 @@ def _after_keyword(stmt: S.Unparsed) -> str:
     return stmt.text.lstrip()[5:].strip()
 
 
+_JUNK_INIT_HEAD = re.compile(r"(?is)\s*(CONST|PUBLIC|DIM)\s+(.*)$")
+
+
+def _junk_init_findings(stmt: S.Unparsed, profile) -> list[str]:
+    """`Const X = 1 2` -> `Incomplete expression: 1 2.`; `Public X = 1 2, Y` -> that line, then
+    `Variable initialization of X has bad syntax.` (echo: the trimmed value, or the first bad
+    `{...}` item), all four loggers (oracle, 2026-10-10); CR6/CR1000X report every variable,
+    CR300/CR350 the first. Pass 1 on all four, so the generic fallback does not follow."""
+    head = _JUNK_INIT_HEAD.match(stmt.text)
+    out: list[str] = []
+    if stmt.text.lstrip().startswith("#"):
+        # a statement starting with `#` (echo: the raw text, the line end as a newline on all four
+        # loggers), pass 1 (oracle, 2026-10-10: `#1 ____`, `# 1`, ` #abc` after a `:`)
+        return [f"Unknown instruction: {stmt.text}{chr(10) if stmt.at_eol else ''}."]
+    if not head:
+        return out
+    if head.group(1).upper() != "CONST" and re.search(r"(?i)\bAs\s+String\s*\*\s*(?:,|$)",
+                                                      head.group(2)):
+        return ["Size of string missing."]  # `Public S As String *` (oracle, all four, 2026-10-10)
+    const = head.group(1).upper() == "CONST"
+    for seg in _split_top(head.group(2)):
+        name = re.match(r"\s*([A-Za-z_]\w*)", seg)
+        if not name or "=" not in seg:
+            continue
+        value = seg.split("=", 1)[1].strip()
+        items = _split_top(value[1:-1]) if value.startswith("{") and value.endswith("}") else [value]
+        bad = next((i.strip() for i in items if _adjacent_literals(i)), None)
+        if bad is None:
+            continue
+        out.append(f"Incomplete expression: {bad}.")
+        if not const:
+            out.append(f"Variable initialization of {name.group(1)} has bad syntax.")
+        if const or profile.single_pass:
+            break
+    return out
+
+
 def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
     """The specific-reason `Unparsed` diagnoses only -- true pass-1 (`docs/checker.md` "Pass
     model": `Need '=' in units definition: %s.`/`Const with no assignment.`/`Need '=' in alias
@@ -2993,7 +3046,15 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         diags.error(stmt.line, f"Need '=' in units definition: {stmt.text}\n.", stmt.file)
         return
     if stmt.reason == _CONST_WITHOUT_EQ:
+        # `Const X =` (nothing after the `=`) -> `Invalid, or out of place expression: .`; a name
+        # with no `=` at all adds `Too many parameters:  X.` (oracle, all four loggers, 2026-10-10)
+        rest = _after_keyword(stmt)
+        if re.fullmatch(r"[A-Za-z_]\w*(?:\s+As\s+\w+)?\s*=", rest, re.I):
+            diags.error(stmt.line, "Invalid, or out of place expression: .", stmt.file)
+            return
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
+        if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As\s+\w+)?", rest, re.I):
+            diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)
         return
     if stmt.reason == _FOR_MISSING:
         diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)

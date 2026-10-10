@@ -4091,3 +4091,33 @@ All rules observed on the real compilers; "all four" means CR6, CR1000X, CR300, 
 Not done: the CR300/CR350 storage limit (`Unable to allocate enough data table space`), and the
 CR300/CR350 `Cannot autoallocate memory for DataTable` that appears when a scan interval
 overflows (timing family, owned elsewhere).
+
+## Round 7 message families (oracle, 2026-10-10; `tests/fixtures/r7_cr3xx_*.json`)
+
+- **Adjacent literals in an initializer** (all four): `Const X = 1 2` -> `Incomplete expression:
+  1 2.`; `Public X = 1 2, Y` / `Dim A(2) = {1 2}` / `Public X As Long = 1 2` -> that line then
+  `Variable initialization of X has bad syntax.` The echo is the trimmed value (the first bad
+  `{...}` item). CR6/CR1000X report every variable, CR300/CR350 the first, and none of them
+  follows with the generic fallback (pass 1).
+- **`Const X =`** (nothing after `=`) -> `Invalid, or out of place expression: .` (empty echo, no
+  newline, all four); `Const X` / `Const X As Long` add `Too many parameters:  X.` after `Const
+  with no assignment.` A `Const = 1` line is `Const name 1 illegal, starts with a number.` (not
+  modelled).
+- **`Public S As String *`** with no size (end of line or a comma follows) -> `Size of string
+  missing.` (all four, pass 1, once per statement; CR300/CR350 only the first statement).
+- **`#` statements**: a statement starting with `#` -> `Unknown instruction: <raw text>` + the line
+  end as a newline + `.` (all four, even CR6) and the compile stops there: no later statement
+  is reported, earlier errors stand.
+- **CR300/CR350 assignment syntax verdicts**: for an assignment or a `Not ...` statement the
+  pass-1 verdict words of CR6 apply after the undefined-name lines (`X = 1 2` -> `Incomplete
+  expression:`, `X = (1 2)` -> `No Matching, or out of place ) in expression:`); prose lines stay
+  generic. A built-in call with juxtaposed operands in its parentheses (`Sin (foo bar)`,
+  `ArrayIndex (Array Index)`) is `No Matching, or out of place )` after its names.
+- **CR300/CR350 names in the generic fallback**: `X (foo bar)` names `foo`, `bar` when `X` is a
+  declared variable or a function (not a `Const`: `C1 (COM1 TX)` names nothing); `Not foo bar`
+  names both; a parenthesis-less function reads as many operands as it has parameters (`Timer
+  is bar baz` -> `bar`, `baz`; `COS foo bar` -> `foo`; `Sin is foo` -> nothing).
+
+Open (CR300/CR350 chm, not established): `Dim A(8)` followed by a lone `=` line (the declaration
+continues across the line), `Function ... As` header cascade, `Loop While I>0 and`,
+`For ... Step-1`, `X (foo) bar` (names `foo` only when text follows the parenthesis).

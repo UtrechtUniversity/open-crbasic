@@ -1,0 +1,975 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r7_cr3xx_stmt-0",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ArrayIndex (foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     ArrayIndex (foo)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-1",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS foo bar."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-2",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS of angle."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-3",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle in radians\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS of angle in radians."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-4",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-5",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not X 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-6",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q = 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-7",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SecsSince1990 function to store SSDate as long\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     SecsSince1990 function to store SSDate as long."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-8",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer 1 foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer 1 foo bar."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-9",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-10",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo bar."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-11",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo bar baz."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-12",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo is bar."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-13",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer is bar."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-14",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer is bar baz."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-15",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (1 foo)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-16",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo 1)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-17",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar baz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo bar baz)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-18",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo bar)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-19",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \"a\" 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = \"a\" 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-20",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 2)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-21",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 \"a\"."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-22",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-23",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-24",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 )."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-25",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 + Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 + Foo."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-26",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 3."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-27",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 : Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-28",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2, 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2, 3."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-29",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 2 Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 2 Y."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-30",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Foo 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Foo 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-31",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Y 2."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-32",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Y (foo bar)."
+  },
+  {
+   "id": "cr6-r7_cr3xx_stmt-33",
+   "logger": "cr6",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Y = X 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-0",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ArrayIndex (foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     ArrayIndex (foo)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-1",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS foo bar."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-2",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS of angle."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-3",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle in radians\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     COS of angle in radians."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-4",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-5",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not X 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-6",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q = 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-7",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SecsSince1990 function to store SSDate as long\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     SecsSince1990 function to store SSDate as long."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-8",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer 1 foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer 1 foo bar."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-9",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-10",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo bar."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-11",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo bar baz."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-12",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer foo is bar."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-13",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer is bar."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-14",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     Timer is bar baz."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-15",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (1 foo)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-16",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo 1)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-17",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar baz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo bar baz)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-18",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     X (foo bar)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-19",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \"a\" 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = \"a\" 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-20",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 2)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-21",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 \"a\"."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-22",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-23",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-24",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 )."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-25",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 + Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 + Foo."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-26",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 3."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-27",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 : Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-28",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2, 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2, 3."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-29",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 2 Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 2 Y."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-30",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Foo 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Foo 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-31",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Y 2."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-32",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Y (foo bar)."
+  },
+  {
+   "id": "cr1000x-r7_cr3xx_stmt-33",
+   "logger": "cr1000x",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Y = X 2."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-0",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ArrayIndex (foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-1",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Expression expects ( :     COS foo bar\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-2",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: of is not defined.\nline 4: Expression expects ( :     COS of angle\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-3",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle in radians\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: of is not defined.\nline 4: Expression expects ( :     COS of angle in radians\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-4",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not 1 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-5",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not X 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-6",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression:     Q = 1 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-7",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SecsSince1990 function to store SSDate as long\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     SecsSince1990 function to store SSDate as long\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-8",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer 1 foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer 1 foo bar\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-9",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Expression expects ( :     Timer foo\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-10",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer foo bar\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-11",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: baz is not defined.\nline 4: Expression expects ( :     Timer foo bar baz\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-12",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer foo is bar\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-13",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer is bar\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-14",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: bar is not defined.\nline 4: baz is not defined.\nline 4: Expression expects ( :     Timer is bar baz\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-15",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Invalid, or out of place expression:     X (1 foo)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-16",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Invalid, or out of place expression:     X (foo 1)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-17",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar baz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     X (foo bar baz)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-18",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     X (foo bar)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-19",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \"a\" 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = \"a\" 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-20",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 2)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-21",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 \"a\"\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-22",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-23",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-24",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 )\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-25",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 + Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 + Foo\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-26",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 3\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-27",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 : Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-28",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2, 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2, 3\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-29",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 2 Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 2 Y\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-30",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Foo 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not defined.\nline 4: Incomplete expression:     X = Foo 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-31",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Y 2\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-32",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     Y (foo bar)\n."
+  },
+  {
+   "id": "cr300-r7_cr3xx_stmt-33",
+   "logger": "cr300",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Y = X 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-0",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    ArrayIndex (foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-1",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Expression expects ( :     COS foo bar\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-2",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: of is not defined.\nline 4: Expression expects ( :     COS of angle\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-3",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    COS of angle in radians\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: of is not defined.\nline 4: Expression expects ( :     COS of angle in radians\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-4",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not 1 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-5",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Not X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Not X 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-6",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Q = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Q is not defined.\nline 4: Incomplete expression:     Q = 1 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-7",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    SecsSince1990 function to store SSDate as long\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects ( :     SecsSince1990 function to store SSDate as long\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-8",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer 1 foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer 1 foo bar\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-9",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Expression expects ( :     Timer foo\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-10",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer foo bar\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-11",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: baz is not defined.\nline 4: Expression expects ( :     Timer foo bar baz\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-12",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer foo is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer foo is bar\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-13",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: bar is not defined.\nline 4: Expression expects ( :     Timer is bar\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-14",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Timer is bar baz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: bar is not defined.\nline 4: baz is not defined.\nline 4: Expression expects ( :     Timer is bar baz\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-15",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Invalid, or out of place expression:     X (1 foo)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-16",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Invalid, or out of place expression:     X (foo 1)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-17",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar baz)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     X (foo bar baz)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-18",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     X (foo bar)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-19",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = \"a\" 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = \"a\" 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-20",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 2)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-21",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 \"a\"\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-22",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-23",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-24",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 )\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-25",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 + Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 + Foo\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-26",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 3\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-27",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2 : Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2 ."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-28",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1 2, 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 2, 3\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-29",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 2 Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 2 Y\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-30",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Foo 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Foo is not defined.\nline 4: Incomplete expression:     X = Foo 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-31",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = Y 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = Y 2\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-32",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y (foo bar)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression:     Y (foo bar)\n."
+  },
+  {
+   "id": "cr350-r7_cr3xx_stmt-33",
+   "logger": "cr350",
+   "source": "Public X, I, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Y = X 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Y = X 2\n."
+  }
+ ]
+}

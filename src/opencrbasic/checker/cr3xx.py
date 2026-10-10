@@ -820,7 +820,7 @@ def declared_later(first: dict[str, tuple[str, int]], line: int, file: str) -> s
     return {n for n, (f, l) in first.items() if f == file and l > line}
 
 
-def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
+def _leading_unknown_words(text: str, known: set[str], callables: frozenset = frozenset()) -> list[str]:
     """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
     would report as `%s is not defined.` ahead of the generic fallback for it -- see this
     module's `check_unknown_line_words` comment above for the oracle evidence and the exact walk
@@ -849,11 +849,11 @@ def _leading_unknown_words(text: str, known: set[str]) -> list[str]:
         if not extending:
             break
         paren = None if operand.group(0)[0].isdigit() else _LINE_PAREN_RE.match(text, pos)
-        if paren and len(words) == 1 and words[0].upper() not in known:
+        if paren and len(words) == 1 and (words[0].upper() not in known or words[0].upper() in callables):
             # `device (8 channels)`: the first word's parenthesis opens a second walk of the same
             # shape, which ends at the first `)`, and nothing after it is examined
             # (oracle, CR300, 2026-10-08).
-            words += _leading_unknown_words(text[paren.end():], known)
+            words += _leading_unknown_words(text[paren.end():], known)  # (a declared variable or function keeps the walk too, oracle 2026-10-10: `X (foo bar)`)
             break
         op_match = _LINE_OP_RUN_RE.match(text, pos) or _LINE_OP_WORD_RE.match(text, pos)
         if op_match:
@@ -1117,7 +1117,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
         return
     unparsed_lines = {(s.line, s.file) for s in program.statements if isinstance(s, S.Unparsed)}
     # (a line with several `:`-separated statements echoes each one; only the Unparsed one counts)
-    unparsed_text = {(s.line, s.file, _echo_key(s.text)) for s in program.statements
+    unparsed_text = {(s.line, s.file, _echo_key(s.text)): s for s in program.statements
                      if isinstance(s, S.Unparsed)}
     if not unparsed_lines:
         return
@@ -1159,20 +1159,60 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                                                 f"Variable illegal in Parameter: {rest}.", d.file))
                 changed = True
                 continue
-            for word in _leading_unknown_words(text, here):
+            callables = frozenset(symbols.declared_variable_names(program) | set(profile.functions))
+            fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
+            needs_paren = bool(
+                fw and fw.group(0).upper() not in profile.instructions
+                and not text[fw.end():].lstrip(" \t").startswith(("(", "."))
+                and fw.group(0).upper() not in symbols.declared_variable_names(program)
+                and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions))
+            words = _leading_unknown_words(text, here, callables)
+            if needs_paren:
+                # the operands after a parenthesis-less function are named (oracle, CR300,
+                # 2026-10-10: `Timer is bar baz` -> `bar`, `baz`)
+                rest = text[fw.end():]  # (a leading `is` counts as an operand, never named)
+                if re.fullmatch(r"[\w\s]*", rest):
+                    # as many operands as the function has parameters are read (oracle, CR300,
+                    # 2026-10-10: `Timer foo bar baz` names three, `COS foo bar` one)
+                    count = profile.functions[fw.group(0).upper()].get("nargs") or 1
+                    words = [w for w in re.findall(r"[A-Za-z_]\w*|\d+", rest)[:count]
+                             if not w[0].isdigit() and w.upper() not in here and w.upper() != "IS"]
+                else:
+                    words = _leading_unknown_words(rest, here)
+            elif re.match(r"(?i)\s*NOT\s", text):
+                words = _leading_unknown_words(re.sub(r"(?i)^\s*NOT\b", "", text), here)
+            for word in words:
                 new_items.append(Diagnostic(
                     "error", d.line, profile.unresolved_symbol_message.format(name=word), d.file,
                     True))
                 changed = True
-            fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
-            if (fw and fw.group(0).upper() not in profile.instructions
-                    and not text[fw.end():].lstrip(" \t").startswith(("(", "."))
-                    and fw.group(0).upper() not in symbols.declared_variable_names(program)
-                    and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions)):
+            if needs_paren:
                 # a built-in function used as the first word without its parenthesis (oracle,
                 # CR300/CR350, 2026-10-08: `Sin foo`, `Timer 1`, `COS of angle`)
                 d = dataclasses.replace(d, message=f"Expression expects ( : {text}.")
                 changed = True
+            if d.message.startswith(_GENERIC_FALLBACK_PREFIX) and (stmt := unparsed_text.get(
+                    (d.line, d.file, _echo_key(text)))):
+                # an assignment's pass-1 syntax verdicts are the same words on CR300/CR350
+                # (oracle, 2026-10-10: `X = 1 2` -> `Incomplete expression`, `X = (1 2)` -> `No Matching,
+                # or out of place )`), whatever names precede them
+                verdict = (structure._pass1_scan(stmt.text, structure._Everything(), profile)
+                           if re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
+                           else None)  # (prose stays generic)
+                head = {"incomplete": "Incomplete expression: ",
+                        "no_matching": "No Matching, or out of place ) in expression: "}.get(
+                            verdict[1] if verdict and verdict[0] == "pass1" else None)
+                call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)\)?\s*$", stmt.text)
+                if (head is None and call and call.group(1).upper() in profile.functions
+                        and call.group(1).upper() not in symbols.declared_variable_names(program)
+                        and re.search(r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]",
+                                      call.group(2), re.I)):
+                    # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
+                    # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`)
+                    head = "No Matching, or out of place ) in expression: "
+                if head:
+                    d = dataclasses.replace(d, message=head + d.message[len(_GENERIC_FALLBACK_PREFIX):])
+                    changed = True
         new_items.append(d)
     if changed:
         diags.items[:] = new_items
