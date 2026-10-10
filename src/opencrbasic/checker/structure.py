@@ -3306,12 +3306,9 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         diags.error(stmt.line, f"Need '=' in units definition: {stmt.text}\n.", stmt.file)
         return
     if stmt.reason == _CONST_WITHOUT_EQ:
-        # `Const X =` (nothing after the `=`) -> `Invalid, or out of place expression: .`; a name
-        # with no `=` at all adds `Too many parameters:  X.` (oracle, all four loggers, 2026-10-10)
+        # a name with no `=` at all adds `Too many parameters:  X.` (oracle, all four loggers,
+        # 2026-10-10); `Const X =` is `Const bad value:` from the parser
         rest = _after_keyword(stmt)
-        if re.fullmatch(r"[A-Za-z_]\w*(?:\s+As\s+\w+)?\s*=", rest, re.I):
-            diags.error(stmt.line, "Invalid, or out of place expression: .", stmt.file)
-            return
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
         if "=" not in rest and (named := re.match(r'\s*("[^"]*"|[^\s,]+)', rest)):
             # the first item is read again as a surplus parameter (oracle, all four loggers,
