@@ -89,8 +89,41 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, env: constev
         positions = checked_instructions.get(stmt.keyword.upper())
         if not positions:
             continue
+        if stmt.keyword.upper() == "ACPOWER" and profile.name == "cr6" and _check_acpower(
+                stmt, channels[positions[0][1]], env, diags):
+            continue
         for pos, kind_name in positions:
             _check_arg(stmt, pos, channels[kind_name], env, diags)
+
+
+def _const_int(stmt: S.Instruction, pos: int, env: consteval.Env) -> int | None:
+    if pos > len(stmt.args) or stmt.args[pos - 1] is None or not consteval.is_constant(stmt.args[pos - 1], env):
+        return None
+    try:
+        value = consteval.value_of(stmt.args[pos - 1], env)
+    except consteval.NotConstant:
+        return None
+    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) and value == int(value) else None
+
+
+def _check_acpower(stmt: S.Instruction, kind: dict, env: consteval.Env, diags: Diagnostics) -> bool:
+    """CR6 `ACPower` with a bad `ChanV` (4th) and/or `ChanI` (7th) and one or two `RepsI` (10th)
+    (oracle, 2026-10-10, `tests/fixtures/acpower_channels.json`): a bad voltage channel `v` prints
+    `v, v, -v, v`; per rep `k` (one or two) a bad voltage channel then adds `v` (from the second
+    rep) and a bad current channel `i` adds `-(i+k)`. True when handled."""
+    v, i, reps = (_const_int(stmt, pos, env) for pos in (4, 7, 10))
+    if v is None or i is None or reps not in (1, 2) or v < 0:
+        return False
+    v_bad, i_bad = not _in_range(v, kind), not _in_range(i, kind)
+    shown = [v, v, -v, v] if v_bad else []
+    for k in range(reps):
+        if k and v_bad:
+            shown.append(v)
+        if i_bad:
+            shown.append(-(i + k))
+    for value in shown:
+        diags.error(stmt.line, kind["message"].format(v=value), stmt.file)
+    return True
 
 
 def _check_arg(stmt: S.Instruction, pos: int, kind: dict, env: consteval.Env, diags: Diagnostics) -> None:

@@ -1,0 +1,123 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-acpower_channels-0",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-1",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-2",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,U2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-acpower_channels-3",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,U2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-4",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,3,115/333,120,5,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 3, must use U1..U12.\nline 4: Invalid channel 3, must use U1..U12.\nline 4: Invalid channel -3, must use U1..U12.\nline 4: Invalid channel 3, must use U1..U12.\nline 4: Invalid channel -5, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-5",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,4,115/333,120,2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 4, must use U1..U12.\nline 4: Invalid channel 4, must use U1..U12.\nline 4: Invalid channel -4, must use U1..U12.\nline 4: Invalid channel 4, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-6",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,1,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-7",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,1,10/333,15,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-8",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,2,10/333,15,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -3, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-9",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,13,115/333,120,2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 13, must use U1..U12.\nline 4: Invalid channel 13, must use U1..U12.\nline 4: Invalid channel -13, must use U1..U12.\nline 4: Invalid channel 13, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-10",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,13,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -13, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-11",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,0,115/333,120,2,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 0, must use U1..U12.\nline 4: Invalid channel 0, must use U1..U12.\nline 4: Invalid channel 0, must use U1..U12.\nline 4: Invalid channel 0, must use U1..U12.\nline 4: Invalid channel -2, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-12",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,0,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 0, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-13",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,-1,10/333,15,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-14",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,1,115/333,120,U2,10/333,15,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel -1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12.\nline 4: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr6-acpower_channels-15",
+   "logger": "cr6",
+   "source": "Public AC_Pwr(4)\nBeginProg\nScan(1,Sec,0,0)\nACPower(AC_Pwr(),1,60,U1,115/333,120,2,10/333,15,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel -2, must use U1..U12.\nline 4: Invalid channel -3, must use U1..U12."
+  }
+ ]
+}

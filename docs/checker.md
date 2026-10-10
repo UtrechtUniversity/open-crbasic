@@ -4374,3 +4374,17 @@ Also seen and left alone: the oracle accepts `I = 1 To 12` (one `To` between two
 target, `+=` too; a second `To` is `Incomplete expression`, a trailing `To` is `Invalid, or out of place
 expression`, a string after `To` is `String is illegal here`), which we reject as `Incomplete expression`
 (`fornext_1`, the `To` owner's area).
+
+### `ACPower` channel series (CR6, 2026-10-10)
+
+Fixture `acpower_channels.json`. With `RepsI` 1 or 2 and constant channels, a bad `ChanV` `v` (4th) prints
+`Invalid channel` for `v, v, -v, v`; then per rep `k` a bad `v` adds `v` (from rep 2) and a bad `ChanI` `i`
+(7th) adds `-(i+k)` (so `ChanI` alone is `-i`; `0` prints `0`, `-1` prints `1`). Larger `RepsI` add a `Scan
+interval too short` line (timing, not modelled) and a variable `RepsI` is a different message; both stay
+on the old two-line output. Replaces the "known incomplete" note above (CR6 only; CR1000X unchanged).
+
+### `AvgRun` instance number given by a `Sub` parameter (2026-10-10)
+
+Fixture `avgrun_subparam.json`: an untyped `Sub` parameter as the number of distinct instances is a
+variable, `Optional number of distinct instances must be a constant of type long.` precedes `Missing
+instance number` (`avgrun_4`).

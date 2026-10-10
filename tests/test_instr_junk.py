@@ -6,7 +6,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-_CASES = [c for name in ("instr_junk_args", "instr_junk_top", "could_not_find_dot")
+_CASES = [c for name in ("instr_junk_args", "instr_junk_top", "could_not_find_dot", "acpower_channels", "avgrun_subparam")
           for c in json.loads((Path(__file__).parent / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))["cases"]]
 
 

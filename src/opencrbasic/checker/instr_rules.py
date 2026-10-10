@@ -1077,6 +1077,7 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
     if not _RUNNING_AVG & profile.instructions.keys():
         return
     types = symbols.declared_variable_types(program)
+    variable_names = symbols.declared_variable_names(program)    # includes `Sub` parameters
 
     def variable_type(arg: S.Expr | None) -> str | None:
         return types.get(arg.name.upper()) if isinstance(arg, (S.Name, S.Index)) else None
@@ -1113,7 +1114,8 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                 instances = number(args[6])
                 if instances is not None and instances < 0:
                     continue  # (`-1` -> `Out of memory.`, not modelled)
-                if variable_type(args[6]) is not None or instances == 0:
+                if variable_type(args[6]) is not None or instances == 0 or (
+                        isinstance(args[6], S.Name) and args[6].name.upper() in variable_names):
                     diags.error(stmt.line, "Optional number of distinct instances must be a "
                                 "constant of type long.", stmt.file)
                 if args[7] is None:
