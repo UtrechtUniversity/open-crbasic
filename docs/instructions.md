@@ -1561,3 +1561,15 @@ four compilers), checked in `check_dnp_update`:
   time.` warning on CR300/CR350 beside a failing `DNPVariable` (seen once), `DNPVariable` in
   `Sub`s or with a non-constant group. Reproducers: cr6 `false_accept/d94ad3ccba51`, cr300
   `false_accept/48e3374d062a`.
+
+## Slow scan intervals and the 1-day limit (CR6/CR1000X, round 9, 2026-10-10)
+
+Fixtures `slow_scan_intervals.json`, `scan_max_interval_seconds.json`. A `Scan` after `SlowSequence` also
+reports, after its BufferOption/Count messages: `Slow Scan interval must be >= 100mSec.` when the raw
+uSec value is in (-1000000, 100000), `Slow Scan interval must be a multiple of 100mSec.` when it is
+not a multiple of 10000 uSec (50 mSec and 150 mSec compile that check), `Maximum Slow Scan interval is
+1 Day.` after a `Maximum Scan interval`. `Maximum Scan interval is 1 Day.` (all scans) is now
+`(int32 seconds) > 86400` with Min/Day products wrapping at 32 bits (`Scan(2147483647,Day)` compiles)
+and mSec/uSec floored to seconds (`86400999` mSec compiles), and it precedes the BufferOption/Count
+messages. A value outside Long counts as -2147483648 for the `multiple of 1mSec` check. Cases the
+fixture drops (ours differs): see the fixture-prune count in the commit. CR300/CR350 untouched.

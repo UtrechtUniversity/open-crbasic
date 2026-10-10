@@ -1,0 +1,1219 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-slow_scan_intervals-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(101,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(500,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 500uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-slow_scan_intervals-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0.5,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-15",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-16",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,\"fuzz\",3,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-17",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0 To 1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-18",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483648,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-slow_scan_intervals-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-20",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(X,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-21",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,0,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-22",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,5,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-23",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-24",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(5,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-25",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(10,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-26",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(20,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-27",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(25,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-28",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(40,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-29",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(49,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-30",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(51,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-31",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(60,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-32",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(75,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-33",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(80,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-34",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(90,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-35",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(150,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-36",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(199,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-37",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(200,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-38",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(250,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-39",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(300,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-40",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-41",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-42",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86400000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-43",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-44",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-45",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-46",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-47",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(150000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-48",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(200000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-49",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(250000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-50",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1500,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-51",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-52",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(60,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-53",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86400,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-54",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-55",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-56",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-57",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-58",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -1000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-59",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -50000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-60",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-100,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -100000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-61",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-999999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -999999uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-62",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1000001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-63",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0.5,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-64",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1.5,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-65",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-66",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-67",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,3,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-68",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,3,2147483648)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-69",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483647,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-70",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-71",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-72",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483647,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-73",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Y = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-74",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(X,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-75",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,X,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-76",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,10,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-77",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-78",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-79",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan 50,mSec,0,0\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-80",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,0,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-81",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-82",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401001,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be a multiple of 100mSec.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-83",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -1000uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-84",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr6-slow_scan_intervals-85",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1001,uSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-0",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-1",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-2",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-3",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-4",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-5",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-6",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(101,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-7",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-8",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-9",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(500,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 500uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-10",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-11",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-12",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-13",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0.5,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-14",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-15",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-16",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,\"fuzz\",3,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-17",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0 To 1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-18",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483648,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-19",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-20",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(X,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-21",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,0,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  0."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-22",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,5,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-23",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-24",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(5,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-25",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(10,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-26",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(20,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-27",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(25,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-28",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(40,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-29",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(49,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-30",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(51,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-31",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(60,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-32",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(75,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-33",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(80,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-34",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(90,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-35",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(150,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-36",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(199,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-37",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(200,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-38",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(250,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-39",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(300,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-40",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-41",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-42",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86400000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-43",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-44",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-45",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(99000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-46",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(100001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-47",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(150000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-48",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(200000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-49",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(250000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-50",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1500,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-51",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-52",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(60,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-53",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86400,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-54",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-55",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-56",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-57",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-58",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -1000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-59",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -50000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-60",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-100,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -100000uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-61",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-999999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -999999uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-62",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1000001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scans must be a multiple of 1mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-63",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0.5,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-64",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1.5,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-65",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-66",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-67",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,3,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-68",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,3,2147483648)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-69",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483647,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-70",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-71",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-72",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(2147483647,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-73",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,Sec,0,0)\n    Y = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-74",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(X,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-75",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,X,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-76",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1,10,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-77",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50,mSec)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-78",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(50)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-79",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan 50,mSec,0,0\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-80",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,0,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-81",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401,Sec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-82",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(86401001,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be a multiple of 100mSec.\nline 7: Maximum Slow Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-83",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(-1,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan -1000uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-84",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(0,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec."
+  },
+  {
+   "id": "cr1000x-slow_scan_intervals-85",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    X = 1\n  NextScan\n  SlowSequence\n  Scan(1001,uSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scans must be a multiple of 1mSec.\nline 7: Scan BufferOption parameter must be a non-negative integer\nline 7: Scan Count parameter must be a non-negative integer\nline 7: Slow Scan interval must be >= 100mSec.\nline 7: Slow Scan interval must be a multiple of 100mSec."
+  }
+ ]
+}

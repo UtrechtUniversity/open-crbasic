@@ -1,0 +1,757 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-scan_max_interval_seconds-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483646,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2000000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(300000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(214748364,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(4294967296,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-20",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-21",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(300000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-23",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-24",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-25",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-26",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-27",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-28",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-32",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2000000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-33",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-34",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-35",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-38",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-39",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-40",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-41",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-42",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-45",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-46",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400999,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-47",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-48",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-49",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-50",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400000001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-51",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400999999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-52",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401000000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-53",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-54",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1440,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-55",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-56",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1.5,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-57",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441.5,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-58",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-59",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,0,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-60",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-61",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401001,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-62",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(-1,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1000uSec invalid must be at least 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-63",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(0,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-scan_max_interval_seconds-64",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1001,uSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-0",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-1",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483646,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-2",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2000000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-3",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-4",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-5",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-6",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(300000000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-7",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(214748364,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-8",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-9",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-10",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-11",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-12",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-13",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-14",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(4294967296,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-19",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-20",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-21",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(300000000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-23",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-24",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-25",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-26",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-27",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-28",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-32",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2000000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-33",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-34",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1000000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-35",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(500000000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-38",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(100000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-39",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(10000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-40",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(3000,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-41",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1500,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-42",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-45",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-46",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400999,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-47",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401000,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-48",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401001,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-49",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,mSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-50",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400000001,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-51",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86400999999,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-52",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401000000,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-53",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(2147483647,uSec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-54",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1440,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-55",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-56",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1.5,Day,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-57",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1441.5,Min,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-58",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,-1,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-59",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,0,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-60",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401,Sec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-61",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(86401001,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Maximum Scan interval is 1 Day.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-62",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(-1,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan Interval parameter must be a non-negative integer\nline 3: Scan -1000uSec invalid must be at least 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-63",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(0,mSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-scan_max_interval_seconds-64",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1001,uSec,-1,-1)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scans must be a multiple of 1mSec.\nline 3: Scan BufferOption parameter must be a non-negative integer\nline 3: Scan Count parameter must be a non-negative integer"
+  }
+ ]
+}

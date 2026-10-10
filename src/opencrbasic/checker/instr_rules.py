@@ -672,9 +672,13 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
     """
     if profile.name not in _SCAN_VALUE_CHECK_LOGGERS:
         return
+    slow = False
     for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SLOWSEQUENCE":
+            slow = True
         if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SCAN":
             continue
+        raw_us = None
         for idx, label in ((0, "Interval"), (2, "BufferOption"), (3, "Count")):
             if idx >= len(stmt.args) or stmt.args[idx] is None:
                 continue
@@ -688,7 +692,48 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
             if _is_negative_or_invalid(value):
                 diags.error(stmt.line, f"Scan {label} parameter must be a non-negative integer", stmt.file)
             if idx == 0:
-                _scan_min_interval(stmt, diags, env)
+                raw_us = _scan_min_interval(stmt, diags, env)
+                if _scan_over_a_day(stmt, env):
+                    diags.error(stmt.line, "Maximum Scan interval is 1 Day.", stmt.file)
+        if slow and raw_us is not None:
+            # a Scan after `SlowSequence` (oracle, CR6/CR1000X, round 9, docs/instructions.md
+            # "Slow scan intervals"), after the BufferOption/Count messages
+            if -1_000_000 < raw_us < 100_000:
+                diags.error(stmt.line, "Slow Scan interval must be >= 100mSec.", stmt.file)
+            if raw_us % 10_000:
+                diags.error(stmt.line, "Slow Scan interval must be a multiple of 100mSec.", stmt.file)
+            if _scan_over_a_day(stmt, env):
+                diags.error(stmt.line, "Maximum Slow Scan interval is 1 Day.", stmt.file)
+
+
+_SECS_PER_UNIT = {2: 1, 3: 60, 4: 3600, 5: 86400}
+
+
+def _scan_over_a_day(stmt: S.Instruction, env: consteval.Env) -> bool:
+    """The interval, in whole seconds as a signed 32-bit integer (`Scan(2000000000,Day,..)` wraps,
+    `Scan(1000000000,Min,..)` too; `86400999` mSec is 86400 s), is over 86400 (oracle, CR6/CR1000X,
+    round 9)."""
+    args = stmt.args
+    if len(args) < 2 or args[0] is None or args[1] is None or \
+            not (consteval.is_constant(args[0], env) and consteval.is_constant(args[1], env)):
+        return False
+    try:
+        value = consteval.value_of(args[0], env)
+        unit = consteval.value_of(args[1], env)
+    except consteval.NotConstant:
+        return False
+    if isinstance(value, str) or isinstance(unit, (str, bool)) or not isinstance(value, (int, float)):
+        return False
+    v = consteval.to_long(value)
+    if unit == 1:
+        secs = v // 1000
+    elif unit == 0:
+        secs = v // 1_000_000
+    elif unit in _SECS_PER_UNIT:
+        secs = (v * _SECS_PER_UNIT[unit] + 2**31) % 2**32 - 2**31
+    else:
+        return False
+    return secs > 86400
 
 
 # `Scan`/`DataInterval`'s `Units` argument folds (via `consteval`, `profile.symbols`) to this 0..5
@@ -696,7 +741,7 @@ def check_scan_params(program: S.Program, profile, diags: Diagnostics, env: cons
 _US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
 
 
-def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env) -> None:
+def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.Env) -> int | None:
     """`Scan %duSec invalid must be at least %dmSec.` / `Scans must be a multiple of %dmSec.`
     (round 6, CR6/CR1000X only, same `FUN_00468900` family as `check_scan_params` above -- oracle-
     confirmed ungated the same way, fires alongside unrelated errors both before and after it in
@@ -735,29 +780,33 @@ def _scan_min_interval(stmt: S.Instruction, diags: Diagnostics, env: consteval.E
     interval = args[0] if args else None
     units = args[1] if len(args) > 1 else None
     if interval is None or units is None:
-        return
+        return None
     if not (consteval.is_constant(interval, env) and consteval.is_constant(units, env)):
-        return
+        return None
     try:
         value = consteval.value_of(interval, env)
         unit = consteval.value_of(units, env)
     except consteval.NotConstant:
-        return
+        return None
     if isinstance(value, str) or not isinstance(value, (int, float)):
-        return
-    # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01)
+        return None
+    # any other unit (`99`, `"2"`, `"fuzz"`) counts as 0 uSec (oracle, CR6, 2026-10-01); a value
+    # outside Long is -2147483648 (`Scan(86401000000,uSec,..)` is `multiple of 1mSec`, round 9)
     us_per_unit = _US_PER_UNIT.get(unit, 0) if not isinstance(unit, bool) else 0
-    raw_us = int(value) * us_per_unit
+    raw_us = consteval.to_long(value) * us_per_unit
     if -1_000_000 < raw_us < 1000:
         diags.error(stmt.line, f"Scan {raw_us}uSec invalid must be at least 1mSec.", stmt.file)
     elif raw_us % 1000 != 0:
         diags.error(stmt.line, "Scans must be a multiple of 1mSec.", stmt.file)
+    return raw_us
 
 
 def check_scan_max_interval(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     """`Maximum Scan interval is 1 Day.` on a `Scan` longer than 86400 s, all four loggers (oracle,
     2026-09-27: `Scan(86401,Sec,...)`, `Scan(1441,Min,...)`, `Scan(2,Day,...)`; `Scan(1,Day,...)`
     is accepted). An interval past `INT32_MAX` gets no such message."""
+    if profile.name in _SCAN_VALUE_CHECK_LOGGERS:
+        return  # folded into `check_scan_params` (message order, seconds model)
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SCAN":
             raw = _scan_raw(stmt, env)
