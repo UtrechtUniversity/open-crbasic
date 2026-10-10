@@ -4272,3 +4272,15 @@ physical line) is pass-1 `Size of string missing.` and the next-line number is i
 declaration still registers its variables (`parser._parse_vardecl` flags `size_missing`), so a later
 `X = MyString +` reports. `String * X` -> `Variable illegal in Parameter: X.`;
 `String * 5 5` -> `Incomplete expression: 5 5.` (not modelled).
+
+## Scope-aware lookups and statement identity (round 8, 2026-10-10)
+
+Fixtures `scope_portset.json`, `scope_fft.json`, `scope_gps.json` (`tests/test_scope_shadow.py`).
+- FFT source length and the GPS NMEA-string size resolve the declaration through
+  `symbols.scoped_view(program, stmt)`: top-level declarations plus the instruction's own routine,
+  a local shadowing a global. `Public x(32)` with a Sub-local `Dim x(16)` and `FFT(x,...,32,...)`
+  in a table compiles on all four loggers; a short global with a long local is still rejected.
+- Statement-scoped suppression of `Too many parameters` matches by statement identity
+  (`Diagnostic.stmt`) where the emitter records it, else by echo substring:
+  `PortSet(C1,1,opt):PortSet(C1,1,1,opts)` reports both lines (CR6/CR1000X). Not modelled: the
+  reversed order (`Too many parameters` statement first) prints in statement order.
