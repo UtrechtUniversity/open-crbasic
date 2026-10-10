@@ -169,10 +169,11 @@ def unknown_calltables(program: S.Program):
     with a specific same-named `DataTable`, since two same-named `DataTable`s in one program is not
     a shape this project has evidence for either way).
     """
-    opened: set[str] = set()
     closed: set[str] = set()
     pending: str | None = None
-    for stmt in program.statements:
+    unknown = []
+    names = {id(stmt): name for stmt, name in _calltable_names(program)}
+    for stmt in _with_inline(program.statements):
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword.upper()
@@ -181,20 +182,31 @@ def unknown_calltables(program: S.Program):
             if not name and stmt.args and isinstance(stmt.args[0], S.String):
                 name = stmt.args[0].value  # `DataTable ("HIST4D",1,100)`, histogram4d_1.CR6
             if name:
-                opened.add(name.upper())
                 pending = name.upper()
         elif kw == "ENDTABLE":
             if pending is not None:
                 closed.add(pending)
             pending = None
-    # Any other target that is not a closed table fails the same way (oracle, all four loggers,
-    # 2026-09-27): `CallTable Nope`, a variable `CallTable X`, `CallTable Status`, `CallTable
-    # ("fuzz")` -> `fuzz`, `CallTable((1+2))` -> `1+2` (quotes and parentheses dropped).
-    return [(stmt, name) for stmt, name in _calltable_names(program) if name.upper() not in closed]
+        elif id(stmt) in names and names[id(stmt)].upper() not in closed:
+            # Any target that is not a table closed *before this statement* fails the same way
+            # (oracle, all four loggers, 2026-09-27 and round 9): `CallTable Nope`, a variable
+            # `CallTable X`, `CallTable Status`, `CallTable ("fuzz")` -> `fuzz`, `CallTable((1+2))`
+            # -> `1+2`; also the table's own still-open body, a table declared later, and a `Sub`
+            # above the table (docs/checker.md "CallTable before its table is closed").
+            unknown.append((stmt, names[id(stmt)]))
+    return unknown
+
+
+def _with_inline(stmts):
+    for stmt in stmts:
+        yield stmt
+        if isinstance(stmt, S.If):
+            yield from _with_inline(stmt.inline or [])
+            yield from _with_inline(stmt.inline_else or [])
 
 
 def _calltable_names(program: S.Program):
-    for stmt in program.statements:
+    for stmt in _with_inline(program.statements):
         if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "CALLTABLE"):
             continue
         target = stmt.args[0] if stmt.args else None

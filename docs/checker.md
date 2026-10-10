@@ -4717,3 +4717,14 @@ the two. `structure._check_assignment_pass2`, `cr3xx.order_target_name_first`.
   tString() As String * 20` is the `A() As` error, `Public A B(2)` then `B = 1` has no `B`). Without a `(`
   after the words it is still `Invalid Variable declaration B.`; `Public A B(` (unclosed, `A B( is missing the )
   character.`) is not modelled. `parser._parse_vardecl`, `structure._check_decl_exprs`.
+
+### `CallTable` before its table is closed (all four loggers, round 9, 2026-10-10)
+
+Fixture `calltable_open_table.json`. `Could not find DataTable %s.` is reported at a `CallTable`
+whose target is not a table that was *closed* (`EndTable`) before that statement, in source order:
+the table's own still-open body (`CallTable T` before or after its `Sample`), a table declared
+later (inside another table, or in a `Sub` above the table), also under `If .. Then CallTable T`.
+Tier B like the unknown-name case: it prints in line order beside an earlier `Invalid symbol`, and
+only the first such `CallTable` is printed. `unknown_calltables` now walks in order instead of
+using the file-wide closed set. Not done: `CallTable T()` (real prints the same, we accept) and
+`Y = T.X` inside its own open table (`Could not find T.` on CR6/CR1000X).
