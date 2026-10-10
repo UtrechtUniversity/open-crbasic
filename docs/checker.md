@@ -4505,3 +4505,9 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   A complete `{5}` or `{ 5` is accepted.
 - Not done: CR300/CR350 also pull (`Public A(2) = {1,` / `2}` compiles clean there), but `_pulls_init` is
   still CR6/CR1000X only.
+
+## Round 8 review 7: SNMPVariable Valid constraint commas (oracle, 2026-10-10; `tests/fixtures/snmp_valid_constraint.json`)
+
+All four loggers: with `RWRITE`, a fifth argument starting `RANGES `/`VALUES ` owns every remaining
+comma (`RANGES 0,65535`, `VALUES 1,2,3,4,5,6,...`, even `RANGES 0,65535,7`) and is not counted as
+extra parameters. With `RONLY` the word itself is the excess parameter (`Too many parameters:  VALUES.`).

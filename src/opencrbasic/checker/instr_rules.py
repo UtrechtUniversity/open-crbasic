@@ -602,6 +602,8 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
             allowed = 1 if words[0] not in _SNMP_TYPES else 2
             if allowed == 2 and len(words) > 1 and words[1] == "RWRITE":
                 allowed = 3  # RWRITE takes the Valid argument
+                if len(words) > 2 and re.match(r"(?:RANGES|VALUES)\s", words[2]):
+                    allowed = len(words)  # `RANGES 0,65535` / `VALUES 1,2,3`: commas belong to it
             if len(starts) > allowed and (token := _next_simple_token(stmt.text[starts[allowed]:])):
                 diags.error(stmt.line, f"Too many parameters:  {token}.", stmt.file)
                 continue
