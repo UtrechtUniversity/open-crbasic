@@ -219,9 +219,10 @@ def _reword_prose(program: S.Program, profile, diags: Diagnostics, stmt: S.Unpar
     prose mentioning `current`). Re-derives the leading-word lines of the generic fallback."""
     key = (stmt.line, stmt.file)
     own = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+    echoes = {_echo_key(stmt.text), _echo_key(structure.condition_part(stmt.text) or stmt.text)}
     fb = next((i for i in own if diags.items[i].message.startswith(_GENERIC_FALLBACK_PREFIX)
                and _echo_key(diags.items[i].message[len(_GENERIC_FALLBACK_PREFIX):-1])
-               == _echo_key(stmt.text)), None)
+               in echoes), None)
     if fb is None or not all(diags.items[i].message.endswith(_UNRESOLVED_SUFFIX)
                              for i in own if i < fb):
         return
@@ -848,6 +849,10 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
     """
     # The chain starts at the first word or number (a leading `2 when the` reports `when`).
     pos = len(text) - len(text.lstrip(" \t"))
+    if re.match(r"-\d", text[pos:pos + 2]):
+        pos += 1  # a signed number starts the chain like a number (oracle, CR300, 2026-10-10: `-1 Then`)
+    elif text[pos:pos + 1] == '"' and text.find('"', pos + 1) > 0:
+        text = text[:pos] + "0" + text[text.find('"', pos + 1) + 1:]  # a string literal likewise
     if not _LINE_OPERAND_RE.match(text, pos):
         return []
     if text[pos:pos + 3].upper() == "IS " or text[pos:].upper() == "IS":

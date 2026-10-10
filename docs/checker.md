@@ -4444,3 +4444,10 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   (`(a As Long!, rst As Long) As Long` -> `rst`, `(a, b, c)` -> `b`); with one parameter it stays
   the second token (`(a As Long!) As Long` -> `As`); with no parameters (`F( ) As Long`) nothing is
   printed. `cr3xx.check_too_many_cascade`.
+- **Leftover lines starting with a signed number or a string** (CR300/CR350, `r8_cr3xx_signed_leftover.json`):
+  `-1 Then`, `"a" Foo`, `-1 Foo bar` start the undefined-name chain like a plain number (`Then is not
+  defined.` then the generic fallback); `-1 X` with `X` declared names nothing. `cr3xx._leading_unknown_words`.
+- **Conditions naming a cascade-dropped variable** (`r8_cr3xx_dropped_cond.json`): `If X =`, `While X >`
+  after the cascade dropped `X`'s declaration print `X is not defined.` before the verdict
+  (`cr3xx._reword_prose` also matches the condition-only echo). Not modelled: `Do Until X >` in a
+  cascade is `Too many parameters:  X.`; `If X Y` omits `X`.
