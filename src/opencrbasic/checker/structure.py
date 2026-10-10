@@ -1337,7 +1337,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
-                    or is_hash_statement(stmt):
+                    or is_hash_statement(stmt) or is_string_size_missing(stmt):
                 continue
             bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
             if bare is not None:
@@ -1608,6 +1608,14 @@ def _unclosed_paren_kind(text: str, known: set[str]) -> str:
 
 
 
+_STRING_SIZE_MISSING_RE = re.compile(r"\s*(?:Public|Dim)\b.*\bAs\s+String\s*\*\s*$", re.I)
+
+
+def is_string_size_missing(stmt: S.Unparsed) -> bool:
+    """`Public A As String *` ending the line (oracle, all four loggers, 2026-10-10)."""
+    return stmt.at_eol and _STRING_SIZE_MISSING_RE.match(stmt.text) is not None
+
+
 def is_hash_statement(stmt: S.Unparsed) -> bool:
     """A statement starting with `#` that no preprocessor directive claimed: `Unknown instruction`."""
     return stmt.text.lstrip().startswith("#")
@@ -1615,7 +1623,7 @@ def is_hash_statement(stmt: S.Unparsed) -> bool:
 
 def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     """An `Unparsed` statement no specific pass-1 diagnosis claims (`_check_unparsed_pass1`)."""
-    return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
+    return not (is_hash_statement(stmt) or is_string_size_missing(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
                 or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,

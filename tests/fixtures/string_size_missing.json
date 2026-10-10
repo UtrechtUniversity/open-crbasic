@@ -1,0 +1,99 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-string_size_missing-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr6-string_size_missing-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A As String *\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr6-string_size_missing-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A As String\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-string_size_missing-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A As String * \nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr6-string_size_missing-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A, B As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr6-string_size_missing-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nDim A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr1000x-string_size_missing-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr1000x-string_size_missing-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A As String *\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr1000x-string_size_missing-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A As String\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-string_size_missing-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A As String * \nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing."
+  },
+  {
+   "id": "cr1000x-string_size_missing-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A, B As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr1000x-string_size_missing-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nDim A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  }
+ ]
+}
