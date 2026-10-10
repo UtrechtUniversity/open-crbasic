@@ -4523,3 +4523,11 @@ extra parameters. With `RONLY` the word itself is the excess parameter (`Too man
 - The cutoff also drops the parser findings of later lines (`#Foo` / `#Else` / `Include "bad.txt"`
   reports only `#Foo`): `Program.hash_cut` is the parser's diagnostic count when the `#` statement
   was parsed.
+
+## Round 8 review 7: bad-As recovery splits at top-level commas (oracle, 2026-10-10; `tests/fixtures/bad_as_nested_dims.json`)
+
+`Public Q(1,(2)), R, Flag Bad, Z`: the names up to the invalid `As` clause (`Q`, `R`, `Flag`) are
+registered whatever the nesting depth of the dimensions (CR300/CR350; same text on CR6/CR1000X). Not
+done: a call inside the dimensions (`Q(1,Fn(2,3))`) has its own message family (CR6: `Invalid symbol in
+expression: Fn(2,3).`; CR300/CR350: `Dimensions not declared`, `Variable illegal in Parameter`), and
+`Public R As Bad, Z` registers `Z` here but not on CR300/CR350.

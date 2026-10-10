@@ -10,6 +10,7 @@ from types import SimpleNamespace
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostics
+from ..source import _split_top_commas
 
 
 def declared_subs(program: S.Program) -> set[str]:
@@ -346,7 +347,7 @@ def _names_through_bad_as_clause(stmt: S.Unparsed) -> set[str]:
         return set()
     bad = re.escape(stmt.reason[len("Invalid As clause: "):].strip())
     out: set[str] = set()
-    for item in re.split(r",(?![^()]*\))", m.group(1)):  # not a comma inside an array's dimensions
+    for item in _split_top_commas(m.group(1)):  # not a comma inside an array's dimensions
         name = re.match(r"\s*([A-Za-z_][A-Za-z0-9_]*)", item)
         if not name:
             break
