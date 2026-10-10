@@ -2343,6 +2343,16 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
     m = re.match(r"\s*(?:call\s+)?" + re.escape(stmt.name) + r"\s*", stmt.text, re.I)
     if not m or not stmt.text[m.end():].startswith("("):
         return
+    if is_function and profile.name not in expressions._WHOLE_EXPR_ECHO_LOGGERS:
+        # CR300/CR350 (oracle, 2026-10-10): `Fn(Zork(1))` names the undefined names up to the
+        # subscripted one, then `Dimensions not declared:` echoes the whole statement
+        names, dims = expressions._names_and_dims(known, None, stmt, (), *stmt.args)
+        for name in names:
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
+        if dims:
+            diags.error(stmt.line, expressions.dimensions_message(stmt.text, profile, True,
+                                                                  stmt.at_eol), stmt.file)
+        return
     last_tail = None
     items = _group_items(stmt.text, m.end())
     quirk = [False] * len(items or [])

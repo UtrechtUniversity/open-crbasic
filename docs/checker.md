@@ -4658,3 +4658,14 @@ cascade (`cr3xx.drop_*`) owns the statement and the real compiler keeps register
 variable after the stop is kept registered (`input.value` of `input As s` after a bad `s2() As s` is not
 reported; fuzz reproducer cr300 e564ca45d2c6). Not modelled: `Public R As Bad(Q), Z` (no type message there),
 declarations inside a `Sub`. `structure._check_decl_exprs`, the single-pass block of `check_pass1`.
+
+## Round 9, CR300/CR350: a bare `Function` call with subscripted arguments (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_fn_call_dims.json`)
+
+`Fn(X(1,2))` (a scalar or an over-indexed array in an argument), `Fn(Zork(1))`, `Fn(Zork(1,2))`, `Fn(Fn(Zork(1)))`,
+`Fn(1+Zork(1))` as a statement are checked like `Y = Fn(...)`: the undefined names up to the subscripted one, then
+`Dimensions not declared:` echoing the **whole statement** (trailing newline unless a comment follows), not just the
+argument (`Zork(1)`) as for a `Sub` call. With defined names only the dimension line is printed. `Fn(A(1))` on a
+declared array and `Fn(Zork)` are unchanged. CR6/CR1000X are unaffected (`Invalid symbol in expression:
+<statement>.` already matched). Not modelled: an argument-count mismatch together with a subscripted undefined name
+(`Fn(Zork(1), 2)` prints no arity line, `Fn(1, Zork(1))` only the arity line) and `Call Fn(...)`.
+`structure._report_call_arg_names`, `expressions.check`.

@@ -1236,7 +1236,17 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
     dim_counts = symbols.declared_dim_counts(
         program, strings=profile.name not in _WHOLE_EXPR_ECHO_LOGGERS)
     struct_vars = _struct_var_names(program)
+    functions = {st.name.upper() for st in program.statements
+                 if isinstance(st, S.SubDef) and st.keyword.upper() == "FUNCTION"}
     for stmt in program.statements:
+        if (isinstance(stmt, S.Call) and not stmt.explicit and stmt.name.upper() in functions
+                and stmt.tail_expr is None and stmt.juxtaposed is None
+                and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS
+                and not any(_undefined_names(a, known) for a in stmt.args)
+                and any(_over_indexed(a, dim_counts) for a in stmt.args)):
+            # CR300/CR350: `Fn(X(1,2))` is checked like `Y = Fn(X(1,2))` (oracle, 2026-10-10)
+            diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
+                        stmt.file)
         if (isinstance(stmt, S.Call) and stmt.tail_expr is not None
                 and profile.name not in _WHOLE_EXPR_ECHO_LOGGERS
                 and not _undefined_names(stmt.tail_expr, known)
