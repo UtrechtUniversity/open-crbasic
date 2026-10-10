@@ -994,6 +994,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     verdict = ("pass1", "fallback" if stmt.text.rstrip().endswith("(")
                                else "no_matching")
                 if verdict and verdict[0] == "pass1":
+                    for message in _unparsed_string_messages(stmt, program, profile):
+                        diags.error(stmt.line, message, stmt.file)
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
@@ -1494,6 +1496,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
                 else:
+                    if verdict == ("pass2", "fallback"):  # an unknown name later in the line
+                        for message in _unparsed_string_messages(stmt, program, profile):
+                            diags.error(stmt.line, message, stmt.file)
                     lead = re.match(r"\s*([A-Za-z_]\w*)\.", stmt.text)
                     if lead and profile.known_first_word_pass1 and lead.group(1).upper() not in (
                             symbols.system_table_names(program) | _table_names(program)):
@@ -1915,8 +1920,28 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     if (nxt.kind == "OP" and nxt.text in _BINARY_OPS) or nxt.kind == "IDENT":
         if first.kind == "IDENT" and nxt.kind == "OP" and _invalid_assignment(toks):
             return ("pass1", "invalid_assignment")
-        return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
+        verdict = _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
+        # a statement that starts with an operand has only the fallback: `X + 1 foo`, `X + 1 )`,
+        # `X and (X foo)` (oracle, all four loggers, 2026-10-10)
+        return ("pass1", "fallback") if verdict in (("pass1", "incomplete"),
+                                                     ("pass1", "no_matching")) else verdict
     return None
+
+
+def _unparsed_string_messages(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:
+    """What the real compiler type-checks before it meets the junk in an unparsable statement:
+    the String-operand errors of the expression it starts with (oracle, CR6/CR1000X, 2026-10-10:
+    `"a" and "b" .` -> `String is illegal here`, then the fallback)."""
+    if condition_part(stmt.text) is not None:
+        return []
+    expr = parser.partial_expression(stmt.text, profile)
+    if expr is None:
+        return []
+    from . import var_types
+    return var_types._string_operand_messages(
+        var_types._Typer(program),
+        S.Assignment(stmt.line, stmt.file, target=S.Name(stmt.line, name="_"), value=expr),
+        every=True)
 
 
 def string_reached(text: str, operands: set[str], profile) -> str | None:
@@ -2166,6 +2191,10 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                   and len(parens) not in rel_levels):
                 to_levels.add(len(parens))
                 expect_operand = True
+            elif not parens and t.kind == "OP" and t.text == ".":
+                # `X = 1 .` is incomplete, `X and X .` the fallback (oracle, all four loggers,
+                # 2026-10-10)
+                return ("pass1", "incomplete" if assign else "fallback")
             elif t.kind in ("IDENT", "NUMBER", "STRING"):
                 # an operand right after an operand: inside a plain `( )` group the real
                 # compiler calls the group unmatched (oracle, 2026-10-03)

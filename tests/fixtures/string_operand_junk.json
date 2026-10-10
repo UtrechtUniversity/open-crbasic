@@ -1,0 +1,519 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-string_operand_junk-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" ."
+  },
+  {
+   "id": "cr6-string_operand_junk-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and (\"b\") .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and (\"b\") .."
+  },
+  {
+   "id": "cr6-string_operand_junk-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and foo .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and foo .."
+  },
+  {
+   "id": "cr6-string_operand_junk-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n(\"a\" and \"b\") .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: (\"a\" and \"b\") .."
+  },
+  {
+   "id": "cr6-string_operand_junk-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n1 + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1 + 1 foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nIf \"a\" and \"b\" Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here"
+  },
+  {
+   "id": "cr6-string_operand_junk-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nPi and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Pi and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: S = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nScan (1,Sec,3,0) and \"b\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  and."
+  },
+  {
+   "id": "cr6-string_operand_junk-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nScan and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-12",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + (1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + (1 foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + (1 foo)."
+  },
+  {
+   "id": "cr6-string_operand_junk-14",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 )."
+  },
+  {
+   "id": "cr6-string_operand_junk-15",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 ) foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 ) foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-16",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 2 3."
+  },
+  {
+   "id": "cr6-string_operand_junk-17",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-18",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1, 2."
+  },
+  {
+   "id": "cr6-string_operand_junk-19",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + Sin(1) foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + Sin(1) foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-20",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Illegal operand of type STRING\nline 5: Incomplete expression: X = \"a\" * \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-21",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" + \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X = \"a\" + \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-22",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X = 1 .."
+  },
+  {
+   "id": "cr6-string_operand_junk-23",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = X and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-24",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and \"b\" and \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X and \"b\" and \"c\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-25",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and (X foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and (X foo)."
+  },
+  {
+   "id": "cr6-string_operand_junk-26",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and X \"s\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and X \"s\"."
+  },
+  {
+   "id": "cr6-string_operand_junk-27",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and X 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and X 5."
+  },
+  {
+   "id": "cr6-string_operand_junk-28",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X(1) + 1 foo."
+  },
+  {
+   "id": "cr6-string_operand_junk-29",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X(1) = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-30",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-31",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nfoo and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: foo and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-32",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\n\"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: String is illegal here\nline 6: Invalid, or out of place expression: \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr6-string_operand_junk-33",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX and X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: X and X .."
+  },
+  {
+   "id": "cr6-string_operand_junk-34",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = 1 .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: X = 1 .."
+  },
+  {
+   "id": "cr6-string_operand_junk-35",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\n\"a\" and foo .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Q.\nline 6: String is illegal here\nline 6: Invalid, or out of place expression: \"a\" and foo .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" ."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and \"b\" foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and (\"b\") .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and (\"b\") .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" and foo .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" and foo .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n(\"a\" and \"b\") .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: (\"a\" and \"b\") .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n1 + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: 1 + 1 foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nIf \"a\" and \"b\" Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here"
+  },
+  {
+   "id": "cr1000x-string_operand_junk-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nPi and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Pi and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: S = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nScan (1,Sec,3,0) and \"b\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  and."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nScan and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-12",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + (1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + (1 foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + (1 foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + (1 foo)."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-14",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 )."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-15",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 ) foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 ) foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-16",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 2 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 2 3."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-17",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1 foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-18",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + 1, 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + 1, 2."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-19",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + Sin(1) foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X + Sin(1) foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-20",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Illegal operand of type STRING\nline 5: Incomplete expression: X = \"a\" * \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-21",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" + \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X = \"a\" + \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-22",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Incomplete expression: X = 1 .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-23",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = X and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-24",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and \"b\" and \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X and \"b\" and \"c\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-25",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and (X foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and (X foo)."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-26",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and X \"s\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and X \"s\"."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-27",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX and X 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X and X 5."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-28",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X(1) + 1 foo."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-29",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X(1) = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-30",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = \"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y = \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-31",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nfoo and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: foo and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-32",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\n\"a\" and \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: String is illegal here\nline 6: Invalid, or out of place expression: \"a\" and \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-33",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX and X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression: X and X .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-34",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\nX = 1 .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Incomplete expression: X = 1 .."
+  },
+  {
+   "id": "cr1000x-string_operand_junk-35",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Q\n\"a\" and foo .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: X = Q.\nline 6: String is illegal here\nline 6: Invalid, or out of place expression: \"a\" and foo .."
+  }
+ ]
+}

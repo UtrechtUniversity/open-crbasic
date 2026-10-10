@@ -2813,6 +2813,20 @@ call that already has more arguments than the function takes before the string (
 (`structure.string_reached`). CR300/CR350 read other shapes (`Foo "abc` also gets the string line
 after `Foo is not defined.`, `X(1) "abc` does not) and are not covered.
 
+### Junk after an expression: string operands, a stray `.` (CR6/CR1000X, 2026-10-10)
+
+Oracle (`string_operand_junk.json`, 36 cases x 2 loggers): the expression a pass-1 statement starts
+with is type-checked before the junk is met, so `"a" and "b" .`, `X and "b" and "c" .` (one per
+operator), `("a" and "b") .` and `"a" and "b" foo` give `String is illegal here` first
+(`parser.partial_expression`, `structure._unparsed_string_messages`); with an unknown name later
+on the line (`"a" and foo .`) the string line still comes first but the fallback stays pass 2
+(`X = Q` before it is still reported). A statement starting with an unknown name (`foo and "b" .`)
+has no string line. Also: a lone `.` after a complete assignment value is `Incomplete expression`
+(`X = 1 .`), after a statement starting with an operand the fallback (`X and X .`); and every junk
+shape after an operand-led non-assignment is the fallback, never `Incomplete`/`No Matching`
+(`X + 1 foo`, `X + 1 )`, `X and (X foo)`, `1 + 1 foo`). CR300/CR350 also print the string line,
+after the `is not defined.` lines; not modelled. Unrelated: CR6 accepts `X = 1 ;`.
+
 ## Subscript counts (2026-09-28)
 
 Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_counts.py`):

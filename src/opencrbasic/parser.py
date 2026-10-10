@@ -1619,6 +1619,28 @@ def _profile_for(name: str) -> profiles.Profile:
     return profiles.for_file(Path(name))
 
 
+def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
+    """The longest expression an unparsable statement starts with (after a plain `target =`), or
+    None: what the real compiler has parsed, and type-checked, before it meets the junk."""
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+        start = 0
+        if len(toks) > 2 and toks[0].kind == "IDENT":
+            if toks[1].text == "=":
+                start = 2
+            elif toks[1].text == "(":
+                depth = 0
+                for j in range(1, len(toks)):
+                    depth += (toks[j].text == "(") - (toks[j].text == ")") if toks[j].kind == "OP" else 0
+                    if depth == 0:
+                        start = j + 2 if j + 1 < len(toks) and toks[j + 1].text == "=" else 0
+                        break
+        parser_ = _Parser(profile, Diagnostics())
+        return parser_._parse_expr(_TokStream(toks[start:] + [_eof_like(0)], text), 0, "")
+    except Exception:  # a shape the expression grammar cannot take (`{`): nothing was parsed
+        return None
+
+
 def parse_file(path: Path | str, profile: profiles.Profile | None = None,
                pull_limit: tuple[int, ...] | None = None) -> tuple[S.Program, Diagnostics]:
     """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical

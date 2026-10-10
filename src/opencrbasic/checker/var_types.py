@@ -124,9 +124,10 @@ def _statement_expressions(stmt: S.Stmt):
             yield from _statement_expressions(inner)
 
 
-def _string_operand_messages(typer: "_Typer", stmt: S.Stmt) -> list[str]:
+def _string_operand_messages(typer: "_Typer", stmt: S.Stmt, every: bool = False) -> list[str]:
     """The messages for the one String-operand error a statement holds; none when it holds
-    several (their number and order is not established)."""
+    several (their number and order is not established), except `every`: several
+    `String is illegal here`, one each (oracle, 2026-10-10: `"a" and "b" and "c" .`)."""
     found: list[list[str]] = []
     for top in _statement_expressions(stmt):
         for node in _subexpressions(top):
@@ -141,6 +142,8 @@ def _string_operand_messages(typer: "_Typer", stmt: S.Stmt) -> list[str]:
             elif node.op in _STRING_ARITH_OPS and (left or right):
                 found.append((["Illegal String operand"] if left else []) +
                              (["Illegal operand of type STRING"] if right else []))
+    if every and found and all(f == ["String is illegal here"] for f in found):
+        return [f[0] for f in found]
     return found[0] if len(found) == 1 else []
 
 
