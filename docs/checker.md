@@ -4249,3 +4249,14 @@ Oracle 2026-10-10:
   gives only `Case with no Select.`. Matched ones still report the symbol. Fixture
   `unmatched_loop_elseif.json`. Not modelled: a stray `Case Nope` is `Case with no Select.` in the
   real compiler (ours `Case outside Select.`).
+
+### `For` header with a bad `To`/`Step` half (CR6/CR1000X)
+
+Oracle 2026-10-10 (`for_header_incomplete.json`): the text after `To` splits at a blank-delimited
+`Step`; each half is an expression, and one with adjacent operands is a pass-1 `Incomplete
+expression: <half>.` (trailing blanks kept; one line, hides pass 2): `For I = 5 To 1 Step-1`
+(`1 Step-1`), `Step(-1)`, `... To 12 Step` (`12 Step`), `Step 2 3` (`2 3`), `Step -1 X` (`-1 X`),
+`To 1 Stepper`. `Step -1` and `Step - 1` compile. `structure._for_header_incomplete`. Observed, not
+modelled: `To` is accepted as a binary operator in assignment values, parentheses, subscripts and
+instruction arguments (`I = 1 To 12`, `X = (1 To 12)` compile) but not in `If` conditions (`If X = 1
+To 12 Then` -> `Incomplete expression: X = 1 To 12 .`); ours still rejects the first group.

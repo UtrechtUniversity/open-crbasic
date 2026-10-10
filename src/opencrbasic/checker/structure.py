@@ -851,6 +851,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         declared_kinds.get(a.name.upper()) not in ("VAR", "ALIAS"):
                     diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
 
+        if profile.known_first_word_pass1 and re.match(r"\s*For\s", getattr(stmt, "text", "") or "", re.I) \
+                and (echo := _for_header_incomplete(stmt.text, profile)) is not None:
+            diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file, show_file=False)
+            continue
         if profile.known_first_word_pass1 and _block_keyword_call(stmt):
             cond = re.match(r"\s*(?:ELSEIF|IF)\s(.*?)THEN", stmt.text, re.I | re.S) \
                 if isinstance(stmt, (S.If, S.ElseIf)) else None
@@ -1988,6 +1992,30 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
 
 _CALLED_BLOCK_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "SCAN", "SELECT", "SUB",
                                     "SUBSCAN", "WHILE"})
+
+
+_FOR_TO_RE = re.compile(r"^\s*For\s(?:.*?)=(?:.*?)\sTo\s(.*)$", re.I | re.S)
+_FOR_STEP_RE = re.compile(r"\sStep\s", re.I)
+
+
+def _for_header_incomplete(text: str, profile) -> str | None:
+    """`For I = 5 To 1 Step-1`, `... Step(-1)`, `... To 12 Step`, `... Step -1 X`: the text after
+    `To` splits at a blank-delimited `Step`; each half is an expression, and one with adjacent
+    operands is a pass-1 `Incomplete expression: <half>.` (oracle, CR6/CR1000X, 2026-10-10). The
+    echo is the half as written, trailing blanks kept. `None`: not this shape."""
+    m = _FOR_TO_RE.match(text)
+    if not m:
+        return None
+    parts = _FOR_STEP_RE.split(m.group(1), maxsplit=1)
+    for part in parts:
+        try:
+            toks = [t for t in lexer.tokenize(part, 0) if t.kind != "EOF"]
+        except lexer.LexError:
+            return None
+        if toks and _scan_expr(toks, 0, _Everything(), profile.functions, assign=False,
+                               start_operand=False) == ("pass1", "incomplete"):
+            return part
+    return None
 
 
 def _block_keyword_call(stmt: S.Stmt) -> bool:
