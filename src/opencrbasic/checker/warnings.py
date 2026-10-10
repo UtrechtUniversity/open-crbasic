@@ -154,8 +154,10 @@ def _scan_span(statements: list[S.Stmt], start: int) -> tuple[int, bool]:
             depth += 1
         elif kw == "NEXTSCAN":
             depth -= 1
-        elif kw == "EXITSCAN":
-            has_exit = True
+        elif kw == "EXITSCAN" or any(
+                _kw(x) == "EXITSCAN" for x in (getattr(statements[j], "inline", None) or [])
+                + (getattr(statements[j], "inline_else", None) or [])):
+            has_exit = True     # (also in a one-line `If X Then ExitScan`, oracle 2026-10-10)
         j += 1
     return j, has_exit
 

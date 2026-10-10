@@ -4410,3 +4410,9 @@ expression: is used to transfer.` (`calltable_1`), `Tab junk` -> `Invalid symbol
 `Tab 1 2` -> `Incomplete expression: 1 2.`, a third comma part -> `Too many parameters:  <its first token>.`
 (`_instruction_arg_findings`; the table word is never resolved as a variable). Not modelled: `CallTable
 Tab(junk)` (symbol error for the subscript).
+
+### `ExitScan` in a one-line `If` ends the scan for reachability (all four loggers, 2026-10-10)
+
+Fixture `exitscan_inline_if.json`. `If F Then ExitScan` / `... Else ExitScan` inside an infinite `Scan(...,0)`
+counts as an `ExitScan` in the body: the statement after `NextScan` gets no `never reached` warning
+(`warnings._scan_span` only looked at top-level statements; `scannextscan_3`).
