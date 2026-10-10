@@ -1,0 +1,39 @@
+{
+ "observation_date": "2026-10-10",
+ "compiler": {
+  "exe": "CR6Comp.exe",
+  "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+ },
+ "cases": [
+  {
+   "id": "pass1-gate-0",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nX=TCPOpen(\"192.168.4.23\",6785,\"fuzz\")\nNextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "pass1-gate-1",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nX=TCPOpen(\"192.168.4.23\",6785,0)\nNextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\n"
+  },
+  {
+   "id": "pass1-gate-2",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nX=Sqr(1,2)\nNextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "pass1-gate-3",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nPanelTemp(X,60)\nNextScan\nEndProg\n",
+   "expected_times": "\r\nline 3: Scan: 0\r\nline 4: PanelTemp = 17700\r\nline 4: PanelTemp = 17700\r\n"
+  },
+  {
+   "id": "pass1-gate-4",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nModemCallBack(X,COMSDC7,599,\"a\",\"b\",\"c\",1,1,1,1)\nNextScan\nEndProg\n",
+   "expected_times": ""
+  },
+  {
+   "id": "pass1-gate-5",
+   "source": "Public X As Long\nBeginProg\nScan(1,Sec,0,0)\nIf True Then X=Scan(1)\nNextScan\nEndProg\n",
+   "expected_times": ""
+  }
+ ]
+}

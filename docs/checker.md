@@ -4531,3 +4531,12 @@ registered whatever the nesting depth of the dimensions (CR300/CR350; same text 
 done: a call inside the dimensions (`Q(1,Fn(2,3))`) has its own message family (CR6: `Invalid symbol in
 expression: Fn(2,3).`; CR300/CR350: `Dimensions not declared`, `Variable illegal in Parameter`), and
 `Public R As Bad, Z` registers `Z` here but not on CR300/CR350.
+
+## Round 8 review 7: the `-t` gate is the checker's pass-1 result (oracle, 2026-10-10; `tests/fixtures/timing_pass1_gate.json`)
+
+`cli._pass1_ok` no longer re-runs a subset of passes; `checker._check` records
+`CompileResult.pass1_errors` (the error state the pass-2 gate itself uses). Real `-t` prints no
+`[Times]` entries for `X=TCPOpen("192.168.4.23",6785,"fuzz")`, `X=Sqr(1,2)`, a `ModemCallBack` with
+`COMSDC7,599`, and `If True Then X=Scan(1)`, and full entries for a pass-2-only error. Known
+remaining difference (pre-existing): `X = Y` with `Y` undefined prints `Scan: 0` on the real
+compiler; ours prints none (`_P1_HIDERS`).

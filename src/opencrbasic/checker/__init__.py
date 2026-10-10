@@ -255,6 +255,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         return True
 
     pass1_errors = bool(diags.errors)
+    result.pass1_errors = pass1_errors
     generic_errors: list = []  # pass-2 argument/expression findings (CR6/CR1000X: no tier-C gate)
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)

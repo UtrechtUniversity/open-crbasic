@@ -109,36 +109,12 @@ def _hides_times(program_ast, diags, main) -> bool:
     return False
 
 
-def _pass1_ok(program_ast, profile, fallback: bool) -> bool:
-    """Whether `checker/__init__.py`'s own pass 1 (structure/expressions/required-parameter
-    checks) finds nothing wrong -- the same condition that module uses to gate pass 2 (instruction
-    channel/range validation). `-t`'s `[Times]` entries are oracle-confirmed to follow *this* gate,
-    not `result.ok`: `dhcprenew_1.CR6` (a CHM corpus example) fails to compile on a pass-2-only
-    channel-range error yet still gets a full `[Times]` section including the very instruction
-    that errored, while `readonly_1.CR6` (a pass-1 parse error, a malformed multi-line `TCDiff`
-    call) gets none at all, though it has a `Scan` and a `PanelTemp` call before the error
-    (`docs/cli.md` "-t"). This re-runs pass 1 standalone by calling `checker/structure.py`'s and
-    friends' own public pass-1 functions (unmodified) rather than editing that package, which a
-    concurrent workstream owns and actively changes (its pass-1 entry point has already been
-    renamed once, `check` -> `check_pass1`, during this session); `getattr` tries both spellings,
-    and any failure -- an incompatible signature, a missing module -- falls back to `fallback`
-    (the caller's own `result.ok`), so a future rename degrades to the simpler, still-correct-most-
-    of-the-time rule rather than breaking `-t` outright.
-    """
-    from . import consteval
-    from .diagnostics import Diagnostics
-
-    try:
-        from .checker import expressions, instr_rules, structure
-        structure_check = getattr(structure, "check_pass1", None) or structure.check
-        diags = Diagnostics()
-        env = consteval.Env(profile, dict(program_ast.consts))
-        structure_check(program_ast, profile, diags, env)
-        expressions.check(program_ast, profile, diags, env)
-        instr_rules.check(program_ast, profile, diags)
-    except Exception:
-        return fallback
-    return not diags.errors
+def _pass1_ok(result) -> bool:
+    """`-t`'s `[Times]` entries follow the checker's own pass-1 gate, not `result.ok`:
+    `dhcprenew_1.CR6` (a CHM corpus example) fails on a pass-2-only channel-range error yet still
+    gets a full `[Times]` section, while `readonly_1.CR6` (a pass-1 parse error) gets none
+    (`docs/cli.md` "-t"). The checker records that gate as `result.pass1_errors`."""
+    return result.ok if result.pass1_errors is None else not result.pass1_errors
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -198,7 +174,7 @@ def main(argv: list[str] | None = None) -> int:
             program_ast = None
 
     times_entries: list[str] = []
-    if opts["t"] and program_ast is not None and _pass1_ok(program_ast, profile, result.ok) and not _hides_times(program_ast, result.diagnostics, program.name):
+    if opts["t"] and program_ast is not None and _pass1_ok(result) and not _hides_times(program_ast, result.diagnostics, program.name):
         from . import timing
         try:
             times_entries = timing.times_lines(program_ast, profile, program.name)

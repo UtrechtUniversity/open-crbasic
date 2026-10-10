@@ -59,6 +59,7 @@ class CompileResult:
     stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
     implementation_exceptions: list[str] = field(default_factory=list)
     program_ast: object = None      # the parsed program (None when parsing failed)
+    pass1_errors: bool | None = None  # whether the checker found pass-1 errors (the gate `-t` follows)
 
     def record_implementation_failure(self, where: str, exc: Exception) -> None:
         """Make an unexpected implementation error visible as a failed compilation.
