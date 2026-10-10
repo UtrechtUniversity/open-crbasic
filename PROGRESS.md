@@ -35,7 +35,7 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-10, after round 8)
+## Status (2026-10-10, after round 9)
 
 Measured on `claude/laughing-franklin-08z9vo` at the commit that adds this text. Exact = equal
 exit code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
@@ -43,11 +43,11 @@ opencrbasic rejects: **none observed** in any differential, replay or fixture ru
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 15,325 passed, 311 skipped |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 18,565 passed, 311 skipped |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 496/9/1/1, CR1000X 494/11/1/1, CR300 474/31/0/2, CR350 474/31/0/2 |
-| `tools/fuzz_replay.py` (2,165 reproducers) | 1,762 exact, 3 false accepts (2 CR300/CR350 storage limit, 1 Scan-interval overflow autoallocate), 0 false rejects, 367 message diffs, 17 mode diffs, 16 oracle errors (`scratch/replay-r8.json`) |
-| `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 202/208, table list 207/208 (open: interval auto size off by one in 81/242 swept sizes, no rule; sweep data `scratch/tdf-sweep/`); `-t` [Times] (harness `/private/tmp/claude-501/tw/h7.py`, not in repo) repo 16/16, CHM 506/507 (2026-10-10) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 496/9/1/1, CR1000X 494/11/1/1, CR300 477/28/0/2, CR350 477/28/0/2 |
+| `tools/fuzz_replay.py` (2,251 reproducers incl. round-9 seeds 301-308) | 1,796 exact, 14 false accepts (mostly round-9 open families, `docs/fuzz-findings.md`), 0 false rejects, 407 message diffs, 18 mode diffs, 16 oracle errors (`scratch/replay-r9.json`) |
+| `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 207/208, table list 207/208 (exact auto-size model from the decompiled allocator, `docs/tdf-rules.md` §10; remaining `goestable_1` field name); `-t` [Times] (harness `/private/tmp/claude-501/tw/h7.py`, not in repo) repo 16/16, CHM 506/507 |
 | implementation exceptions (difftest/replay class) | 0 |
 | `cd ../scripts && uv run --no-sync verify.py` (needs `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`, not the opencrbasic env) | 2026-10-03: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
 
@@ -116,18 +116,14 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 - Branch `ocb-ranges` (no worktree): WIP commit `3228f99` holds unverified CDM range work
   (`checker/cdm.py`, `data/cdm.json`). CDM address/NULL-module rules have since landed on the main
   branch, so compare before finishing, or discard.
-- Round-6 and round-7 review findings fixed in round 8 (one round-7 item, `Q(1,Fn(2,3))`, is a
-  different message family per the oracle). Round 8 (`c7c7d1f4`..HEAD) not reviewed yet.
-- Open: CR300/CR350 block keywords as functions (`X=Scan(1)`); `Alias X=Y(2)` / `Alias X=Foo, Z`
-  dimension messages; Duplicate Alias vs already-declared order; `-t` for `X = Y` with Y
-  undefined (real prints `Scan: 0`); `Public R As Bad, Z` on CR300/CR350; CR300/CR350 include
-  extension error vs missing-include warning; `Fn(X(1,2))` CR300/CR350 Dimensions not declared;
-  `To` inside instruction arguments and assignment target subscripts; `Y = "a" To "b"`;
-  `Const = X`/`Const = "a"` family; CR6 `Invalid channel` beside a Scan parameter error; CR1000X
-  pass-1 symbol error hiding `Scan 0uSec invalid`; `CallTable` inside its own open DataTable;
-  `PortGet(A(9),1)` order; TDF interval auto size (sweep data `scratch/tdf-sweep/`);
-  `cpispeed2_1` CPI time; `pointervariable_2` crashes the real compiler. docs/checker.md "Not
-  done: CR300/CR350 also pull" note is stale (they pull since round 8).
+- Reverse-engineering tooling (round 9): `tools/trace_errors.py` (patched-exe tracer: caller
+  addresses per emitted message, all four compilers; `docs/binary.md` "Message tracer"); Ghidra
+  12.1.4 headless dumps `scratch/re/CR6Comp.decomp.c`, `scratch/re/cr300comp.decomp.c`
+  (untracked; regenerate with `tools/ghidra/DumpAll.java`, project dir outside dot-directories).
+  First results: exact TDF auto-size model; one CR300/CR350 compile-stage ordering rule.
+- Round 10 in progress (2026-10-10 evening): round-8 review fixes, RE on `cpispeed2_1` CPI time /
+  scan budget / FFT+SampleMaxMin excess args / IfTime, remaining help-corpus families. gpt-6.1-sol
+  review of round 9 running (`scratch/codex/review-round9.md`).
 - Worker worktrees removed and the stash dropped (2026-10-04). Their branches remain; all except
   `ocb-ranges` are already integrated by cherry-pick.
 - Unclosed `StructureType` is compiler undefined behaviour on all four loggers: verdicts observed
