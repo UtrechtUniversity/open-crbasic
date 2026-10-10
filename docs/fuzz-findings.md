@@ -441,3 +441,26 @@ that follow as each family is closed.
 or non-Unicode argument, which surfaced as `Invalid, or out of place expression`. It now takes the
 low byte (the value of the resulting string is not otherwise observable). Not covered: `CHR(-1/0)`
 reports `Divide by zero in expression: CHR(-1/0).` on the real compiler, which we do not emit.
+
+### R9 family closed: `MenuPick` value type per item (CR6, CR1000X)
+
+Reproducers `cr6/false_accept/5cbda83b79a2`, `cr6/false_accept/801129666c06`,
+`cr1000x/false_accept/6fc36667c86c`. 183 probed `MenuItem`/`MenuPick` pairs per logger, all exact
+now (`tests/fixtures/r9_menupick_values.json`, audited 0 differing). CR300/CR350 have no menus.
+
+- Item kind: Long variable or Long-array element, or an integer ConstTable constant -> `int`;
+  Float variable (untyped included) or non-integral Float constant -> `float`; String variable or
+  String constant -> `string`; other types and integral float constants not probed, unchanged.
+- Each `MenuPick` value after a `MenuItem` is checked (all values for a variable item, values after
+  the leading constant for a constant item; also on repeated picks of a variable item):
+  `int` -> `<text> must be declared as a integer Const.` (sic) for a float literal (`5.5`, `5.0`,
+  `1e2`), string literal, a `Const` that is a string or non-integral, `PI`, `NAN`, an undefined or
+  variable name, an operator expression (`1+2`, `(1+2)`, `-A`, `-&H10`) or a trailing-blank token.
+  `float` -> the same with `a Const.` for string literal, undefined or variable name, `PI`-free
+  operator expressions and trailing blanks (numeric literals and any declared `Const`, even a
+  string, pass). `string` -> nothing is reported, including variable names (we used to reject
+  `MenuPick(lv)` on a String item: a latent false reject, now gone).
+- A ConstTable item whose first value is not a constant checks every value as `float`.
+- Parenthesised single tokens `(5)`/`(A)` pass; echo strips one `(`..`)` pair. Odd shapes
+  (`a b`, `5x`, `&HZ`, nested parens) are left silent; the real compiler reports them with
+  the same message but we give a different parser message.

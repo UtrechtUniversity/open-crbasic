@@ -6,7 +6,7 @@ import pytest
 from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
-FIXTURES = ["r9_chr_arg"]
+FIXTURES = ["r9_chr_arg", "r9_menupick_values"]
 CASES = [c for f in FIXTURES
          for c in json.loads((Path(__file__).parent / "fixtures" / f"{f}.json").read_text(encoding="utf-8"))["cases"]]
 

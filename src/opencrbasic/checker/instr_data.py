@@ -443,6 +443,8 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             table_consts.add(st.name.upper())
     item_const: str | None = None  # the current `MenuItem`'s ConstTable constant, if it is one
     item_bool = False              # the current `MenuItem`/`MenuRecompile` variable is Boolean
+    item_kind: str | None = None   # "int" / "float" / "string": what its `MenuPick` values must be
+    first_is_const = False
     variables = symbols.declared_variable_names(program)
     types = symbols.declared_variable_types(program)
     if env is None:
@@ -492,6 +494,18 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                     else None
                 item_bool = isinstance(target, (S.Name, S.Index)) and \
                     types.get(target.name.upper()) == "BOOLEAN"
+                item_kind = None
+                if kw == "MENUITEM" and isinstance(target, (S.Name, S.Index)):
+                    if item_const:
+                        value = env.consts.get(item_const)
+                        item_kind = ("string" if isinstance(value, str) else "int"
+                                     if isinstance(value, int) and not isinstance(value, bool)
+                                     else "float" if isinstance(value, float)
+                                     and value != int(value) else None)
+                    else:
+                        item_kind = {"LONG": "int", "FLOAT": "float", "STRING": "string"}.get(
+                            types.get(target.name.upper()))
+                first_is_const = False
                 if kw == "SUBMENU":
                     levels.append([])
                     submenus += 1
@@ -500,11 +514,13 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             # repeated for an ordinary variable; a ConstTable constant's item takes one pick list,
             # naming the constant first (oracle, 2026-10-01, fuzz `62246db1b167`).
             if within(st, kw):
+                after_item = bool(levels[-1]) and levels[-1][-1] == "MENUITEM"
                 if not levels[-1] or levels[-1][-1] not in ("MENUITEM", "MENURECOMPILE"):
                     diags.error(st.line, "MenuPick must follow a MenuItem instruction.", st.file)
                 elif levels[-1][-1] == "MENUITEM" and item_const:
                     first = st.args[0] if st.args else None
-                    if isinstance(first, S.Name) and first.name.upper() in table_consts:
+                    first_is_const = isinstance(first, S.Name) and first.name.upper() in table_consts
+                    if first_is_const:
                         levels[-1].append(kw)
                     else:
                         diags.error(st.line, "When using a ConstTable constant in MenuPick, the "
@@ -513,6 +529,13 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                             and a.name.upper() in variables), None)
                 if item_bool and levels[-1] and levels[-1][-1] in ("MENUITEM", "MENURECOMPILE"):
                     _check_boolean_picklist(st, env, diags)
+                elif after_item and (item_kind is not None or item_const):
+                    # a ConstTable item whose first parameter is not a constant checks every
+                    # value as a plain `Const` (oracle, 2026-10-10)
+                    wrong_first = item_const and not first_is_const
+                    _check_pick_consts(st, "float" if wrong_first else item_kind, env, program,
+                                       profile, variables, diags,
+                                       skip_first=bool(item_const) and first_is_const)
                 elif bad is not None:
                     # `MenuPick (Y)` for `Public Y` (oracle, 2026-10-01)
                     diags.error(st.line, f"{bad.name} must be declared as a Const.", st.file)
@@ -594,6 +617,65 @@ def _check_boolean_picklist(stmt: S.Instruction, env, diags: Diagnostics) -> Non
             diags.error(stmt.line, "Boolean picklist must be True or False.", stmt.file)
     if trailing:
         diags.error(stmt.line, "Unable to parse MenuPick strings.", stmt.file)
+
+
+_PICK_INT_RE = re.compile(r"[+-]?\d+$")
+_PICK_FLOAT_RE = re.compile(r"[+-]?(\d+\.\d*|\.\d+)([eE][+-]?\d+)?$|[+-]?\d+[eE][+-]?\d+$")
+_PICK_RADIX_RE = re.compile(r"&[Hh][0-9A-Fa-f]+$|&[Bb][01]+$")
+_PICK_NAME_RE = re.compile(r"[A-Za-z_]\w*$")
+
+
+def _pick_value_bad(token: str, kind: str, env, program, profile, variables) -> str | None:
+    """The echoed text if the real compiler rejects this raw `MenuPick` value, else None. Rule
+    (oracle, CR6/CR1000X, 2026-10-10, `docs/fuzz-findings.md` "Round 9"): a Long item takes
+    integer constants, a Float item (or ConstTable constant) any numeric constant; a String item
+    anything. Silent for any token shape not probed."""
+    t = token.lstrip(" \t")
+    if t == "":
+        return "" if kind == "int" else None
+    if t != t.rstrip():
+        return t
+    inner = t
+    if t[0] == "(" and t[-1] == ")":
+        inner = t[1:-1]
+    if "(" in inner or ")" in inner or "," in inner:
+        return None
+    if inner.startswith('"') and inner.endswith('"') and len(inner) >= 2 and inner.count('"') == 2:
+        return inner
+    if _PICK_INT_RE.match(inner) or _PICK_RADIX_RE.match(inner):
+        return None
+    if _PICK_FLOAT_RE.match(inner):
+        return inner if kind == "int" else None
+    if _PICK_NAME_RE.match(inner):
+        try:
+            value = consteval._lookup(inner, env)
+        except consteval.NotConstant:
+            from .expressions import _known_names
+            if inner.upper() in variables or inner.upper() not in _known_names(program, profile) \
+                    or (kind == "int" and inner.upper() == "NAN"):
+                return inner
+            return None
+        if kind == "int" and (isinstance(value, str) or value != value or value != int(value)):
+            return inner
+        return None
+    if re.fullmatch(r"[A-Za-z0-9_.&+\-*/ ]+", inner) and re.search(r"[A-Za-z0-9_.)]\s*[-+*/]", inner):
+        return inner  # an operator expression, or `-A` / `-&H10`
+    if re.fullmatch(r"-([A-Za-z_]\w*|&[Hh][0-9A-Fa-f]+)", inner):
+        return inner
+    return None
+
+
+def _check_pick_consts(stmt, kind, env, program, profile, variables, diags, skip_first) -> None:
+    if kind is None or kind == "string":
+        return
+    tokens = _pick_tokens(stmt)
+    if tokens is None:
+        return
+    word = "integer Const" if kind == "int" else "Const"
+    for token in tokens[1:] if skip_first else tokens:
+        bad = _pick_value_bad(token, kind, env, program, profile, variables)
+        if bad is not None:
+            diags.error(stmt.line, f"{bad} must be declared as a {word}.", stmt.file)
 
 
 _MENU_ITEMS = ("SUBMENU", "MENUITEM", "DISPLAYVALUE", "MENURECOMPILE", "DISPLAYLINE")
