@@ -113,3 +113,15 @@ bytes in brackets:
 
 The cr300/cr350 builds lack the `/RTC` `0xCC` frame fill pattern at function entry, use
 `sub esp, N` frames, and put the formatter behind a thunk at 0x4db262 (cr300) / 0x4da316 (cr350).
+
+## Time tracer (`tools/trace_times.py`)
+
+Same cave technique as the message tracer, hooked at `FUN_00522e50(units)` of CR6Comp, the function
+every code generator calls to add its time (100 us units) to the open `Scan`
+(`DAT_0066d76c + 0x44`; cr1000xcomp: `FUN_0051d570`). It prints each added amount and the
+return address into the caller, in compile order. The first analog call of a scan also adds an
+overhead directly (78 CR6 / 16 CR1000X, `FUN_00522ec0` / `FUN_0051d5e0`), invisible here.
+`FUN_0046a4b0` (NextScan) holds the comparison and message; `FUN_0046a910` (NextSubScan) the SubScan
+rules; `FUN_00524f90` (cr1000x `FUN_0051f300`) the shared analog time formula; the instruction
+table at 0x60c310 (16 bytes per entry, name first) maps ids to code generators through the thunk
+at entry+8. docs/instructions.md "Scan time budget" has the resulting model.

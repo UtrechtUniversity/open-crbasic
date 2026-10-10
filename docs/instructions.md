@@ -1624,3 +1624,66 @@ and a second-address sweep exact on CR6 and CR1000X).
   so `Reps 21` fails with channel 21 too); `Thermocouple type unsupported.` outside 0..7; the unit
   message. Known order gap: an out-of-range CPI address together with an out-of-bounds destination
   prints the bounds line first here, last on the real compiler.
+
+### Scan time budget (CR6, CR1000X; fixture `scan_time`)
+
+Found 2026-10-10 with `tools/trace_times.py` (a copy of `CR6Comp.exe` that records every call of
+`FUN_00522e50`, the function each code generator calls to add time to the open `Scan`; the main
+checker never patches `compiler/`) and the decompiled generators of CR6Comp and cr1000xcomp, then
+verified on both real compilers (122 fixture cases, audited 0 differing; about 500 random
+scan/instruction programs per logger exact except the listed gaps). Implementation:
+`checker/scan_time.py` (model), `instr_measure.check_scan_delay_budget` (errors),
+`warnings.check_background_calibration` (warning). Units of 100 us.
+
+- **Error**: `NextScan` compares `interval < total`; message `Scan interval too short for
+  measurement by N <unit>.` with N = ceil((total - interval) / units per unit) (mSec 10, Sec
+  10000, Min 600000). SequentialMode never reports it. A scan whose interval is 0 (invalid, or
+  Sec/Min under one) counts as interval 0. The unit is the scan's, except after a `SubScan` that
+  ends on the "interval longer than body by more than one unit" path, which leaves its own Units
+  argument in force (`Scan(1,Sec)` + `SubScan(100,mSec,5)` with a 50 ms body + `Delay(0,600,mSec)`
+  -> `by 51 mSec`).
+- **Per instruction** (statically, once per occurrence wherever it sits; no loop or `If` awareness):
+  `Delay(0,d,u)` (d truncated to an integer in its unit) adds `us/100 + 1`; `PortSet` 1, and `SW12`
+  and `PulseCount` 1; `PortGet` 0; `CS616` `Reps*5+2`; `Battery` 0 on CR6, one analog call of
+  8 on CR1000X. Option 1 and 2 `Delay` forms add nothing here.
+- **Analog measurements** (`PanelTemp`, `VoltSe`, `VoltDiff`, `TCSe`, `TCDiff`, `Therm107-109`):
+  per call `(Rsum + round_up) // 100 + 1` with `Rsum = (settle + integ) * Reps`; `settle` is the
+  settling argument (0 = default) turned into a code and back, `integ` comes from `fN1` rounded:
+
+  | | CR6 | CR1000X |
+  |---|---|---|
+  | integration code `k` | `int(93750/fN1 + .5)`, 24 for 0 | `int(31250/fN1 + .5)`, 8 for 0 |
+  | `integ` | `k*32//3 + 1` | `k*32 + 180` |
+  | settling code | `int((s or 500) + 810) * 3/32 + .5)` | `int((s or 450)/32 + .5)` |
+  | settle | `int(code*32/3) + 5` | `code*32 + 5` |
+  | `round_up` | 40 | 80 |
+  | scan overhead / refund | +78 / -77 | +16 / -15 |
+
+  Autorange (code 810 / 830) settles twice (`+ Reps*settle`); the open-detect "C" ranges (820-830)
+  add 5 (CR1000X 2) to the settling code and `50*Reps`; `Therm107-109` and bridges double
+  (excitation); `MeasOff` (single-ended) adds one more `integ + settle`; `RevDiff` (differential)
+  doubles. `PanelTemp(Dest,fN1)` is two calls with a fixed settling argument 900 (code 84 CR6, 28
+  CR1000X). Reps above 100000, `Therm` Reps above 255, non-constant arguments and burst (negative)
+  channels are not modelled (the scan is then a lower bound). Not modelled either: bridge,
+  `CurrentSe`, `Resistance`, `PeriodAvg`, `AM25T`, `Thermistor`, `VibratingWire`, `Calibrate`,
+  `ExciteV`, `MuxSelect`, `CDM_*` here.
+- **Overhead**: the first analog call of a scan adds the overhead (78 / 16); if then
+  `interval - total < 500` the refund (77 / 15) is taken back, so a tight analog scan costs net 1.
+  `Scan(1,Sec)` + `PanelTemp` -> `by 1 Sec`; `Scan(0,mSec)` + `PanelTemp(PT,60)` -> `by 36 mSec`.
+- **SubScan** (pipeline): body time L = total added inside it, count n, interval I (100 us, 0 for
+  `SubScan(0,0,n)`). n < 2 or I = 0 or L = 0: total += (n-1)*L. I < L:
+  `SubScan interval too short for measurement by N <unit>.` at `NextSubScan` (N from L - I) and
+  total += (n-1)*L. I - L > 1: total += (n-1)*I. Otherwise total += (n-1)*L. Not modelled (the
+  budget then skips the scan): non-constant SubScan arguments. `Product of SubScan interval and
+  iterations ...` and the SequentialMode SubScan messages are other rules (not implemented).
+- **Background calibration warning** (`When Main Sequence Scan %d is running, background
+  calibration will be disabled.`, last program line, only without errors, never in SequentialMode):
+  a scan with timed instructions warns when its slack `interval - total` is under
+  `max(floor, max integ + c)` with floor 23 / 20 and c 13 / 17 (CR6 / CR1000X), `max integ` the
+  longest integration time (`integ // 100`) of its analog calls (0 for `Battery`); scans whose only
+  timed instruction is `PulseCount` never warn; an empty or untimed scan keeps the interval
+  threshold of `background_calibration.json` (8 / 2 ms). Delay-only boundaries: CR6
+  `Scan(100,mSec)` + `Delay(0,97600,uSec)` quiet, 97700 warns; CR1000X 97900 quiet, 98000 warns.
+  Known gaps: the CR1000X threshold is a fit (it matches 11 `fN1` values for `VoltSe` and
+  `AutoRange` at 250 Hz is 2 above the real boundary); the exact mechanism in the binary was not
+  found.

@@ -580,93 +580,32 @@ def is_sequential(program: S.Program, profile: Profile, env: consteval.Env) -> b
 
 def check_scan_delay_budget(program: S.Program, profile: Profile, diags: Diagnostics,
                             env: consteval.Env, zero: bool = False) -> None:
-    """CR6/CR1000X: measurement delays (`Delay(0,...)`) in the main `Scan` that add up to its
-    interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, in the scan's
-    own unit, rounded up past the small per-scan overhead (oracle, 2026-10-01: `Scan(1,Sec)` with
-    `Delay(0,1,Sec)` -> `by 1 Sec`, `Scan(50,mSec)` with `Delay(0,1,Sec)` -> `by 951 mSec`; a delay
-    in `SubScan(0,0,5)` counts five times). A Sec/Min `Scan` whose interval is 0 or past `INT32_MAX`
-    counts as interval 0; a `PanelTemp`/`VoltSe`/`VoltDiff` in it adds its under-one-unit
-    measurement time, so `by 1 Sec`/`by 1 Min` (oracle, 2026-10-03; mSec needs a per-instruction
-    time model and is not done; `Battery` differs per logger); docs/instructions.md. The zero-interval
-    scans (`zero=True`) are reported even though the scan's own parameter error already failed
-    the compile, so the caller runs them ahead of the error-gated tier C."""
+    """CR6/CR1000X: the measurement time of a main `Scan` (`checker/scan_time.py`, 100 us units)
+    above its interval -> `Scan interval too short for measurement by %d %s.` at `NextScan`, the
+    excess rounded up to the scan's own unit (`Scan(50,mSec)` + `Delay(0,1,Sec)` -> `by 951 mSec`;
+    `Scan(1,Sec)` + `Delay(0,1,Sec)` -> `by 1 Sec`; a `SubScan(0,0,n)` body counts n times).
+    A `SubScan(Interval,...)` body longer than its interval gives `SubScan interval too short for
+    measurement by %d %s.` at its `NextSubScan`. A Sec/Min `Scan` whose interval is 0 or past
+    `INT32_MAX` counts as interval 0. The zero-interval scans (`zero=True`) are reported even
+    though the scan's own parameter error already failed the compile, so the caller runs them
+    ahead of the error-gated tier C. SequentialMode never reports it. docs/instructions.md "Scan
+    time budget"."""
     if profile.name not in ("cr6", "cr1000x"):
         return
-    from .instr_rules import _US_PER_UNIT
+    from . import scan_time
     # SequentialMode never reports it (oracle, CR6/CR1000X, 2026-10-08; docs/fuzz-findings.md).
     if is_sequential(program, profile, env):
         return
-    for _scan, end, (value, unit), total in scan_delay_totals(program, env, include_zero=zero):
-        interval = value * _US_PER_UNIT[unit]
-        if (interval == 0) == zero and total > 0 and total >= interval:
-            diags.error(end.line, f"Scan interval too short for measurement by "
-                        f"{(total - interval) // _US_PER_UNIT[unit] + 1} {_UNIT_NAMES[unit]}.",
-                        end.file)
-
-
-_ZERO_MEASURE = frozenset({"PANELTEMP", "VOLTSE", "VOLTDIFF"})
-
-
-def scan_delay_totals(program: S.Program, env: consteval.Env, include_zero: bool = False):
-    """`(Scan, NextScan, (interval, unit), delay_us)` for each main-sequence `Scan` with a constant
-    mSec/Sec/Min interval: the measurement delays (`Delay(0,...)`) it contains, repeated per
-    `SubScan(0,0,n)` pass. Delays inside a loop, an `If` block or a `Select` are not counted, so
-    the total is a lower bound of the real compiler's estimate."""
-    from .instr_rules import _US_PER_UNIT, _scan_raw
-    slow = False
-    scan: S.Instruction | None = None
-    raw: tuple[int, int] | None = None
-    frames: list[int | None] = []  # per open block: SubScan repeat count, None when not counted
-    total = 0
-    for stmt in program.statements:
-        kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else ""
-        text = stmt.text or ""
-        if kw == "NEXT" and re.match(r"(?i)\s*Next\s+Scan\b", text):
-            kw = "NEXTSCAN"
-        elif kw == "NEXT" and re.match(r"(?i)\s*Next\s+SubScan\b", text):
-            kw = "NEXTSUBSCAN"
-        if kw == "SLOWSEQUENCE":
-            slow = True
-        elif kw == "SCAN" and not slow:
-            raw = _scan_raw(stmt, env)
-            zero = False
-            if include_zero and len(stmt.args) > 1:
-                v, u = _value(stmt.args[0], env), _value(stmt.args[1], env)
-                if u in (2, 3) and not isinstance(u, bool) and isinstance(v, (int, float)) \
-                        and not isinstance(v, bool) and (0 <= v < 1 or v > 2147483647):
-                    raw, zero = (0, u), True
-            scan = stmt if raw and raw[1] in _UNIT_NAMES else None
-            frames, total = [], 0
-        elif scan is None:
+    for b in scan_time.budgets(program, env, profile, include_zero=zero):
+        if (b.interval == 0) != zero:
             continue
-        elif kw == "NEXTSCAN":
-            if not frames:
-                yield scan, stmt, raw, total
-            scan = None
-        elif kw == "SUBSCAN":
-            args = [_value(a, env) for a in stmt.args]
-            count = args[2] if len(args) == 3 and args[0] == 0 else None
-            frames.append(count if isinstance(count, int) and not isinstance(count, bool)
-                          and count > 0 else None)
-        elif (isinstance(stmt, S.For) or (isinstance(stmt, S.DoLoop) and stmt.keyword == "DO")
-              or (isinstance(stmt, S.If) and stmt.inline is None) or kw in _OPENERS):
-            frames.append(None)
-        elif (kw == "NEXT" or (isinstance(stmt, S.DoLoop) and stmt.keyword == "LOOP")
-              or kw in _CLOSERS or (kw == "END" and re.match(r"(?i)\s*End\s+(If|Select)\b", text))):
-            if not frames:
-                scan = None
-            else:
-                frames.pop()
-        elif zero and kw in _ZERO_MEASURE and None not in frames:
-            total += 1
-        elif kw == "DELAY" and None not in frames and len(stmt.args) == 3:
-            option, value, unit = (_value(a, env) for a in stmt.args)
-            if option == 0 and isinstance(value, (int, float)) and not isinstance(value, bool) \
-                    and value > 0 and unit in _US_PER_UNIT and not isinstance(unit, bool):
-                repeat = 1
-                for count in frames:
-                    repeat *= count
-                total += int(value * _US_PER_UNIT[unit]) * repeat
+        for stmt, amount, unit in b.sub_short:
+            diags.error(stmt.line, f"SubScan interval too short for measurement by {amount} "
+                        f"{scan_time.UNIT_NAMES[unit]}.", stmt.file)
+        if b.total > b.interval:
+            amount = scan_time.amount(b.total - b.interval, b.msg_unit)
+            diags.error(b.end.line, f"Scan interval too short for measurement by {amount} "
+                        f"{scan_time.UNIT_NAMES[b.msg_unit]}.", b.end.file)
 
 
 def check_cpi_time(program: S.Program, profile: Profile, diags: Diagnostics,

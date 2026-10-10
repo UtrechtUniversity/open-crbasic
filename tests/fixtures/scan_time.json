@@ -1,0 +1,869 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-delay-mSec-scan",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 951 mSec."
+  },
+  {
+   "id": "cr1000x-delay-mSec-scan",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 951 mSec."
+  },
+  {
+   "id": "cr6-delay-sec-scan",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(0,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr1000x-delay-sec-scan",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    Delay(0,1,Sec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr6-delay-exact-100",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,100,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr1000x-delay-exact-100",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,100,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr6-delay-fraction-truncates",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97.5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay-fraction-truncates",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97.5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-97000",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97000,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-97000",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97000,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-97600",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-97600",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-97700",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97700,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-97700",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,97700,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-98000",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,98000,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-98000",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    Delay(0,98000,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-50-47500",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47500,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-50-47500",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47500,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-50-47600",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-50-47600",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-delay-warn-boundary-50-47700",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47700,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-delay-warn-boundary-50-47700",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    Delay(0,47700,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portset-1ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-portset-1ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-portset-2ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-portset-2ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-portset-3ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(3,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-portset-3ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(3,mSec,0,0)\n    PortSet(C1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-sw12-timed",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    SW12(1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-pulsecount-never-warns",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    PulseCount(Temp(7),1,U8,2,0,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-pulsecount-counts-one",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    PulseCount(Temp(7),1,U8,2,0,1.0,0)\n    Delay(0,97600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-paneltemp-1ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 2 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-2ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-3ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(3,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-paneltemp-4ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(4,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-paneltemp-5ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(5,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-paneltemp-60hz-zero-scan",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 36 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-60hz-zero-sec",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,Sec,0,0)\n    PanelTemp(PT,15000)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 6: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr1000x-paneltemp-60hz-zero-sec",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,Sec,0,0)\n    PanelTemp(PT,15000)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 6: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr6-paneltemp-fn250",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,250)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 11 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-fn100",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 23 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-fn50",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,50)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 43 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-fn0",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-fn20000",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,20000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-paneltemp-delay-refund",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    PanelTemp(PT,15000)\n    Delay(0,47100,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-paneltemp-delay-refund-error",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    PanelTemp(PT,15000)\n    Delay(0,47600,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-paneltemp-delay-no-refund",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1000,mSec,0,0)\n    PanelTemp(PT,15000)\n    Delay(0,100,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-voltse-fn250-4ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(4,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 2 mSec."
+  },
+  {
+   "id": "cr6-voltse-fn250-5ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(5,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr6-voltse-fn250-6ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(6,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-voltse-fn250-10ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(10,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-voltse-fn250-11ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(11,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-voltse-measoff",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-voltse-reps2-measoff",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),2,mV5000,U1,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 5 mSec."
+  },
+  {
+   "id": "cr6-voltse-autorange",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),1,AutoRange,U1,False,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-voltse-open-detect",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000C,U1,False,20,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 2 mSec."
+  },
+  {
+   "id": "cr6-voltse-settling",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,1000,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-voltse-fn60-reps10",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    VoltSe(Temp(1),10,mV5000,U1,True,0,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 198 mSec."
+  },
+  {
+   "id": "cr6-voltdiff-reverse",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltDiff(Temp(2),1,mV5000,U3,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-voltdiff-reps2-reverse",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltDiff(Temp(2),2,mV5000,U3,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 6 mSec."
+  },
+  {
+   "id": "cr6-tcse-measoff",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    TCSe(Temp(3),1,mV200,U5,TypeT,PT,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr6-tcdiff-reverse-reps2",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    TCDiff(Temp(4),2,mV200,U7,TypeT,PT,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 6 mSec."
+  },
+  {
+   "id": "cr6-therm107-reps2",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    Therm107(Temp(5),2,U1,U12,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 6 mSec."
+  },
+  {
+   "id": "cr6-therm107-settling-250",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    Therm107(Temp(5),1,U1,U2,500,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 11 mSec."
+  },
+  {
+   "id": "cr6-cs616-reps3",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    CS616(Temp(6),3,U1,U5,5,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr6-two-analog-calls-warn",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(16,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n    VoltSe(Temp(2),1,mV5000,U2,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-two-analog-calls-quiet",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(18,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n    VoltSe(Temp(2),1,mV5000,U2,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-analog-plus-delay-warn",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(14,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n    Delay(0,5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-analog-plus-delay-quiet",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(16,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,U1,False,0,250,1.0,0)\n    Delay(0,5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-open-detect-plus-tcse-warn",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(20,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000C,U1,True,500,250,1.0,0)\n    TCSe(Temp(3),5,mV200,U5,TypeT,PT,False,20,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr6-tcse-measoff-fn0-quiet",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(12,mSec,0,0)\n    TCSe(Temp(3),3,mV200,U5,TypeT,PT,True,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-subscan-interval-too-short",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    SubScan(20,mSec,5)\n    Delay(0,25,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan interval too short for measurement by 6 mSec.\nline 7: Scan interval too short for measurement by 26 mSec."
+  },
+  {
+   "id": "cr1000x-subscan-interval-too-short",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(100,mSec,0,0)\n    SubScan(20,mSec,5)\n    Delay(0,25,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 6: SubScan interval too short for measurement by 6 mSec.\nline 7: Scan interval too short for measurement by 26 mSec."
+  },
+  {
+   "id": "cr6-subscan-fits",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(100,mSec,5)\n    Delay(0,50,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-subscan-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(100,mSec,5)\n    Delay(0,50,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-subscan-leaves-unit",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(100,mSec,5)\n    Delay(0,50,mSec)\n    NextSubScan\n    Delay(0,600,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Scan interval too short for measurement by 51 mSec."
+  },
+  {
+   "id": "cr1000x-subscan-leaves-unit",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(100,mSec,5)\n    Delay(0,50,mSec)\n    NextSubScan\n    Delay(0,600,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 8: Scan interval too short for measurement by 51 mSec."
+  },
+  {
+   "id": "cr6-subscan-zero-interval-fits",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(0,0,5)\n    Delay(0,150,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-subscan-zero-interval-fits",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(0,0,5)\n    Delay(0,150,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-subscan-zero-interval-over",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(0,0,5)\n    Delay(0,250,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr1000x-subscan-zero-interval-over",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,Sec,0,0)\n    SubScan(0,0,5)\n    Delay(0,250,mSec)\n    NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 7: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr6-sequential-no-budget-no-warning",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  SequentialMode\n  Scan(1,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-empty-scan-7ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(7,mSec,0,0)\n    X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-empty-scan-7ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(7,mSec,0,0)\n    X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-empty-scan-8ms",
+   "logger": "cr6",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(8,mSec,0,0)\n    X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-empty-scan-8ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(8,mSec,0,0)\n    X=1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-1ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 2 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-2ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-3ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(3,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-4ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(4,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-5ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(5,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-60hz-zero",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,60)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 36 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-fn250",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,250)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 11 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-fn100",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 23 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-fn50",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,50)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 43 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-fn0",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 4 mSec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-fn20000",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    PanelTemp(PT,20000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr1000x-x-battery-1ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(1,mSec,0,0)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-battery-2ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(2,mSec,0,0)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-battery-3ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(3,mSec,0,0)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-battery-zero-sec",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,Sec,0,0)\n    Battery(Batt)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 1 Sec."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-delay-refund",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    PanelTemp(PT,15000)\n    Delay(0,47200,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-paneltemp-delay-error",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(50,mSec,0,0)\n    PanelTemp(PT,15000)\n    Delay(0,47300,uSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 6: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr1000x-x-voltse-fn250-4ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(4,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 1 mSec."
+  },
+  {
+   "id": "cr1000x-x-voltse-fn250-5ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(5,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-voltse-fn250-9ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(9,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-voltse-fn250-10ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(10,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-voltse-fn250-11ms",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(11,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-voltse-measoff-fn2",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(5,mSec,0,0)\n    VoltSe(Temp(1),3,mV5000,1,True,3000,2,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 5: Scan interval too short for measurement by 2008 mSec."
+  },
+  {
+   "id": "cr1000x-x-voltse-autorange",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),1,AutoRange,1,False,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 2 mSec."
+  },
+  {
+   "id": "cr1000x-x-voltse-open-detect-reps3",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltSe(Temp(1),3,mV200C,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 15 mSec."
+  },
+  {
+   "id": "cr1000x-x-voltse-open-detect-reps3-warn",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(20,mSec,0,0)\n    VoltSe(Temp(1),3,mV200C,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 6: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-voltse-open-detect-reps3-quiet",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(21,mSec,0,0)\n    VoltSe(Temp(1),3,mV200C,1,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-voltdiff-reverse-reps2",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    VoltDiff(Temp(2),2,mV5000,3,True,0,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 3 mSec."
+  },
+  {
+   "id": "cr1000x-x-tcse",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    TCSe(Temp(3),2,mV200,5,TypeT,PT,True,500,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 15 mSec."
+  },
+  {
+   "id": "cr1000x-x-tcdiff",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    TCDiff(Temp(4),1,mV200,7,TypeT,PT,True,0,1000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 4 mSec."
+  },
+  {
+   "id": "cr1000x-x-therm107",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(0,mSec,0,0)\n    Therm107(Temp(5),2,9,Vx1,500,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR1X -- Compile Failed!\n\nline 3: Scan 0uSec invalid must be at least 1mSec.\nline 5: Scan interval too short for measurement by 19 mSec."
+  },
+  {
+   "id": "cr1000x-x-therm107-warn",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(30,mSec,0,0)\n    Delay(0,20,mSec)\n    Therm107(Temp(5),1,9,Vx1,20,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-two-analog-calls",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(16,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n    VoltSe(Temp(2),1,mV5000,2,False,0,250,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-analog-plus-delay-warn",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(14,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n    Delay(0,5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode.\nline 7: Warning: When Main Sequence Scan 1 is running, background calibration will be disabled."
+  },
+  {
+   "id": "cr1000x-x-analog-plus-delay-quiet",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  Scan(16,mSec,0,0)\n    VoltSe(Temp(1),1,mV5000,1,False,0,250,1.0,0)\n    Delay(0,5,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-x-sequential",
+   "logger": "cr1000x",
+   "source": "Public Temp(200), Batt, PT, X\nBeginProg\n  SequentialMode\n  Scan(1,mSec,0,0)\n    PanelTemp(PT,15000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR1X -- Compiled in SequentialMode."
+  }
+ ]
+}

@@ -1,3 +1,4 @@
 {
-  "threshold_ms": 2
+  "threshold_ms": 2,
+  "busy_slack": 20
 }

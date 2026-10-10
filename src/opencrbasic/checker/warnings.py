@@ -309,17 +309,26 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
     statements = program.statements
     last_line = statements[-1].line if statements else 1
 
-    # Measurement delays leaving under 3 mSec spare also disable it, both loggers (oracle,
-    # 2026-10-01: `Scan(100,mSec)` with `Delay(0,98,mSec)`, not `Delay(0,97,mSec)`).
-    from .instr_measure import scan_delay_totals
-    from .instr_rules import _US_PER_UNIT
-    # Not in SequentialMode (oracle, CR6, 2026-10-08; docs/fuzz-findings.md).
+    # A scan with measurement time warns when its slack (interval minus time) is under
+    # `busy_slack` units of 100 us, or under its longest integration time plus a per-logger constant
+    # (oracle, 2026-10-10: CR6 `Scan(100,mSec)` + `Delay(0,97700,uSec)` warns, 97600 does not;
+    # `VoltSe(...,250)` alone warns up to Scan(10,mSec), not 11; CR1000X delay boundary
+    # 98000/97900). Such a scan never uses the empty-scan interval threshold above.
+    from . import scan_time
     from .instr_measure import is_sequential
-    sequential = is_sequential(program, profile, env)
-    if sequential:  # no warning at all in SequentialMode (oracle, CR6/CR1000X, 2026-10-10)
+    # Not in SequentialMode (oracle, CR6, 2026-10-10: not even for `Scan(1,mSec)`).
+    if is_sequential(program, profile, env):
         return
-    busy = {id(scan) for scan, _end, (value, unit), total in scan_delay_totals(program, env)
-            if total and value * _US_PER_UNIT[unit] - total < 3000 and not sequential}
+    busy_slack = data.get("busy_slack", 0)
+    busy, timed = set(), set()
+    for b in scan_time.budgets(program, env, profile):
+        if b.total:
+            timed.add(id(b.scan))
+            # a scan whose only timed instructions are PulseCounts never warns (oracle, CR6,
+            # 2026-10-10: Scan(1..9,mSec) + PulseCount)
+            gap = b.max_integ + scan_time.MODELS[profile.name].busy_extra if b.max_integ > 0 else 0
+            if b.interval - b.total < max(busy_slack, gap) and not b.pulse_only:
+                busy.add(id(b.scan))
     in_slow = False
     main_scan_index = 0
     for stmt in statements:
@@ -331,7 +340,8 @@ def check_background_calibration(program: S.Program, profile: Profile, diags: Di
             continue
         main_scan_index += 1
         interval_ms = _scan_interval_ms(stmt, env)
-        if (interval_ms is not None and interval_ms < threshold_ms) or id(stmt) in busy:
+        if id(stmt) in busy or (id(stmt) not in timed and interval_ms is not None
+                                and interval_ms < threshold_ms):
             diags.warning(
                 last_line,
                 f"When Main Sequence Scan {main_scan_index} is running, "

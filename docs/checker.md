@@ -2876,10 +2876,11 @@ Oracle-confirmed 2026-10-01.
   argument naming a variable -> `%s must be declared as a Const.`
 - `Scan` units outside 0..5 (including any string) count as 0 uSec on CR6/CR1000X -> `Scan 0uSec
   invalid must be at least 1mSec.`
-- Scan budget (CR6/CR1000X): `Delay(0,...)` calls in the main `Scan` (x n inside
-  `SubScan(0,0,n)`) adding up to the interval -> `Scan interval too short for measurement by N
-  <unit>.` at `NextScan`, N = floor((delays - interval)/unit) + 1 in the scan's own unit
-  (`Scan(50,mSec)` + `Delay(0,1,Sec)` -> `by 951 mSec`).
+- Scan budget (CR6/CR1000X): the time the instructions add to the main `Scan` (100 us units; `Delay`,
+  `PortSet`, `SW12`, `PulseCount`, `PanelTemp`, `VoltSe`/`VoltDiff`/`TCSe`/`TCDiff`, `Therm107-109`,
+  `CS616`, `Battery` on CR1000X; a `SubScan(...,n)` body counts n times) above its interval ->
+  `Scan interval too short for measurement by N <unit>.` at `NextScan`; model and evidence in
+  docs/instructions.md "Scan time budget" (`checker/scan_time.py`).
 - CR300/CR350 argument abort: the first undefined name at a runtime-expression parameter (codes
   2, 8, 24, 25, 27, 28, 29, 33, 40, 41, 47) is followed by `Too many parameters:  <next
   argument>.`; an undefined name at a code-20 slot also gives `Variable illegal in Parameter`.
