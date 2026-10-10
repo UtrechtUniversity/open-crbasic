@@ -685,6 +685,12 @@ def _control_keyword(stmt: S.Stmt) -> str | None:
 _FALLBACK_PREFIX = "Invalid, or out of place expression:"
 
 
+def _table_names(program: S.Program) -> set[str]:
+    return {a.name.upper() for st in program.statements
+            if isinstance(st, S.Instruction) and st.keyword.upper() in ("DATATABLE", "CONSTTABLE")
+            for a in st.args[:1] if isinstance(a, S.Name)}
+
+
 def _leftover_message(profile, stmt: S.Stmt) -> str:
     """The fallback for a missing-parameter leftover line. CR300/CR350 re-read a parenthesised one
     as an expression and echo what is inside: `(X,1,mV1000)` -> `X,1,mV1000.`, an unclosed
@@ -1438,6 +1444,11 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
                 else:
+                    lead = re.match(r"\s*([A-Za-z_]\w*)\.", stmt.text)
+                    if lead and profile.known_first_word_pass1 and lead.group(1).upper() not in (
+                            symbols.system_table_names(program) | _table_names(program)):
+                        # `times.`, `X.Y.Z`: the name before the dot is no table (oracle, 2026-10-10)
+                        diags.error(stmt.line, f"Could not find {lead.group(1)}.", stmt.file)
                     diags.error(stmt.line, _leftover_message(profile, stmt), stmt.file,
                                 show_file=False)
                 if profile.undefined_call_message:
@@ -2461,6 +2472,11 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
         diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                     show_file=False)
         return None
+    if re.fullmatch(r"[A-Za-z_]\w*\.", stmt.name) and re.match(r"\s*\w+\.", stmt.text) and not stmt.explicit and known is not None:
+        base = stmt.name[:-1].upper()
+        if base and base not in getattr(known, "tables", ()) and base not in symbols._ALWAYS_KNOWN_SYSTEM_TABLES:
+            # `times.`: the name before the dot is no table (oracle, CR6/CR1000X, 2026-10-10)
+            diags.error(stmt.line, f"Could not find {stmt.name[:-1]}.", stmt.file)
     diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                 show_file=False)
     if before_beginprog:

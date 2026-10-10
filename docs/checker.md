@@ -4361,3 +4361,16 @@ identical; CR300/CR350 untouched).
   `Randomize X, to x` (`Too many parameters:  to.`), `Calibrate X, to x` (`Illegal parameter to,
   expecting constant integer.`), a lone `to`/`or` argument (`Calibrate to`), and the unreachable-code
   warning name for these pass-1 statements.
+
+### `name.` statement: `Could not find <name>.` (CR6/CR1000X, 2026-10-10)
+
+Fixture `could_not_find_dot.json`. A statement that starts `<name>.` where `<name>` is no table (`times.`,
+`variables.`, `Timer.`, `X.` with `X` a plain `Public`, `X.Y.Z`, `X. Y`) prints pass 2 `Could not find <name>.`
+before its `Invalid, or out of place expression: <text>.` (and the `Expr illegally occurs before
+BeginProg.` line). `Tab.`/`Status.` (tables, system tables) and `X .` (blank before the dot) do not. A
+pass-1 error elsewhere hides it. Not modelled: `Tab.Foo` -> `Could not find Tab.Foo(1).`, `X.1`, the
+`X.Y = 3` assignment (accepted by us; the oracle also says `Invalid assignment in expression`).
+Also seen and left alone: the oracle accepts `I = 1 To 12` (one `To` between two valid operands, scalar
+target, `+=` too; a second `To` is `Incomplete expression`, a trailing `To` is `Invalid, or out of place
+expression`, a string after `To` is `String is illegal here`), which we reject as `Incomplete expression`
+(`fornext_1`, the `To` owner's area).

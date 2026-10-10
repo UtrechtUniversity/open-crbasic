@@ -1,0 +1,183 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-could_not_find_dot-0",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\ntimes.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find times.\nline 7: Invalid, or out of place expression: times.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-1",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nvariables.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find variables.\nline 7: Invalid, or out of place expression: variables.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-2",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-3",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\n_a.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find _a.\nline 7: Invalid, or out of place expression: _a.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-4",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX.Y.Z\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X.Y.Z."
+  },
+  {
+   "id": "cr6-could_not_find_dot-5",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX. Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X. Y."
+  },
+  {
+   "id": "cr6-could_not_find_dot-6",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX .\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X .."
+  },
+  {
+   "id": "cr6-could_not_find_dot-7",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTab.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tab.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-8",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nStatus.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Status.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-9",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo bar.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: foo bar.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-10",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX = 1\ntimes.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find times.\nline 8: Invalid, or out of place expression: times.."
+  },
+  {
+   "id": "cr6-could_not_find_dot-11",
+   "logger": "cr6",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nI = (1\nX.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: I = (1."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-0",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\ntimes.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find times.\nline 7: Invalid, or out of place expression: times.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-1",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nvariables.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find variables.\nline 7: Invalid, or out of place expression: variables.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-2",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-3",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\n_a.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find _a.\nline 7: Invalid, or out of place expression: _a.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-4",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX.Y.Z\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X.Y.Z."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-5",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX. Y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid, or out of place expression: X. Y."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-6",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX .\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X .."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-7",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nTab.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Tab.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-8",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nStatus.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Status.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-9",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nfoo bar.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: foo bar.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-10",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nX = 1\ntimes.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find times.\nline 8: Invalid, or out of place expression: times.."
+  },
+  {
+   "id": "cr1000x-could_not_find_dot-11",
+   "logger": "cr1000x",
+   "source": "Public X, I\nDataTable(Tab,1,10)\nSample(1,X,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nI = (1\nX.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: No Matching, or out of place ) in expression: I = (1."
+  }
+ ]
+}
