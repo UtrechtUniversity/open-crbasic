@@ -4463,3 +4463,14 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   undefined words (`1 Step-1` -> `Step`, `1 X` -> `X`, `Step-Nope` -> `Step` only), then `Incomplete
   expression: <half>.` with no line-end newline. `cr3xx.check_for_header`. Not modelled: the `To`
   keyword inside an assignment value (`I = 1 To 12` compiles; ours still rejects it, `fornext_1.CR6`).
+- **A line holding only `=`** compiles silently on all four loggers (`r8_cr3xx_bare_eq.json`), alone or as a
+  `:` segment (`X = 1 : =`); `= 5` is still `Invalid, or out of place expression`. `parser._parse_line`.
+  After `Dim A(8)` this is the `Dim A(8)` / `=` / `{ ... }` help-corpus shape: only the `{` line is reported.
+- **Initializer pulling on CR300/CR350** (`r8_cr3xx_pull*.json`): `Public`/`Dim` ending in `=` pulls the next
+  line, with the same line-counter shift as CR6/CR1000X (`source._pull_decl_initializer`), **unless an error
+  was already reported ahead of the declaration** (any earlier error except `... illegally occurs before
+  BeginProg.`: `Too many parameters`, `Invalid Variable declaration`, prose names, ...): then the next line
+  is an ordinary statement and the declaration is silent. `compiler.compile_file` compiles again with
+  `pull_limit` set below the first affected declaration (the loader logs the pulls it made in
+  `Program.pull_log`). Not modelled: whether an error inside an earlier pulled declaration also stops
+  later pulls; `Public D(2) As Long =` / `1, 2` is rejected by us on every logger (pre-existing).

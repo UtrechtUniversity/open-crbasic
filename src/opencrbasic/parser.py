@@ -347,8 +347,8 @@ class _Parser:
         in_inline_if = False
         colon_if = False
         for idx, seg_text_raw in enumerate(segments):
-            if not seg_text_raw.strip():
-                continue
+            if not seg_text_raw.strip() or seg_text_raw.strip() == "=":
+                continue  # (a segment holding only `=` compiles silently, oracle, all four loggers, 2026-10-10)
             if colon_if and re.fullmatch(r"\s*(?:Else|EndIf|End\s+If)\s*", seg_text_raw, re.I):
                 continue  # inside `If c Then : ...` these are part of the one-line If
             # Only the segment that is both last on its physical line (nothing after it split off
@@ -1497,7 +1497,8 @@ def _profile_for(name: str) -> profiles.Profile:
     return profiles.for_file(Path(name))
 
 
-def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tuple[S.Program, Diagnostics]:
+def parse_file(path: Path | str, profile: profiles.Profile | None = None,
+               pull_limit: int | None = None) -> tuple[S.Program, Diagnostics]:
     """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical
     default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
     `compiler.compile_file`'s own `profile` argument) so `Const` folding during parsing (predefined
@@ -1506,17 +1507,19 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None) -> tup
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
-                                       _pulls_init(profile or _profile_for(path.name)))
+                                       _pulls_init(profile or _profile_for(path.name)), pull_limit)
+    pull_log = diags.pull_log
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
+    program.pull_log = pull_log
     _include_warning_drives(diags, profile or _profile_for(path.name))
     _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
     return program, diags
 
 
 def _pulls_init(profile: profiles.Profile) -> bool:
-    """CR6/CR1000X pull the line after a `Public`/`Dim` initializer's `=`/`,` into the declaration."""
-    return profile.name in ("cr6", "cr1000x")
+    """All four loggers pull the line after a `Public`/`Dim` initializer's `=`/`,` into the declaration."""
+    return profile.name in ("cr6", "cr1000x", "cr300", "cr350")
 
 
 _MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR|CRD|USB):", re.I)

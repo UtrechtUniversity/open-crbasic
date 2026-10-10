@@ -183,6 +183,8 @@ class _Loader:
                  pull_init: bool = False):
         self.directory = directory
         self.pull_init = pull_init
+        self.pull_limit: int | None = None  # pulls only at physical indexes below this (CR300/CR350)
+        self.pull_log: list[tuple[int, int]] = []  # (physical index, reported line) of top-level pulls
         self.diags = diags
         self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
@@ -244,8 +246,12 @@ class _Loader:
                 i += 1
                 continue
             pulls = 0
-            if self.pull_init and _DECL_START_RE.match(text):
+            if self.pull_init and _DECL_START_RE.match(text) and (
+                    self.pull_limit is None or in_include or i < self.pull_limit):
+                start = i
                 text, i, pulls, bad = _pull_decl_initializer(text, physical, i)
+                if pulls and not in_include:
+                    self.pull_log.append((start, last_line - shift))
                 if pulls:
                     had_comment = len(_strip_comment(physical[i])) != len(physical[i])
                 if bad:
@@ -317,12 +323,14 @@ class _Loader:
 
 
 def load_program(path: Path, own_ext: str | None = None,
-                 pull_init: bool = False) -> tuple[list[LogicalLine], Diagnostics]:
+                 pull_init: bool = False, pull_limit: int | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
     loader = _Loader(path.parent, diags, own_ext, pull_init)
+    loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
+    diags.pull_log = loader.pull_log
     return lines, diags
 
 

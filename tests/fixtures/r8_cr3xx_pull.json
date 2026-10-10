@@ -1,0 +1,415 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r8_cr3xx_pull-0",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-1",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-2",
+   "logger": "cr300",
+   "source": "Dim A\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5\n.\nline 5: Too many parameters:  Sec.\nline 6: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-3",
+   "logger": "cr300",
+   "source": "Dim A(8)\n= 5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = 5\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-4",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-5",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,\n.\nline 4: Invalid, or out of place expression: 2 }\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-6",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\nFoo\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not defined.\nline 3: Invalid, or out of place expression: Foo\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-7",
+   "logger": "cr300",
+   "source": "Dim A(8) =\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1, 2 }\n.\nline 1: Variable initialization of A has bad syntax.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-8",
+   "logger": "cr300",
+   "source": "Dim A(8) =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-9",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-10",
+   "logger": "cr300",
+   "source": "Dim A(8)\n=\n\nDim B\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-11",
+   "logger": "cr300",
+   "source": "Dim D As Long =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-12",
+   "logger": "cr300",
+   "source": "Dim D(3) As Long =\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 2 }\n.\nline 4: Too many parameters:  Sec.\nline 5: A is not defined.\nline 5: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr300-r8_cr3xx_pull-13",
+   "logger": "cr300",
+   "source": "Dim D, E =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-0",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-1",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-2",
+   "logger": "cr350",
+   "source": "Dim A\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5\n.\nline 5: Too many parameters:  Sec.\nline 6: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-3",
+   "logger": "cr350",
+   "source": "Dim A(8)\n= 5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = 5\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-4",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-5",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,\n.\nline 4: Invalid, or out of place expression: 2 }\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-6",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\nFoo\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo is not defined.\nline 3: Invalid, or out of place expression: Foo\n.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-7",
+   "logger": "cr350",
+   "source": "Dim A(8) =\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1, 2 }\n.\nline 1: Variable initialization of A has bad syntax.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-8",
+   "logger": "cr350",
+   "source": "Dim A(8) =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-9",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-10",
+   "logger": "cr350",
+   "source": "Dim A(8)\n=\n\nDim B\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-11",
+   "logger": "cr350",
+   "source": "Dim D As Long =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-12",
+   "logger": "cr350",
+   "source": "Dim D(3) As Long =\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 2 }\n.\nline 4: Too many parameters:  Sec.\nline 5: A is not defined.\nline 5: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr350-r8_cr3xx_pull-13",
+   "logger": "cr350",
+   "source": "Dim D, E =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: Invalid, or out of place expression:     A(1) = 1\n."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-0",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-1",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-2",
+   "logger": "cr6",
+   "source": "Dim A\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-3",
+   "logger": "cr6",
+   "source": "Dim A(8)\n= 5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = 5."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-4",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-5",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,.\nline 4: Invalid, or out of place expression: 2 }."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-6",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\nFoo\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Foo.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-7",
+   "logger": "cr6",
+   "source": "Dim A(8) =\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1, 2 }\n.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-8",
+   "logger": "cr6",
+   "source": "Dim A(8) =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-9",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-10",
+   "logger": "cr6",
+   "source": "Dim A(8)\n=\n\nDim B\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-11",
+   "logger": "cr6",
+   "source": "Dim D As Long =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1) = 1."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-12",
+   "logger": "cr6",
+   "source": "Dim D(3) As Long =\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 2 }."
+  },
+  {
+   "id": "cr6-r8_cr3xx_pull-13",
+   "logger": "cr6",
+   "source": "Dim D, E =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1) = 1."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-0",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1, 2 }."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-1",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-2",
+   "logger": "cr1000x",
+   "source": "Dim A\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-3",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n= 5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: = 5."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-4",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-5",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: { 1,.\nline 4: Invalid, or out of place expression: 2 }."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-6",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\nFoo\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Foo.\nline 3: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-7",
+   "logger": "cr1000x",
+   "source": "Dim A(8) =\n{ 1, 2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1, 2 }\n.\nline 1: Variable initialization of A has bad syntax."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-8",
+   "logger": "cr1000x",
+   "source": "Dim A(8) =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-9",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\n=\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-10",
+   "logger": "cr1000x",
+   "source": "Dim A(8)\n=\n\nDim B\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-11",
+   "logger": "cr1000x",
+   "source": "Dim D As Long =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1) = 1."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-12",
+   "logger": "cr1000x",
+   "source": "Dim D(3) As Long =\n{ 1,\n2 }\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Incomplete expression: { 1,\n.\nline 1: Variable initialization of D has bad syntax.\nline 2: Invalid, or out of place expression: 2 }."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_pull-13",
+   "logger": "cr1000x",
+   "source": "Dim D, E =\n5\nBeginProg\n  Scan(1,Sec,0,0)\n    A(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     A(1) = 1."
+  }
+ ]
+}

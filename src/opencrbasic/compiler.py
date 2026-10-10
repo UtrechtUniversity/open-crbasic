@@ -58,6 +58,7 @@ class CompileResult:
     # (first-seen position among `program.statements`), for `result_lines`' sort -- see there.
     stmt_lines: dict = field(default_factory=dict)  # file name -> sorted [(line, expansion index)]
     implementation_exceptions: list[str] = field(default_factory=list)
+    program_ast: object = None      # the parsed program (None when parsing failed)
 
     def record_implementation_failure(self, where: str, exc: Exception) -> None:
         """Make an unexpected implementation error visible as a failed compilation.
@@ -164,12 +165,32 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     would say -- `checker.check`'s own finer-grained per-pass wrapping is what actually keeps
     *most* internal bugs from reaching here at all.
     """
-    from . import checker, parser
-
     profile = profile or profiles.for_file(path)
     name = display_name or path.name
+    result = _compile_once(path, profile, name, None)
+    if profile.single_pass:
+        # CR300/CR350 stop pulling a `Public`/`Dim` initializer's next line once any error has been
+        # reported ahead of the declaration (oracle, 2026-10-10, `docs/checker.md` "Round 8"): re-run
+        # with the pulls from the first affected declaration on disabled.
+        limit = None
+        for _ in range(16):
+            log = getattr(result.program_ast, "pull_log", None) or []
+            errs = [d.line for d in result.diagnostics.items if d.severity == "error" and d.line
+                    and not d.message.endswith("illegally occurs before BeginProg.")]
+            bad = next((start for start, line in log if any(e < line for e in errs)), None)
+            if bad is None or (limit is not None and bad >= limit):
+                break
+            limit = bad
+            result = _compile_once(path, profile, name, limit)
+    if result.program_ast is None:
+        return result
+    return _finish(result, path, warn_unused)
+
+
+def _compile_once(path: Path, profile: Profile, name: str, pull_limit: int | None):
+    from . import checker, parser
     try:
-        program, diags = parser.parse_file(path, profile=profile)
+        program, diags = parser.parse_file(path, profile=profile, pull_limit=pull_limit)
     except Exception as exc:
         diags = Diagnostics()
         diags.error(0, "Internal error: unable to parse program.")
@@ -188,7 +209,8 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         stmt_lines.setdefault(file, []).append((stmt.line, index))
     for lines in stmt_lines.values():
         lines.sort()
-    result = CompileResult(name, profile, diags, file_order=file_order, stmt_lines=stmt_lines)
+    result = CompileResult(name, profile, diags, file_order=file_order, stmt_lines=stmt_lines,
+                           program_ast=program)
     if len(path.name) + 1 > 60:
         diags.error(0, f"Program name exceeds maximum allowable characters by {len(path.name) - 59}.")
     try:
@@ -197,6 +219,11 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
         result.record_implementation_failure("checker.check", exc)
         if os.environ.get("OPENCRBASIC_STRICT") == "1":
             raise
+    return result
+
+
+def _finish(result: CompileResult, path: Path, warn_unused: bool) -> CompileResult:
+    program, diags = result.program_ast, result.diagnostics
     if warn_unused and not diags.errors:
         # `-u` (`docs/cli.md` "-u", `checker/unused.py`): oracle-confirmed to add nothing at all
         # once any error is present anywhere in the file, so this only ever runs on an otherwise-
