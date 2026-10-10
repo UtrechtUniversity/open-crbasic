@@ -4388,3 +4388,16 @@ on the old two-line output. Replaces the "known incomplete" note above (CR6 only
 Fixture `avgrun_subparam.json`: an untyped `Sub` parameter as the number of distinct instances is a
 variable, `Optional number of distinct instances must be a constant of type long.` precedes `Missing
 instance number` (`avgrun_4`).
+
+### `R` (double-precision) number suffix; assignment inside a leading `( )` group (2026-10-10)
+
+Fixtures `double_literal_r.json` (all four loggers), `paren_assign.json` (CR6/CR1000X).
+
+- A decimal literal followed directly by `R`/`r` (`2.15R`, `2R`, `.5R`, `1e3R`, `2.R`) is one number token
+  and compiles; `5RR`, `5R5`, `2Rx`, `2 R` stay `Incomplete expression`. (`&HFFR` is `Invalid symbol` in the
+  oracle: not modelled.) The lexer previously split it, so valid double-precision programs were rejected.
+- A statement starting with `(` whose group holds `lhs = ...`: a number, string, `-number`, or predefined
+  symbol/type word (`Double`, `Long`, `Float`, `TRUE`, `NAN`, `C1`, `FP2`; not `Single`, `Integer`, `ULong`,
+  `Int4`, `PI`, which are plain unknown names) on the left is pass 1 `Invalid assignment in expression:
+  <stmt>.`; a declared variable on the left keeps `Incomplete expression: <stmt>.` for words after the group
+  (`(D = D) x`). Not modelled: `(D = D) + 1` compiles; `(D(1) = 1) x` is `Incomplete`.

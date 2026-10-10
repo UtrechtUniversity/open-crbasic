@@ -1,0 +1,183 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-paren_assign-0",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Double = D + D) Results in Double\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Double = D + D) Results in Double."
+  },
+  {
+   "id": "cr6-paren_assign-1",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Long = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Long = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-2",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Float = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Float = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-3",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(TRUE = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (TRUE = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-4",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(1 = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (1 = 1) x."
+  },
+  {
+   "id": "cr6-paren_assign-5",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(-1 = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (-1 = 1) x."
+  },
+  {
+   "id": "cr6-paren_assign-6",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(\"a\" = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (\"a\" = 1) x."
+  },
+  {
+   "id": "cr6-paren_assign-7",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(D = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (D = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-8",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(D = 1) Results\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (D = 1) Results."
+  },
+  {
+   "id": "cr6-paren_assign-9",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Single = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (Single = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-10",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Foo = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (Foo = D) x."
+  },
+  {
+   "id": "cr6-paren_assign-11",
+   "logger": "cr6",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\nExample: (Double = Double + Double) Results in Double-Precison\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  (Double = Double + Double) Results in Double-Precison."
+  },
+  {
+   "id": "cr1000x-paren_assign-0",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Double = D + D) Results in Double\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Double = D + D) Results in Double."
+  },
+  {
+   "id": "cr1000x-paren_assign-1",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Long = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Long = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-2",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Float = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (Float = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-3",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(TRUE = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (TRUE = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-4",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(1 = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (1 = 1) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-5",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(-1 = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (-1 = 1) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-6",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(\"a\" = 1) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression: (\"a\" = 1) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-7",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(D = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (D = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-8",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(D = 1) Results\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: (D = 1) Results."
+  },
+  {
+   "id": "cr1000x-paren_assign-9",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Single = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (Single = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-10",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\n(Foo = D) x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (Foo = D) x."
+  },
+  {
+   "id": "cr1000x-paren_assign-11",
+   "logger": "cr1000x",
+   "source": "Public D As Double\nBeginProg\nScan(1,Sec,0,0)\nExample: (Double = Double + Double) Results in Double-Precison\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:  (Double = Double + Double) Results in Double-Precison."
+  }
+ ]
+}

@@ -1816,6 +1816,20 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         return ("pass1", "fallback")  # a stray brace (oracle, CR6/CR1000X, 2026-10-10)
     elif first.kind == "OP" and first.text == "(":
         verdict = _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False)
+        # `(Double = D) x`: an assignment inside the group (oracle, CR6/CR1000X, 2026-10-10) --
+        # a constant or predefined symbol on the left is `Invalid assignment in expression`, a
+        # variable keeps the `Incomplete expression` of the words after the group
+        eq = next((j for j, t in enumerate(toks) if t.kind == "OP" and t.text in ("=", "==")), None)
+        if eq is not None and all(not (t.kind == "OP" and t.text in ("(", ")")) for t in toks[1:eq]):
+            lhs = toks[1:eq]
+            if (len(lhs) == 1 and (lhs[0].kind in ("NUMBER", "STRING")
+                                   or (lhs[0].kind == "IDENT" and lhs[0].upper not in profile.instructions
+                                       and lhs[0].upper in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS))
+                    or (len(lhs) == 2 and lhs[0].text == "-" and lhs[1].kind == "NUMBER")):
+                return ("pass1", "invalid_assignment")
+            if lhs and lhs[0].kind == "IDENT" and lhs[0].upper in operands \
+                    and lhs[0].upper not in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS:
+                return verdict
         return ("pass1", "fallback") if verdict == ("pass1", "incomplete") else verdict
     elif first.kind == "OP" and len(toks) > 1 and first.text in _LEADING_OPS:
         # a statement starting with a binary operator (`+ 1`, `= -1`, `< 3`, `, x`) is a pass-1

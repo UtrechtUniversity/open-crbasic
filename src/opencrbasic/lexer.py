@@ -109,8 +109,12 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
         if ch.isdigit() or (ch == "." and i + 1 < n and text[i + 1].isdigit()):
             m = _NUMBER_RE.match(text, i)
             raw = m.group(0)
-            tokens.append(Token("NUMBER", raw, raw, i, line, _number_value(raw)))
-            i = m.end()
+            value = _number_value(raw)
+            end = m.end()
+            if text[end:end + 1] in ("R", "r") and not (text[end + 1:end + 2].isalnum() or text[end + 1:end + 2] == "_"):
+                end += 1    # `2.15R`: a double-precision literal (oracle, CR6/CR1000X, 2026-10-10)
+            tokens.append(Token("NUMBER", text[i:end], text[i:end], i, line, value))
+            i = end
             continue
         m = _IDENT_RE.match(text, i)
         if m:
