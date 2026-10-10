@@ -4427,3 +4427,15 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   `Long.Y = 3`.
 - `Const A As` with nothing after `As` also prints `Too many parameters:  A.` after `Const with no assignment.`
   (all four loggers), like `Const A As Long` (`sprintf_4`).
+
+## Round 8 CR300/CR350 families (oracle, 2026-10-10; `tests/fixtures/r8_cr3xx_*.json`)
+
+- **Statement ending at an open `(`** (all four loggers; `r8_cr3xx_openparen.json`): `X = Sin(`,
+  `X = Y(`, `X = Sin(1)+Sin(` are the generic `Invalid, or out of place expression: <stmt>.`, not `No
+  Matching, or out of place )`; a trailing comma (`X = Sin(X,`) or an unclosed argument (`X = (X`) stay
+  `No Matching`. `structure.py` (pass 1 and pass 2 `_UNCLOSED_PAREN_EXPR`): text ending in `(` -> fallback.
+- **CR300/CR350 `While`/`Do While|Until`/`Loop While|Until` conditions** (`r8_cr3xx_cond.json`): the
+  CR6 pass-1 verdict applies to the condition alone (`X >`/`X =` -> `Invalid, or out of place
+  expression: X >.`, `X Y` -> `Incomplete expression: X Y.`), echoed without the line-end newline, names
+  of the condition first. They no longer take the "instruction reads the prose" path
+  (`Incomplete expression: While X >.`). `cr3xx.check_unknown_line_words`. An empty condition keeps the old path.

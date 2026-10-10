@@ -967,7 +967,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     dataclasses.replace(program, statements=program.statements[:pos]))
                 if verdict is None and stmt.reason == _UNCLOSED_PAREN_EXPR and \
                         _unclosed_paren_kind(stmt.text, known - later) == "pass1":
-                    verdict = ("pass1", "no_matching")
+                    verdict = ("pass1", "fallback" if stmt.text.rstrip().endswith("(")
+                               else "no_matching")
                 if verdict and verdict[0] == "pass1":
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
@@ -1404,6 +1405,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 # real compiler doesn't derive from the whole statement text, not attempted.
                 kind = (_unclosed_paren_kind(stmt.text, known)
                         if profile.known_first_word_pass1 else "pass1")
+                if kind == "pass1" and stmt.text.rstrip().endswith("("):
+                    kind = "fallback"  # a text ending at the `(` is generic (oracle, all four loggers, 2026-10-10)
                 if kind == "symbol":
                     diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file,
                                 show_file=False)

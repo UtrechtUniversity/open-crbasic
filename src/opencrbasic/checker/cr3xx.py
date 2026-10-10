@@ -1143,7 +1143,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 changed = True
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
-            if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"]:
+            if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
+                    and not (structure.condition_part(text) or "").strip():
                 # `Battery sensor using the`: the instruction reads the prose as its argument
                 # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
                 # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
@@ -1166,7 +1167,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 and not text[fw.end():].lstrip(" \t").startswith(("(", "."))
                 and fw.group(0).upper() not in symbols.declared_variable_names(program)
                 and structure._bare_function_needs_paren(fw.group(0).upper(), profile.functions))
-            words = _leading_unknown_words(text, here, callables)
+            cond_text = structure.condition_part(text)
+            cond_text = cond_text if cond_text and cond_text.strip() else None
+            words = _leading_unknown_words(text if cond_text is None else cond_text, here, callables)
             if needs_paren:
                 # the operands after a parenthesis-less function are named (oracle, CR300,
                 # 2026-10-10: `Timer is bar baz` -> `bar`, `baz`)
@@ -1196,8 +1199,11 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 # an assignment's pass-1 syntax verdicts are the same words on CR300/CR350
                 # (oracle, 2026-10-10: `X = 1 2` -> `Incomplete expression`, `X = (1 2)` -> `No Matching,
                 # or out of place )`), whatever names precede them
+                cond = structure.condition_part(stmt.text)
+                cond = cond if cond and cond.strip() else None
                 verdict = (structure._pass1_scan(stmt.text, structure._Everything(), profile)
-                           if re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
+                           if cond is not None
+                           or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
                            else None)  # (prose stays generic)
                 head = {"incomplete": "Incomplete expression: ",
                         "no_matching": "No Matching, or out of place ) in expression: "}.get(
@@ -1210,7 +1216,12 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
                     # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`)
                     head = "No Matching, or out of place ) in expression: "
-                if head:
+                if cond is not None:
+                    # a `While`/`Do While|Until`/`Loop While|Until` condition echoes alone, no
+                    # line-end newline (oracle, CR300/CR350, 2026-10-10)
+                    d = dataclasses.replace(d, message=(head or _GENERIC_FALLBACK_PREFIX) + cond + ".")
+                    changed = True
+                elif head:
                     d = dataclasses.replace(d, message=head + d.message[len(_GENERIC_FALLBACK_PREFIX):])
                     changed = True
         new_items.append(d)

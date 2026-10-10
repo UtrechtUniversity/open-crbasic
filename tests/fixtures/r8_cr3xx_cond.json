@@ -1,0 +1,275 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r8_cr3xx_cond-0",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope >."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X > Y AND X <>\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X > Y AND X <>."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X =."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-7",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope >."
+  },
+  {
+   "id": "cr6-r8_cr3xx_cond-8",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While Nope =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope =."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope >."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X > Y AND X <>\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X > Y AND X <>."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X =."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope >."
+  },
+  {
+   "id": "cr1000x-r8_cr3xx_cond-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While Nope =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope =."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-0",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope >."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X > Y AND X <>\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X > Y AND X <>."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X =."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-7",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope >."
+  },
+  {
+   "id": "cr300-r8_cr3xx_cond-8",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While Nope =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope =."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-0",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope >."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X > Y AND X <>\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X > Y AND X <>."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    While X =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X =."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: X >."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While X Y\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: X Y."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-7",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do Until Nope >\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope >."
+  },
+  {
+   "id": "cr350-r8_cr3xx_cond-8",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    Do While Nope =\n    Y = 1\n    WEnd\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Invalid, or out of place expression: Nope =."
+  }
+ ]
+}
