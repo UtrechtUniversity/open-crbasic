@@ -4638,3 +4638,23 @@ skips the `=`s and reads the next item as the name:
 Not modelled: `Const = (1)` / `(X)` (the parentheses are stripped), `Const = X As Long`, `Const = a b c` /
 `X Y Z` (two juxtaposed items), `Const = $`. `parser._parse_const`, `structure._check_duplicate_declaration`,
 `_check_unparsed_pass1`.
+
+## Round 9, CR300/CR350: the variables after a stopping variable are not registered (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_decl_stop.json`)
+
+A `Public`/`Dim` statement stops at its first bad variable (an unsupported `As` type, an illegal or undefined
+dimension, a bad initializer, `A() As Long`, a redeclared name); the variables after it are never registered, so
+`Public R As Bad, Z` then `Z = 1` is `Z is not defined.`, as are `Public P(-1), Q`, `Public A(Nope), B` and
+`Public Z` / `Public Z, Q` (Q). The stopping variable itself is registered (`Public R As Bad` then `R = 1` is
+clean), and an alias of an unregistered name is `Z not yet declared so cannot be aliased.`. The unsupported type
+now behaves like the other stops: its own dimensions and initializer are still checked (`R(Q) As Bad`,
+`R As Bad = Q`: type message, then the name messages, then `Variable initialization of R has bad syntax.`), then
+`Too many parameters:  <variable two on>.`; a redeclared name in an earlier position wins (`Public Z` then
+`Public Z, R As Bad` -> only `Z already declared`), at the same position the type message comes first, then
+`R already declared as a variable.`. `Public A() As Long, B, C` also names `C`.
+
+Applied only to global declarations when no error precedes the statement: after earlier errors the declaration
+cascade (`cr3xx.drop_*`) owns the statement and the real compiler keeps registering the later variables
+(`fornext_1.CR6`: `Dim I, J, K, L` after `Dim I, J` names `J` only and `K`, `L` stay defined). A structure-typed
+variable after the stop is kept registered (`input.value` of `input As s` after a bad `s2() As s` is not
+reported; fuzz reproducer cr300 e564ca45d2c6). Not modelled: `Public R As Bad(Q), Z` (no type message there),
+declarations inside a `Sub`. `structure._check_decl_exprs`, the single-pass block of `check_pass1`.

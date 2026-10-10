@@ -922,6 +922,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     # names the one two on (oracle, CR300/CR350, 2026-10-04: `Public a(-1),
                     # b(nv), c` / `a(nv), b(-1), c` / `Public P(-1), Q, R` after `Public P, Q, R`)
                     dims_diags, names_diags = Diagnostics(), Diagnostics()
+                    earlier_errors = any(d.severity == "error" for d in diags.items)
                     dim_at = _check_array_dims(stmt, dims_diags, env, profile)
                     name_at = _check_decl_exprs(stmt, known, decl_variables, profile, names_diags,
                                                 struct_types, dim_at)
@@ -937,6 +938,22 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                             "Too many parameters:")] + dup_diags.items)
                     else:
                         diags.items.extend(own_items)
+                    stops = [i for i in (bad_at, dup_at) if i is not None]
+                    if stops and not in_sub and not in_struct and not earlier_errors:
+                        # the variables after the one that stopped the statement are not registered
+                        # (oracle, CR300/CR350, 2026-10-10, in a file without earlier errors, which is where
+                        # the cascade takes over: `Public R As Bad, Z` then `Z = 1`, and
+                        # `Public P(-1), Q`, `Public A(Nope), B`, a redeclared name)
+                        # (a structure-typed variable stays: `input.value` of `input As s` after
+                        # a bad `s2() As s` is not reported, fuzz reproducer e564ca45d2c6)
+                        stop = min(stops)
+                        for i, v in enumerate(stmt.vars[stop + 1:], stop + 1):
+                            if v.type in struct_types:
+                                continue
+                            if dup_at is None or i < dup_at:
+                                declared_kinds.pop(v.name.upper(), None)
+                                dim0_sizes.pop(v.name.upper(), None)
+                        stmt.vars[stop + 1:] = [v for v in stmt.vars[stop + 1:] if v.type in struct_types]
                 else:
                     _check_array_dims(stmt, diags, env, profile)
                     _check_decl_exprs(stmt, known, decl_variables, profile, diags, struct_types)
@@ -2979,7 +2996,10 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
     if len(segments) != len(stmt.vars):
         return None
     unsupported = empty_eq = False
+    unsupported_at = None
     for index, (v, seg) in enumerate(zip(stmt.vars, segments)):
+        if unsupported_at is not None:
+            break  # CR300/CR350: an unsupported type ends the statement after that variable's checks
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
             continue
@@ -2995,6 +3015,10 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=echo.strip()),
                             stmt.file)
                 diags.error(stmt.line, f"Variable illegal in Parameter: {echo}.", stmt.file)
+                if index + 2 < len(stmt.vars):
+                    diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
+                                stmt.file)
+                return index
             continue
         if (stmt.kind in ("PUBLIC", "DIM") and v.type and v.type not in _VARIABLE_TYPES
                 and v.type not in struct_types):
@@ -3002,6 +3026,8 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
             if m and m.group(1).upper() == v.type and not (profile.single_pass and unsupported):
                 diags.error(stmt.line, f"Variable Type {m.group(1)} not supported", stmt.file)
                 unsupported = True  # CR300/CR350 stop at the first one in a statement
+                if profile.single_pass:
+                    unsupported_at = index
         if v.type == "STRING" and v.string_size is not None and (
                 m := _STRING_SIZE_RE.search(seg)) and _adjacent_literals(m.group(1)):
             # `Public S As String * 1  0` -> `Incomplete expression: 1  0.` (echo: everything after
@@ -3069,6 +3095,11 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                         diags.error(stmt.line, f"Too many parameters:  {stmt.vars[index + 2].name}.",
                                     stmt.file)
                     return index
+    if unsupported_at is not None:  # (the unsupported variable's own dimension/initializer found nothing)
+        if unsupported_at + 2 < len(stmt.vars):
+            diags.error(stmt.line, f"Too many parameters:  {stmt.vars[unsupported_at + 2].name}.",
+                        stmt.file)
+        return unsupported_at
     return None
 
 
