@@ -184,13 +184,14 @@ class _Loader:
     """Turns one file's raw text into `LogicalLine`s, expanding includes as it goes."""
 
     def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None,
-                 pull_init: bool = False):
+                 pull_init: bool = False, cr3xx_exts: tuple[str, ...] | None = None):
         self.directory = directory
         self.pull_init = pull_init
         self.pull_limit: int | None = None  # pulls only at physical indexes below this (CR300/CR350)
         self.pull_log: list[tuple[int, int]] = []  # (physical index, reported line) of top-level pulls
         self.diags = diags
         self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
+        self.cr3xx_exts = cr3xx_exts  # CR300/CR350 only: the extensions an include may load
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
 
     def load_file(self, path: Path, *, section: str | None, in_include: bool,
@@ -283,7 +284,7 @@ class _Loader:
             name, spec = m.group(1), m.group(2)
             if self._bad_extension(spec):
                 return [self._extension_error(spec, line, filename, section)]
-            target = _resolve_include_path(spec, self.directory)
+            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
             included = self.load_file(target, section=name, in_include=in_include,
@@ -297,7 +298,7 @@ class _Loader:
             spec = m.group(1)
             if self._bad_extension(spec):
                 return [self._extension_error(spec, line, filename, section)]
-            target = _resolve_include_path(spec, self.directory)
+            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
             included = self.load_file(target, section=None, in_include=True, display=spec.strip())
@@ -308,8 +309,19 @@ class _Loader:
         """CR6/CR1000X: an include name whose text after the last `.` (none: empty) starts with
         neither `crb` nor the logger's own extension is an error whether or not the file exists, and
         an existing file contributes nothing (oracle, 2026-10-08/10)."""
+        if self.cr3xx_exts is not None:
+            ext = spec.rpartition(".")[2].upper() if "." in spec else ""
+            return (len(ext) == 3 and ext != "CRB") or (
+                len(ext) == 5 and ext.startswith("CR3") and ext not in self.cr3xx_exts)
         return self.own_ext is not None and not spec.rpartition(".")[2].upper().startswith(
             ("CRB", self.own_ext))
+
+    def _unloadable(self, spec: str) -> bool:
+        """CR300/CR350: an include whose extension passes `_bad_extension` still opens only with
+        `crb` or the logger's own extension; anything else is the missing-file warning even if the
+        file exists (oracle, 2026-10-10, `docs/checker.md` "Round 9")."""
+        ext = spec.rpartition(".")[2].upper() if "." in spec else ""
+        return self.cr3xx_exts is not None and ext != "CRB" and ext not in self.cr3xx_exts
 
     @staticmethod
     def _extension_error(spec: str, line: int, filename: str, section: str | None) -> LogicalLine:
@@ -331,11 +343,12 @@ class _Loader:
 
 
 def load_program(path: Path, own_ext: str | None = None,
-                 pull_init: bool = False, pull_limit: int | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+                 pull_init: bool = False, pull_limit: int | None = None,
+                 cr3xx_exts: tuple[str, ...] | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags, own_ext, pull_init)
+    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts)
     loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
     diags.pull_log = loader.pull_log
@@ -343,9 +356,10 @@ def load_program(path: Path, own_ext: str | None = None,
 
 
 def load_text(text: str, name: str = "t.cr6", directory: Path | None = None,
-              own_ext: str | None = None, pull_init: bool = False) -> tuple[list[LogicalLine], Diagnostics]:
+              own_ext: str | None = None, pull_init: bool = False,
+              cr3xx_exts: tuple[str, ...] | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Like `load_program`, for source text that may not be on disk (`directory` resolves includes)."""
     diags = Diagnostics()
-    loader = _Loader(directory, diags, own_ext, pull_init)
+    loader = _Loader(directory, diags, own_ext, pull_init, cr3xx_exts)
     lines = loader.load_text(text, name, section=None, in_include=False)
     return lines, diags

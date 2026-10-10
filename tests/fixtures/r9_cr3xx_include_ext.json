@@ -1,0 +1,1207 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r9_cr3xx_include_ext-0",
+   "logger": "cr300",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-1",
+   "logger": "cr300",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-2",
+   "logger": "cr300",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-3",
+   "logger": "cr300",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-4",
+   "logger": "cr300",
+   "source": "Include \"inc.dat\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.dat": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.dat must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-5",
+   "logger": "cr300",
+   "source": "Include \"inc.dat\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.dat must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-6",
+   "logger": "cr300",
+   "source": "Include \"inc.abc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.abc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.abc must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-7",
+   "logger": "cr300",
+   "source": "Include \"inc.abc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.abc must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-8",
+   "logger": "cr300",
+   "source": "Include \"inc.cr3\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr3": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-9",
+   "logger": "cr300",
+   "source": "Include \"inc.cr3\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-10",
+   "logger": "cr300",
+   "source": "Include \"inc.cr351\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr351": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr351 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-11",
+   "logger": "cr300",
+   "source": "Include \"inc.cr351\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr351 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-12",
+   "logger": "cr300",
+   "source": "Include \"inc.cr35x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr35x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr35x must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-13",
+   "logger": "cr300",
+   "source": "Include \"inc.cr35x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr35x must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-14",
+   "logger": "cr300",
+   "source": "Include \"a.crb.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "a.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file a.crb.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-15",
+   "logger": "cr300",
+   "source": "Include \"a.crb.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file a.crb.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-16",
+   "logger": "cr300",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-17",
+   "logger": "cr300",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-18",
+   "logger": "cr300",
+   "source": "Include \"inc.CRB\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.CRB": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.CRB> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-19",
+   "logger": "cr300",
+   "source": "Include \"inc.CRB\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.CRB."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-20",
+   "logger": "cr300",
+   "source": "Include \"inc.cr300\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr300": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr300> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-21",
+   "logger": "cr300",
+   "source": "Include \"inc.cr300\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr300."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-22",
+   "logger": "cr300",
+   "source": "Include \"inc.cr310\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr310": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr310> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-23",
+   "logger": "cr300",
+   "source": "Include \"inc.cr310\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr310."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-24",
+   "logger": "cr300",
+   "source": "Include \"inc.cr350\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-25",
+   "logger": "cr300",
+   "source": "Include \"inc.cr350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-26",
+   "logger": "cr300",
+   "source": "Include \"inc.CR350\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.CR350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.CR350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-27",
+   "logger": "cr300",
+   "source": "Include \"inc.CR350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.CR350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-28",
+   "logger": "cr300",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-29",
+   "logger": "cr300",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-30",
+   "logger": "cr300",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-31",
+   "logger": "cr300",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-32",
+   "logger": "cr300",
+   "source": "Include \"inc.cr\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-33",
+   "logger": "cr300",
+   "source": "Include \"inc.cr\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-34",
+   "logger": "cr300",
+   "source": "Include \"inc.c\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.c": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.c."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-35",
+   "logger": "cr300",
+   "source": "Include \"inc.c\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.c."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-36",
+   "logger": "cr300",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-37",
+   "logger": "cr300",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-38",
+   "logger": "cr300",
+   "source": "Include \"inc.crbx\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crbx": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crbx."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-39",
+   "logger": "cr300",
+   "source": "Include \"inc.crbx\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crbx."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-40",
+   "logger": "cr300",
+   "source": "Include \"inc.cr3x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr3x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr3x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-41",
+   "logger": "cr300",
+   "source": "Include \"inc.cr3x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr3x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-42",
+   "logger": "cr300",
+   "source": "Include \"inc.cr200\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr200": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr200."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-43",
+   "logger": "cr300",
+   "source": "Include \"inc.cr200\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr200."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-44",
+   "logger": "cr300",
+   "source": "Include \"inc.abcd\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.abcd": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.abcd."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-45",
+   "logger": "cr300",
+   "source": "Include \"inc.abcd\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.abcd."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-46",
+   "logger": "cr300",
+   "source": "Include \"a.txt.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "a.txt.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:a.txt.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-47",
+   "logger": "cr300",
+   "source": "Include \"a.txt.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  a.txt.crb."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-48",
+   "logger": "cr300",
+   "source": "Include \"inc.crb \"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-49",
+   "logger": "cr300",
+   "source": "Include \"inc.crb \"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb ."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-50",
+   "logger": "cr300",
+   "source": "Include \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-51",
+   "logger": "cr300",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-52",
+   "logger": "cr300",
+   "source": "Include \"CPU:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.crb."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-53",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.txt\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-54",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-55",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-56",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.crb\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.crb."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-57",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.cr300\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr300": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr300> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-58",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr300\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.cr300."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-59",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.cr350\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-60",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr350\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr350 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-61",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.cr6\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-62",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr6\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-63",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-64",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-65",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.cr310\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr310": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr310> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-66",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr310\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.cr310."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-67",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"inc.cr1x\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-68",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr1x\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.cr1x."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-69",
+   "logger": "cr300",
+   "source": "Include \"bad.txt\"\nInclude \"bad.crb\"\nInclude \"bad.dat\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file bad.txt must have valid program file extension.\nline 2: Warning: Cannot open include file  bad.crb.\nline 3: Include file bad.dat must have valid program file extension."
+  },
+  {
+   "id": "cr300-r9_cr3xx_include_ext-70",
+   "logger": "cr300",
+   "source": "BeginProg\nEndProg\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-0",
+   "logger": "cr350",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-1",
+   "logger": "cr350",
+   "source": "Include \"inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-2",
+   "logger": "cr350",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-3",
+   "logger": "cr350",
+   "source": "Include \"inc.cr6\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-4",
+   "logger": "cr350",
+   "source": "Include \"inc.dat\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.dat": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.dat must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-5",
+   "logger": "cr350",
+   "source": "Include \"inc.dat\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.dat must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-6",
+   "logger": "cr350",
+   "source": "Include \"inc.abc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.abc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.abc must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-7",
+   "logger": "cr350",
+   "source": "Include \"inc.abc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.abc must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-8",
+   "logger": "cr350",
+   "source": "Include \"inc.cr3\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr3": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-9",
+   "logger": "cr350",
+   "source": "Include \"inc.cr3\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr3 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-10",
+   "logger": "cr350",
+   "source": "Include \"inc.cr351\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr351": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr351 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-11",
+   "logger": "cr350",
+   "source": "Include \"inc.cr351\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr351 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-12",
+   "logger": "cr350",
+   "source": "Include \"inc.cr35x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr35x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr35x must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-13",
+   "logger": "cr350",
+   "source": "Include \"inc.cr35x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr35x must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-14",
+   "logger": "cr350",
+   "source": "Include \"a.crb.txt\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "a.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file a.crb.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-15",
+   "logger": "cr350",
+   "source": "Include \"a.crb.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file a.crb.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-16",
+   "logger": "cr350",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-17",
+   "logger": "cr350",
+   "source": "Include \"inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-18",
+   "logger": "cr350",
+   "source": "Include \"inc.CRB\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.CRB": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.CRB> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-19",
+   "logger": "cr350",
+   "source": "Include \"inc.CRB\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.CRB."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-20",
+   "logger": "cr350",
+   "source": "Include \"inc.cr300\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr300": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-21",
+   "logger": "cr350",
+   "source": "Include \"inc.cr300\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-22",
+   "logger": "cr350",
+   "source": "Include \"inc.cr310\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr310": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr310 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-23",
+   "logger": "cr350",
+   "source": "Include \"inc.cr310\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr310 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-24",
+   "logger": "cr350",
+   "source": "Include \"inc.cr350\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr350> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-25",
+   "logger": "cr350",
+   "source": "Include \"inc.cr350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr350."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-26",
+   "logger": "cr350",
+   "source": "Include \"inc.CR350\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.CR350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.CR350> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-27",
+   "logger": "cr350",
+   "source": "Include \"inc.CR350\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.CR350."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-28",
+   "logger": "cr350",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-29",
+   "logger": "cr350",
+   "source": "Include \"inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-30",
+   "logger": "cr350",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-31",
+   "logger": "cr350",
+   "source": "Include \"inc.\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-32",
+   "logger": "cr350",
+   "source": "Include \"inc.cr\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-33",
+   "logger": "cr350",
+   "source": "Include \"inc.cr\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-34",
+   "logger": "cr350",
+   "source": "Include \"inc.c\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.c": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.c."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-35",
+   "logger": "cr350",
+   "source": "Include \"inc.c\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.c."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-36",
+   "logger": "cr350",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-37",
+   "logger": "cr350",
+   "source": "Include \"inc.cr1x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-38",
+   "logger": "cr350",
+   "source": "Include \"inc.crbx\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crbx": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crbx."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-39",
+   "logger": "cr350",
+   "source": "Include \"inc.crbx\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crbx."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-40",
+   "logger": "cr350",
+   "source": "Include \"inc.cr3x\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr3x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr3x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-41",
+   "logger": "cr350",
+   "source": "Include \"inc.cr3x\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr3x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-42",
+   "logger": "cr350",
+   "source": "Include \"inc.cr200\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr200": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr200."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-43",
+   "logger": "cr350",
+   "source": "Include \"inc.cr200\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr200."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-44",
+   "logger": "cr350",
+   "source": "Include \"inc.abcd\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.abcd": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.abcd."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-45",
+   "logger": "cr350",
+   "source": "Include \"inc.abcd\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.abcd."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-46",
+   "logger": "cr350",
+   "source": "Include \"a.txt.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "a.txt.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:a.txt.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-47",
+   "logger": "cr350",
+   "source": "Include \"a.txt.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  a.txt.crb."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-48",
+   "logger": "cr350",
+   "source": "Include \"inc.crb \"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-49",
+   "logger": "cr350",
+   "source": "Include \"inc.crb \"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.crb ."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-50",
+   "logger": "cr350",
+   "source": "Include \"CPU:inc.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-51",
+   "logger": "cr350",
+   "source": "Include \"CPU:inc\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-52",
+   "logger": "cr350",
+   "source": "Include \"CPU:inc.crb\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.crb."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-53",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.txt\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.txt": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-54",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.txt\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-55",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-56",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.crb\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.crb."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-57",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.cr300\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr300": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-58",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr300\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr300 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-59",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.cr350\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr350": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<cpu:inc.cr350> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-60",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr350\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.cr350."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-61",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.cr6\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr6": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-62",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr6\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-63",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-64",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-65",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.cr310\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr310": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file inc.cr310 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-66",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr310\")\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file CPU:inc.cr310 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-67",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"inc.cr1x\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "inc.cr1x": "Public X\nPublic X\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  inc.cr1x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-68",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\", \"CPU:inc.cr1x\")\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  CPU:inc.cr1x."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-69",
+   "logger": "cr350",
+   "source": "Include \"bad.txt\"\nInclude \"bad.crb\"\nInclude \"bad.dat\"\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file bad.txt must have valid program file extension.\nline 2: Warning: Cannot open include file  bad.crb.\nline 3: Include file bad.dat must have valid program file extension."
+  },
+  {
+   "id": "cr350-r9_cr3xx_include_ext-70",
+   "logger": "cr350",
+   "source": "BeginProg\nEndProg\nInclude \"bad.txt\"\nBeginProg\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

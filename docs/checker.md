@@ -3856,8 +3856,7 @@ Fixtures are real-compiler output (`scratch/mkfixture.py`); `tests/test_r5_cr6_f
   `Include`/`IncludeSection` name (empty with no `.`) must start with `crb` or the logger's own
   extension (`cr6`/`cr1x`), else the error `Include file <name as written, drive included> must have
   valid program file extension.` replaces the missing-file warning; every such include is reported and
-  compilation goes on. CR300/CR350 follow a different rule (a name without `.` passes) and are not
-  modelled (existing `.txt` or `.cr6` files on CR300/CR350 also fail on a bad extension and contribute nothing; observed, not modelled). The rule applies to an *existing* file too (`r7_include_existing_ext`): it is rejected the same way and contributes nothing. `source._Loader._bad_extension`.
+  compilation goes on. CR300/CR350 follow a different rule ("Round 9, CR300/CR350: include extensions"). The rule applies to an *existing* file too (`r7_include_existing_ext`): it is rejected the same way and contributes nothing. `source._Loader._bad_extension`.
 - **Include diagnostics are positional** (`r7_include_cutoff`, all four loggers): a missing-include
   warning or extension error is reported only if the compiler reads the line -- an `Include` after the
   first `EndProg` or inside an inactive `#If` branch is silent. The loader leaves an `include_warning`
@@ -4590,3 +4589,21 @@ reported, and neither is `Dimensions not declared`. An indexed target that is no
 Incomplete line (`A(1) = Scan(1)` on a declared array is Incomplete). Code:
 `structure.check_pass1` (ungated for `single_pass`), `cr3xx.order_block_keyword_calls`.
 Not done (CR6 differs too): `X = If(1)` and `X = Until(1)` (Incomplete), `X = To(1)`, `X = Public(1)`.
+
+## Round 9, CR300/CR350: include extensions (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_include_ext.json`)
+
+Same two messages as CR6/CR1000X, `Include file <name as written> must have valid program file extension.` vs
+the missing-file warning `Cannot open include file  <name>.`, for `Include "x"` and `IncludeSection("A", "x")`
+(the paren-less `IncludeSection "A", "x"` is a different shape, not modelled), existing file or not (a rejected
+file contributes nothing). The extension is the text after the last `.` (none: empty), case-insensitive:
+
+- three characters other than `crb` (`txt`, `cr6`, `dat`, `abc`, `cr3`, `bat`, `c r`): the extension error;
+- five characters starting `cr3` that are not the logger's own: the extension error. Own: `cr300` and `cr310`
+  on CR300, `cr350` on CR350 (`cr300`, `cr310`, `cr301`, `cr351`, `cr35x` all fail on CR350; `cr350`, `cr351`,
+  `cr301`, `cr35x` fail on CR300; `cr310` passes there);
+- anything else (no `.`, `inc.`, 1, 2, 4 or 6+ characters, five not starting `cr3`: `cr1x`, `crbx`, `cr`, `cr200`,
+  `cr3x`, `cr3000`) passes the check, but only `crb` and the logger's own extensions actually open: an existing
+  `inc.cr1x` / `inc` / `inc.cr` is `Cannot open include file` and contributes nothing.
+
+`source._Loader._bad_extension` / `_unloadable`, `parser._CR3XX_INCLUDE_EXTS`. The pass-through and 5-character
+rule are fitted to the probed extensions; the real compiler's table was not read.

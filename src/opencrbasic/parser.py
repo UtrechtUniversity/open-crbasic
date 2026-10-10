@@ -1533,7 +1533,8 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
     lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
-                                       _pulls_init(profile or _profile_for(path.name)), pull_limit)
+                                       _pulls_init(profile or _profile_for(path.name)), pull_limit,
+                                       _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name))
     pull_log = diags.pull_log
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
@@ -1552,6 +1553,7 @@ _MISSING_INCLUDE_DRIVE_RE = re.compile(r"^(Cannot open include file  )(?:CPU|USR
 
 
 _INCLUDE_OWN_EXT = {"cr6": "CR6", "cr1000x": "CR1X"}
+_CR3XX_INCLUDE_EXTS = {"cr300": ("CR300", "CR310"), "cr350": ("CR350",)}
 
 
 def _include_warning_drives(diags: Diagnostics, profile: profiles.Profile) -> None:
@@ -1578,7 +1580,8 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
     directory = Path(directory) if directory is not None else None
     lines, diags = source.load_text(
         text, name, directory, _INCLUDE_OWN_EXT.get((profile or _profile_for(name)).name),
-        _pulls_init(profile or _profile_for(name)))
+        _pulls_init(profile or _profile_for(name)),
+        _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(name)).name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
     _include_warning_drives(diags, profile or _profile_for(name))
