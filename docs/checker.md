@@ -4284,3 +4284,10 @@ Fixtures `scope_portset.json`, `scope_fft.json`, `scope_gps.json` (`tests/test_s
   (`Diagnostic.stmt`) where the emitter records it, else by echo substring:
   `PortSet(C1,1,opt):PortSet(C1,1,1,opts)` reports both lines (CR6/CR1000X). Not modelled: the
   reversed order (`Too many parameters` statement first) prints in statement order.
+
+### `Function` names for call statements are collected from read code only
+
+Oracle 2026-10-10, all four loggers (`function_names_active.json`): a `Function Two(A)` after the
+first `EndProg`, or inside an inactive `#If`, does not make an earlier `Two(1) Round(2,0)` a
+`Function` call (the program defines `Sub Two(A,B)`; it compiles). `parser._Parser.run` finds the
+names with a throwaway pass over the lines, so only definitions the real pass reads count.

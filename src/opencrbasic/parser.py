@@ -216,13 +216,19 @@ class _Parser:
         self._done = False  # set once a top-level EndProg is seen; see `run()`
         self._in_struct = False  # inside StructureType ... EndStructureType
         self.function_names: set[str] = set()
+        self._collect = False
 
     # ------------------------------------------------------------ driver
 
     def run(self, lines: list[source.LogicalLine], name: str) -> tuple[S.Program, Diagnostics]:
         self.program.name = name
-        self.function_names = {m.group(1).upper() for ll in lines
-                               if (m := _FUNCTION_DEF_RE.match(ll.text))}
+        if not self._collect and any(_FUNCTION_DEF_RE.match(ll.text) for ll in lines):
+            # only definitions the compiler really reads count (not after EndProg, not in an
+            # inactive #If; oracle, 2026-10-10): a throwaway pass finds them
+            probe = _Parser(self.profile, Diagnostics())
+            probe._collect = True
+            probe.run(lines, name)
+            self.function_names = probe.function_names
         skipped_include_depth = 0
         for ll in lines:
             if skipped_include_depth:
@@ -256,6 +262,8 @@ class _Parser:
             if not self._active():
                 continue
             self.env.section = ll.section
+            if self._collect and (m := _FUNCTION_DEF_RE.match(ll.text)):
+                self.function_names.add(m.group(1).upper())
             self._parse_line(ll)
             if self._done:
                 # CR6Comp stops reading the file at the first top-level EndProg -- confirmed with
