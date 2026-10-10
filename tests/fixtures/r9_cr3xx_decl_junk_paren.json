@@ -1,0 +1,1031 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-0",
+   "logger": "cr300",
+   "source": "Public CR1000XDa  ta(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-1",
+   "logger": "cr300",
+   "source": "Public A  B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-2",
+   "logger": "cr300",
+   "source": "Public A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-3",
+   "logger": "cr300",
+   "source": "Public A B C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-4",
+   "logger": "cr300",
+   "source": "Public A B(2)\nA = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-5",
+   "logger": "cr300",
+   "source": "Public A B(2)\nB = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: B is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-6",
+   "logger": "cr300",
+   "source": "Public A, B  C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration C."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-7",
+   "logger": "cr300",
+   "source": "Public A, B  C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-8",
+   "logger": "cr300",
+   "source": "Public A As Long B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-9",
+   "logger": "cr300",
+   "source": "Public A B As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-10",
+   "logger": "cr300",
+   "source": "Dim A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-11",
+   "logger": "cr300",
+   "source": "Public A(2) B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-12",
+   "logger": "cr300",
+   "source": "Public A  ta(10), C\nC = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-13",
+   "logger": "cr300",
+   "source": "Public A  ta(10), C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-14",
+   "logger": "cr300",
+   "source": "Public A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-15",
+   "logger": "cr300",
+   "source": "Public A B (10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-16",
+   "logger": "cr300",
+   "source": "Public A B()\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-17",
+   "logger": "cr300",
+   "source": "Public A B(1,2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-18",
+   "logger": "cr300",
+   "source": "Public A B(10) C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-19",
+   "logger": "cr300",
+   "source": "Public A B(10) C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-20",
+   "logger": "cr300",
+   "source": "Public A B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-21",
+   "logger": "cr300",
+   "source": "Public A B(10), D\nD = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-22",
+   "logger": "cr300",
+   "source": "Public A, C B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-23",
+   "logger": "cr300",
+   "source": "Public A Sin(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-24",
+   "logger": "cr300",
+   "source": "Public A 1(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-25",
+   "logger": "cr300",
+   "source": "Public A (2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-26",
+   "logger": "cr300",
+   "source": "Public A B.C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-27",
+   "logger": "cr300",
+   "source": "Public A B(Nope)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined.\nline 1: Variable illegal in Parameter: Nope."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-28",
+   "logger": "cr300",
+   "source": "Public A B C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-29",
+   "logger": "cr300",
+   "source": "Public A B(1)(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-30",
+   "logger": "cr300",
+   "source": "Dim A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-31",
+   "logger": "cr300",
+   "source": "Public A B(10) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-32",
+   "logger": "cr300",
+   "source": "Public A B(10) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-33",
+   "logger": "cr300",
+   "source": "Public Resul  tString() As String * 20\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-34",
+   "logger": "cr300",
+   "source": "Public A B() As Long, C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As.\nline 3: C is not defined."
+  },
+  {
+   "id": "cr300-r9_cr3xx_decl_junk_paren-35",
+   "logger": "cr300",
+   "source": "Public A B(2) As Long = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-0",
+   "logger": "cr350",
+   "source": "Public CR1000XDa  ta(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-1",
+   "logger": "cr350",
+   "source": "Public A  B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-2",
+   "logger": "cr350",
+   "source": "Public A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-3",
+   "logger": "cr350",
+   "source": "Public A B C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-4",
+   "logger": "cr350",
+   "source": "Public A B(2)\nA = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-5",
+   "logger": "cr350",
+   "source": "Public A B(2)\nB = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: B is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-6",
+   "logger": "cr350",
+   "source": "Public A, B  C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration C."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-7",
+   "logger": "cr350",
+   "source": "Public A, B  C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-8",
+   "logger": "cr350",
+   "source": "Public A As Long B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-9",
+   "logger": "cr350",
+   "source": "Public A B As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-10",
+   "logger": "cr350",
+   "source": "Dim A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-11",
+   "logger": "cr350",
+   "source": "Public A(2) B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-12",
+   "logger": "cr350",
+   "source": "Public A  ta(10), C\nC = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-13",
+   "logger": "cr350",
+   "source": "Public A  ta(10), C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-14",
+   "logger": "cr350",
+   "source": "Public A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-15",
+   "logger": "cr350",
+   "source": "Public A B (10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-16",
+   "logger": "cr350",
+   "source": "Public A B()\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-17",
+   "logger": "cr350",
+   "source": "Public A B(1,2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-18",
+   "logger": "cr350",
+   "source": "Public A B(10) C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-19",
+   "logger": "cr350",
+   "source": "Public A B(10) C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-20",
+   "logger": "cr350",
+   "source": "Public A B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-21",
+   "logger": "cr350",
+   "source": "Public A B(10), D\nD = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-22",
+   "logger": "cr350",
+   "source": "Public A, C B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-23",
+   "logger": "cr350",
+   "source": "Public A Sin(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-24",
+   "logger": "cr350",
+   "source": "Public A 1(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-25",
+   "logger": "cr350",
+   "source": "Public A (2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-26",
+   "logger": "cr350",
+   "source": "Public A B.C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-27",
+   "logger": "cr350",
+   "source": "Public A B(Nope)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Nope is not defined.\nline 1: Variable illegal in Parameter: Nope."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-28",
+   "logger": "cr350",
+   "source": "Public A B C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-29",
+   "logger": "cr350",
+   "source": "Public A B(1)(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-30",
+   "logger": "cr350",
+   "source": "Dim A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-31",
+   "logger": "cr350",
+   "source": "Public A B(10) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-32",
+   "logger": "cr350",
+   "source": "Public A B(10) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-33",
+   "logger": "cr350",
+   "source": "Public Resul  tString() As String * 20\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-34",
+   "logger": "cr350",
+   "source": "Public A B() As Long, C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: As is not defined.\nline 1: Variable illegal in Parameter:  As.\nline 3: C is not defined."
+  },
+  {
+   "id": "cr350-r9_cr3xx_decl_junk_paren-35",
+   "logger": "cr350",
+   "source": "Public A B(2) As Long = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-0",
+   "logger": "cr6",
+   "source": "Public CR1000XDa  ta(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-1",
+   "logger": "cr6",
+   "source": "Public A  B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-2",
+   "logger": "cr6",
+   "source": "Public A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-3",
+   "logger": "cr6",
+   "source": "Public A B C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-4",
+   "logger": "cr6",
+   "source": "Public A B(2)\nA = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-5",
+   "logger": "cr6",
+   "source": "Public A B(2)\nB = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: B = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-6",
+   "logger": "cr6",
+   "source": "Public A, B  C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration C."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-7",
+   "logger": "cr6",
+   "source": "Public A, B  C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-8",
+   "logger": "cr6",
+   "source": "Public A As Long B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-9",
+   "logger": "cr6",
+   "source": "Public A B As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-10",
+   "logger": "cr6",
+   "source": "Dim A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-11",
+   "logger": "cr6",
+   "source": "Public A(2) B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-12",
+   "logger": "cr6",
+   "source": "Public A  ta(10), C\nC = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-13",
+   "logger": "cr6",
+   "source": "Public A  ta(10), C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-14",
+   "logger": "cr6",
+   "source": "Public A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-15",
+   "logger": "cr6",
+   "source": "Public A B (10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-16",
+   "logger": "cr6",
+   "source": "Public A B()\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-17",
+   "logger": "cr6",
+   "source": "Public A B(1,2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-18",
+   "logger": "cr6",
+   "source": "Public A B(10) C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-19",
+   "logger": "cr6",
+   "source": "Public A B(10) C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-20",
+   "logger": "cr6",
+   "source": "Public A B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-21",
+   "logger": "cr6",
+   "source": "Public A B(10), D\nD = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-22",
+   "logger": "cr6",
+   "source": "Public A, C B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-23",
+   "logger": "cr6",
+   "source": "Public A Sin(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-24",
+   "logger": "cr6",
+   "source": "Public A 1(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-25",
+   "logger": "cr6",
+   "source": "Public A (2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-26",
+   "logger": "cr6",
+   "source": "Public A B.C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-27",
+   "logger": "cr6",
+   "source": "Public A B(Nope)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-28",
+   "logger": "cr6",
+   "source": "Public A B C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-29",
+   "logger": "cr6",
+   "source": "Public A B(1)(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-30",
+   "logger": "cr6",
+   "source": "Dim A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-31",
+   "logger": "cr6",
+   "source": "Public A B(10) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-32",
+   "logger": "cr6",
+   "source": "Public A B(10) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-33",
+   "logger": "cr6",
+   "source": "Public Resul  tString() As String * 20\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-34",
+   "logger": "cr6",
+   "source": "Public A B() As Long, C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As."
+  },
+  {
+   "id": "cr6-r9_cr3xx_decl_junk_paren-35",
+   "logger": "cr6",
+   "source": "Public A B(2) As Long = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-0",
+   "logger": "cr1000x",
+   "source": "Public CR1000XDa  ta(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-1",
+   "logger": "cr1000x",
+   "source": "Public A  B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-2",
+   "logger": "cr1000x",
+   "source": "Public A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-3",
+   "logger": "cr1000x",
+   "source": "Public A B C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-4",
+   "logger": "cr1000x",
+   "source": "Public A B(2)\nA = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-5",
+   "logger": "cr1000x",
+   "source": "Public A B(2)\nB = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: B = 1.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-6",
+   "logger": "cr1000x",
+   "source": "Public A, B  C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration C."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-7",
+   "logger": "cr1000x",
+   "source": "Public A, B  C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-8",
+   "logger": "cr1000x",
+   "source": "Public A As Long B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-9",
+   "logger": "cr1000x",
+   "source": "Public A B As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-10",
+   "logger": "cr1000x",
+   "source": "Dim A B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid Variable declaration B."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-11",
+   "logger": "cr1000x",
+   "source": "Public A(2) B\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-12",
+   "logger": "cr1000x",
+   "source": "Public A  ta(10), C\nC = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-13",
+   "logger": "cr1000x",
+   "source": "Public A  ta(10), C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-14",
+   "logger": "cr1000x",
+   "source": "Public A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-15",
+   "logger": "cr1000x",
+   "source": "Public A B (10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-16",
+   "logger": "cr1000x",
+   "source": "Public A B()\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-17",
+   "logger": "cr1000x",
+   "source": "Public A B(1,2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-18",
+   "logger": "cr1000x",
+   "source": "Public A B(10) C\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-19",
+   "logger": "cr1000x",
+   "source": "Public A B(10) C(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-20",
+   "logger": "cr1000x",
+   "source": "Public A B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-21",
+   "logger": "cr1000x",
+   "source": "Public A B(10), D\nD = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-22",
+   "logger": "cr1000x",
+   "source": "Public A, C B(10), D\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-23",
+   "logger": "cr1000x",
+   "source": "Public A Sin(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-24",
+   "logger": "cr1000x",
+   "source": "Public A 1(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-25",
+   "logger": "cr1000x",
+   "source": "Public A (2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-26",
+   "logger": "cr1000x",
+   "source": "Public A B.C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-27",
+   "logger": "cr1000x",
+   "source": "Public A B(Nope)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-28",
+   "logger": "cr1000x",
+   "source": "Public A B C(1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-29",
+   "logger": "cr1000x",
+   "source": "Public A B(1)(2)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-30",
+   "logger": "cr1000x",
+   "source": "Dim A B(10)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-31",
+   "logger": "cr1000x",
+   "source": "Public A B(10) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-32",
+   "logger": "cr1000x",
+   "source": "Public A B(10) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-33",
+   "logger": "cr1000x",
+   "source": "Public Resul  tString() As String * 20\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-34",
+   "logger": "cr1000x",
+   "source": "Public A B() As Long, C\nBeginProg\nC = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid symbol in expression:  As."
+  },
+  {
+   "id": "cr1000x-r9_cr3xx_decl_junk_paren-35",
+   "logger": "cr1000x",
+   "source": "Public A B(2) As Long = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  }
+ ]
+}

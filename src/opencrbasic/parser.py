@@ -1158,6 +1158,16 @@ class _Parser:
         dims: list[S.Expr] = []
         dim0_span: tuple[int, int] | None = None
         paren_dim = False
+        if not p.is_op("(") and not p.is_ident("AS"):
+            # `Public A B(10)`, `A B.C(1)`, `A B C(1)`: the words before the parenthesis are
+            # skipped, the parenthesis is the dimension (oracle, 2026-10-10)
+            j = 0
+            while p.peek(j).kind in ("IDENT", "NUMBER", "STRING") or (
+                    j and p.peek(j).kind == "OP" and p.peek(j).text == "."):
+                j += 1
+            if j and p.peek(j).kind == "OP" and p.peek(j).text == "(" and not any(
+                    p.peek(k).kind == "IDENT" and p.peek(k).upper == "AS" for k in range(j)):
+                p.i += j
         if p.is_op("("):
             p.next()
             first = p.i

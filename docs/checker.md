@@ -4705,3 +4705,15 @@ the undefined names, then `Expression expects ( : <statement>` (line-end newline
 TCPOpen` / `EmailSuccess=EMailSend` of comportisactive_1 / ethernetpower_1. `Nope(1) = Sin` stays the generic
 out-of-place line. Not modelled: `Nope = EMailSend` also prints `A string variable destination is required` between
 the two. `structure._check_assignment_pass2`, `cr3xx.order_target_name_first`.
+
+## Round 9, all loggers: a stray `EndStructureType` and words before a dimension (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_endstructure.json`, `r9_cr3xx_decl_junk_paren.json`)
+
+- `EndStructureType` (CR6/CR1000X also `EndObjectType`) with no `StructureType` open is `EndStructure without
+  Structure` (no period) at its line, a pass-1 error like the others (it stops CR6/CR1000X pass 2; on CR300/CR350
+  it starts the declaration cascade, so a later redeclaration is silent there). `structure.check_pass1`,
+  `cr3xx._DECLARATION_TRIGGER_PREFIXES`.
+- `Public A B(10)`, `A B (10)`, `A B.C(1)`, `A B C(1)`, `A 1(2)`, `A Sin(10)`: the words between the name and the
+  `(` are skipped and the parenthesis is the dimension of `A` (`Public A B(Nope)` names `Nope`, `Public Resul
+  tString() As String * 20` is the `A() As` error, `Public A B(2)` then `B = 1` has no `B`). Without a `(`
+  after the words it is still `Invalid Variable declaration B.`; `Public A B(` (unclosed, `A B( is missing the )
+  character.`) is not modelled. `parser._parse_vardecl`, `structure._check_decl_exprs`.

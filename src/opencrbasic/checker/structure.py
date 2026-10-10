@@ -821,6 +821,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             if args and isinstance(args[0], S.Name):
                 structs_seen.add(args[0].name.upper())
         elif kw in ("ENDSTRUCTURETYPE", "ENDOBJECTTYPE"):
+            if not in_struct:
+                # a closer with no `StructureType` open (oracle, all four loggers, 2026-10-10)
+                diags.error(stmt.line, "EndStructure without Structure", stmt.file)
             in_struct = False
             struct_members = set()
         dup_at = None
@@ -3035,7 +3038,11 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
         name_at = seg.upper().find(v.name.upper())
         if name_at < 0:
             continue
-        empty_as = _EMPTY_DIMS_AS_RE.match(seg[name_at + len(v.name):])
+        after_name = seg[name_at + len(v.name):]
+        junk = re.match(r"\s+(?:[\w.\"]+\s*)+?(?=\()", after_name)
+        if junk and not re.match(r"(?i)\s*as\b", after_name):
+            after_name = after_name[junk.end():]  # `Public Resul  tString() As ...` (see below)
+        empty_as = _EMPTY_DIMS_AS_RE.match(after_name)
         if empty_as:
             # `Public A() As Long` -> `Invalid symbol in expression:  As.` (CR300/CR350: `As is not
             # defined.` then `Variable illegal in Parameter:  As.`); plain `Public A()` compiles
@@ -3072,6 +3079,9 @@ def _check_decl_exprs(stmt: S.Declaration, known: set[str], variables: set[str],
                 return index
         rest_at = name_at + len(v.name)
         rest = seg[rest_at:]
+        if (junk := re.match(r"\s+(?:[\w.\"]+\s*)+?(?=\()", rest)) and not re.match(r"(?i)\s*as\b", rest):
+            rest_at += junk.end()  # `Public A B(Nope)`: the words before the parenthesis are skipped
+            rest = seg[rest_at:]
         if (m := _EMPTY_DIMS_INIT_RE.match(rest)) and not (profile.single_pass and empty_eq):
             # `Dim A() = {1,2}` -> `Invalid, or out of place expression:  =.` (echo: the blanks
             # after `)` and the `=`), all four loggers (oracle, 2026-10-10); CR300/CR350 stop there
