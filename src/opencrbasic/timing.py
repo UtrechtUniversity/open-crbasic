@@ -1,6 +1,7 @@
 """`-t`: the `[Times]` section CR6Comp writes to the message file -- one `line N: <label>` per
-timed statement. Every rule, its evidence and the instructions still unmodelled (AM25T) are in `docs/cli.md` "Timing output
-(-t)"; coverage is only what oracle probing established, anything else prints no entry.
+timed statement. Every rule and its evidence is in `docs/cli.md` "Timing output (-t)"; coverage is
+only what oracle probing established, anything else (non-constant arguments, other instructions)
+prints no entry.
 """
 
 from __future__ import annotations
@@ -98,6 +99,8 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
             _therm(stmt, env, lines)
         elif kw in _BRIDGE:
             _bridge(stmt, env, lines)
+        elif kw == "AM25T":
+            _am25t(stmt, env, lines)
         elif kw in _CLOSED:
             _closed(stmt, env, lines, pipeline)
     return lines
@@ -260,6 +263,36 @@ def _bridge(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
             lines.append(f"line {stmt.line}: {label} = {_meas_cost(per, settle, integ)}")
         extra = 50 * g * base if c_range else 0
         lines.append(f"line {stmt.line}: {label} = {_meas_cost(g * per, settle, integ, extra, u)}")
+
+
+def _am25t(stmt: S.Instruction, env: consteval.Env, lines: list[str]) -> None:
+    """AM25T(Dest, Reps, Range, DiffChan, MuxChan, TCType, Tref, ClkPort, ResPort, VxChan, RevDiff,
+    Settle, Integ, Mult, Offset) (docs/cli.md "AM25T cost")."""
+    a = _args(stmt, env, 1, 2, 10, 11, 12)
+    if a is None or len(stmt.args) < 15:
+        return
+    reps, rng, rev, settle, integ = a
+    chan = stmt.args[3]
+    cm = re.fullmatch(r"U(\d+)", chan.name.upper()) if isinstance(chan, S.Name) else None
+    cnum = int(cm.group(1)) if cm else _num(_const(chan, env))
+    if cnum is None or reps < 1 or reps > 1000 or settle < 0 or integ < 0:
+        return
+    auto = rng in _AUTO_RANGES
+    c_range = rng in _C_RANGES or rng == 830
+    if not (c_range or auto or rng in _PLAIN_RANGES):
+        return
+    n = 2 if rev else 1
+    ks = int((24 * (settle or 500) + 127) // 256)
+    kx = 24 if integ == 0 else max(1, int((24e6 / integ + 128) // 256))
+    settle_part = -(-32 * ks // 3)
+    per = 816 + settle_part + 32 * kx // 3
+    out = []
+    if _chan_is_u(stmt.args[9]):
+        first = (140 + n * per + (50 if c_range else 0)) // 100 * 100
+        out = [first] * 3 + [300]
+    total = 140 + int(reps) * (n * (per + 80) + (n * (815 + settle_part + 80) if auto else 0) + (50 if c_range else 0))
+    out += [total // 100 * 100, (40000 if cm else 0) + 400 + 200 * int(cnum)]
+    lines.extend(f"line {stmt.line}: AM25T = {v}" for v in out)
 
 
 def _args(stmt: S.Instruction, env: consteval.Env, *idx: int) -> list[float] | None:

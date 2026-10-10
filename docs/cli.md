@@ -203,4 +203,15 @@ result shown signed (`Delay(0,36,Min)` = -2134967196, `Delay(0,-5,mSec)` = -4996
   `ExmV` (below 20 or above 2500, `Minimum Excitation is 20mV.` / `Excitation exceeds 2500.`) hides
   all entries in the real exe but our checker does not raise it (verdict gap, not a timing rule).
 
-Timed but not probed: AM25T.
+- `AM25T(Dest, Reps, Range, DiffChan, MuxChan, TCType, Tref, ClkPort, ResPort, VxChan, RevDiff,
+  Settle, Integ, Mult, Offset)` (1,500 randomised real points, 0 residual): with `P = 816 +
+  ceil(32*ks/3) + floor(32*kx/3)` (the VoltSe `ks`/`kx`), `n = 1 + RevDiff` and `c = 50` for a C
+  range (C or AutoRangeC): a `Un` VxChan prints `floor100(140 + n*P + c)` three times and then
+  `300` (a numeric VxChan prints neither). Then `floor100(140 + Reps*(n*(P + 80) + c +
+  auto*n*(815 + ceil(32*ks/3) + 80)))` (`auto` for AutoRange/AutoRangeC), and finally `400 +
+  200*N` for DiffChan number `N` (numeric or `UN`; `+40000` for the `UN` form, even N included).
+  MuxChan, TCType, Tref, ClkPort, ResPort and VxChan's number do not matter. Reps < 1 and > 1000
+  give no entry.
+
+All instructions seen in this repository and the CHM sample with a cost are now modelled when
+their arguments are constant; anything else prints no entry.
