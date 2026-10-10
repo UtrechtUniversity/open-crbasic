@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unterminated_string_reached-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X + \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X(1) \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n1 \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: 1 \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nSprintF (S, \"abc, X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: SprintF (S, \"abc, X."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLeft(S, \"abc, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: Left(S, \"abc, 3)."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLen(\"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: Len(\"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = Left(S, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: S = Left(S, \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X = 1 + \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nSin(X, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(X, \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLen(S, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Len(S, \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX here \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X here \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X, \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-12",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nY + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y + \"abc."
+  },
+  {
+   "id": "cr6-unterminated_string_reached-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX * (Y + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X * (Y + \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X + \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX(1) \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X(1) \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\n1 \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: 1 \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nSprintF (S, \"abc, X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: SprintF (S, \"abc, X."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLeft(S, \"abc, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: Left(S, \"abc, 3)."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLen(\"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: Len(\"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nS = Left(S, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: S = Left(S, \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String without end quote\nline 5: Invalid, or out of place expression: X = 1 + \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nSin(X, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Sin(X, \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nLen(S, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: Len(S, \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX here \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X here \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX, \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X, \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-12",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nY + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y + \"abc."
+  },
+  {
+   "id": "cr1000x-unterminated_string_reached-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long\n\nBeginProg\n  Scan (1,Sec,3,0)\nX * (Y + \"abc\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: X * (Y + \"abc."
+  }
+ ]
+}

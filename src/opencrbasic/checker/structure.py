@@ -1424,7 +1424,8 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                    d.message.startswith((_FALLBACK_PREFIX, "Illegal Data parameter"))
                    for d in diags.items[:pass1_count]):
                 continue  # a missing-parameter leftover or `Data` line, reported in pass 1
-            if instr_rules.unterminated_string_shape(stmt, profile, subs):
+            if instr_rules.unterminated_string_shape(stmt, profile, subs,
+                                                     pass1_operands(program, profile)):
                 continue  # reported in pass 1 (`instr_rules._check_unterminated_string_param`)
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
@@ -1916,6 +1917,59 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             return ("pass1", "invalid_assignment")
         return _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
     return None
+
+
+def string_reached(text: str, operands: set[str], profile) -> str | None:
+    """True when the pass-1 scan of a statement cut short by an unterminated string reaches the
+    string with no syntax error before it, so the lexer's `String without end quote` is the first
+    message (oracle, all four loggers, 2026-10-10: `X + "abc`, `Len("abc`, `S = Left(S, "abc`,
+    `X(1) "abc`, `1 "abc`; not `X here "abc`, `Len(S, "abc` whose call already has too many
+    arguments, nor an unknown first name on CR6/CR1000X)."""
+    if profile.single_pass:
+        return None  # CR300/CR350 report undefined names first and read other shapes
+    try:
+        lexer.tokenize(text, 0)
+        return None
+    except lexer.LexError as e:
+        if e.message != "unterminated string" or text[e.col:e.col + 1] != '"':
+            return None
+        head_text = text[:e.col]
+    head = [t for t in lexer.tokenize(head_text, 0) if t.kind != "EOF"]
+    if not head or (head[0].kind == "IDENT" and (
+            head[0].upper in profile.instructions or head[0].upper in _START_ERROR_WORDS
+            or head[0].upper in ("IF", "ELSEIF", "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "NOT"))):
+        return None
+    if any(t.kind == "IDENT" and t.upper not in operands and t.upper not in profile.functions
+           and t.upper not in _BINARY_WORDS for t in head):
+        return None  # an unknown name stops the scan before the string
+    stack: list[list] = []   # open calls: [function record or None, arguments so far]
+    for j, t in enumerate(head):
+        if t.kind != "OP":
+            continue
+        if t.text == "(":
+            prev = head[j - 1] if j else None
+            rec = profile.functions.get(prev.upper) if prev is not None and prev.kind == "IDENT" \
+                and prev.upper not in operands else None
+            stack.append([rec, 1])
+        elif t.text == ")" and stack:
+            stack.pop()
+        elif t.text == "," and stack:
+            stack[-1][1] += 1
+    if any(rec and rec.get("nargs") and n > rec["nargs"] for rec, n in stack):
+        return "many"  # the call's own argument count is reported first
+    last = head[-1]
+    if last.kind in ("IDENT", "NUMBER") or (last.kind == "OP" and last.text == ")"):
+        # an operand then the string: only a lone statement-start operand, optionally subscripted
+        first = head[0]
+        if first.kind == "NUMBER" and len(head) == 1:
+            return "reached"
+        if first.kind == "IDENT" and first.upper in operands and first.upper not in profile.symbols \
+                and not (first.upper in profile.functions and first.upper not in operands):
+            inner = [t.text for t in head[2:-1]]
+            return "reached" if len(head) == 1 or (
+                head[1].text == "(" and last.text == ")" and "(" not in inner and ")" not in inner) else None
+    probe = _pass1_scan(head_text + " __crbunk__", operands, profile)
+    return "reached" if probe is not None and probe[0] == "pass2" else None
 
 
 class _Everything:

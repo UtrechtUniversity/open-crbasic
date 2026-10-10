@@ -2801,6 +2801,18 @@ Oracle on all four loggers (`instr_rules.unterminated_string_shape`,
 Not done: `S = abc"`, where an undefined name comes first, and `ESSInitialize(X)` -> `Community
 Names parameter is of type string`. Replay: 847 of 1469 exact, no false rejects.
 
+### Unterminated string reached by the scan (CR6/CR1000X, 2026-10-10)
+
+Oracle (`unterminated_string_reached.json`, 14 cases x 2 loggers): any statement whose pass-1 scan
+reaches the unterminated string with no earlier syntax error gets `String without end quote`, then
+the fallback echo, whatever the first word is: `X + "abc`, `X(1) "abc`, `1 "abc`, `Len("abc`,
+`S = Left(S, "abc`, `SprintF (S, "abc, X`, `X = 1 + "abc`. Not when an unknown name (`Y + "abc`,
+`X * (Y + "abc`) or an operand pair (`X here "abc`, `X, "abc`) comes first (plain fallback), and a
+call that already has more arguments than the function takes before the string (`Sin(X, "abc`,
+`Len(S, "abc`) is `No Matching, or out of place ) in expression: <stmt>.` alone
+(`structure.string_reached`). CR300/CR350 read other shapes (`Foo "abc` also gets the string line
+after `Foo is not defined.`, `X(1) "abc` does not) and are not covered.
+
 ## Subscript counts (2026-09-28)
 
 Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_counts.py`):

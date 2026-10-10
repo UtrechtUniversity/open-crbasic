@@ -103,7 +103,8 @@ _DECLARATION_WORDS = frozenset({"PUBLIC", "DIM", "STATIC", "CONST", "ALIAS", "UN
                                 "SUB", "FUNCTION"})
 
 
-def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str]) -> str | None:
+def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str],
+                              operands: set[str] | None = None) -> str | None:
     """How a line cut short by an unterminated string is reported (oracle, all four loggers,
     2026-09-28, `docs/checker.md` "Unterminated strings"): `"if"` (a one-line `If`), `"call"` (a
     `Sub` call), `"instruction"`, `"assignment"`, or `None` (left to the generic fallback)."""
@@ -124,6 +125,11 @@ def unterminated_string_shape(stmt: S.Stmt, profile, subs: set[str]) -> str | No
         return "instruction" if params and kind != "bool_expr" else None
     if re.match(r"\s*[A-Za-z_][A-Za-z0-9_]*\s*(?:\([^\"]*\))?\s*=\s*\"", stmt.text):
         return "assignment"
+    if operands is not None:
+        from . import structure
+        reached = structure.string_reached(stmt.text, operands, profile)
+        if reached:
+            return "assignment" if reached == "reached" else "many"
     return None
 
 
@@ -134,12 +140,15 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
     quote` then the fallback for `S = "abc:endif` (the compiler's block-form rewrite)."""
     from . import structure, symbols
     subs = symbols.declared_subs(program)
+    operands = structure.pass1_operands(program, profile)
     for stmt in program.statements:
-        shape = unterminated_string_shape(stmt, profile, subs)
+        shape = unterminated_string_shape(stmt, profile, subs, operands)
         if shape == "instruction":
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
         elif shape == "call":
             diags.error(stmt.line, "Invalid or malformed function argument.", stmt.file)
+        elif shape == "many":
+            diags.error(stmt.line, structure._no_matching(profile, stmt.text, stmt.at_eol), stmt.file)
         elif shape == "assignment":
             diags.error(stmt.line, "String without end quote", stmt.file)
             diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
