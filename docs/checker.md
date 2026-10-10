@@ -2837,6 +2837,15 @@ innermost open built-in call against its `nargs` N: no trailing comma and `n < N
 place )` (`Sin(X,`, `Left(S, 1,`, `FileOpen (S, "r", 0`). `Abs` is left alone (`X = Abs(X` compiles,
 `Abs(X, 1` is `Incomplete expression`). `structure._unclosed_call_message`.
 
+### `_` continuation keeps the blanks in the echo (all four loggers, 2026-10-10)
+
+Oracle (`continuation_echo.json`): a continued line echoes the text before the `_` with its blanks
+(the `_` itself dropped) followed by the next physical line verbatim, leading blanks kept:
+`foo bar _` / `      baz` -> `foo bar       baz` (7 blanks), `Y = foo bar _` / `    baz _` /
+`      qux` -> `Y = foo bar     baz       qux`. Earlier code joined with one blank
+(`source.py`). Fixes the `xml_attribute_namespace,         xml_element_name,` echo of
+`xmlparse_1.CR6`.
+
 ## Subscript counts (2026-09-28)
 
 Oracle, all four loggers (`expressions._over_indexed`, `tests/test_subscript_counts.py`):
