@@ -79,6 +79,12 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   (Agent tool, `model: "sonnet"`, one family per agent, in its own worktree as below). The
   coordinating session plans, reviews, integrates and verifies; it does not implement chunks
   itself.
+- **Human decision (2026-10-10): decompilation and debugger tracing of the real compilers are
+  approved** (internal project, not published; licence not a concern). Ghidra + Temurin JDK 21
+  installed via Homebrew by the human. Use them to find rules quickly (static decompile of
+  CR6Comp/cr300comp outside git; error-origin tracing via `winedbg` breakpoints on the error
+  reporter `0x5089c0` in CR6Comp, see `docs/binary.md`). Every rule is still verified by oracle
+  probes and fixtures; decompiled code is never copied into `src/` (`docs/legal.md`).
 - Orchestration: Opus coordinates; workers get disjoint families in their own git worktree
   (`git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`, then
   `ln -s <main>/opencrbasic/.oracle-cache` into it), and are integrated with `git cherry-pick`
