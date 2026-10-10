@@ -179,7 +179,8 @@ def declared_variable_names(program: S.Program) -> set[str]:
                 names.add(v.name.upper())
         elif isinstance(stmt, S.SubDef):
             for p in stmt.params:
-                names.add(p.name.upper())
+                if p.name.upper() not in program.consts:
+                    names.add(p.name.upper())  # (a parameter named like a later `Const` is local)
     return names
 
 

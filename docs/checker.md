@@ -4398,6 +4398,10 @@ Fixture `avgrun_subparam.json`: an untyped `Sub` parameter as the number of dist
 variable, `Optional number of distinct instances must be a constant of type long.` precedes `Missing
 instance number` (`avgrun_4`).
 
+A `Sub` parameter named like a `Const` declared *after* the `Sub` is local to it: the global constant is
+still accepted as that instance number (fixture `sub_param_const.json`, all four loggers; a `Const` declared
+first gives `N is already declared as a CONST.`, not modelled). `declared_variable_names` skips such names.
+
 ### `R` (double-precision) number suffix; assignment inside a leading `( )` group (2026-10-10)
 
 Fixtures `double_literal_r.json` (all four loggers), `paren_assign.json` (CR6/CR1000X).
