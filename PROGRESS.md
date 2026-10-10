@@ -81,7 +81,9 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   itself.
 - **Human decision (2026-10-10): decompilation and debugger tracing of the real compilers are
   approved** (internal project, not published; licence not a concern). Ghidra + Temurin JDK 21
-  installed via Homebrew by the human. Use them to find rules quickly (static decompile of
+  installed via Homebrew by the human (`brew install ghidra`, a formula: headless analyzer
+  `/opt/homebrew/Cellar/ghidra/<ver>/libexec/support/analyzeHeadless`, GUI `ghidraRun`; JDK
+  `/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home`). Use them to find rules quickly (static decompile of
   CR6Comp/cr300comp outside git; error-origin tracing via `winedbg` breakpoints on the error
   reporter `0x5089c0` in CR6Comp, see `docs/binary.md`). Every rule is still verified by oracle
   probes and fixtures; decompiled code is never copied into `src/` (`docs/legal.md`).
