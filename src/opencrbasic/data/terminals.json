@@ -28,6 +28,7 @@
   },
   "port_c1c4_u1u12": {
    "ranges": [[101, 116], [201, 212]],
+   "port_wrap": true,
    "transform": "none",
    "skip_nonpositive": false,
    "message": "Invalid port {v}, use C1..C4 or U1..U12."

@@ -99,7 +99,7 @@ from contextvars import ContextVar
 
 from .. import consteval, mode
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import (
     cr3xx, ess, expressions, instr_data, instr_measure, instr_rules, instructions, intervals,
@@ -163,6 +163,30 @@ def check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> N
         _check(program, profile, diags, result)
     finally:
         _current_result.reset(token)
+
+
+def _place_index_bounds(bounds: Diagnostics, diags: Diagnostics, program: S.Program) -> None:
+    """CR6/CR1000X `Variable %s out of bounds.` from the index check (`bounds`), which is appended
+    after tier C, with two corrections (oracle, round 9, docs/checker.md "Index bounds placement"):
+    a message the destination check already printed on the line is not printed twice
+    (`VoltSe(A(11),1,..,13,..)`), and for `PortGet` the destination (argument 1) comes before the
+    port (argument 2), so it is inserted ahead of `Invalid port ...` (`PortSet(1,A(11))` keeps the
+    port first)."""
+    portget = {(st.file, st.line) for st in program.statements
+               if isinstance(st, S.Instruction) and st.keyword.upper() == "PORTGET"}
+    kept = []
+    printed = list(diags.items)  # before any insertion below
+    for n, d in enumerate(bounds.items):
+        same = lambda o: (o.file, o.line, o.message) == (d.file, d.line, d.message)  # noqa: E731
+        if sum(map(same, bounds.items[:n])) < sum(map(same, printed)):
+            continue  # the destination check printed it
+        at = next((i for i, o in enumerate(diags.items) if (o.file, o.line) == (d.file, d.line)
+                   and o.message.startswith("Invalid port")), None)
+        if at is not None and (d.file, d.line) in portget:
+            diags.items.insert(at, d)
+        else:
+            kept.append(d)
+    bounds.items = kept
 
 
 def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> None:
@@ -547,6 +571,8 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if table_stop is not None and table_stop in links.positions:
             early.items = [d for d in early.items
                            if links.positions.get((d.file, d.line), 0) <= links.positions[table_stop]]
+    if not profile.single_pass and bounds.items:
+        _place_index_bounds(bounds, diags, flat)
     diags.items += bounds.items + fields.items + ranges.items + early.items
     last: dict[tuple, Diagnostic] = {}  # (file, line) -> its latest leading finding
     for d in leading.items:

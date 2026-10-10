@@ -72,6 +72,14 @@ def _evaluate(value: float, kind: dict) -> tuple[bool, bool, int]:
     v = abs(value) if kind.get("transform") == "abs" else value
     if _cr6_burst_kind(kind) and -200 < value < 0:
         v = value  # a small negative is no burst code: tested and shown signed (oracle, CR6)
+    if kind.get("port_wrap"):
+        # CR6 ports (PortSet/PortGet/CS616, round 9): the value is cast to a 32-bit integer (out of
+        # range -> -2147483648, which is what the message shows) and any v >= 201 with v mod 200
+        # in 0..12 is accepted besides C1..C16/U1..U12 (400, 1000, 1001, 3012 compile; 200, 213,
+        # 413, 1100 do not).
+        v = int(v) if -2**31 <= v < 2**31 else -2**31
+        in_range = _in_range(v, kind) or (v >= 201 and v % 200 <= 12)
+        return in_range, True, v
     in_range = _in_range(v, kind)
     odd_ok = (not kind.get("odd_only")) or (in_range and int(v) % 2 == 1)
     return in_range, odd_ok, int(v)

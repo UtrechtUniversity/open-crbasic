@@ -4728,3 +4728,20 @@ Tier B like the unknown-name case: it prints in line order beside an earlier `In
 only the first such `CallTable` is printed. `unknown_calltables` now walks in order instead of
 using the file-wide closed set. Not done: `CallTable T()` (real prints the same, we accept) and
 `Y = T.X` inside its own open table (`Could not find T.` on CR6/CR1000X).
+
+### Index bounds placement and CR6 port values (CR6/CR1000X, round 9, 2026-10-10)
+
+Fixture `portget_order_wrap.json`.
+
+- `PortGet(A(11),1)`: `Variable A out of bounds.` precedes `Invalid port ...` (argument order;
+  `PortSet(1,A(11))` keeps the port first, as before). `checker._place_index_bounds` inserts the
+  index-check finding ahead of the port error for `PortGet` only.
+- `VoltSe(A(11),1,..,13,..)`: the destination bounds message printed once, before `Invalid
+  channel`; the index check no longer repeats a message the destination check already printed on
+  the line.
+- CR6 port kind (`port_c1c4_u1u12`, `port_wrap`; `PortSet`, `PortGet`, `CS616`): besides
+  101..116 and 201..212 any `v >= 201` with `v mod 200` in 0..12 compiles (400, 412, 1000, 1001,
+  3012, 2147483612; not 200, 213, 413, 1100, 3013), a fraction truncates (`400.5`), and a value
+  outside Long is shown as `-2147483648` (`3000000000`). Previously false rejects. Probed for
+  `PortGet` 95..109, 196..221, 396..415, 596..615, 1196..1215 and singles; `PortSet`/`CS616` at
+  400/412/413/1000. `SPIOpen`/`TimerInput`/I2C/SDI-12 port kinds are not touched. CR1000X unchanged.

@@ -1,0 +1,603 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-portget_order_wrap-0",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-1",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),13)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port 13, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-2",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-3",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),400)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-portget_order_wrap-4",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(10),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-5",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-6",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-portget_order_wrap-7",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1,A(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C4 or U1..U12.\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-portget_order_wrap-8",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1,A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C4 or U1..U12.\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr6-portget_order_wrap-9",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),1)\n    VoltSe(X,1,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port 1, use C1..C4 or U1..U12.\nline 5: Invalid channel 13, must use U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-10",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,13,True,0,250,1,0)\n    PortGet(A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid channel 13, must use U1..U12.\nline 5: Variable A out of bounds.\nline 5: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-11",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(11),1,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid channel 13, must use U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-12",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(10),2,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid channel 13, must use U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-13",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,101)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-14",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,116)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-15",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,117)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 117, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-16",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,200)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 200, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-17",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,201)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-18",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,212)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-19",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,213)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 213, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-20",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,400)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-21",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,412)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-22",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,413)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 413, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-23",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1000)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-24",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1001)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-25",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1100, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-26",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3012)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-27",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3013)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 3013, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-28",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,2147483600)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-29",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,2147483612)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-30",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3000000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -2147483648, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-31",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,400.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-32",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-33",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-400)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port -400, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-34",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(400,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-35",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,400,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-36",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(412,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-37",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,412,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-38",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(413,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 413, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-39",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,413,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 413, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr6-portget_order_wrap-40",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-portget_order_wrap-41",
+   "logger": "cr6",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,1000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-0",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-1",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),13)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-2",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-3",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),400)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-4",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(10),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-5",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-6",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-7",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1,A(11))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C8.\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-8",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1,A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1, use C1..C8.\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-9",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(A(11),1)\n    VoltSe(X,1,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds.\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-10",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(X,1,mV5000,13,True,0,250,1,0)\n    PortGet(A(11),1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable A out of bounds.\nline 5: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-11",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(11),1,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-12",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    VoltSe(A(10),2,mV5000,13,True,0,250,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Variable A out of bounds."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-13",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,101)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-14",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,116)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-15",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,117)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-16",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,200)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-17",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,201)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-18",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,212)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-19",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,213)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-20",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,400)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-21",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,412)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-22",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,413)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-23",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-24",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1001)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-25",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,1100)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-26",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3012)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-27",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3013)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-28",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,2147483600)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-29",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,2147483612)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-30",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,3000000000)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-31",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,400.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-32",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-33",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortGet(X,-400)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-34",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(400,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 400, use C1..C8."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-35",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,400,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-36",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(412,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 412, use C1..C8."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-37",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,412,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-38",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(413,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 413, use C1..C8."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-39",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,413,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U1."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-40",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    PortSet(1000,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid port 1000, use C1..C8."
+  },
+  {
+   "id": "cr1000x-portget_order_wrap-41",
+   "logger": "cr1000x",
+   "source": "Public A(10), X, Y\nBeginProg\n  Scan(1,Sec,0,0)\n    CS616(X,1,U1,1000,1,1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: U1."
+  }
+ ]
+}
