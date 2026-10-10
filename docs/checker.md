@@ -4482,3 +4482,12 @@ Fixtures `symbol_assignment.json`, `const_as_assign.json` (CR6/CR1000X), `const_
   shortfall, and on one line only the first shortfall prints (`PanelTemp(X) : Delay(1)` -> one line;
   `PanelTemp(X) : Delay(1,Nope)` -> the shortfall, then `Too many parameters:  Nope.`). `X=Nope :
   PanelTemp` prints `Nope` before the shortfall. `cr3xx.check_too_many_cascade`, `drop_shortfall_with_names`.
+- **`Const` with a numeric name, no name or no `=`** (all four loggers, `r8_cr3xx_const_name.json`,
+  `r8_cr3xx_const_comma.json`): with an `=` somewhere, a first name token starting with a digit (`Const 1 = 1`,
+  `Const 1X As Long = 2`, `Const = 1`, `Const =1`, `Const = = 1`, `Const = 1, 2`, `Const 2X, Y = 3`) is `Const
+  name <tok> illegal, starts with a number.` and nothing else; without any `=`, `Const with no assignment.`
+  then `Too many parameters:  <first item>.` (`Const 5`, `Const 1 2 3`, `Const X Y`, `Const "a"`, `Const
+  -1`); `Const =` alone is `Const with no assignment.` (a cascade trigger on CR300/CR350). After `Const A =
+  <value>` a top-level comma ends the statement and the rest is ignored (`Const A = 1, B = 2` compiles, `B`
+  stays undefined). Not modelled: `Const = X` (`CONST needs assignment.`), `Const = "a"` / `-1` / `1.5`
+  (`Invalid variable or constant name: ...`), `Const = X = 1`, `Const = X Y`.

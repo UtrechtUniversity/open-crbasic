@@ -1000,6 +1000,8 @@ class _Parser:
             value_start_col = p.peek().col
             value = self._parse_expr(p, line, file)
             value_span = (value_start_col, p.peek().col)
+            if p.is_op(","):
+                p.i = len(p.toks) - 1  # a top-level comma ends the statement, the rest is ignored
         except _ParseError:
             # `Const` with no complete `Name [As Type] = value` on its own physical line -- a CHM
             # corpus example wrapped the assignment onto the next line with no `_` continuation
@@ -1015,6 +1017,13 @@ class _Parser:
                                              and len(rest[-2].text) == 1):
                     value = p.seg_text[rest[0].col:] if rest[0].kind != "EOF" else ""
                     return S.Unparsed(line, file, text="", reason="Const bad value: " + value)
+            body = re.sub(r"(?i)^\s*Const\b", "", p.seg_text, count=1)
+            bad = re.match(r"\s*(?:=\s*)*(\d\w*)(?![\w.])", body)
+            if bad and "=" in body:
+                p.i = len(p.toks) - 1  # (the rest of the statement is consumed: the reason stands)
+                return S.Unparsed(line, file, text="", reason="Const bad name: " + bad.group(1))
+            if "=" not in body or body.strip() == "=":
+                p.i = len(p.toks) - 1
             return S.Unparsed(line, file, text="", reason="Const without '='")
         node = S.ConstDecl(line, file, name=name_tok.text, value=value, type=vtype, value_span=value_span)
         try:

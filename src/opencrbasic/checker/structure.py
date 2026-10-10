@@ -52,6 +52,7 @@ _CONST_WITHOUT_EQ = "Const without '='"
 # `=` seen, value empty or ending in a binary operator: `reason` is this prefix plus the raw value
 # (the caller overwrites `Unparsed.text`)
 _CONST_BAD_VALUE = "Const bad value: "
+_CONST_BAD_NAME = "Const bad name: "
 # `Do`/`Loop` followed by something other than `While`/`Until`: `reason` is this prefix plus the
 # pass-1 message (`parser._parse_doloop`; oracle, 2026-10-10, all four loggers)
 _DO_LOOP_PARAM = "Do/Loop parameter: "
@@ -1392,7 +1393,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if _junk_init_findings(stmt, profile):
                 continue  # reported in pass 1 (`_junk_init_findings`)
             if stmt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                    stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
                                       _ALIAS_NOTHING_AFTER_EQ)) or \
                     stmt.reason.startswith(_UNCLOSED_DIM_PREFIX):
                 continue  # already reported by `check_pass1`
@@ -1661,7 +1662,7 @@ def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
-                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
                                       _ALIAS_NOTHING_AFTER_EQ))
                 or stmt.reason.startswith(_UNCLOSED_DIM_PREFIX))
 
@@ -2234,7 +2235,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or nxt.reason in _BENIGN_REASONS:
             continue
         if nxt.reason in (_UNITS_WITHOUT_EQ, _CONST_WITHOUT_EQ, _ALIAS_WITHOUT_EQ, _FOR_MISSING) or \
-                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
+                nxt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _CONST_BAD_NAME, _DO_LOOP_PARAM,
                                       _ALIAS_NOTHING_AFTER_EQ)) or \
                 nxt.reason.startswith(_UNCLOSED_DIM_PREFIX):
             continue  # already reported by `check_pass1`
@@ -3308,7 +3309,9 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
             diags.error(stmt.line, "Invalid, or out of place expression: .", stmt.file)
             return
         diags.error(stmt.line, "Const with no assignment.", stmt.file)
-        if named := re.fullmatch(r"([A-Za-z_]\w*)(?:\s+As(?:\s+\w+)?)?\s*", rest, re.I):
+        if "=" not in rest and (named := re.match(r'\s*("[^"]*"|[^\s,]+)', rest)):
+            # the first item is read again as a surplus parameter (oracle, all four loggers,
+            # 2026-10-10: `Const X Y`, `Const 1 2 3` -> `1`, `Const "a"`, `Const -1`)
             diags.error(stmt.line, f"Too many parameters:  {named.group(1)}.", stmt.file)
         return
     if stmt.reason == _ALIAS_NOTHING_AFTER_EQ:
@@ -3320,6 +3323,10 @@ def _check_unparsed_pass1(stmt: S.Unparsed, diags: Diagnostics) -> None:
         return
     if stmt.reason.startswith(_DO_LOOP_PARAM):
         diags.error(stmt.line, stmt.reason[len(_DO_LOOP_PARAM):], stmt.file)
+        return
+    if stmt.reason.startswith(_CONST_BAD_NAME):
+        diags.error(stmt.line, f"Const name {stmt.reason[len(_CONST_BAD_NAME):]} illegal, starts with a number.",
+                    stmt.file)
         return
     if stmt.reason.startswith(_CONST_BAD_VALUE):
         diags.error(stmt.line, f"Invalid, or out of place expression: "
