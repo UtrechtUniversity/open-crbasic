@@ -4268,5 +4268,7 @@ same line plus their usual `Too many parameters` cascade, not modelled for this 
 whose text ends at `String *` (also `A, B As String *`, a following blank, or the size on the next
 physical line) is pass-1 `Size of string missing.` and the next-line number is its own statement
 (`Invalid, or out of place expression: 100.`). With a `'` comment after the `*` the real message is
-`Invalid, or out of place expression:  .`; `String * X` -> `Variable illegal in Parameter: X.`;
-`String * 5 5` -> `Incomplete expression: 5 5.` (not modelled). `structure.is_string_size_missing`.
+`Invalid, or out of place expression:  .` (the blanks after the `*`, one dropped; modelled). The
+declaration still registers its variables (`parser._parse_vardecl` flags `size_missing`), so a later
+`X = MyString +` reports. `String * X` -> `Variable illegal in Parameter: X.`;
+`String * 5 5` -> `Incomplete expression: 5 5.` (not modelled).

@@ -1072,6 +1072,7 @@ class _Parser:
         vtype = None
         strsize = None
         init = None
+        size_missing = None
         if p.is_ident("AS"):
             p.next()
             type_tok = p.expect_ident()
@@ -1080,8 +1081,11 @@ class _Parser:
                 p.next()  # pointer type (see docs/frontend.md)
                 vtype += "!"
             if vtype == "STRING" and p.is_op("*"):
-                p.next()
-                strsize = self._parse_expr(p, line, file)
+                star = p.next()
+                if p.at_end() or p.is_op(","):
+                    size_missing = star.col + 1  # `String *` with no size (oracle, 2026-10-10)
+                else:
+                    strsize = self._parse_expr(p, line, file)
             elif not dims and p.is_op("("):
                 # `Public floatArr As Float(5) = {...}`: the dimension can follow the type
                 # instead of the variable name. Confirmed valid CRBasic by corpus testing
@@ -1135,8 +1139,10 @@ class _Parser:
             # reported, confirmed with a valid first variable followed by a malformed second one.
             bad = p.peek()
             raise _ParseError(f"Invalid As clause: {bad.text}")
-        return S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
-                          dim0_span=dim0_span, paren_dim=paren_dim)
+        decl = S.VarDecl(name=name_tok.text, dims=dims, type=vtype, string_size=strsize, init=init,
+                         dim0_span=dim0_span, paren_dim=paren_dim)
+        decl.size_missing = size_missing  # column just after the `*`, or None
+        return decl
 
     # ---- Alias / Units --------------------------------------------------
 

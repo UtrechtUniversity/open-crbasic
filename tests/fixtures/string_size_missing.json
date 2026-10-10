@@ -54,6 +54,13 @@
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
   },
   {
+   "id": "cr6-string_size_missing-6",
+   "logger": "cr6",
+   "source": "Public X, Y\nPublic A As String *  'c\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  .\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
    "id": "cr1000x-string_size_missing-0",
    "logger": "cr1000x",
    "source": "Public X, Y\nPublic A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
@@ -94,6 +101,13 @@
    "source": "Public X, Y\nDim A As String *\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Size of string missing.\nline 3: Invalid, or out of place expression: 100."
+  },
+  {
+   "id": "cr1000x-string_size_missing-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nPublic A As String *  'c\n100\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression:  .\nline 3: Invalid, or out of place expression: 100."
   }
  ]
 }

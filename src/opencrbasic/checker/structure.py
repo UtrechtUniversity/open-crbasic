@@ -851,6 +851,20 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                         declared_kinds.get(a.name.upper()) not in ("VAR", "ALIAS"):
                     diags.error(stmt.line, f"{a.name} not yet declared.", stmt.file)
 
+        if isinstance(stmt, S.Declaration):
+            for v in stmt.vars:
+                if getattr(v, "size_missing", None) is not None:
+                    # `Public A As String *` (oracle, all four loggers, 2026-10-10), once per
+                    # statement, the first one only on CR300/CR350. The echo is the text after the
+                    # `*` minus one blank; empty or a comma next -> `Size of string missing.`, else
+                    # the generic fallback on the blanks (`*  'c`, `*  `)
+                    echo = stmt.text[v.size_missing + 1:]
+                    message = ("Size of string missing." if not echo or echo.lstrip().startswith(",")
+                               else f"Invalid, or out of place expression: {echo}.")
+                    if not (profile.single_pass and any(
+                            d.message == "Size of string missing." for d in diags.items)):
+                        diags.error(stmt.line, message, stmt.file)
+                    break
         if profile.known_first_word_pass1 and re.match(r"\s*For\s", getattr(stmt, "text", "") or "", re.I) \
                 and (echo := _for_header_incomplete(stmt.text, profile)) is not None:
             diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file, show_file=False)
@@ -1337,7 +1351,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 return stmt.line
         elif isinstance(stmt, S.Unparsed):
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
-                    or is_hash_statement(stmt) or is_string_size_missing(stmt):
+                    or is_hash_statement(stmt):
                 continue
             bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
             if bare is not None:
@@ -1608,14 +1622,6 @@ def _unclosed_paren_kind(text: str, known: set[str]) -> str:
 
 
 
-_STRING_SIZE_MISSING_RE = re.compile(r"\s*(?:Public|Dim)\b.*\bAs\s+String\s*\*\s*$", re.I)
-
-
-def is_string_size_missing(stmt: S.Unparsed) -> bool:
-    """`Public A As String *` ending the line (oracle, all four loggers, 2026-10-10)."""
-    return stmt.at_eol and _STRING_SIZE_MISSING_RE.match(stmt.text) is not None
-
-
 def is_hash_statement(stmt: S.Unparsed) -> bool:
     """A statement starting with `#` that no preprocessor directive claimed: `Unknown instruction`."""
     return stmt.text.lstrip().startswith("#")
@@ -1623,7 +1629,7 @@ def is_hash_statement(stmt: S.Unparsed) -> bool:
 
 def _is_generic_unparsed(stmt: S.Unparsed) -> bool:
     """An `Unparsed` statement no specific pass-1 diagnosis claims (`_check_unparsed_pass1`)."""
-    return not (is_hash_statement(stmt) or is_string_size_missing(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
+    return not (is_hash_statement(stmt) or stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS
                 or stmt.reason in (_UNITS_WITHOUT_EQ, _UNITS_TARGET_NO_EQ, _CONST_WITHOUT_EQ,
                                    _ALIAS_WITHOUT_EQ, _ALIAS_TARGET_NO_EQ, _FOR_MISSING)
                 or stmt.reason.startswith((_INVALID_AS_CLAUSE, _CONST_BAD_VALUE, _DO_LOOP_PARAM,
@@ -3128,9 +3134,6 @@ def _junk_init_findings(stmt: S.Unparsed, profile) -> list[str]:
         return [f"Unknown instruction: {stmt.text}{chr(10) if stmt.at_eol else ''}."]
     if not head:
         return out
-    if head.group(1).upper() != "CONST" and re.search(r"(?i)\bAs\s+String\s*\*\s*(?:,|$)",
-                                                      head.group(2)):
-        return ["Size of string missing."]  # `Public S As String *` (oracle, all four, 2026-10-10)
     const = head.group(1).upper() == "CONST"
     for seg in _split_top(head.group(2)):
         name = re.match(r"\s*([A-Za-z_]\w*)", seg)
