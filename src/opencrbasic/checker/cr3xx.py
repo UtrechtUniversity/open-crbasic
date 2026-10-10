@@ -1618,3 +1618,23 @@ def order_invalid_assignments(program: S.Program, profile, diags: Diagnostics) -
         rest = [d for d in diags.items if (d.line, d.file) != key]
         rest[first:first] = group
         diags.items[:] = rest
+
+
+def order_target_name_first(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `Socket = TCPOpen` with `Socket` undeclared names the target before the
+    `Expression expects (` of the bare function on the right (oracle, 2026-10-10: comportisactive_1,
+    ethernetpower_1), though pass 1 emitted that one first."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not (isinstance(stmt, S.Assignment) and isinstance(stmt.target, S.Name)):
+            continue
+        key = (stmt.line, stmt.file)
+        message = profile.unresolved_symbol_message.format(name=stmt.target.name)
+        own = [d for d in diags.items if (d.line, d.file) == key]
+        mark = next((d for d in own if d.message == message), None)
+        if mark is None or own[0] is mark or not any(d.message.startswith("Expression expects (") for d in own):
+            continue
+        first = next(i for i, d in enumerate(diags.items) if (d.line, d.file) == key)
+        diags.items.remove(mark)
+        diags.items.insert(first, mark)

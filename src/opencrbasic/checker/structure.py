@@ -2630,6 +2630,11 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
             if expressions._has_undefined_index(stmt.value, known, ds, stmt, (stmt.target,)):
                 diags.error(stmt.line, expressions.dimensions_message(stmt.text, profile, True,
                                                                       stmt.at_eol), stmt.file)
+            elif expressions._find_bare_function_ref(stmt.value, profile, frozenset()):
+                # `Socket = TCPOpen` with `Socket` undeclared: the names, then the bare function
+                # (oracle, CR300/CR350, 2026-10-10)
+                diags.error(stmt.line, expressions._bare_function_message(
+                    stmt.text, profile, True, stmt.at_eol), stmt.file)
         return None
     if target_names:
         diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,

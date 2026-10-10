@@ -4696,3 +4696,12 @@ with the line-end newline before the `.` (none for a `:` segment, a one-line `If
 The undefined names of the statement come first (`Sec = Nope`, `6 = estimated`). Only the symbols the logger itself
 defines count (`mV1000 = 1` and `Pi = 3` are `... is not defined.` there). `Sec(1) = 3` is still wrong on every
 logger. `structure.check_pass1`, `cr3xx.order_invalid_assignments`.
+
+## Round 9, CR300/CR350: an undeclared target with a bare function value (oracle, 2026-10-10; `tests/fixtures/r9_cr3xx_target_bare_fn.json`)
+
+`Nope = Sin`, `Nope = TCPOpen`, `Nope = Sin + Nope2`, `If X = 1 Then Nope = Sin`, `Nope = Sin` then `Nope2 = Cos`:
+the undefined names, then `Expression expects ( : <statement>` (line-end newline unless a `If` body or comment)
+-- the message was missing when the target was undeclared, and out of order (after the names) in `Socket =
+TCPOpen` / `EmailSuccess=EMailSend` of comportisactive_1 / ethernetpower_1. `Nope(1) = Sin` stays the generic
+out-of-place line. Not modelled: `Nope = EMailSend` also prints `A string variable destination is required` between
+the two. `structure._check_assignment_pass2`, `cr3xx.order_target_name_first`.
