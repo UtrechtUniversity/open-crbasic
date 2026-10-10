@@ -1277,6 +1277,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                             stmt.file)
 
 
+# the `Const ... As` types the real compilers accept (see `structure._CONST_TYPES`)
+_CONST_TYPES = frozenset({"LONG", "FLOAT", "DOUBLE", "STRING", "BOOLEAN"})
+
+
 def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
     """`Const <name> = <value>.` initializer resolution (this round's own new check, all four
     loggers): a `Const`'s value expression is folded eagerly, at declaration time, so an
@@ -1311,6 +1315,8 @@ def check_consts(program: S.Program, profile, diags: Diagnostics) -> None:
     for stmt in program.statements:
         if not isinstance(stmt, S.ConstDecl):
             continue
+        if stmt.type and stmt.type.upper() not in _CONST_TYPES:
+            continue  # `unknown Const type` is the only message (oracle, 2026-10-10)
         names = _undefined_names(stmt.value, known)
         if not names:
             continue

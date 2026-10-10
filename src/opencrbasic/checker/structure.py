@@ -2638,6 +2638,18 @@ def _report_numeric_sub_name(stmt: S.SubDef, value: object, diags: Diagnostics) 
     diags.error(stmt.line, f"Subroutine name {stmt.name} illegal; cannot be numeric.", stmt.file)
 
 
+# oracle, all four loggers, 2026-10-10 (docs/fuzz-findings.md "Round 9"): the only `Const ... As` types
+_CONST_TYPES = expressions._CONST_TYPES
+
+
+def _bad_const_type(stmt: S.ConstDecl) -> str | None:
+    """The `As` type as written when it is not one `Const` accepts, else None."""
+    if not stmt.type or stmt.type.upper() in _CONST_TYPES:
+        return None
+    m = re.search(r"\bAs\s+(\w+)", stmt.text or "", re.IGNORECASE)
+    return m.group(1) if m else stmt.type
+
+
 def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics,
                                  profile=None) -> int | None:
     """Global-scope redeclaration, pass 1, all four loggers (oracle, 2026-09-27, `docs/checker.md`
@@ -2688,6 +2700,8 @@ def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: 
             diags.error(stmt.line, f"{stmt.name} is already declared as a CONST.", stmt.file)
         else:
             declared[stmt.name.upper()] = "CONST"
+        if (bad := _bad_const_type(stmt)) is not None:
+            diags.error(stmt.line, f"{bad} unknown Const type", stmt.file)
     elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "READONLY":
         # `ReadOnly Nope` -> `Nope not yet declared.`, pass 1, all four loggers (oracle)
         if not stmt.args:

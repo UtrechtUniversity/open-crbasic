@@ -1,0 +1,1451 @@
+{
+ "observation_date": "2026-10-10",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r9_const_type-0",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nBeginProg2 = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-1",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a As Foo = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST.\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-2",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr6-r9_const_type-3",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr6-r9_const_type-4",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-5",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-6",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As ULONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ULONG unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-7",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As IEEE4 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-8",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Short = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Short unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-9",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-10",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-11",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As LONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-12",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As String = \"q\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-13",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr6-r9_const_type-14",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = q\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-15",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-16",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-17",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Long = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-18",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst Pi As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-19",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As If = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-20",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Integer = 1.5\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-21",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Byte = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Byte unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-22",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Text = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Text unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-23",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Single = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Single unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-24",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-25",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Const = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-26",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Public = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Public unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-27",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Long = 1 \n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-28",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo\n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-29",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr6-r9_const_type-30",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-31",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nPublic w\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-32",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr6-r9_const_type-33",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst b = 1\nPublic a, b\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: a is already declared as a CONST.\nline 4: b is already declared as a CONST."
+  },
+  {
+   "id": "cr6-r9_const_type-34",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a2 = 2\nPublic b\nz = a2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-35",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a = 2\nPublic b As Foo\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr6-r9_const_type-36",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As String2 = \"1\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-37",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-38",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-39",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Float = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-40",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As String = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-41",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-42",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-43",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As Integer = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-44",
+   "logger": "cr6",
+   "source": "Public y As Long\nConst a As String2 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-45",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As String2 = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: String2 unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-46",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As Foo = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr6-r9_const_type-47",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As Long = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-48",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As Boolean = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-49",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As Double = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r9_const_type-50",
+   "logger": "cr6",
+   "source": "Public y As Long\nConstTable\n  Const a As String = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-0",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nBeginProg2 = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-1",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a As Foo = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST.\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-2",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-r9_const_type-3",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-r9_const_type-4",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-5",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-6",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As ULONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ULONG unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-7",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As IEEE4 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-8",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Short = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Short unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-9",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-10",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-11",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As LONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-12",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As String = \"q\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-13",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr1000x-r9_const_type-14",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = q\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-15",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-16",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-17",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Long = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-18",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst Pi As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-19",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As If = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-20",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Integer = 1.5\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-21",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Byte = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Byte unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-22",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Text = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Text unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-23",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Single = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Single unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-24",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-25",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Const = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-26",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Public = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Public unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-27",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Long = 1 \n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-28",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo\n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-29",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr1000x-r9_const_type-30",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-31",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nPublic w\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-32",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-r9_const_type-33",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst b = 1\nPublic a, b\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: a is already declared as a CONST.\nline 4: b is already declared as a CONST."
+  },
+  {
+   "id": "cr1000x-r9_const_type-34",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a2 = 2\nPublic b\nz = a2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-35",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a = 2\nPublic b As Foo\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr1000x-r9_const_type-36",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As String2 = \"1\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-37",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-38",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-39",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Float = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-40",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As String = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-41",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-42",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-43",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As Integer = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-44",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConst a As String2 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-45",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As String2 = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: String2 unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-46",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As Foo = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr1000x-r9_const_type-47",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As Long = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-48",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As Boolean = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-49",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As Double = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r9_const_type-50",
+   "logger": "cr1000x",
+   "source": "Public y As Long\nConstTable\n  Const a As String = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r9_const_type-0",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nBeginProg2 = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: BeginProg2 is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-1",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a As Foo = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST.\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-2",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr300-r9_const_type-3",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-4",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-5",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-6",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As ULONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ULONG unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-7",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As IEEE4 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-8",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Short = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Short unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-9",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-10",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-11",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As LONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-12",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As String = \"q\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-13",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr300-r9_const_type-14",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = q\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-15",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-16",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-17",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Long = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-18",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst Pi As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-19",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As If = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-20",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Integer = 1.5\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-21",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Byte = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Byte unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-22",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Text = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Text unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-23",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Single = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Single unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-24",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-25",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Const = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-26",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Public = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Public unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-27",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Long = 1 \n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-28",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo\n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-29",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-30",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-31",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nPublic w\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-32",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-33",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst b = 1\nPublic a, b\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: Too many parameters:  b.\nline 5: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-34",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a2 = 2\nPublic b\nz = a2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 5: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-35",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a = 2\nPublic b As Foo\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 4: z is not defined."
+  },
+  {
+   "id": "cr300-r9_const_type-36",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As String2 = \"1\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-37",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-38",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-39",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Float = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-40",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As String = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-41",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-42",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-43",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As Integer = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-44",
+   "logger": "cr300",
+   "source": "Public y As Long\nConst a As String2 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-45",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As String2 = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: String2 unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-46",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As Foo = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr300-r9_const_type-47",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As Long = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-48",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As Boolean = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-49",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As Double = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r9_const_type-50",
+   "logger": "cr300",
+   "source": "Public y As Long\nConstTable\n  Const a As String = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-0",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nBeginProg2 = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: BeginProg2 is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-1",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a As Foo = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST.\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-2",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 3: a is already declared as a CONST."
+  },
+  {
+   "id": "cr350-r9_const_type-3",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-4",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = a\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-5",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-6",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As ULONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: ULONG unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-7",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As IEEE4 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: IEEE4 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-8",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Short = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Short unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-9",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-10",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-11",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As LONG = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-12",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As String = \"q\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-13",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a."
+  },
+  {
+   "id": "cr350-r9_const_type-14",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = q\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-15",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-16",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-17",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Long = 1, b As Bar = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-18",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst Pi As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-19",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As If = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-20",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Integer = 1.5\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-21",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Byte = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Byte unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-22",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Text = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Text unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-23",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Single = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Single unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-24",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-25",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Const = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-26",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Public = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Public unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-27",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Long = 1 \n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-28",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo\n Const b As Bar2 = 2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 3: Bar2 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-29",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Const with no assignment.\nline 2: Too many parameters:  a.\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-30",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-31",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic z\nz = 1\nPublic w\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-32",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nPublic a\nz = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-33",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst b = 1\nPublic a, b\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 4: Too many parameters:  b.\nline 5: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-34",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nConst a2 = 2\nPublic b\nz = a2\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type\nline 5: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-35",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a = 2\nPublic b As Foo\nz = b\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Variable Type Foo not supported\nline 4: z is not defined."
+  },
+  {
+   "id": "cr350-r9_const_type-36",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As String2 = \"1\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-37",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Foo = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-38",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Long = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-39",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Float = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-40",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As String = \"x\"\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-41",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Boolean = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-42",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Double = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-43",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As Integer = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Integer unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-44",
+   "logger": "cr350",
+   "source": "Public y As Long\nConst a As String2 = 1\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: String2 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-45",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As String2 = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: String2 unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-46",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As Foo = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Foo unknown Const type"
+  },
+  {
+   "id": "cr350-r9_const_type-47",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As Long = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-48",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As Boolean = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-49",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As Double = 1\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r9_const_type-50",
+   "logger": "cr350",
+   "source": "Public y As Long\nConstTable\n  Const a As String = \"1\"\nEndConstTable\nBeginProg\n  y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

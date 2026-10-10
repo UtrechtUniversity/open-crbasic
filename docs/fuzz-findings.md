@@ -464,3 +464,21 @@ now (`tests/fixtures/r9_menupick_values.json`, audited 0 differing). CR300/CR350
 - Parenthesised single tokens `(5)`/`(A)` pass; echo strips one `(`..`)` pair. Odd shapes
   (`a b`, `5x`, `&HZ`, nested parens) are left silent; the real compiler reports them with
   the same message but we give a different parser message.
+
+### R9 family closed: `Const x As <type>` with an unsupported type (all four loggers)
+
+Reproducer `cr1000x/false_accept/03ecff3743a0` (`Const myString As String2 = "123"`);
+`tests/fixtures/r9_const_type.json` (204 cases, audited 0 differing).
+
+- Accepted `As` types (case-insensitive): Long, Float, Double, String, Boolean. Everything else,
+  including `Integer`, `Short`, `Single`, `Byte`, `Text`, `ULONG`, `IEEE4`, `String2`, and keywords
+  (`If`, `Const`, `Public`), gives `<type as written> unknown Const type` at the Const's line.
+- Reported after the duplicate-declaration messages of the same line (`a is already declared as a
+  CONST.` then `Foo unknown Const type`), and as the only message for that Const: an undefined
+  name or other problem in the value is not reported. Only the first item of a `Const a As Foo = 1,
+  b As Bar = 2` line is looked at. In a `ConstTable` the line is the Const's own.
+- CR300/CR350: the message is a declaration trigger of the existing cascade (later `Public z` is
+  not defined where used; a later `Public a` gets no duplicate message).
+- Not done: a bad type together with a malformed value (`Const a As Foo = `, `= 1 +`) still gives
+  the value message; `Const y As Foo = 1` for an existing variable `y` misses the later `Invalid
+  assignment in expression` (same pre-existing gap as plain `Const y = 1`).
