@@ -312,3 +312,23 @@ repository, compares `crbc` with the checkout, starts `crbc-lsp` over stdio). Ac
 0 with all checks passing; record OS, Python and uv versions and the revision. On Windows, also
 note whether the stdio handshake works with the default Python launcher.
 
+### T-12 Rename, formatting, quick fixes and message display in VS Code (LSP-07-wire), appended 2026-10-11
+
+On a revision at or after `fe33b2e` (note: review round-2 rename/encoding fixes LSP-R2 may land
+later; retest rename after them). Full wording in
+[LSP-07-wire-handoff.md](docs/lsp-rounds/LSP-07-wire-handoff.md):
+1. F2 on a library `Public` used by two entries: all uses in the `.crb` and both entries change
+   (closed files too); diagnostics clear.
+2. F2 on `Scan`, a string, a comment, a table field: no rename box; refusal text shown; no stack
+   trace in the output channel.
+3. Rename to an existing name, a keyword or `1bad`: error shown, nothing changes.
+4. Rename while another entry has unsaved edits pending: waits briefly, renames consistently.
+5. One Ctrl+Z after a multi-file rename reverts open editors; closed files stay open and dirty.
+6. Format Document on a mis-indented, error-free `Main.CR6` copy fixes indentation; tab/space
+   settings change the result; format on save does not stall.
+7. Format Selection changes only the selected lines.
+8. Format Document on a file with an error: no change; info "opencrbasic: Cannot format: ...".
+9. Ctrl+. on an undefined name near a declared one: "Change to `Name`" applies and clears it.
+10. UTF-8 `Include "CPU:É space.crb"`: Problems shows `É` (H-04 display).
+11. Windows file URIs in rename/quick-fix edits (if a Windows host is available).
+

@@ -39,6 +39,15 @@ Live implementation state and session handoff. Design and acceptance criteria:
   (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
   LSP-04a-rules.
 
+## Review round 2
+
+[gpt-6.1-sol review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md): all four
+round-1 findings confirmed fixed. Four new P2 findings, all accepted (reproducers, oracle probes for
+1 and 4): (1) rename does not verify unedited dependencies' freshness (collision introduced
+later), (2) rename freshness uses prepare-time cached bytes, (4) rename capture check ignores
+`Public.<name>` member uses -> LSP-R2a; (3) feature positions use replacement bytes when the
+editor encoding cannot represent a character -> LSP-R2b.
+
 ## Integration fixes by the coordinator
 
 - `tools/lsp_bench.py` (LSP-08a) removed `OPENCRBASIC_STRICT` from `os.environ` at import, so the
@@ -252,7 +261,10 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-05d navigation accessor | `codex/lsp-05-accessor` -> `a2a7fe7` | integrated | worker: tests/lsp 504 passed, selfdiff 0 differ; fixed the rename regression (field refs refused as `unmodelled`) and a second one (rename of `a` left `Quoted.a` behind: all table member references now refuse) | coordinator: tests/lsp + full rename sweep running |
 | LSP-03d scan cache | `codex/lsp-03-scancache` -> cherry-picked | integrated | worker: tests/lsp 521, selfdiff 0 differ; completion on an unchanged buffer p50 15.6 -> 2.2 ms (cache hit); a changed buffer still costs ~16 ms | - |
 | LSP-08b user guide | `codex/lsp-08-guide` -> `adf6654` | integrated | [docs/lsp-user-guide.md](docs/lsp-user-guide.md); 25 relative links checked, 0 broken; written on a base before LSP-06a/07-wire | refresh after LSP-07-wire; repo-root `.vscode/settings.json` added (human decision 2026-10-11): `entries` `crbasic/*.CR6`, `helpDirectory` `extracted_chm` |
-| LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire`, base `2c0bd6b`, Sonnet | active | - | verify, cherry-pick |
+| LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire` -> `fe33b2e` | integrated | combined tests/lsp 578 passed (coordinator); worker: 549 x3, selfdiff 0 differ, npm 16/16 | host T-12; review round 2 findings -> LSP-R2 |
+| LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename`, Sonnet | active | - | verify, cherry-pick |
+| LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding`, Haiku | active | - | verify, cherry-pick |
+| LSP-08b-refresh user guide | `codex/lsp-08-guide2`, Haiku | active | - | verify, cherry-pick |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
