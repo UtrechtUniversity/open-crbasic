@@ -1289,6 +1289,22 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     new_items.append(Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.",
                                                 d.file, cascade=False))
                     continue
+            bare = text.rstrip("\n")
+            cp = structure.condition_part(bare)
+            if cp is not None and not cp.strip() and not (
+                    re.match(r"(?i)\s*(?:DO|LOOP)\b", bare) and any(
+                        e.severity == "error" and e.line and e.line < d.line for e in diags.items)
+                    ) and (empty := structure._pass1_scan(
+                    bare, structure._Everything(), profile)) in (("pass1", "missing_expr"),
+                                                                 ("pass1", "fallback")):
+                # a block keyword with no condition at all: the same pass-1 verdicts as CR6/CR1000X
+                # (oracle, CR300/CR350, 2026-10-11: bare `If`/`ElseIf`/`Case`/`Loop While` are
+                # `Invalid or missing expression.`, `If ` and `Select Case` an empty echo)
+                new_items.append(dataclasses.replace(d, message=(
+                    "Invalid or missing expression." if empty[1] == "missing_expr"
+                    else f"{_GENERIC_FALLBACK_PREFIX}.")))
+                changed = True
+                continue
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
             if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \

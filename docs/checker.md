@@ -5100,3 +5100,24 @@ accepted it before). Extra trailing empties still do not matter: `Sample (9,X,FP
 `chm/realtime_1.CR6` line 53 (`Sample( 9,` ending a line, `Too few`). Fixture
 `tests/fixtures/trailing_empty_args.json` (44 cases, CR6 and CR1000X, 0 differing). CR300/CR350
 not changed (the rule is gated to CR6/CR1000X; not probed there).
+
+## Round 12, CR300/CR350 help-corpus prose diffs (2026-10-11; `tests/fixtures/r12_cr3xx_*.json`)
+
+The 20 remaining `difftest --group chm` diffs per logger (same 20 files on CR300 and CR350) are
+CHM prose lines that start with an instruction, a block keyword or a function. Each family below
+was probed with `tools/probe.py` on both loggers; the CR300/CR350 pass-1 scan is not run, so the
+CR6/CR1000X verdicts were reused where the probes agreed.
+
+### Block keyword with no condition (`chm/sgn_1.CR6`, fixture `r12_cr3xx_bare_cond.json`)
+
+A bare `If`, `ElseIf`, `Case`, `Do While|Until`, `Loop While|Until` (nothing after the keyword) is
+`Invalid or missing expression.`; with a trailing blank (`If `, `Case `) and for `Select Case` it
+is `Invalid, or out of place expression: .` (empty echo). These are the CR6/CR1000X pass-1
+verdicts (`structure._pass1_scan` on a blank `condition_part`), applied in
+`cr3xx.check_unknown_line_words` to the generic fallback of an `S.Unparsed` statement; they were
+`Invalid, or out of place expression: If` or an `Incomplete expression: While.` from the
+instruction-prose branch. An error on an earlier line does not hide them for `If`/`ElseIf`/`Case`
+(the corpus has three bare `Case` lines after prose errors), but a bare `Do While`/`Loop Until`
+after an earlier error stays silent (`cascade_do_loop`), so `Do`/`Loop` are excluded then. Not
+fixed: a bare `While` (`Invalid or missing parameter.` here, `Invalid or missing expression.`
+real, all four loggers), `Case Is`, `Case To 3`.
