@@ -1,29 +1,36 @@
 # CRBasic language server: user guide
 
 How to run the opencrbasic language server in VS Code, what each setting does, which editor
-features exist and what a real host has shown. It describes the code at base `3da66c7`.
+features exist and what a real host has shown. It describes the code at base `810b8f9`.
 
 Sections 2 to 7 describe the implemented behaviour from code and documentation. Only the rows of
 the status table in section 8 were observed in a VS Code run, and each names the host record
-(revision) it came from. Anything else is marked **untested**. Contracts and per-module limits are
-in [lsp-api.md](lsp-api.md).
+(revision) it came from. Anything else is marked **untested**. "Stdio-tested" means a test drives
+the real server over stdio with a test client (`tests/lsp/`); that is not an editor run. Contracts
+and per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 1. Status in brief
 
-- Only macOS (arm64, VS Code 1.141.0) has been tested in an editor. Windows and Linux are
-  **untested**.
-- Diagnostics, outline, folding, hover, completion, signature help, navigation and syntax
-  highlighting have passed provider-level checks on a host. Visual and typing checks are partly
-  pending (section 8).
-- Rename, formatting and quick fixes exist as core logic but the server does not offer them on this
-  base (section 5.10).
-- H-02 (a toast when the interpreter path changes) and H-03 (`.CR300` opens as plain text) have code
-  fixes in LSP-01e that are **not host-retested**. H-04 (non-ASCII include names) is **open**.
+- Only macOS (arm64, VS Code 1.141.0) has been tested in an editor, at the revisions named in
+  section 8. Windows and Linux are **untested**.
+- Diagnostics, outline, folding, hover, completion, signature help, navigation, semantic tokens and
+  syntax highlighting passed provider or API checks in a VS Code Extension Development Host at
+  `1b01311d`. Visual rendering, repainting and typing checks are pending.
+- Added after that host run and **not host-tested**: watched files, workspace folders and the size,
+  queue and cache bounds (LSP-06a); rename, formatting and quick fixes (LSP-07-wire); the editor
+  display of compiler messages (LSP-07-wire, H-04 display); the `isIncomplete` flag for a capped
+  completion list (LSP-03c, LSP-06a); the `.CR300` association and the interpreter-change fixes
+  (LSP-01e, H-02 and H-03). None of these commits is an ancestor of the host-tested revisions. Their
+  checks are unit and stdio tests.
+- Four findings from the second review (LSP-R2) are open at this base: rename can miss a changed
+  dependency, rename checks bytes cached at prepare time, positions can shift when the encoding
+  cannot represent a character, and rename ignores `Public.<name>` uses. Section 9 lists them.
 
 ## 2. Install and launch
 
-Requirements: Python 3.10 or newer with [uv](https://docs.astral.sh/uv/); VS Code 1.95 or newer
-(`vscode/package.json` `engines`); Node.js with npm, only to build the client.
+Requirements: Python 3.10 or newer with [uv](https://docs.astral.sh/uv/) (`pyproject.toml`,
+`requires-python`); VS Code 1.95 or newer (`vscode/package.json`, `engines`); Node.js with npm, only
+to build the client. The macOS host run at `1b01311d` used Node 26.0.0 and npm 11.12.1.
 
 From the repository:
 
@@ -35,13 +42,15 @@ cd vscode && npm ci && npm run compile
 ```
 
 - `uv sync` installs the `dev` group, which includes pygls (`pyproject.toml`). For a runtime-only
-  environment, run `uv pip install -e ".[lsp]"` in an environment you manage. The `lsp` extra is
-  `pygls>=2.1.1,<3`.
+  environment, install the `lsp` extra (`pygls>=2.1.1,<3`) into an environment you manage.
 - Set `opencrbasic.pythonPath` to that environment's interpreter, as an absolute path with `$HOME`
   expanded, for example `/Users/<you>/.uv-envs/opencrbasic/bin/python`. VS Code does not expand
   `$HOME` in settings.
-- The client runs from source: open `opencrbasic/vscode/`, press F5 ("Run Extension"), then open a
-  `.CR6` file in the Extension Development Host. `vscode/package.json` has no packaging script.
+- Run from source: open `opencrbasic/vscode/`, press F5 ("Run Extension"), then open the repository
+  root in the Extension Development Host. The launch configuration (`vscode/.vscode/launch.json`)
+  passes only the extension path, so the host window opens without a folder. The repository's
+  `.vscode/settings.json` (section 3) applies only when the repository root is open. `vscode/`
+  has `compile`, `watch` and `test` scripts and no packaging script.
 - If the interpreter imports `opencrbasic` from another checkout (a git worktree, for example), set
   `opencrbasic.serverEnv` to `{"PYTHONPATH": "<worktree>/opencrbasic/src"}`.
 
@@ -52,8 +61,16 @@ It writes one startup line to stderr before it serves requests:
 opencrbasic-lsp: opencrbasic=<path> api_version=<N> git=<short sha|unknown>
 ```
 
-It refuses to start, with exit status 2, when `analysis.API_VERSION` is not the version it was
-written for (`lsp-api.md`, Launch). Observed at `7c450ed5`: `api_version=1`, `git=7c450ed5`.
+The same line is also sent once as an Info log message after initialization, so the output channel
+shows it at Info level (LSP-01e; **untested** in an editor). It refuses to start, with exit status 2,
+when `analysis.API_VERSION` is not the version it was written for (`lsp-api.md`, Launch). Observed at
+`7c450ed5`: `api_version=1`, `git=7c450ed5`.
+
+Installed package: `tools/lsp_install_check.py` builds the wheel, installs it into fresh environments
+outside the repository, and checks `crbc`, `crbc-lsp` and the core import without pygls. Its one run
+was on a cloud Linux VM with Python 3.13.16, not a host record: 15 of 15 checks passed
+([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)). macOS and Windows are **untested**
+(T-11 in [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md)).
 
 ## 3. Settings
 
@@ -75,10 +92,24 @@ Names and defaults come from `vscode/package.json`. "Applied" says how a change 
 
 - The server pulls the non-launch settings (`workspace/configuration`) after each change notice.
   Observed at `7c450ed5`: changing `debounceMs` and `exclude` took effect without a restart.
-- `featureWaitMs` (default 1500) is a server-side tuning key that the extension does not contribute.
-  It bounds how long a feature waits for a fresh analysis (section 5.8).
-- An invalid value is ignored with a stderr line and the previous value is kept (`lsp-api.md`,
-  Configuration). **Untested** in an editor.
+- An invalid value is ignored with a stderr line and the previous value is kept (`lsp/config.py`,
+  `lsp-api.md`, Configuration). **Untested** in an editor.
+- Tuning keys that the extension does not contribute. They are not in `package.json`, so VS Code
+  does not offer them in the Settings editor. The server reads them from the `opencrbasic` section
+  when present. The client does not send them in its launch options, so the value is expected to
+  arrive through the configuration pull. That path is inferred from the code and **untested**.
+
+  | Key | Default | Meaning |
+  |---|---|---|
+  | `featureWaitMs` | 1500 | How long a feature waits for a fresh analysis (section 5.8) |
+  | `maxFileBytes` | 2097152 | A file larger than this is not analysed (section 4) |
+  | `maxQueuedJobs` | 64 | Entries with an analysis running at once; the rest wait |
+  | `maxCacheMb` | 256 | Parsed programs kept for the language features |
+
+- **Repository settings.** The repository's `.vscode/settings.json` sets `opencrbasic.entries` to
+  `["crbasic/*.CR6"]` and `opencrbasic.helpDirectory` to `"extracted_chm"` (a human decision,
+  commit `f306982`). The help path is relative to the first workspace folder, so it resolves when the
+  repository root is the workspace folder.
 
 ## 4. Entry programs
 
@@ -86,7 +117,8 @@ The server analyses each *entry* together with the files it includes.
 
 - Entries are the files matching `entries` (workspace-relative, case-insensitive globs: `*`, `?`,
   `**`, `{a,b}`) minus `exclude`. Directories whose name starts with `.` and `node_modules` are not
-  walked.
+  walked. Discovery runs at startup, on a configuration change, on a workspace-folder change and when
+  a program file is created or deleted (see "Files changed outside the editor" below).
 - A `.crb` library is never an entry. Its diagnostics come from the entries that include it. When
   several entries contribute to the same file, each message gets an `[EntryName] ` prefix. Observed
   at `7c450ed5`.
@@ -98,19 +130,38 @@ The server analyses each *entry* together with the files it includes.
 - Changing `entries` or `exclude` re-discovers the entries; a file that drops out loses its
   diagnostics. Observed at `7c450ed5`: excluding `crbasic/SbdPayload_tester.CR6` removed its warnings,
   and removing the exclusion restored them.
-- **Repository root:** the default `**/*.CR6` opened at the repository root matches 2,781 `.CR6`
-  files: 2,758 in `opencrbasic/tests/corpus/` (fuzz and CHM corpora), 16 in `crbasic/` and 4 in
-  `examples/` (counted at `3da66c7`). The cost of analysing all of them is not measured. For the
-  station programs, open the folder that contains `crbasic/` and set `entries` to `["crbasic/*.CR6"]`.
+- **The repository root.** The default `**/*.CR6` matches 2,781 `.CR6` files at base `810b8f9`:
+  2,758 under `opencrbasic/tests/corpus/` (fuzz and CHM corpora), 16 in `crbasic/` and 4 in
+  `examples/`. The count uses the server's own discovery function. Opening the repository root uses
+  the repository's `.vscode/settings.json` instead, which matches the 16 station programs. Opening
+  `opencrbasic/` alone keeps the default. The cost of analysing all 2,781 files is not measured.
   Observed at `7c450ed5`: an explicit restart with the `crbasic/*.CR6` entries gave a last initial
-  publication 0.576 s after `initialize`. That is not an all-entries-complete signal.
+  publication 0.576 s after `initialize`. That is not an all-entries-complete signal, and the server
+  exposes none.
 - The logger comes from `opencrbasic.logger` and never from the file extension. A `.CR300` file with
   the default `cr6` is not an entry; set the logger to `cr300` to analyse it. Observed at `7c450ed5`
-  after the language was chosen by hand. The automatic association is LSP-01e, **not host-retested**.
-- Files changed outside the editor (for example by `git pull`) are **not watched** on this base. The
-  server reads an entry's files when it analyses that entry; restart the server to re-read them
-  (`opencrbasic: Restart Server`). File watching is LSP-06a and is not on this base. This is inferred
-  from the code: there is no file-watch handler, and every entry is analysed after `initialized`.
+  after the language was chosen by hand. The automatic association is LSP-01e, **untested** in an
+  editor (section 8).
+
+**Files changed outside the editor (LSP-06a).** When the client supports dynamic registration, the
+server asks it to report changes to `**/*.{crb,cr6,cr1x,cr300,cr350}`, in lower and upper case, after
+`initialized`. Without that support one stderr line says so, and closed files are noticed only on
+save, open or close. A changed file re-analyses every entry that read it or listed its directory, so
+a created include clears a missing-include warning. A created or deleted program file re-runs
+discovery. An open document keeps its editor text until it is closed. A change whose bytes equal what
+the entries last read re-runs nothing. Mixed-case extensions such as `.Cr6` are not watched, and
+includes are looked up in the entry's own directory only. Whether VS Code sends these events for this
+glob, and how fast, is **untested** (T-10 in [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md)). Restarting
+the server still works (section 10).
+
+**Workspace folders (LSP-06a).** Adding or removing a folder re-runs discovery, and entries that drop
+out lose their diagnostics unless they are open. **Untested** in an editor.
+
+**Bounds (LSP-06a).** A file over `maxFileBytes` is not analysed. `maxQueuedJobs` limits how many
+entry analyses run at once; the rest wait and none is dropped. `maxCacheMb` drops the least recently
+used parsed program, and a later feature request re-analyses that entry. Each bound is reported as a
+server warning at line 0 of the entry (source `opencrbasic (server)`) and once in the log. It is never
+a CRBasic error (`lsp-api.md`, Workspace). **Untested** in an editor.
 
 ## 5. Features
 
@@ -128,6 +179,10 @@ configuration change. The analysis reads the unsaved text of open files, not the
   prepended.
 - An internal failure, a timeout (`analysisTimeoutMs`) or a worker crash gives an error at line 0 of
   the entry, source `opencrbasic (internal)`. The next successful analysis clears it.
+- **Display text (LSP-07-wire, H-04).** The compiler decodes source bytes as Latin-1, so a UTF-8 name
+  reads as mojibake in its message. The server re-decodes the compiler's message with
+  `opencrbasic.encoding` before publishing it (`lsp-api.md`, Diagnostics mapping). Analysis, the CLI
+  and the structured results are unchanged. **Untested** in an editor (T-12 item 10).
 
 Host: at `7c450ed5`, an invalid edit gave errors after the debounce, undo cleared them, an unsaved
 overlay of a library changed the diagnostics of the entries that include it, and Don't Save restored
@@ -155,8 +210,8 @@ Triggered by `(` and `,`. Parameter names come from the help only when the help'
 equals the checker's count. Otherwise the parameters are `arg1` to `argN` and the documentation says
 the names are not applied. Function argument counts follow the checker's accepted counts, not the
 help. For example, FTPClient accepts 6, 10 or 11 arguments. Parameters after the smallest accepted
-count are marked optional, which is a simplification (`lsp-api.md`, Hover). The accepted counts come
-from 130 real-compiler cases with the argument values recorded at `4d88a186` (host record
+count are marked optional, which is a simplification (`lsp-api.md`, Hover and signature help). The
+accepted counts for the 130 real-compiler cases were recorded at `4d88a186` (host record
 `e77ee5cc`); they are not claimed for every argument value.
 
 Host: at `1b01311d`, the active parameter was 0 after `VoltSE(` and 1 after the first comma. Highlight
@@ -170,9 +225,13 @@ instructions, functions and symbols). After `name.` it lists the fields of that 
 The replaced range is the prefix only.
 
 - There is no argument or type context. No items are offered inside a string or after `'`.
-- At most 200 items are returned. The server then reports the list as complete
-  (`isIncomplete: false`), so the editor filters those 200 items as you type instead of asking again.
-  This is inferred from the code and the protocol; **untested** in an editor.
+- At most 200 items are returned (`COMPLETION_LIMIT`, `editing.py`). When the list is cut, the server
+  sends `isIncomplete: true` (`lsp/features.py`), so the editor should ask again as the prefix grows
+  instead of filtering only the first 200. This is added after the `1b01311d` host run and is
+  **untested** in an editor (T-10 item 9).
+- Measured in-process on `Main.CR6` on a loaded cloud host: a request takes about 16 ms when the
+  buffer has changed and about 2 ms when the scan is cached (LSP-03c and LSP-03d handoffs). These are
+  not host measurements.
 
 Host: at `1b01311d`, prefix `Vo` listed a program name before the instructions, `Status.` and `Public.`
 returned fields, and the replaced range covered only the typed prefix. Typing responsiveness:
@@ -233,6 +292,9 @@ highlights were non-empty. Visual highlight rendering: **untested**.
 - Semantic tokens colour declared names by kind: variables, constants (read-only), parameters,
   subs and functions, structure members and tables. A name that is only referenced gets no semantic
   token.
+- When the client declares `workspace.semanticTokens.refreshSupport`, the server asks it to re-request
+  tokens after each new analysis (`lsp-api.md`, Language features). Whether VS Code declares it was not
+  checked here.
 - The TextMate grammar (`vscode/syntaxes/crbasic.tmLanguage.json`) colours comments, strings with `""`,
   numbers, directives, keywords, instructions, built-in functions, predefined constants and operators.
   It is generated from the CR6 catalog and uses the CR6 names whatever `opencrbasic.logger` is set to.
@@ -244,19 +306,47 @@ colours. Predefined constants render white in that theme. At `1b01311d`, semanti
 non-empty before and after an edit. Repainting after an edit without a keystroke: **untested** in
 an editor.
 
-### 5.10 Not offered by the server on this base
+### 5.10 Rename, formatting and quick fixes (LSP-07-wire)
 
-Rename, indentation formatting and quick fixes exist as core modules with their own tests (LSP-07a,
-LSP-07b, LSP-07c; [lsp-api.md](lsp-api.md)), but the server does not register their handlers. VS Code
-shows no rename, format or quick-fix action. Code actions, inlay hints, pull diagnostics and server
-commands are also not offered. **Untested** in an editor.
+The server registers these at this base (`lsp/server.py`). Their cores have their own tests, and the
+server path has stdio tests. **None was run in an editor** (T-12 in
+[LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md)). A refusal is an LSP error or an information message,
+never a CRBasic diagnostic.
+
+- **Rename (F2).** Renames a declared name in every entry that reads its file, including closed files.
+  Edits are versioned: an open document gets its version and a closed one gets `null`. Rename
+  refuses with `Cannot rename: <reason>` and `data.reason` set. The reason is `no_entry` (no entry
+  reads the file), `pending` or `unanalysed` (an entry's analysis is pending, failed or timed out),
+  or `stale` (the text changed while the edit was computed). The core refusals (`rename.REASONS`,
+  all or nothing) cover, for example: a name that is not a name in code, such as a comment, string or
+  keyword (`not_a_name`); a predefined name (`external`); a new name that is a keyword, an invalid
+  identifier or a reserved word (`reserved_name`, `invalid_name`); a name already in scope
+  (`collision`); a table named by a string (`quoted`). A case-only change is allowed.
+- **Formatting.** Format Document and Format Selection change only leading whitespace. When any
+  entry that reads the file has an error anywhere in its program, or an entry is not current, nothing
+  changes and an information message reads `opencrbasic: Cannot format: ...`. The indentation rules
+  (`lsp-api.md`, Formatting): each block body is one level deeper, `Else` and `ElseIf` sit with their
+  `If`, `Case` sits one level inside `Select`, continuation lines are one level deeper, and `#If`
+  directives stay at column 0. Lines after an unclosed block, or after the top-level `EndProg`, are left
+  alone. `SlowSequence` is indented inside `BeginProg`, which differs from the layout of this
+  repository's `Main.CR6`. Offline evidence: the 198 CHM programs that compile on `cr6` gave identical
+  results after formatting (LSP-07b handoff, cloud run).
+- **Quick fixes.** `Change to `Name`` for a misspelled name in an undefined-symbol, undefined-Sub or
+  missing-include diagnostic. Candidates are declarations in scope and catalog names within a small
+  edit distance (at most 2, at most 5 offered). The action replaces one token. It creates no
+  declaration and no `Include`, and it is offered only for diagnostics of open documents.
+- **Not offered.** Commands (`executeCommand`), refactoring kinds, "fix all", inlay hints, pull
+  diagnostics, range and delta semantic tokens.
+
+Known limits and the open review findings for rename and formatting are in section 9.
 
 ## 6. Help directory
 
 `opencrbasic.helpDirectory` names a folder holding `Instructions/*.htm` and `parameters/*.htm`, the
 layout of the extracted CRBasic help. In this repository that is `extracted_chm/` at the repository
 root. A relative path is resolved against the first workspace folder, so with the workspace folder
-`opencrbasic/` use `../extracted_chm`.
+`opencrbasic/` use `../extracted_chm`. The repository's `.vscode/settings.json` (section 3) uses
+`extracted_chm` for the repository root.
 
 - The index is built once, in a background thread, when the setting is applied. The `extracted_chm`
   index took about 0.5 s on the cloud measurement host (LSP-wire handoff). Changing the setting needs
@@ -273,24 +363,31 @@ Host: see the hover row in section 8 (`1b01311d`).
 ## 7. Encoding and file names
 
 - The compiler reads source bytes as Latin-1. Unsaved text is encoded with `opencrbasic.encoding`
-  before analysis, so a saved file and its unsaved text give the same analysis when the setting
-  matches the file's encoding. When some characters cannot be represented, the document gets one
-  warning at line 0 (source `opencrbasic (server)`).
+  before analysis (replacing characters the encoding cannot represent), so a saved file and its
+  unsaved text give the same analysis when the setting matches the file's encoding. When some
+  characters cannot be represented, the document gets one warning at line 0 (source
+  `opencrbasic (server)`).
+- **Open (LSP-R2b).** Editor positions are converted with the bytes after that replacement. With an
+  encoding that cannot represent a character, the columns after that character on its line move, and
+  an edit can land in the wrong place. The reviewer reproduced this at `f3069825` over stdio with
+  `encoding: latin-1` and an emoji in a string: hover and highlights were two columns off, and an
+  accepted completion produced `s = "😀" :oldNameN`. The default `utf-8` represents every character.
 - Positions use the editor's negotiated encoding (UTF-16 in VS Code by default). The server converts
-  from byte columns of the document's text. Observed at `1b01311d`: after a string earlier on the line that holds
-  a non-BMP character (U+1F600, a surrogate pair in UTF-16), the use of a later name still resolved,
-  and an error at the end of that line ended at the UTF-16 line end.
-- **Non-ASCII include names (H-04, open).** At `7c450ed5` a UTF-8 file name, `É space.crb`, was not
-  resolved: the diagnostic shows mojibake (`Cannot open include file  Ã\u0089 space.crb.`). The
-  compiler's own behaviour, observed on Wine at `e77ee5cc` (T-05): a UTF-8 name in the source gives a
-  cannot-open warning with exit status 0, and the Latin-1 byte name resolves. The editor's display of
-  the message text is LSP-01f, which is not on this base.
+  from byte columns of the document's text. Observed at `1b01311d`: after a string earlier on the line
+  that holds a non-BMP character (U+1F600, a surrogate pair in UTF-16), the use of a later name still
+  resolved, and an error at the end of that line ended at the UTF-16 line end.
+- **Non-ASCII include names (H-04).** Resolution matches the compiler. At `e77ee5cc` (T-05), a UTF-8
+  name in the source (`Include "É space.crb"` with bytes `C3 89`) gave a cannot-open warning with exit
+  status 0 from both the real compiler and `crbc`, and the Latin-1 byte name (`C9`) resolved. At
+  `7c450ed5` the editor showed mojibake (`Ã\u0089 space.crb`). The display now re-decodes the message
+  with the configured encoding (section 5.1), so with `utf-8` it reads `É space.crb`. That display
+  change is **untested** in an editor (T-12 item 10).
 - Names with spaces resolve, and one file has one URI whether or not it is open (`7c450ed5`).
 
 ## 8. Host-tested status
 
-Each record applies to its own revision only. Later changes, such as LSP-01e, are untested unless a
-row says otherwise.
+Each record applies to its own revision only. Every feature from LSP-01e onward is untested unless a
+row says otherwise, because none of those commits is in the host-tested revisions.
 
 | Area | Observed | Record |
 |---|---|---|
@@ -303,29 +400,55 @@ row says otherwise.
 | Library edit on physical line 32 covers lines 32 and 33 | Yes (fixed by LSP-01d; was line 33) | [e77ee5cc](lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md) |
 | `debounceMs` and `exclude` change without restart | Yes | `7c450ed5` |
 | `opencrbasic: Restart Server` | Yes | `7c450ed5` |
-| Interpreter path change restarts the server | Yes, new server starts; an error toast also appears (H-02) | `7c450ed5` |
+| Interpreter path change restarts the server | Yes, a new server starts; an error toast also appears (H-02) | `7c450ed5` |
 | Interpreter path change without the toast (LSP-01e) | **Untested** | - |
-| `.CR300` opens as CRBasic automatically (LSP-01e) | **Untested**; at `1b01311d` and `7c450ed5` it opened as plain text (H-03) | [1b01311d](lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md) |
+| `.CR300` opens as CRBasic automatically (LSP-01e) | **Fails** at `1b01311d` (H-03: plain text); the LSP-01e fix is **untested** | [1b01311d](lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md) |
 | Open `.crb` with no entry shows the information note | Yes | `7c450ed5` |
 | Include name with a space: one URI, opened or not | Yes | `7c450ed5` |
-| UTF-8 non-ASCII include name | Not resolved; mojibake in the message (H-04, open) | `7c450ed5` |
+| UTF-8 non-ASCII include name: mojibake in the message (H-04) | Yes at `7c450ed5`; the display fix (LSP-07-wire) is **untested** | `7c450ed5` |
 | Syntax highlighting, scope checks | 12 of 12 pass | [602f6462](lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md) |
 | Syntax highlighting, visual check, Dark Modern | Yes | `7c450ed5` |
-| Help hover, variable hover, completion, signature help, outline, folding, links, navigation, semantic tokens, Unicode, after-edit update (provider and API level) | 16 checks pass; the `.CR300` association check fails | [1b01311d](lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md) |
+| Help hover, variable hover, completion, signature help, outline, folding, links, navigation, semantic tokens, Unicode, after-edit update (provider and API level) | 16 checks pass | `1b01311d` |
 | Same, visual rendering, repaint, typing responsiveness | **Untested** (the record lists them as pending) | - |
-| Benchmark on an idle macOS host: hover p95 0.856 ms, completion p95 3.948 ms (in-process core calls); diagnostics p95 133.740 ms after the debounce, from an end-to-end edit-to-publish of 433.740 ms (20 edits) | Measured once; not a guarantee | `e77ee5cc` |
+| Full pytest suite, client tests, repository verifier | 22,182 passed, 311 skipped; client 10 pass; `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` (H-05 strict-mode leak fixed) | `1b01311d` |
+| Benchmark on an idle macOS host: hover p95 0.856 ms, completion p95 3.948 ms (in-process core calls); diagnostics p95 133.740 ms after the debounce, from an end-to-end edit-to-publish of 433.740 ms (20 edits, stdio) | Measured once; not a guarantee | `e77ee5cc` |
+| Builtin argument counts (signature help) | 130 real-compiler cases; audit 0 differing | `e77ee5cc` (T-08 at `4d88a186`) |
+| Watched files, workspace folders, size, queue and cache bounds | **Untested** in an editor (T-10); stdio and unit tests only | - |
+| Completion cap (200) and `isIncomplete` in an editor | **Untested** (T-10 item 9) | - |
+| Rename, formatting, quick fixes and their refusals | **Untested** in an editor (T-12); stdio tests only | - |
+| Editor display of compiler messages in the encoding (H-04 display) | **Untested** (T-12 item 10) | - |
+| Install check (LSP-08c) | Cloud Linux run 15 of 15; macOS and Windows **untested** (T-11) | [LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md) |
 | Windows and Linux | **Untested** | - |
-| Rename, formatting, quick fixes | Not offered by the server; core only | - |
-| File watching of files changed outside the editor | Not on this base (LSP-06a) | - |
 
 ## 9. Known limits
 
 - One platform observed (macOS). Windows and Linux are untested.
-- Outside-editor changes are not seen until the server restarts or the entry is analysed again.
-- Completion stops at 200 items, reported as complete (section 5.4).
+- **Open review findings (LSP-R2), not fixed at `810b8f9`.** They come from the second review at
+  `f3069825` ([review](lsp-rounds/review-2026-10-11-f3069825.md)). The reviewer observed each one, and
+  the coordinator accepted them. Fixes are assigned to LSP-R2a (rename) and LSP-R2b (encoding).
+  1. Rename checks freshness only for the files it edits. A dependency with no occurrence of the old
+     name can change after the analysis and introduce the new name. Rename then succeeds, and the
+     program gets a duplicate declaration. The reviewer checked this with the native analysis and the
+     reference compiler.
+  2. Rename's freshness check compares with bytes cached at prepare time. An edited file that changed
+     between prepare and rename can give positions from the older text.
+  3. Rename's new-name capture check ignores `Public.<name>` uses. Renaming a `Public` variable can bind
+     an existing `Public.<name>` use that the edit does not change, and the program can then compile.
+     The reviewer checked this with the reference compiler.
+  4. Encoding positions after an unrepresentable character (section 7).
+  Until these are fixed, check the edit list of a rename before accepting it.
+- Completion stops at 200 items and reports the list as incomplete (section 5.4).
 - Ranges are whole lines. There are no token or column ranges for diagnostics or hover.
 - Results during an edit can be stale (section 5.8). A timeout restarts the worker pool; the entry
   shows an error until its next successful analysis.
+- Rename and formatting wait up to `analysisTimeoutMs` plus 2 s for pending analyses before refusing.
+  A client with a shorter request timeout would show an error instead of the refusal (LSP-07-wire
+  handoff).
+- Formatting refuses per program: an error anywhere in an entry that reads the file blocks it.
+- Quick fixes replace one token in open documents only. They never add a declaration or an `Include`.
+- Files changed outside the editor: mixed-case extensions are not watched, and includes resolve only in
+  the entry's own directory (LSP-06a handoff).
+- Not offered: `executeCommand`, refactoring code actions, inlay hints, pull diagnostics.
 - The full per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 10. Troubleshooting
@@ -339,16 +462,24 @@ row says otherwise.
 - **Server failed to start** (error message). Check `pythonPath`. Run `<pythonPath> -m opencrbasic.lsp`
   in a terminal: the startup line should appear on stderr, then the process waits for input. Stop it
   with Ctrl-C.
-- **Toast after changing `pythonPath`** (H-02, observed at `7c450ed5`). The LSP-01e fix is not
-  host-retested. If the new server did not start, run `opencrbasic: Restart Server`.
-- **`.CR300` opens as plain text** (H-03). Choose CRBasic from the language picker; set `logger` to
-  `cr300` to see its diagnostics. The automatic association is LSP-01e, not host-retested.
+- **Toast after changing `pythonPath`** (H-02, observed at `7c450ed5`). The LSP-01e fix is **untested**.
+  If the new server did not start, run `opencrbasic: Restart Server`.
+- **`.CR300` opens as plain text** (H-03, observed at `1b01311d`). Choose CRBasic from the language
+  picker; set `logger` to `cr300` to see its diagnostics. The automatic association is LSP-01e,
+  **untested**.
 - **No diagnostics for a file.** Check that the file is an entry (section 4). The information note
   tells you when a `.crb` is not included by any entry.
-- **Stale results for a file changed outside the editor.** Run `opencrbasic: Restart Server`.
+- **Stale results for a file changed outside the editor.** Watched files are not host-tested. If the
+  output channel says the client does not support watched-file registration, changes to closed files
+  are seen only on save, open or close. Run `opencrbasic: Restart Server` in either case.
+- **`Cannot rename: ...`.** The text after the colon gives the reason (section 5.10). `pending` clears
+  when the running analysis finishes. `unanalysed` means an entry has no completed analysis (it failed
+  or timed out), and it stays until a later analysis of that entry succeeds.
+- **`opencrbasic: Cannot format: ...`.** Fix the errors the message names. Formatting is not offered for
+  a file with errors in an entry that reads it.
 
 ## 11. Where the details live
 
 - [lsp-api.md](lsp-api.md): contracts, provenance and known limits for each module.
-- [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md): the host checks still pending.
+- [LSP_TO_BE_TESTED.md](../LSP_TO_BE_TESTED.md): the host checks still pending (T-04, T-09 to T-12).
 - [LSP_PROGRESS.md](../LSP_PROGRESS.md): the round ledger.
