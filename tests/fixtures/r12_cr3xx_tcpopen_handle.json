@@ -1,0 +1,281 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-0",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-1",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hs,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-2",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hs(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-3",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-4",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,st,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-5",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-6",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,5,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-7",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,x+1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-8",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-9",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-10",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-11",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",Nope,30,1000,Nope2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-12",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long\nline 4: Dimensions not declared: TCPOpen (\"\",3000,30,1000,Nope(1),3)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-13",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPClose(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-14",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPClose(hf)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-15",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-16",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-17",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nNope = 1\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-18",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nNope = 1\nTCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-0",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-1",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hs,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-2",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hs(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-3",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-4",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,st,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-5",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-6",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,5,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-7",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,x+1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-8",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-9",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-10",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nx = TCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-11",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",Nope,30,1000,Nope2,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Nope2 is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-12",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long\nline 4: Dimensions not declared: TCPOpen (\"\",3000,30,1000,Nope(1),3)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-13",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPClose(Nope)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-14",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPClose(hf)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-15",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Nope,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-16",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-17",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nNope = 1\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-18",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nNope = 1\nTCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Parameter must be a variable of type long"
+  }
+ ]
+}

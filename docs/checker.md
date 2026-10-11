@@ -5225,3 +5225,15 @@ and `Incomplete expression`), `&h0000 text more` (real names `text`).
   `Need '=' in alias definition: ...` alone; the prose fallback and its names were extra.
 - **A line that starts with a comparison operator** (`= Year`, `< x`, `<> a b`, `>= 3 b`) names the
   first following word and stops (`_leading_unknown_words`), then the generic fallback.
+
+### `TCPOpen` handle argument, CR300/CR350 (`chm/tcpopen_4`; fixture `r12_cr3xx_tcpopen_handle.json`)
+
+The fifth argument (the connection handle) must be a Long variable or Long array element: a Float
+or String variable, a constant, an expression, an undefined name (also a declaration the cascade
+dropped) is `Parameter must be a variable of type long`, printed after the statement's `X is not
+defined.` lines and before `Dimensions not declared` (`cr3xx.check_tcpopen_handle`, run after the
+cascade). Same message on CR6 (`TCPOpen("",3000,30,1000,hf,3)`), where it comes first, ahead of
+`Max number of concurrent connections must be 1..1` (a scalar Long handle with 3 connections):
+not done. A non-constant fourth argument stops the list with `Parameter must be a constant
+integer: <stmt>` instead and is not modelled (the check is skipped then). The first three
+arguments' checks are the existing `_CONST_INTEGER_BAD_ARGS` ones.

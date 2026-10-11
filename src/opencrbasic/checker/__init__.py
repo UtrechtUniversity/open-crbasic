@@ -622,6 +622,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.order_invalid_assignments, program, profile, diags)
     _run_pass(cr3xx.order_target_name_first, program, profile, diags)
     _run_pass(cr3xx.order_unterminated_string, program, profile, diags)
+    _run_pass(cr3xx.check_tcpopen_handle, program, profile, diags)
     _run_pass(cr3xx.add_string_illegal, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:

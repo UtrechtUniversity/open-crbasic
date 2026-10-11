@@ -1930,6 +1930,52 @@ def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
             diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, True) for m in messages]
 
 
+_TCPOPEN_HANDLE = "Parameter must be a variable of type long"
+
+
+def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `TCPOpen`'s fifth argument (the connection handle) must be a Long variable or
+    array: a Float or String variable, a constant, an expression or an undefined name (a
+    declaration the cascade dropped too) is `Parameter must be a variable of type long` (oracle,
+    CR300, CR350 and CR6, 2026-10-11, `chm/tcpopen_4.CR6`), printed after the statement's
+    `X is not defined.` lines and before `Dimensions not declared`. CR6/CR1000X not done: their
+    line comes first, with the connection count check."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    types = symbols.declared_variable_types(program)
+    known = expressions._known_names(program, profile)
+    gone = getattr(diags, "cascade_gone", set())
+    for stmt in program.statements:
+        if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
+            calls = [stmt.args]
+        else:
+            calls = [ix.args for e in expressions._stmt_exprs(stmt) for ix in expressions._index_nodes(e)
+                     if ix.name.upper() == "TCPOPEN"]
+        for args in calls:
+            if len(args) < 5 or args[4] is None:
+                continue
+            arg = args[4]
+            if isinstance(args[3], (S.Name, S.Index)) and args[3].name.upper() not in known:
+                continue  # (a non-constant fourth argument ends the list: `Parameter must be a constant integer`, not done)
+            if isinstance(arg, (S.Name, S.Index)):
+                up = arg.name.upper()
+                if up in gone or up not in known:
+                    bad = True
+                elif up in types:
+                    bad = types[up] != "LONG"
+                else:
+                    continue  # (an alias or a constant: not probed)
+            else:
+                bad = isinstance(arg, (S.Number, S.String, S.Binary, S.Unary))
+            if not bad:
+                continue
+            key = (stmt.line, stmt.file)
+            own = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+            names = [i for i in own if diags.items[i].message.endswith(_UNRESOLVED_SUFFIX)]
+            at = (names[-1] + 1) if names else (own[0] if own else len(diags.items))
+            diags.items.insert(at, Diagnostic("error", stmt.line, _TCPOPEN_HANDLE, stmt.file, True))
+
+
 def order_target_name_first(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350: `Socket = TCPOpen` with `Socket` undeclared names the target before the
     `Expression expects (` of the bare function on the right (oracle, 2026-10-10: comportisactive_1,
