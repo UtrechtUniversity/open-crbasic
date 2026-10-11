@@ -375,3 +375,110 @@ environment): `OPENCRBASIC_LSP_TEST_CRASH=<substring>` makes the worker call `os
 the entry path contains the substring; `OPENCRBASIC_LSP_TEST_SLEEP=<substring>:<seconds>` sleeps
 that long first (for timeout tests). `tests/lsp/test_server.py` drives the real server over stdio
 with `tests/lsp/lspclient.py`.
+
+## Binding index (LSP-05a)
+
+`opencrbasic.bindings` is a read-only index over the parsed program: every declaration, every name
+use, and the declarations each use resolves to. Nothing in the compiler or the checkers calls it,
+so compiler acceptance is unchanged (`tools/selfdiff.py`: 0 differ). Handoff with the observed
+corpus counts: [LSP-05a-handoff.md](lsp-rounds/LSP-05a-handoff.md).
+
+```python
+ix = bindings.build(result.program, "cr6")      # AnalysisResult.program, or parser.parse_file()[0]
+ix.declarations, ix.references                  # tuples, in source (emission) order
+ix.failures                                     # IndexFailure(index, file, line, message)
+ix.unparsed                                     # Unparsed statements the parser could not take apart
+ix.declarations_named("x"), ix.references_to(decl), ix.records_in(stmt), ix.counts()
+ix.lookup("x", routine=None, role="read")       # Resolution(candidates, ambiguity)
+ix.token_of(record)                             # lexer Token (col into record.unit.text) or None
+bindings.name_tokens(stmt, "x", member=False, string=False)   # token-based, strings skipped
+bindings.segment_starts(logical_text)           # [(offset, segment text)] as the parser splits on ':'
+```
+
+`build` never raises for a program (a bad profile name is still `ValueError`). Each statement is
+indexed inside its own `try`: on an internal error its records are discarded and one
+`IndexFailure` is kept; resolution failures are recorded the same way.
+
+### Records
+
+`Declaration` (identity, not value, distinguishes records): `name` (source spelling), `kind`
+(`public dim static const sub function param alias datatable consttable structuretype objecttype
+structure_member label`, plus `system_table` and `external` for predefined targets), `scope`
+(`global`, `routine`, `structure`, `predefined`), `routine` (the owning `SubDef`, scope `routine`),
+`container` (owning `StructureType`/`ConstTable`), `file`, `line` (the compiler's), `node` (the AST
+node: `VarDecl`, `ConstDecl`, `Param`, `SubDef`, `Instruction`, `Label`), `stmt` (innermost
+statement), `unit` (top-level statement of the `:`-segment: the owner of the text), `index`
+(position of `unit` in `program.statements`), `type`, `quoted`, `external` (the `CatalogEntry`),
+`alias_target` (a `Reference`), `unverified_scope`.
+
+`Reference`: `name` (spelling at the use), `role`, `file`, `line`, `resolved` (tuple), `ambiguity`
+(text), `container` (member references: the table/structure searched), `routine`, `node`, `stmt`,
+`unit`, `index`, `base` (member references: the base's reference), `is_write`, `forward`, and
+`status`: `resolved` (one proven target), `ambiguous` (several candidates, or a stated reason),
+`unmodelled` (a `Table.Field` or `Status.X` field name: the table is found, field names are not
+modelled), `unresolved` (nothing found).
+
+Roles, as far as the AST tells: `read`, `write` (assignment and `For` targets), `call` (`Call`,
+bare Sub calls, an indexed name that resolves only to Subs/Functions/built-in functions),
+`member_base`, `member` (`is_write` marks an assigned member), `alias_target`, `units_target`,
+`table_ref` (a name that resolves only to tables), `argument` (a top-level instruction or call
+argument: the AST does not say whether the instruction reads or writes it), `type` (an `As` type
+word: structure types and predefined type symbols), `instruction` (the keyword of an instruction
+statement, resolved to the catalog).
+
+### Scope policies and evidence
+
+| Policy | Evidence |
+|---|---|
+| Resolution is case-insensitive on AST names; the declared spelling is kept. | `symbols.py` upper-cases every lookup. |
+| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction`. | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). |
+| `Dim`, `Const` and parameters inside a routine are local and win over a global of the same name; the same parameter name in two routines is two declarations. | `docs/checker.md` ("`Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow"); `tests/fixtures/const_shadow_sub.json` and `sub_param_const.json` (a parameter named like a `Const` declared after the Sub is local). |
+| A local that shadows a global `Const` declared earlier is a compile error the index does not model; the local still wins. | `const_shadow_sub.json`. |
+| `Sub`/`Function` names are global and order-free (forward references resolve). Variables and constants are also resolved order-free, but `Reference.forward` is true when every candidate is declared in a later statement. | `symbols.declared_subs` (whole program); order for variables is unverified (`declared_names` "deliberately global"), hence the flag. |
+| CR6/CR1000X: a local `Dim`/parameter whose name is a built-in function resolves to the local. CR300/CR350: it does not shadow the built-in, so the reference is `ambiguous` with candidates (built-in, local). | `docs/checker.md` "Function-named assignment targets and CR300/CR350 local shadows" and "Expression expects (" section. The CR6 side rests on the accepted arithmetic probe; "CR6 scoping of a Sub-local" is listed there as unfinished. |
+| `Public` and `Alias` (and labels) inside a routine: scope inside the routine is recorded (`scope="routine"`, `unverified_scope=True`) and a use elsewhere gets that candidate with an `ambiguity` note. | No fixture establishes their visibility. |
+| Two or more global candidates stay `ambiguous` with a reason: duplicate declarations (the compiler rejects them), the same include used twice, or a table sharing a variable's spelling. | `tests/fixtures/routine_names.json` (duplicate Sub, variable/Function clash). The vendor sample `avgrun_1.CR6` declares `Public TCTemp` and `DataTable (TCTemp,...)`; whether the namespaces are separate is not established here, so no choice is made. |
+| `Table.Field`: the base resolves to the table; the field part is `unmodelled` for a `DataTable` and for `Status`, `Settings`, `DataTableInfo` (exists only once a `DataTable` does). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json` (field names come from `FieldNames` and the output instruction, `tables.py`; not re-derived here). |
+| Structure members resolve through the base variable's declared type (also through nested members); an unknown member is `unresolved`. | `checker/structs.py` model (`_structure_members`, `_member_chain`). |
+| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction. | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`. |
+| `Alias A(1) = N1, N2`: each right-hand name is an `alias` declaration with `alias_target` = the reference of `A`; `Units V = label`: `V` is a `units_target` reference. | `parser._parse_alias`, `_parse_units_segment`. |
+
+### Inactive code, strings, includes
+
+- Statements the parser did not keep (inactive `#If` branches, text after the first `EndProg`) are
+  not in `program.statements` and so are not indexed. LSP-02 keeps those lines mappable.
+- String literals are never references. A table named by a string (`DataTable ("Hist",...)`) is a
+  declaration with `quoted=True`; `CallTable("Hist")` is not a reference to it. Rename must treat
+  quoted tables as not safely renamable.
+- `Static` is not a parser declaration (observed: `Static Q` is an `Unparsed` statement), so
+  nothing is indexed for it. Labels are indexed when the parser makes
+  a `Label`.
+- A file included twice yields two declaration objects (different `unit`/`index`); a use then lists
+  both and is `ambiguous` ("the same declaration is included more than once"). `file` is the
+  compiler display name (`CPU:Lib.crb`).
+
+### Positions for LSP-05b
+
+The AST has no name columns, so records keep what is needed: `unit` (the top-level statement) and
+`occurrence`, the 0-based ordinal of the record among the same-name tokens of `unit.text`
+(identifier tokens before a `.` are a separate class from those after it; string tokens a third).
+`ix.token_of(record)` tokenizes `unit.text` with `opencrbasic.lexer` and returns that token; its
+`col` is an offset into `unit.text`. For a logical column, add the offset of the segment: use
+`segment_starts(logical_text)` and take the segment whose text equals `unit.text` (for an inline
+`If` body the text is a slice of the `If` statement's segment, and the occurrence is counted over
+the whole segment; a `Units` statement's text is stripped). `Stmt.line` is the last physical line
+of a continued statement, so physical positions come from LSP-02 provenance. Where the statement
+text cannot be tokenized (a lex error) or the parser rewrote tokens (`DataTable(15Min,...)`),
+`token_of` returns `None`; 5b must treat that as "no range". Occurrences are exact for the
+statement kinds the AST models fully; array-parameter dimensions and `Alias` junk after the first
+name are not in the AST and can shift later same-name occurrences in that statement (observed
+corpus rate in the handoff).
+
+### Not modelled (recommendations only)
+
+- Data-table field names (`Table.Field` definitions, `FieldNames`): would need `tables.py`'s
+  field derivation exposed for reuse.
+- Whether tables and variables share a namespace; visibility of `Public`/`Alias`/labels inside a
+  routine; use-before-declare for variables. Each needs a focused oracle probe.
+- A checker could later take its declared-name and scoped-view helpers from this index, only after
+  a differential gate (`tools/selfdiff.py` plus the fixtures above) shows equal behaviour.
