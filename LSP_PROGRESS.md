@@ -49,7 +49,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - `tests/lsp/test_rename.py::test_unresolved_and_unmodelled_and_quoted` fails on the branch since
   LSP-07a was integrated after LSP-05c (field references now resolve, refusal reason changed from
   `unmodelled` to `kind`). Coordinator did not rerun tests/lsp after that cherry-pick (rule
-  tightened: rerun tests/lsp after **every** integration). Fix assigned to LSP-05d.
+  tightened: rerun tests/lsp after **every** integration). Fixed by LSP-05d, which also found that
+  a variable rename left `Quoted.a` member references behind (unsafe; now refused).
 
 ## Review findings
 
@@ -243,7 +244,9 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-04d function argument counts | `codex/lsp-04-argcount` -> cherry-picked | integrated (classification only) | worker: 75 passed, selfdiff 0 differ; checker `_call_arity_problem` uses oracle-backed `_ARITY_ALLOWED` (FTPCLIENT {6,10,11}, HTTPPUT {4,8,9}) / `_ARITY_RANGE`; fixtures: EmailSend/EmailRecv min 9 | follow-up LSP-04e (after R1, edits hover.py): signature help uses the checker's accepted-count sets; host probe T-08 for the rest |
 | LSP-07c quick-fix core | `codex/lsp-07-quickfix` -> cherry-picked | integrated | worker: 22 passed, selfdiff 0 differ (its 2 tests/lsp failures were the lsp_bench strict-mode leak, fixed); misspelling sweep 16/16 top suggestion exact | worker claim "no diagnostic for an undeclared name read inside a Sub" not reproduced by the coordinator for `x = Undeclared1` in a called Sub (reported, line 3); shape unknown |
 | LSP-06a workspace resilience | `codex/lsp-06-workspace`, base `b3ba175`, Sonnet, brief [LSP-06.md](docs/lsp-rounds/LSP-06.md) | active | - | verify, cherry-pick |
-| LSP-05d navigation accessor | `codex/lsp-05-accessor`, base `b3ba175`, Haiku | active | - | verify, cherry-pick |
+| LSP-05d navigation accessor | `codex/lsp-05-accessor` -> `a2a7fe7` | integrated | worker: tests/lsp 504 passed, selfdiff 0 differ; fixed the rename regression (field refs refused as `unmodelled`) and a second one (rename of `a` left `Quoted.a` behind: all table member references now refuse) | coordinator: tests/lsp + full rename sweep running |
+| LSP-03d scan cache | `codex/lsp-03-scancache`, Haiku | active | - | verify, cherry-pick |
+| LSP-08b user guide | `codex/lsp-08-guide`, Haiku | active | - | verify, cherry-pick |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
