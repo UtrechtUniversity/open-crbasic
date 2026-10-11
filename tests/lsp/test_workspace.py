@@ -59,8 +59,10 @@ def test_registers_watched_files_when_the_client_supports_it(make_client, tmp_pa
                                  30, "client/registerCapability")
     (registration,) = request["params"]["registrations"]
     assert registration["method"] == "workspace/didChangeWatchedFiles"
-    (watcher,) = registration["registerOptions"]["watchers"]
-    assert watcher["globPattern"] == watch_pattern()
+    watchers = registration["registerOptions"]["watchers"]
+    assert [w["globPattern"] for w in watchers] == [watch_pattern(), "**/*"]
+    assert "kind" not in watchers[0]
+    assert watchers[1]["kind"] == 4                        # WatchKind.Delete only (H-07)
     assert client.shutdown() == 0
 
 
@@ -94,6 +96,49 @@ def test_created_include_resolves_missing_and_deleted_include_reports_it(make_cl
     cleared = client.wait_diagnostics(lib, lambda d: not d, after=count(client, lib) - 1)
     assert cleared["diagnostics"] == []
     assert client.shutdown() == 0
+
+
+def test_deleted_folder_reported_only_as_its_uri_drops_the_entries_below_it(make_client, tmp_path):
+    root = project(tmp_path, **{"Lib.crb": LIB})
+    gone = root / "gone"
+    gone.mkdir()
+    entry = gone / "Gone.CR6"
+    entry.write_text(bad(SMALL))
+    (gone / "Lib.crb").write_text(LIB)
+    client = started(make_client, root)
+    client.wait_diagnostics(entry, has("y"))
+    for child in gone.iterdir():
+        child.unlink()
+    gone.rmdir()
+    client.watched((gone, DELETED))                        # what VS Code sends: no per-file events
+    cleared = client.wait_diagnostics(entry, lambda d: not d, after=count(client, entry))
+    assert cleared["diagnostics"] == []
+    assert client.shutdown() == 0
+
+
+def test_unrelated_deleted_file_does_not_rediscover(tmp_path):
+    root = tmp_path / "proj"
+    root.mkdir()
+    (root / "Lib.crb").write_text(LIB)
+    (root / "notes.txt").write_text("x")
+
+    async def scenario() -> None:
+        session = Session(lambda *_: None, workers=1)
+        await session.configure(Config(debounce_ms=0, analysis_timeout_ms=60000), [root])
+        await settle(session)
+        calls = []
+        original = session._rediscover
+
+        async def counted():
+            calls.append(1)
+            await original()
+        session._rediscover = counted
+        (root / "notes.txt").unlink()
+        await session.files_changed([(root / "notes.txt", "deleted")])
+        assert calls == []
+        session.close()
+
+    asyncio.run(scenario())
 
 
 def test_rename_is_delete_plus_create(make_client, tmp_path):

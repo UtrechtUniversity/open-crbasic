@@ -373,12 +373,12 @@ def formatting_edits(ctx: Ctx, path: Path, options: types.FormattingOptions,
 # ---- rename (LSP-07-wire) ---------------------------------------------------------------------
 
 
-def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position
-                   ) -> tuple[types.PrepareRenamePlaceholder | None, rename.Refusal | None]:
+def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position,
+                   source: Any = None) -> tuple[types.PrepareRenamePlaceholder | None, rename.Refusal | None]:
     at = ctx.decoded(path, position)
     if at is None:
         return None, rename.Refusal("no_range", "the document cannot be read")
-    found = rename.prepare_rename(results, path, *at)
+    found = rename.prepare_rename(results, path, *at, source=source)
     if not found.ok:
         return None, found.refusal
     return types.PrepareRenamePlaceholder(
@@ -387,14 +387,16 @@ def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position
 
 
 def rename_edit(ctx: Ctx, results: list, path: Path, position: types.Position, new_name: str,
-                versions: Mapping[Path, int]
+                versions: Mapping[Path, int], source: Any = None
                 ) -> tuple[types.WorkspaceEdit | None, rename.Refusal | None, dict]:
     """(edit, refusal, file hashes). The edit is `documentChanges` with the document version for
-    every open document and `None` for a closed one. The hashes are `rename`'s content hashes."""
+    every open document and `None` for a closed one. The hashes are `rename`'s content hashes.
+    `source`: the `SourceProvider` `rename` checks freshness against (default: the analysed
+    overlays on the disk)."""
     at = ctx.decoded(path, position)
     if at is None:
         return None, rename.Refusal("no_range", "the document cannot be read"), {}
-    found = rename.rename(results, path, at[0], at[1], new_name)
+    found = rename.rename(results, path, at[0], at[1], new_name, source=source)
     if not found.ok:
         return None, found.refusal, {}
     changes = []

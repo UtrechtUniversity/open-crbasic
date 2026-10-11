@@ -378,17 +378,20 @@ extension `.CR6` (case-insensitive; additionally the extension of the configured
 
 - **Watched files.** After `initialized`, when the client declares
   `workspace.didChangeWatchedFiles.dynamicRegistration`, the server registers
-  `workspace/didChangeWatchedFiles` with one glob, `config.watch_pattern()`: `**/*.{...}` over `crb`
-  and the program extensions of every logger profile, each in lower and upper case (a mixed-case
-  extension is not watched). Without client support one stderr line says so and closed-file changes
+  `workspace/didChangeWatchedFiles` with two watchers: `config.watch_pattern()`, `**/*.{...}` over
+  `crb` and the program extensions of every logger profile, each in lower and upper case (a
+  mixed-case extension is not watched), and `**/*` with `WatchKind.Delete` only (host finding H-07:
+  VS Code reports a deleted folder only as the folder's URI, which the first glob does not match). Without client support one stderr line says so and closed-file changes
   are noticed only through save/open/close. Handling (`Session.files_changed`): events for an open
   document are ignored (its text wins; closing restores the disk state); other events re-analyse
   every entry whose last analysis read the file or listed its directory, so a created include
   resolves the missing-include warning and a deleted one brings it back; a created or deleted
   program file re-runs discovery (a new entry appears, a deleted one drops out and its diagnostics
   are cleared); a rename is delete + create. A changed file whose bytes equal what the entries
-  last read re-runs nothing. An event for a path with another extension is a directory: discovery
-  runs again and entries that read, listed or live below it are re-analysed. Delay: `debounceMs`.
+  last read re-runs nothing. An event for a path with another extension is a directory: a created
+  one, or a deleted one that is or contains a discovered or open file or anything an entry read or
+  listed, runs discovery again, and entries that read, listed or live below it are re-analysed (a
+  deleted path that holds nothing known, such as a `.txt` file, changes nothing). Delay: `debounceMs`.
   Includes are looked up in the entry's own directory only (observed: `CPU:sub/Lib.crb` is not
   resolved by the loader), so directory events matter for discovery.
 - **Workspace folders.** `workspace/didChangeWorkspaceFolders` adds/removes folders, re-runs
@@ -457,9 +460,12 @@ the disk file for every analysis. When replacement happened the document gets on
   worker crash and scheduler errors are published the same way at line 0 of the entry.
 - Publishes carry the document `version` for open documents. A file that had diagnostics and now
   has none gets an empty publish; identical consecutive publishes are suppressed.
-- An open `.crb` that no analyzed entry read gets one Information diagnostic at line 0: `No
+- An open document that is not an entry and that no analyzed entry read gets one Information
+  diagnostic at line 0 (only after every entry has completed a first analysis). A `.crb` gets `No
   configured entry program includes this file; diagnostics come from the entry programs that
-  include it.` (only after every entry has completed a first analysis).
+  include it.`; a program file (for example a `.CR300` under logger `cr6`, host finding H-06) gets
+  `This file is not an entry program for the configured logger and entries, and no entry program
+  includes it.`
 - Display text (LSP-07-wire, host finding H-04): the compiler decodes source bytes as Latin-1, so
   its message text for a name written in UTF-8 reads `Ã\x89`. The published `message` is the compiler
   text re-decoded for display: `text.encode("latin-1").decode(encoding, "replace")` with the
@@ -587,7 +593,9 @@ that is not open. Versioned-edit rule: the analyses must match every open docume
 (`current`), no `await` separates that check from the snapshot of the open documents' bytes, and after
 the (threaded) computation each edited open document must still have the snapshot's version and its
 sha256 must equal the content hash `rename.rename` reports; else the request is refused (`stale`). A
-closed file is checked by `rename` itself against the bytes on disk (`stale`).
+closed file is checked by `rename` itself against the bytes on disk (`stale`). The server passes
+`rename.rename` and `prepare_rename` `source=OverlaySource(DiskSource(), <open documents' compiler
+bytes>)`, so every file an entry read is also compared with the open buffers as they are now.
 
 **`textDocument/formatting` / `rangeFormatting`** use `FormattingOptions`: `insertSpaces` with
 `tabSize` (1 to 16) gives that many spaces per level, otherwise one tab per level. A range that ends at

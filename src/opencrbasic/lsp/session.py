@@ -34,6 +34,8 @@ SRC_SERVER = "opencrbasic (server)"
 MARKERS = ("Internal error: unable to compile program.", "Internal error: unable to parse program.")
 INFO_UNINCLUDED = ("No configured entry program includes this file; diagnostics come from the "
                    "entry programs that include it.")
+INFO_NOT_ENTRY = ("This file is not an entry program for the configured logger and entries, and "
+                  "no entry program includes it.")
 _LINE_END = re.compile(r"\r\n|\r|\n")
 MIB = 1024 * 1024
 CREATED, CHANGED, DELETED = "created", "changed", "deleted"
@@ -337,7 +339,7 @@ class Session:
                     rediscover = rediscover or path.suffix.lower() != ".crb"
                 if path not in self.docs:
                     files.append(path)
-            elif kind != CHANGED:
+            elif kind == CREATED or (kind == DELETED and self._known_below(path)):
                 rediscover = True
                 trees.append(path)
         if rediscover:
@@ -349,6 +351,17 @@ class Session:
             self._changed(path, delay, shortcut=shortcut)
         for path in dict.fromkeys(trees):
             self._changed_tree(path, delay)
+
+    def _known_below(self, path: Path) -> bool:
+        """Whether `path` is, or contains, something the session knows: a discovered or open
+        file, or a file or directory an entry read or listed. (A deleted file of another type, or a
+        folder with no program in it, changes nothing.)"""
+        key = _key(path)
+        below = key.rstrip(os.sep) + os.sep
+        names = [_key(p) for p in (*self.discovered, *self.docs)]
+        for entry in self.entries.values():
+            names += [*entry.reads, *entry.dirs, _key(entry.path)]
+        return any(n == key or n.startswith(below) for n in names)
 
     def _wanted_entries(self) -> set[Path]:
         suffixes = self.config.entry_suffixes()
@@ -372,7 +385,7 @@ class Session:
                 self._request(entry, 0.0)
             elif force:
                 self._request(entry, 0.0)
-        self._publish(touched | self._open_crb_paths())
+        self._publish(touched | self._open_non_entry_paths())
 
     # ---- document events -----------------------------------------------------------------
 
@@ -630,7 +643,7 @@ class Session:
                 self._enforce_cache(entry)
         entry.versions = dict(snap.versions)
         entry.settled = True
-        self._publish(old_paths | set(entry.contrib) | {entry.path} | self._open_crb_paths())
+        self._publish(old_paths | set(entry.contrib) | {entry.path} | self._open_non_entry_paths())
         self._notify()
         if installed and self.on_analysed is not None:
             self.on_analysed()
@@ -678,8 +691,8 @@ class Session:
 
     # ---- publishing ----------------------------------------------------------------------
 
-    def _open_crb_paths(self) -> set[Path]:
-        return {p for p in self.docs if p.suffix.lower() == ".crb"}
+    def _open_non_entry_paths(self) -> set[Path]:
+        return {p for p in self.docs if p not in self.entries}
 
     def _text_of(self, path: Path) -> str:
         doc = self.docs.get(path)
@@ -730,10 +743,12 @@ class Session:
                             f"Some characters in this file are not representable in the "
                             f"configured encoding {self.config.encoding!r} and were replaced "
                             "in the text sent to the compiler.", SRC_SERVER))
-        if doc is not None and path.suffix.lower() == ".crb" and self._ready \
+        if doc is not None and path not in self.entries and self._ready \
                 and all(e.settled for e in self.entries.values()) \
                 and not any(_key(path) in e.reads for e in self.entries.values()):
-            out.append(make(0, "information", INFO_UNINCLUDED, SRC_COMPILE))
+            out.append(make(0, "information",
+                            INFO_UNINCLUDED if path.suffix.lower() == ".crb" else INFO_NOT_ENTRY,
+                            SRC_COMPILE))
         return out
 
     def _publish(self, paths: set[Path]) -> None:

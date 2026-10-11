@@ -23,6 +23,7 @@ from typing import Any
 EXPECTED_API_VERSION = 1       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
 WATCH_ID = "opencrbasic-watch"
+DELETE_PATTERN = "**/*"         # VS Code reports a deleted folder only as its own URI
 CONFIG_PULL_TIMEOUT = 10.0
 
 
@@ -64,6 +65,7 @@ def build_server():
 
     from .. import __version__
     from .. import formatting
+    from ..sources import DiskSource, OverlaySource
     from . import features
     from .config import Config, parse_config, watch_pattern
     from .session import CHANGED, CREATED, DELETED, Diag, Session
@@ -160,7 +162,9 @@ def build_server():
                 types.RegistrationParams(registrations=[types.Registration(
                     id=WATCH_ID, method=types.WORKSPACE_DID_CHANGE_WATCHED_FILES,
                     register_options=types.DidChangeWatchedFilesRegistrationOptions(
-                        watchers=[types.FileSystemWatcher(glob_pattern=watch_pattern())]))])),
+                        watchers=[types.FileSystemWatcher(glob_pattern=watch_pattern()),
+                                  types.FileSystemWatcher(glob_pattern=DELETE_PATTERN,
+                                                          kind=types.WatchKind.Delete)]))])),
                 CONFIG_PULL_TIMEOUT)
         except Exception as exc:
             session.log(f"watched-file registration failed: {type(exc).__name__}: {exc}")
@@ -380,14 +384,15 @@ def build_server():
             raise refuse(what, "pending", "a document changed while the request was prepared")
         ctx = context_now()
         versions = {p: d.version for p, d in session.docs.items()}
+        source = OverlaySource(DiskSource(), session.blobs())      # buffers as the analyses read them
         if new_name is None:
             found, refusal = await asyncio.to_thread(
-                locked, entries, features.prepare_rename, ctx, results, path, position)
+                locked, entries, features.prepare_rename, ctx, results, path, position, source)
             hashes = {}
         else:
             found, refusal, hashes = await asyncio.to_thread(
                 locked, entries, features.rename_edit, ctx, results, path, position, new_name,
-                versions)
+                versions, source)
         if refusal is not None:
             raise refuse(what, refusal.code, refusal.message)
         for p, digest in hashes.items():        # an open document must still be what was renamed

@@ -376,3 +376,26 @@ def test_utf8_include_name_shows_as_written(make_client, tmp_path):
     assert any("É space.crb" in m for m in messages), messages
     assert not any("Ã" in m for m in messages), messages
     assert client.shutdown() == 0
+
+
+def test_feature_rename_reads_freshness_through_the_given_source(tmp_path):
+    """LSP-R2a: the server passes the open buffers on top of the disk, so a buffer edited after
+    the analysis is stale even though the analysed overlays and the disk still agree."""
+    from lsprotocol import types
+    from opencrbasic.analysis import AnalysisRequest, analyze
+    from opencrbasic.lsp import features
+    from opencrbasic.sources import DiskSource, OverlaySource
+
+    root = project(tmp_path, A_CR6=ENTRY, Lib_crb=LIB)
+    entry = root / "A.CR6"
+    result = analyze(AnalysisRequest(entry))
+    ctx = features.Ctx("cr6", "utf-16", "utf-8", {}, {})
+    at = types.Position(8, 8)                                        # `x` in `x = x + lib_v`
+    plain = features.rename_edit(ctx, [result], entry, at, "y", {})
+    assert plain[1] is None
+    fresh = OverlaySource(DiskSource(), {root / "Lib.crb": b"Public lib_v As Long\n"})
+    assert features.rename_edit(ctx, [result], entry, at, "y", {}, source=fresh)[1] is None
+    edited = OverlaySource(DiskSource(), {root / "Lib.crb": b"Public lib_w As Long\n"})
+    _, refusal, _ = features.rename_edit(ctx, [result], entry, at, "y", {}, source=edited)
+    assert refusal.code == "stale"
+    assert features.prepare_rename(ctx, [result], entry, at, source=edited)[1].code == "stale"

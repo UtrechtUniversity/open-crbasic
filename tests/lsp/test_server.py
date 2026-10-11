@@ -316,6 +316,24 @@ def test_uninclude_information_diagnostic(make_client, tmp_path):
     assert published is None or published["diagnostics"] == []
 
 
+def test_program_file_that_is_not_an_entry_gets_the_information_note(make_client, tmp_path):
+    root = small_project(tmp_path)
+    other = root / "Other.CR300"                 # a program extension of another logger (H-06)
+    other.write_text(SMALL)
+    client = started(make_client, root)
+    client.open(other, SMALL)
+    params = client.wait_diagnostics(other, lambda d: bool(d))
+    (diag,) = params["diagnostics"]
+    assert diag["severity"] == 3 and diag["source"] == "opencrbasic"
+    assert diag["message"] == ("This file is not an entry program for the configured logger and "
+                               "entries, and no entry program includes it.")
+    entry = root / "Small.CR6"                   # an analysed entry gets none
+    client.open(entry, SMALL)
+    time.sleep(1.0)
+    published = client.latest(entry)
+    assert published is None or published["diagnostics"] == []
+
+
 def test_two_entries_get_prefixed_messages(make_client, tmp_path):
     root = small_project(tmp_path, entries=("A.CR6", "B.CR6"))
     lib = root / "Lib.crb"
