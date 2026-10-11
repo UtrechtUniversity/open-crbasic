@@ -22,8 +22,8 @@ from typing import NamedTuple
 from . import bindings, positions
 
 __all__ = ["Location", "Highlight", "SemanticToken", "Site", "Navigation", "navigation", "definition",
-           "references", "document_highlights", "semantic_tokens", "path_keys", "TOKEN_TYPES",
-           "TOKEN_MODIFIERS"]
+           "references", "references_across", "declaration_sites", "document_highlights",
+           "semantic_tokens", "path_keys", "TOKEN_TYPES", "TOKEN_MODIFIERS"]
 
 # Semantic-token legend (indices into these tuples are the LSP wire values; the server declares
 # them in this order).
@@ -214,16 +214,32 @@ class Navigation:
 
     def references(self, path, line: int, col: int, include_declaration: bool = True) -> list[Location]:
         self._build()
+        return _locations(self._reference_sites(self._targets(path, line, col), include_declaration))
+
+    def declaration_sites(self, path, line: int, col: int) -> list[Site]:
+        """The sites of the declaration(s) the name at the position resolves to, for those that
+        have an exact range (external and predefined declarations have none)."""
+        self._build()
+        sites = [self._site_of.get(id(d)) for d in self._targets(path, line, col)]
+        return [s for s in sites if s is not None]
+
+    def declaration_at(self, path, line: int, start: int, end: int) -> list[bindings.Declaration]:
+        """The declarations whose own token is exactly at that range: how the same declaration is
+        found in another analysis that reads the same file (LSP-R4a)."""
+        return [s.rec for s in self.sites_at(path, line, start)
+                if isinstance(s.rec, bindings.Declaration) and (s.start, s.end) == (start, end)]
+
+    def _reference_sites(self, targets, include_declaration: bool) -> list[Site]:
         sites: list[Site] = []
         if self.index is None:
-            return []
-        for d in self._targets(path, line, col):
+            return sites
+        for d in targets:
             if include_declaration and id(d) in self._site_of:
                 sites.append(self._site_of[id(d)])
             for r in self.index.references_to(d):
                 if id(r) in self._site_of:
                     sites.append(self._site_of[id(r)])
-        return _locations(sites)
+        return sites
 
     def document_highlights(self, path, line: int, col: int) -> list[Highlight]:
         self._build()
@@ -306,6 +322,44 @@ def references(result, path, line: int, col: int, include_declaration: bool = Tr
                index=None) -> list[Location]:
     """Every reference to the declaration(s) of the name at the position, in every file."""
     return navigation(result, index).references(path, line, col, include_declaration)
+
+
+def _decl_key(site: Site) -> tuple:
+    return (site.path, site.line, site.start, site.end)
+
+
+def declaration_sites(navs, path, line: int, col: int) -> list[Site]:
+    """The declaration sites the name at the position resolves to in any of `navs` (one
+    `Navigation` per analysis; those that do not read `path` contribute nothing), one per range."""
+    out: dict[tuple, Site] = {}
+    for nav in navs:
+        for s in nav.declaration_sites(path, line, col):
+            out.setdefault(_decl_key(s), s)
+    return list(out.values())
+
+
+def references_across(navs, path, line: int, col: int,
+                      include_declaration: bool = True) -> list[Location]:
+    """References over several analyses (LSP-R4a): the name at the position is resolved in every
+    nav that reads `path`; each resolved declaration with an exact range is then found in every
+    nav by its token's file and position (`Navigation.declaration_at`), and the references of all
+    of them are united. A range listed by several analyses appears once, with the `occurrences`
+    of the first analysis (in `navs` order) that lists it."""
+    navs = list(navs)
+    keys = [_decl_key(s) for s in declaration_sites(navs, path, line, col)]
+    merged: dict[tuple, Location] = {}
+    for nav in navs:
+        nav._build()
+        targets: list[bindings.Declaration] = list(nav._targets(path, line, col))
+        for p, ln, a, b in keys:
+            if p is None:
+                continue
+            for d in nav.declaration_at(p, ln, a, b):
+                if all(d is not t for t in targets):
+                    targets.append(d)
+        for loc in _locations(nav._reference_sites(targets, include_declaration)):
+            merged.setdefault((str(loc.path or ""), loc.file, loc.line, loc.start, loc.end), loc)
+    return sorted(merged.values(), key=lambda l: (str(l.path or ""), l.file, l.line, l.start))
 
 
 def document_highlights(result, path, line: int, col: int, *, index=None) -> list[Highlight]:

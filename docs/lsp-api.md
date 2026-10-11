@@ -349,7 +349,8 @@ with a stdio transcript test in `tests/lsp/test_features_server.py`):
 | `documentSymbolProvider` | hierarchical `DocumentSymbol` | `editing.document_symbols` |
 | `foldingRangeProvider` | | `editing.folding_ranges` |
 | `documentLinkProvider` | no resolve | `editing.include_links` |
-| `definitionProvider`, `referencesProvider`, `documentHighlightProvider` | | `navigation.Navigation` |
+| `definitionProvider`, `documentHighlightProvider` | | `navigation.Navigation` |
+| `referencesProvider` | across entries (LSP-R4a; "Which program answers a request") | `navigation.references_across` |
 | `semanticTokensProvider` | `full` only; legend = `navigation.TOKEN_TYPES` / `TOKEN_MODIFIERS` | `Navigation.semantic_tokens` |
 | `renameProvider` | `prepareProvider` (advertised when the client declares `textDocument.rename.prepareSupport`, as pygls decides) | `rename.prepare_rename`, `rename.rename` |
 | `documentFormattingProvider`, `documentRangeFormattingProvider` | | `formatting.format_indentation`, `formatting.format_range` |
@@ -525,6 +526,17 @@ was measured and not chosen: see the handoff.
 **Which program answers a request.** A file that is an entry uses its own program. A `.crb` uses the
 first entry (sorted by path) whose last analysis read it and that has a program. A file no entry
 read gets no program: text-based requests still work, the others answer empty.
+
+References are the exception (LSP-R4a): the request file's program (chosen as above, possibly
+stale) is joined by every other entry whose program is current (`Session.current_readers`) and
+that reads the request file; the declarations the name resolves to in any of them are found, and
+then every current entry that reads a declaration's file joins too. `navigation.references_across`
+finds the same declaration in each by the declaration token's file and position and unites the
+references, one location per range. An entry whose program is not current (pending, failed,
+evicted or behind an open document's version) is skipped, not waited for and not refused: this is
+the read-only policy of "Stale data" below. Definition, highlights and the other program-based
+requests stay on the one chosen program (highlights are per document, and a shared file's ranges
+are the same in every entry that parses it).
 
 **Stale data.** A program is *fresh* for a file when the document version it read equals the
 document's current version. Completion, hover, signature help and folding are text-based: they read
@@ -1068,7 +1080,19 @@ references(result, path, line, col, include_declaration=True, *, index=None) -> 
 document_highlights(result, path, line, col, *, index=None)         -> [Highlight]
 semantic_tokens(result, path, *, index=None)                        -> [SemanticToken]
 Navigation(result, index=None)     # the same four methods; builds the ranges once
+references_across(navs, path, line, col, include_declaration=True)  -> [Location]   # LSP-R4a
+declaration_sites(navs, path, line, col)                            -> [Site]
+Navigation.declaration_at(path, line, start, end)                   -> [Declaration]
 ```
+
+`references_across` takes one `Navigation` per analysis (each entry's program). The name at the
+position is resolved in every one that reads `path`; each resolved declaration with an exact range
+is then found in every one by its token's file and range (`declaration_at`: declarations whose own
+token is exactly there), and all their references are united. A range listed by several analyses
+appears once with the `occurrences` of the first analysis (in `navs` order) listing it. External
+and predefined targets have no range, so they are not carried to other analyses: their references
+come only from the analyses that resolve the position. `declaration_sites` gives the resolved
+declarations' sites (the server uses their files to pick the other entries).
 
 `index` is a `BindingIndex` for `result.program`; when omitted one is built with
 `result.request.logger`. The module functions reuse one `Navigation` while the same
@@ -1381,10 +1405,10 @@ directory listing, which changes for unrelated files too).
 
 | Code | Refused when |
 |---|---|
-| `no_results`, `no_ast` | no analysis depends on the file, or none parses the clicked line (a click in an inactive `#If` branch, a directive or text after `EndProg` gets this code with the message "no given analysis depends on the file", although the analysis does depend on the file: the wording is imprecise); the program could not be parsed |
+| `no_results`, `no_ast` | no given analysis reads the file ("no given analysis depends on the file"); the program could not be parsed |
 | `stale` | any file the analysis read (edited or not) differs now from the bytes it read, is gone, or differs between entries |
 | `index_failure` | the binding index recorded a failure for a statement of an entry |
-| `not_a_name` | the position is not on a name the index records in some entry that parses that line (comment, string, keyword the index does not record) |
+| `not_a_name` | the position is not on a name the index records in some entry that parses that line (comment, string, keyword the index does not record); or an analysis reads the file but none parses the clicked line: a comment-only line, an inactive `#If` branch, a directive or text after `EndProg` ("the position is not in code any entry parses ...", LSP-R4a; before, `no_results` "no given analysis depends on the file") |
 | `unresolved`, `ambiguous`, `unmodelled` | the reference at the position, or any reference to the target, is not one proven single target (duplicate declarations, a table sharing a variable's spelling, a `Public` declared inside a routine used elsewhere); `unmodelled` is a table field name (`Tab.Field`, `Status.X`) |
 | `external` | the target is predefined: catalog instruction, function, symbol or keyword, `Status`, `Public`, `Settings`, `NAN`, `INF` |
 | `quoted` | the target is a table named by a string (`DataTable("T", ...)`); string names are never rewritten |

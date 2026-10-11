@@ -301,3 +301,38 @@ def test_instruction_token_has_no_user_definition(tmp_path):
     p = write(tmp_path, "m.CR6", "Public PanelTemp,T\nBeginProg\n Scan(1,Sec,0,0)\n"
                                  "  PanelTemp(T,15000)\n NextScan\nEndProg\n")
     assert N.definition(run(p), p, 3, 3) == []
+
+
+# ------------------------------------------------------------------ across entries (LSP-R4a)
+
+SHARED_USE = 'Include "Lib.crb"\nBeginProg\nsharedValue = 1\nEndProg\n'
+
+
+def test_references_across_entries_of_a_shared_library(tmp_path):
+    """Host H-08: from A's use, B's use or the declaration, every entry's uses are listed."""
+    lib = write(tmp_path, "Lib.crb", "Public sharedValue\n")
+    a = write(tmp_path, "A.CR6", SHARED_USE)
+    b = write(tmp_path, "B.CR6", SHARED_USE)
+    navs = [N.Navigation(run(a)), N.Navigation(run(b))]
+    want = [("A.CR6", 2, 0, 11), ("B.CR6", 2, 0, 11), ("Lib.crb", 0, 7, 18)]
+    for path, line, col in ((a, 2, 3), (b, 2, 3), (lib, 0, 9)):
+        assert where(N.references_across(navs, path, line, col)) == want
+        assert where(N.references_across(list(reversed(navs)), path, line, col)) == want
+        assert where(N.references_across(navs, path, line, col, False)) == want[:2]
+    assert where(N.references_across(navs[:1], b, 2, 3)) == []             # A does not read B
+    assert where(N.references(navs[0].result, a, 2, 3)) == [want[0], want[2]]  # one entry: unchanged
+    sites = N.declaration_sites(navs, a, 2, 3)
+    assert [(s.path.name, s.line, s.start, s.end) for s in sites] == [("Lib.crb", 0, 7, 18)]
+
+
+def test_references_across_entries_with_their_own_declarations(tmp_path):
+    """A library use that resolves to a different declaration in each entry lists both."""
+    lib = write(tmp_path, "Lib.crb", "Sub Bump\n  v = v + 1\nEndSub\n")
+    body = 'Public v\nInclude "Lib.crb"\nBeginProg\nv = 1\nBump\nEndProg\n'
+    a = write(tmp_path, "A.CR6", body)
+    b = write(tmp_path, "B.CR6", body)
+    navs = [N.Navigation(run(a)), N.Navigation(run(b))]
+    got = where(N.references_across(navs, lib, 1, 2))
+    assert ("A.CR6", 0, 7, 8) in got and ("B.CR6", 0, 7, 8) in got
+    assert ("A.CR6", 3, 0, 1) in got and ("B.CR6", 3, 0, 1) in got
+    assert [g for g in got if g[0] == "Lib.crb"] == [("Lib.crb", 1, 2, 3), ("Lib.crb", 1, 6, 7)]

@@ -736,3 +736,24 @@ def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
     assert not res.ok and res.refusal.code == "unparsed"
     res = R.rename([r], p, *pos(p, "Public x", offset=7), "z")
     assert res.ok, res.refusal
+
+
+def test_click_in_a_comment_line_or_inactive_branch_is_not_a_name(tmp_path):
+    """LSP-R4a (host H-10): the file is read, the line is not code any entry parses."""
+    m = write(tmp_path, "m.CR6", """' sharedValue in a comment
+Public a
+#If 1 = 0
+Public z
+#EndIf
+BeginProg
+  a = 1
+EndProg
+""")
+    r = run(m)
+    for line, col in ((0, 4), (3, 8)):
+        res = R.prepare_rename([r], m, line, col)
+        assert code(res) == "not_a_name"
+        assert "not in code any entry parses" in res.refusal.message
+    other = write(tmp_path, "o.CR6", "Public q\nBeginProg\nEndProg\n")
+    res = R.prepare_rename([run(other)], m, 0, 4)                   # an entry not reading m
+    assert code(res) == "no_results" and "depends on the file" in res.refusal.message

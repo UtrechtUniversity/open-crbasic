@@ -323,6 +323,47 @@ def references(ctx: Ctx, ana: Any, result: Any, path: Path, position: types.Posi
     return _locations(ctx, found)
 
 
+def _navigations(analyses: list) -> tuple[list, contextlib.ExitStack]:
+    """The `Navigation` of each (Analysed, result) pair, and a stack holding every program's
+    core-call guard (taken in the given order; the caller passes them sorted by entry path)."""
+    stack = contextlib.ExitStack()
+    navs = []
+    try:
+        for ana, result in analyses:
+            nav = _navigation(ana, result)
+            if nav is not None:
+                stack.enter_context(_guard(ana))
+                navs.append(nav)
+    except BaseException:
+        stack.close()
+        raise
+    return navs, stack
+
+
+def declaration_files(ctx: Ctx, analyses: list, path: Path, position: types.Position) -> set[Path]:
+    """The files of the declarations the name at the position resolves to in any of `analyses`
+    ((Analysed, result) pairs): the files whose readers `references_across` must also see."""
+    at = ctx.decoded(path, position)
+    if at is None:
+        return set()
+    navs, stack = _navigations(analyses)
+    with stack:
+        found = navigation.declaration_sites(navs, path, *at)
+    return {Path(s.path) for s in found if s.path is not None}
+
+
+def references_across(ctx: Ctx, analyses: list, path: Path, position: types.Position,
+                      include_declaration: bool) -> list[types.Location]:
+    """References over several analyses ((Analysed, result) pairs; LSP-R4a)."""
+    at = ctx.decoded(path, position)
+    if at is None:
+        return []
+    navs, stack = _navigations(analyses)
+    with stack:
+        found = navigation.references_across(navs, path, at[0], at[1], include_declaration)
+    return _locations(ctx, found)
+
+
 def document_highlights(ctx: Ctx, ana: Any, result: Any, path: Path,
                         position: types.Position) -> list[types.DocumentHighlight]:
     nav, at = _navigation(ana, result), ctx.decoded(path, position)

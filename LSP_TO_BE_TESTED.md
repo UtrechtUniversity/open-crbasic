@@ -469,3 +469,9 @@ T-14 passed; T-09/T-12 visual checks observed on macOS, with its qualifications.
 H-08..H-10): cross-entry references are fixed in LSP-R4a, so re-check T-09 "Definition/references"
 on that revision: Peek References from A on a library symbol used by A and B lists A, B and Lib.
 Still open: T-15, T-16, Windows/Linux.
+
+### T-12 amendment (H-09, LSP-R4a), appended 2026-10-11
+
+T-12 step 5's expectation is corrected by the `ccba3666` host record: one Ctrl+Z after a multi-file
+rename reverts every text, and files the rename opened are open and **clean** afterwards, not dirty
+(VS Code behaviour). Accept that outcome.

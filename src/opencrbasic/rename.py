@@ -475,10 +475,12 @@ def _collect(results, path, line, col, current):
     entries: list[_Entry] = []
     used: set[int] = set()
     first = None
+    readers = 0
     for r in results:
         st = _state(r)
         if not _reads(r, path):
             continue                                    # this entry does not depend on the file
+        readers += 1
         if getattr(r, "program", None) is not None and not st.parses(path, line):
             continue                                    # the declaration is not in this entry's program
         current.verify(r)
@@ -487,6 +489,9 @@ def _collect(results, path, line, col, current):
             first = (placeholder, rng)
         entries.append(e)
         used.add(id(r))
+    if not entries and readers:
+        raise _Refuse("not_a_name", "the position is not in code any entry parses (a comment "
+                      "line, an inactive #If branch, a directive or text after EndProg)")
     if not entries:
         raise _Refuse("no_results", "no given analysis depends on the file")
     assert first is not None                # set with the first entry

@@ -129,7 +129,8 @@ Open:
   (`docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md`: all T-13 checks pass; T-04/T-10/T-11/T-12 rerun pass at API level).
 - Banner stderr copy and pygls' normal "Server shutting down" line show as `[error]` in the
   output channel (cosmetic; documented).
-- Undo after a multi-file rename closes files the rename opened (VS Code behaviour; documented).
+- Undo after a multi-file rename leaves files the rename opened open and clean (VS Code
+  behaviour, observed at `ccba3666`; documented in LSP-R4a).
 - Host record `ccba3666` (macOS, VS Code 1.141.0, packaged VSIX in an empty profile): T-14 pass;
   T-09/T-12 visual checks observed with the qualifications in its RESULTS.md. New:
   - H-08: Peek References from entry A on a symbol declared in a library shared with B lists A and

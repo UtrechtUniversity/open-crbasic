@@ -286,6 +286,11 @@ These use the binding index: F12 goes to a declaration, including one in a `.crb
 references; occurrence highlights mark reads and writes.
 
 - An ambiguous name shows every candidate.
+- References (Shift+F12, Peek References) list the uses in every entry that reads the
+  declaration's file: from a use in entry A of a `Public` declared in a library that entry B also
+  includes, B's uses are listed too (LSP-R4a). An entry whose analysis is not current (pending,
+  failed or behind an unsaved edit) is left out of that request rather than refused; ask again
+  when its analysis has finished. Definition and highlights use the request file's program only.
 - Catalog and predefined names (instructions, functions, `Status`, `Public`, `NAN`) have no definition
   location, but their references are listed.
 - Names in strings, names in inactive `#If` branches, names after `EndProg` and derived table fields
@@ -332,7 +337,9 @@ never a CRBasic diagnostic.
   all or nothing) cover, for example: a name that is not a name in code, such as a comment, string or
   keyword (`not_a_name`); a predefined name (`external`); a new name that is a keyword, an invalid
   identifier or a reserved word (`reserved_name`, `invalid_name`); a name already in scope
-  (`collision`); a table named by a string (`quoted`). A case-only change is allowed.
+  (`collision`); a table named by a string (`quoted`). A click on a comment-only line, in an inactive
+  `#If` branch, on a directive or after `EndProg` is also `not_a_name`, with the message "the
+  position is not in code any entry parses" (LSP-R4a). A case-only change is allowed.
 - **Formatting.** Format Document and Format Selection change only leading whitespace. When any
   entry that reads the file has an error anywhere in its program, or an entry is not current, nothing
   changes and an information message reads `opencrbasic: Cannot format: ...`. The indentation rules
@@ -450,7 +457,7 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
 | Builtin argument counts (signature help) | 130 real-compiler cases; audit 0 differing | `e77ee5cc` (T-08 at `4d88a186`) |
 | Watched files, workspace folders, `maxFileBytes` warning (T-10) | Pass at API level at `679f2f70`; folder deletion failed at `7d6db3b1` (H-07) and passes at `679f2f70`. Explorer clicks not seen. Queue and cache bounds: stdio and unit tests only | `7d6db3b1`, `679f2f70` |
 | Completion cap (200) and `isIncomplete` | 200 items with `isIncomplete=true`; `Vo` gives 14 items including `VoltSe` (provider level; list refresh not seen) | `7d6db3b1`, `679f2f70` |
-| Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts and closes the file the rename opened (VS Code behaviour) | `7d6db3b1`, `679f2f70` |
+| Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; files the rename opened are then open and clean, not dirty (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70` |
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
 | Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)); Windows **untested** | `7d6db3b1`, `679f2f70` |
 | Packaged `.vsix` (LSP-08f, T-14); inlay hints and output commands (LSP-09c, T-15) | **Untested** in an editor (requests written, no record yet) | - |
@@ -466,8 +473,11 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
   Remaining rename limit: a file that did not exist at analysis time and appears later is not
   detected ([LSP-R2a handoff](lsp-rounds/LSP-R2a-handoff.md)). The unsaved-library collision and the
   Latin-1 position checks passed at provider level at `679f2f70`.
-- **Undo after a multi-file rename** (observed at `7d6db3b1`): one Ctrl+Z restores all texts, and a
-  file that the rename opened is closed again. This is VS Code's behaviour, not the server's.
+- **Undo after a multi-file rename**: one Ctrl+Z restores all texts. Files the rename opened are
+  then open and clean, not dirty (observed at `ccba3666`: entries that were closed were written by
+  the rename and stayed closed until inspected; after one undo they were open and clean). At
+  `7d6db3b1` the file the rename opened was closed again. Either way this is VS Code's behaviour,
+  not the server's.
 - Completion stops at 200 items and reports the list as incomplete (section 5.4).
 - Ranges are whole lines. There are no token or column ranges for diagnostics or hover.
 - Results during an edit can be stale (section 5.8). A timeout restarts the worker pool; the entry

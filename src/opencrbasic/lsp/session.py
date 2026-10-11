@@ -928,6 +928,12 @@ class Session:
         return all(ana.versions.get(p) == d.version for p, d in self.docs.items()
                    if _key(p) in entry.reads)
 
+    def current_readers(self, path: Path) -> list[Entry]:
+        """Entries whose last analysis read `path` and whose program is current (`current`),
+        sorted by path; no waiting (read-only features skip the others, LSP-R4a)."""
+        key = _key(path)
+        return [e for _, e in sorted(self.entries.items()) if e.reads.get(key) and self.current(e)]
+
     def fresh_contributors(self, path: Path) -> list[Entry]:
         """Entries whose diagnostics for `path` are published now (same rule as `_compose`) and
         whose parsed program is the one that produced them."""

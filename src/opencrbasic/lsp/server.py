@@ -326,8 +326,30 @@ def build_server():
     @server.feature(types.TEXT_DOCUMENT_REFERENCES)
     @guarded("references", list)
     async def on_references(params: types.ReferenceParams):
+        """The request file's program (as for every read-only feature, possibly stale) plus every
+        other entry with a current program that reads the request file or a declaration's file
+        (LSP-R4a); entries without a current program are skipped."""
         path, ana, result = await prepared(params.text_document.uri, wait=True)
-        return await asyncio.to_thread(features.references, await make_ctx(), ana, result, path,
+        if result is None:
+            return []
+        ctx = await make_ctx()
+        home = next((p for p, e in session.entries.items() if e.analysed is ana), Path())
+        analyses: dict[int, tuple] = {id(ana): (home, ana, result)}
+
+        async def add(entries) -> list:
+            for e in entries:
+                if e.analysed is not None and id(e.analysed) not in analyses:
+                    loaded = await session.load(e.analysed)
+                    if loaded is not None:
+                        analyses[id(e.analysed)] = (e.path, e.analysed, loaded)
+            return [(a, r) for _, a, r in sorted(analyses.values(), key=lambda t: str(t[0]))]
+
+        pairs = await add(session.current_readers(path))
+        files = await asyncio.to_thread(features.declaration_files, ctx, pairs, path,
+                                        params.position)
+        for f in sorted(files):
+            pairs = await add(session.current_readers(f))
+        return await asyncio.to_thread(features.references_across, ctx, pairs, path,
                                        params.position, params.context.include_declaration)
 
     @server.feature(types.TEXT_DOCUMENT_DOCUMENT_HIGHLIGHT)
