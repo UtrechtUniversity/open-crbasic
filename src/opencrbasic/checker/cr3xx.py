@@ -333,19 +333,25 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                     dropped.add(id(stmt))
                     dropped_names.update(v.name.upper() for v in stmt.vars)
                 continue
-            if (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" and stmt.args
-                    and isinstance(stmt.args[0], (S.Index, S.Name))
-                    and stmt.args[0].name.upper() in dropped_names - registered_names):
+            alias_src = None
+            if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" and stmt.args \
+                    and isinstance(stmt.args[0], (S.Index, S.Name)):
+                alias_src = stmt.args[0].name
+            elif isinstance(stmt, S.Unparsed):  # `Alias A(1) =` with the name on the next line
+                m_alias = re.match(r"(?i)\s*Alias\s+([A-Za-z_]\w*)\s*(?:\([^()]*\))?\s*=\s*$", stmt.text)
+                alias_src = m_alias.group(1) if m_alias else None
+            if alias_src and alias_src.upper() in dropped_names - registered_names:
                 # a cascade-dropped declaration is never registered, so its aliases name an
                 # undeclared source (oracle, CR300/CR350, 2026-10-04)
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                 at = next((i for i, d in enumerate(diags.items)
                            if d.file == stmt.file and d.line > stmt.line), len(diags.items))
                 diags.items.insert(at, Diagnostic("error", stmt.line,
-                                                  f"{stmt.args[0].name} not yet declared so cannot be aliased.",
+                                                  f"{alias_src} not yet declared so cannot be aliased.",
                                                   stmt.file))
                 # the alias name is not registered either (prose that mentions it: `current`)
-                dropped_names.update(a.name.upper() for a in stmt.args[1:] if isinstance(a, S.Name))
+                if isinstance(stmt, S.Instruction):
+                    dropped_names.update(a.name.upper() for a in stmt.args[1:] if isinstance(a, S.Name))
                 continue
             if isinstance(stmt, S.SubDef):
                 tainted_subs.add(id(stmt))

@@ -5004,3 +5004,15 @@ on CR300/CR350 (`Q = F2(1,2)`) prints `Q is not defined.` before the `No Matchin
 it after), and the same shapes after the cascade has started (`_report_unregistered` re-runs the
 checks, and the original pass still sees the dropped name as declared). Fixture:
 `tests/fixtures/undefined_target_call.json`.
+
+### Stray close parenthesis, and `Alias A(1) =` after the cascade (2026-10-11)
+
+A statement with an unmatched `)` that is not an assignment (`Z)`, `Z + 1)`, `West)`, `Z > 1)`,
+`1)`, `Z, 1)`) is `Invalid, or out of place expression: <text>.` on all four loggers (CR300/CR350
+first name undefined words: `West) ` -> `West is not defined.` then the fallback); an assignment
+(`Z = 1)`, `Z = (1))`) and an `If` condition keep `Incomplete expression:`. `structure._ASSIGNMENT_HEAD`
+and the stray-`)` verdict of `_scan_expr`. Fixture `tests/fixtures/stray_close_paren.json`.
+
+After the CR300/CR350 cascade has dropped `Public gps_data(15)`, `Alias gps_data(1) =` with the
+alias name on the next line (an `Unparsed` statement) is `gps_data not yet declared so cannot be
+aliased.`, not `Nothing after '=' in alias definition` (`chm/gps_1.CR6`; cr3xx cascade loop).

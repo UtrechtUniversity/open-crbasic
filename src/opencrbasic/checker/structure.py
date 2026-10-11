@@ -102,6 +102,7 @@ _UNCLOSED_DIM_PREFIX = parser.UNCLOSED_DIM_PREFIX
 # "Invalid, or out of place expression" fallback, `%s` = `stmt.text` (the whole statement, same
 # echo convention).
 _EXTRA_CLOSE_PAREN = "unexpected trailing input starting at ')'"
+_ASSIGNMENT_HEAD = re.compile(r"\s*[A-Za-z_]\w*\s*(?:\([^()]*\)\s*)?=")
 
 # Named, `EndXxx`-terminated body blocks conventionally declared before `BeginProg`, alongside
 # `Sub`/`Function` (`S.SubDef`, tracked separately since it is its own AST node type, not a plain
@@ -1474,6 +1475,11 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         profile, stmt.text, stmt.at_eol, pass1_operands(program, profile))
                         or _no_matching(profile, stmt.text, stmt.at_eol),
                         stmt.file, show_file=False)
+            elif stmt.reason == _EXTRA_CLOSE_PAREN and not _ASSIGNMENT_HEAD.match(stmt.text):
+                # `Z)`, `Z + 1)`, `West)`: not an assignment, so the generic fallback (oracle, all
+                # four loggers, 2026-10-11, docs/checker.md "Stray close parenthesis")
+                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
+                            show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
                 sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file,
@@ -2176,7 +2182,7 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
         else:
             if t.kind == "OP" and t.text == ")":
                 if not parens:
-                    return ("pass1", "incomplete")
+                    return ("pass1", "incomplete" if assign or cond else "fallback")
                 parens.pop()
             elif t.kind == "OP" and t.text == ",":
                 to_levels.discard(len(parens))
@@ -2432,6 +2438,9 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason == _UNCLOSED_PAREN_EXPR:
             diags.error(nxt.line, f"No Matching, or out of place ) in expression: {nxt.text}.",
                         nxt.file, show_file=False)
+        elif nxt.reason == _EXTRA_CLOSE_PAREN and not _ASSIGNMENT_HEAD.match(nxt.text):
+            diags.error(nxt.line, _out_of_place(profile, nxt.text, nxt.at_eol), nxt.file,
+                        show_file=False)
         elif nxt.reason == _EXTRA_CLOSE_PAREN:
             diags.error(nxt.line, f"Incomplete expression: {nxt.text}.", nxt.file,
                         show_file=False)
