@@ -12,7 +12,7 @@ import dataclasses
 
 import re
 
-from .. import consteval
+from .. import consteval, lexer
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from . import expressions, instr_rules, structure, symbols
@@ -464,6 +464,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if any(_is_cascade_trigger(d) for d in existing):
             tainted = True
             taint_at = index
+    diags.cascade_gone = dropped_names - registered_names  # (names the cascade left unregistered)
     if rewritten:
         _report_rewritten_first_arg(program, profile, diags, dropped, rewritten)
     if dropped or tainted_subs:
@@ -1750,6 +1751,120 @@ def order_invalid_assignments(program: S.Program, profile, diags: Diagnostics) -
         rest = [d for d in diags.items if (d.line, d.file) != key]
         rest[first:first] = group
         diags.items[:] = rest
+
+
+_STRING_END_QUOTE = "String without end quote"
+_IF_STRING_RE = re.compile(r"(?i)\s*If\s+(.*?)\s+Then\s+([A-Za-z_]\w*)\s*(?:\([^()]*\))?\s*=")
+
+
+_BINARY_SYMBOLS = frozenset({"+", "-", "*", "/", "^", "&", "<", ">", "=", "<>", "<=", ">=", "\\"})
+_WORD_OPERATORS = frozenset({"AND", "OR", "XOR", "EQV", "IMP", "MOD", "IS", "TO"})
+
+
+def _string_reached(text: str) -> bool:
+    """True when the tokens before an unterminated string are a well-formed expression prefix, so
+    the lexer's `String without end quote` is met (oracle, CR300/CR350, 2026-10-11: `Foo" bar`,
+    `Nope + "abc`, `Len("abc` reach it, `Datalogger</title>")` fails at the `/` first)."""
+    try:
+        lexer.tokenize(text, 0)
+        return False
+    except lexer.LexError as e:
+        if e.message != "unterminated string" or text[e.col:e.col + 1] != '"':
+            return False
+        head = text[:e.col]
+    toks = [t for t in lexer.tokenize(head, 0) if t.kind != "EOF"]
+    expect, depth = True, 0
+    for t in toks:
+        word_op = t.kind == "IDENT" and t.upper in _WORD_OPERATORS
+        if expect:
+            if t.kind == "OP" and t.text in ("(", "-", "+"):
+                depth += t.text == "("
+            elif t.kind == "IDENT" and t.upper == "NOT":
+                pass
+            elif t.kind in ("IDENT", "NUMBER", "STRING") and not word_op:
+                expect = False
+            else:
+                return False
+        elif (t.kind == "OP" and t.text in _BINARY_SYMBOLS) or word_op:
+            expect = True
+        elif t.kind == "OP" and t.text == "(":
+            depth += 1
+            expect = True
+        elif t.kind == "OP" and t.text == ")":
+            depth -= 1
+        elif t.kind == "OP" and t.text == "," and depth > 0:
+            expect = True
+        else:
+            return False  # a juxtaposed operand or anything else before the string: not modelled
+    return True
+
+
+def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: a statement cut short by an unterminated string prints its undefined names,
+    then `String without end quote`, then its final message (oracle, CR300 and CR350, 2026-10-11:
+    `Foo" bar`, `x + "abc`, `Len("abc`, `Nope = "abc`, `If Nope Then Nope2 = "abc`; the final
+    message was already right for most shapes). A call of a built-in function that the string leaves
+    open is the generic fallback, not `No Matching` (`SprintF ( s, "The ...`). Left alone: a line
+    that already has an instruction/call message (`Battery("abc`), and a declared variable with a
+    subscript before the string (`x(1) "abc`, no string line)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    known = None
+    declared = symbols.declared_variable_names(program)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed) or stmt.reason != "lex error: unterminated string":
+            continue
+        key = (stmt.line, stmt.file)
+        own = [d for d in diags.items if (d.line, d.file) == key]
+        final = next((d for d in own if d.message.startswith((_GENERIC_FALLBACK_PREFIX, "Incomplete expression:",
+                                                              "No Matching, or out of place )"))), None)
+        if final is None or not all(d.message.endswith(_UNRESOLVED_SUFFIX) or d.message == _STRING_END_QUOTE
+                                    or d is final for d in own):
+            continue
+        sub = re.match(r"\s*([A-Za-z_]\w*)\s*\([^()\"]*\)\s+\"", stmt.text)
+        if (sub and sub.group(1).upper() in declared) or re.match(r"(?i)\s*(?:Public|Dim)\b", stmt.text):
+            continue
+        if not _IF_STRING_RE.match(stmt.text) and not _string_reached(stmt.text):
+            continue
+        names = [d for d in own if d.message.endswith(_UNRESOLVED_SUFFIX)]
+        if not names and (m := _IF_STRING_RE.match(stmt.text)):
+            if known is None:
+                known = prose_known(program, profile)
+            here = known - declared_later(first_declarations(program), stmt.line, stmt.file) \
+                - getattr(diags, "cascade_gone", set())
+            words = _leading_unknown_words(m.group(1), here) + (
+                [m.group(2)] if m.group(2).upper() not in here else [])
+            names = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
+                                stmt.file, True) for w in words]
+        if final.message.startswith("No Matching") and re.match(
+                r"\s*([A-Za-z_]\w*)\s*\(", stmt.text) and stmt.text.lstrip().split("(")[0].strip().upper() in profile.functions:
+            final = dataclasses.replace(final, message=f"{_GENERIC_FALLBACK_PREFIX}{stmt.text}"
+                                        f"{chr(10) if final.message.endswith(chr(10) + '.') else ''}.")
+        at = diags.items.index(own[0])
+        diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+        diags.items[at:at] = [*names, Diagnostic("error", stmt.line, _STRING_END_QUOTE, stmt.file, True), final]
+
+
+def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: an unparsable statement that starts with a well-formed expression holding a
+    String operand of a numeric/logical operator prints `String is illegal here` before its final
+    message, as on CR6/CR1000X (`structure._unparsed_string_messages`; oracle, CR300/CR350,
+    2026-10-11: `"BattV" and "Counter".`, `x = "BattV" and "Counter".`; a lone string or `x "a" and
+    "b"` print none)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed) or stmt.reason == "lex error: unterminated string":
+            continue
+        key = (stmt.line, stmt.file)
+        own = [d for d in diags.items if (d.line, d.file) == key]
+        final = next((d for d in own if d.message.startswith((_GENERIC_FALLBACK_PREFIX, "Incomplete expression:"))), None)
+        if final is None or any(d.message == "String is illegal here" for d in own):
+            continue
+        messages = structure._unparsed_string_messages(stmt, program, profile)
+        if messages:
+            at = diags.items.index(final)
+            diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, True) for m in messages]
 
 
 def order_target_name_first(program: S.Program, profile, diags: Diagnostics) -> None:

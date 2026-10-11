@@ -5173,3 +5173,24 @@ prose messages follow the first parameter's code (`cr3xx.check_unknown_line_word
   second parameter prints only the second parameter's first token (`CallTable instruction is used
   to ...` -> `Too many parameters:  is.`, CR300). CR300 `CallTable` itself differs from CR350
   only by that optional second parameter (`profile.instructions`).
+
+### Statements with a string: `String without end quote` and `String is illegal here` (`chm/call_1`, `sprintf_1`, `straincalc_1`, `getdatarecord_2`; fixture `r12_cr3xx_string_stmts.json`)
+
+- **Unterminated string** (`cr3xx.order_unterminated_string`, after every other pass): an unparsable
+  statement whose text up to the opening quote is a well-formed expression prefix prints its
+  undefined names, then `String without end quote`, then the final message
+  (`Foo" bar baz`, `x" bar`, `Nope + "abc`, `Len("abc`, `Nope = "abc`, `If Nope <= 29 Then Nope2 =
+  "TEMP`: both names, then the string line, then `Nope2 = "TEMP:endif.`). We printed the string line
+  only for assignment/`If` shapes, and before the names. The prefix check (`_string_reached`) is
+  what keeps `Datalogger</title>")` free of the line: it fails at the `/` operand first. A
+  built-in function call that the string leaves open is the generic fallback, not `No Matching`
+  (`SprintF ( s, "The current air temp`). Names the cascade left unregistered are undefined here too
+  (`diags.cascade_gone`, `call_1`). Left alone, still wrong or unprobed: `Sin(x) "abc` (real
+  `Incomplete expression`), `y = Sin(x, "abc` (real `No Matching`), `Battery(x, "abc` (real `Too
+  many parameters:  "abc.`), `Public z = "abc` (real: accepted, we reject), a declared variable
+  with a subscript before the string (`x(1) "abc`, no string line, left as it was), a juxtaposed
+  operand before the string (`x y "abc`).
+- **String operand** (`cr3xx.add_string_illegal`): an unparsable statement that starts with a
+  well-formed expression with a string operand of a logical/numeric operator prints `String is
+  illegal here` before its final message, as on CR6/CR1000X (`"BattV" and "Counter".`, `x =
+  "BattV" and "Counter".`; `"BattV"` alone, `x "BattV" and "Counter".` print none).
