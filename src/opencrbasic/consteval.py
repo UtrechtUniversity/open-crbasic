@@ -61,9 +61,11 @@ class Env:
 # Pure builtins usable in constant expressions (see mathematicalexpressions.htm / the CHM function
 # pages for CHR/ABS/INT/SQR/LEN). Each takes already-evaluated argument values.
 def _fn_chr(args):
-    # any numeric argument is accepted by the real compilers (CHR(-1), CHR(1e300) probed 2026-10-10)
+    # any numeric argument is accepted by the real compilers (CHR(-1), CHR(1e300) probed 2026-10-10).
+    # A NUL byte adds nothing: CHR(256), CHR(0)+"A"+CHR(0)+"B" are "", "AB" (round 10, see checker.md)
     v = _num(args[0])
-    return chr(int(v) & 0xFF if v == v and abs(v) != float('inf') else 0)
+    code = int(v) & 0xFF if v == v and abs(v) != float('inf') else 0
+    return chr(code) if code else ""
 
 
 def _fn_abs(args):

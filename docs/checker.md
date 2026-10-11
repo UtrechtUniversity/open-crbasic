@@ -4845,3 +4845,10 @@ All four loggers: the operand after `To` may be preceded by any number of `Not`,
 operand, not a relational: `X = 1 To Not 2 To 3`, `1 To Not 2 < 3` and `1 To Not 2 = 3` are `Incomplete
 expression`, while `1 To Not Not 2`, `1 To Not 2 + 1`, `1 To Not 2 << 1`, `1 To Not 2 And 3` compile.
 Not modelled (pre-existing false reject): `X = 1 + Not 2 To 3` compiles.
+
+## Round 10: `CHR` of a zero low byte is the empty string (oracle, 2026-10-11; `tests/fixtures/chr_nul_const.json`)
+
+All four loggers: a NUL byte contributes nothing to a constant string. `CHR(256)` (low byte 0) is
+`""`: `LEN(CHR(256))` is 0, `CHR(256)=""` is true, and `CHR(256)+"AB"` equals `"AB"` with length 2,
+`"A"+CHR(256)+"B"` has length 2. `#If CHR(0)=""` is true. `consteval._fn_chr` returns `""` for a zero
+low byte; the earlier `"\x00"` made `LEN` 1 and failed the comparisons.
