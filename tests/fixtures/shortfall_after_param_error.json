@@ -1,0 +1,561 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-shortfall_after_param_error-0",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Strain\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-1",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-2",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1,IEEE4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-3",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain,IEEE4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-4",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-5",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Strain, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-6",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-7",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery Strain\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-8",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery (Strain, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-9",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-10",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-11",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-12",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-13",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-14",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-15",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-16",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too few parameters in instruction."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-17",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-18",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (C1,1,x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-19",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (C1,x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-20",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-21",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-22",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X,1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-23",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-24",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSW12 (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-25",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSW12 (X,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-26",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-27",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-28",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-29",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1,IEEE4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-30",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-31",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-32",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-33",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-34",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-35",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-36",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (x,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-37",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nVoltDiff (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-shortfall_after_param_error-38",
+   "logger": "cr6",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nVoltDiff (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-0",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Strain\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-1",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-2",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1,IEEE4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-3",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain,IEEE4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Average must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-4",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-5",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Strain, 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-6",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-7",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery Strain\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-8",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery (Strain, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-9",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-10",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-11",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-12",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-13",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage Foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-14",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-15",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Foo)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid symbol in expression: Foo."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-16",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Too few parameters in instruction."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-17",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-18",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (C1,1,x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal parameter x, expecting constant integer."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-19",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (C1,x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-20",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-21",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-22",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (X,1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-23",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nPortSet (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-24",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSW12 (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-25",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSW12 (X,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-26",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-27",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nBattery (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-28",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nSample (Strain,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-29",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1,IEEE4)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-30",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-31",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-32",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nAverage (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-33",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-34",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: Strain."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-35",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (1,Strain)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-36",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nDelay (x,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable illegal in Parameter: x."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-37",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nVoltDiff (Strain,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-shortfall_after_param_error-38",
+   "logger": "cr1000x",
+   "source": "Public X, Strain\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery (X)\nVoltDiff (X,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid or missing parameter."
+  }
+ ]
+}

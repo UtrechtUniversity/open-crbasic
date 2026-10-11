@@ -5072,3 +5072,19 @@ Not done: `If Batt > 1 Then CallTable (Msgs) : Battery (Batt)` (a colon-separate
 inline `If`) prints no warning on CR6/CR1000X in either, but the real compiler's mode is Sequential and
 ours is Pipeline (`mode.decide`; inference: the parser keeps `: Battery` outside the `If`, the real one
 puts it inside, and a conditional `Battery` in a `Scan` is sequential). Left out of the fixture.
+
+### Shortfall after an earlier parameter-kind error (CR6/CR1000X, 2026-10-11)
+
+On CR6/CR1000X the same rule that hides `Too many parameters` (above) also hides a shortfall
+(`Too few parameters in instruction.` / `Invalid or missing parameter.`) on a statement that already has
+`Variable illegal in Parameter: X.` or `Illegal parameter X, ...`: `Average Strain`, `Average (Strain)`,
+`Average Strain, 1`, `Sample (Strain)`, `Sample (Strain,1)`, `PortSet (X,1)` print only the variable
+line (`chm/straincalc_1.CR6`; the `MQTT QoS` shape of `chm/mqttpublishtable_1.CR6` is a different
+pass-1 question, below). `Average (Strain,1)` likewise prints only the variable line. Without a variable
+or illegal parameter the shortfall stands: `Average Foo`, `Sample (1)`, and `Average (1,Strain)` (the
+variable is a destination, no variable line) keep `Invalid or missing parameter.`. Implementation: `instr_rules.check`, the same
+`_earlier_error_in_stmt` gate as `check_too_many`. Fixture `tests/fixtures/shortfall_after_param_error.json`
+(78 cases, CR6 and CR1000X, 0 differing). `chm/mqttpublishtable_1.CR6` still differs (its `MQTT QoS`
+argument: real `MQTTPublishTable(MQTT QoS, 5)` is a pass-1 error that hides the fallbacks of earlier
+lines in the table, `Foo Bar` before it included; ours reports them. Not fixed: the pass-1/pass-2
+placement of that argument is unidentified).

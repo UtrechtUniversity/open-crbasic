@@ -288,6 +288,11 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
                    and _undefined_names(a, known) for i, a in enumerate(stmt.args[:len(params)])):
                 continue
             _report_constant_destinations(stmt, record, params, program, profile, diags)
+        # CR6/CR1000X: an earlier parameter-kind error on the statement hides the shortfall, as it
+        # hides `Too many parameters` below (`Average Strain`, `Sample (Strain)`, `PortSet (X,1)`)
+        if profile.name in ("cr6", "cr1000x") and _earlier_error_in_stmt(
+                program, stmt, diags, ("Illegal parameter ", "Variable illegal in Parameter")):
+            continue
         kind = _type_code_kinds().get(missing_code - 100 if missing_code >= 100 else missing_code)
         if kind in _TOO_FEW_PARAMS_KINDS:
             diags.error(stmt.line, "Too few parameters in instruction.", stmt.file)
