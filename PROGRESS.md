@@ -50,7 +50,7 @@ accepts, opencrbasic rejects: **none observed** in any differential, replay or f
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
 | help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 502/4/0/1, CR1000X 502/4/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
 | `tools/fuzz_replay.py` (2,251 reproducers) | 1,843 exact, 4 false accepts, 0 false rejects, 376 message diffs, 12 mode diffs, 16 oracle errors (`scratch/replay-r12.json`) |
-| `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 207/208, table list 207/208 (only `goestable_1` field name) |
+| `tools/tdftest.py --group all` | repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
 | `-t` [Times] (`scratch/timing_harness.py`, untracked) | repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash) |
 | implementation exceptions (difftest/replay class) | 0 |
 | `cd ../scripts && uv run --no-sync verify.py` (env `$HOME/.uv-envs/firnmelt-scripts`) | 2026-10-11: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |

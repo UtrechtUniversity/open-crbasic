@@ -115,3 +115,10 @@ Prerequisite: T-02 setup. Accept each when observed; record OS/VS Code version.
 4. Workspace: open the repository root; first analysis of all `crbasic/*.CR6` entries finishes;
    note the time from activation to the last publish.
 5. Other loggers: a `.CR1X`/`.CR300` program with `opencrbasic.logger` set accordingly.
+
+### Coordinator note (2026-10-11, appended)
+
+The language server (LSP-01b) is on the branch from `a15d2b3`; T-02 and T-04 can run now. Later
+revisions add hover/signature/editing logic modules that are not yet wired into the server; host
+checks for them will be appended as T-05+ when they are wired.
+

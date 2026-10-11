@@ -24,6 +24,30 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
   cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 
+## Human decisions (2026-10-11)
+
+- Help parsing (display only; the instruction table stays authoritative): a bare `[X]` around one
+  parameter in a call's parameter list marks it optional (`Name [optional]` already did); brackets
+  outside call parameter lists are not parameters; a trailing `...` is one repeatable parameter
+  (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
+  LSP-04a-rules.
+
+## Host findings to act on
+
+- 2026-10-11 host run `602f6462` (T-02): the VS Code client logged `Client is not running and
+  can't be stopped` while the server failed to start -> LSP-01d client fix.
+- T-02/T-04 are runnable from `a15d2b3` (server integrated); T-03 visual check pending (tokenizer
+  checks passed on host).
+
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
+  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
 ## Open questions for the human
 
 - Help parsing (LSP-04a-fix), display only (hover/signature labels; the instruction table stays
@@ -67,10 +91,10 @@ Live implementation state and session handoff. Design and acceptance criteria:
 |---|---|---|---|---|
 | LSP-00 | `f42e471`, main checkout, coordinator | accepted pending review | LSP-00.md gate table; selfdiff 0 differ | human review |
 | LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01b, round gates |
-| LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated, gates passed | at `c7e5a6f`: selfdiff 0 differ; full pytest 21,547 passed / 507 skipped; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | oracle gates: T-01 |
+| LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated, gates passed | at `c7e5a6f`: selfdiff 0 differ; full pytest 21,547 passed / 507 skipped; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | oracle gates passed on host (T-01, `8b25214a`, macOS: difftest/replay/tdftest unchanged vs baseline, real-exe verify BUILD pass) |
 | LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
 | LSP-01b server | `codex/lsp-01-server` -> `bdc8881` | integrated | combined tests/lsp 156 passed x3 (no flakes); worker: full pytest 21,566/507, selfdiff 0 differ | ranges still compiler-line based -> LSP-01d; host checks T-02/T-04 |
-| LSP-02a positions | `codex/lsp-02-positions` -> `43acb40` | integrated, gates passed | at `43acb40`: selfdiff 0 differ; full pytest 21,637/507; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass`; loader+parser ~+8% time (worker) | oracle: T-01 |
+| LSP-02a positions | `codex/lsp-02-positions` -> `43acb40` | integrated, gates passed | at `43acb40`: selfdiff 0 differ; full pytest 21,637/507; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass`; loader+parser ~+8% time (worker) | oracle gates passed on host (T-01, `8b25214a`) |
 | LSP-03a catalog+grammar | `codex/lsp-03-catalog` -> `4822b49` | integrated | coordinator rerun: 32 passed, `gen_grammar --check` up to date; combined tests/lsp 92 passed; npm compile 0, 5/5; worker: selfdiff 0 differ, full pytest 21,579/507 | highlighting: T-03 |
 | LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
 | LSP-04a-fix help param names | `codex/lsp-04-helpfix` -> cherry-picked | integrated | coordinator rerun 23 passed; CR6 help coverage 302 with help, matching counts 226 -> 269, 33 mismatches (categories in LSP-04a-fix-handoff.md) | open questions below |
