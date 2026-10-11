@@ -87,6 +87,91 @@ Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`,
 (hover p95 0.9 ms, completion 3.9 ms, diagnostics after debounce 134 ms), T-09 provider/API checks
 16/16 (`1b01311d`; visual checks pending), H-05 strict-mode leak fixed and retested (`1b01311d`).
 
+Accepted from `7d6db3b1`/`572e54d4` (macOS, VS Code 1.141.0, API-level): T-11 install 15/15; T-04
+amendment (H-02 restart race gone, H-03 associations, logger switch); T-10 steps 1-3, 5-7, 9; T-12
+rename/formatting/quick fix/H-04 display. Visual checks (F2 box, Ctrl+. menu, toasts, Problems
+rendering) still pending.
+
+Open:
+- H-06 open `.CR300` under logger `cr6` gets no "no configured entry" note (limited to `.crb`)
+  -> LSP-06c.
+- H-07 deleting a folder leaves its entries' diagnostics (VS Code sends only the folder URI,
+  which the extension glob does not match) -> LSP-06c.
+- Banner stderr copy and pygls' normal "Server shutting down" line show as `[error]` in the
+  output channel (cosmetic; documented).
+- Undo after a multi-file rename closes files the rename opened (VS Code behaviour; documented).
+- T-09/T-12 visual checks; Windows/Linux.
+
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Scope: this LSP session changes only LSP code (facade, editor modules, server, client, LSP
+  tests/docs). Compiler work items it finds are recorded in [PROGRESS.md](PROGRESS.md) "Compiler
+  items found by the LSP work" and not executed. Where the compiler or help lacks something
+  (e.g. no help page, unimplemented instruction), editor features show an explicit placeholder
+  ("Help: still to do") instead of driving a compiler change.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
+## Human decisions (2026-10-11)
+
+- Help parsing (display only; the instruction table stays authoritative): a bare `[X]` around one
+  parameter in a call's parameter list marks it optional (`Name [optional]` already did); brackets
+  outside call parameter lists are not parameters; a trailing `...` is one repeatable parameter
+  (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
+  LSP-04a-rules.
+
+## Review round 2
+
+[gpt-6.1-sol review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md): all four
+round-1 findings confirmed fixed. Four new P2 findings, all accepted (reproducers, oracle probes for
+1 and 4): (1) rename does not verify unedited dependencies' freshness (collision introduced
+later), (2) rename freshness uses prepare-time cached bytes, (4) rename capture check ignores
+`Public.<name>` member uses -> LSP-R2a; (3) feature positions use replacement bytes when the
+editor encoding cannot represent a character -> LSP-R2b.
+
+## Integration fixes by the coordinator
+
+- `tools/lsp_bench.py` (LSP-08a) removed `OPENCRBASIC_STRICT` from `os.environ` at import, so the
+  smoke test switched strict mode off for every later test in the session (found as 2 failures in
+  `tests/lsp/test_analysis.py` when run after it). Now only `main()` does it.
+
+## Regressions found after integration
+
+- `tests/lsp/test_rename.py::test_unresolved_and_unmodelled_and_quoted` fails on the branch since
+  LSP-07a was integrated after LSP-05c (field references now resolve, refusal reason changed from
+  `unmodelled` to `kind`). Coordinator did not rerun tests/lsp after that cherry-pick (rule
+  tightened: rerun tests/lsp after **every** integration). Fixed by LSP-05d, which also found that
+  a variable rename left `Quoted.a` member references behind (unsafe; now refused).
+
+## Review findings
+
+[Second gpt-6.1-sol review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md)
+(human-requested, 2026-10-11): findings and prior-fix verification are recorded in the report.
+The new findings await implementation.
+
+[gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
+2026-10-11), four P2 findings, triaged by the coordinator:
+
+1. Two-word `End Sub`/`End Function` do not close routine scope (bindings, hover): accepted,
+   reproducer confirmed by the reviewer; LSP-R1 (Haiku). The compiler's `symbols.scoped_view` has
+   the same omission (compiler workstream; LSP-R1 reports whether verdicts are affected).
+2. Instruction token resolves to a same-name user declaration: accepted; LSP-R1.
+3. Diagnostic columns always UTF-16 regardless of negotiated encoding: accepted; fixed in LSP-wire
+   (utf-8/utf-16/utf-32 test).
+4. Quoted `DataTable("Hist")` missing from outline/declared names/completion: accepted; LSP-R1.
+
+## Host findings to act on
+
+Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`, `c0fd9bf1`,
+`e77ee5cc`/`4d88a186`, `1b01311d`). Accepted from them: T-01 oracle gates (no regression through
+`e77ee5cc`), T-02 CR6 scenarios, H-01 range 32-33 (`e77ee5cc`), T-03 visual, T-07 idle benchmark
+(hover p95 0.9 ms, completion 3.9 ms, diagnostics after debounce 134 ms), T-09 provider/API checks
+16/16 (`1b01311d`; visual checks pending), H-05 strict-mode leak fixed and retested (`1b01311d`).
+
 Open:
 - H-02 restart toast and H-03 `.CR300` association: fixed by LSP-01e (`c5162d7` predates it at
   `1b01311d`); host retest per T-04 amendment.
@@ -262,8 +347,9 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-03d scan cache | `codex/lsp-03-scancache` -> cherry-picked | integrated | worker: tests/lsp 521, selfdiff 0 differ; completion on an unchanged buffer p50 15.6 -> 2.2 ms (cache hit); a changed buffer still costs ~16 ms | - |
 | LSP-08b user guide | `codex/lsp-08-guide` -> `adf6654` | integrated | [docs/lsp-user-guide.md](docs/lsp-user-guide.md); 25 relative links checked, 0 broken; written on a base before LSP-06a/07-wire | refresh after LSP-07-wire; repo-root `.vscode/settings.json` added (human decision 2026-10-11): `entries` `crbasic/*.CR6`, `helpDirectory` `extracted_chm` |
 | LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire` -> `fe33b2e` | integrated, gates passed | at `810b8f9`: tests/lsp 578, selfdiff 0 differ, npm 16/16, full pytest 22,083 passed / 507 skipped, native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | host T-12; review round 2 findings -> LSP-R2 |
-| LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename`, Sonnet | active | - | verify, cherry-pick |
-| LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding`, Haiku | active | - | verify, cherry-pick |
+| LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename` -> `463a565` | integrated | combined tests/lsp 592 passed (coordinator); worker: reproducers failed before / pass after, full rename sweep 940/196, 0 problems, selfdiff 0 differ | server should pass open buffers as `source` -> LSP-06c; limit: a file absent at analysis that appears later is not detected |
+| LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding` -> `3d76e93` | integrated | combined tests/lsp 586 then 592; worker: reproducer failed before / pass after; one conversion point (`features.Ctx`, `positions.EditorBytes`) | - |
+| LSP-06c host H-06/H-07 + rename source | `codex/lsp-06-hostfix`, Sonnet | active | - | verify, cherry-pick |
 | LSP-08b-refresh user guide | `codex/lsp-08-guide2` -> cherry-picked | integrated | guide updated to `810b8f9`; 32 links, 0 broken; R2 findings listed as known limits | update after R2 lands |
 | LSP-01g contribute tuning settings | `codex/lsp-01-settings` -> cherry-picked | integrated | worker: npm 16/16, server tests 25, selfdiff 0 differ; sync test package.json vs config.py | Settings UI: host check |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
