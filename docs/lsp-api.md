@@ -103,3 +103,81 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
   [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md). Documentation coverage is not
   compiler-rule coverage.
+
+## Instruction catalog (LSP-03a)
+
+`opencrbasic.catalog` lists every name a program can use for one logger profile.
+
+```python
+cat = InstructionCatalog.for_profile("cr6")     # cached; ValueError for an unknown profile
+cat.get("voltse")            # CatalogEntry(name="VoltSe", kind="instruction", ...) or None
+cat.get("if", "symbol")      # one kind only
+cat.entries("if")            # every entry of the name, in kind priority order
+cat.names("keyword")         # profile spellings of one kind, sorted case-insensitively
+iter(cat), len(cat), "voltse" in cat
+```
+
+`CatalogEntry` is a frozen dataclass: `name` (the profile's spelling), `kind`, `profile`, `source`
+(`instructions.json`, `functions.json`, `symbols.json`, `keyword:table`, `keyword:parser`),
+`params` (instructions: type codes, see `docs/type-codes.md`), `value` (symbols), and for
+functions `code`, `func_kind`, `argspec`, plus `nargs`/`argtypes` for the rows that have them.
+Lookup is case-insensitive; names keep a trailing `$` (`CHR$` and `CHR` are different functions).
+
+### Provenance
+
+Instructions, functions and symbols are built only from `profiles.get(name).instructions`,
+`.functions` and `.symbols`: the tables that `tools/extract_tables.py` read out of each logger's
+compiler (see `docs/legal.md`). There is no second hand-written instruction list, and the counts
+of the first three kinds equal the row counts of the profile's data files (tested for all four
+profiles).
+
+### Kinds overlap
+
+A name can have several kinds because the tables overlap: `If`, `Select`, `Case`, `Sub`,
+`Function`, `Scan`, `Do`, `For` are instruction rows and symbols (the words after `End`/`Exit`);
+`To`, `Is` and the word operators are function rows. `get(name)` returns one entry by the priority
+instruction, function, symbol, keyword; `entries(name)` returns all.
+
+### Keywords
+
+Kind `keyword` marks the words that structure a program. Most are already instruction rows, so
+the catalog derives them: `TABLE_KEYWORDS` in `catalog.py` names the block and declaration words
+(`If` ... `EndIf`, `For`/`Next`, `Sub`/`EndSub`, `BeginProg`/`EndProg`, `Scan`/`NextScan`,
+`DataTable`/`EndTable`, `Public`, `Dim`, `Const`, `Alias`, `Units`, `Include`, ...), and a profile
+gets the entry (with the table's spelling, `source` `keyword:table`) only when its own
+instruction table has the row. The parser dispatches on those words in `Parser._parse_statement`
+or reads them as ordinary instruction rows.
+
+The tables lack four language words, listed in `EXTRA_KEYWORDS` (`source` `keyword:parser`):
+`Then`, `Step`, `As`, `Optional`. Each is recognised by name in `parser.py` (`is_ident("THEN")` in
+`_parse_if`/`_parse_elseif`, `STEP` in `_parse_for`, `AS` in declarations, `_parse_subdef` and
+`_parse_param`, `OPTIONAL` in `_parse_param`); `test_extra_keywords_are_in_parser_source` checks
+that the strings are still there. `And`, `Or`, `Not`, `Xor`, `Mod`, `Eqv`, `Imp`, `To`, `Is` are
+function rows and stay functions. Directives (`#If`, `#ElseIf`, `#Else`, `#EndIf`,
+`#If_no_remove`, `#UnDef`) are not catalog entries; the parser matches them with `_DIRECTIVE_RE`
+and the generated grammar repeats that list. `Rem` is not a comment (`source._strip_comment`
+only knows `'`), so it is not highlighted as one.
+
+### Generated TextMate grammar
+
+`tools/gen_grammar.py` writes `vscode/syntaxes/crbasic.tmLanguage.json` (scope `source.crbasic`)
+from the CR6 catalog and the lexer's operator list. Patterns, in match order: comment (`'` to end
+of line), string (`"` with `""`), directive, number (decimal, `.5`, exponent, `R` suffix, `&H`,
+`&B`), keyword, word operator, instruction (`support.function.instruction.crbasic`), builtin
+function (`support.function.builtin.crbasic`), predefined constant (`support.constant.crbasic`),
+operator. A name that is in several kinds takes the first of that order. Every regex starts with
+`(?i)`, names are escaped and sorted longest first, and names are bounded by lookarounds (not
+`\b`, so `CHR$` works and `Tmp.001`, `Scan1`, `MyIf` do not match). Output is sorted JSON with a
+trailing newline.
+
+```bash
+cd opencrbasic
+uv run --no-sync python tools/gen_grammar.py           # regenerate
+uv run --no-sync python tools/gen_grammar.py --check   # exit 1 when the committed file is stale
+```
+
+`tests/lsp/test_grammar_sync.py` runs the check, validates the JSON, compiles every regex with
+Python `re` (the patterns stay in the syntax shared with Oniguruma; they also compile as
+JavaScript `RegExp` when `(?i)` is turned into a flag), and tokenizes sample lines with a small
+matcher (earliest match wins, ties go to the earlier rule). That proves the patterns match the
+intended text under Python `re`; it does not prove how VS Code renders the grammar.
