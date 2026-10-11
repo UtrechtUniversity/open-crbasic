@@ -424,3 +424,18 @@ the installed VSIX (output channel startup line), Main shows its one expected wa
 and hover work, and uninstalling removes it. Optionally also `uv run --no-sync python
 tools/vsix_check.py` on the host.
 
+### T-15 Inlay hints and commands in VS Code (LSP-09), appended 2026-10-11
+
+On a revision at or after the LSP-09c integration (see ledger), with `helpDirectory` set (the
+repository `.vscode/settings.json` does). Full list in
+[LSP-09c-handoff.md](docs/lsp-rounds/LSP-09c-handoff.md):
+1. `crbasic/Main.CR6`: parameter-name hints (`Dest:`, `Reps:`, ...) appear before `VoltSE`/`PanelTemp`
+   arguments, not before arguments already named like the parameter; none without a help directory.
+2. Setting `opencrbasic.inlayHints.parameterNames` false removes them without restart; true restores.
+3. Hints follow edits (refresh) and stay aligned after an emoji/non-ASCII text earlier on the line.
+4. Palette "opencrbasic: Show Compiler Output" on Main.CR6 opens a read-only document beside the
+   editor whose text equals `uv run --no-sync crbc ../crbasic/Main.CR6` output (`cd opencrbasic`);
+   with an unsaved invalid edit it shows the error; on a `.crb` it shows its entry's output.
+5. Palette "opencrbasic: Show Table Fields" lists Main's DataTables with field names, units,
+   processing.
+

@@ -20,7 +20,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
   Second round-3 reviewer, Claude Fable 5.1 at high effort, same HEAD:
   [review-2026-10-11-ccba3666-fable.md](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md),
   1 P1, 4 P2, 14 P3, non-overlapping; also awaiting triage and fixes.
-- Active: LSP-08d (test-run speed), LSP-09a/09b (inlay hints, commands). Done: LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX).
+- Active: LSP-08d (test-run speed). Done: LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
@@ -32,8 +32,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
    Windows URI clear, then its P3 list and documentation pass).
 3. LSP-08 release validation still open: install-from-VSIX on the host (T-14); Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
    (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
-4. LSP-09 (human request): parameter-name inlay hints and commands "Show compiler output" /
-   "Show table fields" (cores 09a/09b active; wiring 09c after LSP-08f). Pull diagnostics: not adopted.
+4. LSP-09 (human request) done: parameter-name inlay hints and commands "Show Compiler Output" /
+   "Show Table Fields"; host check T-15. Pull diagnostics: not adopted.
 5. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
    does not detect a file that appears after analysis, formatting refuses programs with errors,
    completion capped at 200, CR6-only help.
@@ -390,7 +390,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |
 | LSP-09b commands core (compiler output, table fields) | `codex/lsp-09-commands` -> cherry-picked | integrated (core, not wired) | worker: 58 passed, tests/lsp -n 4 654, selfdiff 0 differ; `compiler_output` equals `crbc` stdout on all crbasic/ + CHM sample, writes no files | wire in LSP-09c |
-| LSP-09c wiring (inlay hints, two commands) | `codex/lsp-09-wire`, base local `eb61380`+brief, Sonnet | active | - | verify, cherry-pick; push held while the human reviews/tests `ccba366` |
+| LSP-09c wiring (inlay hints, two commands) | `codex/lsp-09-wire` -> cherry-picked | integrated | coordinator on combined tree: tests/lsp -n 4 690 passed, npm 25/25, pyrefly 0; worker: new server tests 21 x3, selfdiff 0 differ, vsix_check 11/11 | host T-15 |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
