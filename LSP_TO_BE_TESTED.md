@@ -382,3 +382,33 @@ On a revision at or after `a42c7b0` (details in
 4. LSP-R2b: with `opencrbasic.encoding` `latin-1`, a line `s = "😀" : oldN` completes `oldName` in
    place (no shifted edit); hover and highlights land on the right token.
 
+
+## Local host retest (2026-10-11, 679f2f70)
+
+[Fresh results and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md)
+for `679f2f7009b8cd04c1a496851cf30b57dc660b8c`:
+
+- **T-13 H-06/H-07 PASS through the actual VS Code client:** unmatched other-logger documents now
+  receive the Information note; whole-folder deletion externally and through workspace API
+  clears closed-entry diagnostics. Both watcher patterns register successfully and deleted
+  folder URIs reach the server. Deleting 1000 unrelated files causes no refresh/diagnostic burst
+  during the recorded four-second observation.
+- **T-13 R2a/R2b PASS API checks:** an unsaved library declaration of the proposed new name causes
+  a collision refusal with no edits. Under Latin-1, completion after an emoji replaces exactly
+  `oldN`; hover, highlights and rename ranges select the correct `oldName` token.
+- T-04/T-10/T-11/T-12 checks were rerun; install 15/15 and client tests pass, full Python suite
+  reports `22297 passed, 311 skipped`. The single stale-editor-handle failure in the main harness
+  is preserved and resolved by a narrow completion retest; no implementation was changed.
+  Undo again closes and cleans the previously closed file, differing from the stated expectation.
+- **Repository verifier FAIL:** three solar/power/workbook freshness checks fail after the ASCII
+  reference-filename update in `2a1d36dd`. A read-only digest comparison reproduces the exact
+  previous digests using the previous reference parameter bytes. Compiler and consistency checks
+  pass. Generated outputs were not rewritten in this record. Observed final line:
+
+  ```text
+  BUILD  host tests 119 FAIL | CRBasic 16/16 compiled, 6 warning(s) | repository pass
+  ```
+
+Literal Explorer clicks and visual rendering/toasts remain unobserved, as do Windows/Linux.
+The report states the API/trace limits; it does not close those checks or all possible rename races.
+Original CRBasic sources and existing raw reports were untouched; no hardware was contacted.
