@@ -92,6 +92,15 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   reproducer, fixture/docs chores, single well-scoped families). Keep Sonnet for hard families,
   reverse engineering and anything needing rule discovery. Review Haiku output for quality (all
   gates plus a spot-check of rules and fixtures against the oracle) and record the verdict here.
+  **Verdict after round 11 (3 Haiku workers): good enough for easy/medium work; keep using it.**
+  Integration of 7 verified commits: correct picks, green after each, stopped cleanly on a real
+  design conflict instead of guessing (handed to Sonnet). Round-9 review: 6/7 findings confirmed
+  against the oracle and fixed (incl. an internal crash), 1 correctly reported "not confirmed".
+  Small items: fixed a false reject, corrected a mis-stated rule from probes, deliberately
+  under-modelled a mixed case. All fixtures re-audited by the coordinator: 0 differing; no
+  regressions in difftest. One defect: it amended cherry-picked commit messages, replacing the
+  original authors' trailers (now forbidden in the brief). Keep Sonnet for rule discovery,
+  reverse engineering and design conflicts.
 - Orchestration: Opus coordinates; workers get disjoint families in their own git worktree
   (`git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`, then
   `ln -s <main>/opencrbasic/.oracle-cache` into it), and are integrated with `git cherry-pick`
