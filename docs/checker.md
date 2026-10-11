@@ -4891,3 +4891,13 @@ statement, the `instr_rules` convention): the undefined-symbol finding of the wh
 keep the line-based rule. Not modelled: the order of these findings when the `Member` statement comes
 first (`X=Status.TimeStamp(1,1,1) : X=Nope`, CR6 prints the `Member` line first; ours prints `Nope`
 first), and the position of a later `Y=2` finding (CR6/CR1000X print it last; ours first).
+
+## Round 10, CR300/CR350: string literals are not code in the block-call ordering (oracle, 2026-10-11; `tests/fixtures/r10_cr3xx_block_quotes.json`)
+
+`cr3xx.order_block_keyword_calls` finds the first block keyword call (`Scan(`, `Sub(`, ...) in the
+statement text with the quoted literals blanked. Before, `LEN("Scan(") + Nope + Scan(1)` cut the
+name scan at the quoted `Scan(` and dropped `Nope is not defined.`, and `LEN("Nope") + Scan(1) +
+Nope` kept the later `Nope`, because the quoted name counted as an earlier name. Both match the
+real compilers now, as does `If LEN("Scan(") = Nope Then X = Scan(1)`. CR6/CR1000X are not part of
+this family: `X = Nope + Scan(1)` gives `Invalid symbol in expression` there, which ours does not
+model (pre-existing).

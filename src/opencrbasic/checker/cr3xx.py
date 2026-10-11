@@ -1556,7 +1556,9 @@ def order_block_keyword_calls(program: S.Program, profile, diags: Diagnostics) -
         if not isinstance(stmt, (S.Assignment, S.If, S.ElseIf)):
             continue
         key = (stmt.line, stmt.file)
-        m = _CALL_KEYWORD_RE.search(stmt.text or "")
+        # string literals are not code: `LEN("Scan(")` is no call, `LEN("Nope")` names nothing
+        code = re.sub(r'"[^"]*"', lambda q: " " * len(q.group()), stmt.text or "")
+        m = _CALL_KEYWORD_RE.search(code)
         marks = [d for d in diags.items if (d.line, d.file) == key
                  and d.message.startswith("Incomplete expression:")]
         if not (m and marks):
@@ -1565,7 +1567,7 @@ def order_block_keyword_calls(program: S.Program, profile, diags: Diagnostics) -
                for d in diags.items):  # `Q(1) = Scan(1)`, an undeclared or scalar indexed target
             diags.items[:] = [d for d in diags.items if d not in marks]
             continue
-        before = {w.upper() for w in re.findall(r"[A-Za-z_]\w*", stmt.text[:m.start()])}
+        before = {w.upper() for w in re.findall(r"[A-Za-z_]\w*", code[:m.start()])}
         keep = []
         for d in diags.items:
             if (d.line, d.file) == key:

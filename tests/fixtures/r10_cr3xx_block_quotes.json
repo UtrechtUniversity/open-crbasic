@@ -1,0 +1,141 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-0",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = LEN(\"Scan(\") + Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = LEN(\"Scan(\") + Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Scan(1) + Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = LEN(\"Nope\") + Scan(1) + Nope\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-2",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-3",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = Nope + LEN(\"Scan(\") + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Nope + LEN(\"Scan(\") + Scan(1)\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-4",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Nope2 + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope2 is not defined.\nline 3: Incomplete expression: X = LEN(\"Nope\") + Nope2 + Scan(1)\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = LEN(\"x)\") + Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = LEN(\"x)\") + Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nIf LEN(\"Scan(\") = Nope Then X = Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Scan(1)."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-7",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nIf LEN(\"Nope\") = 1 Then X = Scan(1) + Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = Scan(1) + Nope."
+  },
+  {
+   "id": "cr300-r10_cr3xx_block_quotes-8",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Scan(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = LEN(\"Nope\") + Scan(Nope)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-0",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = LEN(\"Scan(\") + Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = LEN(\"Scan(\") + Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Scan(1) + Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = LEN(\"Nope\") + Scan(1) + Nope\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-2",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-3",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = Nope + LEN(\"Scan(\") + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Nope + LEN(\"Scan(\") + Scan(1)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-4",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Nope2 + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope2 is not defined.\nline 3: Incomplete expression: X = LEN(\"Nope\") + Nope2 + Scan(1)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = LEN(\"x)\") + Nope + Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = LEN(\"x)\") + Nope + Scan(1)\n."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nIf LEN(\"Scan(\") = Nope Then X = Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Incomplete expression: X = Scan(1)."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-7",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nIf LEN(\"Nope\") = 1 Then X = Scan(1) + Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = Scan(1) + Nope."
+  },
+  {
+   "id": "cr350-r10_cr3xx_block_quotes-8",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nX = LEN(\"Nope\") + Scan(Nope)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Incomplete expression: X = LEN(\"Nope\") + Scan(Nope)\n."
+  }
+ ]
+}
