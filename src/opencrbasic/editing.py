@@ -227,7 +227,20 @@ def _block_events(text: str, profile: str):
             yield event[0], event[1], name, first, last
 
 
-def _scan(text: str, profile: str) -> list[_Block]:
+# Results of `_scan` kept per (text, profile). The key is the text itself, so a hit is exact (no hash
+# collisions); a completion or folding request on an unchanged buffer reuses the scan. Eight texts
+# bound the memory (a few hundred KB for a large program).
+_SCAN_CACHE_SIZE = 8
+
+
+@functools.lru_cache(maxsize=_SCAN_CACHE_SIZE)
+def _scan(text: str, profile: str) -> tuple[_Block, ...]:
+    """Every block of `text` with its closer (or None), as a tuple; cached, see
+    `_scan.__wrapped__` for the uncached function (the tests compare the two)."""
+    return tuple(_scan_uncached(text, profile))
+
+
+def _scan_uncached(text: str, profile: str) -> list[_Block]:
     """Every block of `text` with its closer (or None), by nearest-matching-opener recovery: a
     closer closes the innermost open block of its family and drops the blocks opened inside it
     that were never closed, a closer with no opener is ignored. `SlowSequence` also ends, without

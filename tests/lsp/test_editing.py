@@ -846,3 +846,66 @@ def test_declared_names_close_routine_scope_for_two_word_end(tmp_path, end):
                                       "BeginProg\nEndProg\n")
     names = {(n.name, n.scope) for n in declared_names(_analyze(entry).program)}
     assert ("z", None) in names and ("x", None) in names and ("x", "S") in names
+
+
+
+# ------------------------------------------------------------------ scan cache (LSP-03d)
+
+
+def _uncached_scan(monkeypatch):
+    """Route `editing._scan` to the uncached function for the duration of a test."""
+    monkeypatch.setattr(editing, "_scan", lambda text, profile: tuple(
+        editing._scan_uncached(text, profile)))
+
+
+def test_scan_cache_returns_the_uncached_result_on_main_cr6():
+    text = MAIN.read_bytes().decode("latin-1")
+    editing._scan.cache_clear()
+    cold = editing._scan(text, "cr6")
+    assert cold == tuple(editing._scan_uncached(text, "cr6"))
+    assert editing._scan(text, "cr6") is cold           # the second call is a cache hit
+
+
+def test_scan_cache_is_keyed_by_text_and_profile():
+    text = "Sub A()\nEndSub\n"
+    editing._scan.cache_clear()
+    assert editing._scan(text, "cr6") != editing._scan(text + "Sub B()\n", "cr6")
+    assert editing._scan(text, "cr6") == tuple(editing._scan_uncached(text, "cr6"))
+    assert editing._scan(text, "cr300") == tuple(editing._scan_uncached(text, "cr300"))
+    assert editing._scan.cache_info().currsize == 3
+
+
+def test_scan_cache_is_bounded():
+    editing._scan.cache_clear()
+    for k in range(editing._SCAN_CACHE_SIZE + 5):
+        editing._scan(f"Sub S{k}()\nEndSub\n", "cr6")
+    assert editing._scan.cache_info().currsize == editing._SCAN_CACHE_SIZE
+
+
+def test_scan_cache_follows_an_edited_buffer():
+    # the same routine with its closer, then without: a stale hit would keep the old scope
+    closed = "Public x\nSub S()\n Dim y\nEndSub\nBeginProg\n x = y\nEndProg\n"
+    open_ = "Public x\nSub S()\n Dim y\nBeginProg\n x = y\nEndProg\n"
+    assert folding_ranges(closed) != folding_ranges(open_)
+    assert folding_ranges(closed) == folding_ranges(closed)
+    declared = [("x", "variable", None), ("y", "variable", "S")]   # the routine's local `y`
+    assert [i.label for i in _complete(closed, 5, 6, declared=declared).items
+            if i.source == "program"] == []
+    assert [i.label for i in _complete(open_, 4, 6, declared=declared).items
+            if i.source == "program"] == ["y"]
+
+
+def test_completion_on_main_cr6_cached_equals_uncached(monkeypatch):
+    # every line (at its end) and every fifth line (mid-line): the candidates through the cache
+    # must equal those through the uncached scan, position by position
+    text = MAIN.read_bytes().decode("latin-1")
+    result = _analyze(MAIN)
+    lines = text.split("\n")
+    positions = [(n, len(l)) for n, l in enumerate(lines)]
+    positions += [(n, len(l) // 2) for n, l in enumerate(lines) if n % 5 == 0 and len(l) > 1]
+    editing._scan.cache_clear()
+    cached = [_complete(text, n, c, result) for n, c in positions]
+    assert editing._scan.cache_info().hits > 0
+    _uncached_scan(monkeypatch)
+    uncached = [_complete(text, n, c, result) for n, c in positions]
+    assert cached == uncached

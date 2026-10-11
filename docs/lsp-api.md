@@ -882,6 +882,15 @@ current `lsp/features.py` sends `False`; see `docs/lsp-rounds/LSP-03c-handoff.md
 to member lists too. The catalog's completion items are built once per profile (`_catalog_items`,
 cached; the items are immutable), not per call.
 
+LSP-03d: the routine-scope scan (`_scan`, the block scan of the whole buffer that completion uses to
+find the current Sub / Function, and folding uses) is cached in a bounded LRU of 8 entries
+(`_SCAN_CACHE_SIZE`), keyed by `(text, profile)`; the key is the text itself, so a hit is exact. It
+returns a tuple. `_scan.__wrapped__` is the uncached function. A call on a buffer already scanned
+skips the scan: on `Main.CR6` the completion call drops from about 16 ms to about 2.4 ms (p50, see
+`docs/lsp-rounds/LSP-03d-handoff.md`). A changed buffer is a miss and costs what it did before. The
+cache changes no result: `test_completion_on_main_cr6_cached_equals_uncached` compares every line
+of `Main.CR6` through the cache and through the uncached scan.
+
 ### Known limits
 
 - Everything depends on what the parser accepts: a `Sub` header the parser cannot read (it
