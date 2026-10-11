@@ -707,8 +707,27 @@ def _leftover_message(profile, stmt: S.Stmt) -> str:
     for i, ch in enumerate(text):
         depth += (ch == "(") - (ch == ")")
         if depth == 0:
-            return f"{_FALLBACK_PREFIX} {text[1:i]}."
+            inner = text[1:i]
+            if _constant_assignment(inner, profile):
+                # `(Double = Z) x`: the group is read as an expression whose assignment target is a
+                # constant (oracle, CR300/CR350, 2026-10-11, docs/checker.md "Parenthesised assignment")
+                return f"Invalid assignment in expression: {inner}."
+            return f"{_FALLBACK_PREFIX} {inner}."
     return _out_of_place(profile, text[1:], stmt.at_eol)
+
+
+def _constant_assignment(text: str, profile) -> bool:
+    """`Double = Z`, `1 = 1`, `Sec = 1`: one constant, string or predefined-symbol token, then `=`."""
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return False
+    if len(toks) < 3 or not (toks[1].kind == "OP" and toks[1].text == "="):
+        return False
+    first = toks[0]
+    return first.kind in ("NUMBER", "STRING") or (
+        first.kind == "IDENT" and first.upper not in profile.instructions
+        and first.upper in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS)
 
 
 def _no_matching(profile, text: str, at_eol: bool = True) -> str:

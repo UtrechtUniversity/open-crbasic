@@ -5016,3 +5016,13 @@ and the stray-`)` verdict of `_scan_expr`. Fixture `tests/fixtures/stray_close_p
 After the CR300/CR350 cascade has dropped `Public gps_data(15)`, `Alias gps_data(1) =` with the
 alias name on the next line (an `Unparsed` statement) is `gps_data not yet declared so cannot be
 aliased.`, not `Nothing after '=' in alias definition` (`chm/gps_1.CR6`; cr3xx cascade loop).
+
+### Parenthesised assignment with a constant target, CR300/CR350 (2026-10-11)
+
+A leftover line starting `(` is re-read as an expression and its inside echoed
+(`structure._leftover_message`). When the inside is `<constant|string|predefined symbol> = ...`
+(`(Double = Z) x`, `(1 = 1) x`, `(Sec = 1) x`) the message is `Invalid assignment in expression:
+<inside>.` instead of the generic fallback (`chm/DoublePrecArith_1.CR6`). With a variable target
+(`(Z = Z) x`) the real compiler accepts it (`Expr illegally occurs before BeginProg.` before
+`BeginProg`, nothing after); not implemented, we still print the fallback. Fixture
+`tests/fixtures/paren_assignment.json`.
