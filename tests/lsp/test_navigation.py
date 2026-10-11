@@ -285,3 +285,18 @@ def test_never_raises_over_crbasic(tmp_path):
                 assert text[s.start:s.end].decode("latin-1").upper() == s.rec.name.upper() or \
                     s.rec.name.upper() in ("", )
     assert declared > 100 and resolved > 100
+
+
+@pytest.mark.parametrize("end", ["EndSub", "End Sub"])
+def test_two_word_end_sub_scopes_the_main_program_name(tmp_path, end):
+    src = (f"Public x\nSub S()\n Dim x\n x=1\n{end}\nPublic z\n"
+           "BeginProg\n Scan(1,Sec,0,0)\n  x=2\n NextScan\nEndProg\n")
+    p = write(tmp_path, "m.CR6", src)
+    r = run(p)
+    assert where(N.definition(r, p, 8, 2)) == [("m.CR6", 0, 7, 8)]
+
+
+def test_instruction_token_has_no_user_definition(tmp_path):
+    p = write(tmp_path, "m.CR6", "Public PanelTemp,T\nBeginProg\n Scan(1,Sec,0,0)\n"
+                                 "  PanelTemp(T,15000)\n NextScan\nEndProg\n")
+    assert N.definition(run(p), p, 3, 3) == []

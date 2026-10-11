@@ -496,3 +496,12 @@ def test_hostile_text():
             for col in (0, 1, 5, 1000):
                 H.call_context(t, ln, col)
                 H.hover(None, t, ln, col, "cr6", None)
+
+
+@pytest.mark.parametrize("end", ["EndSub", "End Sub"])
+def test_two_word_end_sub_closes_hover_scope(tmp_path, end):
+    path = tmp_path / "Main.CR6"
+    path.write_text(f"Public x\nSub S()\n Dim x\nx=1\n{end}\nPublic z\n")
+    d = H.declarations(analyze(AnalysisRequest(path)).program)
+    assert [x.scope for x in d["X"]] == [None, "S"]
+    assert d["Z"][0].scope is None

@@ -501,14 +501,26 @@ def _outline(located, roles: _Roles, cat: InstructionCatalog, occ: int) -> list[
     return root
 
 
+def _declared_name_arg(first, family: str) -> str | None:
+    """The name a DataTable / ConstTable / StructureType statement declares, from its first
+    argument: the bare name, or for DataTable and ConstTable the quoted name of
+    `DataTable("Hist", ...)` (declared the same way by `bindings.py`)."""
+    if isinstance(first, S.Name):
+        return first.name
+    if isinstance(first, S.String) and first.value and family in ("DATATABLE", "CONSTTABLE"):
+        return first.value
+    return None
+
+
 def _header(stmt: S.Stmt, family: str, cat: InstructionCatalog) -> tuple[str, str, str]:
     """`(name, kind, detail)` of a block-opening statement."""
     if isinstance(stmt, S.SubDef):
         return stmt.name, family.lower(), _sub_detail(stmt)
     if family in ("DATATABLE", "CONSTTABLE", "STRUCTURETYPE"):
         first = stmt.args[0] if getattr(stmt, "args", None) else None
-        if isinstance(first, S.Name):
-            return first.name, family.lower(), ""
+        name = _declared_name_arg(first, family)
+        if name is not None:
+            return name, family.lower(), ""
     m = re.match(r"\s*(\w+)", stmt.text)
     return (m.group(1) if m else family), family.lower(), " ".join(stmt.text.split())[:80]
 
@@ -569,8 +581,10 @@ def declared_names(program, profile: str = "cr6") -> list[DeclaredName]:
             if stmt.keyword == "ALIAS":
                 out.extend(DeclaredName(a.name, "alias", routine) for a in stmt.args[1:]
                            if isinstance(a, S.Name))
-            elif stmt.keyword in ("DATATABLE", "CONSTTABLE") and isinstance(first, S.Name):
-                out.append(DeclaredName(first.name, "table", None))
+            elif stmt.keyword in ("DATATABLE", "CONSTTABLE"):
+                table = _declared_name_arg(first, stmt.keyword)
+                if table is not None:
+                    out.append(DeclaredName(table, "table", None))
             elif stmt.keyword == "STRUCTURETYPE" and isinstance(first, S.Name):
                 out.append(DeclaredName(first.name, "type", None))
     return out

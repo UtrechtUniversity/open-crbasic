@@ -555,3 +555,33 @@ def test_build_never_raises_on_chm_corpus_and_reports_unresolved():
 def test_build_never_raises_on_chm_sample_other_loggers(logger):
     total, failures = _corpus_counts(CHM[::7], logger)
     assert failures == [] and total["files"] > 0
+
+
+# ------------------------------------- LSP-R1: two-word closers, instruction tokens
+
+
+@pytest.mark.parametrize("end", ["EndSub", "End Sub"])
+def test_two_word_end_sub_closes_routine_scope(end):
+    ix = index(f"Public x\nSub S()\n Dim x\n x=1\n{end}\nPublic z\n"
+               "BeginProg\n Scan(1,Sec,0,0)\n  x=2\n NextScan\nEndProg\n")
+    assert ix.failures == ()
+    assert [(d.kind, d.scope, d.line) for d in decls(ix, "z")] == [("public", "global", 6)]
+    assert [targets(r) for r in refs(ix, "x") if r.line == 4] == [[("dim", "routine", 3)]]
+    assert [targets(r) for r in refs(ix, "x") if r.line == 9] == [[("public", "global", 1)]]
+
+
+def test_instruction_keyword_resolves_to_catalog_before_a_user_declaration():
+    ix = index("Public PanelTemp,T\nBeginProg\n Scan(1,Sec,0,0)\n  PanelTemp(T,15000)\n NextScan\n"
+               "EndProg\n")
+    assert ix.failures == ()
+    ref = refs(ix, "PanelTemp", "instruction")[0]
+    assert ref.status == "resolved"
+    assert [(d.kind, d.external and d.external.kind) for d in ref.resolved] == [("external", "instruction")]
+    public = decls(ix, "PanelTemp", "public")[0]
+    assert not any(r.role == "instruction" for r in ix.references_to(public))
+
+
+def test_instruction_keyword_resolves_to_catalog_before_a_routine_local():
+    ix = index("Sub S(T)\n Dim PanelTemp\n PanelTemp(T,15000)\nEndSub\nBeginProg\nEndProg\n")
+    ref = refs(ix, "PanelTemp", "instruction")[0]
+    assert [(d.kind, d.external and d.external.kind) for d in ref.resolved] == [("external", "instruction")]

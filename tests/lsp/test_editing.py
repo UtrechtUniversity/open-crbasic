@@ -780,3 +780,23 @@ def test_chm_folds_equal_outline_blocks_where_the_program_compiles():
                 assert (s.range.start_line, s.range.end_line - 1) in folds, (path.name, s.name)
                 checked += 1
     assert checked > 10
+
+
+def test_quoted_datatable_name_is_listed_declared_and_completed(tmp_path):
+    src = ('Public x\nDataTable("Hist",True,1)\n Sample(1,x,FP2)\nEndTable\n'
+           'BeginProg\n Scan(1,Sec,0,0)\n CallTable("Hist")\n NextScan\nEndProg\n')
+    entry = _write(tmp_path, "q.CR6", src)
+    result = _analyze(entry)
+    assert result.ok
+    assert [(s.kind, s.name) for s in document_symbols(result, entry) if s.kind == "datatable"] == [
+        ("datatable", "Hist")]
+    assert ("Hist", "table", None) in {(n.name, n.kind, n.scope) for n in declared_names(result.program)}
+    assert [i.label for i in _complete("Hi", 0, 2, result).items if i.source == "program"] == ["Hist"]
+
+
+@pytest.mark.parametrize("end", ["EndSub", "End Sub"])
+def test_declared_names_close_routine_scope_for_two_word_end(tmp_path, end):
+    entry = _write(tmp_path, "s.CR6", f"Public x\nSub S()\n Dim x\n x=1\n{end}\nPublic z\n"
+                                      "BeginProg\nEndProg\n")
+    names = {(n.name, n.scope) for n in declared_names(_analyze(entry).program)}
+    assert ("z", None) in names and ("x", None) in names and ("x", "S") in names

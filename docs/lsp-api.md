@@ -461,7 +461,7 @@ statement, resolved to the catalog).
 | Policy | Evidence |
 |---|---|
 | Resolution is case-insensitive on AST names; the declared spelling is kept. | `symbols.py` upper-cases every lookup. |
-| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction`. | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). |
+| Outside a routine, `Public`/`Dim`/`Const`, `Sub`/`Function`, `Alias`, tables and structure types are global. A routine is the span from a `Sub`/`Function` statement to `EndSub`/`EndFunction` or the two-word `End Sub`/`End Function` (`bindings.closes_routine`, shared with hover; LSP-R1 finding 1). | `symbols.scoped_view` (`docs/checker.md` "Scope-aware lookups and statement identity (round 8)"; `tests/test_scope_shadow.py`). The compiler's `scoped_view` tests only the one-word closers; see [LSP-R1-handoff.md](lsp-rounds/LSP-R1-handoff.md). |
 | `Dim`, `Const` and parameters inside a routine are local and win over a global of the same name; the same parameter name in two routines is two declarations. | `docs/checker.md` ("`Sub` parameters and `Dim`s inside a `Sub`/`Function` may shadow"); `tests/fixtures/const_shadow_sub.json` and `sub_param_const.json` (a parameter named like a `Const` declared after the Sub is local). |
 | A local that shadows a global `Const` declared earlier is a compile error the index does not model; the local still wins. | `const_shadow_sub.json`. |
 | `Sub`/`Function` names are global and order-free (forward references resolve). Variables and constants are also resolved order-free, but `Reference.forward` is true when every candidate is declared in a later statement. | `symbols.declared_subs` (whole program); order for variables is unverified (`declared_names` "deliberately global"), hence the flag. |
@@ -470,7 +470,7 @@ statement, resolved to the catalog).
 | Two or more global candidates stay `ambiguous` with a reason: duplicate declarations (the compiler rejects them), the same include used twice, or a table sharing a variable's spelling. | `tests/fixtures/routine_names.json` (duplicate Sub, variable/Function clash). The vendor sample `avgrun_1.CR6` declares `Public TCTemp` and `DataTable (TCTemp,...)`; whether the namespaces are separate is not established here, so no choice is made. |
 | `Table.Field` of a user `DataTable`: resolves to the `field` declaration of that table (see "Table fields"). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json`; field names come from `tables.py`. |
 | Structure members resolve through the base variable's declared type (also through nested members); an unknown member is `unresolved`. | `checker/structs.py` model (`_structure_members`, `_member_chain`). |
-| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction. | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`. |
+| Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction, and a token the parser made an instruction (`instruction` role) never resolves to a user declaration of the same spelling (LSP-R1 finding 2). | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`; the parser's `S.Instruction` classification ([LSP-R1-handoff.md](lsp-rounds/LSP-R1-handoff.md)). |
 | `Alias A(1) = N1, N2`: each right-hand name is an `alias` declaration with `alias_target` = the reference of `A`; `Units V = label`: `V` is a `units_target` reference. | `parser._parse_alias`, `_parse_units_segment`. |
 
 ### Inactive code, strings, includes
@@ -648,7 +648,7 @@ decodes, Latin-1, so a column is an index into the line of that string.
 | `folding_ranges(text, profile="cr6") -> list[FoldRange]` | Block, `#If` and comment-run folds from the buffer text alone. |
 | `include_links(result) -> list[IncludeLink]` | One entry per `Include` / `IncludeSection` statement of every file of the program. |
 | `completion_candidates(result, text, line, column, profile="cr6", declared=None) -> Completion` | Candidates at a position. `result` may be None or stale. |
-| `declared_names(program, profile="cr6") -> list[DeclaredName]` | The `(name, kind, scope)` list completion uses by default (LSP-05a's binding index replaces it). |
+| `declared_names(program, profile="cr6") -> list[DeclaredName]` | The `(name, kind, scope)` list completion uses by default (LSP-05a's binding index replaces it). A quoted `DataTable("Hist",...)` is declared as `Hist` (kind `table`), as in the outline. |
 | `block_pairs(profile) -> dict` | Opener word -> closer word of the profile (upper case). |
 
 ### Block words
@@ -697,7 +697,7 @@ with `Program.line_map` (`positions.reported_spans`) and nests by block:
 | `kind` | Statement | Children |
 |---|---|---|
 | `sub`, `function` | `Sub` / `Function` (detail: parameters and return type) | `parameter` per parameter |
-| `datatable` | `DataTable` | `output`: each instruction in the body that is not a catalog keyword (so `Units` is left out; `DataInterval`, `Sample`, ... stay) |
+| `datatable` | `DataTable` (a quoted `DataTable("Hist",...)` is listed as `Hist`; LSP-R1 finding 4) | `output`: each instruction in the body that is not a catalog keyword (so `Units` is left out; `DataInterval`, `Sample`, ... stay) |
 | `consttable` | `ConstTable` | `const` |
 | `structuretype` | `StructureType` | `member` |
 | `beginprog`, `scan`, `subscan`, `slowsequence` | the block words | declarations inside, nested blocks |

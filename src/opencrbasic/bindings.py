@@ -35,7 +35,6 @@ _TABLE_KINDS = ("datatable", "consttable")
 _STRUCT_KINDS = ("structuretype", "objecttype")
 _ROUTINE_KINDS = ("sub", "function")
 _VARIABLE_KINDS = ("public", "dim", "static")
-_LEX_BLOCKS = {"ENDSUB", "ENDFUNCTION"}
 # `TableName.<property>` members of a data (or Status) table that are not fields
 # (extracted_chm/Info/datatableaccess.htm "Data Table Access").
 _TABLE_PROPERTIES = {n.upper(): n for n in (
@@ -236,6 +235,10 @@ class BindingIndex:
 
     def _resolve_name(self, upper: str, routine, role: str) -> Resolution:
         profile = self.profile
+        if role == INSTRUCTION:
+            # The parser made this token an instruction: only the catalog answers, never a user
+            # declaration of the same spelling (docs/lsp-api.md, "Scope policies and evidence").
+            return Resolution(self._predefined(upper, ("instruction", "keyword")), "")
         locals_ = self._local.get(id(routine), {}).get(upper, []) if routine is not None else []
         if locals_:
             if len(locals_) > 1:
@@ -261,8 +264,6 @@ class BindingIndex:
                               "that routine is not established by evidence")
         if role == CALL:
             kinds = ("instruction", "function", "symbol")
-        elif role == INSTRUCTION:
-            kinds = ("instruction", "keyword")
         elif role == TYPE:
             kinds = ("symbol",)
         else:
@@ -399,6 +400,19 @@ def _is_callable(d: Declaration) -> bool:
 
 
 # ------------------------------------------------------------- token helpers
+
+
+def closes_routine(stmt: S.Stmt) -> bool:
+    """True when `stmt` ends a Sub or Function: `EndSub` / `EndFunction`, or the two-word `End Sub` /
+    `End Function`, which the parser gives as `Instruction(keyword="END", args=[Name("Sub")])`.
+    Shared by the binding index, hover and the routine scope they track."""
+    if not isinstance(stmt, S.Instruction):
+        return False
+    kw = stmt.keyword.upper()
+    if kw in ("ENDSUB", "ENDFUNCTION"):
+        return True
+    return (kw == "END" and bool(stmt.args) and isinstance(stmt.args[0], S.Name)
+            and stmt.args[0].name.upper() in ("SUB", "FUNCTION"))
 
 
 def classified_tokens(stmt: S.Stmt):
@@ -819,7 +833,7 @@ def _build(ix: BindingIndex, program) -> None:
             b.routine, b.struct, b.consttable = saved
             failures.append(IndexFailure(i, getattr(st, "file", ""), getattr(st, "line", 0),
                                          f"{type(e).__name__}: {e}"))
-        if isinstance(st, S.Instruction) and st.keyword.upper() in _LEX_BLOCKS:
+        if closes_routine(st):
             b.routine = None
     ix.declarations = tuple(b.decls)
     ix.references = tuple(b.refs)

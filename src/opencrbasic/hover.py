@@ -18,6 +18,7 @@ from typing import Mapping
 
 from . import positions, profiles
 from . import syntax as S
+from .bindings import closes_routine
 from .catalog import CatalogEntry, InstructionCatalog
 from .helpdocs import HelpProvider, InstructionHelp, pair_signature
 from .helpdocs import _md
@@ -377,7 +378,7 @@ def declarations(program) -> dict[str, list[Declaration]]:
             scope = st.name
         elif isinstance(st, S.Instruction):
             kw = st.keyword
-            if kw in ("ENDSUB", "ENDFUNCTION"):
+            if closes_routine(st):
                 scope = None
             elif kw in ("DATATABLE", "CONSTTABLE") and st.args and isinstance(st.args[0], S.Name):
                 add(st.args[0].name, st, "DataTable" if kw == "DATATABLE" else "ConstTable")
