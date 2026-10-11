@@ -169,3 +169,20 @@ accept when difftest/replay/tdftest counts and the real-exe `verify.py` BUILD li
 from the `8b25214a` host record. Cloud gates at `3769504`: selfdiff 0 differ, full pytest 21,869
 passed / 507 skipped, native verify pass.
 
+### T-02 amendment (2026-10-11, appended): H-01 after LSP-01d
+
+On a revision at or after `b21c1e1`, repeat the H-01 edit (ShuntLib physical line 32,
+`Public Shunt_mV` -> `Public =`). Expected: the errors' range covers physical lines 32-33 (the
+loader pulls line 33 into the `Public =` declaration; the compiler message echoes
+`Public = Public Shunt_Current_A`). A different line or a single-line range is a failure.
+
+### T-05 Non-ASCII include names with the real compiler (H-04), appended 2026-10-11
+
+Real-compiler evidence needed before any change. With Wine and `compiler/CR6Comp.exe`, in a
+scratch directory containing `É space.crb` (a minimal valid library) run CR6Comp on:
+1. `Uri.CR6` saved as UTF-8 (`IncludeSection`/`Include` naming `É space.crb`, bytes C3 89),
+2. the same program saved as Latin-1/cp1252 (byte C9),
+and record stdout/exit for each, plus `crbc` (opencrbasic) on the same files. Also note how the
+include file name is stored on disk (macOS NFD vs NFC). Save the raw outputs under a new host-tests
+directory. Acceptance is the record itself; the coordinator decides the behaviour from it.
+

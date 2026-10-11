@@ -34,6 +34,43 @@ Live implementation state and session handoff. Design and acceptance criteria:
 
 ## Host findings to act on
 
+Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`, `c0fd9bf1`). T-01
+(oracle) passed at `8b25214a`; T-02 CR6 scenarios and T-03 visual passed at `7c450ed5` (macOS,
+VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
+
+- H-01 ShuntLib edit on physical line 32 shown on 33: explained, fixed by LSP-01d (`b21c1e1`).
+  `Public =` ends in `=`, so the loader pulls line 33 into the declaration (the compiler's own
+  rule; the message echoes `Public = Public Shunt_Current_A`) and reports it at 33. Coordinator
+  reproduction on the current tree: span (32, 33), so the range now covers both lines. Host retest:
+  T-02 amendment.
+- H-02 Python-path restart error toast (`didChangeConfiguration failed` / `Starting server failed`):
+  client race between the configuration-sync notification and client replacement -> LSP-01e
+  after LSP-wire (vscode/ is owned by the wiring worker until then).
+- H-03 `.CR300` opens as Plain Text: the client language contributes only `.CR6`/`.crb` -> LSP-01e
+  adds `.CR1X`, `.CR300`, `.CR350` (both cases).
+- H-04 UTF-8 `É` include name unresolved (mojibake `Ã\x89`): the compiler decodes source bytes as
+  Latin-1 (parity behaviour assumed, not observed for non-ASCII names). Needs real-compiler
+  evidence first (T-05); no code change until then.
+
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
+  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
+## Human decisions (2026-10-11)
+
+- Help parsing (display only; the instruction table stays authoritative): a bare `[X]` around one
+  parameter in a call's parameter list marks it optional (`Name [optional]` already did); brackets
+  outside call parameter lists are not parameters; a trailing `...` is one repeatable parameter
+  (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
+  LSP-04a-rules.
+
+## Host findings to act on
+
 - 2026-10-11 host run `602f6462` (T-02): the VS Code client logged `Client is not running and
   can't be stopped` while the server failed to start -> LSP-01d client fix.
 - T-02/T-04 are runnable from `a15d2b3` (server integrated); T-03 visual check pending (tokenizer
