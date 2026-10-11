@@ -787,7 +787,9 @@ occurrence paths as given (absolute) and symlink-resolved.
 - External (catalog) and predefined declarations have no location: `definition` is empty for
   instruction names, built-in functions, `Status`, `Public`, `NAN`. `references` still lists
   references to them in the program. The server may show hover for these.
-- Table field names (`Status.X`, `Tab.Field`) are `unmodelled` by the index and give nothing.
+- Table fields (LSP-05c): `Tab.Field` resolves to a `field` declaration. A `FieldNames` field's
+  location is its whole string literal; a derived-name field (`TC_Avg`) has no source range, so
+  definition returns nothing for it. `Status.X`/`Settings.X` members are predefined (no location).
 - Names in an inactive `#If` branch, after `EndProg`, or in a statement the parser could not take
   apart are not indexed, so they give nothing.
 - Range policy: a token from one physical piece gets an exact range; a token whose characters
