@@ -1570,8 +1570,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         "no_matching": "No Matching, or out of place ) in expression: "}.get(
                             verdict[1] if verdict and verdict[0] == "pass1" else None)
                 call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)", stmt.text)
-                juxt = call and re.search(r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]",
-                                         call.group(2), re.I)
+                juxt = call and stmt.reason != "lex error: unterminated string" and re.search(
+                    r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]", call.group(2), re.I)
                 if (head is None and call and call.group(1).upper() in profile.functions
                         and call.group(1).upper() not in symbols.declared_variable_names(program)
                         and juxt):
@@ -1584,7 +1584,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     nargs = profile.functions[call.group(1).upper()].get("nargs") or 0
                     head = ("Expression expects , : " if k < nargs
                             else "No Matching, or out of place ) in expression: ")
-                if head == "No Matching, or out of place ) in expression: " and cond is None and (
+                if head == "No Matching, or out of place ) in expression: " and cond is None \
+                        and stmt.reason != "lex error: unterminated string" and (
                         refined := structure._unclosed_call_message(
                             profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program))):
                     # a call left open at the end of the line: its argument count decides the message
