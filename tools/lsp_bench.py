@@ -53,7 +53,6 @@ TARGETS = {"hover_p95_ms": 100.0, "completion_p95_ms": 100.0, "diagnostics_after
 
 sys.path.insert(0, str(ROOT / "src"))
 sys.path.insert(0, str(ROOT / "tests" / "lsp"))
-os.environ.pop("OPENCRBASIC_STRICT", None)
 
 from opencrbasic import editing, hover as H, navigation  # noqa: E402
 from opencrbasic.analysis import AnalysisRequest, analyze  # noqa: E402
@@ -469,6 +468,7 @@ def render_markdown(report: dict) -> str:
 
 
 def main(argv: list[str] | None = None) -> int:
+    os.environ.pop("OPENCRBASIC_STRICT", None)  # as a program only: importing must not change the caller's mode
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--child", choices=("cold", "memory"), help=argparse.SUPPRESS)
     parser.add_argument("--entry", help=argparse.SUPPRESS)
