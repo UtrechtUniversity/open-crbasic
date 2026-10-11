@@ -122,3 +122,41 @@ The language server (LSP-01b) is on the branch from `a15d2b3`; T-02 and T-04 can
 revisions add hover/signature/editing logic modules that are not yet wired into the server; host
 checks for them will be appended as T-05+ when they are wired.
 
+
+## Local VS Code host report (2026-10-11, tested implementation 7c450ed5)
+
+[Full results, findings, raw logs and screenshots](docs/lsp-rounds/host-tests/2026-10-11-7c450ed5/RESULTS.md).
+
+- T-02 CR6 scenarios are observed: successful startup with import/API/revision banner, expected
+  Main warnings, errors after invalid edits, clearing on undo, merged errors from an unsaved
+  ShuntLib overlay, and disk diagnostics restored after Don't Save. Client compile/5 tests pass.
+- T-03 visual check is complete in Dark Modern for the fixture, Main and SBDIridiumLib. Saved
+  screenshots complement the earlier real tokenizer scope tests. Predefined constants render
+  white in this theme despite their correct grammar scope.
+- T-04 is partially passing: Settings UI changes reload without restart, exclusion removes/restores
+  the tester warnings, restart command works, orphan library information note appears, and a
+  space-containing include uses the same URI before/after opening without duplicate entries.
+  Last initial nonempty publish was 0.576 s after initialize on an explicit restart; this is not
+  an exposed all-entries-complete signal. Windows/Linux were not tested.
+- Findings to address/retest: H-01 physical line 32 reported as 33 for the ShuntLib edit; H-02 a
+  valid Python-path restart succeeds but raises a configuration-forwarding error toast; H-03
+  `.CR300` opens as Plain Text (manual CRBasic selection enables live edits); H-04 a UTF-8 `É`
+  include filename becomes mojibake and cannot resolve, while the ASCII space-only control works.
+  Exact reproductions and evidence are in the report. These findings do not constitute round
+  acceptance and are not silently marked fixed by newer, untested integrations.
+- Clean full pytest at 7c450ed5: 21,932 passed, 311 skipped; real-exe verify passed with its
+  quoted BUILD line in the report. An interrupted run and a run contaminated by inherited
+  auto-save are retained and explicitly excluded from accepted results. Original CRBasic files
+  are restored; no hardware was flashed or exercised.
+
+Original requests and remote additions above remain intact. This dated report completes the
+macOS visual follow-up and replaces the previous server-absent limitation for the tested revision;
+future implementation changes and the remaining platform/findings checks require fresh evidence.
+
+## Local gate supplement (2026-10-11, c0fd9bf1)
+
+[Supplement and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-c0fd9bf1/RESULTS.md): after
+pulling the standalone editing/help-rule additions, full host pytest passes **22,048 tests,
+311 skipped**; the real-exe repository verifier passes with its exact BUILD line in the record.
+The server and client files are unchanged from the VS Code test revision; no additional VS Code
+capability or finding fix is inferred. H-01 through H-04 above remain open for the coordinator.
