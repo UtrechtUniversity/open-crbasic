@@ -1095,6 +1095,39 @@ Labels and predefined/external declarations are not tokens. A constant is a `var
 Rendering in an editor, encoding conversion (server), rename (needs `quoted` tables refused),
 table field-level references, references through a stale AST while typing.
 
+## Inlay hints (LSP-09a)
+
+`opencrbasic.inlay` is the protocol-independent logic behind parameter-name inlay hints (no pygls).
+Positions are physical: 0-based line and decoded-character column ("Source positions"); the server
+converts encodings. Handoff: [LSP-09a-handoff.md](lsp-rounds/LSP-09a-handoff.md).
+
+```python
+parameter_hints(result, path, start_line, end_line, profile, help_provider) -> [InlayHint]
+InlayHint(line, column, label, kind="parameter", padding_right=True)
+```
+
+- `path` is a file of the analysis (matched like Navigation: absolute and symlink-resolved);
+  `start_line..end_line` are 0-based physical lines, both inclusive. The result is sorted by position
+  and has no duplicates (a file included twice gives one hint per position).
+- A hint stands at the first character of each positional argument of an instruction call (the
+  statement's first word, `Scan(...)`, `VoltSe(...)`) or a builtin-function call anywhere in a
+  statement (including nested calls). `label` is the parameter name plus `:`, exactly as
+  `hover.signature_help` labels it, and only when that signature is `paired` with help names: with no
+  help provider, no help page, or help whose count does not pair, there are no hints and never an
+  `argN` hint. Names are shown as help gives them (for example `"FieldName"` with its quotes, or the
+  help-parsing artefact `ASCIIString(1,1,X)` for `ASCII`).
+- No hint: for an empty argument slot; when the argument text equals the parameter name
+  (case-insensitive); for an argument past the parameter count; for a name declared in the program
+  (declared names win, as in hover); for a member call after `.`; for a paren-less statement call
+  (`Foo a, b`) or an instruction that is not first in its statement (the body of an inline `If`);
+  for a statement the lexer cannot tokenize.
+- Positions come from the AST, not from text search: the statement's own text is tokenized, and a
+  token's logical offset (`stmt.origin` segment offset plus the token column) is mapped through
+  `positions.exact_range`. A hint needs the argument's first token in one physical piece; an argument
+  that continues over `_` lines is hinted at its first token, and an argument whose first token itself
+  crosses a join gets none. The argument may span pieces after that token.
+- `const_value_hints` is not implemented. The function never raises (any failure gives `[]`).
+
 ## Formatting (LSP-07b)
 
 `opencrbasic.formatting` is the protocol-independent indentation formatter (no pygls, no other
