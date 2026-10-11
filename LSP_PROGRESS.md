@@ -100,7 +100,10 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-04a-fix help param names | `codex/lsp-04-helpfix` -> cherry-picked | integrated | coordinator rerun 23 passed; CR6 help coverage 302 with help, matching counts 226 -> 269, 33 mismatches (categories in LSP-04a-fix-handoff.md) | open questions below |
 | LSP-05a binding index | `codex/lsp-05-bindings` -> `eca1727` | integrated | coordinator rerun 37 passed; combined tests/lsp 193 passed; worker: full pytest 21,634/507, selfdiff 0 differ; crbasic/ 0 unresolved, CHM 439 unresolved / 188 ambiguous (fragments) | LSP-05b |
 | LSP-03b-core editing logic | `codex/lsp-03-editing`, `.claude/worktrees/lsp-03-editing`, base `e909d96`, Sonnet | active | - | verify, cherry-pick |
-| LSP-04b-core hover logic | `codex/lsp-04-hover`, `.claude/worktrees/lsp-04-hover`, base `e909d96`, Sonnet | active | - | verify, cherry-pick |
+| LSP-04b-core hover logic | `codex/lsp-04-hover` -> `cd943ff` | integrated | coordinator rerun 38 passed; worker: tests/lsp 175, selfdiff 0 differ | server wiring |
+| LSP-01d spans + client stop | `codex/lsp-01-spans`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
+| LSP-04a-rules help syntax decisions | `codex/lsp-04-rules`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
+| LSP-05b-core navigation logic | `codex/lsp-05-navigation`, base `6cddead`, Sonnet | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
