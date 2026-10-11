@@ -39,7 +39,9 @@ REASONS = (
 # are not references, so they are not renamable.
 _RENAMABLE = {"public", "dim", "static", "const", "sub", "function", "param", "alias", "datatable",
               "consttable", "structuretype", "objecttype", "structure_member"}
-_VARIABLE = {"public", "dim", "static", "alias"}        # their names can become table field names
+_VARIABLE = {"public", "dim", "static", "alias"}
+# kinds whose names can become data table field names (`Sample(1, P, Pt)` names fields after members)
+_FIELD_SOURCES = _VARIABLE | {"structure_member"}
 _WORD = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?")
 _STRING = re.compile(r'"(?:[^"]|"")*"?')
 
@@ -283,16 +285,38 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
     if any(s != sets[0] for s in sets):
         raise _Refuse("occurrences_differ", f"{name!r} is declared by a file loaded more than "
                       "once and the loads differ")
+    _check_ordinals(ix, targets)
     for u in ix.unparsed:
         if name in {t.upper for t in lexer_tokens(u)}:
             raise _Refuse("unparsed", f"a statement the parser could not take apart "
                           f"({u.file}:{u.line}) mentions {name!r}")
-    if targets[0].kind in _VARIABLE:
+    if targets[0].kind in _FIELD_SOURCES:
         _check_field_names(ix, name)
     key = frozenset((rk[0], rk[1], rk[2], rk[3], d.kind, name) for d in targets
                     for rk in [_site_key(nav.site_of(d))])
     return _Entry(state, name, tuple(targets), sets[0], frozenset(ref_ids), key), placeholder, \
         (clicked.path, clicked.line, clicked.start, clicked.end)
+
+
+def _check_ordinals(ix, targets) -> None:
+    """`token_of` picks a record's token by its ordinal among the same-name tokens of its unit, so a
+    token of that name the index has no record for (a name the parser skipped, such as the ignored
+    words of `Alias A = X junk, Y`) shifts every later ordinal onto the wrong token. In every unit an
+    edit falls in, the tokens of each edited name must not outnumber the records of it."""
+    seen: set[tuple] = set()
+    for d in targets:
+        for rec in (d, *ix.references_to(d)):
+            unit, key = rec.unit, rec.tok_key
+            if unit is None or not key or (id(unit), key) in seen:
+                continue
+            seen.add((id(unit), key))
+            toks = bindings.classified_tokens(unit) or ()
+            n_tok = sum(1 for t, k in toks if k == key[1] and bindings._tok_name(t, k) == key[0])
+            n_rec = sum(1 for o in ix.records_in(unit) if o.tok_key == key)
+            if n_tok > n_rec:
+                raise _Refuse("no_range", f"{unit.file}:{unit.line}: the statement spells "
+                              f"{rec.name!r} {n_tok} times but the index records {n_rec}; the "
+                              "token of each occurrence is not proven")
 
 
 def lexer_tokens(stmt):
@@ -332,6 +356,12 @@ def _check_new_name(entry: _Entry, new_name: str) -> None:
     if cat.get(new_name) is not None or up in _SYSTEM_NAMES or up in bindings._EXTRA_PREDEFINED:
         raise _Refuse("reserved_name", f"{new_name!r} is a keyword, instruction, function or "
                       f"predefined symbol of {cat.profile}")
+    if up == entry.name:
+        return          # a case-only change binds nothing new; the old name was checked in `_entry`
+    for u in ix.unparsed:
+        if up in {t.upper for t in lexer_tokens(u)}:
+            raise _Refuse("unparsed", f"a statement the parser could not take apart "
+                          f"({u.file}:{u.line}) mentions {new_name!r}")
     ours = {id(d) for d in entry.targets}
     for t in entry.targets:
         for d in ix.declarations_named(up):
@@ -364,7 +394,7 @@ def _check_new_name(entry: _Entry, new_name: str) -> None:
             if clash:
                 raise _Refuse("collision", f"{new_name!r} is already used at {r.file}:{r.line} "
                               f"({r.status})")
-    if entry.targets[0].kind in _VARIABLE:
+    if entry.targets[0].kind in _FIELD_SOURCES:
         _check_field_names(ix, up)
     hit = state.string_words().get(up)
     if hit is not None:
@@ -373,6 +403,19 @@ def _check_new_name(entry: _Entry, new_name: str) -> None:
     for path, ln, _, _ in state.unindexed().get(up, ()):
         raise _Refuse("unindexed_code", f"{new_name!r} occurs in code the index does not cover "
                       f"({path.name}:{ln + 1})")
+
+
+def _check_unchanged(entries: list[_Entry], new_name: str) -> None:
+    """`unchanged` only when every range to edit is already spelled `new_name` exactly; a case-only
+    change of any occurrence (`TOTAL` -> `total` for `Public total`) is a rename."""
+    if new_name.upper() != entries[0].name:
+        return
+    for e in entries:
+        for p, ln, a, b in e.ranges:
+            text = e.state.data(p).decode("latin-1").replace("\r\n", "\n").split("\n")
+            if not 0 <= ln < len(text) or text[ln][a:b] != new_name:
+                return
+    raise _Refuse("unchanged", "the new name equals the current name")
 
 
 def _valid_identifier(new_name: str) -> bool:
@@ -521,9 +564,7 @@ def rename(results, path, line: int, column: int, new_name: str, source=None) ->
         entries, (placeholder, rng) = _collect(results, path, line, column, current)
         if not _valid_identifier(new_name):
             raise _Refuse("invalid_name", f"{new_name!r} is not a valid identifier")
-        if new_name == placeholder or (new_name.upper() == entries[0].name
-                                       and new_name == entries[0].targets[0].name):
-            raise _Refuse("unchanged", "the new name equals the current name")
+        _check_unchanged(entries, new_name)
         for e in entries:
             _check_new_name(e, new_name)
         ranges = sorted(set().union(*(e.ranges for e in entries)),

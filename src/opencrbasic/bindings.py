@@ -644,6 +644,8 @@ class _Builder:
         self.decl(st, st.name, kind, node=st, scope="global", routine=None, type=st.return_type)
         for p in st.params:
             self.decl(st, p.name, "param", node=p, scope="routine", routine=st, type=p.type)
+            for dim in p.dim_exprs:              # `p(sz)`: a read in the routine's scope
+                self.expr(dim, st)
             self.type_ref(st, p.type, p)
             self.expr(p.string_size, st)
             self.expr(p.default, st)

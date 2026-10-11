@@ -771,9 +771,10 @@ the whole segment; a `Units` statement's text is stripped). `Stmt.line` is the l
 of a continued statement, so physical positions come from LSP-02 provenance. Where the statement
 text cannot be tokenized (a lex error) or the parser rewrote tokens (`DataTable(15Min,...)`),
 `token_of` returns `None`; 5b must treat that as "no range". Occurrences are exact for the
-statement kinds the AST models fully; array-parameter dimensions and `Alias` junk after the first
-name are not in the AST and can shift later same-name occurrences in that statement (observed
-corpus rate in the handoff).
+statement kinds the AST models fully. Array-parameter dimensions (`Sub F(p(sz) As Float, sz As
+Long)`) are `read` references in the routine's scope (`Param.dim_exprs`, LSP-R3b). `Alias` junk after
+an item's first name (`Alias A(1) = a1 a2, a2`) is not in the AST and still shifts later same-name
+occurrences in that statement; rename refuses such a statement (`no_range`, below).
 
 ### Table fields (LSP-05c)
 
@@ -1138,6 +1139,9 @@ path_keys(path)                                        -> {str}
 logical line (purely additive; not a dataclass field, so equality and `repr` are unchanged). The
 segment offset is the start of the statement's `:`-segment in `LogicalLine.text`; navigation
 verifies `unit.text` against the logical text (a `Units` text is stripped) before using it.
+`Param.dim_exprs` (LSP-R3b) keeps the parsed expressions inside a parameter's `(...)`; it is a
+dataclass field with `compare=False, repr=False`, read only by `bindings`, and `Param.dims` is
+unchanged.
 
 ### Semantic-token legend
 
@@ -1385,21 +1389,24 @@ directory listing, which changes for unrelated files too).
 | `external` | the target is predefined: catalog instruction, function, symbol or keyword, `Status`, `Public`, `Settings`, `NAN`, `INF` |
 | `quoted` | the target is a table named by a string (`DataTable("T", ...)`); string names are never rewritten |
 | `kind` | the declaration kind has uses the index does not record (labels) |
-| `no_range` | the declaration or a reference has no exact physical range (token across a continuation join, digit-leading table name, no token) or its range is not the name |
+| `no_range` | the declaration or a reference has no exact physical range (token across a continuation join, digit-leading table name, no token) or its range is not the name; or a statement holding an edit spells the name more often than the index has records of it (the token ordinals are not proven, e.g. `Alias` junk; LSP-R3b) |
 | `text_mismatch` | the bytes at an edit range are not the name (index and text disagree) |
 | `occurrences_differ` | a file loaded more than once gives declarations with different edit sets |
 | `entries_disagree` | the entries do not agree on the declaration set (the target's physical range and kind) |
-| `unparsed` | a statement the parser could not take apart mentions the name |
+| `unparsed` | a statement the parser could not take apart mentions the old or the new name |
 | `string_mention` | the old name (or the new name) occurs inside a string literal of any entry; names in strings are never rewritten and the word cannot be told apart from a use |
 | `unindexed_code` | the old name occurs, in code of any entry that is in no statement (inactive `#If` branch, `#If` directive, text after `EndProg`), at a place no entry edits; or the new name occurs there |
-| `table_field` | for a variable or alias: a `Table.Field` use whose field name equals the name or starts with `name_` (field names are derived from variable names and are not modelled) |
-| `unchanged` | the new name is spelled exactly as the current one (a case-only change is allowed) |
+| `table_field` | for a variable, alias or structure member: a `Table.Field` use whose field name equals the name or starts with `name_` (field names are derived from variable names and are not modelled) |
+| `unchanged` | every range to edit is already spelled exactly as the new name (a case-only change of any occurrence is allowed) |
 | `invalid_name` | not `[A-Za-z_][A-Za-z0-9_]*` (the lexer's identifier rule); a trailing `$` is refused too |
 | `reserved_name` | the new name is a keyword, instruction, function or symbol of the profile (`InstructionCatalog.get`, any kind), `Status`, `Public`, `Settings`, `DataTableInfo`, `NAN` or `INF` |
 | `collision` | see below |
 | `overlap` | two edits overlap (should not happen) |
 
 ### Collision rule (case-insensitive, checked in every entry)
+
+A case-only rename (`a` -> `A`) binds nothing new and skips the rule (and the new-name `unparsed`,
+`table_field`, string and unindexed checks, which the old name already passed).
 
 - Target is a **global** (`Public`, `Dim`, `Const`, `Sub`, `Function`, `Alias`, table, structure
   type): refused if any declaration of any scope, including routine locals and parameters, has the

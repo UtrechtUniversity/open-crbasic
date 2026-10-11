@@ -1088,13 +1088,14 @@ class _Parser:
             p.next()
         name_tok = p.expect_ident()
         dims = 0
+        dim_exprs: list[S.Expr] = []
         if p.is_op("("):
             p.next()
             if not p.is_op(")"):
-                self._parse_expr(p, line, file)
+                dim_exprs.append(self._parse_expr(p, line, file))
                 while p.is_op(","):
                     p.next()
-                    self._parse_expr(p, line, file)
+                    dim_exprs.append(self._parse_expr(p, line, file))
             p.expect_close(")")
             dims = 1
         vtype = None
@@ -1114,7 +1115,7 @@ class _Parser:
             p.next()
             default = self._parse_expr(p, line, file)
         return S.Param(name=name_tok.text, by_ref=None, type=vtype, string_size=strsize,
-                        dims=dims, default=default)
+                        dims=dims, default=default, dim_exprs=dim_exprs)
 
     # ---- Const ------------------------------------------------------
 

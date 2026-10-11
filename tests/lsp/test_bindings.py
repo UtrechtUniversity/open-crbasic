@@ -585,3 +585,29 @@ def test_instruction_keyword_resolves_to_catalog_before_a_routine_local():
     ix = index("Sub S(T)\n Dim PanelTemp\n PanelTemp(T,15000)\nEndSub\nBeginProg\nEndProg\n")
     ref = refs(ix, "PanelTemp", "instruction")[0]
     assert [(d.kind, d.external and d.external.kind) for d in ref.resolved] == [("external", "instruction")]
+
+
+# ------------------------------------------- LSP-R3b: array-parameter dimensions (review F1)
+
+
+def test_parameter_dimension_expressions_are_read_references_and_keep_ordinals():
+    ix = index("Const N = 3\nSub Fill(p(sz) As Float, sz As Long, q(N) As Float)\nEndSub\n"
+               "BeginProg\nEndProg\n")
+    sz = decls(ix, "sz", "param")[0]
+    assert sz.occurrence == 1 and ix.token_of(sz).col == sz.unit.text.index("sz As")
+    dim = refs(ix, "sz")[0]
+    assert (dim.role, dim.occurrence, ix.token_of(dim).col) == ("read", 0, sz.unit.text.index("sz)"))
+    assert dim.resolved == (sz,)                     # resolved in the routine's scope
+    n = refs(ix, "N")[0]
+    assert n.role == "read" and targets(n) == [("const", "global", 1)]
+
+
+def test_param_dim_exprs_is_additive():
+    prog, _ = parser.parse_text("Sub F(a(2, k) As Long, b() As Long, c)\nEndSub\nBeginProg\nEndProg\n",
+                                "t.cr6", profile=profiles.get("cr6"))
+    sub = next(s for s in prog.statements if isinstance(s, S.SubDef))
+    assert [p.dims for p in sub.params] == [1, 1, 0]
+    assert [len(p.dim_exprs) for p in sub.params] == [2, 0, 0]
+    assert isinstance(sub.params[0].dim_exprs[1], S.Name)
+    assert "dim_exprs" not in repr(sub.params[0])
+    assert sub.params[0] == S.Param(name="a", dims=1, type="LONG")      # not part of equality

@@ -191,6 +191,9 @@ class Param:
     string_size: Expr | None = None
     dims: int = 0                   # `x()` style array parameter
     default: Expr | None = None     # `Optional x = 1`
+    # the parsed expressions inside `x(...)`, in source order; editor tooling only (`bindings`), no
+    # compiler stage reads it, and it takes no part in equality or repr
+    dim_exprs: list[Expr] = field(default_factory=list, compare=False, repr=False)
 
 
 @dataclass

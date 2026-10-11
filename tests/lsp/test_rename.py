@@ -616,3 +616,123 @@ def test_sweep_semantic_preservation(tmp_path):
         print("PROBLEM", p)
     assert accepted > 0
     assert problems == []
+
+
+# ------------------------------------------------- LSP-R3b: token-exact rename (review round 3)
+
+
+F1_TEXT = """Const N = 3
+Public arr(3)
+Sub Fill(p(sz) As Float, sz As Long, q(N) As Float)
+  Dim i
+  For i = 1 To sz
+    p(i) = i
+  Next
+EndSub
+BeginProg
+  Scan(1,Sec,0,0)
+    Fill(arr, 3, arr)
+  NextScan
+EndProg
+"""
+
+
+def test_r3b_f1_parameter_named_in_an_array_dimension(tmp_path):
+    p = write(tmp_path, "M.CR6", F1_TEXT)
+    r = run(p)
+    assert r.ok
+    res = R.rename([r], p, *pos(p, "To sz", offset=3), "cnt")
+    assert res.ok, res.refusal
+    assert spots(res, p) == [(2, 11, 13), (2, 25, 27), (4, 15, 17)]
+    p.write_bytes(apply(p.read_bytes(), res.edits[p]))
+    assert b"Sub Fill(p(cnt) As Float, cnt As Long" in p.read_bytes()
+    assert run(p).ok
+
+
+def test_r3b_f1_const_used_as_a_parameter_dimension_is_renamed(tmp_path):
+    p = write(tmp_path, "M.CR6", F1_TEXT)
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "Const N", offset=6), "M3")
+    assert res.ok, res.refusal
+    assert spots(res, p) == [(0, 6, 7), (2, 39, 40)]
+    p.write_bytes(apply(p.read_bytes(), res.edits[p]))
+    assert run(p).ok
+
+
+def test_r3b_f2_alias_junk_token_is_refused(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public arr(2)\nAlias arr(1) = a1 a2, a2\nBeginProg\n"
+              "  Scan(1,Sec,0,0)\n    a2 = 1\n  NextScan\nEndProg\n")
+    r = run(p)
+    assert r.ok
+    res = R.rename([r], p, *pos(p, "a2 = 1"), "b2")
+    assert not res.ok and res.refusal.code == "no_range"
+    res = R.rename([r], p, *pos(p, "a1"), "b1")     # the junk spells another name: a1 is exact
+    assert res.ok and spots(res, p) == [(1, 15, 17)]
+
+
+STRUCT_TEXT = """StructureType Pt
+  Lat As Float
+  Lon As Float
+EndStructureType
+Public P As Pt
+Public out
+DataTable(T,True,-1)
+  Sample(1,P,Pt)
+EndTable
+BeginProg
+  Scan(1,Sec,0,0)
+    P.Lat = 1
+    out = T.Lat
+    CallTable T
+  NextScan
+EndProg
+"""
+
+
+def test_r3b_f3_structure_member_named_by_a_table_field_is_refused(tmp_path):
+    p = write(tmp_path, "M.CR6", STRUCT_TEXT)
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "Lat As Float"), "Y")
+    assert not res.ok and res.refusal.code == "table_field"
+    res = R.rename([r], p, *pos(p, "Lon As Float"), "Lat2")
+    assert res.ok, res.refusal                       # no `T.Lon` use
+    p2 = write(tmp_path, "N.CR6", STRUCT_TEXT.replace("out = T.Lat", "out = T.Q_Avg"))
+    r2 = run(p2)
+    res = R.rename([r2], p2, *pos(p2, "Lon As Float"), "Q")     # new name derives T.Q_Avg
+    assert not res.ok and res.refusal.code == "table_field"
+
+
+def test_r3b_f14a_case_only_rename_from_a_differently_spelled_reference(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public total\nBeginProg\n  Scan(1,Sec,0,0)\n    TOTAL = 1\n"
+              "  NextScan\nEndProg\n")
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "TOTAL"), "total")
+    assert res.ok, res.refusal
+    assert [e.new_text for e in res.edits[p]] == ["total", "total"]
+    res = R.rename([r], p, *pos(p, "TOTAL"), "TOTAL")
+    assert res.ok                                    # the declaration is spelled `total`
+    p.write_bytes(p.read_bytes().replace(b"TOTAL", b"total"))
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "total", nth=1), "total")
+    assert not res.ok and res.refusal.code == "unchanged"
+
+
+def test_r3b_f14b_case_only_rename_is_not_a_collision_with_a_local(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public a\nSub S\n  Dim a\n  a = 2\nEndSub\nBeginProg\n"
+              "  Scan(1,Sec,0,0)\n    a = 1\n    S\n  NextScan\nEndProg\n")
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "Public a", offset=7), "A")
+    assert res.ok, res.refusal
+    assert spots(res, p) == [(0, 7, 8), (7, 4, 5)]
+    res = R.rename([r], p, *pos(p, "Public a", offset=7), "S")
+    assert not res.ok and res.refusal.code == "collision"
+
+
+def test_r3b_f16_new_name_in_an_unparsed_statement_is_refused(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public x\nStatic y\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1\n"
+              "  NextScan\nEndProg\n")
+    r = run(p)
+    res = R.rename([r], p, *pos(p, "Public x", offset=7), "y")
+    assert not res.ok and res.refusal.code == "unparsed"
+    res = R.rename([r], p, *pos(p, "Public x", offset=7), "z")
+    assert res.ok, res.refusal
