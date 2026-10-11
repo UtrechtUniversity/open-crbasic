@@ -28,10 +28,9 @@ Live implementation state and session handoff. Design and acceptance criteria:
 1. LSP-08d and LSP-08e integrated. Test tiers and `tools/lsp_gate.py` are developer tooling, documented
    in `docs/lsp-api.md` "Test tiers"; the user guide needs no change for them.
 2. Review round 3 fixed (LSP-R3); host check T-16. Next review (human-run) over `ccba3666..HEAD`.
-3. LSP-08 release validation: T-14 (VSIX install) passed and T-09/T-12 visual checks observed on macOS
-   at `ccba3666` ([host record](docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md)); open:
-   H-08 (references across entries), Windows/Linux host matrix (or narrow the release claim to macOS),
-   T-15/T-16 on the integrated tree.
+3. LSP-08 release validation on macOS done: T-14 (VSIX) at `ccba3666` and `e18cdf52`; T-09/T-12
+   visual checks at `ccba3666`; T-15/T-16/T-17 and H-08/H-10 at `e18cdf52`. Release claim is macOS
+   only (human decision 2026-10-12); Windows/Linux not claimed.
 4. LSP-09 (human request) done: parameter-name inlay hints and commands "Show Compiler Output" /
    "Show Table Fields"; host check T-15. Pull diagnostics: not adopted.
 5. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
@@ -60,6 +59,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
   outside call parameter lists are not parameters; a trailing `...` is one repeatable parameter
   (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
   LSP-04a-rules.
+- 2026-10-12: Windows and Linux cannot be tested in this work session; the release claim is
+  macOS only. Windows/Linux stay untested and unclaimed (user guide sections 1 and 8, client README).
 
 ## Review round 2
 
@@ -153,7 +154,7 @@ Open:
   22471 passed; npm 30; vsix_check 11/11; pyrefly 0; verify.py the 3 known freshness failures.
   Not run there: selfdiff (the baseline is local to the cloud container), Windows F5,
   Linux/Windows GUI, the empty-list/next-keystroke fallback in the GUI.
-- Windows/Linux.
+- Windows/Linux: not claimed (human decision 2026-10-12).
 
 ## Resume here
 

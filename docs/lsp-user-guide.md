@@ -12,8 +12,9 @@ and per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 1. Status in brief
 
-- Only macOS (arm64, VS Code 1.141.0) has been tested in an editor, at the revisions named in
-  section 8. Windows and Linux are **untested**.
+- Tested and claimed for **macOS only** (arm64, VS Code 1.141.0), at the revisions named in
+  section 8. Windows and Linux are **untested and not claimed** (human decision 2026-10-12: they
+  cannot be tested in this work session).
 - Diagnostics, outline, folding, hover, completion, signature help, navigation, semantic tokens and
   syntax highlighting passed provider or API checks in a VS Code Extension Development Host at
   `1b01311d`. Watched files, workspace folders, the size bound, the completion cap, rename,
@@ -429,7 +430,8 @@ Host: see the hover row in section 8 (`1b01311d`).
 
 Each record applies to its own revision only. API or protocol level means VS Code's provider commands,
 workspace edits, configuration updates and client traces, not what is drawn on screen. Features added
-after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
+after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and `e18cdf52`
+(LSP-09, LSP-R3, LSP-R4a in the installed `.vsix`; LSP-R4b at `e1769132` over stdio).
 
 | Area | Observed | Record |
 |---|---|---|
@@ -451,7 +453,8 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
 | Syntax highlighting, scope checks | 12 of 12 pass | [602f6462](lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md) |
 | Syntax highlighting, visual check, Dark Modern | Yes | `7c450ed5` |
 | Help hover, variable hover, completion, signature help, outline, folding, links, navigation, semantic tokens, Unicode, after-edit update (provider and API level) | 16 checks pass | `1b01311d` |
-| Same, visual rendering, repaint, typing responsiveness | **Untested** (the record lists them as pending) | - |
+| Same, visual rendering, repaint, typing responsiveness | Observed (screenshots), with the record's qualifications: cross-entry references then incomplete (H-08, fixed in LSP-R4a and passed at `e18cdf52`), full nested outline not exhaustively inspected | [ccba3666](lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md) |
+| F2 box, refusal text, Ctrl+. menu, format refusal toast, Problems rendering (T-12 visuals) | Observed | `ccba3666` |
 | Full pytest suite, client tests, repository verifier | 22,182 passed, 311 skipped; client 10 pass; `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` (H-05 strict-mode leak fixed) | `1b01311d` |
 | Benchmark on an idle macOS host: hover p95 0.856 ms, completion p95 3.948 ms (in-process core calls); diagnostics p95 133.740 ms after the debounce, from an end-to-end edit-to-publish of 433.740 ms (20 edits, stdio) | Measured once; not a guarantee | `e77ee5cc` |
 | Builtin argument counts (signature help) | 130 real-compiler cases; audit 0 differing | `e77ee5cc` (T-08 at `4d88a186`) |
@@ -460,12 +463,16 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
 | Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; whether the files the rename opened are then open, clean or dirty varies (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70`, `ccba3666`, `e18cdf52` |
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
 | Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)); Windows **untested** | `7d6db3b1`, `679f2f70` |
-| Packaged `.vsix` (LSP-08f, T-14); inlay hints and output commands (LSP-09c, T-15) | **Untested** in an editor (requests written, no record yet) | - |
-| Windows and Linux | **Untested** (neither editor nor launcher) | - |
+| Packaged `.vsix` installs into an empty profile, activates, uninstalls (LSP-08f, T-14) | Pass | `ccba3666`, `e18cdf52` |
+| Inlay hints and output commands (LSP-09c, T-15) | Pass (the five checks; extended hint gestures not exhaustive) | [e18cdf52](lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md) |
+| Review round 3 fixes, macOS items (LSP-R3, T-16); references across entries and comment refusal (LSP-R4a) | Pass | `e18cdf52` |
+| Member completion before the first analysis (LSP-R4b, T-17 item 1) | 6 of 6 cold requests return the fields in 462-498 ms over stdio (0 items before R4b); the GUI empty-list fallback not observed | `e18cdf52` (on `e1769132`) |
+| Typing latency (T-17 item 2) | Server after-debounce p95 149 ms; GUI squiggle upper bounds 984-1249 ms | `e18cdf52` |
+| Windows and Linux | **Untested, not claimed** (human decision 2026-10-12) | - |
 
 ## 9. Known limits
 
-- One platform observed (macOS). Windows and Linux are untested.
+- One platform tested and claimed (macOS). Windows and Linux are untested and not claimed.
 - **Review findings from round 2** ([review](lsp-rounds/review-2026-10-11-f3069825.md)) are fixed
   in LSP-R2a (`463a565`: rename checks every dependency's current bytes and `Public.<name>`
   captures) and LSP-R2b (`3d76e93`: positions map through the editor text when the encoding
