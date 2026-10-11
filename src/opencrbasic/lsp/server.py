@@ -254,11 +254,11 @@ def build_server():
                             session.blobs(), {p: d.uri for p, d in session.docs.items()},
                             session.help_provider())
 
-    async def prepared(uri: str, wait: bool):
+    async def prepared(uri: str, wait: bool, first: bool = False):
         """(path, Analysed or None, AnalysisResult or None) for a request about `uri`."""
         await session.configured()
         path = fs_path(uri)
-        ana = await session.analysed_for(path, wait)
+        ana = await session.analysed_for(path, wait, first)
         return path, ana, await session.load(ana)
 
     def guarded(name: str, empty: Any):
@@ -280,7 +280,7 @@ def build_server():
                     types.CompletionOptions(trigger_characters=["."]))
     @guarded("completion", lambda: types.CompletionList(False, []))
     async def on_completion(params: types.CompletionParams):
-        path, ana, result = await prepared(params.text_document.uri, wait=False)
+        path, ana, result = await prepared(params.text_document.uri, wait=False, first=True)
         return await asyncio.to_thread(features.completion, await make_ctx(), ana, result, path,
                                        params.position)
 

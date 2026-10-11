@@ -940,3 +940,19 @@ def test_completion_routine_local_shadows_global_once():
     # outside the routine only the global is visible
     assert [i.label for i in _complete(src, 0, 0, declared=declared).items
             if i.source == "program"] == ["x", "y"]
+
+
+def test_completion_members_from_a_broken_or_stale_program(tmp_path):
+    # LSP-R4b: an incomplete `x = Status.` still parses to a program whose tables give members,
+    # and a stale program of the valid text serves the edited text; only no program gives none
+    valid = "Public Temp\nBeginProg\n  Scan(1,Sec,0,0)\n    Temp = 1\n  NextScan\nEndProg\n"
+    for name, member in (("Status", "SkippedScan"), ("Public", "Temp")):
+        broken = valid.replace("    Temp = 1\n", f"    Temp = 1\n    x = {name}.\n")
+        col = len(f"    x = {name}.")
+        own = _analyze(_write(tmp_path, "b.CR6", broken))
+        assert own.program is not None
+        stale = _analyze(_write(tmp_path, "v.CR6", valid))
+        for result in (own, stale):
+            c = _complete(broken, 4, col, result)
+            assert c.member_of == name and member in _labels(c)
+        assert _complete(broken, 4, col, None).items == ()

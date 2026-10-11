@@ -101,8 +101,25 @@ def test_completion_reports_a_capped_list_as_incomplete(monkeypatch):
     for flag in (True, False):
         monkeypatch.setattr(editing, "completion_candidates",
                             lambda *a, _f=flag, **k: Capped(real(*a, **k), _f))
-        got = features.completion(ctx, None, None, path, types.Position(1, 0))
+        got = features.completion(ctx, None, object(), path, types.Position(1, 0))
         assert got.is_incomplete is flag and got.items
+
+
+def test_completion_without_a_program_is_incomplete(tmp_path):
+    # LSP-R4b: before the first analysis there are no program names or members, so the client
+    # must ask again (`isIncomplete`); with a program, the cap alone decides
+    from opencrbasic.analysis import AnalysisRequest, analyze
+    from opencrbasic.lsp import features
+
+    path = tmp_path / "x.CR6"
+    text = "Public Temp\nBeginProg\n  x = Status.\nEndProg\n"
+    path.write_text(text)
+    ctx = Ctx("cr6", "utf-16", "utf-8", {path: text.encode()}, {})
+    got = features.completion(ctx, None, None, path, types.Position(2, 13))
+    assert got.is_incomplete is True and got.items == []
+    got = features.completion(ctx, None, analyze(AnalysisRequest(path)), path,
+                              types.Position(2, 13))
+    assert got.is_incomplete is False and "SkippedScan" in [i.label for i in got.items]
 
 
 # ---- encoding replacement: positions follow the editor text (LSP-R2b, review finding 3) -------

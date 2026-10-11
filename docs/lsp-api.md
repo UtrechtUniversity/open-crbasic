@@ -426,7 +426,9 @@ extension `.CR6` (case-insensitive; additionally the extension of the configured
   stays usable (see the LSP-06a handoff, compiler issue).
 - **Cancellation.** `$/cancelRequest` for a feature request that waits for a program is answered
   with error -32800 (RequestCancelled) by pygls; a request already running in a thread finishes.
-- `completion`: `isIncomplete` follows `editing.Completion.is_incomplete` when the core provides it.
+- `completion`: `isIncomplete` follows `editing.Completion.is_incomplete` when the core provides it,
+  and is also true when the answer had no program (none in time, see "Stale data"), so the
+  client asks again as typing goes on (LSP-R4b).
 
 ### Overlays and encoding
 
@@ -540,7 +542,11 @@ are the same in every entry that parses it).
 
 **Stale data.** A program is *fresh* for a file when the document version it read equals the
 document's current version. Completion, hover, signature help and folding are text-based: they read
-the current text (and take names from the program, fresh or not) and never wait. The other
+the current text (and take names from the program, fresh or not) and never wait for a fresh
+program. Completion alone waits when the file has no program at all yet (the first analysis after
+opening is still pending), for at most `featureWaitMs`, since its program names and `Status.` /
+`Public.` / table members need one (LSP-R4b); an existing program, stale or from a buffer with
+errors, is used at once. The other
 requests (document symbols, links, definition, references, highlights, semantic tokens) read the
 program: when it is not fresh and an analysis is pending they wait, without blocking the event
 loop, until it is, for at most `featureWaitMs` when an older program exists and at most
@@ -1029,7 +1035,10 @@ and every target is None.
 identifier prefix before the cursor. There are no candidates inside a string (odd number of `"`
 before the cursor) or after a `'`. After `name.` the items are the fields of the table called
 `name` from `tables.build_tables(result.program)` (Status, Public, each DataTable, each
-StructureType variable), `kind="field"`; unknown name or no result: none. Otherwise the items are
+StructureType variable), `kind="field"`; unknown name or no result: none. A buffer with an
+incomplete `x = Status.` still parses to a program whose tables give these members, and a stale
+program of an earlier text serves the edited text; only `result=None` gives none (the server waits
+up to `featureWaitMs` for a first program, see "Stale data", LSP-R4b). Otherwise the items are
 the program's names plus the catalog's. Catalog entries use the profile's spelling and one item per
 name: the language word (`keyword`) beats the instruction row, then instruction, function, symbol.
 `param_count` is `len(params)` for an instruction and `nargs` (else `len(argtypes)`) for a

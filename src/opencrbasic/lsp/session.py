@@ -845,18 +845,23 @@ class Session:
                    or (e.task is not None and not e.task.done())
                    for e in self.entries.values())
 
-    async def analysed_for(self, path: Path, wait: bool = True) -> Analysed | None:
+    async def analysed_for(self, path: Path, wait: bool = True,
+                           first: bool = False) -> Analysed | None:
         """The program to answer a request about `path`. With `wait`, a program that does not
         reflect the document's newest version is waited for while an analysis is pending: up to
         `featureWaitMs` when an older program exists, up to the analysis timeout when none does.
-        After that the older program (possibly stale) or None is returned; never an error."""
+        With `first` instead (completion), only a missing program is waited for, up to
+        `featureWaitMs`; any program, stale or not, is returned at once. After that the older
+        program (possibly stale) or None is returned; never an error."""
         loop = asyncio.get_running_loop()
         start = loop.time()
         while True:
             ana = self._pick(path)
-            if not wait or self._fresh(path, ana) or not self._pending() or self._closed:
+            if (not wait and not (first and ana is None)) or self._fresh(path, ana) \
+                    or not self._pending() or self._closed:
                 return ana
-            limit = (self.config.analysis_timeout_ms / 1000 + 2 if ana is None
+            limit = (self.config.feature_wait_ms / 1000 if first
+                     else self.config.analysis_timeout_ms / 1000 + 2 if ana is None
                      else self.config.feature_wait_ms / 1000)
             left = start + limit - loop.time()
             if left <= 0:

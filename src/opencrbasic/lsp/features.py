@@ -180,8 +180,9 @@ def completion(ctx: Ctx, ana: Any, result: Any, path: Path,
         items.append(types.CompletionItem(
             label=item.label, kind=_COMPLETION_KIND.get(item.kind), detail=detail,
             sort_text=f"{n:06d}", text_edit=types.TextEdit(where, item.label)))
-    return types.CompletionList(is_incomplete=bool(getattr(found, "is_incomplete", False)),
-                                items=items)
+    # no program yet: the names and members are missing, so the client must ask again
+    return types.CompletionList(is_incomplete=bool(getattr(found, "is_incomplete", False))
+                                or result is None, items=items)
 
 
 def hover(ctx: Ctx, ana: Any, result: Any, path: Path, position: types.Position) -> types.Hover | None:
