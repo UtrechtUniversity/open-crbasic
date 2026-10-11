@@ -15,14 +15,15 @@ Live implementation state and session handoff. Design and acceptance criteria:
   power/solar outputs, not LSP).
 - Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
 - Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
-  host-retested. Not yet reviewed: `f3069825..HEAD`.
+  host-retested. [Round 3, gpt-6-astra at high effort](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
+  cumulative through `ccba3666`: three new findings (one P1, two P2), awaiting triage and fixes.
 - Active: LSP-08d (test-run speed), LSP-09a/09b (inlay hints, commands). Done: LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX).
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
 
 1. Finish and integrate LSP-08d and LSP-08e; refresh the user guide for them.
-2. Review round 3 (gpt-6.1-sol, human-run) over `f3069825..HEAD`; fix accepted findings.
+2. Triage and fix the findings in [review round 3](docs/lsp-rounds/review-2026-10-11-ccba3666.md).
 3. LSP-08 release validation still open: install-from-VSIX on the host (T-14); Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
    (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
 4. LSP-09 (human request): parameter-name inlay hints and commands "Show compiler output" /
