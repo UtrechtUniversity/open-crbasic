@@ -3,19 +3,33 @@
 Live implementation state and session handoff. Design and acceptance criteria:
 [LSP_PLAN.md](LSP_PLAN.md). Compiler state and worker policy: [PROGRESS.md](PROGRESS.md).
 
-## Current state (2026-10-11, cloud session)
+## Current state (2026-10-11, end of cloud session work)
 
-- LSP-00 done (baseline, inventory, contracts): [docs/lsp-rounds/LSP-00.md](docs/lsp-rounds/LSP-00.md).
-  The human-requested `gpt-6.1-sol` review through `39286384` is recorded in
-  [review-2026-10-11-39286384.md](docs/lsp-rounds/review-2026-10-11-39286384.md);
-  the [second review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md)
-  records fix verification and new findings. Usage is checked by the human; work proceeds per round.
-- Active round: LSP-01. Host-only checks pending: [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md).
-- Released capabilities: none. No server/extension behaviour observed yet.
-- Container limits: no Wine (no oracle, difftest, live replay, probes), VS Code download host
-  blocked (no VS Code integration tests). Shared-code gate here: `tools/selfdiff.py` (0 differ)
-  plus full pytest; baseline `scratch/lsp/selfdiff-base.json` (local, ignored; regenerate at the
-  base revision with `--save` if missing).
+- Implemented and integrated (rounds LSP-00..07 and parts of LSP-08): shared analysis facade and
+  source providers, physical positions, catalog + generated grammar, help provider, binding index,
+  stdio server (diagnostics, completion, hover, signature help, outline, folding, links,
+  definition/references/highlights, semantic tokens, rename, formatting, quick fixes), workspace
+  watching/folders/limits, VS Code client, user guide, benchmarks, install check.
+- Last full gates at `679f2f7`: tests/lsp 596, full pytest 22,101 passed / 507 skipped, selfdiff
+  0 differ, npm 16/16; `verify.py` host tests fail only from commit `2a1d36d` (stale generated
+  power/solar outputs, not LSP).
+- Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
+- Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
+  host-retested. Not yet reviewed: `f3069825..HEAD`.
+- Active: LSP-08d (test-run speed), LSP-08e (Pyrefly to 0 errors).
+- Remaining LSP work: see "Remaining work" below.
+
+## Remaining work
+
+1. Finish and integrate LSP-08d and LSP-08e; refresh the user guide for them.
+2. Review round 3 (gpt-6.1-sol, human-run) over `f3069825..HEAD`; fix accepted findings.
+3. LSP-08 release validation still open: packaged VSIX (`vsce package`) + install-from-VSIX
+   check; Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
+   (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
+4. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
+   does not detect a file that appears after analysis, formatting refuses programs with errors,
+   completion capped at 200, CR6-only help, no inlay hints/pull diagnostics/commands.
+5. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
 
 ## Work rules (human instructions 2026-10-11)
 
