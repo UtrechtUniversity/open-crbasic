@@ -179,11 +179,11 @@ CI. A compiler metadata improvement should need no manual edit to a second instr
 
 Parameter type codes alone do not supply friendly parameter names, complete signatures,
 optionality, or prose. Build a separate documentation provider indexed by catalog identity.
-For internal use it may read the user's local `extracted_chm/`; do not redistribute those pages.
+It may read the local `extracted_chm/` and may copy its text (internal use only, human decision in
+[docs/legal.md](docs/legal.md)).
 Test the importer with permitted minimal fixtures and record provenance. Missing help falls
 back to the metadata actually known. Help-only information does not override checker rules.
-Resolve [docs/legal.md](docs/legal.md) before public packaging; local feature development can
-continue. Documentation coverage and compiler-rule coverage are separate measurements.
+No public packaging is planned ([docs/legal.md](docs/legal.md)). Documentation coverage and compiler-rule coverage are separate measurements.
 
 ## Implementation rounds
 

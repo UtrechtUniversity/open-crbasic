@@ -1,5 +1,11 @@
 # Legal and provenance notes
 
+**Human decision (2026-10-11): internal use only.** opencrbasic, its language server and the VS Code
+extension are internal tooling and will never be published or redistributed. Copying text from
+Campbell's CRBasic help (`extracted_chm/`) into source, tests, fixtures, generated files or
+packaged help is therefore permitted. The notes below are kept as background; they would only
+matter if this decision were reversed.
+
 This project aims at interoperability with Campbell Scientific CR6 dataloggers. Before publishing
 it, the maintainers should confirm the points below; this is not legal advice.
 

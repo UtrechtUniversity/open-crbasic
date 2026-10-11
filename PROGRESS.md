@@ -164,4 +164,4 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 5. Fresh fuzz seeds (next unused: 401+) to find new families; fix false rejects first.
 6. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments and
    Reps > 1000.
-7. Before publishing anything outside this repository, settle `docs/legal.md`.
+7. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).

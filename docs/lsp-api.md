@@ -96,9 +96,9 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
   type-code count and otherwise returns `matched=False` with a note and placeholder labels
   (`arg1`...): no guessing. Help names never change checker rules; types come from the catalog.
 - Rendering is separate from parsing and returns text; Markdown escapes the help text.
-- Provenance: the help is Campbell Scientific documentation and is not redistributable
-  ([legal.md](legal.md)). No help text is stored in `src/`, tests or generated files; tests use
-  synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
+- Provenance: the help is Campbell Scientific documentation, read from the local directory.
+  Internal use only, so copying it is permitted ([legal.md](legal.md), 2026-10-11); LSP-04a's
+  tests nevertheless use synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
   setting `opencrbasic.helpDirectory`, default none: no help is shown unless configured.
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
   [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md). Documentation coverage is not
