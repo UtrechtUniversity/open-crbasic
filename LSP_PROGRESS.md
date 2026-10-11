@@ -22,6 +22,11 @@ Live implementation state and session handoff. Design and acceptance criteria:
   [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
   sessions only **append** to that file (new items, or a dated amendment under an existing item);
   never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Scope: this LSP session changes only LSP code (facade, editor modules, server, client, LSP
+  tests/docs). Compiler work items it finds are recorded in [PROGRESS.md](PROGRESS.md) "Compiler
+  items found by the LSP work" and not executed. Where the compiler or help lacks something
+  (e.g. no help page, unimplemented instruction), editor features show an explicit placeholder
+  ("Help: still to do") instead of driving a compiler change.
 - Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
   compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 

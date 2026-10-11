@@ -148,6 +148,36 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/tdf-sweep/` (allocator sweep data), `scratch/timing_harness.py` (`-t` comparison),
   `scratch/mkfixture.py`, `scratch/codex/` (reviews, worker brief), `scratch/replay-r12.json`.
 
+## Compiler items found by the LSP work (recorded 2026-10-11, not executed)
+
+Human instruction 2026-10-11: compiler work found while building the language server is recorded
+here and left for the compiler workstream; the LSP session does not execute it. Evidence links
+are in `docs/lsp-rounds/`.
+
+1. **Two-word `End Sub`/`End Function`** (parsed as `Instruction("END", [Name("Sub")])`) do not end
+   a routine in `checker/symbols.scoped_view`, `cli._hides_times` and `timing.py` (they test only
+   `ENDSUB`/`ENDFUNCTION`). No fixture uses the two-word closer alone; needs oracle probes
+   (scoping after `End Sub`, `-t`). Source: gpt-6.1-sol review finding 1
+   (`docs/lsp-rounds/review-2026-10-11-39286384.md`), `LSP-R1-handoff.md`.
+2. **`crbc -z` traceback** (`struct.error` in `tdf.serialize`) on the CR300/CR350 storage-limit
+   false accepts `tests/corpus/fuzz/cr300/false_accept/80cdb831bd9a.CR6` and
+   `cr350/false_accept/4b318b036fd1.CR6` (table size beyond 32 bits). Part of the storage-limit
+   family above; at minimum no traceback. Source: `docs/lsp-rounds/LSP-00.md`.
+3. **Indentation changes a message**: `tests/corpus/chm/xmlparse_1.CR6` gives "Invalid symbol in
+   expression" unindented but "Illegal Data parameter" when its prose line is indented
+   (opencrbasic only; real compiler not yet run: LSP_TO_BE_TESTED.md T-06).
+4. **Non-ASCII include names**: a UTF-8 `É space.crb` include is decoded as Latin-1 and not found.
+   Real-compiler behaviour unknown (T-05).
+5. **Builtin argument counts** for `EmailSend`, `EmailRecv`, `UDPDatagram`, `XMLParse`, `HTTPGet`,
+   `UDPOpen`, `TCPOpen`, `HTTPPost`, `CheckSum` have no arity fixtures (`nargs` 6 is the packed
+   `argspec` limit, not the real count); probe request T-08; evidence `LSP-04d-handoff.md`.
+6. **`Status.CardBytesFree`** (used by `crbasic/Main.CR6`, which the real compiler accepts) is in
+   neither `data/status_table.json` nor `settings_fields.json`; check whether the Status field
+   list is incomplete (`LSP-05c-handoff.md`).
+7. **`Static` declarations** parse as `Unparsed` (`LSP-05a-handoff.md`); check against the oracle.
+8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);
+   host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`.
+
 ## Next steps
 
 1. Act on `scratch/codex/review-round11.md` (one Haiku or Sonnet worker, confirm each finding
