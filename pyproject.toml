@@ -59,4 +59,5 @@ project-includes = [
     "src/opencrbasic/rename.py",
     "src/opencrbasic/formatting.py",
     "src/opencrbasic/quickfix.py",
+    "src/opencrbasic/commands.py",
 ]
