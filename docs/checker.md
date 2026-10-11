@@ -5057,3 +5057,18 @@ silent. CR300/CR350 keep line order (`Foo Bar` / `Include` prints the warning la
 error (`Include "x.txt"`) hides the other errors as before and is not reordered. Pre-`BeginProg` and
 in-body shapes are in `tests/fixtures/include_warning_pre.json` and `tests/fixtures/include_warning_body.json`
 (all four loggers, 0 differing). Fixed `chm/include_1.CR6` on CR1000X.
+
+### `CallTable` inside a single-line `If` counts as a use (CR6/CR1000X, 2026-10-11)
+
+`Table %s, is declared but never called.` is not printed when the table's only `CallTable` is a
+single-line `If` branch, whatever the condition: `If Batt > 1 Then CallTable (Msgs)`, `If False Then
+CallTable (Msgs)`, the `Else` branch, nested `If`. The multi-line `If ... EndIf` form was already
+counted. `warnings._with_inline_branches` walks the `If` branches for the `called` set. Evidence:
+`chm/emailrecv_1.CR6` (CR1000X printed the warning before; CR6 was exact only because of its unrelated
+channel error). Fixture `tests/fixtures/called_inline_if.json` (56 cases, four loggers, 0 differing).
+CR300/CR350 unchanged (same fixture).
+
+Not done: `If Batt > 1 Then CallTable (Msgs) : Battery (Batt)` (a colon-separated statement after an
+inline `If`) prints no warning on CR6/CR1000X in either, but the real compiler's mode is Sequential and
+ours is Pipeline (`mode.decide`; inference: the parser keeps `: Battery` outside the `If`, the real one
+puts it inside, and a conditional `Battery` in a `Scan` is sequential). Left out of the fixture.

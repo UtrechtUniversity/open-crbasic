@@ -25,6 +25,19 @@ def _table_arg_name(stmt: S.Instruction) -> str | None:
     return None
 
 
+def _with_inline_branches(statements):
+    """The statements plus those in every single-line `If ... Then stmt [Else stmt]` branch, at any
+    depth. A `CallTable` there counts as a use even when the branch is never taken (oracle,
+    CR6/CR1000X, 2026-10-11: `If Batt > 1 Then CallTable (Msgs)`, `If False Then CallTable (Msgs)`,
+    `If Batt > 1 Then Battery (Batt) Else CallTable (Msgs)`, `If ... Then CallTable (Msgs) : Battery`
+    -- `emailrecv_1.CR6` has its only call this way, and no `Table ... never called` warning)."""
+    for stmt in statements:
+        yield stmt
+        if isinstance(stmt, S.If):
+            yield from _with_inline_branches(stmt.inline or ())
+            yield from _with_inline_branches(stmt.inline_else or ())
+
+
 def check(program: S.Program, result, diags: Diagnostics) -> None:
     # User `DataTable(...)...EndTable` blocks only -- deliberately *not* `result.tables` (which
     # also carries the logger's own system tables, `Status`/`DataTableInfo`/`GlobalConfigTable`/
@@ -44,7 +57,7 @@ def check(program: S.Program, result, diags: Diagnostics) -> None:
     # variable, so this is a safe superset of the real "called" set.
     called = {
         arg.name.upper()
-        for stmt in program.statements
+        for stmt in _with_inline_branches(program.statements)
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() != "DATATABLE"
         for arg in stmt.args
         if isinstance(arg, S.Name) and arg.name.upper() in declared
