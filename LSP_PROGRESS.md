@@ -6,8 +6,9 @@ Live implementation state and session handoff. Design and acceptance criteria:
 ## Current state (2026-10-11, cloud session)
 
 - LSP-00 done (baseline, inventory, contracts): [docs/lsp-rounds/LSP-00.md](docs/lsp-rounds/LSP-00.md).
-  Review pending (the human runs `gpt-6.1-sol` manually; Codex is unavailable in the cloud
-  container). Usage is checked by the human; work proceeds per round.
+  The human-requested `gpt-6.1-sol` review through `39286384` is recorded in
+  [review-2026-10-11-39286384.md](docs/lsp-rounds/review-2026-10-11-39286384.md);
+  findings await implementation. Usage is checked by the human; work proceeds per round.
 - Active round: LSP-01. Host-only checks pending: [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md).
 - Released capabilities: none. No server/extension behaviour observed yet.
 - Container limits: no Wine (no oracle, difftest, live replay, probes), VS Code download host
@@ -126,7 +127,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 
 | Round/chunk | Base / worktree / owner | State | Evidence / review | Next action |
 |---|---|---|---|---|
-| LSP-00 | `f42e471`, main checkout, coordinator | accepted pending review | LSP-00.md gate table; selfdiff 0 differ | human review |
+| LSP-00 | `f42e471`, main checkout, coordinator | reviewed; findings pending | LSP-00.md gate table; selfdiff 0 differ; [review through 39286384](docs/lsp-rounds/review-2026-10-11-39286384.md) | resolve review findings |
 | LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01b, round gates |
 | LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated, gates passed | at `c7e5a6f`: selfdiff 0 differ; full pytest 21,547 passed / 507 skipped; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | oracle gates passed on host (T-01, `8b25214a`, macOS: difftest/replay/tdftest unchanged vs baseline, real-exe verify BUILD pass) |
 | LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
