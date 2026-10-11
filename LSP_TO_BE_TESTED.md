@@ -242,3 +242,31 @@ and `opencrbasic.helpDirectory` set to the repository's `extracted_chm`. Accept 
    diagnostic underlines end at the line end.
 8. No UI freeze while typing in `Main.CR6`; outline/tokens update about 1 s after the last edit.
 
+## Local host report (2026-10-11, e77ee5cc / 4d88a186 / 1b01311d)
+
+[Oracle, range, encoding, indentation, benchmark and arity evidence](docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md).
+[Integrated-feature retest and actual VS Code API observations](docs/lsp-rounds/host-tests/2026-10-11-1b01311d/RESULTS.md).
+
+- T-01 at `e77ee5cc`: differential group totals, all replay classifications and TDF totals match
+  the earlier host baseline; real-exe verify passes. Full pytest exposed four failures from
+  benchmark import clearing strict mode (H-05), independently reproduced in the report.
+  At `1b01311d`, after the coordinator's fix, full pytest passes **22,182 tests, 311 skipped**;
+  client compile/10 tests and real-exe verify also pass. Exact BUILD lines are in the records.
+- T-02 H-01 amendment: actual VS Code host API confirms all six merged ShuntLib errors cover
+  physical lines 32–33, with unchanged disk bytes, and clear on undo.
+- T-05: both real and native compilers resolve the Latin-1 filename; UTF-8 source produces a
+  cannot-open warning despite exit 0. NFC filename bytes, valid Include/IncludeSection probes
+  and raw outputs are saved. An initial malformed IncludeSection fixture is explicitly excluded.
+- T-06: both compilers give the same line-78 message sequence before/after the requested
+  formatting. The earlier reported native difference did not reproduce through `crbc`.
+- T-07: no concurrent test jobs; hover/completion/diagnostics p95 meet the proposed targets
+  on this host. Load and end-to-end versus in-process measurement limits are recorded.
+- T-08 at `4d88a186`: 130 real-compiler cases saved in a fixture; audit gives **0 differing cases**.
+  Accepted counts and exact argument variants are tabulated in the first report.
+- T-09 at `1b01311d`: 16 actual VS Code provider/API checks pass. The extra `.CR300` association
+  check still reports Plain Text (H-03). Visual rendering, automatic repaint, typing responsiveness,
+  H-02 and Windows/Linux checks remain unverified; the supplement names the observation limits.
+
+Earlier requests and reports remain intact for coordinator integration. Results apply only to
+their named revisions; no later code or round acceptance is implied. No hardware was contacted.
+
