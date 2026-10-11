@@ -35,7 +35,7 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-10, after round 9)
+## Status (2026-10-11, after round 11)
 
 Measured on `claude/laughing-franklin-08z9vo` at the commit that adds this text. Exact = equal
 exit code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
@@ -43,10 +43,10 @@ opencrbasic rejects: **none observed** in any differential, replay or fixture ru
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 18,565 passed, 311 skipped |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 20,439 passed, 311 skipped |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 496/9/1/1, CR1000X 494/11/1/1, CR300 477/28/0/2, CR350 477/28/0/2 |
-| `tools/fuzz_replay.py` (2,251 reproducers incl. round-9 seeds 301-308) | 1,796 exact, 14 false accepts (mostly round-9 open families, `docs/fuzz-findings.md`), 0 false rejects, 407 message diffs, 18 mode diffs, 16 oracle errors (`scratch/replay-r9.json`) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 500/6/0/1, CR1000X 498/8/0/1, CR300 485/20/0/2, CR350 485/20/0/2 |
+| `tools/fuzz_replay.py` (2,251 reproducers) | 1,819 exact, 11 false accepts, 0 false rejects, 389 message diffs, 16 mode diffs, 16 oracle errors (`scratch/replay-r11.json`) |
 | `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 207/208, table list 207/208 (exact auto-size model from the decompiled allocator, `docs/tdf-rules.md` §10; remaining `goestable_1` field name); `-t` [Times] (harness `/private/tmp/claude-501/tw/h7.py`, not in repo) repo 16/16, CHM 506/507 |
 | implementation exceptions (difftest/replay class) | 0 |
 | `cd ../scripts && uv run --no-sync verify.py` (needs `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`, not the opencrbasic env) | 2026-10-03: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
@@ -135,9 +135,10 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   12.1.4 headless dumps `scratch/re/CR6Comp.decomp.c`, `scratch/re/cr300comp.decomp.c`
   (untracked; regenerate with `tools/ghidra/DumpAll.java`, project dir outside dot-directories).
   First results: exact TDF auto-size model; one CR300/CR350 compile-stage ordering rule.
-- Round 10 in progress (2026-10-10 evening): round-8 review fixes, RE on `cpispeed2_1` CPI time /
-  scan budget / FFT+SampleMaxMin excess args / IfTime, remaining help-corpus families. gpt-6.1-sol
-  review of round 9 running (`scratch/codex/review-round9.md`).
+- Rounds 10-11 done: CPI measurement time (cpispeed2_1 closed: no verdict mismatch left on any
+  logger), scan-time budget, scan-interval arithmetic (scan_split model reconciled with the
+  slow-scan contract), deferred-text excess arguments, CR300/CR350 corpus rules (+8 each), round-8
+  and round-9 review findings. Not reviewed yet: `46f79c5d`..HEAD.
 - Worker worktrees removed and the stash dropped (2026-10-04). Their branches remain; all except
   `ocb-ranges` are already integrated by cherry-pick.
 - Unclosed `StructureType` is compiler undefined behaviour on all four loggers: verdicts observed
