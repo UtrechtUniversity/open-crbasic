@@ -31,7 +31,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated, gates passed | at `c7e5a6f`: selfdiff 0 differ; full pytest 21,547 passed / 507 skipped; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | oracle gates: T-01 |
 | LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
 | LSP-01b server | `codex/lsp-01-server`, `.claude/worktrees/lsp-01-server`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
-| LSP-02a positions | `codex/lsp-02-positions`, `.claude/worktrees/lsp-02-positions`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-02a positions | `codex/lsp-02-positions` -> `43acb40` | integrated-awaiting-gates | coordinator rerun 40 passed; combined tests/lsp 132 passed; worker: selfdiff 0 differ, full pytest 21,587/507, loader+parser ~+8% time on CHM corpus | combined gates; oracle: T-01 |
 | LSP-03a catalog+grammar | `codex/lsp-03-catalog` -> `4822b49` | integrated | coordinator rerun: 32 passed, `gen_grammar --check` up to date; combined tests/lsp 92 passed; npm compile 0, 5/5; worker: selfdiff 0 differ, full pytest 21,579/507 | highlighting: T-03 |
 | LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
 | LSP-04a-fix help param names | `codex/lsp-04-helpfix`, `.claude/worktrees/lsp-04-helpfix`, base `41c4c4a`, Haiku | active | - | verify, cherry-pick |

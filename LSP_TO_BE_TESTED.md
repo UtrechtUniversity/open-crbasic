@@ -11,10 +11,10 @@ UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic WINEPREFIX=$HOME/.wine-cr6 WIN
 
 ## Pending
 
-### T-01 Oracle gates after the shared driver change (LSP-01a)
+### T-01 Oracle gates after the shared driver/loader changes (LSP-01a, LSP-02a)
 
-The source-provider refactor touches `source.py`, `parser.py`, `signature.py` and
-`compiler.py`. In the cloud it was gated by `tools/selfdiff.py` (opencrbasic output unchanged)
+The source-provider refactor (LSP-01a) touches `source.py`, `parser.py`, `signature.py` and
+`compiler.py`; the provenance/line-map recording (LSP-02a) touches `source.py` and `parser.py`. In the cloud it was gated by `tools/selfdiff.py` (opencrbasic output unchanged)
 and the fixture-backed pytest suite only.
 
 - `uv run --no-sync pytest -q` with Wine available: no failures; skips drop to the Wine-less
