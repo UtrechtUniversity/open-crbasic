@@ -4947,3 +4947,18 @@ parameters:  <rest>.` (`instr_rules._TOO_MANY_KINDS`). On CR300/CR350 a `SampleM
 excess argument drops the `Maximum() or Minimum() must precede SampleMaxMin().` error that
 CR6/CR1000X still emit. Evidence: `tests/fixtures/too_many_deferred.json` (84 cases, all four
 compilers, audited with `tools/fixture_audit.py`: 0 differing).
+
+### Undeclared dotted names, CR300/CR350 (2026-10-11)
+
+In an expression (assignment value or subscript, `If`/`ElseIf` condition, function argument, ...)
+`Undeclared.member` (`Tmp.dat`, `TempConv.dat`, `Tmp.001`, `Tmp.a.b`) is not `Tmp is not defined.`
+but `Could not find DataTable Tmp.`, one line per such name, in source order with the plain
+undefined names (`X = Tmp.dat + Zed` -> both, `X = Tmp.dat * 2 + Tmp.dat` -> two). Once a plain
+`is not defined.` was reported for the statement, later dotted names are silent (`X = Zed + Tmp.dat`
+names only `Zed`; `Nope = Tmp.dat` names only `Nope`). Implementation: `profiles.DottedName`
+(returned by `_undefined_names` for a `Member` whose base is undeclared, CR300/CR350 only) and
+`profiles.DottedAwareMessage`, the `unresolved_symbol_message` those profiles carry. The lexer reads
+`ident.digits` as `.` plus a member name, not a number. Fixture: `tests/fixtures/dotted_undeclared.json`
+(52 cases). Not done: CR6/CR1000X report `Could not find Tmp.` for the same shapes (plus the whole-
+expression `Invalid symbol` echo only when a plain undefined name follows); `Declared.nothing` on a
+data table (`Could not find T1.dat(1).`) is not checked on any logger.

@@ -106,6 +106,15 @@ def tokenize(text: str, line: int = 0) -> list[Token]:
             tokens.append(Token("NUMBER", raw, raw.upper(), i, line, _number_value(raw)))
             i = m.end()
             continue
+        if ch == "." and i + 1 < n and text[i + 1].isdigit() and tokens and tokens[-1].kind == "IDENT" \
+                and text[i - 1].isalnum() or (ch == "." and i + 1 < n and text[i + 1].isdigit()
+                                              and tokens and tokens[-1].kind == "IDENT"
+                                              and text[i - 1] == "_"):
+            tokens.append(Token("OP", ".", ".", i, line))   # `Tmp.001`: a member name, not a number
+            m = re.compile(r"\w+").match(text, i + 1)
+            tokens.append(Token("IDENT", m.group(0), m.group(0).upper(), i + 1, line))
+            i = m.end()
+            continue
         if ch.isdigit() or (ch == "." and i + 1 < n and text[i + 1].isdigit()):
             m = _NUMBER_RE.match(text, i)
             raw = m.group(0)

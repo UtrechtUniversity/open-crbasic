@@ -13,6 +13,7 @@ from .. import consteval
 from .. import lexer
 from .. import parser
 from .. import syntax as S
+from ..profiles import DottedName
 from ..diagnostics import Diagnostics
 from . import expressions, instr_data, instr_rules, symbols
 
@@ -2761,7 +2762,10 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
             diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
                         show_file=False)
         else:
+            plain_target = any(not isinstance(t, DottedName) for t in target_names)
             for name in expressions._undefined_names(stmt.value, known):
+                if plain_target and isinstance(name, DottedName):
+                    continue  # `Nope = Tmp.dat`: only the target is named (oracle, CR300, 2026-10-11)
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
                             stmt.file)
             if expressions._has_undefined_index(stmt.value, known, ds, stmt, (stmt.target,)):

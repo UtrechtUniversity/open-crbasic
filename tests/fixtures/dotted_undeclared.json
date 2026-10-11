@@ -1,0 +1,379 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-dotted_undeclared-0",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-1",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-2",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-3",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.dat + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-4",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.001\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-5",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.001\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-6",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = T1.X\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr300-dotted_undeclared-7",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = T1.X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-8",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = T1.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-9",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp(1).dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined.\nline 6: Tmp is not defined.\nline 6: Dimensions not declared: Fil = Tmp(1).dat\n."
+  },
+  {
+   "id": "cr300-dotted_undeclared-10",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-11",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.a.b\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-12",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.a.b\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-13",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Zed + Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-14",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat + Zed\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-15",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Zed\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-16",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat\nX = Tmp2.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 7: Could not find DataTable Tmp2."
+  },
+  {
+   "id": "cr300-dotted_undeclared-17",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nIf Tmp.dat > 1 Then\nX = 1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-18",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Sin(Tmp.dat)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-19",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nY(Tmp.dat) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-20",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-21",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nSerialOut(COMC1,Tmp.dat,\"\",0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: COMC1 is not defined."
+  },
+  {
+   "id": "cr300-dotted_undeclared-22",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nY(1) = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-23",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nTmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Invalid, or out of place expression: Tmp.dat\n."
+  },
+  {
+   "id": "cr300-dotted_undeclared-24",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat * 2 + Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr300-dotted_undeclared-25",
+   "logger": "cr300",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = T1.X(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr350-dotted_undeclared-0",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-1",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-2",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-3",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.dat + 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-4",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.001\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-5",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.001\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-6",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = T1.X\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  },
+  {
+   "id": "cr350-dotted_undeclared-7",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = T1.X\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-8",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = T1.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-9",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp(1).dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined.\nline 6: Tmp is not defined.\nline 6: Dimensions not declared: Fil = Tmp(1).dat\n."
+  },
+  {
+   "id": "cr350-dotted_undeclared-10",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-11",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.a.b\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-12",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nFil = Tmp.a.b\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Fil is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-13",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Zed + Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-14",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat + Zed\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-15",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Zed\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zed is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-16",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat\nX = Tmp2.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 7: Could not find DataTable Tmp2."
+  },
+  {
+   "id": "cr350-dotted_undeclared-17",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nIf Tmp.dat > 1 Then\nX = 1\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-18",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Sin(Tmp.dat)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-19",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nY(Tmp.dat) = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-20",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat.x\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-21",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nSerialOut(COMC1,Tmp.dat,\"\",0,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: COMC1 is not defined."
+  },
+  {
+   "id": "cr350-dotted_undeclared-22",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nY(1) = Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-23",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nTmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Invalid, or out of place expression: Tmp.dat\n."
+  },
+  {
+   "id": "cr350-dotted_undeclared-24",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = Tmp.dat * 2 + Tmp.dat\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Tmp.\nline 6: Could not find DataTable Tmp."
+  },
+  {
+   "id": "cr350-dotted_undeclared-25",
+   "logger": "cr350",
+   "source": "Public X, Y(3)\nDataTable(T1,True,-1)\nSample(1,X,FP2)\nEndTable\nBeginProg\nX = T1.X(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T1, is declared but never called."
+  }
+ ]
+}

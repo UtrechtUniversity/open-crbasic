@@ -11,6 +11,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from .. import consteval
+from ..profiles import DottedName
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
 from . import instr_data, symbols
@@ -374,6 +375,16 @@ def _position_kinds(params: list[int], keyword: str = "") -> dict[int, str]:
 
 
 def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
+    """`_undefined_names_walk`, minus the dotted names after the first plain one: once a name is
+    `is not defined.`, a later `Undeclared.member` is not reported (oracle, CR300, 2026-10-11)."""
+    out = _undefined_names_walk(expr, known)
+    for i, n in enumerate(out):
+        if not isinstance(n, DottedName):
+            return out[:i + 1] + [m for m in out[i + 1:] if not isinstance(m, DottedName)]
+    return out
+
+
+def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
     """Every undeclared name referenced anywhere inside `expr` (in source order), recursing into
     unary/binary operators, array indices and array-literal items. `Member` (`Table.Field`,
     `Struct.member`) only recurses into its own base, never its `member` text -- that is a
@@ -389,27 +400,29 @@ def _undefined_names(expr: S.Expr | None, known: set[str]) -> list[str]:
         upper = expr.name.upper()
         return [] if upper in known and upper not in getattr(known, "tables", ()) else [expr.name]
     if isinstance(expr, S.Unary):
-        return _undefined_names(expr.operand, known)
+        return _undefined_names_walk(expr.operand, known)
     if isinstance(expr, S.Binary):
-        return _undefined_names(expr.left, known) + _undefined_names(expr.right, known)
+        return _undefined_names_walk(expr.left, known) + _undefined_names_walk(expr.right, known)
     if isinstance(expr, S.Index):
         head = [] if expr.name.upper() in known else [expr.name]
         for a in expr.args:
-            head += _undefined_names(a, known)
+            head += _undefined_names_walk(a, known)
         return head
     if isinstance(expr, S.Member):
         # ... but its index arguments are (`Status.TimeStamp(Nope,1)`, oracle 2026-09-28). A
         # table name is fine as the base (`T.Field`).
         base = expr.base
         out = [] if isinstance(base, S.Name) and base.name.upper() in known else \
-            _undefined_names(base, known)
+            _undefined_names_walk(base, known)
+        if out and isinstance(base, S.Name) and getattr(known, "dotted_tables", False):
+            out = [DottedName(base.name)]
         for a in getattr(expr, "args", None) or []:
-            out += _undefined_names(a, known)
+            out += _undefined_names_walk(a, known)
         return out
     if isinstance(expr, S.ArrayLiteral):
         out: list[str] = []
         for item in expr.items:
-            out += _undefined_names(item, known)
+            out += _undefined_names_walk(item, known)
         return out
     return []  # Number, String: nothing to resolve
 
@@ -731,7 +744,8 @@ def _known_names(program: S.Program, profile) -> set[str]:
                     _undefined_names(a, known) for a in src.args if a is not None))
             (failed if bad else valid).add(st.args[1].name.upper())
         known -= failed - valid
-    return KnownNames(known, tables=_value_less_tables(program, profile))
+    return KnownNames(known, tables=_value_less_tables(program, profile),
+                      dotted_tables=profile.single_pass)
 
 
 def _unclosed_structure_variables(program: S.Program) -> set[str]:
@@ -757,9 +771,10 @@ class KnownNames(set):
     """`_known_names`, plus the `DataTable` names that are known only as table references: a bare
     `T` used as a value is undefined (`X = T`, `Battery(T)`, `Foo(X, T)`; oracle, all four
     loggers, 2026-09-28) while `T.Field` and `CallTable T` resolve."""
-    def __init__(self, names=(), tables: frozenset = frozenset()):
+    def __init__(self, names=(), tables: frozenset = frozenset(), dotted_tables: bool = False):
         super().__init__(names)
         self.tables = tables
+        self.dotted_tables = dotted_tables  # CR300/CR350: `Undeclared.member` names a table
 
 
 def _value_less_tables(program: S.Program, profile=None) -> frozenset:

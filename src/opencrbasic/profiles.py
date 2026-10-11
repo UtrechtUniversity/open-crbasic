@@ -14,6 +14,21 @@ from pathlib import Path
 DATA = Path(__file__).resolve().parent / "data"
 
 
+
+class DottedName(str):
+    """An undeclared name used as `Name.member` in an expression (CR300/CR350 read it as a table)."""
+
+
+class DottedAwareMessage(str):
+    """`{name} is not defined.`, except that a `DottedName` is `Could not find DataTable <name>.`
+    (oracle, CR300/CR350, 2026-10-11, `docs/checker.md` "Undeclared dotted names")."""
+    def format(self, *args, **kw):
+        name = kw.get("name")
+        if isinstance(name, DottedName):
+            return f"Could not find DataTable {name}."
+        return str.format(self, *args, **kw)
+
+
 @dataclass(frozen=True)
 class Profile:
     name: str               # "cr6", "cr1000x", ...
@@ -165,12 +180,12 @@ PROFILES = {
     "cr1000x": Profile("cr1000x", "CR1000X", "CR1000X.8.2.0", "03/04/2025", DATA / "cr1000x", True,
                        "cr1000xcomp.exe", declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
-                     "cr300comp.exe", unresolved_symbol_message="{name} is not defined.",
+                     "cr300comp.exe", unresolved_symbol_message=DottedAwareMessage("{name} is not defined."),
                      early_warnings_gated=True, undefined_call_message=True,
                      fallback_echo_newline=True, known_first_word_pass1=False,
                      include_drive_prefix=True, single_pass=True),
     "cr350": Profile("cr350", "CR350", "CR350.Std.1.07", "02/04/2025", DATA / "cr350", False,
-                     "cr350comp.exe", unresolved_symbol_message="{name} is not defined.",
+                     "cr350comp.exe", unresolved_symbol_message=DottedAwareMessage("{name} is not defined."),
                      early_warnings_gated=True, undefined_call_message=True,
                      fallback_echo_newline=True, known_first_word_pass1=False,
                      include_drive_prefix=True, single_pass=True),
