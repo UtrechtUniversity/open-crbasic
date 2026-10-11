@@ -1317,3 +1317,35 @@ gate. Fixes are annotations and narrowing; the few remaining suppressions are th
 `# type: ignore[...]` lines in `lsp/server.py` (pygls attributes set dynamically). The one
 attribute read from a compiler module that its class does not declare (`TdfTable._dup_fields`) is
 read with `getattr` in `bindings.py`.
+
+## Commands (LSP-09b)
+
+`opencrbasic.commands` is the core of two editor commands; the server wiring is LSP-09c. Neither
+function writes a file (tested: the temp tree, the cwd and the source tree are unchanged).
+
+```python
+compiler_output(entry, logger="cr6", overlays=None) -> CompilerOutput(text, ok, program_name)
+table_fields(result) -> list[TableInfo(name, fields: tuple[FieldInfo(name, type, units, process,
+                                       dimension)], interval)]
+render_table_fields(tables) -> str          # Markdown
+```
+
+- `compiler_output` is `compiler.compile_file(entry, profile, display_name=entry.name,
+  source=OverlaySource(DiskSource(), overlays), signature=False)` and `"\n".join(result_lines())`
+  plus the newline `print` adds. `text` therefore equals the stdout of
+  `crbc --logger L --no-message-file ENTRY` (header with the file name only, `line N:` messages cut
+  by the 4096-byte buffer, warnings, mode). `crbc`'s `-s`, `-u`, `-t`, `-b` are not offered. An entry
+  that is neither on disk nor in `overlays` gives the CLI's `<path> -- Compile Failed!` / `No Program
+  File` text (the path as given, absolute). `ok` is `CompileResult.ok`.
+- `table_fields` takes an `AnalysisResult` and calls `tables.build_tables(program, profile,
+  consts)`, the call `tables_hook.attach` makes, so tables and fields are the TDF's, in TDF order,
+  `Status`, `DataTableInfo` and `Public` included. `type` is the TDF type name (`IEEE4`, `FP2`,
+  `LONG`, `String`, `NSEC`, `Boolean`, ...; an unlisted code is `type N`); `units` and `process` are
+  `None` when empty (`process` is the TDF processing text, `Avg` for `Average`); `dimension` is the
+  field's element count. `interval` is the `-l` text (`5 MIN`) or `None`. The result is `[]` when the
+  program did not compile (the compiler builds tables only after a clean check) or `build_tables`
+  raises. It imports `tables.build_tables` and its private `_seconds_to_display` and reads the
+  private `_interval_display` attribute that `render_table_list` also reads.
+- Tests: `tests/lsp/test_commands.py` (stdout equality with in-process `cli.main` on temp copies
+  for all `../crbasic/*.CR6`, every 25th CHM sample, an unsaved overlay and an overlay-only entry;
+  table names, fields, units and processing equal to `build_tables` for `../crbasic/`).
