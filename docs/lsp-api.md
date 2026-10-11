@@ -125,11 +125,11 @@ function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(n
 - Function coverage (LSP-04c) is a separate report over `profile.functions`. A row is checked only
   when its table has `nargs`: the help parameter count must equal it. Rows with help and no `nargs`
   are `unchecked`; rows with `nargs` and no help are in `without_help`. Instruction numbers are
-  unchanged. Signature help for functions uses `nargs` as the count (see Hover).
+  unchanged. Signature help for functions takes the checker's accepted argument counts (see Hover).
 - Argument-count classes (LSP-04d): `function_arg_count_classes` lists the functions whose help count
   differs from `nargs` as `packing_cap` (`nargs` 6, the 16-bit `argspec` maximum), `optional_tail`
-  (help required count equals `nargs`) or `other`. It is a classification only. Signature help keeps
-  `argN` for these functions: names are not applied beyond `nargs`. Evidence and the decision are in
+  (help required count equals `nargs`) or `other`. It is a classification only. Signature help uses help names only where the checker's
+  accepted-count tables support them (LSP-04e, see Hover); otherwise `argN`. Evidence and the decision are in
   [LSP-04d-handoff.md](lsp-rounds/LSP-04d-handoff.md).
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
   [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md) and, after the 2026-10-11 rules,
