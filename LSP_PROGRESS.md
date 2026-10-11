@@ -99,7 +99,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
 | LSP-04a-fix help param names | `codex/lsp-04-helpfix` -> cherry-picked | integrated | coordinator rerun 23 passed; CR6 help coverage 302 with help, matching counts 226 -> 269, 33 mismatches (categories in LSP-04a-fix-handoff.md) | open questions below |
 | LSP-05a binding index | `codex/lsp-05-bindings` -> `eca1727` | integrated | coordinator rerun 37 passed; combined tests/lsp 193 passed; worker: full pytest 21,634/507, selfdiff 0 differ; crbasic/ 0 unresolved, CHM 439 unresolved / 188 ambiguous (fragments) | LSP-05b |
-| LSP-03b-core editing logic | `codex/lsp-03-editing`, `.claude/worktrees/lsp-03-editing`, base `e909d96`, Sonnet | active | - | verify, cherry-pick |
+| LSP-03b-core editing logic | `codex/lsp-03-editing` -> `6c39974` | integrated | coordinator rerun 110 passed; combined tests/lsp 341 passed; worker: selfdiff 0 differ | server wiring after 01d |
 | LSP-04b-core hover logic | `codex/lsp-04-hover` -> `cd943ff` | integrated | coordinator rerun 38 passed; worker: tests/lsp 175, selfdiff 0 differ | server wiring |
 | LSP-01d spans + client stop | `codex/lsp-01-spans`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
 | LSP-04a-rules help syntax decisions | `codex/lsp-04-rules`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
