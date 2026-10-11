@@ -8,7 +8,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - LSP-00 done (baseline, inventory, contracts): [docs/lsp-rounds/LSP-00.md](docs/lsp-rounds/LSP-00.md).
   Review pending (the human runs `gpt-6.1-sol` manually; Codex is unavailable in the cloud
   container). Usage is checked by the human; work proceeds per round.
-- Active round: LSP-01 (next).
+- Active round: LSP-01. Host-only checks pending: [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md).
 - Released capabilities: none. No server/extension behaviour observed yet.
 - Container limits: no Wine (no oracle, difftest, live replay, probes), VS Code download host
   blocked (no VS Code integration tests). Shared-code gate here: `tools/selfdiff.py` (0 differ)
@@ -27,7 +27,10 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | Round/chunk | Base / worktree / owner | State | Evidence / review | Next action |
 |---|---|---|---|---|
 | LSP-00 | `f42e471`, main checkout, coordinator | accepted pending review | LSP-00.md gate table; selfdiff 0 differ | human review |
-| LSP-01 | see LSP-01.md | planned | - | write brief, dispatch |
+| LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01a/01c, then dispatch 01b |
+| LSP-01a sources+facade | `codex/lsp-01-sources`, `.claude/worktrees/lsp-01-sources`, Sonnet worker | active | - | verify, cherry-pick |
+| LSP-01c VS Code client | `codex/lsp-01-vscode`, `.claude/worktrees/lsp-01-vscode`, Haiku worker | active | - | verify, cherry-pick |
+| LSP-01b server | not dispatched (needs 01a) | planned | - | dispatch after 01a |
 
 States: planned, active, checkpointed-unverified, verified-not-integrated, integrated-awaiting-gates,
 accepted. Record exact SHAs and paths when assigned; do not substitute descriptions for identities.
