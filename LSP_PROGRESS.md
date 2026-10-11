@@ -3,32 +3,31 @@
 Live implementation state and session handoff. Design and acceptance criteria:
 [LSP_PLAN.md](LSP_PLAN.md). Compiler state and worker policy: [PROGRESS.md](PROGRESS.md).
 
-## Current state (2026-10-11)
+## Current state (2026-10-11, cloud session)
 
-- Planning documents created; implementation has not started.
-- Active round: none. Next proposed round: LSP-00.
-- Released capabilities: none. No server/extension tests or editor behaviour observed.
-- No LSP workers, implementation branches or worktrees created by this planning task.
-- Compiler baseline: read its live PROGRESS.md; remeasure at LSP-00 rather than copying counts.
-- Verification of this documentation change: pending until the planning task's checks finish.
+- LSP-00 done (baseline, inventory, contracts): [docs/lsp-rounds/LSP-00.md](docs/lsp-rounds/LSP-00.md).
+  Review pending (the human runs `gpt-6.1-sol` manually; Codex is unavailable in the cloud
+  container). Usage is checked by the human; work proceeds per round.
+- Active round: LSP-01 (next).
+- Released capabilities: none. No server/extension behaviour observed yet.
+- Container limits: no Wine (no oracle, difftest, live replay, probes), VS Code download host
+  blocked (no VS Code integration tests). Shared-code gate here: `tools/selfdiff.py` (0 differ)
+  plus full pytest; baseline `scratch/lsp/selfdiff-base.json` (local, ignored; regenerate at the
+  base revision with `--save` if missing).
 
 ## Resume here
 
-1. On an implementation request, read LSP_PLAN.md, AGENTS.md and compiler PROGRESS.md.
-2. Inventory checkout/worktree changes and record the actual base SHA and import path.
-3. Start LSP-00 with a durable round brief and current baseline measurements. Inventory existing
-   scope fixtures, driver reparsing/output rules, and snapshot/include API gaps before designing
-   the facade. Confirm which designated worker/reviewer tools are available.
-
-No implementation request has been executed by the planning task. There is no partial server
-work to recover. This file is the owner of future LSP resume state; the templates below are
-instructions for maintaining it, not observed results.
+1. Read LSP_PLAN.md, this file, the active round brief under `docs/lsp-rounds/`, and its handoffs.
+2. Check `git log` on `claude/laughing-franklin-08z9vo` and `git worktree list`; recover any
+   worker worktree under `.claude/worktrees/` before editing.
+3. If `scratch/lsp/selfdiff-base.json` is missing, recreate it at the round's base SHA.
 
 ## Round ledger
 
 | Round/chunk | Base / worktree / owner | State | Evidence / review | Next action |
 |---|---|---|---|---|
-| LSP-00 | Not assigned | Planned | No implementation evidence | Write round brief and establish baseline |
+| LSP-00 | `f42e471`, main checkout, coordinator | accepted pending review | LSP-00.md gate table; selfdiff 0 differ | human review |
+| LSP-01 | see LSP-01.md | planned | - | write brief, dispatch |
 
 States: planned, active, checkpointed-unverified, verified-not-integrated, integrated-awaiting-gates,
 accepted. Record exact SHAs and paths when assigned; do not substitute descriptions for identities.

@@ -6,7 +6,7 @@
 
 Unlike `tools/difftest.py`, this needs no reference compiler: it checks that a refactor leaves
 every observable `crbc` output unchanged. Each case runs the CLI in-process twice:
-`-s -t -z TDF -l LIST -p PRE <file> <msgfile>` and `-u -p PRE -i <file> <msgfile>`, recording exit
+`-s -t -z TDF -l LIST -p PRE <file> <msgfile>` and `-u -i PRE <file> <msgfile>`, recording exit
 status, stdout, and the bytes of every written file. Cases: `../crbasic/*.CR6` and
 `tests/corpus/chm/*.CR6` on all four loggers, and every fuzz reproducer on its own logger.
 
@@ -39,7 +39,7 @@ FUZZ_DIR = ROOT / "tests" / "corpus" / "fuzz"
 SIBLINGS_MARKER = "' fuzz-needs-siblings: crbasic"
 RUNS = (
     ("a", ["-s", "-t", "-z", "{tmp}/out.tdf", "-l", "{tmp}/out.lst", "-p", "{tmp}/out.pre"]),
-    ("b", ["-u", "-i", "-p", "{tmp}/out.pre"]),
+    ("b", ["-u", "-i", "{tmp}/out.pre"]),
 )
 
 
