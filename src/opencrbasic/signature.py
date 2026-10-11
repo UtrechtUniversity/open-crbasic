@@ -22,12 +22,12 @@ def csi_signature(data: bytes, seed: int = 0xAAAA) -> int:
     return sig
 
 
-def program_signature(path: Path) -> int:
-    from . import source
+def program_signature(path: Path, source=None) -> int:
+    from . import source as source_mod
     from .diagnostics import Diagnostics
 
     path = Path(path)
-    loader = source._Loader(path.parent, Diagnostics())
+    loader = source_mod._Loader(path.parent, Diagnostics(), source=source)
     loader.load_file(path, section=None, in_include=False)
     sig = 0xAAAA
     for data in loader.files:

@@ -29,6 +29,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .diagnostics import Diagnostics
+from .sources import DiskSource, SourceProvider
 
 _INCLUDE_RE = re.compile(r'^\s*Include\s*\(?\s*"([^"]*)"\s*\)?\s*$', re.IGNORECASE)
 # A third (or later) argument is tolerated and ignored, matching the real compiler
@@ -97,15 +98,17 @@ def _is_continuation(line: str) -> tuple[bool, str]:
     return False, line
 
 
-def _resolve_include_path(spec: str, directory: Path | None) -> Path | None:
+def _resolve_include_path(spec: str, directory: Path | None,
+                          source: SourceProvider | None = None) -> Path | None:
     name = _DRIVE_RE.sub("", spec.strip())
     if directory is None or not name:
         return None
-    if not directory.is_dir():
+    names = (source or DiskSource()).list_dir(directory)
+    if names is None:
         return None
-    for entry in directory.iterdir():
-        if entry.is_file() and entry.name.lower() == name.lower():
-            return entry
+    for entry in names:
+        if entry.lower() == name.lower():
+            return directory / entry
     return None
 
 
@@ -186,7 +189,10 @@ class _Loader:
     """Turns one file's raw text into `LogicalLine`s, expanding includes as it goes."""
 
     def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None,
-                 pull_init: bool = False, cr3xx_exts: tuple[str, ...] | None = None):
+                 pull_init: bool = False, cr3xx_exts: tuple[str, ...] | None = None,
+                 source: SourceProvider | None = None):
+        self.source = source or DiskSource()
+        self.includes: dict[str, Path] = {}  # include display name -> the path it resolved to
         self.directory = directory
         self.pull_init = pull_init
         self.pull_limit: tuple[int, ...] | None = None  # pulls only at positions below this (CR300/CR350)
@@ -201,9 +207,8 @@ class _Loader:
                   display: str | None = None) -> list[LogicalLine]:
         """`display` is an included file's name as written in the `Include`, drive included
         (`CPU:Lib.crb`); `diagnostics.Diagnostic.cr6comp` renders it per logger."""
-        try:
-            data = path.read_bytes()
-        except OSError:
+        data = self.source.read(path)
+        if data is None:
             return []
         self.files.append(data)
         return self.load_text(data.decode("latin-1"), display or path.name, section=section,
@@ -286,10 +291,11 @@ class _Loader:
             name, spec = m.group(1), m.group(2)
             if self._bad_extension(spec):
                 return [self._extension_error(spec, line, filename, section)]
-            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
+            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory, self.source)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
             self.site.setdefault(spec.strip(), (*self.site.get(filename, ()), line))
+            self.includes.setdefault(spec.strip(), target)
             included = self.load_file(target, section=name, in_include=in_include,
                                       display=spec.strip())
             return self._include_lines(included, line, filename, section)
@@ -301,10 +307,11 @@ class _Loader:
             spec = m.group(1)
             if self._bad_extension(spec):
                 return [self._extension_error(spec, line, filename, section)]
-            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory)
+            target = None if self._unloadable(spec) else _resolve_include_path(spec, self.directory, self.source)
             if target is None:
                 return [self._missing(spec, line, filename, section)]
             self.site.setdefault(spec.strip(), (*self.site.get(filename, ()), line))
+            self.includes.setdefault(spec.strip(), target)
             included = self.load_file(target, section=None, in_include=True, display=spec.strip())
             return self._include_lines(included, line, filename, section)
         return [LogicalLine(text, line, filename, section, had_trailing_comment=had_comment)]
@@ -348,15 +355,17 @@ class _Loader:
 
 def load_program(path: Path, own_ext: str | None = None,
                  pull_init: bool = False, pull_limit: tuple[int, ...] | None = None,
-                 cr3xx_exts: tuple[str, ...] | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+                 cr3xx_exts: tuple[str, ...] | None = None,
+                 source: SourceProvider | None = None) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts)
+    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts, source)
     loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
     diags.pull_log = loader.pull_log
     diags.pull_site = loader.site
+    diags.include_paths = loader.includes
     return lines, diags
 
 

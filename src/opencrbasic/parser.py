@@ -39,6 +39,7 @@ from . import consteval, lexer, profiles, source
 from . import syntax as S
 from .diagnostics import Diagnostics
 from .lexer import Token
+from .sources import DiskSource, SourceProvider
 
 _DIRECTIVE_RE = re.compile(
     r'^\s*#\s*(If_no_remove|If|ElseIf|Else|EndIf|UnDef)\b(.*)$', re.IGNORECASE
@@ -1739,8 +1740,12 @@ def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
         return None
 
 
+_source_module = source  # parse_file's `source` parameter shadows the module
+
+
 def parse_file(path: Path | str, profile: profiles.Profile | None = None,
-               pull_limit: tuple[int, ...] | None = None) -> tuple[S.Program, Diagnostics]:
+               pull_limit: tuple[int, ...] | None = None,
+               source: SourceProvider | None = None) -> tuple[S.Program, Diagnostics]:
     """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical
     default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
     `compiler.compile_file`'s own `profile` argument) so `Const` folding during parsing (predefined
@@ -1748,16 +1753,21 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     `.CR6` file always folded against the CR6 profile regardless of `--logger`, silently baking a
     CR6 symbol value into a non-CR6 profile's `program.consts` -- `docs/loggers.md`."""
     path = Path(path)
-    lines, diags = source.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
+    lines, diags = _source_module.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
                                        _pulls_init(profile or _profile_for(path.name)), pull_limit,
-                                       _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name))
+                                       _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name),
+                                       source)
     pull_log = diags.pull_log
     parser = _Parser(profile or _profile_for(path.name), diags)
     program, diags = parser.run(lines, path.name)
     program.pull_log = pull_log
     program.pull_site = diags.pull_site
+    program.include_paths = diags.include_paths
     _include_warning_drives(diags, profile or _profile_for(path.name))
-    _set_last_line(program, parser, path.read_bytes().decode("latin-1"))
+    main = (source or DiskSource()).read(path)
+    if main is None:
+        raise FileNotFoundError(str(path))
+    _set_last_line(program, parser, main.decode("latin-1"))
     return program, diags
 
 
