@@ -2,9 +2,9 @@
 
 Each function is synchronous and meant for a worker thread (`asyncio.to_thread`): it calls
 `editing`, `hover` or `navigation` and converts what they return. The core modules speak physical
-0-based lines and decoded (Latin-1) columns; this module converts both ways with
-`positions.lsp_position` / `positions.decoded_position` using the negotiated position encoding and
-the configured file encoding, and nothing else. There are no CRBasic rules here.
+0-based lines and decoded (Latin-1) columns; `Ctx` converts both ways using the negotiated position
+encoding and the configured file encoding (through the editor text of an open document, else
+through its bytes), and nothing else. There are no CRBasic rules here.
 """
 
 from __future__ import annotations
@@ -56,13 +56,13 @@ def _key(path: Path) -> str:
     return str(path).lower()
 
 
-def _utf16(text: str) -> int:
-    return len(text.encode("utf-16-le")) // 2
-
-
 class Ctx:
-    """What one request needs to convert positions: the encodings, the open documents' bytes
-    (a snapshot taken on the event loop), their URIs, the profile and the help provider."""
+    """What one request needs to convert positions: the encodings, the documents' compiler bytes
+    (a snapshot taken on the event loop), their URIs, the profile and the help provider.
+
+    Every conversion goes through here. A document whose bytes carry its editor text
+    (`positions.EditorBytes`) is mapped through that text, so a character the file encoding
+    replaced keeps its editor width; any other file is mapped through its bytes."""
 
     def __init__(self, profile: str, position_encoding: str, file_encoding: str,
                  blobs: Mapping[Path, bytes], uris: Mapping[Path, str], help_provider: Any = None):
@@ -73,6 +73,7 @@ class Ctx:
         self._blobs = {_key(p): d for p, d in blobs.items()}
         self._uris = {_key(p): u for p, u in uris.items()}
         self._lines: dict[str, list[bytes] | None] = {}
+        self._editor: dict[str, list[str] | None] = {}
 
     def data(self, path: Path) -> bytes | None:
         found = self._blobs.get(_key(path))
@@ -90,6 +91,16 @@ class Ctx:
             self._lines[key] = None if data is None else positions.physical_lines(data)
         return self._lines[key]
 
+    def editor_lines(self, path: Path) -> list[str] | None:
+        """The editor text lines of an open document, or None when the document has no editor
+        text (a file read from disk)."""
+        key = _key(path)
+        if key not in self._editor:
+            found = self._blobs.get(key)
+            text = getattr(found, "text", None)
+            self._editor[key] = None if text is None else positions.text_lines(text)
+        return self._editor[key]
+
     def uri(self, path: Path) -> str:
         return self._uris.get(_key(path)) or Path(path).absolute().as_uri()
 
@@ -99,6 +110,11 @@ class Ctx:
         if not lines:
             return None
         line = min(max(position.line, 0), len(lines) - 1)
+        editor = self.editor_lines(path)
+        if editor is not None:
+            return line, positions.compiler_column(editor[line], position.character,
+                                                   encoding=self.encoding,
+                                                   file_encoding=self.file_encoding)
         _, col = positions.decoded_position(lines, line, position.character,
                                             encoding=self.encoding,
                                             editor_encoding=self.file_encoding)
@@ -110,6 +126,10 @@ class Ctx:
         lines = self.lines(path) or [b""]
         line = min(max(line, 0), len(lines) - 1)
         col = len(lines[line]) if col is None else col
+        editor = self.editor_lines(path)
+        if editor is not None:
+            return types.Position(line, positions.editor_character(
+                editor[line], col, encoding=self.encoding, file_encoding=self.file_encoding))
         out_line, character = positions.lsp_position(
             lines, line + 1, col, encoding=self.encoding, editor_encoding=self.file_encoding)
         return types.Position(out_line, character)
@@ -192,7 +212,8 @@ def signature_help(ctx: Ctx, path: Path, position: types.Position) -> types.Sign
         return None
 
     def offsets(span: tuple[int, int]) -> tuple[int, int]:      # label offsets are UTF-16 units
-        return _utf16(info.label[:span[0]]), _utf16(info.label[:span[1]])
+        return (positions.units(info.label[:span[0]], "utf-16"),
+                positions.units(info.label[:span[1]], "utf-16"))
 
     parameters = [types.ParameterInformation(
         label=offsets(p.label_span),

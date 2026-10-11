@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
+from .. import positions
 from .config import Config, discover
 from .worker import JobResult, run_analysis
 
@@ -205,15 +206,6 @@ def _digest(path: Path) -> str | None:
         return None
 
 
-def _units(text: str, encoding: str) -> int:
-    """Length of `text` in the negotiated position encoding's units."""
-    if encoding == "utf-8":
-        return len(text.encode("utf-8", errors="replace"))
-    if encoding == "utf-32":
-        return len(text)
-    return len(text.encode("utf-16-le", errors="surrogatepass")) // 2
-
-
 def display_text(message: str, encoding: str) -> str:
     """Compiler message text for display. The compiler decodes source bytes as Latin-1, so a
     name written in the editor's encoding shows as mojibake; encode back to the original bytes and
@@ -280,12 +272,13 @@ class Session:
 
     # ---- configuration and entries -------------------------------------------------------
 
-    def _encode(self, text: str) -> tuple[bytes, bool]:
+    def _encode(self, text: str) -> tuple[positions.EditorBytes, bool]:
+        """The compiler bytes of `text`, which keep `text` for the position mapping."""
         enc = self.config.encoding
         try:
-            return text.encode(enc), False
+            return positions.EditorBytes(text.encode(enc), text), False
         except UnicodeEncodeError:
-            return text.encode(enc, errors="replace"), True
+            return positions.EditorBytes(text.encode(enc, errors="replace"), text), True
 
     async def configure(self, config: Config, folders: list[Path] | None = None) -> None:
         old = self.config
@@ -715,7 +708,8 @@ class Session:
                 last = min(max(span[1] - 1, first), last_idx)
             else:
                 first = last = min(max(line - 1, 0), last_idx) if line > 0 else 0
-            return Diag(first, last, _units(lines[last], self.position_encoding), severity, message, source)
+            return Diag(first, last, positions.units(lines[last], self.position_encoding),
+                        severity, message, source)
 
         contributors = [e for e in self.entries.values()
                         if e.contrib.get(path) and e.versions.get(path) == current]

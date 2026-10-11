@@ -516,10 +516,22 @@ after every new program, since semantic tokens are otherwise only re-requested o
 
 **Position encoding.** The client's `general.positionEncodings` is negotiated by pygls (first
 client-listed value of `utf-8`, `utf-16`, `utf-32`; `utf-16` when absent). The conversion is at the
-boundary only: incoming LSP positions go through `positions.decoded_position` and outgoing ones
-through `positions.lsp_position`, with the document's bytes in `encoding` (the open document's
-overlay bytes, else the file on disk). The core modules only see decoded (Latin-1) columns. A line
-past the end of the document (a stale request) clamps to its last line.
+boundary only, in `features.Ctx`, for every feature and for diagnostics. The core modules only see
+decoded (Latin-1) columns, which are byte offsets into the compiler bytes.
+
+- An open document's overlay bytes carry its editor text (`positions.EditorBytes`). When the file
+  `encoding` replaces characters, the mapping goes through that text, one editor character at a
+  time: each counts `len(ch.encode(encoding, "replace"))` bytes and its own width in the negotiated
+  position encoding (`positions.compiler_column` in, `positions.editor_character` out). So an
+  emoji under `latin-1` is 2 UTF-16 units in the editor and 1 byte to the compiler; editor columns
+  after it stay correct for hover, highlights, completion and rename/quick-fix edits, and
+  diagnostic ranges use the editor line. Without replacement the mapping is the same byte count.
+- A file with no editor text (read from disk for an included or unopened file) maps through its
+  bytes with `positions.decoded_position` / `positions.lsp_position`, decoding with `encoding`.
+- The per-character mapping assumes a stateless encoding. Inferred from the code, not observed:
+  a BOM-writing codec such as `utf-16` adds bytes that no character accounts for, so its columns
+  are not checked.
+- A line past the end of the document (a stale request) clamps to its last line.
 
 **Help.** `helpDirectory` (a relative path is resolved against the first workspace folder) is read
 by one `helpdocs.HelpProvider` per resolved directory, shared behind a lock and indexed in a

@@ -23,9 +23,78 @@ from .source import LineSpan, LogicalLine, Occurrence, Piece, _split_physical_li
 
 __all__ = ["LineSpan", "Occurrence", "Piece", "PhysicalRange", "reported_spans", "line_span",
            "logical_ranges", "exact_range", "physical_lines", "lsp_position", "lsp_range",
-           "decoded_position", "POSITION_ENCODINGS"]
+           "decoded_position", "POSITION_ENCODINGS", "units", "EditorBytes", "text_lines",
+           "compiler_column", "editor_character"]
 
 POSITION_ENCODINGS = ("utf-16", "utf-8", "utf-32")
+
+
+class EditorBytes(bytes):
+    """A document's compiler bytes (its editor `text` encoded with `errors="replace"`) that keep
+    the editor text they came from. Feature positions are mapped through that text when it is
+    present (`compiler_column` / `editor_character`), so a replaced character keeps its editor
+    width. `text` is None for plain bytes (files read from disk, unpickled copies)."""
+
+    text: str | None = None
+
+    def __new__(cls, data: bytes, text: str | None = None) -> "EditorBytes":
+        out = super().__new__(cls, data)
+        out.text = text
+        return out
+
+
+def units(text: str, encoding: str) -> int:
+    """Length of `text` in position-encoding units: UTF-16 code units, UTF-8 bytes or code points."""
+    if encoding == "utf-16":
+        return len(text.encode("utf-16-le", errors="surrogatepass")) // 2
+    if encoding == "utf-8":
+        return len(text.encode("utf-8", errors="replace"))
+    if encoding == "utf-32":
+        return len(text)
+    raise ValueError(f"unsupported position encoding {encoding!r}")
+
+
+def text_lines(text: str) -> list[str]:
+    """Editor text split into physical lines exactly as `physical_lines` splits the bytes (CRLF
+    and LF), so line N here is line N of the compiler bytes."""
+    return text.replace("\r\n", "\n").split("\n")
+
+
+def compiler_column(line: str, character: int, *, encoding: str = "utf-16",
+                    file_encoding: str = "utf-8") -> int:
+    """Decoded (byte) column in the compiler bytes of editor `line` for `character` (position
+    encoding units). Each editor character is `len(ch.encode(file_encoding, "replace"))` bytes, so
+    this is exact for a replaced character too. A `character` inside an editor character snaps back
+    to its start; one past the line end clamps to the line's byte length."""
+    target = max(character, 0)
+    seen = col = 0
+    for ch in line:
+        step = units(ch, encoding)
+        if seen + step > target:
+            return col
+        seen += step
+        col += len(ch.encode(file_encoding, errors="replace"))
+        if seen == target:
+            return col
+    return col
+
+
+def editor_character(line: str, column: int, *, encoding: str = "utf-16",
+                     file_encoding: str = "utf-8") -> int:
+    """The inverse of `compiler_column`: decoded (byte) `column` of the compiler bytes of editor
+    `line` -> `character` in `encoding` units. A column inside an encoded character snaps back to
+    its start; one past the end clamps to the line's length in units."""
+    target = max(column, 0)
+    col = seen = 0
+    for ch in line:
+        size = len(ch.encode(file_encoding, errors="replace"))
+        if col + size > target:
+            return seen
+        col += size
+        seen += units(ch, encoding)
+        if col == target:
+            return seen
+    return seen
 
 LineMap = Mapping[str, Mapping[int, Sequence[LineSpan]]]
 
