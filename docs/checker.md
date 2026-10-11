@@ -5250,3 +5250,14 @@ with a word operator, deferred-text and name-token first parameters (their own r
 `Alias`/`Units`/`Sub`/`Function`/`Data`. Not done: the `Too many parameters:  <next argument>`
 that follows for destination-first instructions (`PanelTemp(foo bar, 15000)`, `VoltSe(foo bar, 1, ...)`)
 and a bad second argument (`Delay(1, foo bar)`).
+
+### `Name As Type` outside a `StructureType`, CR300/CR350 (`chm/not_1`; fixture `r12_cr3xx_member_decl.json`)
+
+A bare `Flag As Boolean` line (also after a nameless `Public`, whose `Variable not named.` does not
+take the next line on CR300/CR350) is an expression, not a member declaration, outside a
+`StructureType`: `Flag is not defined.`, `As is not defined.` (an already declared first word
+reports only `As`), the generic fallback, and later uses of `Flag` are undefined too. The parser read
+every `Name As ...` as a structure member; it now does so only inside the structure on CR300/CR350
+(`parser._parse_assignment_or_call`). CR6/CR1000X also reject the line (`Invalid, or out of place
+expression`, plus `Expr illegally occurs before BeginProg.` before `BeginProg`) but a nameless
+`Public` there swallows the next line, so the parser is left as it is for them.
