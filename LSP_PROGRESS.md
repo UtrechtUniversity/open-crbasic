@@ -102,7 +102,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-03b-core editing logic | `codex/lsp-03-editing` -> `6c39974` | integrated | coordinator rerun 110 passed; combined tests/lsp 341 passed; worker: selfdiff 0 differ | server wiring after 01d |
 | LSP-04b-core hover logic | `codex/lsp-04-hover` -> `cd943ff` | integrated | coordinator rerun 38 passed; worker: tests/lsp 175, selfdiff 0 differ | server wiring |
 | LSP-01d spans + client stop | `codex/lsp-01-spans`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
-| LSP-04a-rules help syntax decisions | `codex/lsp-04-rules`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
+| LSP-04a-rules help syntax decisions | `codex/lsp-04-rules` -> cherry-picked | integrated | coordinator: helpdocs+hover+editing tests pass, spot checks MenuPick/ModbusSlave/PortSet; coverage matching 269 -> 270 (MenuPick) | leftover: `FileOption, [optional]` (FTPClient, EMailSend, HTTPPost) not marked optional -> fold into wiring chunk |
 | LSP-05b-core navigation logic | `codex/lsp-05-navigation`, base `6cddead`, Sonnet | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
