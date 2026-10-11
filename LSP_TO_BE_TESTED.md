@@ -304,3 +304,11 @@ On a revision at or after `80a6fb8`, VS Code with T-02 setup (details in
 8. Typing quickly during a slow analysis gives no error toast.
 9. Completion with an empty prefix in a Scan body: the list grows as you type (isIncomplete).
 
+### T-11 Clean install on macOS (and Windows if available) (LSP-08c), appended 2026-10-11
+
+From `opencrbasic/`: `uv run --no-sync python tools/lsp_install_check.py` (builds the wheel,
+installs it with and without the `lsp` extra into temporary virtual environments outside the
+repository, compares `crbc` with the checkout, starts `crbc-lsp` over stdio). Accept when it exits
+0 with all checks passing; record OS, Python and uv versions and the revision. On Windows, also
+note whether the stdio handshake works with the default Python launcher.
+

@@ -249,7 +249,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-08b user guide | `codex/lsp-08-guide` -> `adf6654` | integrated | [docs/lsp-user-guide.md](docs/lsp-user-guide.md); 25 relative links checked, 0 broken; written on a base before LSP-06a/07-wire | refresh after LSP-07-wire; repo-root `.vscode/settings.json` added (human decision 2026-10-11): `entries` `crbasic/*.CR6`, `helpDirectory` `extracted_chm` |
 | LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire`, base `2c0bd6b`, Sonnet | active | - | verify, cherry-pick |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
-| LSP-08c install check | `codex/lsp-08-install`, base `ecfb993`, Haiku | active | - | verify, cherry-pick |
+| LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles`, base `ecfb993`, Haiku | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
