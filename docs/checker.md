@@ -4852,3 +4852,11 @@ All four loggers: a NUL byte contributes nothing to a constant string. `CHR(256)
 `""`: `LEN(CHR(256))` is 0, `CHR(256)=""` is true, and `CHR(256)+"AB"` equals `"AB"` with length 2,
 `"A"+CHR(256)+"B"` has length 2. `#If CHR(0)=""` is true. `consteval._fn_chr` returns `""` for a zero
 low byte; the earlier `"\x00"` made `LEN` 1 and failed the comparisons.
+
+### Constant `To` with a string left operand (oracle, 2026-10-11; `tests/fixtures/const_string_to.json`)
+
+All four loggers: `"a" To 3` (and `"" To 3`) is a constant `0`, as `1 To 3` is: `Const K = "a" To 3`
+makes `#If K=0` true, `K=""` and `K="a"` false, and `Public Y(K)` fails with `Illegally dimension`.
+Only the right operand must be numeric in `consteval._binary`. A string right operand (`1 To "a"`,
+`"a" To "b"`) is `String is illegal here` at line 1 on the real compilers; ours reports no line 1
+finding for it (not modelled, pre-existing; the fixture omits those cases).

@@ -214,8 +214,9 @@ def _as_str(v: object) -> str:
 
 
 def _binary(op: str, left: object, right: object) -> object:
-    if op == "TO":  # `Scan(1 To 2,..)` is interval 0, `PortGet(X,5 To 2)` port 0 (oracle, round 9)
-        _num(left), _num(right)
+    if op == "TO":  # `Scan(1 To 2,..)` is interval 0, `PortGet(X,5 To 2)` port 0 (oracle, round 9).
+        # A string left operand is accepted too: `Const K = "a" To 3` gives K=0; a string right is not
+        _num(right)
         return 0
     if op == "&":
         return _as_str(left) + _as_str(right)
