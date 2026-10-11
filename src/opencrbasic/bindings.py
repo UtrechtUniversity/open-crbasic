@@ -68,7 +68,7 @@ class Declaration:
     unverified_scope: bool = False     # scope inside a routine is not established by evidence
     tok_key: tuple = ()
     modelled: bool = False             # table/system_table: every field name is known (`fields_of`)
-    members: dict = None               # StructureType: upper member name -> [Declaration]
+    members: dict | None = None       # StructureType: upper member name -> [Declaration]
     site: str = ""                     # `field`: "fieldnames" (the FieldNames string token is the
     #                                    site, `quoted`), "instruction" (name derived from the Source;
     #                                    only stmt/line locate it, no token) or "property" (a
@@ -500,7 +500,8 @@ class _Builder:
         if scope is None:
             scope = "routine" if routine is not None else "global"
         key = (name.upper(), "string" if quoted else "id")
-        d = Declaration(name, kind, scope, routine if scope == "routine" else None, container,
+        owner = routine if scope == "routine" and isinstance(routine, S.SubDef) else None
+        d = Declaration(name, kind, scope, owner, container,
                         stmt.file, stmt.line, node, stmt, self.unit, self.idx,
                         self._occ(key) if count else None, type, quoted,
                         unverified_scope=unverified, tok_key=key)
@@ -725,7 +726,7 @@ def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failure
                         f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []),
                         name=f.name)
             derived = [of.name for _, _, fs in groups for of in fs]
-            if table is None or derived != [of.name for of in tdf._dup_fields if not of.name_only]:
+            if table is None or derived != [of.name for of in getattr(tdf, "_dup_fields") if not of.name_only]:
                 continue
         except Exception as e:                      # never raise out of the index
             failures.append(IndexFailure(-1, "", dt.line, f"fields of {dt.name}: {type(e).__name__}: {e}"))

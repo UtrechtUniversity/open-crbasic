@@ -325,6 +325,7 @@ _SYSTEM_NAMES = ("STATUS", "PUBLIC", "SETTINGS", "DATATABLEINFO")
 def _check_new_name(entry: _Entry, new_name: str) -> None:
     state = entry.state
     ix = state.nav.index
+    assert ix is not None                   # an entry exists only for a program with an index
     up = new_name.upper()
     cat = InstructionCatalog.for_profile(state.result.request.logger)
     if cat.get(new_name) is not None or up in _SYSTEM_NAMES or up in bindings._EXTRA_PREDEFINED:
@@ -388,7 +389,7 @@ class _Current:
     def __init__(self, source):
         self.source = source
         self._own: dict[int, OverlaySource] = {}
-        self._bytes: dict[tuple, object] = {}
+        self._bytes: dict[tuple, bytes | None] = {}
 
     def _provider(self, result):
         if self.source is not None:
@@ -434,6 +435,7 @@ def _collect(results, path, line, col, current):
         entries.append(e)
     if not entries:
         raise _Refuse("no_results", "no given analysis depends on the file")
+    assert first is not None                # set with the first entry
     if any(e.key != entries[0].key or e.name != entries[0].name for e in entries):
         raise _Refuse("entries_disagree", "the entries disagree on the declaration set")
     for e in entries:

@@ -69,7 +69,7 @@ class SemanticToken(NamedTuple):
 
 class Site(NamedTuple):
     """The exact physical range of one declaration or reference (`rec`) of an analysis."""
-    rec: object                     # Declaration | Reference
+    rec: bindings.Declaration | bindings.Reference
     path: Path | None
     file: str
     occurrence: int
@@ -117,6 +117,8 @@ class Navigation:
         unit = rec.unit
         origin = getattr(unit, "origin", None)
         if origin is None:
+            return None
+        if self.index is None:
             return None
         tok = self.index.token_of(rec)
         if tok is None:
@@ -213,6 +215,8 @@ class Navigation:
     def references(self, path, line: int, col: int, include_declaration: bool = True) -> list[Location]:
         self._build()
         sites: list[Site] = []
+        if self.index is None:
+            return []
         for d in self._targets(path, line, col):
             if include_declaration and id(d) in self._site_of:
                 sites.append(self._site_of[id(d)])

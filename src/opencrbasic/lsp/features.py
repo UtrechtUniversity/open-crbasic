@@ -381,6 +381,7 @@ def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position
     found = rename.prepare_rename(results, path, *at, source=source)
     if not found.ok:
         return None, found.refusal
+    assert found.path is not None           # an ok PrepareResult carries its range
     return types.PrepareRenamePlaceholder(
         range=ctx.columns(found.path, found.line, found.start, found.end),
         placeholder=found.placeholder), None

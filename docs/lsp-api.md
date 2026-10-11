@@ -1308,3 +1308,12 @@ directory listing, which changes for unrelated files too).
   `Static` declarations, anything after `EndProg` or in inactive `#If` branches (refused when the
   old name occurs there), the 510-character loader line limit for a longer new name, a maximum
   identifier length (no evidence found, not checked), and editor behaviour.
+
+## Type checking (LSP-08e)
+
+The language-server modules (listed in `pyproject.toml` `[tool.pyrefly]`) are type-checked with
+Pyrefly: `uv run --no-sync pyrefly check` must report 0 errors. Compiler modules are outside the
+gate. Fixes are annotations and narrowing; the few remaining suppressions are the pre-existing
+`# type: ignore[...]` lines in `lsp/server.py` (pygls attributes set dynamically). The one
+attribute read from a compiler module that its class does not declare (`TdfTable._dup_fields`) is
+read with `getattr` in `bindings.py`.

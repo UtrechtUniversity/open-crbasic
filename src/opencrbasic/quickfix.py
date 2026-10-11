@@ -222,6 +222,7 @@ def _code_actions(result, path: Path, diag, profile_name: str, index, source) ->
     if family is None:
         return []
     if family == "missing-include":
+        assert name is not None             # its pattern always captures the include spec
         return _include_actions(result, path, diag, name, source)
     if getattr(result, "program", None) is None:
         return []

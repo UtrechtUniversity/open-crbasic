@@ -182,7 +182,11 @@ class ServerError(Exception):
         self.result = result            # the analysis that was discarded (its reads still count)
 
 
-_BROKEN = object()          # a worker pool break, internal to `_run_job`
+class _Broken:
+    """Marks a worker pool break, internal to `_run_job`."""
+
+
+_BROKEN = _Broken()
 
 
 def _oversize(paths: list[Path], overlays: dict[Path, int], limit: int) -> tuple[Path, int] | None:
@@ -438,7 +442,8 @@ class Session:
             if entry.settled and shortcut is not None and not entry.error \
                     and entry.reads.get(_key(path)) == shortcut:
                 for versions in (entry.versions,
-                                 entry.analysed.versions if entry.analysed_current else {}):
+                                 entry.analysed.versions
+                                 if entry.analysed is not None and entry.analysed_current else {}):
                     if doc is None:
                         versions.pop(path, None)
                     else:
@@ -565,7 +570,7 @@ class Session:
         so a crash is only ever blamed on the job that was running alone."""
         async with self._semaphore():
             outcome = await self._attempt(entry, snap)
-        if outcome is not _BROKEN:
+        if not isinstance(outcome, _Broken):
             return outcome
         async with self._solo_lock():
             slots = self._semaphore()
@@ -576,7 +581,7 @@ class Session:
             finally:
                 for _ in range(self.workers):
                     slots.release()
-        if outcome is _BROKEN:
+        if isinstance(outcome, _Broken):
             return ServerError(f"The analysis worker process terminated unexpectedly while "
                                f"analysing {entry.path.name}; the worker pool was restarted.")
         return outcome
@@ -586,7 +591,7 @@ class Session:
             self._solo = asyncio.Lock()
         return self._solo
 
-    async def _attempt(self, entry: Entry, snap: Snapshot):
+    async def _attempt(self, entry: Entry, snap: Snapshot) -> JobResult | ServerError | _Broken:
         if self._closed:
             return ServerError("server is shutting down")
         loop = asyncio.get_running_loop()
@@ -633,10 +638,11 @@ class Session:
             entry.error_limit = False
             self._record_reads(entry, outcome)
             entry.contrib = self._contributions(entry, outcome)
-            entry.analysed_current = outcome.program is not None
-            if entry.analysed_current:
+            program = outcome.program
+            entry.analysed_current = program is not None
+            if program is not None:
                 entry.analysed = Analysed(entry.path, snap.logger, snap.overlays, snap.versions,
-                                          outcome.program, outcome)
+                                          program, outcome)
                 entry.used = next(self._use)
                 entry.evicted = False
                 installed = True
@@ -660,11 +666,12 @@ class Session:
         when a feature request needs it."""
         budget = self.config.max_cache_mb * MIB
         held = [e for e in self.entries.values() if e.analysed is not None]
-        total = sum(e.analysed.size for e in held)
+        sizes = {id(e): e.analysed.size for e in held if e.analysed is not None}
+        total = sum(sizes.values())
         for victim in sorted((e for e in held if e is not keep), key=lambda e: e.used):
             if total <= budget:
                 break
-            total -= victim.analysed.size
+            total -= sizes[id(victim)]
             victim.analysed, victim.analysed_current, victim.evicted = None, False, True
             self.notice("cache", f"the parsed programs exceed maxCacheMb={self.config.max_cache_mb}"
                         "; the least recently used ones are dropped and rebuilt when a language "

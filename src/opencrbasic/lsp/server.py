@@ -96,7 +96,10 @@ def build_server():
     session.on_message = send_message
 
     def fs_path(uri: str) -> Path:
-        return Path(to_fs_path(uri)).absolute()
+        fs = to_fs_path(uri)
+        if fs is None:                      # not a `file:` URI (was a TypeError from Path(None))
+            raise ValueError(f"not a file URI: {uri!r}")
+        return Path(fs).absolute()
 
     def folders_of(params: types.InitializeParams) -> list[Path]:
         if params.workspace_folders:
@@ -152,7 +155,7 @@ def build_server():
         registration, only when the client supports it). A failure is logged, never fatal: the
         server still handles open documents and `didChangeConfiguration`."""
         workspace = server.client_capabilities.workspace
-        support = workspace and workspace.did_change_watched_files
+        support = workspace.did_change_watched_files if workspace else None
         if not (support and support.dynamic_registration):
             session.log("client does not support watched-file registration; changes to closed "
                         "files are noticed when a document is saved, opened or closed")
@@ -471,7 +474,7 @@ def build_server():
     def refresh_semantic_tokens() -> None:
         """New programs change the tokens of unchanged documents: ask the client to re-request."""
         workspace = server.client_capabilities.workspace
-        support = workspace and workspace.semantic_tokens
+        support = workspace.semantic_tokens if workspace else None
         if support and support.refresh_support and not state.get("shutdown"):
             pending = server.workspace_semantic_tokens_refresh(None)
             pending.add_done_callback(lambda f: f.cancelled() or f.exception())   # answer unused

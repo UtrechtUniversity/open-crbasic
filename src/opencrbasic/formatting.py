@@ -100,18 +100,24 @@ def _load(text: str) -> tuple[list[source.LogicalLine], int | None]:
     return out, None
 
 
+def _phys(ll: source.LogicalLine) -> tuple[int, int]:
+    """The physical span of a logical line, which `source.load_text` sets on every line it makes."""
+    assert ll.phys is not None
+    return ll.phys
+
+
 def _inside_string(ll: source.LogicalLine) -> bool:
     """True when the text cannot be read as tokens, or a continuation line starts inside a string
     (changing its leading blanks would change the string)."""
     try:
         tokens = lexer.tokenize(ll.text)
     except lexer.LexError as e:
-        if e.message == "unterminated string" or ll.phys[1] > ll.phys[0]:
+        if e.message == "unterminated string" or _phys(ll)[1] > _phys(ll)[0]:
             return True
         return False
     strings = [(t.col, t.col + len(t.text)) for t in tokens if t.kind == "STRING"]
     for piece in ll.pieces:
-        if piece.line > ll.phys[0] and piece.col == 0:
+        if piece.line > _phys(ll)[0] and piece.col == 0:
             if any(a < piece.start < b for a, b in strings):
                 return True
     return False
@@ -150,7 +156,7 @@ def _plan(text: str, profile: str) -> tuple[dict[int, int], int]:
 
     halted = False
     for ll in logical:
-        first, last = ll.phys[0] - 1, ll.phys[1] - 1
+        first, last = _phys(ll)[0] - 1, _phys(ll)[1] - 1
         if halted or first >= limit:
             break
         enter = len(stack)
@@ -283,7 +289,7 @@ def _first_overflow(text: str) -> tuple[int, int] | None:
     loaded, _ = source.load_text(text, "t", directory=None)
     for ll in loaded:
         if ll.kind == "overflow":
-            return ll.phys[0] - 1, ll.phys[1] - 1
+            return _phys(ll)[0] - 1, _phys(ll)[1] - 1
     return None
 
 
