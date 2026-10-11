@@ -220,3 +220,25 @@ file; `scratch/mkfixture.py` if present), audit it with `tools/fixture_audit.py`
 accepted counts per function. This feeds signature help (display only) and the compiler's own
 arity checks.
 
+### T-09 Language features in VS Code (LSP-wire), appended 2026-10-11
+
+On a revision at or after the LSP-wire integration (see LSP_PROGRESS.md ledger), with T-02 setup
+and `opencrbasic.helpDirectory` set to the repository's `extracted_chm`. Accept each when observed
+(screenshot or log excerpt); the detailed expectations are in
+[LSP-wire-handoff.md](docs/lsp-rounds/LSP-wire-handoff.md) "Needs VS Code host testing":
+
+1. Hover on `VoltSE` shows help title, parameters and "Source: help page"; without the setting,
+   "No help directory configured."; hover on a `Public` shows type/units/file:line; nothing in
+   comments/strings.
+2. Completion: prefix `Vo` in a Scan body lists program names then instructions; `Status.` and
+   `Public.` list fields; accepting replaces only the prefix.
+3. Signature help: `VoltSE(` then `,` moves the highlighted parameter.
+4. Outline/breadcrumbs for `Main.CR6` and an opened `.crb`; folding chevrons (blocks, `#If`,
+   comment runs); include file names underlined and Ctrl-click opens them.
+5. F12 from `Main.CR6` to a name declared in a `.crb`; Shift+F12 lists references; occurrence
+   highlights.
+6. Semantic tokens colour declared names and settle after an edit without another keystroke.
+7. Non-ASCII (`é😀` in a string earlier on the line): features land on the right token;
+   diagnostic underlines end at the line end.
+8. No UI freeze while typing in `Main.CR6`; outline/tokens update about 1 s after the last edit.
+
