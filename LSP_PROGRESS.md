@@ -143,6 +143,11 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-05b-core navigation logic | `codex/lsp-05-navigation` -> `3769504` | integrated, gates passed | at `3769504`: selfdiff 0 differ, full pytest 21,869/507, native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass`; additive `stmt.origin` in parser.py | oracle: T-01 amendment |
 | LSP-wire features in server | `codex/lsp-wire`, base `b21c1e1`, Sonnet | active | - | verify, cherry-pick |
 | LSP-04a-optmark | `codex/lsp-04-optmark` -> cherry-picked | integrated | worker: helpdocs+hover 70 passed, tests/lsp 367, selfdiff 0 differ; FileOption optional in FTPClient/EMailSend/HTTPPost/HTTPPut | gap: `coverage_report` counts instructions only; FTPClient etc. are function-table entries (coordinator check) |
+| LSP-07a rename core | `codex/lsp-07-rename`, base `6ca749d`, Sonnet, brief [LSP-07.md](docs/lsp-rounds/LSP-07.md) | active | - | verify, cherry-pick |
+| LSP-07b formatting core | `codex/lsp-07-format`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
+| LSP-05c table fields | `codex/lsp-05-fields`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
+| LSP-04c function help coverage | `codex/lsp-04-funccov`, base `6ca749d`, Haiku | active | - | verify, cherry-pick |
+| LSP-08a benchmarks | `codex/lsp-08-bench`, base `6ca749d`, Haiku, brief [LSP-08.md](docs/lsp-rounds/LSP-08.md) | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
