@@ -372,13 +372,17 @@ same defaults (`vscode/package.json`, checked by `test_vscode_contributes_server
 declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
 (after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
 initial one key by key). A client without pull support may send the section in the
-`didChangeConfiguration` params (`settings` or `settings.opencrbasic`). An invalid value is
-ignored with a stderr line and the previous value kept. Changing `logger` or `encoding`
+`didChangeConfiguration` params (`settings` or `settings.opencrbasic`). Every reload rebuilds the
+configuration from the defaults, the initialization options and the new settings, so a key that
+disappeared from the settings returns to its default (or its initialization-option value); a
+reload with no settings (a pull that failed, or a notification without settings from a client that
+cannot be pulled) keeps the current configuration. An invalid value is ignored with a log line and
+that key keeps its default or initialization-option value. Changing `logger` or `encoding`
 re-analyzes every entry; changing `entries`/`exclude` re-discovers (entries that drop out have
 their diagnostics cleared); `debounceMs` and `analysisTimeoutMs` apply to later jobs.
 
 Entry discovery globs the workspace folders (`entries` minus `exclude`; workspace-relative,
-case-insensitive; `*`, `?`, `**`, `{a,b}`; directories starting with `.` and `node_modules` are not
+case-insensitive; `*`, `?`, `**`, `{a,b}`; directories starting with `.`, `node_modules` and `__pycache__` are not
 walked) at startup, on configuration change, on workspace-folder changes and on watched-file events ("Workspace (LSP-06a)"). An opened file with
 extension `.CR6` (case-insensitive; additionally the extension of the configured logger, e.g.
 `.CR1X`) is an entry for itself while it is open, configured or not. A `.crb` is never an entry.
@@ -1366,7 +1370,7 @@ directory listing, which changes for unrelated files too).
 
 | Code | Refused when |
 |---|---|
-| `no_results`, `no_ast` | no analysis depends on the file; the program could not be parsed |
+| `no_results`, `no_ast` | no analysis depends on the file, or none parses the clicked line (a click in an inactive `#If` branch, a directive or text after `EndProg` gets this code with the message "no given analysis depends on the file", although the analysis does depend on the file: the wording is imprecise); the program could not be parsed |
 | `stale` | any file the analysis read (edited or not) differs now from the bytes it read, is gone, or differs between entries |
 | `index_failure` | the binding index recorded a failure for a statement of an entry |
 | `not_a_name` | the position is not on a name the index records in some entry that parses that line (comment, string, keyword the index does not record) |
@@ -1379,6 +1383,7 @@ directory listing, which changes for unrelated files too).
 | `occurrences_differ` | a file loaded more than once gives declarations with different edit sets |
 | `entries_disagree` | the entries do not agree on the declaration set (the target's physical range and kind) |
 | `unparsed` | a statement the parser could not take apart mentions the name |
+| `string_mention` | the old name (or the new name) occurs inside a string literal of any entry; names in strings are never rewritten and the word cannot be told apart from a use |
 | `unindexed_code` | the old name occurs, in code of any entry that is in no statement (inactive `#If` branch, `#If` directive, text after `EndProg`), at a place no entry edits; or the new name occurs there |
 | `table_field` | for a variable or alias: a `Table.Field` use whose field name equals the name or starts with `name_` (field names are derived from variable names and are not modelled) |
 | `unchanged` | the new name is spelled exactly as the current one (a case-only change is allowed) |

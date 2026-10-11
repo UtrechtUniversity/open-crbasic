@@ -166,7 +166,9 @@ def test_vscode_contributes_server_tuning_keys():
         _, warnings = lsp_config.parse_config({key: prop["default"]})
         assert warnings == [], key               # the contributed default is a value the server accepts
     for key in ("maxFileBytes", "maxQueuedJobs", "maxCacheMb"):
-        assert contributed[key]["type"] == "number" and contributed[key]["minimum"] == 1, key
+        assert contributed[key]["type"] == "integer" and contributed[key]["minimum"] == 1, key
+    for key in ("debounceMs", "analysisTimeoutMs"):
+        assert contributed[key]["type"] == "integer", key
     assert "featureWaitMs" not in contributed
 
 
@@ -448,6 +450,19 @@ def test_exclude_change_via_configuration(make_client, tmp_path):
     # an opened program is an entry for itself even when excluded
     client.open(broken, bad(SMALL))
     client.wait_diagnostics(broken, lambda d: bool(d), after=len(client.publishes(broken)) - 1)
+
+
+def test_a_setting_removed_returns_to_its_default(make_client, tmp_path):
+    root = project(tmp_path, **{"Broken.CR6": bad(SMALL), "Lib.crb": LIB})
+    broken = root / "Broken.CR6"
+    client = started(make_client, root, settings=dict(FAST))
+    client.wait_diagnostics(broken, lambda d: bool(d))
+    client.settings = {**FAST, "exclude": ["Broken.CR6"]}
+    client.notify("workspace/didChangeConfiguration", {"settings": None})
+    client.wait_diagnostics(broken, lambda d: not d, after=1)
+    client.settings = dict(FAST)                    # the key is gone: the default (no exclude)
+    client.notify("workspace/didChangeConfiguration", {"settings": None})
+    client.wait_diagnostics(broken, lambda d: bool(d), after=2)
 
 
 def test_configuration_pushed_without_pull_support(make_client, tmp_path):

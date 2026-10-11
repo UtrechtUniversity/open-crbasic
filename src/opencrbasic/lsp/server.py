@@ -141,10 +141,15 @@ def build_server():
 
     async def reload(settings: Any = None, pull: bool = False, first: bool = False) -> None:
         base: Config = Config() if first else session.config
-        cfg, warnings = parse_config(state["init_options"] if first else None, base)
         if pull and supports_configuration():
             settings = await pull_settings()
-        cfg, more = parse_config(settings, cfg)
+        if first or settings is not None:
+            # Every reload rebuilds from the defaults, so a key removed from the settings returns
+            # to its default; no settings at all (a failed pull) keeps the current configuration.
+            cfg, warnings = parse_config(state["init_options"], Config())
+            cfg, more = parse_config(settings, cfg)
+        else:
+            cfg, warnings, more = base, [], []
         for warning in warnings + more:
             session.log(warning)
         before = (base.inlay_parameter_names, base.help_directory)
