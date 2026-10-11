@@ -35,134 +35,130 @@ Living state. Update after every milestone. Plan: `PLAN.md`.
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-11, after round 11)
+## Status (2026-10-11, end of session; resume in a clean session)
 
-Measured on `claude/laughing-franklin-08z9vo` at the commit that adds this text. Exact = equal
-exit code and normalized ordered stdout (not byte parity). False reject = real compiler accepts,
-opencrbasic rejects: **none observed** in any differential, replay or fixture run.
+Measured on `claude/laughing-franklin-08z9vo` at `b844b7b9` (plus the docs commit that adds this
+text). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
+accepts, opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 20,439 passed, 311 skipped |
+| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 21,701 passed, 311 skipped |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 500/6/0/1, CR1000X 498/8/0/1, CR300 485/20/0/2, CR350 485/20/0/2 |
-| `tools/fuzz_replay.py` (2,251 reproducers) | 1,819 exact, 11 false accepts, 0 false rejects, 389 message diffs, 16 mode diffs, 16 oracle errors (`scratch/replay-r11.json`) |
-| `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 207/208, table list 207/208 (exact auto-size model from the decompiled allocator, `docs/tdf-rules.md` §10; remaining `goestable_1` field name); `-t` [Times] (harness `/private/tmp/claude-501/tw/h7.py`, not in repo) repo 16/16, CHM 506/507 |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 502/4/0/1, CR1000X 502/4/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
+| `tools/fuzz_replay.py` (2,251 reproducers) | 1,843 exact, 4 false accepts, 0 false rejects, 376 message diffs, 12 mode diffs, 16 oracle errors (`scratch/replay-r12.json`) |
+| `tools/tdftest.py --group all` | repo 16/16; CHM (208 CR6-accepted) TDF 207/208, table list 207/208 (only `goestable_1` field name) |
+| `-t` [Times] (`scratch/timing_harness.py`, untracked) | repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash) |
 | implementation exceptions (difftest/replay class) | 0 |
-| `cd ../scripts && uv run --no-sync verify.py` (needs `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/firnmelt-scripts`, not the opencrbasic env) | 2026-10-03: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
+| `cd ../scripts && uv run --no-sync verify.py` (env `$HOME/.uv-envs/firnmelt-scripts`) | 2026-10-11: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
 
-Reference faults (`pointervariable_2.CR6` on all loggers, `strcomp_3.CR6` on CR300/CR350, 18
+Reference faults (`pointervariable_2.CR6` on all loggers, `strcomp_3.CR6` on CR300/CR350, 16
 replay reproducers) make the gates exit nonzero; they are counted separately, never as verdicts.
 Every fixture under `tests/fixtures/` records real-compiler output; recheck one with
 `uv run --no-sync tools/fixture_audit.py tests/fixtures/<x>.json` (must report 0 differing).
 
+Remaining help-corpus diffs: CR6/CR1000X `mqttpublishtable_1`, `clockset_1`, `sprintf_1`,
+`strcomp_3` (pass-1/pass-2 classification of certain arguments; see docs/checker.md "Round 12
+CR6/CR1000X"). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs/tdf-rules.md`
+"Storage limit"), Scan-interval overflow autoallocate (1), `CDM_Delay` >60 min message count (1).
+
 | Phase | State |
 |---|---|
-| 0 Oracle + corpus | done: `tools/oracle.py`, `tools/difftest.py`, 507 CHM examples (many invalid on purpose or by extraction; they exercise error paths) |
-| 1 Binary RE | done for current needs: CLI (`docs/cli.md`), exe layout and tables (`docs/binary.md`, `tools/extract_tables.py`), type codes (`docs/type-codes.md`), messages (`docs/messages.tsv`), mode rule (`docs/modes.md`), TDF rules (`docs/tdf-rules.md`), ProgSignature (`signature.py`), per-logger differences (`docs/loggers.md`) |
-| 2 Front end | implemented; residual parsing/diagnostic gaps remain: lexer, include expansion, constant folding, `#If`, parser (`docs/frontend.md`) |
-| 3 Checker | usable: structure/placement, declarations, Units/Const/Alias, parameter counts, channel ranges per logger, Scan/DataInterval ranges, array limits, warnings (table never called, never reached, background calibration, fnotch), include-file prefixes, 4 KB message buffer, general expression-tree name resolution (`Invalid symbol in expression`/`%s is not defined`, per-logger echo/ordering rules, `NAN`/`INF`/system-table predefined symbols), the constant-only-family "rejects a variable" check, and the two-pass/pass-2-cutoff model (the generic "Expr"/`Call` fallback and before-`BeginProg` placement are now pass 2, not pass 1) (`docs/checker.md`, `docs/instructions.md`). Gaps: most instruction-specific value/type checks (per-instruction tables in `var_types.py`, `measure.json` `const_ranges`, `instr_measure._DEST_*`; no uniform per-type-code rule holds), remaining placement shapes |
-| 4 Fuzzing | `tools/fuzz.py`, `tools/fuzz_replay.py`; 1,949 saved reproducers (`tests/corpus/fuzz/`), 1,200 exact (`docs/fuzz-findings.md`) |
-| 5 Outputs | result line, mode (verified 16/16), warnings, ProgSignature (`-s`, verified on 5 programs), `-l` table list byte-identical 16/16, `-z` TDF byte-identical **16/16** (`tables.py`'s auto-size formula, §10, fully decompiled and oracle-exact as of 2026-09-26 -- was 8/16, the other 8 within ~3%); `-p`/`-i` preprocessed source byte-identical 16/16 repo + 98/100 CHM sample (`preprocess.py`); `-t` `[Times]` byte-identical on all 16 repo programs, 91/100 CHM sample (narrow, oracle-verified instruction set: `Scan`/`PanelTemp`/`PortSet`/`Sw12`/`Delay`(mSec)/`TCDiff`(Reps=1), `timing.py`); `-b` CDM image: "No CDM devices" message implemented and correct for every program in this repository (none use CPI/CDM hardware), binary image format not attempted; `-m` decompiled, confirmed no observable effect; `-u` **implemented** (`checker/unused.py`, wired through `compiler.compile_file`/`cli.py`, not through `checker.check`): `%s declared but not used.` for an unreferenced `Public`/`Dim`/`Sub`-or-`Function`-parameter, and for an unreferenced `Sub` or `Function` itself; oracle-confirmed identical across all four loggers; byte-identical on all 16 `crbasic/` programs with `-u` (`tests/test_unused.py`) |
-| 6 Complete parity gate | incomplete: known diagnostics, acceptance, option/artifact gaps remain on all four profiles |
+| 0 Oracle + corpus | done: `tools/oracle.py`, `tools/difftest.py`, 507 CHM examples |
+| 1 Binary RE | done and ongoing: `docs/binary.md` (functions, message tracer), Ghidra 12 dumps, CLI, type codes, messages, modes, TDF rules, signature, logger differences |
+| 2 Front end | implemented; small residual gaps (`docs/frontend.md`, `docs/checker.md`) |
+| 3 Checker | near parity on the help corpus; long tail of message ordering in fuzz reproducers |
+| 4 Fuzzing | `tools/fuzz.py`, `tools/fuzz_replay.py`; 2,251 saved reproducers; seeds used: 0, 1, 42-54, 100, 201-208, 301-308 (`docs/fuzz-findings.md`) |
+| 5 Outputs | TDF/table list exact except one name; `-t` exact except one crash; exact auto-size model; CDM binary image not attempted |
+| 6 Complete parity gate | incomplete: 376 fuzz message diffs, 4 false accepts, 4 CR6/CR1000X help diffs, storage limit, CDM image |
 
 History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
-## Work method (2026-10-02/03)
+## Work method
 
-- One chunk = one observed rule family: probe all four loggers (incl. accepted boundaries) with
-  `tools/probe.py` (template with `$BODY$` + cases file; prints `==`/`!=` real vs ours, cached
-  oracle), implement data-driven in the existing passes, fixture-backed test, docs section, then
-  full pytest + four-logger difftest + replay + fixture audit. Commit each chunk, single-line
-  message.
-- **Human instruction (2026-10-03): execute chunks of work with Sonnet-class Claude subagents**
-  (Agent tool, `model: "sonnet"`, one family per agent, in its own worktree as below). The
-  coordinating session plans, reviews, integrates and verifies; it does not implement chunks
-  itself.
-- **Human decision (2026-10-10): decompilation and debugger tracing of the real compilers are
-  approved** (internal project, not published; licence not a concern). Ghidra + Temurin JDK 21
-  installed via Homebrew by the human (`brew install ghidra`, a formula: headless analyzer
-  `/opt/homebrew/Cellar/ghidra/<ver>/libexec/support/analyzeHeadless`, GUI `ghidraRun`; JDK
-  `/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home`). Use them to find rules quickly (static decompile of
-  CR6Comp/cr300comp outside git; error-origin tracing via `winedbg` breakpoints on the error
-  reporter `0x5089c0` in CR6Comp, see `docs/binary.md`). Every rule is still verified by oracle
-  probes and fixtures; decompiled code is never copied into `src/` (`docs/legal.md`).
-- **Human instruction (2026-10-11): trial Haiku 5.5 (Agent tool `model: "haiku"`) for easy and
-  medium sub-tasks** (rebases/integration of clean branches, small review findings with a given
-  reproducer, fixture/docs chores, single well-scoped families). Keep Sonnet for hard families,
-  reverse engineering and anything needing rule discovery. Review Haiku output for quality (all
-  gates plus a spot-check of rules and fixtures against the oracle) and record the verdict here.
-  **Verdict after round 11 (3 Haiku workers): good enough for easy/medium work; keep using it.**
-  Integration of 7 verified commits: correct picks, green after each, stopped cleanly on a real
-  design conflict instead of guessing (handed to Sonnet). Round-9 review: 6/7 findings confirmed
-  against the oracle and fixed (incl. an internal crash), 1 correctly reported "not confirmed".
-  Small items: fixed a false reject, corrected a mis-stated rule from probes, deliberately
-  under-modelled a mixed case. All fixtures re-audited by the coordinator: 0 differing; no
-  regressions in difftest. One defect: it amended cherry-picked commit messages, replacing the
-  original authors' trailers (now forbidden in the brief). Keep Sonnet for rule discovery,
-  reverse engineering and design conflicts.
-- Orchestration: Opus coordinates; workers get disjoint families in their own git worktree
-  (`git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`, then
-  `ln -s <main>/opencrbasic/.oracle-cache` into it), and are integrated with `git cherry-pick`
-  (never merge commits). Doc conflicts from parallel appends: keep both sides. Code conflicts:
-  resolve by hand (a keep-both resolver once produced a duplicated `_arity_message`).
-- Worktree gotcha: the shared uv env's editable install imports the MAIN checkout. Inside a
-  worktree always `export PYTHONPATH=$PWD/src` (from `opencrbasic/`); difftest/tdftest insert
-  their own path.
-- Codex CLI: use ONLY `gpt-6.1-sol` (human instruction 2026-10-04; API slug from
-  `~/.codex/models_cache.json`) for read-only reviews of each merged batch (human
-  instruction 2026-10-03: the Codex 5-hour window exhausts quickly; implementation workers were
-  cut off twice). `codex exec -m gpt-6.1-sol -s read-only -C <repo> -o <out.md> "<prompt>"`.
-  Use the ChatGPT app's bundled CLI (0.159.2+):
-  `/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex`;
-  `~/.local/bin/codex` (0.158.0) rejects `gpt-6.1-sol` with a ChatGPT account. Pass `</dev/null`.
-  Act on findings with Claude subagents (Sonnet for rule families, Haiku for small precise
-  changes). Every review so far found real defects.
-- Agent brief for Claude workers: `scratch/codex/brief-claude.md` (untracked; it restates this
-  section: worktree-only, PYTHONPATH, probe/difftest/replay/fixture_audit, own baseline before
-  editing, one commit per family). Recreate from this section if missing.
-- Cherry-pick conflicts in `checker/__init__.py` are usually parallel workers adding
-  `_run_pass(...)` lines at the same spot: keep HEAD, add the new pass lines, and confirm with a
-  sorted diff of `_run_pass(` names against the worker branch.
+- **One chunk = one observed rule family.** Minimise, probe all four loggers (incl. accepted
+  boundaries) with `tools/probe.py` (template with `$BODY$` + cases file; prints `==`/`!=` real
+  vs ours, cached oracle), implement minimally and data-driven in the existing passes, add a
+  fixture from the real compiler (`scratch/mkfixture.py <name> <template> <cases> <loggers>`,
+  untracked helper) with a small test, document in `docs/checker.md` or `docs/instructions.md`,
+  then full pytest + four-logger difftest + replay + fixture audit. One commit per chunk. Never
+  generalise beyond probed evidence: a false reject is the worst outcome.
+- **Who does the work (human instructions 2026-10-03 and 2026-10-11).** The coordinating session
+  plans, integrates and verifies; it does not implement chunks itself. Workers are Claude
+  subagents (Agent tool), one family each, in their own worktree:
+  - `model: "haiku"` (Haiku 5.5) for easy/medium work: integrating clean branches, review findings
+    that come with a reproducer, small well-scoped families, fixture/docs chores. Verdict after
+    rounds 11-12 (6 Haiku workers): reliable; it stops on real design conflicts, reverts unsafe
+    attempts, and its fixtures re-audit clean. Do not let it amend cherry-picked commits.
+  - `model: "sonnet"` for rule discovery, reverse engineering, hard families, design conflicts.
+  - At most 4 workers at once: heavier rounds exhausted the 5-hour window in about an hour.
+- **Reverse engineering (human decision 2026-10-10: decompilation and debugger tracing approved,
+  internal project).** `tools/trace_errors.py <cr6|cr1000x|cr300|cr350> prog.CR6 [--json]`
+  records the caller of every emitted message using a patched exe copy in `scratch/re/` (never
+  modify `compiler/`); `docs/binary.md` "Message tracer". Ghidra dumps
+  `scratch/re/CR6Comp.decomp.c`, `scratch/re/cr300comp.decomp.c` (untracked); regenerate with
+  `tools/ghidra/DumpAll.java` and `/opt/homebrew/Cellar/ghidra/<ver>/libexec/support/analyzeHeadless`
+  (`JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home`; Ghidra refuses
+  project paths under dot-directories such as `.claude`, so use e.g. `/private/tmp/.../ghproj`).
+  `winedbg` disables a breakpoint after its first hit on macOS Wine, hence the patched exe. Every
+  rule is still verified by oracle probes and fixtures; decompiled code never goes into `src/`.
+- **Worktrees.** `git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`,
+  then `ln -s <main>/opencrbasic/.oracle-cache <wt>/opencrbasic/.oracle-cache` (and
+  `scratch/re` for RE workers). Inside a worktree always
+  `export UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic WINEPREFIX=$HOME/.wine-cr6 WINEDEBUG=-all PYTHONPATH=$PWD/src`
+  from `opencrbasic/` (the shared env's editable install imports the MAIN checkout otherwise).
+  Never create `.venv` in the repository (`verify.py` fails on it). Remove the cache symlink
+  with `unlink` before `git worktree remove --force`.
+- **Integration.** `git cherry-pick` worker commits onto `claude/laughing-franklin-08z9vo` (or
+  fast-forward when a worker branched from current main); never merge commits; keep cherry-picked
+  messages and trailers. Docs conflicts from parallel appends: keep both sides. Code conflicts:
+  delegate to a worker with "keep both sides' behaviour, both fixture sets green, probe the
+  real compiler where they disagree". Verify each worker branch independently before trusting
+  its report (pytest + `fixture_audit` on its new fixtures); in zsh, avoid `set -- $pair` loops
+  (no word splitting).
+- **Worker rules (`scratch/codex/brief-claude.md`, untracked; recreate from here if missing).**
+  Work only in your worktree; export the env above; never `git add -A`, never commit
+  `.oracle-cache`; NEVER use `git stash` (shared across worktrees; a worker once popped another's
+  changes; use a WIP commit); record a baseline before editing; never claim an observation not
+  made; a real-compiler page fault (exit 5) is no verdict; do not edit PROGRESS.md/PLAN.md; final
+  report with commits, rules, counts, uncertainty.
+- **Reviews.** After each batch, one read-only Codex review with `gpt-6.1-sol` (human instruction
+  2026-10-04), using the ChatGPT app's bundled CLI (0.159.2+; `~/.local/bin/codex` 0.158 rejects
+  the model): `/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex exec -m gpt-6.1-sol -s read-only -C <repo> -o opencrbasic/scratch/codex/review-<n>.md "<prompt>" </dev/null`.
+  Codex is for reviews and research summaries only, never implementation. Every review so far
+  found real defects; act on them with a worker that confirms each against the oracle first.
+- **Usage pacing.** Check `mcp__ccd_session_mgmt__get_usage`; tell workers to wrap up at ~85% of
+  the 5-hour window (they otherwise get cut off mid-task; a cut-off branch is recovered by saving
+  uncommitted work as a WIP commit and verifying the last real commit).
+- **CRBasic Field Notes artifact** (https://claude.ai/artifact/FngiuvrYeHto3WivhRouX4; source
+  `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
+  ONLY when the human asks; publish with `url` to keep the link.
 
-## Resume here (open work at 2026-10-04)
+## Resume here (2026-10-11)
 
-- Branch `ocb-ranges` (no worktree): WIP commit `3228f99` holds unverified CDM range work
-  (`checker/cdm.py`, `data/cdm.json`). CDM address/NULL-module rules have since landed on the main
-  branch, so compare before finishing, or discard.
-- Reverse-engineering tooling (round 9): `tools/trace_errors.py` (patched-exe tracer: caller
-  addresses per emitted message, all four compilers; `docs/binary.md` "Message tracer"); Ghidra
-  12.1.4 headless dumps `scratch/re/CR6Comp.decomp.c`, `scratch/re/cr300comp.decomp.c`
-  (untracked; regenerate with `tools/ghidra/DumpAll.java`, project dir outside dot-directories).
-  First results: exact TDF auto-size model; one CR300/CR350 compile-stage ordering rule.
-- Rounds 10-11 done: CPI measurement time (cpispeed2_1 closed: no verdict mismatch left on any
-  logger), scan-time budget, scan-interval arithmetic (scan_split model reconciled with the
-  slow-scan contract), deferred-text excess arguments, CR300/CR350 corpus rules (+8 each), round-8
-  and round-9 review findings. Not reviewed yet: `46f79c5d`..HEAD.
-- Worker worktrees removed and the stash dropped (2026-10-04). Their branches remain; all except
-  `ocb-ranges` are already integrated by cherry-pick.
-- Unclosed `StructureType` is compiler undefined behaviour on all four loggers: verdicts observed
-  once (old cache entries), uncached reruns page-fault (`docs/instructions.md`).
+- No rounds are scheduled; no worktrees exist; no WIP is pending on main. Old worker branches
+  (`ocb-*`) are all integrated except: `ocb-ranges` (WIP `3228f99`, unverified CDM range work;
+  compare with current CDM rules or discard).
+- Not yet reviewed by gpt-6.1-sol: rounds 10-12 after `75b94c1a` (`git log 75b94c1a..HEAD`);
+  `scratch/codex/review-round11.md` covers `46f79c5d..75b94c1a` and has NOT been acted on yet.
+- Local untracked state worth keeping: `scratch/re/` (Ghidra dumps, patched exes),
+  `scratch/tdf-sweep/` (allocator sweep data), `scratch/timing_harness.py` (`-t` comparison),
+  `scratch/mkfixture.py`, `scratch/codex/` (reviews, worker brief), `scratch/replay-r12.json`.
 
 ## Next steps
 
-1. Known false rejects: none open. Remaining verdict items: `cpispeed2_1` CPI time (non-linear in
-   Reps: at a 1 ms scan Reps 2..16 need 2,2,2,3,3,4,4,5,5,6,6,6,7,7,8 ms); CR300 storage limit
-   (`docs/tdf-rules.md`). Rejected-with-wrong-message shapes after Sub/instruction calls are
-   listed in `docs/checker.md` "Trailing tokens, round 4".
-2. Message differences (262 replay; 49-77 per logger in the help corpus): rank by first
-   differing diagnostic; prefer shared gating/ordering fixes (CR300/CR350 cascade, tier gating,
-   same-line ordering by argument) over per-instruction edits. Open from round 2: several
-   unresolved instruction arguments are each reported in a non-textual order (MoveBytes 1,4,3;
-   SendVariables 1,9); `If` with a malformed `Then`; CR6 `Invalid channel` beside a Scan parameter
-   error; CR1000X pass-1 symbol error hiding `Scan 0uSec invalid`; `CallTable` inside its own open
-   `DataTable`; CR300/CR350 `Return`/nested-Scan cascades. Known: `PortGet(A(9),1)` order on
-   CR6/CR1000X, interleaved messages for two port statements on one `:` line, float32 rounding
-   of values near 2^31 on CR300/CR350.
-3. Local-function resolution gap: CR300/CR350 accept a local `Dim exp` but resolve bare uses
-   as the internal function (pending observations in `tests/fixtures/function_name_collision.json`).
-4. Outputs: auto-allocated table sizes and mixed regimes (`docs/tdf-rules.md` §10, §12; CHM
-   TDF 139/192), CDM binary image, `Reps`-dependent timing, non-CR6 artifact byte parity.
-5. Fresh fuzz seeds (`tools/fuzz.py`) to find new families now that the saved set is nearly
-   closed; then `cd ../scripts && uv run --no-sync verify.py`.
-6. Settle `docs/legal.md` before publishing outside this repository.
+1. Act on `scratch/codex/review-round11.md` (one Haiku or Sonnet worker, confirm each finding
+   against the oracle first), then start a gpt-6.1-sol review of `75b94c1a..HEAD`.
+2. Remaining CR6/CR1000X help diffs (`mqttpublishtable_1`, `clockset_1`, `sprintf_1`,
+   `strcomp_3`): which pass reports `MQTTPublishTable(MQTT QoS, 5)`, `&` after a comma, `%`- or
+   float-led continuation lines. Use the tracer (which stage emits each message) instead of
+   probing blind (Sonnet + RE tools).
+3. Fuzz message diffs (376): rank by first differing line (`scratch/replay-r12.json`), prefer
+   shared ordering/gating rules; the tracer settles ordering questions.
+4. Remaining false accepts: storage limit (CR300/CR350; evidence in `docs/tdf-rules.md`; likely
+   readable from the decompiled allocator now), `CDM_Delay` >60 min count, Scan-interval overflow
+   autoallocate.
+5. Fresh fuzz seeds (next unused: 401+) to find new families; fix false rejects first.
+6. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments and
+   Reps > 1000.
+7. Before publishing anything outside this repository, settle `docs/legal.md`.
