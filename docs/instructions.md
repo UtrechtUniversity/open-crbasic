@@ -1719,3 +1719,17 @@ unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (3
   not `(0,5,Min)`; `Scan(-1,Sec,..)` (step -10000) fails only sub-second intervals; `Scan(-5,Sec,..)`
   also `(0,2,Sec)`; `Scan("fuzz",uSec,..)` (step -21474836) fails every `IfTime`. On CR6/CR1000X
   this pass-1 error hides the scan's own pass-2 messages (`Scan Interval parameter ...`).
+
+## `SerialOpen` TxDelay and buffer arguments (2026-10-11, fixture `tests/fixtures/serialopen_constint.json`)
+
+- The 4th and 5th `SerialOpen` arguments (`checker/expressions.py`, `_CONST_INTEGER_BAD_ARGS`) must
+  be integer constants on all four loggers: a float (`1.0`), a string, or an integer beyond 32 bits
+  (`999999999999`) gives `Parameter must be a constant integer:` with the statement echo. CR300/CR350
+  add the usual `.`-on-its-own-line and `Too many parameters` cascade (reproducer
+  `cr300/false_accept/7be9f5d53b3a`).
+- Accepted on all four: `Hr`, `1+1`, `-1` as the 5th argument, and integers in 32 bits.
+- Not modelled: a 4th argument that is an in-range-of-32-bits but out-of-range integer. The real
+  compilers print `<n> usec delay before transmit is illegal, must be 0..14000000` (`-1`, `2147483647`),
+  and CR300/CR350 print a wrapped value for `2147483648`/`-2147483648`. Ours accepts these.
+- Not modelled: a 6th argument. CR6/CR1000X also print `CommsMode Option ... not supported` warnings
+  there, so the constant-integer line is not the only diagnostic.

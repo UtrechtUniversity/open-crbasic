@@ -323,7 +323,10 @@ _CONST_INTEGER_OVERFLOW_STRING = {"TCPOPEN": 3}
 # Argument positions that must be an integer constant: a string, `NAN`, a float literal (`1.0`) or an
 # integer beyond 32 bits is `Parameter must be a constant integer` (oracle, all four loggers,
 # 2026-10-10: `TCPOpen(Addr,6785,"fuzz")`; an integer constant expression and `Hr` compile)
-_CONST_INTEGER_BAD_ARGS = {"TCPOPEN": 2}
+# `SerialOpen`'s 4th and 5th arguments (oracle, all four loggers, 2026-10-11: `1.0`, `999999999999`
+# -> `Parameter must be a constant integer`; `Hr`, `1+1`, `-1` compile on CR300 and also CR6/CR1000X
+# for `-1` only the range message `usec delay before transmit is illegal`, not modelled).
+_CONST_INTEGER_BAD_ARGS = {"TCPOPEN": frozenset({2}), "SERIALOPEN": frozenset({3, 4})}
 
 
 def _not_constant_integer(arg) -> bool:
@@ -1506,8 +1509,7 @@ def _call_arity_problem(name: str, args: list[S.Expr | None], profile) -> str | 
     if any(i < len(args) and isinstance(args[i], S.String)
            for i in _FUNCTION_CONST_INTEGER_STRING_ARGS.get(upper, ())):
         return "constint"
-    if (i := _CONST_INTEGER_BAD_ARGS.get(upper)) is not None and i < n and \
-            _not_constant_integer(args[i]):
+    if any(i < n and _not_constant_integer(args[i]) for i in _CONST_INTEGER_BAD_ARGS.get(upper, ())):
         return "constint"
     if (_CONST_INTEGER_OVERFLOW_STRING.get(upper) == nargs and len(args) == nargs + 1
             and isinstance(args[-1], S.String)):

@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-serialopen_constint-0",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,999999999999,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,999999999999,10000)."
+  },
+  {
+   "id": "cr6-serialopen_constint-1",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1.0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,1.0,10000)."
+  },
+  {
+   "id": "cr6-serialopen_constint-2",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,1.0)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,1.0)."
+  },
+  {
+   "id": "cr6-serialopen_constint-3",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,999999999999)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,999999999999)."
+  },
+  {
+   "id": "cr6-serialopen_constint-4",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,Hr,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialopen_constint-5",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1+1,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialopen_constint-6",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,-1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-serialopen_constint-7",
+   "logger": "cr6",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-0",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,999999999999,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,999999999999,10000)."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-1",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1.0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,1.0,10000)."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-2",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,1.0)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,1.0)."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-3",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,999999999999)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,999999999999)."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-4",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,Hr,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-5",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1+1,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-6",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,-1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-serialopen_constint-7",
+   "logger": "cr1000x",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-serialopen_constint-0",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,999999999999,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,999999999999,10000)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-serialopen_constint-1",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1.0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,1.0,10000)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-serialopen_constint-2",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,1.0)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,1.0)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-serialopen_constint-3",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,999999999999)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,999999999999)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-serialopen_constint-4",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,Hr,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serialopen_constint-5",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1+1,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serialopen_constint-6",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,-1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-serialopen_constint-7",
+   "logger": "cr300",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_constint-0",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,999999999999,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,999999999999,10000)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-serialopen_constint-1",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1.0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,1.0,10000)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-serialopen_constint-2",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,1.0)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,1.0)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-serialopen_constint-3",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,999999999999)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a constant integer:   SerialOpen (ComRS232,9600,3,0,999999999999)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-serialopen_constint-4",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,Hr,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_constint-5",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,1+1,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_constint-6",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,-1)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-serialopen_constint-7",
+   "logger": "cr350",
+   "source": "Public Q\nBeginProg\n  SerialOpen (ComRS232,9600,3,0,10000)\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
