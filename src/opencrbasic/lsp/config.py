@@ -20,6 +20,8 @@ class Config:
     encoding: str = "utf-8"
     debounce_ms: int = 300
     analysis_timeout_ms: int = 10000
+    help_directory: str = ""            # "" : no help text
+    feature_wait_ms: int = 1500         # bounded wait for a fresh analysis (docs/lsp-api.md)
 
     def analysis_key(self) -> tuple[str, str]:
         """What changes every entry's analysis input."""
@@ -75,13 +77,20 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
         except LookupError:
             warnings.append(f"ignoring 'encoding': unknown encoding {value!r}")
     for key, attr, minimum in (("debounceMs", "debounce_ms", 0), ("analysisTimeoutMs",
-                                                                  "analysis_timeout_ms", 1)):
+                                                                  "analysis_timeout_ms", 1),
+                                    ("featureWaitMs", "feature_wait_ms", 0)):
         if key in options:
             value = _int(options[key], minimum)
             if value is None:
                 warnings.append(f"ignoring {key!r}: expected an integer >= {minimum}")
             else:
                 changes[attr] = value
+    if "helpDirectory" in options:
+        value = options["helpDirectory"]
+        if value is None or isinstance(value, str):
+            changes["help_directory"] = (value or "").strip()
+        else:
+            warnings.append("ignoring 'helpDirectory': expected a string")
     return (Config(**{**cfg.__dict__, **changes}) if changes else cfg), warnings
 
 

@@ -11,8 +11,10 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import multiprocessing
+import pickle
 import re
 import sys
+import threading
 import traceback
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures.process import BrokenProcessPool
@@ -36,7 +38,7 @@ _LINE_END = re.compile(r"\r\n|\r|\n")
 class Diag:
     line: int            # 0-based LSP line where the range starts; the range starts at character 0
     end_line: int        # 0-based LSP line where the range ends (== line for one physical line)
-    end: int             # end character (UTF-16 units) of end_line
+    end: int             # end character (negotiated position-encoding units) of end_line
     severity: str        # "error" | "warning" | "information"
     message: str
     source: str
@@ -64,6 +66,69 @@ class Raw:
     span: tuple[int, int] | None = None   # physical (first, last) line in the target file
 
 
+class Analysed:
+    """The parsed program of one entry for the language features. Built from the pickled program
+    a worker returned; the unpickling happens lazily in a thread (`Session.load`). The caches hold
+    objects the core feature modules derive from the program (declared names, binding index...)."""
+
+    def __init__(self, entry: Path, logger: str, overlays: tuple[tuple[str, bytes], ...],
+                 versions: dict[Path, int], blob: bytes):
+        self.entry = entry
+        self.logger = logger
+        self.overlays = overlays
+        self.versions = dict(versions)      # open documents (path -> version) the analysis read
+        self.blob: bytes | None = blob
+        self.result = None                  # analysis.AnalysisResult with the program only
+        self.failed = False
+        self.lock: asyncio.Lock | None = None
+        self._cache: dict[str, object] = {}
+        self._cache_lock = threading.Lock()
+        self.guard = threading.RLock()      # serialises core feature calls on this program
+
+    def build(self):
+        """Runs in a thread. The result has the program and the request; its diagnostics are
+        empty (diagnostics are published from the job result, not from here)."""
+        from .. import analysis
+
+        try:
+            program = pickle.loads(self.blob or b"")
+        except Exception:
+            self.failed = True
+            return None
+        self.blob = None
+        request = analysis.AnalysisRequest(
+            self.entry, self.logger, {Path(p): data for p, data in self.overlays})
+        return analysis.AnalysisResult(
+            analysis.API_VERSION, request, True, None, (), (), (),
+            analysis.Dependencies({}, {}), program)
+
+    def cached(self, key: str, make: Callable[[], object]) -> object:
+        with self._cache_lock:
+            if key not in self._cache:
+                self._cache[key] = make()
+            return self._cache[key]
+
+
+class _LockedHelp:
+    """A `helpdocs.HelpProvider` shared by the request threads (its lazy index is not locked)."""
+
+    def __init__(self, directory: Path):
+        from ..helpdocs import HelpProvider
+
+        self.directory = directory
+        self._provider = HelpProvider(directory)
+        self._lock = threading.Lock()
+        self.warming = False
+
+    def lookup(self, name: str):
+        with self._lock:
+            return self._provider.lookup(name)
+
+    def warm(self) -> None:
+        with self._lock:
+            self._provider.names()
+
+
 @dataclass
 class Entry:
     path: Path
@@ -78,6 +143,8 @@ class Entry:
     contrib: dict[Path, list[Raw]] = field(default_factory=dict)
     versions: dict[Path, int] = field(default_factory=dict)       # open docs at capture
     error: str | None = None
+    analysed: Analysed | None = None            # newest program that was parsed, for features
+    analysed_current: bool = False              # the newest applied analysis produced it
 
 
 @dataclass
@@ -99,8 +166,13 @@ def _key(path: Path) -> str:
     return str(path).lower()
 
 
-def _utf16_len(text: str) -> int:
-    return len(text.encode("utf-16-le")) // 2
+def _units(text: str, encoding: str) -> int:
+    """Length of `text` in the negotiated position encoding's units."""
+    if encoding == "utf-8":
+        return len(text.encode("utf-8", errors="replace"))
+    if encoding == "utf-32":
+        return len(text)
+    return len(text.encode("utf-16-le", errors="surrogatepass")) // 2
 
 
 def _kill(pool: ProcessPoolExecutor) -> None:
@@ -117,6 +189,7 @@ class Session:
         self.publish = publish
         self.config = config or Config()
         self.workers = workers
+        self.position_encoding = "utf-16"          # negotiated by the server adapter
         self.folders: list[Path] = []
         self.docs: dict[Path, Doc] = {}
         self.entries: dict[Path, Entry] = {}
@@ -128,6 +201,11 @@ class Session:
         self._solo: asyncio.Lock | None = None
         self._closed = False
         self._ready = False                       # first configure() has finished
+        self._configured = asyncio.Event()
+        self.on_analysed: Callable[[], None] | None = None    # a new program is available
+        self._event: asyncio.Event | None = None
+        self._help: dict[str, _LockedHelp] = {}
+        self._background: set[asyncio.Task] = set()
 
     # ---- logging -------------------------------------------------------------------------
 
@@ -157,9 +235,11 @@ class Session:
         self.discovered = set(await asyncio.to_thread(
             discover, self.folders, config.entries, config.exclude))
         self._ready = True
+        self._configured.set()
         self._sync_entries(force=old.analysis_key() != config.analysis_key())
         if touched:
             self._publish(touched)
+        self._warm_help()
 
     def _wanted_entries(self) -> set[Path]:
         suffixes = self.config.entry_suffixes()
@@ -174,6 +254,7 @@ class Session:
             if entry.task:
                 entry.task.cancel()
             touched |= set(entry.contrib) | {path}
+            self._notify()
         for path in sorted(wanted):
             entry = self.entries.get(path)
             if entry is None:
@@ -233,10 +314,13 @@ class Session:
         for entry in self._affected(path):
             if entry.settled and shortcut is not None and not entry.error \
                     and entry.reads.get(_key(path)) == shortcut:
-                if doc is None:
-                    entry.versions.pop(path, None)
-                else:
-                    entry.versions[path] = doc.version
+                for versions in (entry.versions,
+                                 entry.analysed.versions if entry.analysed_current else {}):
+                    if doc is None:
+                        versions.pop(path, None)
+                    else:
+                        versions[path] = doc.version
+                self._notify()
                 continue
             self._request(entry, delay)
 
@@ -348,9 +432,11 @@ class Session:
 
     def _apply(self, entry: Entry, snap: Snapshot, outcome: JobResult | ServerError) -> None:
         old_paths = set(entry.contrib)
+        installed = False
         if isinstance(outcome, ServerError):
             entry.error = str(outcome)
             entry.contrib = {}
+            entry.analysed_current = False
         else:
             reads = {_key(Path(p)): h for p, h in outcome.reads}
             stale = any((self.docs[p].version if p in self.docs else None) != snap.versions.get(p)
@@ -363,9 +449,17 @@ class Session:
             entry.reads = reads
             entry.dirs = frozenset(_key(Path(d)) for d in outcome.listings)
             entry.contrib = self._contributions(entry, outcome)
+            entry.analysed_current = outcome.program is not None
+            if entry.analysed_current:
+                entry.analysed = Analysed(entry.path, snap.logger, snap.overlays, snap.versions,
+                                          outcome.program)
+                installed = True
         entry.versions = dict(snap.versions)
         entry.settled = True
         self._publish(old_paths | set(entry.contrib) | {entry.path} | self._open_crb_paths())
+        self._notify()
+        if installed and self.on_analysed is not None:
+            self.on_analysed()
 
     @staticmethod
     def _contributions(entry: Entry, result: JobResult) -> dict[Path, list[Raw]]:
@@ -415,7 +509,7 @@ class Session:
                 last = min(max(span[1] - 1, first), last_idx)
             else:
                 first = last = min(max(line - 1, 0), last_idx) if line > 0 else 0
-            return Diag(first, last, _utf16_len(lines[last]), severity, message, source)
+            return Diag(first, last, _units(lines[last], self.position_encoding), severity, message, source)
 
         contributors = [e for e in self.entries.values()
                         if e.contrib.get(path) and e.versions.get(path) == current]
@@ -458,10 +552,104 @@ class Session:
                 self._last.pop(uri, None)
             self.publish(uri, version, diags)
 
+    # ---- language features ---------------------------------------------------------------
+
+    def _notify(self) -> None:
+        event, self._event = self._event, None
+        if event is not None:
+            event.set()
+
+    async def configured(self, timeout: float = 15.0) -> None:
+        """Returns once the first configuration is applied (bounded: a client that never answers
+        the configuration pull must not hang requests)."""
+        try:
+            await asyncio.wait_for(self._configured.wait(), timeout)
+        except asyncio.TimeoutError:
+            pass
+
+    def blobs(self) -> dict[Path, bytes]:
+        """Bytes of every open document (what the compiler would read), by path."""
+        return {p: d.data for p, d in self.docs.items()}
+
+    def _pick(self, path: Path) -> Analysed | None:
+        """The program features use for `path`: its own entry's, else the first entry (sorted by
+        path) whose last analysis read the file."""
+        if path in self.entries:
+            candidates = [self.entries[path]]
+        else:
+            key = _key(path)
+            candidates = [e for _, e in sorted(self.entries.items()) if e.reads.get(key)]
+        return next((e.analysed for e in candidates if e.analysed is not None), None)
+
+    def _fresh(self, path: Path, ana: Analysed | None) -> bool:
+        doc = self.docs.get(path)
+        return ana is not None and ana.versions.get(path) == (doc.version if doc else None)
+
+    def _pending(self) -> bool:
+        return any(not e.settled or (e.task is not None and not e.task.done())
+                   for e in self.entries.values())
+
+    async def analysed_for(self, path: Path, wait: bool = True) -> Analysed | None:
+        """The program to answer a request about `path`. With `wait`, a program that does not
+        reflect the document's newest version is waited for while an analysis is pending: up to
+        `featureWaitMs` when an older program exists, up to the analysis timeout when none does.
+        After that the older program (possibly stale) or None is returned; never an error."""
+        loop = asyncio.get_running_loop()
+        start = loop.time()
+        while True:
+            ana = self._pick(path)
+            if not wait or self._fresh(path, ana) or not self._pending() or self._closed:
+                return ana
+            limit = (self.config.analysis_timeout_ms / 1000 + 2 if ana is None
+                     else self.config.feature_wait_ms / 1000)
+            left = start + limit - loop.time()
+            if left <= 0:
+                return ana
+            if self._event is None:
+                self._event = asyncio.Event()
+            try:
+                await asyncio.wait_for(self._event.wait(), left)
+            except asyncio.TimeoutError:
+                return self._pick(path)
+
+    async def load(self, ana: Analysed | None):
+        """The `AnalysisResult` (program only) of `ana`, unpickled once in a thread."""
+        if ana is None:
+            return None
+        if ana.result is None and not ana.failed:
+            if ana.lock is None:
+                ana.lock = asyncio.Lock()
+            async with ana.lock:
+                if ana.result is None and not ana.failed:
+                    ana.result = await asyncio.to_thread(ana.build)
+        return ana.result
+
+    def help_provider(self) -> _LockedHelp | None:
+        directory = self.config.help_directory
+        if not directory:
+            return None
+        path = Path(directory).expanduser()
+        if not path.is_absolute():
+            path = (self.folders[0] if self.folders else Path.cwd()) / path
+        key = str(path)
+        if key not in self._help:
+            self._help[key] = _LockedHelp(path)
+        return self._help[key]
+
+    def _warm_help(self) -> None:
+        provider = self.help_provider()
+        if provider is None or provider.warming:
+            return
+        provider.warming = True
+        task = asyncio.get_running_loop().create_task(asyncio.to_thread(provider.warm))
+        self._background.add(task)
+        task.add_done_callback(self._background.discard)
+
     # ---- shutdown ------------------------------------------------------------------------
 
     def close(self) -> None:
         self._closed = True
+        self._notify()
         for entry in self.entries.values():
             entry.removed = True
             if entry.task:

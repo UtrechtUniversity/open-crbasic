@@ -259,6 +259,7 @@ read-only over provenance the loader records; no compiler output changed (`tools
 | `physical_lines(data) -> list[bytes]` | The loader's line split (CRLF and LF). |
 | `lsp_position(data, line, col, *, encoding="utf-16", editor_encoding="utf-8") -> (line0, character)` | Decoded column -> LSP position. |
 | `lsp_range(data, physical_range, ...)` | Both ends of a `PhysicalRange`. |
+| `decoded_position(data, line, character, *, encoding="utf-16", editor_encoding="utf-8") -> (line1, col)` | The inverse of `lsp_position` (LSP-wire): LSP `(line0, character)` -> 1-based line and decoded column. |
 
 Token columns are offsets into `LogicalLine.text`. The parser keeps no token or logical-line
 reference on AST nodes, so a consumer obtains tokens by `lexer.tokenize(ll.text)` on the loader's
@@ -280,6 +281,12 @@ code points. A column past the end of the line is clamped; a line outside the fi
 encoding become U+FFFD (1 UTF-16 unit, 3 UTF-8 bytes), as an editor that reads the file with
 replacement would show them.
 
+`decoded_position` is the inverse: `character` counted in `encoding` units -> the byte offset into
+the line. On a character boundary `decoded_position(d, *lsp_position(d, l, c)) == (l, c)`; a
+`character` inside a character (the middle of a UTF-16 surrogate pair) snaps back to its start; a
+`character` past the line end gives the line length; a negative one gives 0; a line outside the
+file raises `IndexError`. An all-ASCII line short-cuts to `min(character, len)`.
+
 ### Known limits
 
 - Only ASCII-compatible editor encodings are meaningful (the line split is on bytes).
@@ -296,9 +303,10 @@ replacement would show them.
 ## Language server (LSP-01)
 
 `opencrbasic.lsp` is a protocol adapter on pygls 2.1.1 / lsprotocol 2025.0.0. It contains no
-language rules: all CRBasic knowledge comes from `analysis.analyze`. Modules: `server.py` (pygls
-handlers, `main`), `session.py` (documents, entries, scheduling, diagnostics merge; no pygls
-import), `config.py`, `worker.py` (the pool job; imports only the core compiler). The package
+language rules: all CRBasic knowledge comes from `analysis.analyze` and the core feature modules.
+Modules: `server.py` (pygls handlers, `main`), `session.py` (documents, entries, scheduling,
+diagnostics merge, the programs kept for features; no pygls import), `features.py` (core answers ->
+LSP types; imports lsprotocol), `config.py`, `worker.py` (the pool job; imports only the core compiler). The package
 `__init__` imports nothing third-party, so analysis workers never load pygls.
 
 ### Launch
@@ -320,15 +328,30 @@ stderr; stdout carries only protocol frames.
 ### Capabilities
 
 `textDocumentSync` with `openClose`, `change = 1` (Full) and `save`; diagnostics are pushed
-(`textDocument/publishDiagnostics`), there is no pull provider. pygls additionally advertises
-`positionEncoding` utf-16, `workspace.workspaceFolders` (changes are ignored until LSP-06) and an
-empty `executeCommandProvider`; the server implements no command and no other language feature.
+(`textDocument/publishDiagnostics`), there is no pull provider. Language features (LSP-wire, each
+with a stdio transcript test in `tests/lsp/test_features_server.py`):
+
+| Capability | Registration | Core function |
+|---|---|---|
+| `completionProvider` | trigger `.` | `editing.completion_candidates` |
+| `hoverProvider` | | `hover.hover` |
+| `signatureHelpProvider` | triggers `(` and `,` | `hover.call_context`, `hover.signature_help` |
+| `documentSymbolProvider` | hierarchical `DocumentSymbol` | `editing.document_symbols` |
+| `foldingRangeProvider` | | `editing.folding_ranges` |
+| `documentLinkProvider` | no resolve | `editing.include_links` |
+| `definitionProvider`, `referencesProvider`, `documentHighlightProvider` | | `navigation.Navigation` |
+| `semanticTokensProvider` | `full` only; legend = `navigation.TOKEN_TYPES` / `TOKEN_MODIFIERS` | `Navigation.semantic_tokens` |
+
+pygls additionally advertises `workspace.workspaceFolders` (changes are ignored until LSP-06) and
+an empty `executeCommandProvider`; the server implements no command. Nothing else (no rename, code
+action, formatting, inlay hints, range or delta semantic tokens) is advertised.
 
 ### Configuration
 
 Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000). Sources, in order: `initializationOptions`, then, when the client
+`analysisTimeoutMs` (10000), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
+"Language features"; a tuning key that the VS Code extension does not contribute). Sources, in order: `initializationOptions`, then, when the client
 declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
 (after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
 initial one key by key). A client without pull support may send the section in the
@@ -392,8 +415,8 @@ the disk file for every analysis. When replacement happened the document gets on
 - An open `.crb` that no analyzed entry read gets one Information diagnostic at line 0: `No
   configured entry program includes this file; diagnostics come from the entry programs that
   include it.` (only after every entry has completed a first analysis).
-- Known limit: ranges are whole physical lines, not token spans; columns are UTF-16 only for the
-  line end. A file loaded twice (two occurrences) gets the union of its spans, which can cover
+- Known limit: ranges are whole physical lines, not token spans; the only column is the line end,
+  counted in the negotiated position encoding (utf-16 by default). A file loaded twice (two occurrences) gets the union of its spans, which can cover
   more lines than one occurrence.
 
 ### Test hooks
@@ -403,6 +426,69 @@ environment): `OPENCRBASIC_LSP_TEST_CRASH=<substring>` makes the worker call `os
 the entry path contains the substring; `OPENCRBASIC_LSP_TEST_SLEEP=<substring>:<seconds>` sleeps
 that long first (for timeout tests). `tests/lsp/test_server.py` drives the real server over stdio
 with `tests/lsp/lspclient.py`.
+
+### Language features (LSP-wire)
+
+`lsp/features.py` turns the core modules' answers into LSP types (a synchronous adapter that runs in
+a worker thread via `asyncio.to_thread`); `lsp/server.py` registers the handlers; `lsp/session.py`
+supplies the program. No CRBasic rule is in `lsp/`. Handoff with the measurements and the host
+checklist: [LSP-wire-handoff.md](lsp-rounds/LSP-wire-handoff.md).
+
+**Where the program comes from (option b).** The analysis job in the worker pool also returns the
+parsed program pickled (`JobResult.program`, about 0.5 MB for `Main.CR6`, about 30 ms to pickle).
+The session keeps it per entry as `Analysed` together with the open-document versions the analysis
+read (`versions`). The first feature request that needs it unpickles it in a thread (about 25 ms)
+and builds an `AnalysisResult` that holds the program and a request (entry, logger, the snapshot's
+overlays) but no diagnostics. Objects derived from the program (declared names, hover declarations,
+the `Navigation` with its binding index, the include links) are cached on the `Analysed`. There is
+no second analysis. The alternative (a), analysing again in a thread of the server process,
+was measured and not chosen: see the handoff.
+
+**Which program answers a request.** A file that is an entry uses its own program. A `.crb` uses the
+first entry (sorted by path) whose last analysis read it and that has a program. A file no entry
+read gets no program: text-based requests still work, the others answer empty.
+
+**Stale data.** A program is *fresh* for a file when the document version it read equals the
+document's current version. Completion, hover, signature help and folding are text-based: they read
+the current text (and take names from the program, fresh or not) and never wait. The other
+requests (document symbols, links, definition, references, highlights, semantic tokens) read the
+program: when it is not fresh and an analysis is pending they wait, without blocking the event
+loop, until it is, for at most `featureWaitMs` when an older program exists and at most
+`analysisTimeoutMs` + 2 s when none does (the first request after opening a document). After that
+they answer from the last program (positions may be off while the document changed) or empty. A
+request never fails because of stale data; an unexpected exception inside a feature is logged to
+stderr and answered with an empty result. Features wait for the first configuration (bounded,
+15 s) so the help directory and encoding are known. When the client declares
+`workspace.semanticTokens.refreshSupport`, the server sends `workspace/semanticTokens/refresh`
+after every new program, since semantic tokens are otherwise only re-requested on edits.
+
+**Position encoding.** The client's `general.positionEncodings` is negotiated by pygls (first
+client-listed value of `utf-8`, `utf-16`, `utf-32`; `utf-16` when absent). The conversion is at the
+boundary only: incoming LSP positions go through `positions.decoded_position` and outgoing ones
+through `positions.lsp_position`, with the document's bytes in `encoding` (the open document's
+overlay bytes, else the file on disk). The core modules only see decoded (Latin-1) columns. A line
+past the end of the document (a stale request) clamps to its last line.
+
+**Help.** `helpDirectory` (a relative path is resolved against the first workspace folder) is read
+by one `helpdocs.HelpProvider` per resolved directory, shared behind a lock and indexed in a
+background thread when the setting is applied (about 0.5 s for `extracted_chm`, measured). Changing
+it needs no re-analysis.
+
+**Mappings that are the adapter's choice.** Completion items: `sortText` keeps the core order
+(program names first), `textEdit` replaces the identifier prefix, `detail` is the kind plus the
+parameter count; `kind` maps instruction/function/sub/user_function to Function, symbol/constant to
+Constant, keyword to Keyword, variable/alias/parameter to Variable, table to Class, type to Struct,
+field to Field. Outline kinds: sub/function Function, datatable/consttable Class, structuretype
+Struct, member/output Field, const Constant, beginprog Module, scan/subscan/slowsequence Event,
+declarations Variable. A file included twice appears once per occurrence in the outline. Document
+links carry a target only when the compiler resolved the include. Semantic-token lengths are in the
+negotiated unit. Signature-help label offsets are UTF-16 offsets into the label.
+
+Known limits: the outline and links of a file are those of the program that read it, so a `.crb`
+shared by several entries shows the first entry's view; `references` and `definition` of a
+position in a stale document may land on the wrong name until the analysis arrives; folding of a
+file with lone-CR line breaks differs from the editor (as in "Source positions"); a completion at
+an empty prefix returns every catalog name (about a thousand items).
 
 ## Binding index (LSP-05a)
 

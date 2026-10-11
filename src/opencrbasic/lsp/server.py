@@ -1,8 +1,10 @@
-"""pygls adapter: lifecycle, document sync, configuration and diagnostics publishing.
+"""pygls adapter: lifecycle, document sync, configuration, diagnostics and language features.
 
-No language rules: everything about CRBasic comes from `opencrbasic.analysis` through `Session`.
-Capabilities advertised: full text document sync (open/close/change/save) and published
-diagnostics, nothing else.
+No language rules: everything about CRBasic comes from `opencrbasic.analysis` through `Session`
+and from the core feature modules through `features`. Capabilities advertised: full text document
+sync (open/close/change/save), published diagnostics, completion (trigger `.`), hover, signature
+help (triggers `(` `,`), document symbols, folding ranges, document links, definition,
+references, document highlights and full semantic tokens. Each has a stdio transcript test.
 """
 
 from __future__ import annotations
@@ -10,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import subprocess
 import sys
+import traceback
 from pathlib import Path
 from typing import Any
 
@@ -54,6 +57,7 @@ def build_server():
     from pygls.uris import to_fs_path
 
     from .. import __version__
+    from . import features
     from .config import Config, parse_config
     from .session import Diag, Session
 
@@ -113,6 +117,7 @@ def build_server():
     @server.feature(types.INITIALIZE)
     def on_initialize(params: types.InitializeParams) -> None:
         state["init_options"] = params.initialization_options
+        session.position_encoding = position_encoding()
         state["folders"] = folders_of(params)
 
     @server.feature(types.INITIALIZED)
@@ -152,6 +157,117 @@ def build_server():
     def on_shutdown(*_: Any) -> None:
         state["shutdown"] = True
         session.close()
+
+    # ---- language features -------------------------------------------------------------
+
+    def position_encoding() -> str:
+        value = getattr(server.workspace, "position_encoding", None)
+        return str(getattr(value, "value", value) or "utf-16")
+
+    async def make_ctx() -> features.Ctx:
+        await session.configured()
+        return features.Ctx(session.config.logger, position_encoding(), session.config.encoding,
+                            session.blobs(), {p: d.uri for p, d in session.docs.items()},
+                            session.help_provider())
+
+    async def prepared(uri: str, wait: bool):
+        """(path, Analysed or None, AnalysisResult or None) for a request about `uri`."""
+        await session.configured()
+        path = fs_path(uri)
+        ana = await session.analysed_for(path, wait)
+        return path, ana, await session.load(ana)
+
+    def guarded(name: str, empty: Any):
+        """A request never fails: an internal error is logged and answered with `empty`."""
+        def wrap(handler):
+            async def run(params):
+                try:
+                    return await handler(params)
+                except asyncio.CancelledError:
+                    raise
+                except Exception:
+                    session.log(f"{name} failed:\n{traceback.format_exc()}")
+                    return empty() if callable(empty) else empty
+            run.__name__ = handler.__name__
+            return run
+        return wrap
+
+    @server.feature(types.TEXT_DOCUMENT_COMPLETION,
+                    types.CompletionOptions(trigger_characters=["."]))
+    @guarded("completion", lambda: types.CompletionList(False, []))
+    async def on_completion(params: types.CompletionParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=False)
+        return await asyncio.to_thread(features.completion, await make_ctx(), ana, result, path,
+                                       params.position)
+
+    @server.feature(types.TEXT_DOCUMENT_HOVER)
+    @guarded("hover", None)
+    async def on_hover(params: types.HoverParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=False)
+        return await asyncio.to_thread(features.hover, await make_ctx(), ana, result, path,
+                                       params.position)
+
+    @server.feature(types.TEXT_DOCUMENT_SIGNATURE_HELP,
+                    types.SignatureHelpOptions(trigger_characters=["(", ","]))
+    @guarded("signatureHelp", None)
+    async def on_signature_help(params: types.SignatureHelpParams):
+        return await asyncio.to_thread(features.signature_help, await make_ctx(),
+                                       fs_path(params.text_document.uri), params.position)
+
+    @server.feature(types.TEXT_DOCUMENT_DOCUMENT_SYMBOL)
+    @guarded("documentSymbol", list)
+    async def on_document_symbol(params: types.DocumentSymbolParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.document_symbols, await make_ctx(), ana, result, path)
+
+    @server.feature(types.TEXT_DOCUMENT_FOLDING_RANGE)
+    @guarded("foldingRange", list)
+    async def on_folding_range(params: types.FoldingRangeParams):
+        return await asyncio.to_thread(features.folding_ranges, await make_ctx(),
+                                       fs_path(params.text_document.uri))
+
+    @server.feature(types.TEXT_DOCUMENT_DOCUMENT_LINK)
+    @guarded("documentLink", list)
+    async def on_document_link(params: types.DocumentLinkParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.document_links, await make_ctx(), ana, result, path)
+
+    @server.feature(types.TEXT_DOCUMENT_DEFINITION)
+    @guarded("definition", list)
+    async def on_definition(params: types.DefinitionParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.definition, await make_ctx(), ana, result, path,
+                                       params.position)
+
+    @server.feature(types.TEXT_DOCUMENT_REFERENCES)
+    @guarded("references", list)
+    async def on_references(params: types.ReferenceParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.references, await make_ctx(), ana, result, path,
+                                       params.position, params.context.include_declaration)
+
+    @server.feature(types.TEXT_DOCUMENT_DOCUMENT_HIGHLIGHT)
+    @guarded("documentHighlight", list)
+    async def on_document_highlight(params: types.DocumentHighlightParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.document_highlights, await make_ctx(), ana, result,
+                                       path, params.position)
+
+    @server.feature(types.TEXT_DOCUMENT_SEMANTIC_TOKENS_FULL, features.LEGEND)
+    @guarded("semanticTokens", lambda: types.SemanticTokens(data=[]))
+    async def on_semantic_tokens(params: types.SemanticTokensParams):
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        return await asyncio.to_thread(features.semantic_tokens, await make_ctx(), ana, result, path)
+
+    def refresh_semantic_tokens() -> None:
+        """New programs change the tokens of unchanged documents: ask the client to re-request."""
+        workspace = server.client_capabilities.workspace
+        support = workspace and workspace.semantic_tokens
+        if support and support.refresh_support and not state.get("shutdown"):
+            pending = server.workspace_semantic_tokens_refresh(None)
+            pending.add_done_callback(lambda f: f.cancelled() or f.exception())   # answer unused
+
+    session.on_analysed = refresh_semantic_tokens
 
     server.session = session  # type: ignore[attr-defined]
     server.state = state  # type: ignore[attr-defined]

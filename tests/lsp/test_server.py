@@ -90,9 +90,13 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
     caps = result["capabilities"]
     assert caps["textDocumentSync"]["change"] == 1 and caps["textDocumentSync"]["openClose"]
     # pygls adds an empty executeCommandProvider and workspace-folder support unconditionally;
-    # no language feature is advertised.
-    assert set(caps) <= {"textDocumentSync", "positionEncoding", "executeCommandProvider",
-                         "workspace"}, caps
+    # the language features are the ones tests/lsp/test_features_server.py exercises.
+    assert set(caps) == {"textDocumentSync", "positionEncoding", "executeCommandProvider",
+                         "workspace", "completionProvider", "hoverProvider",
+                         "signatureHelpProvider", "documentSymbolProvider",
+                         "foldingRangeProvider", "documentLinkProvider", "definitionProvider",
+                         "referencesProvider", "documentHighlightProvider",
+                         "semanticTokensProvider"}, caps
     assert caps["executeCommandProvider"]["commands"] == []
     assert result["serverInfo"]["name"] == "opencrbasic"
     assert client.shutdown() == 0

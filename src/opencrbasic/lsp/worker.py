@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import pickle
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -21,6 +22,16 @@ class JobResult:
     failures: tuple[str, ...]
     reads: tuple[tuple[str, str | None], ...]      # path -> sha256 or None (missing)
     listings: tuple[str, ...]                      # directories whose listing was read
+    program: bytes | None = None                   # pickled parsed program (None: none or unpicklable)
+
+
+def _pickle_program(program: object) -> bytes | None:
+    if program is None:
+        return None
+    try:
+        return pickle.dumps(program, protocol=pickle.HIGHEST_PROTOCOL)
+    except Exception:           # RecursionError, an unpicklable node: features fall back to text
+        return None
 
 
 def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...]) -> JobResult:
@@ -44,4 +55,5 @@ def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...
               for d in result.diagnostics),
         tuple(result.implementation_failures),
         tuple((str(p), h) for p, h in result.dependencies.reads.items()),
-        tuple(str(p) for p in result.dependencies.listings))
+        tuple(str(p) for p in result.dependencies.listings),
+        _pickle_program(result.program))

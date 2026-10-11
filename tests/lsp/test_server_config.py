@@ -24,6 +24,16 @@ def test_valid_and_invalid_values():
     assert ".cr300" not in Config().entry_suffixes()
 
 
+def test_help_directory_and_feature_wait():
+    cfg, warnings = parse_config({"helpDirectory": " ../extracted_chm ", "featureWaitMs": 250})
+    assert cfg.help_directory == "../extracted_chm" and cfg.feature_wait_ms == 250 and warnings == []
+    assert (Config().help_directory, Config().feature_wait_ms) == ("", 1500)
+    cleared, warnings = parse_config({"helpDirectory": None}, cfg)
+    assert cleared.help_directory == "" and warnings == []
+    kept, warnings = parse_config({"helpDirectory": 3, "featureWaitMs": -1}, cfg)
+    assert kept == cfg and len(warnings) == 2
+
+
 def test_glob_semantics(tmp_path):
     assert glob_regex("**/*.CR6").fullmatch("a/b/Main.cr6")      # case-insensitive
     assert glob_regex("**/*.CR6").fullmatch("Main.CR6")

@@ -23,7 +23,7 @@ from .source import LineSpan, LogicalLine, Occurrence, Piece, _split_physical_li
 
 __all__ = ["LineSpan", "Occurrence", "Piece", "PhysicalRange", "reported_spans", "line_span",
            "logical_ranges", "exact_range", "physical_lines", "lsp_position", "lsp_range",
-           "POSITION_ENCODINGS"]
+           "decoded_position", "POSITION_ENCODINGS"]
 
 POSITION_ENCODINGS = ("utf-16", "utf-8", "utf-32")
 
@@ -131,3 +131,48 @@ def lsp_range(data: bytes | Sequence[bytes], r: PhysicalRange, *, encoding: str 
     lines = physical_lines(data) if isinstance(data, (bytes, bytearray)) else data
     return (lsp_position(lines, r.line, r.start_col, encoding=encoding, editor_encoding=editor_encoding),
             lsp_position(lines, r.line, r.end_col, encoding=encoding, editor_encoding=editor_encoding))
+
+
+def _units(text: str, encoding: str) -> int:
+    if encoding == "utf-16":
+        return len(text.encode("utf-16-le")) // 2
+    if encoding == "utf-8":
+        return len(text.encode("utf-8", errors="replace"))
+    return len(text)
+
+
+def decoded_position(data: bytes | Sequence[bytes], line: int, character: int, *,
+                     encoding: str = "utf-16", editor_encoding: str = "utf-8") -> tuple[int, int]:
+    """The inverse of `lsp_position`: LSP `(line, character)` (0-based line, `character` counted
+    in `encoding` units) -> `(line, col)` with `line` 1-based and `col` the decoded (Latin-1)
+    column, i.e. the byte offset into that physical line.
+
+    `character` on a character boundary gives the offset of that boundary, so
+    `decoded_position(data, *lsp_position(data, l, c)) == (l, c)` for every `c` on a boundary.
+    A `character` inside a character (the middle of a UTF-16 surrogate pair) snaps back to that
+    character's start, as `lsp_position` snaps a column; one past the line end is clamped to the
+    line length. A line outside the file raises `IndexError`; an unknown encoding `ValueError`."""
+    if encoding not in POSITION_ENCODINGS:
+        raise ValueError(f"unsupported position encoding {encoding!r}")
+    lines = physical_lines(data) if isinstance(data, (bytes, bytearray)) else data
+    if not 0 <= line < len(lines):
+        raise IndexError(f"line {line} outside 0..{len(lines) - 1}")
+    raw = lines[line]
+    target = max(character, 0)
+    if raw.isascii():
+        return line + 1, min(target, len(raw))
+    if target == 0:
+        return line + 1, 0
+    decoder = codecs.getincrementaldecoder(editor_encoding)(errors="replace")
+    units = start = 0
+    for col in range(len(raw)):
+        step = _units(decoder.decode(raw[col:col + 1], final=False), encoding)
+        if not step:
+            continue                       # an incomplete multi-byte sequence so far
+        if units + step > target:
+            return line + 1, start         # inside a character: snap back to its start
+        units += step
+        start = col + 1
+        if units == target:
+            return line + 1, start
+    return line + 1, len(raw)

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import signal
 import subprocess
 import sys
 import threading
@@ -23,7 +24,8 @@ class LspClient:
         child_env.update(env or {})
         self.proc = subprocess.Popen([sys.executable, "-m", "opencrbasic.lsp"],
                                      stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                     stderr=subprocess.PIPE, env=child_env)
+                                     stderr=subprocess.PIPE, env=child_env,
+                                     start_new_session=True)
         self.settings = settings            # answer to workspace/configuration (None: null)
         self.pull_configuration = pull_configuration
         self.messages: list[dict] = []      # every message the server sent, in order
@@ -100,8 +102,14 @@ class LspClient:
     def notify(self, method: str, params: Any = None) -> None:
         self._send({"jsonrpc": "2.0", "method": method, "params": params})
 
-    def initialize(self, folder: Path | None, options: dict | None = None) -> dict:
+    def initialize(self, folder: Path | None, options: dict | None = None,
+                   position_encodings: list[str] | None = None,
+                   semantic_refresh: bool = False) -> dict:
         caps: dict = {"workspace": {"configuration": self.pull_configuration}}
+        if position_encodings is not None:
+            caps["general"] = {"positionEncodings": position_encodings}
+        if semantic_refresh:
+            caps["workspace"]["semanticTokens"] = {"refreshSupport": True}
         params = {"processId": os.getpid(), "rootUri": folder.as_uri() if folder else None,
                   "capabilities": caps, "initializationOptions": options,
                   "workspaceFolders": [{"uri": folder.as_uri(), "name": folder.name}]
@@ -128,15 +136,34 @@ class LspClient:
     def close(self, path: Path) -> None:
         self.notify("textDocument/didClose", {"textDocument": {"uri": path.as_uri()}})
 
+    # ---- language features (text document requests) ----
+
+    def at(self, method: str, path: Path, line: int, character: int, timeout: float = 60,
+           **extra: Any) -> Any:
+        return self.request(method, {"textDocument": {"uri": path.as_uri()},
+                                     "position": {"line": line, "character": character},
+                                     **extra}, timeout)
+
+    def on_file(self, method: str, path: Path, timeout: float = 60) -> Any:
+        return self.request(method, {"textDocument": {"uri": path.as_uri()}}, timeout)
+
+    def server_requests(self, method: str) -> list[dict]:
+        with self._cond:
+            return [m for m in self.messages if m.get("method") == method and "id" in m]
+
     def shutdown(self, timeout: float = 30) -> int:
         self.request("shutdown")
         self.notify("exit")
         return self.proc.wait(timeout)
 
     def kill(self) -> None:
+        try:
+            os.killpg(self.proc.pid, signal.SIGKILL)   # the server's own session: its pool workers too
+        except (ProcessLookupError, PermissionError):
+            pass
         if self.proc.poll() is None:
             self.proc.kill()
-            self.proc.wait()
+        self.proc.wait()
 
     # ---- observation ----
 
