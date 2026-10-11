@@ -482,3 +482,75 @@ corpus rate in the handoff).
   routine; use-before-declare for variables. Each needs a focused oracle probe.
 - A checker could later take its declared-name and scoped-view helpers from this index, only after
   a differential gate (`tools/selfdiff.py` plus the fixtures above) shows equal behaviour.
+
+## Hover and signature help (LSP-04b-core)
+
+`opencrbasic.hover` is the protocol-independent logic behind hover and signature help (pure
+functions and frozen dataclasses; no pygls). Positions in and out are physical: 0-based line and
+decoded-character column, as in "Source positions"; the server converts encodings. Brief:
+`docs/lsp-rounds/LSP-04.md`; handoff: `docs/lsp-rounds/LSP-04b-core-handoff.md`.
+
+```python
+call_context(text, line, column) -> CallContext(name, active, line, column) | None
+signature_help(name, active, profile, help_provider=None) -> SignatureInfo | None
+hover(result, text, line, column, profile, help_provider=None, declared=None) -> Hover | None
+declarations(program) -> {UPPER_NAME: [Declaration, ...]}
+```
+
+`profile` is a profile name or a `Profile`. `help_provider` is any object with `lookup(name)`
+(`helpdocs.HelpProvider`); None means no help directory is configured.
+
+- **`call_context`**: the innermost call around the position and the 0-based index of the argument
+  the position is in. The statement is the physical line joined with its `_` continuations
+  (a comment ends a line, so a `_` inside one continues nothing). Strings (`""` escape) and `'`
+  comments are skipped; only top-level commas of the call count; grouping parentheses and `{}`
+  array literals are transparent (`A((1,2), 3)` is still A, argument 0). Incomplete text answers:
+  no `)`, a trailing comma, an unterminated string (a string ends at its line). A position in a
+  comment, outside any call, past the text, or with a negative column gives None; a column past the
+  end of the line clamps. The name is as written and may be dotted (`Status.Battery`) or end in
+  `$`. `If`, `While`, `And`, `Then` and the other grammar words that may precede `(` are not
+  calls. `line`/`column` locate the start of the name (a call can span several physical lines).
+  A paren-less statement call (`Foo a, b`) is not recognised.
+- **`signature_help`**: instruction (preferred) or builtin function, spelled as the profile
+  spells it. Parameters pair with help through `helpdocs.pair_signature`: help names and text when
+  the help count equals the catalog count, otherwise `arg1..argN` for the catalog count with
+  `documentation` empty per parameter; the signature `documentation` then still carries the help
+  summary and syntax line and a sentence saying the names are not applied. Nothing is paired by
+  guess. Instruction parameters carry the catalog `type_code`, its `type_codes.json` `kind` (the
+  names of `docs/type-codes.md`, none invented) and `optional` (code >= 100, or the help syntax
+  says `optional`). Functions take the count from the table's `nargs` (a trailing argument may be
+  optional; `checker/expressions.py`) and have no type kind (`argtypes` is not decoded). A function
+  with no `nargs` and no help parameters (operators such as `And`, `Not`, `To`), a constant, a
+  keyword-only word, a dotted name or an unknown name gives None. `active_parameter` is clamped to
+  `[0, count - 1]` (None for no parameters). `label_span` of each parameter indexes into `label`
+  (the LSP `ParameterInformation.label` offset form). Descriptions are Markdown-escaped and one
+  line.
+- **`hover`**: the identifier at the position (or ending at it) when it is code: not in a comment
+  or string, not a number or `&H`/`&B` literal, not a member after `.`. Declared names win, then
+  the catalog:
+  - declared (from `declarations(result.program)`, or the `declared` argument that LSP-05a
+    bindings can supply): `Public`/`Dim`/`Static` (type as written, upper case; "none written
+    (Float)" when there is no `As`), dimensions, string size, `Units` label (from `Units` statements),
+    `Const` (value resolved by the parser when it could be folded), `Sub`/`Function` with parameters,
+    `DataTable`/`ConstTable` names and `Alias` names; each with the declaring file (compiler
+    display name) and the first physical line of the statement (`positions.line_span`; the reported
+    line when unknown). A name declared several times (locals of different Subs) lists up to five
+    and says scope is not resolved, because `hover` does not know which file or Sub the position is
+    in; `Declaration.scope` names the enclosing Sub/Function.
+  - instruction or function: title (help title when help exists), signature, summary, one bullet
+    per parameter with `type_codes.json` kind and optional marker plus the help description, the
+    mismatch sentence when help and catalog counts differ, and a provenance line naming the help
+    page (for example `Source: help page Instructions/voltse.htm`) or "No help directory configured." /
+    "No help page for this name." A name that is also a predefined constant gets an "Also a
+    predefined constant" line.
+  - predefined constant: `NAME = value` from the symbol table. Keyword-only words (`Then`, `Step`,
+    `As`, `Optional`): one line. Operators without an argument count: the table row.
+  The result carries the word's line and columns for the hover range.
+- `declarations` reads only the statements the parser kept (not an inactive `#If` branch) and takes
+  `Units` from separate `Units` statements (`VarDecl.units` is not filled by the parser). Parameters
+  of Subs and fields of tables are not declarations here. The AST is from the last analysis; names
+  from a stale AST are shown as they were.
+
+Not covered, and not observed: rendering in an editor, UTF-16 conversion (the server's job), the
+effect of a stale analysis while typing. Help text is Campbell Scientific documentation shown
+verbatim-reduced (internal use, `docs/legal.md`); help names never change checker rules.
