@@ -160,3 +160,12 @@ pulling the standalone editing/help-rule additions, full host pytest passes **22
 311 skipped**; the real-exe repository verifier passes with its exact BUILD line in the record.
 The server and client files are unchanged from the VS Code test revision; no additional VS Code
 capability or finding fix is inferred. H-01 through H-04 above remain open for the coordinator.
+
+### T-01 amendment (2026-10-11, appended): LSP-05b-core parser attribute
+
+`3769504` adds `stmt.origin` (logical line and segment offset) to every parsed statement in
+`parser.py` (additive, positions only). Rerun the T-01 gates on a revision at or after `b096f0f`;
+accept when difftest/replay/tdftest counts and the real-exe `verify.py` BUILD line are unchanged
+from the `8b25214a` host record. Cloud gates at `3769504`: selfdiff 0 differ, full pytest 21,869
+passed / 507 skipped, native verify pass.
+
