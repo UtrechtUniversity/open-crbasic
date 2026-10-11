@@ -501,3 +501,12 @@ On a revision at or after this entry (see ledger; the API-level probe of item 1 
 appear within `featureWaitMs` (default 1500 ms) of the completion request, also before the first
 diagnostics; if the first analysis takes longer, the popup is empty and the next typed letter asks
 again (`isIncomplete: true`). A valid file shows no visible marker for "first analysis done".
+
+### Results recorded for T-15, T-16, T-17 and the H-08/H-10 re-checks (host record `e18cdf52`), appended 2026-10-12
+
+[host-tests/2026-10-11-e18cdf52/RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md):
+T-15, the macOS items of T-16, T-17 items 1 and 2, and the T-09 references and H-10 re-checks pass.
+T-12 step 5 (and its amendment): accept "one undo restores every text"; the open/clean/dirty state
+of the files the rename opened is VS Code's and varied between host runs (clean at `ccba3666`,
+dirty at `e18cdf52`), so it is not an acceptance criterion. Still open: T-16 item 8 (Windows),
+the Windows/Linux matrix, and the GUI empty-list/next-keystroke fallback of T-17 item 1 (API test only).

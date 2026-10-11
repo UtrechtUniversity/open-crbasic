@@ -457,7 +457,7 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
 | Builtin argument counts (signature help) | 130 real-compiler cases; audit 0 differing | `e77ee5cc` (T-08 at `4d88a186`) |
 | Watched files, workspace folders, `maxFileBytes` warning (T-10) | Pass at API level at `679f2f70`; folder deletion failed at `7d6db3b1` (H-07) and passes at `679f2f70`. Explorer clicks not seen. Queue and cache bounds: stdio and unit tests only | `7d6db3b1`, `679f2f70` |
 | Completion cap (200) and `isIncomplete` | 200 items with `isIncomplete=true`; `Vo` gives 14 items including `VoltSe` (provider level; list refresh not seen) | `7d6db3b1`, `679f2f70` |
-| Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; files the rename opened are then open and clean, not dirty (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70` |
+| Rename, formatting, quick fixes and their refusals (T-12) | Pass at API level (cross-file rename, refusals, formatting, format-on-save, quick fix); F2 box, refusal text and Ctrl+. menu not seen. One `undo` restores all texts; whether the files the rename opened are then open, clean or dirty varies (VS Code behaviour; section 9) | `7d6db3b1`, `679f2f70`, `ccba3666`, `e18cdf52` |
 | Unmatched `.CR300` information note (H-06) and rename of an unsaved library collision (R2a), Latin-1 positions (R2b) | Pass at provider level | `679f2f70` |
 | Install check (LSP-08c, T-11) | macOS 15 of 15 at `7d6db3b1` and `679f2f70`; cloud Linux 15 of 15 ([LSP-08c-install-cloud.md](lsp-rounds/LSP-08c-install-cloud.md)); Windows **untested** | `7d6db3b1`, `679f2f70` |
 | Packaged `.vsix` (LSP-08f, T-14); inlay hints and output commands (LSP-09c, T-15) | **Untested** in an editor (requests written, no record yet) | - |
@@ -473,11 +473,12 @@ after `679f2f70` (LSP-08f, LSP-09, LSP-R3) are untested in an editor.
   Remaining rename limit: a file that did not exist at analysis time and appears later is not
   detected ([LSP-R2a handoff](lsp-rounds/LSP-R2a-handoff.md)). The unsaved-library collision and the
   Latin-1 position checks passed at provider level at `679f2f70`.
-- **Undo after a multi-file rename**: one Ctrl+Z restores all texts. Files the rename opened are
-  then open and clean, not dirty (observed at `ccba3666`: entries that were closed were written by
-  the rename and stayed closed until inspected; after one undo they were open and clean). At
-  `7d6db3b1` the file the rename opened was closed again. Either way this is VS Code's behaviour,
-  not the server's.
+- **Undo after a multi-file rename**: one Ctrl+Z restores all texts (observed in every host run).
+  The open and dirty state of the files the rename opened is VS Code's, not the server's, and it
+  differed between runs: at `7d6db3b1` the file was closed again; at `ccba3666` the closed entries
+  were written by the rename and, after inspection and one undo, open and clean; at `e18cdf52`,
+  with the renamed `A` saved before the undo from `A`, `B` and `Lib` stayed open and dirty. Check
+  and save those files after an undo.
 - Completion stops at 200 items and reports the list as incomplete (section 5.4).
 - Ranges are whole lines. There are no token or column ranges for diagnostics or hover.
 - Results during an edit can be stale (section 5.8). A timeout restarts the worker pool; the entry

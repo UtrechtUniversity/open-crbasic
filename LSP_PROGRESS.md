@@ -136,12 +136,23 @@ Open:
   - H-08: Peek References from entry A on a symbol declared in a library shared with B lists A and
     Lib but not B (the references counterpart of review A1, which LSP-R3a fixed for rename only)
     -> LSP-R4a.
-  - H-09: after a multi-file rename and one undo, files the rename opened are open and clean, not
-    dirty as the LSP-07 handoff said (VS Code behaviour; documentation only) -> LSP-R4a docs.
+  - H-09: after a multi-file rename and one undo, the open/dirty state of files the rename opened is
+    VS Code's and varies between runs (clean at `ccba3666`; open and dirty at `e18cdf52` after
+    saving A before the undo); all texts are restored in every run. Documentation only; the guide
+    no longer states one outcome.
   - H-10: the refusal for a click in a comment reads "no given analysis depends on the file";
     give it a message that names the comment -> LSP-R4a.
   - First `npm ci` on the host gave tar ENOENT warnings and a missing `tsc`; a repeat was clean
     (cause not established; not an LSP defect).
+- Host record `e18cdf52` (macOS, installed VSIX; R4b probes and gates on `e1769132`):
+  [RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md). Pass: T-15 (hints and
+  both commands), T-16 macOS items (cross-entry rename and collision, dimension parameter, include
+  size limit, `Units` formatting, nested signature, close after Python change, integer settings),
+  H-08 and H-10 re-checks, T-17 cold completion (6/6 within 500 ms on R4b; 0 items before),
+  T-17 latency (after-debounce p95 149 ms; GUI squiggle upper bounds 984-1249 ms). Full suite
+  22471 passed; npm 30; vsix_check 11/11; pyrefly 0; verify.py the 3 known freshness failures.
+  Not run there: selfdiff (the baseline is local to the cloud container), Windows F5,
+  Linux/Windows GUI, the empty-list/next-keystroke fallback in the GUI.
 - Windows/Linux.
 
 ## Resume here
