@@ -1436,7 +1436,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
             cinfo = profile.instructions.get(call.group(1).upper()) if call else None
             if cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
-                    1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION") and \
+                    1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION", "IF", "ELSEIF",
+                                      "WHILE", "UNTIL", "SELECT", "CASE", "FOR", "DO", "LOOP") and \
                     (carg := _split_top_commas(call.group(2))[0].rstrip()) and re.search(
                         r"[\w\"]\s+[\w\"]", re.sub(r'"[^"]*"', '"', carg)) and not re.search(
                             r"(?i)\b(?:and|or|xor|eqv|imp|mod|is|to|not)\b", carg):

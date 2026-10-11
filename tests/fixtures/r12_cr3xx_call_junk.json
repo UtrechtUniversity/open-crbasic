@@ -61,6 +61,20 @@
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Incomplete expression: foo \"a\".\nline 4: Variable illegal in Parameter: foo \"a\"."
   },
   {
+   "id": "cr300-r12_cr3xx_call_junk-7",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nIf (x Then x = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x ."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_junk-8",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nIf (x Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x ."
+  },
+  {
    "id": "cr350-r12_cr3xx_call_junk-0",
    "logger": "cr350",
    "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nDelay(foo bar, 2)\nNextScan\nEndProg\n",
@@ -108,6 +122,20 @@
    "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nDelay(foo \"a\", 2)\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: Incomplete expression: foo \"a\".\nline 4: Variable illegal in Parameter: foo \"a\"."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_junk-7",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nIf (x Then x = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x ."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_junk-8",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nIf (x Then\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (x ."
   }
  ]
 }
