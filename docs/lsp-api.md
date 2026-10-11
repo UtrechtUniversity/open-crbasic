@@ -356,8 +356,10 @@ range or delta semantic tokens, no other code-action kinds, no on-type formattin
 
 Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000), `maxFileBytes`, `maxQueuedJobs`, `maxCacheMb` ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
-"Language features"; a tuning key that the VS Code extension does not contribute). Sources, in order: `initializationOptions`, then, when the client
+`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
+"Language features"). The VS Code extension contributes every key except `featureWaitMs`, with the
+same defaults (`vscode/package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
+`featureWaitMs` is internal and set only by a client that sends it. Sources, in order: `initializationOptions`, then, when the client
 declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
 (after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
 initial one key by key). A client without pull support may send the section in the
@@ -393,7 +395,7 @@ extension `.CR6` (case-insensitive; additionally the extension of the configured
   discovery and clears diagnostics of entries that drop out (unless open).
 - **Bounds** (reported as `opencrbasic (server)` warnings at line 0 of the entry, plus a
   `window/logMessage` Warning once per cause; never CRBasic errors; compiler semantics unchanged;
-  keys are tuning keys the VS Code extension does not contribute):
+  keys are tuning keys; the VS Code extension contributes them, see Configuration):
 
   | Key | Default | Meaning |
   |---|---|---|

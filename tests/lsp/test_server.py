@@ -14,6 +14,7 @@ import pytest
 
 from opencrbasic import profiles
 from opencrbasic.analysis import AnalysisRequest, analyze
+from opencrbasic.lsp import config as lsp_config
 
 from .lspclient import SRC, LspClient
 
@@ -131,6 +132,39 @@ def test_vscode_language_covers_logger_extensions():
     assert lowered - logger_exts == {".crb"}       # the only non-logger extension
     for ext in logger_exts:
         assert ext.upper() in declared, ext        # both spellings, as .CR6 / .cr6 are declared
+
+
+# Every key `lsp/config.parse_config` accepts, with its Config attribute. featureWaitMs is internal:
+# docs/lsp-api.md ("Configuration") says the extension does not contribute it.
+SERVER_KEY_ATTRS = {
+    "entries": "entries", "exclude": "exclude", "logger": "logger", "encoding": "encoding",
+    "debounceMs": "debounce_ms", "analysisTimeoutMs": "analysis_timeout_ms",
+    "featureWaitMs": "feature_wait_ms", "maxFileBytes": "max_file_bytes",
+    "maxQueuedJobs": "max_queued_jobs", "maxCacheMb": "max_cache_mb",
+    "helpDirectory": "help_directory",
+}
+INTERNAL_SERVER_KEYS = {"featureWaitMs"}
+
+
+def test_vscode_contributes_server_tuning_keys():
+    manifest = json.loads((ROOT / "vscode" / "package.json").read_text(encoding="utf-8"))
+    props = manifest["contributes"]["configuration"]["properties"]
+    contributed = {name.removeprefix("opencrbasic."): prop for name, prop in props.items()
+                   if name.startswith("opencrbasic.")}
+    server_keys = set(SERVER_KEY_ATTRS) - INTERNAL_SERVER_KEYS
+    client_only = {"pythonPath", "serverArgs", "serverEnv", "trace.server"}
+    assert set(contributed) == server_keys | client_only
+    defaults = lsp_config.Config()
+    for key in server_keys:
+        prop = contributed[key]
+        default = getattr(defaults, SERVER_KEY_ATTRS[key])
+        expected = list(default) if isinstance(default, tuple) else default
+        assert prop["default"] == expected, key
+        _, warnings = lsp_config.parse_config({key: prop["default"]})
+        assert warnings == [], key               # the contributed default is a value the server accepts
+    for key in ("maxFileBytes", "maxQueuedJobs", "maxCacheMb"):
+        assert contributed[key]["type"] == "number" and contributed[key]["minimum"] == 1, key
+    assert "featureWaitMs" not in contributed
 
 
 def test_exit_without_shutdown_is_nonzero(make_client, tmp_path):
