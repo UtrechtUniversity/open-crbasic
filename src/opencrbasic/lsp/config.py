@@ -25,6 +25,7 @@ class Config:
     max_file_bytes: int = 2 * 1024 * 1024   # larger files are not analysed (docs/lsp-api.md "Bounds")
     max_queued_jobs: int = 64           # entries with an analysis task at once; the rest wait
     max_cache_mb: int = 256             # parsed programs kept for the language features
+    inlay_parameter_names: bool = True  # `inlayHints.parameterNames`
 
     def analysis_key(self) -> tuple[str, str, int]:
         """What changes every entry's analysis input or outcome."""
@@ -91,6 +92,17 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
                 warnings.append(f"ignoring {key!r}: expected an integer >= {minimum}")
             else:
                 changes[attr] = value
+    nested = options.get("inlayHints")
+    flat = "inlayHints.parameterNames"
+    if isinstance(nested, Mapping) and "parameterNames" in nested:
+        present, value = True, nested["parameterNames"]
+    else:
+        present, value = flat in options, options.get(flat)
+    if present:
+        if isinstance(value, bool):
+            changes["inlay_parameter_names"] = value
+        else:
+            warnings.append("ignoring 'inlayHints.parameterNames': expected a boolean")
     if "helpDirectory" in options:
         value = options["helpDirectory"]
         if value is None or isinstance(value, str):

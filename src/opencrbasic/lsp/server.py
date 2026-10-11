@@ -5,7 +5,8 @@ and from the core feature modules through `features`. Capabilities advertised: f
 sync (open/close/change/save), published diagnostics, completion (trigger `.`), hover, signature
 help (triggers `(` `,`), document symbols, folding ranges, document links, definition,
 references, document highlights, full semantic tokens, prepareRename/rename, document and range
-formatting and quick-fix code actions. Each has a stdio transcript test.
+formatting, quick-fix code actions, parameter-name inlay hints and the commands
+`opencrbasic.showCompilerOutput` and `opencrbasic.showTableFields`. Each has a stdio transcript test.
 """
 
 from __future__ import annotations
@@ -25,6 +26,8 @@ SECTION = "opencrbasic"
 WATCH_ID = "opencrbasic-watch"
 DELETE_PATTERN = "**/*"         # VS Code reports a deleted folder only as its own URI
 CONFIG_PULL_TIMEOUT = 10.0
+COMMAND_COMPILER_OUTPUT = "opencrbasic.showCompilerOutput"
+COMMAND_TABLE_FIELDS = "opencrbasic.showTableFields"
 
 
 def _git_revision(src_dir: Path) -> str | None:
@@ -64,7 +67,7 @@ def build_server():
     from pygls.uris import to_fs_path
 
     from .. import __version__
-    from .. import formatting
+    from .. import commands, formatting
     from ..sources import DiskSource, OverlaySource
     from . import features
     from .config import Config, parse_config, watch_pattern
@@ -132,7 +135,10 @@ def build_server():
         cfg, more = parse_config(settings, cfg)
         for warning in warnings + more:
             session.log(warning)
+        before = (base.inlay_parameter_names, base.help_directory)
         await session.configure(cfg, state.get("folders") if first else None)
+        if not first and before != (cfg.inlay_parameter_names, cfg.help_directory):
+            refresh_inlay_hints()
 
     @server.feature(types.INITIALIZE)
     def on_initialize(params: types.InitializeParams) -> None:
@@ -471,15 +477,83 @@ def build_server():
             locked, entries, features.code_actions, ctx, sources, path,
             list(params.context.diagnostics), doc.version if doc else None, session.display)
 
+    def refresh(supported, send) -> None:
+        if supported and not state.get("shutdown"):
+            pending = send(None)
+            pending.add_done_callback(lambda f: f.cancelled() or f.exception())   # answer unused
+
     def refresh_semantic_tokens() -> None:
         """New programs change the tokens of unchanged documents: ask the client to re-request."""
         workspace = server.client_capabilities.workspace
         support = workspace.semantic_tokens if workspace else None
-        if support and support.refresh_support and not state.get("shutdown"):
-            pending = server.workspace_semantic_tokens_refresh(None)
-            pending.add_done_callback(lambda f: f.cancelled() or f.exception())   # answer unused
+        refresh(support and support.refresh_support, server.workspace_semantic_tokens_refresh)
 
-    session.on_analysed = refresh_semantic_tokens
+    def refresh_inlay_hints() -> None:
+        workspace = server.client_capabilities.workspace
+        support = workspace.inlay_hint if workspace else None
+        refresh(support and support.refresh_support, server.workspace_inlay_hint_refresh)
+
+    def on_new_program() -> None:
+        refresh_semantic_tokens()
+        refresh_inlay_hints()
+
+    session.on_analysed = on_new_program
+
+    # ---- inlay hints and commands (LSP-09c) ----------------------------------------------
+
+    @server.feature(types.TEXT_DOCUMENT_INLAY_HINT)
+    @guarded("inlayHint", list)
+    async def on_inlay_hint(params: types.InlayHintParams):
+        await session.configured()
+        if not session.config.inlay_parameter_names:
+            return []
+        path, ana, result = await prepared(params.text_document.uri, wait=True)
+        if result is None or not session.fresh(path, ana):    # a stale program has stale lines
+            return []
+        ctx = await make_ctx()
+        first, last = ctx.decoded(path, params.range.start), ctx.decoded(path, params.range.end)
+        if first is None or last is None:
+            return []
+        end = last[0] - 1 if params.range.end.character == 0 and last[0] > first[0] else last[0]
+        return await asyncio.to_thread(features.inlay_hints, ctx, ana, result, path, first[0], end)
+
+    async def command_entry(args: tuple, what: str):
+        """(document path, entry) for a command argument: the document URI. A `.crb` takes the
+        first sorted entry that reads it, as the other features do."""
+        if len(args) != 1 or not isinstance(args[0], str):
+            raise refuse(what, "bad_arguments", "expected one argument: the document URI")
+        try:
+            path = fs_path(args[0])
+        except ValueError as exc:
+            raise refuse(what, "bad_arguments", str(exc))
+        await session.configured()
+        reading = await session.entries_reading(path)
+        if path in session.entries:
+            return path, session.entries[path]
+        if reading:
+            return path, reading[0]
+        raise refuse(what, "no_entry", "no configured entry program includes this file")
+
+    @server.command(COMMAND_COMPILER_OUTPUT)
+    async def on_compiler_output(*args):
+        _, entry = await command_entry(args, "Cannot show compiler output")
+        out = await asyncio.to_thread(commands.compiler_output, entry.path,
+                                      session.config.logger, session.blobs())
+        return session.display(out.text)
+
+    @server.command(COMMAND_TABLE_FIELDS)
+    async def on_table_fields(*args):
+        what = "Cannot show table fields"
+        _, entry = await command_entry(args, what)
+        if not session.current(entry):
+            raise refuse(what, "pending", f"the analysis of {entry.path.name} is not current "
+                         "(pending, failed or timed out); try again when it has finished")
+        result = await session.load(entry.analysed)
+        if result is None:
+            raise refuse(what, "no_program", "a parsed program is not available")
+        tables = await asyncio.to_thread(locked, [entry], commands.table_fields, result)
+        return session.display(commands.render_table_fields(tables))
+
 
     server.session = session  # type: ignore[attr-defined]
     server.state = state  # type: ignore[attr-defined]

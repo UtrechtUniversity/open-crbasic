@@ -102,8 +102,9 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
                          "referencesProvider", "documentHighlightProvider",
                          "semanticTokensProvider", "renameProvider",
                          "documentFormattingProvider", "documentRangeFormattingProvider",
-                         "codeActionProvider"}, caps
-    assert caps["executeCommandProvider"]["commands"] == []
+                         "codeActionProvider", "inlayHintProvider"}, caps
+    assert sorted(caps["executeCommandProvider"]["commands"]) == [
+        "opencrbasic.showCompilerOutput", "opencrbasic.showTableFields"]
     assert result["serverInfo"]["name"] == "opencrbasic"
     assert client.shutdown() == 0
     assert "opencrbasic-lsp: opencrbasic=" in client.stderr_text
@@ -141,7 +142,7 @@ SERVER_KEY_ATTRS = {
     "debounceMs": "debounce_ms", "analysisTimeoutMs": "analysis_timeout_ms",
     "featureWaitMs": "feature_wait_ms", "maxFileBytes": "max_file_bytes",
     "maxQueuedJobs": "max_queued_jobs", "maxCacheMb": "max_cache_mb",
-    "helpDirectory": "help_directory",
+    "helpDirectory": "help_directory", "inlayHints.parameterNames": "inlay_parameter_names",
 }
 INTERNAL_SERVER_KEYS = {"featureWaitMs"}
 

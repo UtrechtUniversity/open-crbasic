@@ -88,6 +88,7 @@ Names and defaults come from `vscode/package.json`. "Applied" says how a change 
 | `opencrbasic.debounceMs` | `300` | Quiet time after an edit before analysis (minimum 0) | sent; later jobs |
 | `opencrbasic.analysisTimeoutMs` | `10000` | Limit for one analysis (minimum 1) | sent; later jobs |
 | `opencrbasic.helpDirectory` | `""` | Folder of the extracted CRBasic help (section 6) | sent; indexed in the background |
+| `opencrbasic.inlayHints.parameterNames` | `true` | Parameter names before call arguments (section 5.11); needs `helpDirectory` | sent; hints refresh |
 | `opencrbasic.trace.server` | `off` | `messages` or `verbose` trace in the `opencrbasic` output channel | applied at once |
 
 - The server pulls the non-launch settings (`workspace/configuration`) after each change notice.
@@ -335,10 +336,32 @@ never a CRBasic diagnostic.
   missing-include diagnostic. Candidates are declarations in scope and catalog names within a small
   edit distance (at most 2, at most 5 offered). The action replaces one token. It creates no
   declaration and no `Include`, and it is offered only for diagnostics of open documents.
-- **Not offered.** Commands (`executeCommand`), refactoring kinds, "fix all", inlay hints, pull
-  diagnostics, range and delta semantic tokens.
+- **Not offered.** Refactoring kinds, "fix all", pull diagnostics, range and delta semantic tokens.
 
 Known limits and the open review findings for rename and formatting are in section 9.
+
+### 5.11 Parameter-name hints and output commands (LSP-09c)
+
+Both are wired in the server and the client. They have stdio tests and client unit tests;
+**neither was run in an editor** (see [LSP-09c-handoff.md](lsp-rounds/LSP-09c-handoff.md) for the
+host checks).
+
+- **Parameter-name hints.** A grey `Name:` before each positional argument of an instruction or
+  builtin function call, for example `Dest:`, `Reps:`, `Range:` before the arguments of `VoltSe`. The
+  names are the ones signature help shows, so hints need `opencrbasic.helpDirectory` (section 6);
+  without help text there are none. No hint appears where the argument already reads as the name, for
+  an empty argument, or for a name declared in the program. Hints refresh when a new analysis
+  finishes. Turn them off with `opencrbasic.inlayHints.parameterNames` = `false`. After an edit,
+  hints for a changed file are withheld until the analysis catches up rather than shown at old lines.
+- **opencrbasic: Show Compiler Output.** Opens, beside the editor, the text the command-line
+  compiler prints for the active file's entry program: the header, `line N:` messages and warnings,
+  computed from your unsaved text without writing a file. On a `.crb` the entry is the first entry
+  program that includes it.
+- **opencrbasic: Show Table Fields.** Opens a Markdown table of every data table the program
+  defines (Status, DataTableInfo, Public and yours) with field names, types, units and processing.
+  A program with errors shows "No tables". It is refused while the analysis is pending.
+- Both documents are read-only; run the command again to refresh them. A refusal appears as the
+  document's text.
 
 ## 6. Help directory
 
@@ -442,7 +465,9 @@ row says otherwise, because none of those commits is in the host-tested revision
 - Quick fixes replace one token in open documents only. They never add a declaration or an `Include`.
 - Files changed outside the editor: mixed-case extensions are not watched, and includes resolve only in
   the entry's own directory (LSP-06a handoff).
-- Not offered: `executeCommand`, refactoring code actions, inlay hints, pull diagnostics.
+- Not offered: refactoring code actions, pull diagnostics. Parameter hints need the help directory
+  and show the help parser's names as they are (for example `"FieldName"` with quotes for
+  `SetSetting`).
 - The full per-module limits are in [lsp-api.md](lsp-api.md).
 
 ## 10. Troubleshooting

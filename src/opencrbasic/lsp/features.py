@@ -15,7 +15,7 @@ from typing import Any, Callable, Mapping
 
 from lsprotocol import types
 
-from .. import editing, formatting, hover as hovering, navigation, positions, quickfix, rename
+from .. import editing, formatting, hover as hovering, inlay, navigation, positions, quickfix, rename
 
 LEGEND = types.SemanticTokensLegend(token_types=list(navigation.TOKEN_TYPES),
                                     token_modifiers=list(navigation.TOKEN_MODIFIERS))
@@ -226,6 +226,23 @@ def signature_help(ctx: Ctx, path: Path, position: types.Position) -> types.Sign
         parameters=parameters, active_parameter=info.active_parameter)
     return types.SignatureHelp(signatures=[signature], active_signature=0,
                                active_parameter=info.active_parameter)
+
+
+# ---- inlay hints (LSP-09c) ---------------------------------------------------------------------
+
+
+def inlay_hints(ctx: Ctx, ana: Any, result: Any, path: Path, start_line: int,
+                end_line: int) -> list[types.InlayHint]:
+    """Parameter-name hints on lines `start_line..end_line` (0-based, inclusive). The whole file's
+    hints are computed once per program and kept; a request only filters them."""
+    if result is None or ctx.help is None:
+        return []
+    with _guard(ana):
+        every = _memo(ana, f"inlay:{_key(path)}:{getattr(ctx.help, 'directory', '')}", lambda: inlay.parameter_hints(
+            result, path, 0, 1 << 30, ctx.profile, ctx.help))
+    return [types.InlayHint(position=ctx.position(path, h.line, h.column), label=h.label,
+                            kind=types.InlayHintKind.Parameter, padding_right=h.padding_right)
+            for h in every if start_line <= h.line <= end_line]
 
 
 # ---- outline, folding, links -----------------------------------------------------------------

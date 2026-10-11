@@ -347,16 +347,18 @@ with a stdio transcript test in `tests/lsp/test_features_server.py`):
 | `renameProvider` | `prepareProvider` (advertised when the client declares `textDocument.rename.prepareSupport`, as pygls decides) | `rename.prepare_rename`, `rename.rename` |
 | `documentFormattingProvider`, `documentRangeFormattingProvider` | | `formatting.format_indentation`, `formatting.format_range` |
 | `codeActionProvider` | kinds `["quickfix"]` | `quickfix.code_actions` |
+| `inlayHintProvider` | no resolve | `inlay.parameter_hints` ("Inlay hints and commands (LSP-09c)") |
+| `executeCommandProvider` | `opencrbasic.showCompilerOutput`, `opencrbasic.showTableFields` | `commands.compiler_output`, `commands.table_fields` |
 
-pygls additionally advertises `workspace.workspaceFolders` (changes are handled, see "Workspace (LSP-06a)") and
-an empty `executeCommandProvider`; the server implements no command. Nothing else (no inlay hints,
-range or delta semantic tokens, no other code-action kinds, no on-type formatting) is advertised.
+pygls additionally advertises `workspace.workspaceFolders` (changes are handled, see "Workspace (LSP-06a)").
+Nothing else (range or delta semantic tokens, no other code-action kinds, no on-type formatting,
+no pull diagnostics) is advertised.
 
 ### Configuration
 
 Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
+`analysisTimeoutMs` (10000), `maxFileBytes` (2097152), `maxQueuedJobs` (64), `maxCacheMb` (256) ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text), `inlayHints.parameterNames` (`true`; a nested object `{"inlayHints": {"parameterNames": false}}` or the flat key; "Inlay hints and commands (LSP-09c)") and `featureWaitMs` (1500, see
 "Language features"). The VS Code extension contributes every key except `featureWaitMs`, with the
 same defaults (`vscode/package.json`, checked by `test_vscode_contributes_server_tuning_keys`);
 `featureWaitMs` is internal and set only by a client that sends it. Sources, in order: `initializationOptions`, then, when the client
@@ -611,6 +613,48 @@ displayed text (with the optional `[Entry] ` prefix) and the same first line is 
 program. Each action carries the originating diagnostic and a `WorkspaceEdit` with one versioned
 `TextDocumentEdit` (the open document's version). The same fix from several entries is offered once;
 edits outside the requested file are dropped.
+
+### Inlay hints and commands (LSP-09c)
+
+Handoff: [LSP-09c-handoff.md](lsp-rounds/LSP-09c-handoff.md). The cores are "Inlay hints (LSP-09a)"
+and "Commands (LSP-09b)"; the adapter adds no CRBasic rule.
+
+**`textDocument/inlayHint`.** Answers from `inlay.parameter_hints` over the whole file, computed once per
+parsed program (and help directory) and filtered by the request range (line based; a range that ends
+at character 0 of a later line excludes that line). Like the other program-based requests it waits
+for a fresh program (`featureWaitMs`); if the program still does not reflect the open document's
+version the answer is `[]`, because the lines of a stale program would put hints at the wrong
+places. Positions go through `features.Ctx` (negotiated encoding, editor text of open documents).
+Each hint is `InlayHint(position, label = "Name:", kind = Parameter, paddingRight = true)`; the label
+is the core's, with its trailing colon. `[]` when `inlayHints.parameterNames` is `false`, when no
+help directory is configured (the core needs help names) or when the file has no program. A handler
+failure is logged and answered `[]`.
+
+**Refresh.** After each new parsed program the server sends `workspace/inlayHint/refresh`, only when
+the client declares `workspace.inlayHint.refreshSupport` (same rule as semantic tokens). It is also
+sent when a configuration change alters `inlayHints.parameterNames` or `helpDirectory`.
+
+**Commands** (`workspace/executeCommand`, one argument: the document URI string). The entry is the
+document itself when it is an entry (configured, or open with an entry extension); a `.crb` takes the
+first entry, sorted by path, whose last analysis read it, after pending analyses of the entries it
+can affect have finished (bounded, as for rename). The result is a JSON string.
+
+| Command | Result |
+|---|---|
+| `opencrbasic.showCompilerOutput` | `commands.compiler_output(entry, logger, overlays)`: the text `crbc` prints for the entry, computed from the open buffers as overlays (unsaved text is used, a library buffer is compiled through its entry) and the disk, writing no file. Compiler text is passed through the same latin-1 to file-encoding display step as diagnostics (`session.display`); for ASCII the text equals the core's. |
+| `opencrbasic.showTableFields` | `commands.render_table_fields(commands.table_fields(result))` for the entry's current parsed program; Markdown. A program that does not compile gives the core's "No tables" text. |
+
+Refusals are LSP errors (code -32803, `data.reason`), the same shape as rename: `bad_arguments` (not
+exactly one string argument, or a non-`file:` URI), `no_entry` (no entry reads the file), and for
+table fields `pending` (the entry's analysis is not current) and `no_program`. A command name the
+server does not advertise is answered by pygls with -32602.
+
+The VS Code client registers the palette commands `opencrbasic.openCompilerOutput` and
+`opencrbasic.openTableFields` (titles "opencrbasic: Show Compiler Output" and "opencrbasic: Show Table
+Fields"). The ids differ from the server's because `vscode-languageclient` registers every
+advertised server command itself and a second registration of one id fails. They open a read-only
+`opencrbasic-output:` document beside the editor whose content is the server command's answer for the
+active CRBasic file; running the command again refreshes it.
 
 ## Binding index (LSP-05a)
 

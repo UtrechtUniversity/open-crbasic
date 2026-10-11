@@ -114,7 +114,8 @@ class LspClient:
 
     def initialize(self, folder: Path | None, options: dict | None = None,
                    position_encodings: list[str] | None = None,
-                   semantic_refresh: bool = False, watched_files: bool = False) -> dict:
+                   semantic_refresh: bool = False, watched_files: bool = False,
+                   inlay_refresh: bool = False) -> dict:
         caps: dict = {"workspace": {"configuration": self.pull_configuration,
                                     "workspaceEdit": {"documentChanges": True}},
                       "textDocument": {"rename": {"prepareSupport": True}}}
@@ -124,6 +125,8 @@ class LspClient:
             caps["general"] = {"positionEncodings": position_encodings}
         if semantic_refresh:
             caps["workspace"]["semanticTokens"] = {"refreshSupport": True}
+        if inlay_refresh:
+            caps["workspace"]["inlayHint"] = {"refreshSupport": True}
         params = {"processId": os.getpid(), "rootUri": folder.as_uri() if folder else None,
                   "capabilities": caps, "initializationOptions": options,
                   "workspaceFolders": [{"uri": folder.as_uri(), "name": folder.name}]
@@ -171,6 +174,17 @@ class LspClient:
 
     def on_file(self, method: str, path: Path, timeout: float = 60) -> Any:
         return self.request(method, {"textDocument": {"uri": path.as_uri()}}, timeout)
+
+    def inlay_hints(self, path: Path, start: tuple[int, int] = (0, 0),
+                    end: tuple[int, int] = (100000, 0), timeout: float = 60) -> list[dict]:
+        return self.request("textDocument/inlayHint", {
+            "textDocument": {"uri": path.as_uri()},
+            "range": {"start": {"line": start[0], "character": start[1]},
+                      "end": {"line": end[0], "character": end[1]}}}, timeout) or []
+
+    def execute(self, command: str, *arguments: Any, timeout: float = 60) -> Any:
+        return self.request("workspace/executeCommand",
+                            {"command": command, "arguments": list(arguments)}, timeout)
 
     def server_requests(self, method: str) -> list[dict]:
         with self._cond:

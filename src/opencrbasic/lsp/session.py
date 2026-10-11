@@ -817,6 +817,10 @@ class Session:
         doc = self.docs.get(path)
         return ana is not None and ana.versions.get(path) == (doc.version if doc else None)
 
+    def fresh(self, path: Path, ana: Analysed | None) -> bool:
+        """`ana` reflects the newest version of the open document `path` (a closed file: always)."""
+        return self._fresh(path, ana)
+
     def _pending(self) -> bool:
         return any(not e.settled or e.done != e.requested
                    or (e.task is not None and not e.task.done())
