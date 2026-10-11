@@ -1,0 +1,499 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-bounds_whole_array_subcall-0",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-1",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-2",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),7,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable M out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-3",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-4",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (Q(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable Q out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-5",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (R(),\"ab\",CHR(32),3,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-6",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (SD(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable SD out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-7",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(1),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-8",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-9",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(9))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-10",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-11",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-12",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (R(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable R out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-13",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (S(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-14",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (F9(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable F9 out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-15",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Call S1(P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr6-bounds_whole_array_subcall-16",
+   "logger": "cr6",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-0",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-1",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-2",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),7,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable M out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-3",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-4",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (Q(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable Q out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-5",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (R(),\"ab\",CHR(32),3,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-6",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (SD(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable SD out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-7",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(1),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-8",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-9",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(9))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-10",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-11",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-12",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (R(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable R out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-13",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (S(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-14",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (F9(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable F9 out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-15",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Call S1(P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-bounds_whole_array_subcall-16",
+   "logger": "cr1000x",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-0",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-1",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-2",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),7,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable M out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-3",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-4",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (Q(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable Q out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-5",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (R(),\"ab\",CHR(32),3,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-6",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (SD(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable SD out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-7",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(1),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-8",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-9",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(9))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-10",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-11",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-12",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (R(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable R out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-13",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (S(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-14",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (F9(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable F9 out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-15",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Call S1(P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr300-bounds_whole_array_subcall-16",
+   "logger": "cr300",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-0",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-1",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-2",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),7,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable M out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-3",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (M(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-4",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (Q(),\"ab\",CHR(32),5,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable Q out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-5",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (R(),\"ab\",CHR(32),3,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-6",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (SD(),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable SD out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-7",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    SplitStr (S(1),\"ab\",CHR(32),6,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-8",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-9",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(9))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-10",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(0))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-11",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(-1))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-12",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (R(4))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable R out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-13",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (S(6))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable S out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-14",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (F9(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable F9 out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-15",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Call S1(P(10))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 15: Variable P out of bounds."
+  },
+  {
+   "id": "cr350-bounds_whole_array_subcall-16",
+   "logger": "cr350",
+   "source": "Public R(3)\nPublic Q((1+2))\nPublic P(9) As Long\nPublic F9(9)\nPublic M(2,3)\nPublic S(5) As String * 20\nPublic SD((2+3)) As String * 20\nPublic Z(3)\nDim I\nSub S1(A As Long)\n  Z(1)=A\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    S1 (P(I))\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

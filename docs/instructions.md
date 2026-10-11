@@ -1766,3 +1766,24 @@ Oracle, all four loggers, identical except where noted. The block stack is **not
 - Not modelled: a second `Sub` declared while a block is open (`Sub declaration inside If..EndIf.`
   at that line, then a second `If without EndIf` at its end). Ours does not print the middle line
   (`tests/fixtures/sub_end_open_blocks.json` leaves those variants out).
+
+## Whole-array `SplitStr` destination and `Sub` element arguments (2026-10-11, fixture `tests/fixtures/bounds_whole_array_subcall.json`)
+
+Oracle, all four loggers, identical unless noted.
+
+- **`SplitStr(A(),...,Reps,...)`** (no subscript on the destination): `Variable A out of bounds.` when
+  `Reps` is greater than the element count. Count is the product of the dimensions, paren dimensions
+  included (`Public S((2+3))` takes 5; `Public M(2,3)` takes 6, so Reps 6 compiles and 7 does not).
+  Float, Long and String arrays alike. Reps 0, 1 and -1 compile. A subscripted destination
+  (`SplitStr(S(1),...,6,7)`) compiles. `checker/expressions.py` `check_splitstr_whole_array`, run after
+  `check_option_values` so `Invalid option -1` comes first (CR6/CR1000X). This replaces the older
+  "scalar only" note in `docs/checker.md` Destination bounds, which the 2026-10-11 probes contradict.
+  Reproducer: `cr350/false_accept/73c3fc153711` (`Public ResultString((1+2))`, Reps 5).
+- **`Sub` element arguments** (`check_subcall_element_bounds`): `S1(P(10))` for `Public P(9)` gives
+  `Variable P out of bounds.`; `S1(P(0))`, `S1(R(4))` for `Public R(3)`, `S1(S(6))` for a 5-element
+  String array, `Call S1(P(10))` likewise. Valid: `1..n` per dimension, and `S1(P(9))` compiles.
+  Only number-literal subscripts count: `P(-1)`, `P(10)+1` and `P(I)` compile. Reproducer:
+  `cr6/false_accept/2435be9885e1` (`rt2(&HFF)` passed to a `Sub`).
+- Not modelled: a single subscript on a multi-dimensional array passed to a `Sub` (`S1(M(6))` on
+  `Public M(2,3)` is out of bounds on the real compiler and accepted here); `S1(P(1,1))` on a 1-D array
+  (`Dimensions not declared` on CR300/CR350, accepted here); a function call argument (`X = FN(P(10))`).

@@ -2258,6 +2258,68 @@ def check_instruction_index_bounds(program: S.Program, profile, diags: Diagnosti
                 diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
 
 
+def check_splitstr_whole_array(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`SplitStr(A(),...,Reps,...)` with `A` an array and no subscript: `Variable A out of bounds.`
+    when `Reps` exceeds the element count (oracle, 2026-10-11, all four loggers: `Public S(5)` with
+    Reps 6 or 20, `Public M(2,3)` with 7, `Public S((2+3))` with 6 are out of bounds; Reps 5 and 6
+    for `M(2,3)` compile; Reps 0, 1 and -1 compile). Float, Long and String arrays alike. A
+    subscripted destination (`SplitStr(S(1),...,6,7)` compiles) is not this rule. Run after
+    `instr_rules.check_option_values`: `SplitStr(S(),...,6,-1)` prints `Invalid option -1` first."""
+    dims = symbols.declared_all_dims(program, env)
+    arrays = {v.name.upper() for st in program.statements
+              if isinstance(st, S.Declaration) and st.kind in ("PUBLIC", "DIM")
+              for v in st.vars if v.dims}
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "SPLITSTR":
+            continue
+        if not stmt.args or not isinstance(stmt.args[0], S.Index) or stmt.args[0].args \
+                or len(stmt.args) < 4:
+            continue
+        dest = stmt.args[0]
+        name = dest.name.upper()
+        shape = dims.get(name)
+        if not shape or name not in arrays:
+            continue
+        try:
+            reps = consteval.value_of(stmt.args[3], env)
+        except consteval.NotConstant:
+            continue
+        if not isinstance(reps, int) or isinstance(reps, bool):
+            continue
+        total = 1
+        for n in shape:
+            total *= n
+        if reps > total:
+            diags.error(stmt.line, f"Variable {dest.name} out of bounds.", stmt.file)
+
+
+def check_subcall_element_bounds(program: S.Program, profile, diags: Diagnostics, env) -> None:
+    """`Sub` call with an array element literal argument out of its declared range: `S1(P(10))` for
+    `Public P(9)` -> `Variable P out of bounds.` (oracle, 2026-10-11, all four loggers; `Call S1(P(10))`
+    and `S1 (P(0))` too, `S1(R(4))` for `Public R(3)`, `S1(S(6))` for `Public S(5) As String * 20`,
+    `S1(F9(10))` for `Public F9(9)`). Valid: 1..n per dimension. Checked for a single-subscript or
+    per-dimension subscript on a 1-D or multi-dimensional array with number-literal subscripts only;
+    a negative literal (`P(-1)`), an expression (`P(10)+1`, `P(I)`), a single subscript on a
+    multi-dimensional array (`M(6)` on `M(2,3)` is out of bounds on the real compiler but not
+    modelled) and `P(1,1)` on a 1-D array (`Dimensions not declared` on CR300/CR350) are not this rule.
+    Functions are not checked (`X = FN(P(10))`)."""
+    subs = symbols.declared_subs(program)
+    dims = symbols.declared_all_dims(program, env)
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Call) or stmt.name.upper() not in subs:
+            continue
+        for arg in stmt.args:
+            if not isinstance(arg, S.Index) or not arg.args:
+                continue
+            shape = dims.get(arg.name.upper())
+            index = [a.value for a in arg.args if isinstance(a, S.Number) and not isinstance(a.value, float)]
+            if not shape or len(index) != len(arg.args) or len(index) != len(shape) or \
+                    any(k < 0 for k in index):
+                continue
+            if any(not 1 <= k <= n for k, n in zip(index, shape)):
+                diags.error(stmt.line, f"Variable {arg.name} out of bounds.", stmt.file)
+
+
 def check_recursive_functions(program: S.Program, profile, diags: Diagnostics) -> None:
     """A `Function` called inside its own body (to its `EndFunction`, or the end of the file when
     there is none) -> `Cannot recursively call functions.`, pass 1, all four loggers (oracle,
