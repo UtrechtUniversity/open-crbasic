@@ -87,6 +87,11 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   CR6Comp/cr300comp outside git; error-origin tracing via `winedbg` breakpoints on the error
   reporter `0x5089c0` in CR6Comp, see `docs/binary.md`). Every rule is still verified by oracle
   probes and fixtures; decompiled code is never copied into `src/` (`docs/legal.md`).
+- **Human instruction (2026-10-11): trial Haiku 5.5 (Agent tool `model: "haiku"`) for easy and
+  medium sub-tasks** (rebases/integration of clean branches, small review findings with a given
+  reproducer, fixture/docs chores, single well-scoped families). Keep Sonnet for hard families,
+  reverse engineering and anything needing rule discovery. Review Haiku output for quality (all
+  gates plus a spot-check of rules and fixtures against the oracle) and record the verdict here.
 - Orchestration: Opus coordinates; workers get disjoint families in their own git worktree
   (`git worktree add -b <br> .claude/worktrees/<br> claude/laughing-franklin-08z9vo`, then
   `ln -s <main>/opencrbasic/.oracle-cache` into it), and are integrated with `git cherry-pick`
