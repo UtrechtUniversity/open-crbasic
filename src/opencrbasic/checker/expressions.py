@@ -1826,6 +1826,7 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                 verb = ("Expression expects , : " if problem == "few"
                         else "No Matching, or out of place ) in expression: ")
                 diags.error(stmt.line, f"{verb}{text}.", stmt.file)
+                _hold(held, diags, problem)
                 if struct_cond:
                     mine.append(diags.items[-1])
         elif isinstance(stmt, S.ConstDecl) and stmt.value_span:

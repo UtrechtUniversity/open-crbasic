@@ -4869,3 +4869,13 @@ integral constant (`1e300`) stays unclassified, as before. Before this, the clas
 `int()` on infinity and the compile ended as `Internal error`. `checker/instr_data.py`, `item_kind`.
 Not modelled (pre-existing, not part of this fix): a second `DisplayMenu` gives `Only one DisplayMenu
 allowed.` on the real compilers; ours reports nothing.
+
+### `Member` index error in an `If` condition is held like the other statements (all four loggers, oracle, 2026-10-11; `tests/fixtures/if_member_hold.json`)
+
+`If Status.TimeStamp(1,1,1) Then X=1` reports `No Matching, or out of place ) in expression` as a
+compile-stage (held) error, as `X=Status.TimeStamp(1,1,1)` already did. With an earlier pass-1
+error (`X=Nope`), the real compilers print only that error and the `Expr illegally occurs before
+BeginProg.` line, not the `If` line. Without one, the held error prints at its line as before.
+`checker/expressions.py`, `check_function_arity`, `If` branch (`_hold`). Not modelled: `If
+Status.TimeStamp(1,1,1)+Nope2 Then`, which on CR300/CR350 hides the `Nope2` finding that ours still
+reports (the same family as the assignment case `X=Status.TimeStamp(1,1,1)+Nope`, pre-existing).
