@@ -15,6 +15,15 @@ Live implementation state and session handoff. Design and acceptance criteria:
   plus full pytest; baseline `scratch/lsp/selfdiff-base.json` (local, ignored; regenerate at the
   base revision with `--save` if missing).
 
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
+  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
 ## Resume here
 
 1. Read LSP_PLAN.md, this file, the active round brief under `docs/lsp-rounds/`, and its handoffs.
