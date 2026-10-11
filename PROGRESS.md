@@ -175,6 +175,8 @@ are in `docs/lsp-rounds/`.
    neither `data/status_table.json` nor `settings_fields.json`; check whether the Status field
    list is incomplete (`LSP-05c-handoff.md`).
 7. **`Static` declarations** parse as `Unparsed` (`LSP-05a-handoff.md`); check against the oracle.
+9. **Statement labels**: in one LSP probe `Label1:` parsed as an unresolved call, not a `Label`
+   (`LSP-07a-handoff.md`; not investigated, may depend on the statement shape).
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);
    host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md`.
 
