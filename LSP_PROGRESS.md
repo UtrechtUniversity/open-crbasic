@@ -26,10 +26,12 @@ Live implementation state and session handoff. Design and acceptance criteria:
 3. LSP-08 release validation still open: packaged VSIX (`vsce package`) + install-from-VSIX
    check; Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
    (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
-4. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
+4. LSP-09 (human request): parameter-name inlay hints and commands "Show compiler output" /
+   "Show table fields" (cores 09a/09b active; wiring 09c after LSP-08f). Pull diagnostics: not adopted.
+5. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
    does not detect a file that appears after analysis, formatting refuses programs with errors,
-   completion capped at 200, CR6-only help, no inlay hints/pull diagnostics/commands.
-5. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
+   completion capped at 200, CR6-only help.
+6. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
 
 ## Work rules (human instructions 2026-10-11)
 
@@ -380,6 +382,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-08d test-run speed | `codex/lsp-08-speed`, base `636eff1`, Sonnet | active | profile in LSP-08.md | verify, cherry-pick |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix`, base `621b7b4`, Haiku | active | - | verify, cherry-pick |
+| LSP-09a inlay hints core | `codex/lsp-09-inlay`, base `9537c5a`, Sonnet, brief [LSP-09.md](docs/lsp-rounds/LSP-09.md) | active | - | verify, cherry-pick |
+| LSP-09b commands core (compiler output, table fields) | `codex/lsp-09-commands`, base `9537c5a`, Sonnet | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
