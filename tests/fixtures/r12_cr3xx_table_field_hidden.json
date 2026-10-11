@@ -1,0 +1,253 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-0",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nBattery(Zork)\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-1",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nCallTable Nope\nCallTable Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-2",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nCallTable Nope\nZork = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-3",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nDelay(1,Zork,Sec)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-4",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIf Nope.Field(1,1) Then\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-5",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIf Nope.Field(1,1)\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-6",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nPanelTemp(x)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-7",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nPanelTemp(x,1,2,3)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-8",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-9",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1) Then\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-10",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1)\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-11",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1)\nx = 1\nEndIf\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-12",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-13",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope(1)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Dimensions not declared: x = Nope(1)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-14",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-15",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nZork = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_table_field_hidden-16",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nx = Nope2.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope.\nline 5: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-0",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nBattery(Zork)\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-1",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nCallTable Nope\nCallTable Nope2\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-2",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nCallTable Nope\nZork = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-3",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nDelay(1,Zork,Sec)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-4",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIf Nope.Field(1,1) Then\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-5",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIf Nope.Field(1,1)\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-6",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nPanelTemp(x)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-7",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nPanelTemp(x,1,2,3)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-8",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-9",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1) Then\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-10",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1)\nx = 1\nEndIf\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-11",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nIf Nope.Field(1,1)\nx = 1\nEndIf\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-12",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nZork = 1\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-13",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope(1)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Dimensions not declared: x = Nope(1)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-14",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-15",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nZork = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_table_field_hidden-16",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Nope.Field(1,1)\nx = Nope2.Field(1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope.\nline 5: Could not find DataTable Nope2."
+  }
+ ]
+}

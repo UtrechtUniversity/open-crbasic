@@ -5290,3 +5290,11 @@ s, s, s,` (real generic, `nargs` of the function in our table).
   operator, so the walk ended at the first string (`_LINE_OP_RUN_RE`, `_LINE_OP_WORD_RE`,
   `_LINE_OPERAND_RE`). Not done: `st <> "" and x = 2 then` is `Incomplete expression` on the real
   compilers (the `=` after a string-led chain), we print the generic fallback.
+
+### `Could not find DataTable` for a table field is hidden by other errors (`chm/tablenameeventend_1`; fixture `r12_cr3xx_table_field_hidden.json`)
+
+CR300/CR350: `x = Nope.Field(1,1)` and `If Nope.Field(1,1)` print `Could not find DataTable
+Nope.` alone, but any other error in the file, before or after, removes it (`Zork = 1` undefined,
+`PanelTemp(x)` short, `PanelTemp(x,1,2,3)` too many; two unknown tables in a row print both when
+nothing else is wrong). Only the `CallTable` form was hidden before
+(`cr3xx.drop_calltable_error_with_other_errors`, now every statement but a prose line).
