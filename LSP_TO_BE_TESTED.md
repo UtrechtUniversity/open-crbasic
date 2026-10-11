@@ -367,3 +367,18 @@ The report distinguishes harness corrections from real findings. Interactive F2/
 notification toasts, Problems/hover rendering, T-09 visuals, Windows/Linux and Windows edit URIs
 remain pending: native UI access still selected the original VS Code process rather than the
 isolated extension host. Original CRBasic sources were untouched; no hardware was contacted.
+
+### T-13 Retest after LSP-06c and LSP-R2 (appended 2026-10-11)
+
+On a revision at or after `a42c7b0` (details in
+[LSP-06c-handoff.md](docs/lsp-rounds/LSP-06c-handoff.md)):
+1. H-07: delete a whole folder containing a closed erroneous entry (Explorer and externally): its
+   diagnostics clear; both watched-file registrations succeed (trace); deleting a large unrelated
+   folder causes no burst of analyses (output channel/trace).
+2. H-06: with logger `cr6`, open a `.CR300`: it shows the information note "This file is not an entry
+   program for the configured logger and entries, and no entry program includes it."
+3. LSP-R2a via the server: edit a library buffer (unsaved) so that it declares the proposed new name,
+   then rename a variable in an entry to that name: refused (stale or collision), no edits.
+4. LSP-R2b: with `opencrbasic.encoding` `latin-1`, a line `s = "😀" : oldN` completes `oldName` in
+   place (no shifted edit); hover and highlights land on the right token.
+

@@ -93,10 +93,7 @@ rename/formatting/quick fix/H-04 display. Visual checks (F2 box, Ctrl+. menu, to
 rendering) still pending.
 
 Open:
-- H-06 open `.CR300` under logger `cr6` gets no "no configured entry" note (limited to `.crb`)
-  -> LSP-06c.
-- H-07 deleting a folder leaves its entries' diagnostics (VS Code sends only the folder URI,
-  which the extension glob does not match) -> LSP-06c.
+- H-06 / H-07: fixed in LSP-06c (`a42c7b0`); host retest T-13.
 - Banner stderr copy and pygls' normal "Server shutting down" line show as `[error]` in the
   output channel (cosmetic; documented).
 - Undo after a multi-file rename closes files the rename opened (VS Code behaviour; documented).
@@ -349,7 +346,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire` -> `fe33b2e` | integrated, gates passed | at `810b8f9`: tests/lsp 578, selfdiff 0 differ, npm 16/16, full pytest 22,083 passed / 507 skipped, native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | host T-12; review round 2 findings -> LSP-R2 |
 | LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename` -> `463a565` | integrated | combined tests/lsp 592 passed (coordinator); worker: reproducers failed before / pass after, full rename sweep 940/196, 0 problems, selfdiff 0 differ | server should pass open buffers as `source` -> LSP-06c; limit: a file absent at analysis that appears later is not detected |
 | LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding` -> `3d76e93` | integrated | combined tests/lsp 586 then 592; worker: reproducer failed before / pass after; one conversion point (`features.Ctx`, `positions.EditorBytes`) | - |
-| LSP-06c host H-06/H-07 + rename source | `codex/lsp-06-hostfix`, Sonnet | active | - | verify, cherry-pick |
+| LSP-06c host H-06/H-07 + rename source | `codex/lsp-06-hostfix` -> `a42c7b0` | integrated | combined tests/lsp 596 passed (coordinator); worker: 596 x3, selfdiff 0 differ; info note for every open non-entry file; `**/*` delete watcher; rename gets open buffers as `source` | host T-13 |
 | LSP-08b-refresh user guide | `codex/lsp-08-guide2` -> cherry-picked | integrated | guide updated to `810b8f9`; 32 links, 0 broken; R2 findings listed as known limits | update after R2 lands |
 | LSP-01g contribute tuning settings | `codex/lsp-01-settings` -> cherry-picked | integrated | worker: npm 16/16, server tests 25, selfdiff 0 differ; sync test package.json vs config.py | Settings UI: host check |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |

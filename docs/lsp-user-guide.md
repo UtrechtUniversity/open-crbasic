@@ -423,20 +423,14 @@ row says otherwise, because none of those commits is in the host-tested revision
 ## 9. Known limits
 
 - One platform observed (macOS). Windows and Linux are untested.
-- **Open review findings (LSP-R2), not fixed at `810b8f9`.** They come from the second review at
-  `f3069825` ([review](lsp-rounds/review-2026-10-11-f3069825.md)). The reviewer observed each one, and
-  the coordinator accepted them. Fixes are assigned to LSP-R2a (rename) and LSP-R2b (encoding).
-  1. Rename checks freshness only for the files it edits. A dependency with no occurrence of the old
-     name can change after the analysis and introduce the new name. Rename then succeeds, and the
-     program gets a duplicate declaration. The reviewer checked this with the native analysis and the
-     reference compiler.
-  2. Rename's freshness check compares with bytes cached at prepare time. An edited file that changed
-     between prepare and rename can give positions from the older text.
-  3. Rename's new-name capture check ignores `Public.<name>` uses. Renaming a `Public` variable can bind
-     an existing `Public.<name>` use that the edit does not change, and the program can then compile.
-     The reviewer checked this with the reference compiler.
-  4. Encoding positions after an unrepresentable character (section 7).
-  Until these are fixed, check the edit list of a rename before accepting it.
+- **Review findings from round 2** ([review](lsp-rounds/review-2026-10-11-f3069825.md)) are fixed
+  in LSP-R2a (`463a565`: rename checks every dependency's current bytes and `Public.<name>`
+  captures) and LSP-R2b (`3d76e93`: positions map through the editor text when the encoding
+  replaces characters); the server passes open buffers to rename's freshness check (LSP-06c).
+  Remaining rename limit: a file that did not exist at analysis time and appears later is not
+  detected ([LSP-R2a handoff](lsp-rounds/LSP-R2a-handoff.md)). Not yet host-tested.
+- **Undo after a multi-file rename** (observed at `7d6db3b1`): one Ctrl+Z restores all texts, and a
+  file that the rename opened is closed again. This is VS Code's behaviour, not the server's.
 - Completion stops at 200 items and reports the list as incomplete (section 5.4).
 - Ranges are whole lines. There are no token or column ranges for diagnostics or hover.
 - Results during an edit can be stale (section 5.8). A timeout restarts the worker pool; the entry
@@ -462,16 +456,22 @@ row says otherwise, because none of those commits is in the host-tested revision
 - **Server failed to start** (error message). Check `pythonPath`. Run `<pythonPath> -m opencrbasic.lsp`
   in a terminal: the startup line should appear on stderr, then the process waits for input. Stop it
   with Ctrl-C.
-- **Toast after changing `pythonPath`** (H-02, observed at `7c450ed5`). The LSP-01e fix is **untested**.
-  If the new server did not start, run `opencrbasic: Restart Server`.
-- **`.CR300` opens as plain text** (H-03, observed at `1b01311d`). Choose CRBasic from the language
-  picker; set `logger` to `cr300` to see its diagnostics. The automatic association is LSP-01e,
-  **untested**.
+- **Toast after changing `pythonPath`** (H-02, observed at `7c450ed5`). Fixed in LSP-01e; at `7d6db3b1`
+  two interpreter switches logged no failed notification (toast absence not visually checked). If
+  the new server did not start, run `opencrbasic: Restart Server`.
+- **`[error]` lines in the output channel on a normal start or stop.** The startup line is also written
+  to stderr, and the client logs stderr at error level; pygls logs `Server shutting down. No more
+  requests!` the same way. Both are expected (observed at `7d6db3b1`).
+- **`.CR300` opens as plain text** (H-03, observed at `1b01311d`). Fixed in LSP-01e: at `7d6db3b1`
+  `.CR300`, `.CR1X`, `.CR350` open as CRBasic. Set `logger` to `cr300` to see its diagnostics.
 - **No diagnostics for a file.** Check that the file is an entry (section 4). The information note
-  tells you when a `.crb` is not included by any entry.
-- **Stale results for a file changed outside the editor.** Watched files are not host-tested. If the
-  output channel says the client does not support watched-file registration, changes to closed files
-  are seen only on save, open or close. Run `opencrbasic: Restart Server` in either case.
+  tells you when an open file (a `.crb`, or since LSP-06c a program file of another logger) is not an
+  entry and no entry includes it.
+- **Stale results for a file changed outside the editor.** Watched files were host-tested at `7d6db3b1`
+  (create/delete/rename of includes and entries, workspace folders). Deleting a whole folder left
+  stale diagnostics there (H-07); LSP-06c adds a delete watcher for folders, **not yet host-tested**.
+  If the output channel says the client does not support watched-file registration, changes to
+  closed files are seen only on save, open or close. Run `opencrbasic: Restart Server` in either case.
 - **`Cannot rename: ...`.** The text after the colon gives the reason (section 5.10). `pending` clears
   when the running analysis finishes. `unanalysed` means an entry has no completed analysis (it failed
   or timed out), and it stays until a later analysis of that entry succeeds.
