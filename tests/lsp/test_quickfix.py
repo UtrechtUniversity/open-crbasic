@@ -355,3 +355,12 @@ def test_misspelling_sweep():
         print("  ", r)
     assert exact >= 0.8 * len(rows)
     assert elapsed < 40
+
+
+def test_read_position_offers_no_statement_words(tmp_path):
+    # review F15: `Do`, `For`, `Scan` have a catalog symbol/function entry beside the statement word
+    entry = write(tmp_path, "a.CR6", prog("Temp = Fo + 1"))
+    titles = [a.title for _, a in actions_for(run(entry), entry)]
+    assert not {"Change to `Do`", "Change to `FOR`"} & set(titles), titles
+    entry = write(tmp_path, "b.CR6", prog("Temp = Humiditty + 1"))
+    assert actions_for(run(entry), entry)[0][1].title == "Change to `Humidity`"

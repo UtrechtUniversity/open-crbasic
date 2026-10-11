@@ -163,6 +163,7 @@ def tokenize(line: str) -> list[tuple[str, str]]:
         ("keyword.control.crbasic", "Then"),
     ]),
     ("x += 1", [("keyword.operator.crbasic", "+="), ("constant.numeric.decimal.crbasic", "1")]),
+    ("x = a << 2", [("constant.numeric.decimal.crbasic", "2")]),   # `<<` is no builtin function
     ("Scan1 = Tmp.001", []),   # identifiers that merely contain a keyword or end in digits
     ("MyIf = 3", [("constant.numeric.decimal.crbasic", "3")]),
 ])

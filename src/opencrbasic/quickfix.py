@@ -174,6 +174,9 @@ def suggest(index: bindings.BindingIndex, catalog: InstructionCatalog, ref: bind
         if not all(_kind_ok(ref.role, explicit, c) for c in res.candidates):
             continue
         user = any(c.kind != "external" for c in res.candidates)
+        if (not user and ref.role in (bindings.READ, bindings.ARGUMENT)
+                and (catalog.get(spelling, "instruction") or catalog.get(spelling, "keyword"))):
+            continue            # `Do`, `For`, `Scan`: a statement word, not the value meant
         ranked.append((dist, not user, upper, spelling))
     ranked.sort()
     return [r[3] for r in ranked[:MAX_ACTIONS]]

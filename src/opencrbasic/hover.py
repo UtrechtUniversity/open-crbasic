@@ -28,7 +28,7 @@ from .helpdocs import _md
 from .source import _is_continuation, _strip_comment
 
 __all__ = [
-    "CallContext", "call_context", "ParameterInfo", "SignatureInfo", "signature_help",
+    "CallContext", "call_context", "call_stack", "ParameterInfo", "SignatureInfo", "signature_help",
     "Declaration", "declarations", "Hover", "hover",
 ]
 
@@ -77,7 +77,10 @@ class _Scan:
         self.state = "code"     # state at the end of the last fed text: code | string | comment
 
     def feed(self, lineno: int, text: str, end: int) -> None:
-        self.state = "code"
+        """Scan `text[:end]`; a string still open at the end of the previous fed line stays open
+        (the loader continues a string across `_`), a comment does not."""
+        if self.state == "comment":
+            self.state = "code"
         i, n = 0, min(end, len(text))
         while i < n:
             ch = text[i]
@@ -118,16 +121,9 @@ class CallContext:
     column: int
 
 
-def call_context(text: str, line: int, column: int) -> CallContext | None:
-    """The innermost call enclosing the position and the argument the position is in.
-
-    The statement is the physical line joined with its `_` continuations; strings, `'` comments,
-    nested parentheses and `{}` are respected, and an incomplete call (no `)`, trailing comma,
-    unterminated string) still answers. None outside any call, in a comment, or for a position
-    outside the text."""
-    lines = _lines(text)
-    if not 0 <= line < len(lines) or column < 0:
-        return None
+def _statement_scan(lines: list[str], line: int, column: int) -> _Scan | None:
+    """The scanner after feeding the statement (the physical line joined with its `_`
+    continuations) up to `column` of `line`; None when the position lies in a comment."""
     first = line
     while first > 0 and _is_continuation(_strip_comment(lines[first - 1]))[0]:
         first -= 1
@@ -136,12 +132,32 @@ def call_context(text: str, line: int, column: int) -> CallContext | None:
         scan.feed(k, lines[k], len(lines[k]) if k < line else column)
         if scan.state == "comment" and k == line:
             return None
-        if k < line:
-            scan.state = "code"
-    for frame in reversed(scan.stack):
-        if frame.name:
-            return CallContext(frame.name, frame.commas, frame.line, frame.col)
-    return None
+    return scan
+
+
+def call_stack(text: str, line: int, column: int) -> list[CallContext]:
+    """Every named call enclosing the position, innermost first, each with the argument the
+    position is in (grouping parentheses and `{}` are skipped). Same scanning rules as
+    `call_context`; an array index or user Sub call nested in an instruction call is a frame of
+    its own, so the caller can fall through to the enclosing instruction."""
+    lines = _lines(text)
+    if not 0 <= line < len(lines) or column < 0:
+        return []
+    scan = _statement_scan(lines, line, column)
+    if scan is None:
+        return []
+    return [CallContext(f.name, f.commas, f.line, f.col) for f in reversed(scan.stack) if f.name]
+
+
+def call_context(text: str, line: int, column: int) -> CallContext | None:
+    """The innermost call enclosing the position and the argument the position is in.
+
+    The statement is the physical line joined with its `_` continuations; strings (also across a
+    `_`), `'` comments, nested parentheses and `{}` are respected, and an incomplete call (no `)`,
+    trailing comma, unterminated string) still answers. None outside any call, in a comment, or
+    for a position outside the text. `call_stack` gives the enclosing calls as well."""
+    stack = call_stack(text, line, column)
+    return stack[0] if stack else None
 
 
 def _word_at(lines: list[str], line: int, column: int) -> tuple[str, int, int] | None:
@@ -161,9 +177,8 @@ def _word_at(lines: list[str], line: int, column: int) -> tuple[str, int, int] |
                 break
     if found is None:
         return None
-    scan = _Scan()
-    scan.feed(line, text, found[1])
-    if scan.state != "code":
+    scan = _statement_scan(lines, line, found[1])
+    if scan is None or scan.state != "code":
         return None
     return found
 

@@ -50,7 +50,8 @@ EXPECTED_CR6_PAIRS = {
     "SUB": "ENDSUB", "SUBMENU": "ENDSUBMENU", "FUNCTION": "ENDFUNCTION",
     "DIALSEQUENCE": "ENDDIALSEQUENCE", "MODEMHANGUP": "ENDMODEMHANGUP",
     "APPLYANDRESTARTSEQUENCE": "ENDAPPLYANDRESTARTSEQUENCE", "STRUCTURETYPE": "ENDSTRUCTURETYPE",
-    "OBJECTTYPE": "ENDOBJECTTYPE",
+    "OBJECTTYPE": "ENDOBJECTTYPE", "DISPLAYMENU": "ENDMENU", "WEBPAGEBEGIN": "WEBPAGEEND",
+    "SHUTDOWNBEGIN": "SHUTDOWNEND",
 }
 
 # the statements the parser makes of each opener (words not listed parse as a bare instruction)
@@ -910,3 +911,32 @@ def test_completion_on_main_cr6_cached_equals_uncached(monkeypatch, memo_analyze
     _uncached_scan(monkeypatch)
     uncached = [_complete(text, n, c, result) for n, c in positions]
     assert cached == uncached
+
+
+# ------------------------------------------------------------------ LSP-R3d (review F10, F11, F13)
+
+
+def test_completion_string_state_goes_on_across_a_continuation():
+    src = 's = "a, _\n     b" + Vol'
+    assert _complete(src, 1, len('     b" + Vol')).items
+    assert _complete('s = "a, _\n     Vol', 1, len("     Vol")).items == ()
+    assert _complete('s = "a, _\n     \' Vol', 1, len("     ' Vol")).items == ()
+
+
+def test_catalog_items_are_identifiers_only():
+    import re
+    for profile in ("cr6", "cr300"):
+        for item in editing._catalog_items(profile):
+            assert re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*\$?", item.label), item.label
+    labels = _labels(_complete("", 0, 0))
+    assert "<<" not in labels and ">>" not in labels
+
+
+def test_completion_routine_local_shadows_global_once():
+    src = "Public x\nSub Foo\n  Dim x\n  \nEndSub\n"
+    declared = [("x", "variable", None), ("X", "variable", "Foo"), ("y", "variable", None)]
+    got = [i for i in _complete(src, 3, 2, declared=declared).items if i.source == "program"]
+    assert [i.label for i in got] == ["X", "y"]
+    # outside the routine only the global is visible
+    assert [i.label for i in _complete(src, 0, 0, declared=declared).items
+            if i.source == "program"] == ["x", "y"]

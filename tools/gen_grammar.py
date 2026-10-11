@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -39,6 +40,9 @@ def _esc(text: str) -> str:
     return "".join("\\" + c if c in _META else c for c in text)
 
 
+_WORD_NAME = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?")
+
+
 def _alternation(names) -> str:
     ordered = sorted(set(names), key=lambda n: (-len(n), n.upper(), n))
     return "(?:" + "|".join(_esc(n) for n in ordered) + ")"
@@ -53,7 +57,8 @@ def build() -> dict:
     taken: set[str] = set()
 
     def claim(names) -> list[str]:
-        out = [n for n in names if n.upper() not in taken]
+        # `<<` and `>>` are catalog "functions" but operators: no word alternation takes them
+        out = [n for n in names if n.upper() not in taken and _WORD_NAME.fullmatch(n)]
         taken.update(n.upper() for n in out)
         return out
 

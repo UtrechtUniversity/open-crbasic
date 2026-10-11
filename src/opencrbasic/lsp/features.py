@@ -204,10 +204,11 @@ def signature_help(ctx: Ctx, path: Path, position: types.Position) -> types.Sign
     text, at = _text(ctx, path), ctx.decoded(path, position)
     if text is None or at is None:
         return None
-    call = hovering.call_context(text, at[0], at[1])
-    if call is None:
-        return None
-    info = hovering.signature_help(call.name, call.active, ctx.profile, ctx.help)
+    info = None
+    for call in hovering.call_stack(text, at[0], at[1]):    # innermost first
+        info = hovering.signature_help(call.name, call.active, ctx.profile, ctx.help)
+        if info is not None:
+            break
     if info is None:
         return None
 

@@ -61,7 +61,8 @@ def _lines(first: int, last: int) -> Span:
 _IRREGULAR_PAIRS = {
     "FOR": "NEXT", "DO": "LOOP", "WHILE": "WEND", "DATATABLE": "ENDTABLE",
     "BEGINPROG": "ENDPROG", "SCAN": "NEXTSCAN", "SUBSCAN": "NEXTSUBSCAN",
-    "SLOWSEQUENCE": "ENDSEQUENCE",
+    "SLOWSEQUENCE": "ENDSEQUENCE", "DISPLAYMENU": "ENDMENU", "WEBPAGEBEGIN": "WEBPAGEEND",
+    "SHUTDOWNBEGIN": "SHUTDOWNEND",
 }
 
 
@@ -631,6 +632,7 @@ class Completion:
 # tells it to (LSP `CompletionList.isIncomplete`).
 COMPLETION_LIMIT = 200
 
+_IDENT_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*\$?$")
 _PREFIX_RE = re.compile(r"(?<![A-Za-z0-9_$])[A-Za-z_][A-Za-z0-9_]*\$?$")
 _BASE_RE = re.compile(r"(?<![A-Za-z0-9_$.])([A-Za-z_][A-Za-z0-9_]*\$?)\s*\.\s*$")
 
@@ -641,6 +643,8 @@ def _catalog_items(profile: str) -> tuple[CompletionItem, ...]:
     then exact). Built once per profile: the items are immutable and the catalog is cached."""
     best: dict[str, CompletionItem] = {}
     for entry in InstructionCatalog.for_profile(profile):
+        if not _IDENT_RE.match(entry.name):
+            continue                    # `<<` and `>>` are catalog "functions", not names
         if entry.kind == "instruction":
             count = len(entry.params)
         elif entry.kind == "function":
@@ -680,6 +684,36 @@ def _member_items(result, name: str, profile: str) -> list[CompletionItem]:
     return items
 
 
+def _in_string_or_comment(lines: list[str], line: int, before: str) -> bool:
+    """True when the end of `before` (the text of `lines[line]` before the cursor) lies inside a
+    string or a `'` comment. A string still open at the end of a `_`-continued line goes on in the
+    next one, as the loader joins them."""
+    first = line
+    while 0 < first <= len(lines) and source._is_continuation(
+            source._strip_comment(lines[first - 1]))[0]:
+        first -= 1
+    in_string = False
+    for text in [*lines[first:line], before]:
+        in_string, in_comment = _scan_quotes(text, in_string)
+    return in_string or in_comment
+
+
+def _scan_quotes(text: str, in_string: bool) -> tuple[bool, bool]:
+    """`(in a string, in a comment)` at the end of `text`, which starts inside a string or not."""
+    i, n = 0, len(text)
+    while i < n:
+        ch = text[i]
+        if ch == '"':
+            if in_string and text[i + 1:i + 2] == '"':
+                i += 2
+                continue
+            in_string = not in_string
+        elif ch == "'" and not in_string:
+            return False, True
+        i += 1
+    return in_string, False
+
+
 def completion_candidates(result, text: str, line: int, column: int, profile: str = "cr6",
                           declared: Sequence[tuple] | None = None) -> Completion:
     """Completion at 0-based physical `line` and decoded `column` of the buffer `text` (Latin-1
@@ -700,7 +734,7 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     before = row[:column]
     here = Span(line, column, line, column)
     nothing = Completion((), here, "")
-    if len(source._strip_comment(before)) < len(before) or before.count('"') % 2:
+    if _in_string_or_comment(lines, line, before):
         return nothing
     m = _PREFIX_RE.search(before)
     prefix = m.group(0) if m else ""
@@ -721,8 +755,12 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     for b in _scan(text, profile):
         if b.family in _ROUTINES and b.name and b.start <= line and (b.end is None or line <= b.end):
             routine = b.name.lower()
-    program_items = [CompletionItem(n, k, "program") for n, k, s in declared
-                     if s is None or (routine is not None and s.lower() == routine)]
+    visible: dict[str, tuple[str, str, bool]] = {}          # upper-case label -> routine-scoped wins
+    for n, k, s in declared:
+        if s is None or (routine is not None and s.lower() == routine):
+            if n.upper() not in visible or (s is not None and not visible[n.upper()][2]):
+                visible[n.upper()] = (n, k, s is not None)
+    program_items = [CompletionItem(n, k, "program") for n, k, _ in visible.values()]
     program_items.sort(key=lambda i: (i.label.lower(), i.label))
     lower = prefix.lower()
     items = [i for i in program_items if i.label.lower().startswith(lower)]

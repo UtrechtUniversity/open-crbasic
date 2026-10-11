@@ -169,6 +169,18 @@ def test_lines_inside_strings_are_left_alone():
     assert lines(fmt(src))[2] == "  y = 1"
 
 
+def test_continued_units_label_is_left_alone(tmp_path):
+    # review F4: the label is verbatim text, so re-indenting its continuation changes the TDF
+    src = ('Public T\nUnits T = Deg _\n        C\nDataTable(Tab,True,-1)\nSample(1,T,FP2)\n'
+           'EndTable\nBeginProg\nScan(1,Sec,0,0)\nCallTable Tab\nNextScan\nEndProg\n')
+    assert lines(fmt(src))[:3] == ["Public T", "Units T = Deg _", "        C"]
+    assert lines(fmt(src))[4] == "  Sample(1,T,FP2)"          # the rest is still formatted
+    f = tmp_path / "u.CR6"
+    f.write_bytes(fmt(src).encode("latin-1"))
+    assert [x.units for t in compiler.compile_file(f, profiles.get("cr6"), signature=False).tables
+            for x in t.fields if x.name == "T"][0] == "Deg         C"
+
+
 def test_unclosed_block_leaves_the_rest_alone():
     src = "Sub S\nIf x Then\ny = 1\nEndSub\n   z = 2\n"
     out = lines(fmt(src))
@@ -259,14 +271,18 @@ def _format_bytes(data: bytes, indent: str = "  ") -> bytes:
 @pytest.mark.slow
 @pytest.mark.parametrize("indent", ["  ", "\t", "    "])
 def test_crbasic_programs_compile_identically_after_formatting(tmp_path, indent):
+    edited = 0
     for f in CRBASIC.iterdir():
         if not f.is_file():
             continue
         data = f.read_bytes()
         if f.suffix.upper() in (".CR6", ".CRB"):
+            edited += data != _format_bytes(data, indent)
             data = _format_bytes(data, indent)
             assert _format_bytes(data, indent) == data, f.name
         (tmp_path / f.name).write_bytes(data)
+    if indent != "  ":      # crbasic/ is already two-space formatted
+        assert edited > 0, "a no-op formatter must not pass the sweep"
     entries = sorted(CRBASIC.glob("*.CR6"))
     assert len(entries) > 10
     for entry in entries:
@@ -277,11 +293,12 @@ def test_crbasic_programs_compile_identically_after_formatting(tmp_path, indent)
 def test_chm_programs_compile_identically_after_formatting(tmp_path):
     """Every CHM program. Accepted: identical `ok`, mode, diagnostics, TDF bytes, table list.
     Rejected: only the blanks echoed in messages may differ (one program differs in more)."""
-    accepted = rejected = echo = other = 0
+    accepted = rejected = echo = other = changed = 0
     odd = []
     for f in CHM:
         data = f.read_bytes()
         new = _format_bytes(data)
+        changed += new != data
         assert _format_bytes(new) == new, f.name
         g = tmp_path / f.name
         g.write_bytes(new)
@@ -300,4 +317,5 @@ def test_chm_programs_compile_identically_after_formatting(tmp_path):
     print(f"chm: accepted {accepted}, rejected {rejected}, rejected differing {echo}, "
           f"differing beyond blanks {other} {odd}")
     assert accepted > 100
+    assert changed > 0, "a no-op formatter must not pass the sweep"
     assert set(odd) <= {"xmlparse_1.CR6"}        # a prose line parsed differently with its indent

@@ -843,7 +843,11 @@ declarations(program) -> {UPPER_NAME: [Declaration, ...]}
   (a comment ends a line, so a `_` inside one continues nothing). Strings (`""` escape) and `'`
   comments are skipped; only top-level commas of the call count; grouping parentheses and `{}`
   array literals are transparent (`A((1,2), 3)` is still A, argument 0). Incomplete text answers:
-  no `)`, a trailing comma, an unterminated string (a string ends at its line). A position in a
+  no `)`, a trailing comma, an unterminated string (a string open at the end of a `_`-continued
+  line goes on in the next, as the loader joins them). `call_stack` returns every named call around
+  the position, innermost first (an array index or user Sub call nested in an instruction call is
+  a frame of its own); `signature_help` in the server takes the first frame that resolves to a
+  catalog callable, so `Sample(1, Temp(|1), FP2)` still shows `Sample`. A position in a
   comment, outside any call, past the text, or with a negative column gives None; a column past the
   end of the line clamps. The name is as written and may be dotted (`Status.Battery`) or end in
   `$`. `If`, `While`, `And`, `Then` and the other grammar words that may precede `(` are not
@@ -938,10 +942,12 @@ decodes, Latin-1, so a column is an index into the line of that string.
 `block_pairs` is derived from the instruction catalog (`catalog.InstructionCatalog`), not typed in:
 an instruction row `X` whose row `EndX` exists is a pair (If/EndIf, Select/EndSelect, Sub/EndSub,
 Function/EndFunction, ConstTable/EndConstTable, StructureType/EndStructureType, ObjectType,
-DialSequence, ModemHangup, SubMenu, ProChiPri, ApplyAndRestartSequence). Eight pairs are not named
+DialSequence, ModemHangup, SubMenu, ProChiPri, ApplyAndRestartSequence). Eleven pairs are not named
 that way and are listed in `editing._IRREGULAR_PAIRS`: For/Next, Do/Loop, While/Wend,
 DataTable/EndTable, BeginProg/EndProg, Scan/NextScan, SubScan/NextSubScan,
-SlowSequence/EndSequence. A pair is used for a profile only when both rows are in its instruction
+SlowSequence/EndSequence, DisplayMenu/EndMenu, WebPageBegin/WebPageEnd, ShutdownBegin/ShutdownEnd
+(the last three confirmed in the local help; `BeginBurstTrigger`/`EndBurstTrigger` are catalog rows
+without a help page and are not paired). A pair is used for a profile only when both rows are in its instruction
 table. The two-word closers (`End If`, `End Sub`, `Next Scan`, `Next SubScan`) are `End`/`Next`
 followed by the identifier that completes a closer word. `Case`, `Else`, `ElseIf` do not fold.
 
@@ -1018,7 +1024,7 @@ function where the table has them, None otherwise; it counts table parameters, o
 included. Program names are `(name, kind, scope)`; `scope=None` is global, otherwise the name of a
 Sub/Function and the name is offered only inside it. The current routine is found from `text`
 (unclosed routines included), not from the possibly stale `result`. `declared=` replaces the AST
-walk with a caller-built list. Program names sort before catalog names, then case-insensitively.
+walk with a caller-built list. Program names sort before catalog names, then case-insensitively. A routine-local name that shadows a global of the same upper-cased label is listed once (the local one); catalog names that are not identifiers (`<<`, `>>`) are never offered; a string open at the end of a `_`-continued line goes on in the next line, so there are no candidates there.
 
 LSP-03c: at most `editing.COMPLETION_LIMIT` (200) items are returned, program names first, so the
 list is the first 200 of the complete order. `is_incomplete` is True when more matched; the server
@@ -1225,7 +1231,8 @@ Rules:
   nothing after the `#EndIf` is edited.
 - Blank and whitespace-only lines are not touched.
 - Left alone: a statement with an unterminated string; a continuation line that begins inside a
-  string; every line after an unclosed block opener, after a closer with no opener, after an
+  string; a continued statement holding a `Units` segment (the label is verbatim text, blanks
+  included); every line after an unclosed block opener, after a closer with no opener, after an
   `#EndIf` whose branches disagree, after the first overflow line, and after the top-level
   `EndProg` (the compiler stops reading there).
 - A change that would push a physical line (or a continued statement, counted together as the
@@ -1283,7 +1290,7 @@ defined` lines above.
 
 Names come from the binding index (every declaration whose `lookup(name, ref.routine, ref.role)`
 at the use gives candidates and no ambiguity: a local of another routine is never offered) and
-the profile's catalog (instructions, functions, symbols, plus `NAN` and `INF`). A candidate must fit
+the profile's catalog (instructions, functions, symbols, plus `NAN` and `INF`; for a read or argument reference a catalog name that also has an `instruction` or `keyword` entry, such as `Do` or `For`, is dropped). A candidate must fit
 the role: an assignment target takes variables and parameters only; a bare `Call X` only Subs; a
 call statement Subs, Functions and catalog instructions/functions; a table reference tables; any
 other read variables, constants, functions and symbols (arguments also tables). Distance is the

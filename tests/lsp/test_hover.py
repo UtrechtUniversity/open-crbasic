@@ -594,3 +594,46 @@ def test_no_help_placeholders_in_hover_markdown(prog):
     assert "Help: not configured (No help directory configured)." in off
     todo = _callable_markdown(entry, None, True, ())
     assert "Help: still to do (No help page for this name)." in todo
+
+
+# ---------------------------------------------------------------- LSP-R3d (review F9, F10)
+
+
+def stack(text: str):
+    t, line, col = _at(text)
+    return [(c.name, c.active) for c in H.call_stack(t, line, col)]
+
+
+def test_call_stack_is_innermost_first_and_context_is_its_head():
+    assert stack("Sample(1, Temp(|1), FP2)") == [("Temp", 0), ("Sample", 1)]
+    assert stack("VoltSe(Temp(1), |") == [("VoltSe", 1)]
+    assert stack("VoltSe(x, MySub(1, |") == [("MySub", 1), ("VoltSe", 1)]
+    assert stack("x = (a + (b|))") == []
+    assert stack("A(1) ' B(|") == []
+    assert ctx("Sample(1, Temp(|1), FP2)").name == "Temp"
+
+
+def test_signature_help_falls_through_an_array_index_to_the_instruction():
+    from opencrbasic.lsp import features
+    from opencrbasic.lsp.features import Ctx
+    from lsprotocol import types
+    path = Path("/nowhere/x.cr6")
+    for text, col, name in (("Sample(1, Temp(1), FP2)", 15, "Sample"),
+                            ("VoltSe(Temp(1), ", 16, "VoltSe"),
+                            ("VoltSe(x, MySub(1, ", 19, "VoltSe")):
+        c = Ctx("cr6", "utf-16", "utf-8", {path: text.encode()}, {})
+        got = features.signature_help(c, path, types.Position(0, col))
+        assert got is not None and got.signatures[0].label.startswith(name + "("), text
+    c = Ctx("cr6", "utf-16", "utf-8", {path: b"x = Temp(1)"}, {})
+    assert features.signature_help(c, path, types.Position(0, 9)) is None
+
+
+def test_string_goes_on_across_a_continuation():
+    assert ctx('x = Foo("a, _\n     b", |2)').active == 1
+    t, line, col = _at('x = Foo("a, _\n     b|", 2)')
+    assert H.call_context(t, line, col).active == 0
+    # a word inside the continued string is not hover material
+    t, line, col = _at('s = "a _\n  Volt|age"')
+    assert H._word_at(H._lines(t), line, col) is None
+    t, line, col = _at('s = "a" _\n  + Volt|age')
+    assert H._word_at(H._lines(t), line, col) is not None

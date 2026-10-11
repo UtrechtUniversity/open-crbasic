@@ -14,6 +14,7 @@ Block words are not listed here: the structure comes from `editing` (`_roles`, `
 from __future__ import annotations
 
 import bisect
+import re
 from collections import defaultdict
 from dataclasses import dataclass
 from typing import NamedTuple
@@ -24,6 +25,7 @@ from .parser import _DIRECTIVE_RE, _split_text_segments
 
 __all__ = ["TextEdit", "apply_edits", "format_indentation", "format_range", "format_refusal"]
 
+_UNITS_RE = re.compile(r"\s*Units\b", re.I)
 _MID_WORDS = frozenset({"CASE", "ELSE", "ELSEIF"})
 _CASE = "CASE"          # a virtual frame: the body of one `Case` of a `Select Case`
 _IMPLICIT_END = "SLOWSEQUENCE"      # editing._IMPLICIT_END: ends at the next one or at EndProg
@@ -107,8 +109,12 @@ def _phys(ll: source.LogicalLine) -> tuple[int, int]:
 
 
 def _inside_string(ll: source.LogicalLine) -> bool:
-    """True when the text cannot be read as tokens, or a continuation line starts inside a string
-    (changing its leading blanks would change the string)."""
+    """True when the text cannot be read as tokens, a continuation line starts inside a string, or
+    a continued line holds a `Units` segment (its label is verbatim text, blanks included): changing
+    the leading blanks of a continuation line would change the program."""
+    if _phys(ll)[1] > _phys(ll)[0] and any(
+            _UNITS_RE.match(seg) for seg in _split_text_segments(ll.text)):
+        return True
     try:
         tokens = lexer.tokenize(ll.text)
     except lexer.LexError as e:
