@@ -2404,7 +2404,7 @@ def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str])
     arguments counting the missing one (`Round(X,`, `FileOpen (S,`) is the fallback; anything
     else stays `No Matching, or out of place )`. None: not this shape (`Abs`, which also accepts
     an unclosed call, is left alone)."""
-    if not profile.known_first_word_pass1:
+    if not (profile.known_first_word_pass1 or profile.single_pass):
         return None
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
@@ -2430,7 +2430,10 @@ def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str])
     count, nargs = stack[-1][1], stack[-1][0]["nargs"]
     if toks[-1].text == ",":
         return _out_of_place(profile, text, at_eol) if count <= nargs else None
-    return f"Expression expects , : {text}." if count < nargs else None
+    if count >= nargs:
+        return None
+    sep = "\n" if profile.fallback_echo_newline and at_eol else ""
+    return f"Expression expects , : {text}{sep}."
 
 
 def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None = None) -> str:

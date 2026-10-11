@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_open_call-0",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : x = Round(x\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-1",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Round(x,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-2",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Round(x,1,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-3",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,1,2,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Round(x,1,2,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-4",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Left(s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Left(s,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-5",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Left(s\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : x = Left(s\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-6",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileOpen (s, \"r\",\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileOpen (s, \"r\",\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-7",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileRead( x,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-8",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x, s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileRead( x, s,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-9",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x, s, 3,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = FileRead( x, s, 3,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-10",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = XMLParse( s, s, s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = XMLParse( s, s, s,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-11",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Sin(\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-12",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Sin(x,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-13",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(x,1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Sin(x,1,\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_open_call-14",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound(x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : Round(x\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-0",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : x = Round(x\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-1",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Round(x,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-2",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Round(x,1,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-3",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Round(x,1,2,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Round(x,1,2,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-4",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Left(s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Left(s,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-5",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Left(s\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : x = Left(s\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-6",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileOpen (s, \"r\",\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileOpen (s, \"r\",\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-7",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileRead( x,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-8",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x, s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = FileRead( x, s,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-9",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = FileRead( x, s, 3,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = FileRead( x, s, 3,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-10",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = XMLParse( s, s, s,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = XMLParse( s, s, s,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-11",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x = Sin(\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-12",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Sin(x,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-13",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nx = Sin(x,1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: x = Sin(x,1,\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_open_call-14",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound(x\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : Round(x\n."
+  }
+ ]
+}

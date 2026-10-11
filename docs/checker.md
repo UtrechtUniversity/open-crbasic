@@ -5261,3 +5261,16 @@ every `Name As ...` as a structure member; it now does so only inside the struct
 (`parser._parse_assignment_or_call`). CR6/CR1000X also reject the line (`Invalid, or out of place
 expression`, plus `Expr illegally occurs before BeginProg.` before `BeginProg`) but a nameless
 `Public` there swallows the next line, so the parser is left as it is for them.
+
+### Statement left open inside a function call, CR300/CR350 (`chm/xmlparse_1`; fixture `r12_cr3xx_open_call.json`)
+
+An assignment cut off inside a built-in call (the CHM wraps arguments onto the next line) follows
+the CR6/CR1000X rule (`structure._unclosed_call_message`, now also enabled for CR300/CR350): no
+trailing comma and fewer arguments than the function has is `Expression expects , : <stmt>`
+(`x = Round(x`, `x = Left(s`); a trailing comma with at most as many arguments as the function
+takes, counting the missing one, is the generic `Invalid, or out of place expression: <stmt>`
+(`x = Round(x,`, `x = FileOpen (s, "r",`, `x = XMLParse( s, s, s,`); anything else stays `No
+Matching, or out of place )`. The echo carries the CR300/CR350 line-end newline. Still wrong, all
+four loggers: a bare call statement open at a trailing comma (`Round(x,`, `FileOpen (s, "r",`:
+real the generic fallback, accepted here), `x = Abs(x,` (real accepts), `x = XMLParse( s, s, s,
+s, s, s,` (real generic, `nargs` of the function in our table).

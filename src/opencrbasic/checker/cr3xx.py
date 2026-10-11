@@ -1576,7 +1576,15 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
                     # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`)
                     head = "No Matching, or out of place ) in expression: "
-                if cond is not None:
+                if head == "No Matching, or out of place ) in expression: " and cond is None and (
+                        refined := structure._unclosed_call_message(
+                            profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program))):
+                    # a call left open at the end of the line: its argument count decides the message
+                    # as on CR6/CR1000X (oracle, CR300/CR350, 2026-10-11: `x = Round(x` -> `Expression
+                    # expects ,`, `x = FileOpen (s, "r",` -> the generic fallback)
+                    d = dataclasses.replace(d, message=refined)
+                    changed = True
+                elif cond is not None:
                     # a `While`/`Do While|Until`/`Loop While|Until` condition echoes alone, no
                     # line-end newline (oracle, CR300/CR350, 2026-10-10)
                     d = dataclasses.replace(d, message=(head or _GENERIC_FALLBACK_PREFIX) + cond + ".")
