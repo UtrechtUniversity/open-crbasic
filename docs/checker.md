@@ -5194,3 +5194,19 @@ prose messages follow the first parameter's code (`cr3xx.check_unknown_line_word
   well-formed expression with a string operand of a logical/numeric operator prints `String is
   illegal here` before its final message, as on CR6/CR1000X (`"BattV" and "Counter".`, `x =
   "BattV" and "Counter".`; `"BattV"` alone, `x "BattV" and "Counter".` print none).
+
+### `&` in a call's arguments and the argument items (`chm/clockset_1`, `sdmcd16mask_1`; fixture `r12_cr3xx_call_items.json`)
+
+A prose line that starts with a call (`cv(4, 5, & 6) with GoesTime values`, a declared variable
+or an undefined name) reads its parenthesised arguments as comma-separated items
+(`cr3xx._paren_items_words`, called from the first-word parenthesis walk): the first three items
+are walked like a line (words, chain and one peek word), the fourth only for its first name, the
+rest is not read, and a juxtaposed peek word ends the whole walk (`foo (a b, c d, ...)` names `a`,
+`b`; `cv(4, zz yy, 6)` names both; `cv(zz, yy, 6, ww)` names all three; `cv(4, 5, 6, zz, 7)` names
+`zz`). `&` is a hex literal prefix only before `h` and hex digits: `&h0F` in the first three items
+is a literal, in the fourth it is the name `h0F` (an unresolved call's fourth `&h0000` argument
+too, `_call_arg_undefined_names`); in operand position any other `&` makes a name of the `&` and
+what follows up to a blank (`& 6` -> `&`, `&6` -> `&6`, third item or earlier; a fourth `&5` names
+nothing). Not done: `foo (a, & b) text` (real also names `b`), the `text` that follows a plain
+`foo (a, b) text` is named by us and not by the real compilers, `x = & 6` (real `& is not defined.`
+and `Incomplete expression`), `&h0000 text more` (real names `text`).

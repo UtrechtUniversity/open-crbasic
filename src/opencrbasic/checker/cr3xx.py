@@ -946,7 +946,53 @@ def declared_later(first: dict[str, tuple[str, int]], line: int, file: str) -> s
     return {n for n, (f, l) in first.items() if f == file and l > line}
 
 
-def _leading_unknown_words(text: str, known: set[str], callables: frozenset = frozenset()) -> list[str]:
+def _paren_items_words(inner: str, known: set[str]) -> list[str]:
+    """The undefined names of the text after a call's `(`: with top-level commas, the first three
+    items are walked like a line (words, chain and peek) and the fourth only for its first name,
+    the rest is not read (oracle, CR300, 2026-10-11: `cv(zz, yy, 6, ww) text` names `zz`, `yy`,
+    `ww`; `cv(4, zz yy, 6)` names both). An item starting `&` is a hex literal (`&h0F`) or, in
+    operand position, a name made of the `&` and what follows it up to a blank (`& 6` -> `&`,
+    `&6` -> `&6`); the fourth item's `&h0F` names `h0F`, its other `&` forms name nothing."""
+    items, depth, cur = [], 0, ""
+    for ch in inner:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            if depth == 0:
+                break
+            depth -= 1
+        if ch == "," and depth == 0:
+            items.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    items.append(cur)
+    if len(items) == 1 and "&" not in inner:
+        return _leading_unknown_words(inner, known)
+    words: list[str] = []
+    for idx, item in enumerate(items[:4]):
+        item = item.lstrip(" \t")
+        amp = re.match(r"&([A-Za-z0-9_]*)", item)
+        if amp:
+            hexed = re.match(r"&[hH][0-9A-Fa-f]+", item)
+            if idx == 3:
+                if hexed and amp.group(1) not in known:
+                    words.append(amp.group(1))
+                continue
+            if not hexed:
+                words.append(amp.group(0))
+                continue
+            item = "0" + item[hexed.end():]
+        walked: dict = {}
+        found = _leading_unknown_words(item, known, state=walked)
+        words += found[:1] if idx == 3 else found
+        if walked.get("peeked"):
+            break
+    return words
+
+
+def _leading_unknown_words(text: str, known: set[str], callables: frozenset = frozenset(),
+                           state: dict | None = None) -> list[str]:
     """The ordered list of `text`'s own leading bare words this project believes CR300/CR350
     would report as `%s is not defined.` ahead of the generic fallback for it -- see this
     module's `check_unknown_line_words` comment above for the oracle evidence and the exact walk
@@ -983,7 +1029,7 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
             # `device (8 channels)`: the first word's parenthesis opens a second walk of the same
             # shape, which ends at the first `)`, and nothing after it is examined
             # (oracle, CR300, 2026-10-08).
-            words += _leading_unknown_words(text[paren.end():], known)  # (a declared variable or function keeps the walk too, oracle 2026-10-10: `X (foo bar)`)
+            words += _paren_items_words(text[paren.end():], known)  # (a declared variable or function keeps the walk too, oracle 2026-10-10: `X (foo bar)`)
             break
         op_match = _LINE_OP_RUN_RE.match(text, pos) or _LINE_OP_WORD_RE.match(text, pos)
         if op_match:
@@ -993,6 +1039,8 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
         if ws_match and _LINE_WORD_RE.match(text, ws_match.end()):
             pos = ws_match.end()
             extending = False
+            if state is not None:
+                state["peeked"] = True  # (a juxtaposed word: the walk is over)
             continue
         break
     return [w for w in words if w.upper() not in known]
@@ -1062,7 +1110,9 @@ def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> lis
     for arg in args[:3]:
         if not walk(arg):
             return names
-    if len(args) > 3:
+    if len(args) > 3 and isinstance(args[3], S.Number) and args[3].text[:2].lower() == "&h":
+        names.append(args[3].text[1:])  # (oracle, CR300, 2026-10-11: a fourth `&h0000` names `h0000`)
+    elif len(args) > 3:
         first = args[3]
         while isinstance(first, (S.Binary, S.Unary)):
             first = first.left if isinstance(first, S.Binary) else first.operand
