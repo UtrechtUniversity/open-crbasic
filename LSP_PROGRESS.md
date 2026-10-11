@@ -59,6 +59,63 @@ Live implementation state and session handoff. Design and acceptance criteria:
 
 ## Host findings to act on
 
+Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`, `c0fd9bf1`,
+`e77ee5cc`/`4d88a186`, `1b01311d`). Accepted from them: T-01 oracle gates (no regression through
+`e77ee5cc`), T-02 CR6 scenarios, H-01 range 32-33 (`e77ee5cc`), T-03 visual, T-07 idle benchmark
+(hover p95 0.9 ms, completion 3.9 ms, diagnostics after debounce 134 ms), T-09 provider/API checks
+16/16 (`1b01311d`; visual checks pending), H-05 strict-mode leak fixed and retested (`1b01311d`).
+
+Open:
+- H-02 restart toast and H-03 `.CR300` association: fixed by LSP-01e (`c5162d7` predates it at
+  `1b01311d`); host retest per T-04 amendment.
+- H-04 non-ASCII include: resolution matches the real compiler (T-05). LSP display issue: the
+  message text is Latin-1-decoded source bytes, so a UTF-8 workspace shows mojibake -> LSP-01f
+  (decode compiler message text with the configured editor encoding for display only).
+- T-09 visual checks; Windows/Linux; all-entries-complete signal (none exposed).
+
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Scope: this LSP session changes only LSP code (facade, editor modules, server, client, LSP
+  tests/docs). Compiler work items it finds are recorded in [PROGRESS.md](PROGRESS.md) "Compiler
+  items found by the LSP work" and not executed. Where the compiler or help lacks something
+  (e.g. no help page, unimplemented instruction), editor features show an explicit placeholder
+  ("Help: still to do") instead of driving a compiler change.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
+## Human decisions (2026-10-11)
+
+- Help parsing (display only; the instruction table stays authoritative): a bare `[X]` around one
+  parameter in a call's parameter list marks it optional (`Name [optional]` already did); brackets
+  outside call parameter lists are not parameters; a trailing `...` is one repeatable parameter
+  (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
+  LSP-04a-rules.
+
+## Integration fixes by the coordinator
+
+- `tools/lsp_bench.py` (LSP-08a) removed `OPENCRBASIC_STRICT` from `os.environ` at import, so the
+  smoke test switched strict mode off for every later test in the session (found as 2 failures in
+  `tests/lsp/test_analysis.py` when run after it). Now only `main()` does it.
+
+## Review findings
+
+[gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
+2026-10-11), four P2 findings, triaged by the coordinator:
+
+1. Two-word `End Sub`/`End Function` do not close routine scope (bindings, hover): accepted,
+   reproducer confirmed by the reviewer; LSP-R1 (Haiku). The compiler's `symbols.scoped_view` has
+   the same omission (compiler workstream; LSP-R1 reports whether verdicts are affected).
+2. Instruction token resolves to a same-name user declaration: accepted; LSP-R1.
+3. Diagnostic columns always UTF-16 regardless of negotiated encoding: accepted; fixed in LSP-wire
+   (utf-8/utf-16/utf-32 test).
+4. Quoted `DataTable("Hist")` missing from outline/declared names/completion: accepted; LSP-R1.
+
+## Host findings to act on
+
 Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`, `c0fd9bf1`). T-01
 (oracle) passed at `8b25214a`; T-02 CR6 scenarios and T-03 visual passed at `7c450ed5` (macOS,
 VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:

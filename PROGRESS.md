@@ -163,18 +163,24 @@ are in `docs/lsp-rounds/`.
    false accepts `tests/corpus/fuzz/cr300/false_accept/80cdb831bd9a.CR6` and
    `cr350/false_accept/4b318b036fd1.CR6` (table size beyond 32 bits). Part of the storage-limit
    family above; at minimum no traceback. Source: `docs/lsp-rounds/LSP-00.md`.
-3. **Indentation changes a message**: `tests/corpus/chm/xmlparse_1.CR6` gives "Invalid symbol in
-   expression" unindented but "Illegal Data parameter" when its prose line is indented
-   (opencrbasic only; real compiler not yet run: LSP_TO_BE_TESTED.md T-06).
-4. **Non-ASCII include names**: a UTF-8 `É space.crb` include is decoded as Latin-1 and not found.
-   Real-compiler behaviour unknown (T-05).
-5. **Builtin argument counts** for `EmailSend`, `EmailRecv`, `UDPDatagram`, `XMLParse`, `HTTPGet`,
-   `UDPOpen`, `TCPOpen`, `HTTPPost`, `CheckSum` have no arity fixtures (`nargs` 6 is the packed
-   `argspec` limit, not the real count); probe request T-08; evidence `LSP-04d-handoff.md`.
+3. ~~Indentation changes a message~~: not reproduced on the host (T-06, `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`): real CR6Comp and
+   `crbc` both print the same pair at line 78 with and without indentation. Closed unless the LSP-07b
+   formatter observation is reproduced.
+4. **Non-ASCII include names** (T-05, `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`): resolution matches the real compiler (UTF-8 source
+   bytes: both warn "cannot open include"; Latin-1 source: both resolve). Remaining difference:
+   the real compiler writes the message's raw source bytes (shows `É`), `crbc` prints the Latin-1
+   decoded text re-encoded as UTF-8 (shows `Ã\x89`). CLI output encoding item.
+5. **Builtin argument counts** (T-08 done on the host, audited fixture with 0 differing:
+   `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/function-arity-fixture.json`): accepted counts
+   EmailSend 9/13/14, EmailRecv 9-13, UDPDatagram 6-8, XMLParse 8, HTTPGet 3-4, UDPOpen 3-4,
+   TCPOpen 3/4/6, HTTPPost 4/8/9, CheckSum 3/4/6. Integrate the fixture into `tests/fixtures/`
+   and the checker's `_ARITY_ALLOWED`; signature help follows the checker tables automatically.
 6. **`Status.CardBytesFree`** (used by `crbasic/Main.CR6`, which the real compiler accepts) is in
    neither `data/status_table.json` nor `settings_fields.json`; check whether the Status field
    list is incomplete (`LSP-05c-handoff.md`).
 7. **`Static` declarations** parse as `Unparsed` (`LSP-05a-handoff.md`); check against the oracle.
+10. **Malformed one-argument `IncludeSection "X"`**: CR6Comp crashes (exit 5), `crbc` exits 0
+   (T-05 side observation, `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`); a reference fault, no verdict to match.
 9. **Statement labels**: in one LSP probe `Label1:` parsed as an unresolved call, not a `Label`
    (`LSP-07a-handoff.md`; not investigated, may depend on the statement shape).
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);

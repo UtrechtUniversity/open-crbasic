@@ -280,3 +280,11 @@ Changing `debounceMs`/`exclude` with the server running still applies without re
 "no configured entry" note; with logger `cr300` it gets live diagnostics). (4) The startup line
 appears in the output channel as an info log message (record whether the stderr copy still shows
 at error level).
+
+### Coordinator integration note (2026-10-11, appended)
+
+Integrated from the host records through `1b01311d`: H-01, H-05, T-01, T-03, T-07, T-08 and the
+T-09 provider checks are accepted at their tested revisions; T-06 closed as not reproduced; T-05
+shows parity of include resolution (display follow-up LSP-01f). Still requested: T-04 amendment
+(LSP-01e: H-02 toast, H-03 association, banner), T-09 visual checks, Windows/Linux.
+
