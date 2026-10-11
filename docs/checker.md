@@ -4901,3 +4901,12 @@ Nope` kept the later `Nope`, because the quoted name counted as an earlier name.
 real compilers now, as does `If LEN("Scan(") = Nope Then X = Scan(1)`. CR6/CR1000X are not part of
 this family: `X = Nope + Scan(1)` gives `Invalid symbol in expression` there, which ours does not
 model (pre-existing).
+
+
+`Not` after any other operator (oracle 2026-10-11, all four loggers, `tests/fixtures/not_operand_binary.json`):
+`Not` is a prefix on the operand of any binary operator (`+ - * / Mod \ & << >> ^ = < >`) and of unary `-`,
+so `X = 1 + Not 2`, `X = 1 + Not 2 To 3`, `X = 1 = Not 2`, `X = -Not 2`, `X = 2 ^ Not 2 To 3`,
+`X = 1 + Not 2 To 3 Mod 4` and `X = 1 + Not 2 To Not 3 Mod 4` compile. Still rejected by the same rules as
+above: `1 + Not 2 To 3 < 4`, `1 + Not 2 < 3 To 4`, `1 = Not 2 To 3` (`Incomplete expression`), `1 Mod Not`,
+`1 + Not 2 To Not` (`Invalid, or out of place expression`). Implemented in `parser._parse_unary` and
+`parser._parse_power_operand`; the `Not` at the start of a value is still the lowest-precedence logical `Not`.

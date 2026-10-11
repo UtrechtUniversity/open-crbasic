@@ -1473,6 +1473,9 @@ class _Parser:
             tok = p.next()
             operand = self._parse_unary(p, line, file)
             return S.Unary(tok.line, file, tok.text, operand)
+        if p.is_ident("NOT"):  # `1 + Not 2 To 3`, `1 = Not 2`, `-Not 2` compile: Not is an operand prefix
+            tok = p.next()
+            return S.Unary(tok.line, file, "NOT", self._parse_unary(p, line, file))
         return self._parse_power(p, line, file)
 
     def _parse_power(self, p: _TokStream, line: int, file: str) -> S.Expr:
@@ -1493,6 +1496,9 @@ class _Parser:
             tok = p.next()
             operand = self._parse_power_operand(p, line, file)
             return S.Unary(tok.line, file, tok.text, operand)
+        if p.is_ident("NOT"):  # `2 ^ Not 2 To 3` compiles (oracle)
+            tok = p.next()
+            return S.Unary(tok.line, file, "NOT", self._parse_power_operand(p, line, file))
         return self._parse_atom(p, line, file)
 
     def _parse_atom(self, p: _TokStream, line: int, file: str, strict: bool = True) -> S.Expr:
