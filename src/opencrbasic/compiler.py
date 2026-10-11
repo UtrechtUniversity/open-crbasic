@@ -91,6 +91,18 @@ class CompileResult:
     def ok(self) -> bool:
         return not self.diagnostics.errors and not self.implementation_exceptions
 
+    def _sort_key(self, d) -> tuple:
+        if not d.line:
+            return (True, _no_line_kind(d), 0)
+        if (self.profile.include_warning_first and (d.file or self.program) == self.program
+                and d.severity == "warning"
+                and d.message.startswith("Cannot open include file ")):
+            # reader pass: before any other message of the main file (`docs/checker.md`)
+            return (False, (-1, d.line), 0)
+        return (False, self._position(d),
+                d.message.endswith("never reached at run time.") * 2
+                or d.message.endswith("illegally occurs before BeginProg."))
+
     def result_lines(self, show_signature: bool = False) -> list[str]:
         """The lines CR6Comp prints to stdout (and the message file) for this result."""
         # CR6Comp is a single top-to-bottom pass over the file, so its own diagnostics -- errors
@@ -132,11 +144,7 @@ class CompileResult:
         # diagnostics; a stable sort keeps each kind's own relative (insertion) order within itself.
         # On one line the reachability warning follows that line's errors (oracle: 15 of 15 corpus
         # and fuzz transcripts); other warnings keep their check order.
-        ordered = sorted(self.diagnostics.items,
-                          key=lambda d: (False, self._position(d),
-                                         d.message.endswith("never reached at run time.") * 2
-                                         or d.message.endswith("illegally occurs before BeginProg."))
-                          if d.line else (True, _no_line_kind(d), 0))
+        ordered = sorted(self.diagnostics.items, key=self._sort_key)
         drive = self.profile.include_drive_prefix
         if not self.ok:
             rendered = _bounded_by_message_buffer([d.cr6comp(self.program, drive) for d in ordered])

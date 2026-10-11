@@ -85,6 +85,10 @@ class Profile:
     # CR300/CR350 print an included file's name with its drive (`<CPU:Lib.crb>`, `<cpu:Lib.crb>`
     # when none was written); CR6/CR1000X without it (`diagnostics.Diagnostic.cr6comp`).
     include_drive_prefix: bool = False
+    # CR6/CR1000X: a missing main-file `Include` warning is printed before every other message of
+    # the file, whatever line the other message is on (`compiler.CompileResult.result_lines`,
+    # `docs/checker.md` "Missing include warnings come first"). CR300/CR350 print it in line order.
+    include_warning_first: bool = False
     # CR300/CR350 report pass-2 findings (undefined names, the generic fallback) even after a
     # pass-1 error (oracle: `Dim Z banana` then `X = Q` prints both); CR6/CR1000X do not.
     single_pass: bool = False
@@ -176,9 +180,10 @@ _DECLARABLE_NUMERIC_TYPES = frozenset({
 
 PROFILES = {
     "cr6": Profile("cr6", "CR6", "CR6.14.2.0", "03/04/2025", DATA, True, "CR6Comp.exe",
-                   declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
+                   include_warning_first=True, declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
     "cr1000x": Profile("cr1000x", "CR1000X", "CR1000X.8.2.0", "03/04/2025", DATA / "cr1000x", True,
-                       "cr1000xcomp.exe", declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
+                       "cr1000xcomp.exe", include_warning_first=True,
+                       declarable_predefined_names=_DECLARABLE_NUMERIC_TYPES),
     "cr300": Profile("cr300", "CR300", "CR300.Std.11.02", "02/04/2025", DATA / "cr300", False,
                      "cr300comp.exe", unresolved_symbol_message=DottedAwareMessage("{name} is not defined."),
                      early_warnings_gated=True, undefined_call_message=True,

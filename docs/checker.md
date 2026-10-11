@@ -5044,3 +5044,16 @@ literal), `X = 1 AND S = "a" AND X =` and `X AND "a" AND X =` shapes were checke
 string line. Not done: an assignment-led shape with a string operand (`X = "a" AND X =`,
 `S = "a" AND X =`, `X = "a" AND`) also gets the string line on CR300/CR350 and is still missing
 there. Fixture `tests/fixtures/logical_assign.json`.
+
+### Missing include warnings come first (CR6/CR1000X, 2026-10-11)
+
+A missing main-file `Include` warning (`Cannot open include file  X.`) is printed before every other
+message of the main file, whatever line those are on: `Foo Bar` on line 2 with `Include "NoSuch.crb"`
+on line 3 is `line 3: Warning: ...` then `line 2: Invalid, or out of place expression: Foo Bar.`, and
+the same inside a `Scan` body (`Battery (Q)` then `Include`: warning first). Warnings keep their line
+order among themselves. Measured on CR6 and CR1000X (`Profile.include_warning_first`,
+`CompileResult._sort_key`); the reader stops at the first `EndProg`, so an `Include` after it is still
+silent. CR300/CR350 keep line order (`Foo Bar` / `Include` prints the warning last there). An extension
+error (`Include "x.txt"`) hides the other errors as before and is not reordered. Pre-`BeginProg` and
+in-body shapes are in `tests/fixtures/include_warning_pre.json` and `tests/fixtures/include_warning_body.json`
+(all four loggers, 0 differing). Fixed `chm/include_1.CR6` on CR1000X.
