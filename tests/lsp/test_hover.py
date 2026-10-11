@@ -345,9 +345,9 @@ def test_hover_instruction_with_and_without_help(prog):
     line, col = find(text, "Sample")
     none = hv(prog, line, col, None).markdown
     assert "**Sample** (instruction)" in none and "Sample(arg1, arg2, arg3, arg4 (optional))" in none
-    assert "No help directory configured." in none and "const_expr" in none
+    assert "Help: not configured (No help directory configured)." in none and "const_expr" in none
     missing = hv(prog, line, col, FakeHelp()).markdown
-    assert "No help page for this name." in missing
+    assert "Help: still to do (No help page for this name)." in missing
     got = hv(prog, line, col, HELP).markdown
     assert "**Sample (Synthetic Title)**" in got and "Synthetic summary." in got
     assert "Help lists 3 parameters, catalog has 4" in got and "Source: help page `Instructions/sample.htm`" in got
@@ -505,3 +505,90 @@ def test_two_word_end_sub_closes_hover_scope(tmp_path, end):
     d = H.declarations(analyze(AnalysisRequest(path)).program)
     assert [x.scope for x in d["X"]] == [None, "S"]
     assert d["Z"][0].scope is None
+
+
+# ---------------------------------------------------------------- function arity from the checker
+
+def _ftp_help(count: int) -> FakeHelp:
+    names = [f"P{i}" for i in range(1, count + 1)]
+    return FakeHelp(ftpclient=page("FTPClient", [(n, "d") for n in names]))
+
+
+def test_function_accepted_counts_pair_help_names_with_optional_tail():
+    # FTPCLIENT (table nargs 6) takes 6, 10 or 11 arguments (checker `_ARITY_ALLOWED`); 11 help names.
+    s = H.signature_help("FTPClient", 0, "cr6", _ftp_help(11))
+    assert s.paired and s.catalog_count == s.help_count == 11 and s.note == ""
+    assert s.label == "FTPCLIENT(P1, P2, P3, P4, P5, P6, P7 (optional), P8 (optional), P9 (optional), " \
+                      "P10 (optional), P11 (optional))"
+    assert [p.optional for p in s.parameters] == [False] * 6 + [True] * 5
+    assert s.parameters[0].documentation == "d"
+    assert "Accepted argument counts (checker): 6, 10 or 11." in s.documentation
+    assert s.active_parameter == 0
+    assert H.signature_help("FTPClient", 20, "cr6", _ftp_help(11)).active_parameter == 10
+
+
+def test_function_help_count_not_an_accepted_maximum_keeps_argn():
+    # EMAILSEND (nargs 6): the checker has a lower bound only, so no largest count; help has 14.
+    s = H.signature_help("EmailSend", 0, "cr6", FakeHelp(emailsend=page("EmailSend", [(f"P{i}", "d") for i in range(1, 15)])))
+    assert not s.paired and s.label == "EMAILSEND(arg1, arg2, arg3, arg4, arg5, arg6)"
+    assert all(p.documentation == "" and not p.optional for p in s.parameters)
+    assert "Accepted argument counts" not in s.documentation
+
+
+def test_function_range_counts_pair_when_help_matches_the_maximum():
+    # NETWORKTIMEPROTOCOL (nargs 5) takes 3 or 4 arguments (checker `_ARITY_RANGE`); help lists 4.
+    help4 = FakeHelp(networktimeprotocol=page("NetworkTimeProtocol",
+                                              [("Server", "a"), ("Offset", "b"), ("Max", "c"), ("Wait", "d")]))
+    s = H.signature_help("NetworkTimeProtocol", 0, "cr6", help4)
+    assert s.paired and s.label == "NETWORKTIMEPROTOCOL(Server, Offset, Max, Wait (optional))"
+    assert "Accepted argument counts (checker): 3 or 4." in s.documentation
+
+
+def test_function_without_help_or_with_other_count_is_unchanged():
+    assert H.signature_help("FTPClient", 0, "cr6", None).label == "FTPCLIENT(arg1, arg2, arg3, arg4, arg5, arg6)"
+    s = H.signature_help("FTPClient", 0, "cr6", _ftp_help(9))
+    assert not s.paired and s.label == "FTPCLIENT(arg1, arg2, arg3, arg4, arg5, arg6)"
+
+
+def test_accepted_counts_helper():
+    assert H._accepted_counts("FTPClient", 6) == (6, 10, 11)
+    assert H._accepted_counts("ftpclient", 6) == (6, 10, 11)
+    assert H._accepted_counts("HTTPPut", 5) == (4, 8, 9)
+    assert H._accepted_counts("NetworkTimeProtocol", 5) == (3, 4)
+    assert H._accepted_counts("Left", 2) == (2,)         # both bounds are nargs in the checker tables
+    assert H._accepted_counts("EmailSend", 6) is None    # minimum only in the checker tables
+    assert H._accepted_counts("NoSuchFunction", 3) is None
+
+
+def test_declarations_include_quoted_datatable_and_consttable_names(tmp_path):
+    path = tmp_path / "Main.CR6"
+    path.write_text('Public x\nDataTable("Hist",1,-1)\nConstTable("Ct")\nEndTable\nEndProg\n')
+    d = H.declarations(analyze(AnalysisRequest(path)).program)
+    assert d["HIST"][0].kind == "DataTable" and d["HIST"][0].name == "Hist"
+    assert d["CT"][0].kind == "ConstTable" and d["CT"][0].name == "Ct"
+    assert d["X"][0].kind == "Public"
+
+
+def test_no_help_placeholders_in_signature_documentation():
+    # Help directory not configured: "not configured"; configured but no page: "still to do".
+    off = H.signature_help("Left", 0, "cr6", None)
+    assert off.help_count is None and off.label == "LEFT(arg1, arg2)"
+    assert "Help: not configured (No help directory configured)." in off.documentation
+    assert "still to do" not in off.documentation
+    todo = H.signature_help("FTPClient", 0, "cr6", FakeHelp())
+    assert "Help: still to do (No help page for this name)." in todo.documentation
+    assert "not configured" not in todo.documentation
+    # With help, no placeholder is shown.
+    assert "Help: " not in H.signature_help("left", 0, "cr6", HELP).documentation
+
+
+def test_no_help_placeholders_in_hover_markdown(prog):
+    from opencrbasic.hover import _callable_markdown
+    from opencrbasic import hover as HH
+    cat = HH._catalog("cr6")
+    entry = cat.get("Sample", "instruction")
+    assert entry is not None
+    off = _callable_markdown(entry, None, False, ())
+    assert "Help: not configured (No help directory configured)." in off
+    todo = _callable_markdown(entry, None, True, ())
+    assert "Help: still to do (No help page for this name)." in todo

@@ -675,7 +675,15 @@ declarations(program) -> {UPPER_NAME: [Declaration, ...]}
   guess. Instruction parameters carry the catalog `type_code`, its `type_codes.json` `kind` (the
   names of `docs/type-codes.md`, none invented) and `optional` (code >= 100, or the help syntax
   says `optional`). Functions take the count from the table's `nargs` (a trailing argument may be
-  optional; `checker/expressions.py`) and have no type kind (`argtypes` is not decoded). A function
+  optional; `checker/expressions.py`) unless the checker's own tables give accepted counts
+  (`_ARITY_ALLOWED`, `_ARITY_RANGE`, or `_ARITY_MIN_SAFE` and `_ARITY_MAX_SAFE` both equal to
+  `nargs`; imported by `hover._accepted_counts`, not copied). When the largest accepted count equals
+  the help parameter count, help names pair with the catalog positions, parameters after the
+  smallest accepted count are marked optional, and the documentation states the accepted counts
+  (FTPClient: 6, 10 or 11, so 11 names with 6 required; HTTPPut: 4, 8 or 9; NetworkTimeProtocol:
+  3 or 4). The optional marking is a simplification: it cannot show that FTPClient rejects 7-9.
+  Otherwise `arg1..argN` for the table count. Functions have no type kind (`argtypes` is not
+  decoded). A function
   with no `nargs` and no help parameters (operators such as `And`, `Not`, `To`), a constant, a
   keyword-only word, a dotted name or an unknown name gives None. `active_parameter` is clamped to
   `[0, count - 1]` (None for no parameters). `label_span` of each parameter indexes into `label`
@@ -696,9 +704,12 @@ declarations(program) -> {UPPER_NAME: [Declaration, ...]}
   - instruction or function: title (help title when help exists), signature, summary, one bullet
     per parameter with `type_codes.json` kind and optional marker plus the help description, the
     mismatch sentence when help and catalog counts differ, and a provenance line naming the help
-    page (for example `Source: help page Instructions/voltse.htm`) or "No help directory configured." /
-    "No help page for this name." A name that is also a predefined constant gets an "Also a
-    predefined constant" line.
+    page (for example `Source: help page Instructions/voltse.htm`). With no help text the line is an
+    explicit placeholder, never inferred text: `Help: not configured (No help directory configured).`
+    when no help directory is set, `Help: still to do (No help page for this name).` when the
+    directory has no page for the name. The same placeholders appear in signature documentation, and
+    the catalog facts (parameter count, type codes) are still shown. A name that is also a predefined
+    constant gets an "Also a predefined constant" line.
   - predefined constant: `NAME = value` from the symbol table. Keyword-only words (`Then`, `Step`,
     `As`, `Optional`): one line. Operators without an argument count: the table row.
   The result carries the word's line and columns for the hover range.

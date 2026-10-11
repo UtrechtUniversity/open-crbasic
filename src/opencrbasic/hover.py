@@ -20,6 +20,9 @@ from . import positions, profiles
 from . import syntax as S
 from .bindings import closes_routine
 from .catalog import CatalogEntry, InstructionCatalog
+from .checker.expressions import (_ARITY_ALLOWED, _ARITY_MAX_SAFE, _ARITY_MIN_SAFE,
+                                  _ARITY_RANGE)
+from .editing import _declared_name_arg
 from .helpdocs import HelpProvider, InstructionHelp, pair_signature
 from .helpdocs import _md
 from .source import _is_continuation, _strip_comment
@@ -222,7 +225,43 @@ def _callable_entry(cat: InstructionCatalog, name: str) -> CatalogEntry | None:
     return cat.get(name, "instruction") or cat.get(name, "function")
 
 
-def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: int) -> SignatureInfo | None:
+def _accepted_counts(name: str, nargs: int) -> tuple[int, ...] | None:
+    """Argument counts the checker accepts for a builtin function whose table has `nargs`, from its
+    own tables (`checker/expressions.py`, `_call_arity_problem`); None when those tables do not bound
+    the count both ways. `nargs` is not a universal bound (`_ARITY_ALLOWED`, `_ARITY_RANGE`)."""
+    upper = name.upper()
+    if allowed := _ARITY_ALLOWED.get(upper, {}).get(nargs):
+        return tuple(sorted(allowed))
+    if bounds := _ARITY_RANGE.get(upper, {}).get(nargs):
+        return tuple(range(bounds[0], bounds[1] + 1))
+    if _ARITY_MIN_SAFE.get(upper) == nargs and _ARITY_MAX_SAFE.get(upper) == nargs:
+        return (nargs,)
+    return None
+
+
+def _count_text(counts: tuple[int, ...]) -> str:
+    """`6, 10 or 11` for (6, 10, 11)."""
+    words = [str(c) for c in counts]
+    return words[0] if len(words) == 1 else f"{', '.join(words[:-1])} or {words[-1]}"
+
+
+# Explicit placeholders when no help text is available (human instruction, LSP-04e). Never inferred.
+_HELP_TODO = "Help: still to do (No help page for this name)."
+_HELP_OFF = "Help: not configured (No help directory configured)."
+
+
+def _no_help_line(help_configured: bool) -> str:
+    return _HELP_TODO if help_configured else _HELP_OFF
+
+
+def _accepted_note(accepted: tuple[int, ...]) -> str:
+    return (f"Accepted argument counts (checker): {_count_text(accepted)}. "
+            f"Parameters after the first {accepted[0]} are optional.")
+
+
+def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: int,
+                     help_configured: bool = True) -> SignatureInfo | None:
+    accepted: tuple[int, ...] | None = None
     if entry.kind == "instruction":
         codes = tuple(entry.params)
         kinds = [_kind_of(c) for c in codes]
@@ -230,22 +269,36 @@ def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: 
         count = len(codes)
         type_codes: list[int | None] = list(codes)
     else:
-        count = entry.nargs if entry.nargs is not None else (len(help.params) if help and help.params else None)
+        # Help names apply when the largest count the checker accepts is the help parameter count
+        # (FTPClient: 6, 10 or 11 against 11 help names). Parameters past the smallest accepted count
+        # are optional; the accepted counts are stated in the documentation.
+        if entry.nargs is not None:
+            accepted = _accepted_counts(entry.name, entry.nargs)
+        if help is not None and accepted and len(help.params) == accepted[-1]:
+            count = accepted[-1]
+        else:
+            accepted = None
+            count = entry.nargs if entry.nargs is not None else (len(help.params) if help and help.params else None)
         if count is None:
             return None
         kinds = [(None, False)] * count
         paired = pair_signature(entry.name, (0,) * count, help)
+        if accepted:
+            paired = dataclasses.replace(paired, params=tuple(
+                dataclasses.replace(p, optional=True) if i >= accepted[0] else p
+                for i, p in enumerate(paired.params)))
         type_codes = [None] * count
     labels, spans, pos = [], [], len(entry.name) + 1
     params = []
     for i, p in enumerate(paired.params):
-        kind, cat_optional = kinds[i]
+        kind, cat_optional = kinds[i] if i < len(kinds) else (None, False)
+        type_code = type_codes[i] if i < len(type_codes) else None
         piece = p.label + (" (optional)" if p.optional or cat_optional else "")
         spans.append((pos, pos + len(piece)))
         pos += len(piece) + 2
         labels.append(piece)
         params.append(ParameterInfo(p.label, spans[-1], _esc(p.description) if p.from_help else "",
-                                    type_codes[i], kind, p.optional or cat_optional))
+                                    type_code, kind, p.optional or cat_optional))
     label = f"{entry.name}({', '.join(labels)})"
     doc: list[str] = []
     if help is not None:
@@ -254,7 +307,11 @@ def _build_signature(entry: CatalogEntry, help: InstructionHelp | None, active: 
         if not paired.matched:
             doc.append(_mismatch(help, paired.note))
         doc.append(_provenance(help))
-    if entry.kind == "function" and entry.nargs is not None:
+    else:
+        doc.append(_no_help_line(help_configured))
+    if accepted:
+        doc.append(_accepted_note(accepted))
+    elif entry.kind == "function" and entry.nargs is not None:
         doc.append("Argument count from the function table; a trailing argument may be optional.")
     clamped = None if count == 0 else max(0, min(active, count - 1))
     return SignatureInfo(entry.name, entry.kind, label, "\n\n".join(doc), tuple(params), clamped,
@@ -277,7 +334,7 @@ def signature_help(name: str, active: int, profile, help_provider: HelpProvider 
     if entry is None:
         return None
     help = help_provider.lookup(entry.name) if help_provider is not None else None
-    return _build_signature(entry, help, active)
+    return _build_signature(entry, help, active, help_configured=help_provider is not None)
 
 
 # ---------------------------------------------------------------------------- declarations
@@ -380,8 +437,9 @@ def declarations(program) -> dict[str, list[Declaration]]:
             kw = st.keyword
             if closes_routine(st):
                 scope = None
-            elif kw in ("DATATABLE", "CONSTTABLE") and st.args and isinstance(st.args[0], S.Name):
-                add(st.args[0].name, st, "DataTable" if kw == "DATATABLE" else "ConstTable")
+            elif kw in ("DATATABLE", "CONSTTABLE") and st.args and (
+                    table := _declared_name_arg(st.args[0], kw)):
+                add(table, st, "DataTable" if kw == "DATATABLE" else "ConstTable")
             elif kw == "UNITS" and len(st.args) == 2 and isinstance(st.args[1], S.String):
                 target = _target_name(st.args[0])
                 if target:
@@ -450,7 +508,7 @@ class Hover:
 
 def _callable_markdown(entry: CatalogEntry, help: InstructionHelp | None, help_configured: bool,
                        others: tuple[CatalogEntry, ...]) -> str:
-    sig = _build_signature(entry, help, 0)
+    sig = _build_signature(entry, help, 0, help_configured)
     label = entry.kind
     if any(e.kind == "keyword" for e in others):
         label = "statement keyword" if entry.kind == "instruction" else label
@@ -472,14 +530,16 @@ def _callable_markdown(entry: CatalogEntry, help: InstructionHelp | None, help_c
             rows.append(text + (f": {p.documentation}" if p.documentation else ""))
         if rows:
             out += [""] + rows
-        if entry.kind == "function" and entry.nargs is not None:
+        accepted = (_accepted_counts(entry.name, entry.nargs)
+                    if entry.kind == "function" and entry.nargs is not None else None)
+        if accepted and sig.paired:
+            out += ["", _accepted_note(accepted)]
+        elif entry.kind == "function" and entry.nargs is not None:
             out += ["", "Argument count from the function table; a trailing argument may be optional."]
     if help is not None:
         out += ["", _provenance(help)]
-    elif not help_configured:
-        out += ["", "No help directory configured."]
     else:
-        out += ["", "No help page for this name."]
+        out += ["", _no_help_line(help_configured)]
     return "\n".join(out)
 
 
