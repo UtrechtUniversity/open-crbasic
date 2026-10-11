@@ -4992,3 +4992,15 @@ digits-then-word after `DataTable(` / `CallTable` as one name.
   15Min declared with no output fields.` on CR6; not implemented.
 
 Fixture: `tests/fixtures/digit_table_names.json` (164 cases, four loggers).
+
+### Function calls after an undefined target (2026-10-11)
+
+`Q(3) = F2(1,2)`, `Q(3) = F2()`, `Q(Z) = F2(1,2)` with `Q` undeclared and `F2` a user `Function`:
+the target is reported (`Q is not defined.` + the out-of-place fallback on CR300/CR350; the
+fallback alone on CR6/CR1000X) and the value's call is never checked, so neither `No Matching, or
+out of place )` nor `Call argument required.` appears (all four loggers, 2026-10-11).
+`expressions.check_function_call_counts` skips such assignments. Not done: a bare undefined target
+on CR300/CR350 (`Q = F2(1,2)`) prints `Q is not defined.` before the `No Matching` line (ours prints
+it after), and the same shapes after the cascade has started (`_report_unregistered` re-runs the
+checks, and the original pass still sees the dropped name as declared). Fixture:
+`tests/fixtures/undefined_target_call.json`.

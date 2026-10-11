@@ -1948,6 +1948,7 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
                  if isinstance(st, S.SubDef) and st.keyword == "FUNCTION"}
     if not functions:
         return
+    known = _known_names(program, profile)
 
     def problem(expr: S.Expr | None) -> str | None:
         for node in _index_nodes(expr):
@@ -1974,6 +1975,10 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
     def visit(stmt: S.Stmt) -> None:
         if isinstance(stmt, S.Assignment):
             kind = problem(stmt.target) or problem(stmt.value)
+            if kind and _undefined_names(stmt.target, known) and not (
+                    profile.single_pass and isinstance(stmt.target, S.Name)):
+                kind = None  # an undefined target never reaches the value's call (oracle, all four
+                #              loggers, 2026-10-11, docs/checker.md "Function calls after an undefined target")
             if kind:
                 report(stmt, kind, stmt.text, True)
         elif isinstance(stmt, S.If):
