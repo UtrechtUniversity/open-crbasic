@@ -899,6 +899,18 @@ _LINE_WS_RE = re.compile(r"[ \t]+")
 _LINE_PAREN_RE = re.compile(r"[ \t]*\(")
 
 
+def _split_top_commas(text: str) -> list[str]:
+    parts, depth, cur = [], 0, ""
+    for ch in text:
+        depth += (ch == "(") - (ch == ")")
+        if ch == "," and depth <= 0:
+            parts.append(cur)
+            cur = ""
+        else:
+            cur += ch
+    return parts + [cur]
+
+
 def _loose_before_beginprog(program: S.Program, line: int, file: str) -> bool:
     """The statement at `line` precedes `BeginProg` outside any Sub/Function/table body."""
     depth = 0
@@ -1419,6 +1431,27 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 # surplus (oracle, CR300/CR350, 2026-10-11: `BeginProg, EndProg (Begin Program,
                 # End Program)` -> `Too many parameters:  EndProg.`)
                 new_items.append(Diagnostic("error", d.line, f"Too many parameters:  {tok}.", d.file))
+                changed = True
+                continue
+            call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
+            cinfo = profile.instructions.get(call.group(1).upper()) if call else None
+            if cinfo and cinfo["params"] and cinfo["params"][0] % 100 not in (6, 11) and call.group(
+                    1).upper() not in ("DATA", "DATALONG", "ALIAS", "UNITS", "SUB", "FUNCTION") and \
+                    (carg := _split_top_commas(call.group(2))[0].rstrip()) and re.search(
+                        r"[\w\"]\s+[\w\"]", re.sub(r'"[^"]*"', '"', carg)) and not re.search(
+                            r"(?i)\b(?:and|or|xor|eqv|imp|mod|is|to|not)\b", carg):
+                # `Instruction(a b, ...)`: the first argument is read as an expression with
+                # adjacent operands (oracle, CR300/CR350, 2026-10-11: `MQTTPublishTable(MQTT QoS,
+                # ...)` -> both words, `Incomplete expression: MQTT QoS.`, and for a constant-only
+                # parameter `Variable illegal in Parameter: MQTT QoS.`); the rest is never read
+                if carg.endswith(")") and carg.count("(") < carg.count(")"):
+                    carg = carg[:-1].rstrip()  # (the call's own closing parenthesis)
+                for word in _leading_unknown_words(carg, here):
+                    new_items.append(Diagnostic("error", d.line,
+                                                profile.unresolved_symbol_message.format(name=word), d.file))
+                new_items.append(Diagnostic("error", d.line, f"Incomplete expression: {carg}.", d.file))
+                if cinfo["params"][0] in _CONST_FIRST_PARAM:
+                    new_items.append(Diagnostic("error", d.line, f"Variable illegal in Parameter: {carg}.", d.file))
                 changed = True
                 continue
             lead = _INSTRUCTION_PROSE_RE.match(text)

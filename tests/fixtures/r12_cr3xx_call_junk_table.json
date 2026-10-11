@@ -1,0 +1,57 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_call_junk_table-0",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\nMQTTPublishTable(MQTT QoS, Number of records to publish, Interval)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTT is not defined.\nline 3: QoS is not defined.\nline 3: Incomplete expression: MQTT QoS.\nline 3: Variable illegal in Parameter: MQTT QoS.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_junk_table-1",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\nSample (1,x,FP2)\nMQTTPUblishTable(MQTT QoS, Number of records, Interval, Interval units)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MQTT is not defined.\nline 4: QoS is not defined.\nline 4: Incomplete expression: MQTT QoS.\nline 4: Variable illegal in Parameter: MQTT QoS.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_junk_table-2",
+   "logger": "cr300",
+   "source": "Public x\nDataTable (T,1,10)\nAverage(foo bar, x)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Incomplete expression: foo bar.\nline 3: Variable illegal in Parameter: foo bar.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_junk_table-0",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\nMQTTPublishTable(MQTT QoS, Number of records to publish, Interval)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTT is not defined.\nline 3: QoS is not defined.\nline 3: Incomplete expression: MQTT QoS.\nline 3: Variable illegal in Parameter: MQTT QoS.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_junk_table-1",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\nSample (1,x,FP2)\nMQTTPUblishTable(MQTT QoS, Number of records, Interval, Interval units)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: MQTT is not defined.\nline 4: QoS is not defined.\nline 4: Incomplete expression: MQTT QoS.\nline 4: Variable illegal in Parameter: MQTT QoS.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_junk_table-2",
+   "logger": "cr350",
+   "source": "Public x\nDataTable (T,1,10)\nAverage(foo bar, x)\nEndTable\nBeginProg\nScan (1,Sec,3,0)\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: bar is not defined.\nline 3: Incomplete expression: foo bar.\nline 3: Variable illegal in Parameter: foo bar.\nline 6: Too many parameters:  Sec."
+  }
+ ]
+}

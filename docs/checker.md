@@ -5237,3 +5237,16 @@ cascade). Same message on CR6 (`TCPOpen("",3000,30,1000,hf,3)`), where it comes 
 not done. A non-constant fourth argument stops the list with `Parameter must be a constant
 integer: <stmt>` instead and is not modelled (the check is skipped then). The first three
 arguments' checks are the existing `_CONST_INTEGER_BAD_ARGS` ones.
+
+### `Instruction(a b, ...)`: adjacent operands in the first argument (`chm/mqttpublishtable_1`; fixtures `r12_cr3xx_call_junk.json`, `r12_cr3xx_call_junk_table.json`)
+
+A line `Name(first, ...)` whose `Name` is an instruction and whose first argument holds adjacent
+operands (`MQTTPublishTable(MQTT QoS, Number of records, ...)`) names the first argument's
+undefined words, prints `Incomplete expression: <first argument>.` and, for a constant-only first
+parameter, `Variable illegal in Parameter: <first argument>.`; the rest of the line is never read
+(`cr3xx.check_unknown_line_words`, the echo drops the call's closing parenthesis). The instruction
+name is not reported as undefined (it was, when the line was not parsed as a call). Skipped: texts
+with a word operator, deferred-text and name-token first parameters (their own rules above),
+`Alias`/`Units`/`Sub`/`Function`/`Data`. Not done: the `Too many parameters:  <next argument>`
+that follows for destination-first instructions (`PanelTemp(foo bar, 15000)`, `VoltSe(foo bar, 1, ...)`)
+and a bad second argument (`Delay(1, foo bar)`).
