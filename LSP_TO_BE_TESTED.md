@@ -461,3 +461,11 @@ regression tests already; these are the editor-visible checks:
    offers integers only; removal returns the server to the default (output channel trace).
 8. Windows only (F5): open an entry outside the `entries` globs with an error, close it: its
    Problems entries are cleared.
+
+### Results recorded for T-14, T-09, T-12 (host record `ccba3666`), appended 2026-10-11
+
+[host-tests/2026-10-11-ccba3666/RESULTS.md](docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md):
+T-14 passed; T-09/T-12 visual checks observed on macOS, with its qualifications. Follow-ups (ledger
+H-08..H-10): cross-entry references are fixed in LSP-R4a, so re-check T-09 "Definition/references"
+on that revision: Peek References from A on a library symbol used by A and B lists A, B and Lib.
+Still open: T-15, T-16, Windows/Linux.

@@ -28,8 +28,10 @@ Live implementation state and session handoff. Design and acceptance criteria:
 1. LSP-08d and LSP-08e integrated. Test tiers and `tools/lsp_gate.py` are developer tooling, documented
    in `docs/lsp-api.md` "Test tiers"; the user guide needs no change for them.
 2. Review round 3 fixed (LSP-R3); host check T-16. Next review (human-run) over `ccba3666..HEAD`.
-3. LSP-08 release validation still open: install-from-VSIX on the host (T-14); Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
-   (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
+3. LSP-08 release validation: T-14 (VSIX install) passed and T-09/T-12 visual checks observed on macOS
+   at `ccba3666` ([host record](docs/lsp-rounds/host-tests/2026-10-11-ccba3666/RESULTS.md)); open:
+   H-08 (references across entries), Windows/Linux host matrix (or narrow the release claim to macOS),
+   T-15/T-16 on the integrated tree.
 4. LSP-09 (human request) done: parameter-name inlay hints and commands "Show Compiler Output" /
    "Show Table Fields"; host check T-15. Pull diagnostics: not adopted.
 5. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
@@ -128,7 +130,18 @@ Open:
 - Banner stderr copy and pygls' normal "Server shutting down" line show as `[error]` in the
   output channel (cosmetic; documented).
 - Undo after a multi-file rename closes files the rename opened (VS Code behaviour; documented).
-- T-09/T-12 visual checks; Windows/Linux.
+- Host record `ccba3666` (macOS, VS Code 1.141.0, packaged VSIX in an empty profile): T-14 pass;
+  T-09/T-12 visual checks observed with the qualifications in its RESULTS.md. New:
+  - H-08: Peek References from entry A on a symbol declared in a library shared with B lists A and
+    Lib but not B (the references counterpart of review A1, which LSP-R3a fixed for rename only)
+    -> LSP-R4a.
+  - H-09: after a multi-file rename and one undo, files the rename opened are open and clean, not
+    dirty as the LSP-07 handoff said (VS Code behaviour; documentation only) -> LSP-R4a docs.
+  - H-10: the refusal for a click in a comment reads "no given analysis depends on the file";
+    give it a message that names the comment -> LSP-R4a.
+  - First `npm ci` on the host gave tar ENOENT warnings and a missing `tsc`; a repeat was clean
+    (cause not established; not an LSP defect).
+- Windows/Linux.
 
 ## Resume here
 
