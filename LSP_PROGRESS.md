@@ -16,7 +16,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
 - Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
   host-retested. Not yet reviewed: `f3069825..HEAD`.
-- Active: LSP-08d (test-run speed), LSP-08e (Pyrefly to 0 errors).
+- Active: LSP-08d (test-run speed), LSP-08f (VSIX packaging). LSP-08e done: Pyrefly 0 errors.
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
@@ -378,7 +378,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
 | LSP-08d test-run speed | `codex/lsp-08-speed`, base `636eff1`, Sonnet | active | profile in LSP-08.md | verify, cherry-pick |
-| LSP-08e Pyrefly type checking | `codex/lsp-08-types`, base `7289caa`, Sonnet | active | Pyrefly 1.3.1, preset default, LSP modules: 38 errors at start | verify, cherry-pick |
+| LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
+| LSP-08f VSIX packaging | `codex/lsp-08-vsix`, base `621b7b4`, Haiku | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).

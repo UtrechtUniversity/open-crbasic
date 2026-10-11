@@ -190,6 +190,9 @@ are in `docs/lsp-rounds/`.
 13. **CR300/CR350 duplicate declaration in an include**: a library declaring a variable twice makes
    `analyze` add "Too many parameters" and a duplicate "x is not defined." to the entry
    (`LSP-06b-handoff.md`); real-compiler output not checked.
+14. **Typing in compiler modules** (from the LSP Pyrefly work, `LSP-08e-handoff.md`): `tables.py`
+   sets `TdfTable._dup_fields`/`_interval_display` with `# type: ignore` (declare them on `TdfTable`);
+   `source.LogicalLine.phys` is typed Optional although `load_text` always sets it.
 9. **Statement labels**: in one LSP probe `Label1:` parsed as an unresolved call, not a `Label`
    (`LSP-07a-handoff.md`; not investigated, may depend on the statement shape).
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);
