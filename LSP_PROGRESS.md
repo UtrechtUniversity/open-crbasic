@@ -105,7 +105,7 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-04a-rules help syntax decisions | `codex/lsp-04-rules` -> cherry-picked | integrated | coordinator: helpdocs+hover+editing tests pass, spot checks MenuPick/ModbusSlave/PortSet; coverage matching 269 -> 270 (MenuPick) | leftover: `FileOption, [optional]` (FTPClient, EMailSend, HTTPPost) not marked optional -> fold into wiring chunk |
 | LSP-05b-core navigation logic | `codex/lsp-05-navigation` -> `3769504` | integrated-awaiting-gates | coordinator rerun 17 passed; selfdiff 0 differ at `3769504`; worker: full pytest 21,753/507; additive `stmt.origin` in parser.py | full pytest + native verify running |
 | LSP-wire features in server | `codex/lsp-wire`, base `b21c1e1`, Sonnet | active | - | verify, cherry-pick |
-| LSP-04a-optmark | `codex/lsp-04-optmark`, base `f2d8c00`, Haiku | active | - | verify, cherry-pick |
+| LSP-04a-optmark | `codex/lsp-04-optmark` -> cherry-picked | integrated | worker: helpdocs+hover 70 passed, tests/lsp 367, selfdiff 0 differ; FileOption optional in FTPClient/EMailSend/HTTPPost/HTTPPut | gap: `coverage_report` counts instructions only; FTPClient etc. are function-table entries (coordinator check) |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
