@@ -274,9 +274,15 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         params = _real_params(record["params"])
         required = _required_count(params)
-        if len(stmt.args) >= required:
+        given = len(stmt.args)
+        if profile.name in ("cr6", "cr1000x"):
+            # trailing empty arguments read as absent: `Sample(9,)` is short like `Sample(9)`
+            # (`Too few parameters`), `Sample(9, X, )` like `Sample(9, X)` (oracle, 2026-10-11)
+            while given and stmt.args[given - 1] is None:
+                given -= 1
+        if given >= required:
             continue
-        missing_code = params[len(stmt.args)]
+        missing_code = params[given]
         if missing_code in _TOLERANT_CODES:
             continue
         if profile.name in ("cr6", "cr1000x"):

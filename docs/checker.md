@@ -5088,3 +5088,15 @@ variable is a destination, no variable line) keep `Invalid or missing parameter.
 argument: real `MQTTPublishTable(MQTT QoS, 5)` is a pass-1 error that hides the fallbacks of earlier
 lines in the table, `Foo Bar` before it included; ours reports them. Not fixed: the pass-1/pass-2
 placement of that argument is unidentified).
+
+### Trailing empty arguments count as absent (CR6/CR1000X, 2026-10-11)
+
+For the shortfall check (`instr_rules.check`), a trailing empty argument does not count: `Sample (9,)`
+and `Sample (9,` (line ends after the comma) are short like `Sample (9)` (`Too few parameters in
+instruction.`, the missing parameter is an identifier), `Sample (9, X, )` like `Sample (9, X)`
+(`Invalid or missing parameter.`), `Sample (9, rTime( ),)` (`Invalid or missing parameter.`; ours
+accepted it before). Extra trailing empties still do not matter: `Sample (9,X,FP2,)` and
+`Sample (9,X,FP2,,)` keep their own messages, and `Sample (1,X,FP2,)` is accepted. Evidence:
+`chm/realtime_1.CR6` line 53 (`Sample( 9,` ending a line, `Too few`). Fixture
+`tests/fixtures/trailing_empty_args.json` (44 cases, CR6 and CR1000X, 0 differing). CR300/CR350
+not changed (the rule is gated to CR6/CR1000X; not probed there).
