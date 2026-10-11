@@ -26,6 +26,27 @@ Live implementation state and session handoff. Design and acceptance criteria:
 
 ## Open questions for the human
 
+- Help parsing (LSP-04a-fix), display only (hover/signature labels; the instruction table stays
+  authoritative for counts and checks). Coordinator recommendations after checking the help pages
+  (2026-10-11), pending the human's answer:
+  1. A bare `[X]` around one parameter inside a call's parameter list marks it optional (as
+     `ModbusSlave ( ..., [ModbusOption] )`, whose page has an "Optional Parameter" section);
+     `Name [optional]` is already handled. Brackets outside call parameter lists (statement
+     blocks `[Step increment]`, alternatives `[A,B,C]`, SDM `[COMMAND 2049]`) are not parameters.
+  2. A trailing `...` (`MenuPick ( Item1, Item2, Item3... )`) is one repeatable parameter.
+  3. Keep quotes on quoted names (`"SDICommand"`): they mark a string-literal argument.
+
+## Work rules (human instructions 2026-10-11)
+
+- Host-only checks run asynchronously on the human's machine from
+  [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
+  sessions only **append** to that file (new items, or a dated amendment under an existing item);
+  never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
+- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
+  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+
+## Open questions for the human
+
 - Help parsing (LSP-04a-fix): (1) should a trailing `...` in a help syntax list mean one repeatable
   parameter (would restore `MenuPick`'s count match)? (2) should `[ X ]` in a syntax line mark `X`
   optional? (3) keep quotes on quoted literal names (`"SDICommand"`)? Coordinator default until
@@ -48,12 +69,12 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01b, round gates |
 | LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated, gates passed | at `c7e5a6f`: selfdiff 0 differ; full pytest 21,547 passed / 507 skipped; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | oracle gates: T-01 |
 | LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
-| LSP-01b server | `codex/lsp-01-server`, `.claude/worktrees/lsp-01-server`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-01b server | `codex/lsp-01-server` -> `bdc8881` | integrated | combined tests/lsp 156 passed x3 (no flakes); worker: full pytest 21,566/507, selfdiff 0 differ | ranges still compiler-line based -> LSP-01d; host checks T-02/T-04 |
 | LSP-02a positions | `codex/lsp-02-positions` -> `43acb40` | integrated, gates passed | at `43acb40`: selfdiff 0 differ; full pytest 21,637/507; native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass`; loader+parser ~+8% time (worker) | oracle: T-01 |
 | LSP-03a catalog+grammar | `codex/lsp-03-catalog` -> `4822b49` | integrated | coordinator rerun: 32 passed, `gen_grammar --check` up to date; combined tests/lsp 92 passed; npm compile 0, 5/5; worker: selfdiff 0 differ, full pytest 21,579/507 | highlighting: T-03 |
 | LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
 | LSP-04a-fix help param names | `codex/lsp-04-helpfix` -> cherry-picked | integrated | coordinator rerun 23 passed; CR6 help coverage 302 with help, matching counts 226 -> 269, 33 mismatches (categories in LSP-04a-fix-handoff.md) | open questions below |
-| LSP-05a binding index | `codex/lsp-05-bindings`, `.claude/worktrees/lsp-05-bindings`, base `41c4c4a`, Sonnet, brief [LSP-05.md](docs/lsp-rounds/LSP-05.md) | active | - | verify, cherry-pick |
+| LSP-05a binding index | `codex/lsp-05-bindings` -> `eca1727` | integrated | coordinator rerun 37 passed; combined tests/lsp 193 passed; worker: full pytest 21,634/507, selfdiff 0 differ; crbasic/ 0 unresolved, CHM 439 unresolved / 188 ambiguous (fragments) | LSP-05b |
 | LSP-03b-core editing logic | `codex/lsp-03-editing`, `.claude/worktrees/lsp-03-editing`, base `e909d96`, Sonnet | active | - | verify, cherry-pick |
 | LSP-04b-core hover logic | `codex/lsp-04-hover`, `.claude/worktrees/lsp-04-hover`, base `e909d96`, Sonnet | active | - | verify, cherry-pick |
 

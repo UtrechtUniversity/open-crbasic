@@ -99,3 +99,19 @@ This revision includes LSP-02a (`43acb404`) and the help-parser fix (`665b40f7`)
 
 These are revision-specific host findings for the remote coordinator to integrate. Newer
 source changes require fresh affected checks; none are implicitly accepted by this record.
+
+### T-04 Language server behaviour in VS Code (LSP-01b), appended 2026-10-11
+
+Prerequisite: T-02 setup. Accept each when observed; record OS/VS Code version.
+
+1. Settings: change `opencrbasic.exclude` / `opencrbasic.debounceMs` in the Settings UI; the server
+   re-reads them (output channel or changed behaviour) without restart. Changing
+   `opencrbasic.pythonPath` restarts the server; "opencrbasic: Restart Server" works.
+2. Problems panel: whole-line ranges; a library included by several testers shows
+   `[Entry.CR6]` prefixes; an open `.crb` included by no entry shows the information note.
+3. URIs: diagnostics for an unopened included file appear under the same file entry as when the
+   file is opened (watch for duplicates). On Windows also with a path containing spaces and a
+   non-ASCII character.
+4. Workspace: open the repository root; first analysis of all `crbasic/*.CR6` entries finishes;
+   note the time from activation to the last publish.
+5. Other loggers: a `.CR1X`/`.CR300` program with `opencrbasic.logger` set accordingly.
