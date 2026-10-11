@@ -84,6 +84,7 @@ ParamHelp(name, link, description, optional=False, repeatable=False)
 pair_signature(name, type_codes, help) -> PairedSignature(matched, help_count, catalog_count, params, note)
 render_markdown(help, sig=None) / render_plain(help, sig=None) / render_signature_label(sig)
 coverage_report(profile, provider, names=None) -> CoverageReport(total, with_help, matching, mismatches, without_help)
+function_coverage_report(profile, provider, names=None) -> FunctionCoverageReport(total, with_nargs, with_help, checked, matching, mismatches, without_help, unchecked)
 ```
 
 - Lazy: the first `lookup` parses every `Instructions/*.htm` once. Nothing raises; a missing
@@ -120,6 +121,10 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
   Internal use only, so copying it is permitted ([legal.md](legal.md), 2026-10-11); LSP-04a's
   tests nevertheless use synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
   setting `opencrbasic.helpDirectory`, default none: no help is shown unless configured.
+- Function coverage (LSP-04c) is a separate report over `profile.functions`. A row is checked only
+  when its table has `nargs`: the help parameter count must equal it. Rows with help and no `nargs`
+  are `unchecked`; rows with `nargs` and no help are in `without_help`. Instruction numbers are
+  unchanged. Signature help for functions uses `nargs` as the count (see Hover).
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
   [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md) and, after the 2026-10-11 rules,
   [LSP-04a-rules-handoff.md](lsp-rounds/LSP-04a-rules-handoff.md). Documentation coverage is not

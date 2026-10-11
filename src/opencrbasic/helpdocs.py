@@ -17,7 +17,7 @@ from typing import Iterable, Mapping, Sequence
 __all__ = [
     "ParamHelp", "InstructionHelp", "HelpProvider", "PairedParam", "PairedSignature",
     "pair_signature", "render_markdown", "render_plain", "render_signature_label",
-    "CoverageReport", "coverage_report",
+    "CoverageReport", "coverage_report", "FunctionCoverageReport", "function_coverage_report",
 ]
 
 
@@ -527,3 +527,43 @@ def coverage_report(profile, provider: HelpProvider, names: Iterable[str] | None
         if not sig.matched:
             mism.append((n, len(h.params), len(table[n]["params"])))
     return CoverageReport(len(wanted), with_help, with_help - len(mism), tuple(mism), tuple(missing))
+
+
+@dataclass(frozen=True)
+class FunctionCoverageReport:
+    total: int                                      # rows of `profile.functions` considered
+    with_nargs: int                                 # rows whose function table has `nargs`
+    with_help: int                                  # rows with a parsable help page
+    checked: int                                    # rows with help and `nargs`: count compared
+    matching: int                                   # checked rows whose help count equals nargs
+    mismatches: tuple[tuple[str, int, int], ...]    # (name, help parameter count, nargs)
+    without_help: tuple[str, ...]
+    unchecked: tuple[str, ...]                      # help but no `nargs`: nothing to compare with
+
+
+def function_coverage_report(profile, provider: HelpProvider, names: Iterable[str] | None = None
+                             ) -> FunctionCoverageReport:
+    """Documentation coverage for `profile.functions`, separate from `coverage_report` (instructions)
+    and from compiler-rule coverage. Only rows with `nargs` are compared, by parameter count."""
+    table: Mapping[str, Mapping] = profile.functions
+    wanted = sorted(table) if names is None else sorted(n.upper() for n in names if n.upper() in table)
+    with_nargs = with_help = 0
+    mism: list[tuple[str, int, int]] = []
+    missing: list[str] = []
+    unchecked: list[str] = []
+    for n in wanted:
+        nargs = table[n].get("nargs")
+        if nargs is not None:
+            with_nargs += 1
+        h = provider.lookup(n)
+        if h is None:
+            missing.append(n)
+            continue
+        with_help += 1
+        if nargs is None:
+            unchecked.append(n)
+        elif len(h.params) != nargs:
+            mism.append((n, len(h.params), nargs))
+    checked = with_help - len(unchecked)
+    return FunctionCoverageReport(len(wanted), with_nargs, with_help, checked, checked - len(mism),
+                                  tuple(mism), tuple(missing), tuple(unchecked))

@@ -7,7 +7,8 @@ from pathlib import Path
 import pytest
 
 from opencrbasic import helpdocs, profiles
-from opencrbasic.helpdocs import HelpProvider, coverage_report, pair_signature
+from opencrbasic import hover
+from opencrbasic.helpdocs import HelpProvider, coverage_report, function_coverage_report, pair_signature
 
 FIX = Path(__file__).parent / "fixtures" / "help"
 CORPUS = Path(__file__).resolve().parents[3] / "extracted_chm"
@@ -250,6 +251,24 @@ def test_coverage_report_on_fixtures(prov):
     assert r.without_help == ("ABSENT",)
 
 
+def test_function_coverage_on_fixtures(prov):
+    class P:
+        instructions = {}
+        functions = {
+            "FOOSTART": {"nargs": 2},                 # two help parameters: match
+            "FOOMEASURE": {"nargs": 6},               # five help parameters: mismatch
+            "FOOMENU": {"nargs": 2},                  # `Item1..., Item...` folds to two: match
+            "FOONOLINKS": {},                         # help, no nargs: unchecked
+            "ABSENT": {"nargs": 0},                   # no help page
+        }
+    r = function_coverage_report(P, prov)
+    assert (r.total, r.with_nargs, r.with_help, r.checked, r.matching) == (5, 4, 4, 3, 2)
+    assert r.mismatches == (("FOOMEASURE", 5, 6),)
+    assert r.without_help == ("ABSENT",) and r.unchecked == ("FOONOLINKS",)
+    sub = function_coverage_report(P, prov, names=["foostart", "nope"])
+    assert (sub.total, sub.with_help, sub.matching) == (1, 1, 1)
+
+
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
 def test_local_corpus_voltse_parameters():
     h = HelpProvider(CORPUS).lookup("VoltSE")
@@ -299,3 +318,34 @@ def test_local_corpus_parses_structurally():
         if h is not None:
             assert h.title and h.source_path.is_file() and h.name == name
             assert all(x.name for x in h.params)
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_function_coverage_and_instructions_unchanged():
+    p = HelpProvider(CORPUS)
+    cat = profiles.get("cr6")
+    r = function_coverage_report(cat, p)
+    assert r.total == len(cat.functions) == 134
+    assert (r.with_nargs, r.with_help, r.checked, r.matching) == (123, 117, 111, 91)
+    assert len(r.mismatches) == r.checked - r.matching == 20
+    assert len(r.without_help) == r.total - r.with_help == 17
+    assert len(r.unchecked) == 6 and set(r.unchecked) == {"AND", "IMP", "MOD", "NOT", "OR", "XOR"}
+    assert dict((n, (h, c)) for n, h, c in r.mismatches)["FTPCLIENT"] == (11, 6)
+    # instruction coverage is a separate report and keeps its numbers
+    ic = coverage_report(cat, p)
+    assert (ic.total, ic.with_help, ic.matching) == (410, 302, 270)
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_function_signature_labels():
+    p = HelpProvider(CORPUS)
+    labels = {n: hover.signature_help(n, 0, "cr6", p).label for n in ("SIN", "PWR", "INSTR", "FILEOPEN", "SERIALOUT")}
+    assert labels == {
+        "SIN": "SIN(angle)",
+        "PWR": "PWR(X, Y)",
+        "INSTR": "INSTR(Start, SearchString, FilterString, SearchOption)",
+        "FILEOPEN": 'FILEOPEN("FileName", "Mode", SeekPoint)',
+        "SERIALOUT": "SERIALOUT(ComPort, OutString, WaitString, NumberTries, TimeOut)",
+    }
+    tcp = hover.signature_help("TCPOPEN", 0, "cr6", p)
+    assert not tcp.paired and tcp.label == "TCPOPEN(arg1, arg2, arg3)"
