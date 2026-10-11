@@ -1743,3 +1743,26 @@ unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (3
 - Reproducer: `cr350/false_accept/1b3ba52e3818` (a 9-argument `FTPClient` on line 35, the only
   reported line). Argument values were not probed, only counts, so the rule is
   about counts and not about the contents of the argument list.
+
+## Open `If`/`Select` at a Sub end (2026-10-11, fixture `tests/fixtures/sub_end_open_blocks.json`)
+
+Oracle, all four loggers, identical except where noted. The block stack is **not** cleared at
+`EndSub`/`EndFunction`.
+
+- Each `EndSub`/`EndFunction` while an `If` or `Select` is open (inline `If ... Then x` does not count)
+  gives one `If without EndIf inside of Sub.` on that line, however many blocks are open
+  (`checker/structure.py` `stray_controls`). The rest of the file continues.
+- The open block stays open. An `EndSelect` before `BeginProg` with a `Select` still open
+  (any `If` above it does not matter) gives `EndSelect illegally occurs before BeginProg.` and stops.
+  With no `Select` open it stays `EndSelect w/o Select` (the probe with only an `If` open).
+- An `EndIf` in the same position is already `EndIf illegally occurs before BeginProg.` (no change).
+- With this error present, the end-of-file `IF or SELECT without EndIf or EndSelect.` and
+  `No BeginProg in Program.` checks do not print (observed in the probes with an open block at a
+  Sub end and no other closing error).
+- CR300/CR350: the `IF or SELECT statement illegally has SCAN without NEXT SCAN.` closer error
+  survives this message (`checker/cr3xx.py` `_hides_nothing`).
+- Reproducer: `cr1000x/false_accept/9ec2e021b721` (a `Select` inside a `Function`, closed by
+  `EndSelect` after the `EndFunction`); the same output on all four loggers.
+- Not modelled: a second `Sub` declared while a block is open (`Sub declaration inside If..EndIf.`
+  at that line, then a second `If without EndIf` at its end). Ours does not print the middle line
+  (`tests/fixtures/sub_end_open_blocks.json` leaves those variants out).

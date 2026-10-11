@@ -1503,6 +1503,8 @@ _CLOSER_ERRORS = frozenset({
 def _hides_nothing(d) -> bool:
     if d.message.endswith("without Sub or nested subs."):
         return True
+    if d.message == "If without EndIf inside of Sub.":  # oracle, CR300/CR350, 2026-10-11 (`t5` probe)
+        return True
     # a built-in call's arity error hides nothing only when a `Public.<name>` reference precedes
     # its first `)` on the line (oracle, 2026-10-04: `Round(Public.x,1,2)`, `Round(x,Public.T,2,3)`
     # hide nothing; `Round(x)+Public.T`, `FormatLong(x)`, `Floor(x,1)` hide the closers)

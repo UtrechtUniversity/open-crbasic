@@ -558,25 +558,39 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
     or `Function`, and `ExitScan`/`ContinueScan` with no open `Scan` do not stop."""
     found: dict[int, tuple[str, bool]] = {}
     elses: list[bool] = []
+    # Open `If`/`Select` kinds, kept across `EndSub`/`EndFunction` (oracle, 2026-10-11): an open
+    # block at a Sub end is reported once there and stays open for the rest of the file.
+    opens: list[str] = []
     loops = {"DO": 0, "FOR": 0}
     scans = 0
     in_sub = False
+    seen_beginprog = False
     for stmt in program.statements:
         kw = _keyword(stmt)
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT", "EXIT") else None
         message, stops = None, False
+        seen_beginprog = seen_beginprog or kw == "BEGINPROG"
         if isinstance(stmt, S.SubDef):
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and word in ("SUB", "FUNCTION")):
             if not in_sub:
                 message = "EndSub without Sub or nested subs."  # `EndFunction` too (oracle, 2026-10-03)
+            elif opens and kw in ("ENDSUB", "ENDFUNCTION"):
+                message = "If without EndIf inside of Sub."  # one per Sub end (oracle, 2026-10-11)
             in_sub = False
         elif kw == "SELECT" or (kw == "IF" and not (isinstance(stmt, S.If) and stmt.inline is not None)):
             elses.append(False)
+            opens.append("SELECT" if kw == "SELECT" else "IF")
+        elif (kw == "ENDSELECT" or (kw == "END" and word == "SELECT")) and not in_sub \
+                and not seen_beginprog and "SELECT" in opens:
+            # a `Select` left open by an earlier Sub end, closed before `BeginProg` (oracle, 2026-10-11)
+            message, stops = "EndSelect illegally occurs before BeginProg.", True
         elif kw in ("ENDIF", "ENDSELECT") or (kw == "END" and word in ("IF", "SELECT")):
             if elses:
                 elses.pop()
+            if opens:
+                opens.pop()
         elif kw == "ELSE" or isinstance(stmt, S.Case) and _is_case_else(stmt):
             if not elses:
                 message, stops = "Else with no If.", True
