@@ -1733,3 +1733,13 @@ unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (3
   and CR300/CR350 print a wrapped value for `2147483648`/`-2147483648`. Ours accepts these.
 - Not modelled: a 6th argument. CR6/CR1000X also print `CommsMode Option ... not supported` warnings
   there, so the constant-integer line is not the only diagnostic.
+
+## `FTPClient` argument count (2026-10-11, fixture `tests/fixtures/ftpclient_arity.json`)
+
+- Oracle, all four loggers, identical: 6, 10 and 11 arguments compile. 1-5 and 7-9 give `Expression
+  expects , :` (with the call echoed after the `line N:` prefix); 12 and more give `No Matching, or
+  out of place ) in expression:`. `FTPClient` is listed with `nargs` 6 in `functions.json`, so the
+  allowed set sits in `checker/expressions.py` `_ARITY_ALLOWED` (the same mechanism as `HTTPPut`).
+- Reproducer: `cr350/false_accept/1b3ba52e3818` (a 9-argument `FTPClient` on line 35, the only
+  reported line). Argument values were not probed, only counts, so the rule is
+  about counts and not about the contents of the argument list.
