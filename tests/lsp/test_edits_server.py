@@ -14,6 +14,8 @@ from opencrbasic import formatting
 from opencrbasic.lsp.session import display_text
 
 from .lspclient import LspClient
+
+pytestmark = pytest.mark.server
 from .test_features_server import copy_crbasic, locate, make_client, units  # noqa: F401
 
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}

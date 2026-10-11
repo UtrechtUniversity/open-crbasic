@@ -460,6 +460,7 @@ def _columns(line: str) -> set[int]:
     return {0, len(line) // 2, len(line), len(line) + 3} | {i for i, c in enumerate(line) if c in "(),\"' "}
 
 
+@pytest.mark.slow
 def test_sweep_over_project_programs():
     files = sorted(CRBASIC.glob("*.CR6")) + sorted(CRBASIC.glob("*.crb"))
     assert files
@@ -474,12 +475,13 @@ def test_sweep_over_project_programs():
     assert checked > 1000
 
 
-def test_sweep_with_analysis_and_real_help():
+@pytest.mark.slow
+def test_sweep_with_analysis_and_real_help(memo_analyze):
     path = CRBASIC / "Main.CR6"
     if not path.exists():
         pytest.skip("no Main.CR6")
     text = path.read_bytes().decode("latin-1")
-    result = analyze(AnalysisRequest(path))
+    result = memo_analyze(AnalysisRequest(path))
     prov = HelpProvider(CHM) if CHM.is_dir() else HELP
     hits = 0
     for ln, line in enumerate(text.replace("\r\n", "\n").split("\n")):

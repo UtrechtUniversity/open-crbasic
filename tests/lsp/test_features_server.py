@@ -19,6 +19,8 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .lspclient import LspClient
 
+pytestmark = pytest.mark.server
+
 ROOT = Path(__file__).resolve().parents[2]
 CRBASIC = (ROOT.parent / "crbasic").resolve()
 CHM = ROOT.parent / "extracted_chm"

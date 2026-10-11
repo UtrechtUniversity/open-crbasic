@@ -258,6 +258,7 @@ def test_no_program_returns_empty(tmp_path):
     assert nav.definition(m, 0, 7) == [] and nav.semantic_tokens(m) == []
 
 
+@pytest.mark.slow
 def test_never_raises_over_crbasic(tmp_path):
     files = sorted(CRBASIC.glob("*.CR6"))
     assert files

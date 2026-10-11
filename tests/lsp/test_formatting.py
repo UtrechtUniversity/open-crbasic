@@ -256,6 +256,7 @@ def _format_bytes(data: bytes, indent: str = "  ") -> bytes:
     return apply_edits(text, format_indentation(text, "cr6", indent)).encode("latin-1")
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("indent", ["  ", "\t", "    "])
 def test_crbasic_programs_compile_identically_after_formatting(tmp_path, indent):
     for f in CRBASIC.iterdir():
@@ -272,6 +273,7 @@ def test_crbasic_programs_compile_identically_after_formatting(tmp_path, indent)
         assert _outcome(tmp_path / entry.name) == _outcome(entry), entry.name
 
 
+@pytest.mark.slow
 def test_chm_programs_compile_identically_after_formatting(tmp_path):
     """Every CHM program. Accepted: identical `ok`, mode, diagnostics, TDF bytes, table list.
     Rejected: only the blanks echoed in messages may differ (one program differs in more)."""

@@ -20,12 +20,13 @@ Live implementation state and session handoff. Design and acceptance criteria:
   Second round-3 reviewer, Claude Fable 5.1 at high effort, same HEAD:
   [review-2026-10-11-ccba3666-fable.md](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md),
   1 P1, 4 P2, 14 P3, non-overlapping; also awaiting triage and fixes.
-- Active: LSP-08d (test-run speed). Done: LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
+- Active: none. Done: LSP-08d (test tiers, xdist), LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
 
-1. Finish and integrate LSP-08d and LSP-08e; refresh the user guide for them.
+1. LSP-08d and LSP-08e integrated. Test tiers and `tools/lsp_gate.py` are developer tooling, documented
+   in `docs/lsp-api.md` "Test tiers"; the user guide needs no change for them.
 2. Triage and fix the findings in [review round 3](docs/lsp-rounds/review-2026-10-11-ccba3666.md)
    and in the [second round-3 report](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md) (rename
    token-ordinal defects, structure-member field check, `Units` continuation in the formatter,
@@ -385,7 +386,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
-| LSP-08d test-run speed | `codex/lsp-08-speed`, base `636eff1`, Sonnet | active | profile in LSP-08.md | verify, cherry-pick |
+| LSP-08d test-run speed | `codex/lsp-08-speed` -> cherry-picked | integrated | coordinator on combined tree: tests/lsp -n 4 721 passed in 96 s (serial was ~360 s), fast tier `-m "not slow"` 709 in 69 s, `-m server` 136 in 53 s, pyrefly 0, selfdiff 0 differ; `server` mark added to the LSP-09c server tests (`test_lsp09_server.py`, 4 tests in `test_features_positions.py`) that postdate the worker base; worker: full suite -n 4 359 s vs 653 s serial | - |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |

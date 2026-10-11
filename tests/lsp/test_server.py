@@ -18,6 +18,8 @@ from opencrbasic.lsp import config as lsp_config
 
 from .lspclient import SRC, LspClient
 
+pytestmark = pytest.mark.server
+
 ROOT = Path(__file__).resolve().parents[2]
 CRBASIC = (ROOT.parent / "crbasic").resolve()
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
@@ -417,14 +419,14 @@ def test_worker_crash_recovers(make_client, tmp_path):
 
 def test_analysis_timeout_recovers(make_client, tmp_path):
     root = project(tmp_path, **{"Slow.CR6": SMALL, "Fast.CR6": SMALL, "Lib.crb": LIB})
-    client = started(make_client, root, {"analysisTimeoutMs": 1500},
-                     env={"OPENCRBASIC_LSP_TEST_SLEEP": "Slow:120"})
+    client = started(make_client, root, {"analysisTimeoutMs": 1000},
+                     settings={**FAST, "analysisTimeoutMs": 1000},
+                     env={"OPENCRBASIC_LSP_TEST_SLEEP": "Slow:20"})
     slow, fast = root / "Slow.CR6", root / "Fast.CR6"
-    client.open(slow, SMALL)
-    client.open(fast, SMALL)
     err = client.wait_diagnostics(slow, lambda d: any(x["source"] == "opencrbasic (internal)"
                                                       for x in d))
-    assert "timed out after 1500 ms" in err["diagnostics"][0]["message"]
+    assert "timed out after 1000 ms" in err["diagnostics"][0]["message"]
+    client.open(fast, SMALL)
     client.change(fast, bad(SMALL, "after_timeout"), 2)
     client.wait_diagnostics(fast, lambda d: any("after_timeout" in x["message"] for x in d))
     t0 = time.monotonic()

@@ -341,6 +341,7 @@ def sweep(seed: str = "lsp-07c", budget: float = 25.0):
     return rows
 
 
+@pytest.mark.slow
 def test_misspelling_sweep():
     t0 = time.monotonic()
     rows = sweep()

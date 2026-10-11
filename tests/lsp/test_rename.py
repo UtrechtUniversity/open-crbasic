@@ -558,6 +558,7 @@ def sweep(stride: int = 1, offset: int = 0, verbose: bool = False, workdir: Path
     return accepted, refused, problems
 
 
+@pytest.mark.slow
 def test_sweep_semantic_preservation(tmp_path):
     full = os.environ.get("RENAME_SWEEP") == "full"
     accepted, refused, problems = sweep(1 if full else 23, 0, verbose=full, workdir=tmp_path / "w")

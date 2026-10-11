@@ -34,30 +34,32 @@ def _siblings(entry):
     return {p: p.read_bytes() for p in entry.parent.iterdir() if p.is_file()}
 
 
-def _check_equal(entry, logger, overlays):
+def _check_equal(entry, logger, overlays, memo):
     ok, mode, diags, lines = _direct(entry, logger)
     for ov in ({}, overlays):
-        res = analyze(AnalysisRequest(entry, logger, ov, warn_unused=True, signature=True))
+        request = AnalysisRequest(entry, logger, ov, warn_unused=True, signature=True)
+        res = analyze(request) if ov else memo(request)
         assert res.api_version == API_VERSION == 1
         assert (res.ok, res.mode, [_key(d) for d in res.diagnostics], list(res.rendered_lines)) == (
             ok, mode, diags, lines), entry
 
 
 @pytest.mark.parametrize("entry", sorted(CRBASIC.glob("*.CR6")), ids=lambda p: p.name)
-def test_crbasic_overlay_equals_disk(entry):
-    _check_equal(entry, "cr6", _siblings(entry))
+def test_crbasic_overlay_equals_disk(entry, memo_analyze):
+    _check_equal(entry, "cr6", _siblings(entry), memo_analyze)
 
 
-def test_chm_corpus_overlay_equals_disk_cr6():
+@pytest.mark.slow
+def test_chm_corpus_overlay_equals_disk_cr6(memo_analyze):
     assert CHM
     for entry in CHM:
-        _check_equal(entry, "cr6", {entry: entry.read_bytes()})
+        _check_equal(entry, "cr6", {entry: entry.read_bytes()}, memo_analyze)
 
 
 @pytest.mark.parametrize("logger", ["cr1000x", "cr300", "cr350"])
-def test_chm_sample_overlay_equals_disk_other_loggers(logger):
+def test_chm_sample_overlay_equals_disk_other_loggers(logger, memo_analyze):
     for entry in CHM[:: max(1, len(CHM) // 30)]:
-        _check_equal(entry, logger, {entry: entry.read_bytes()})
+        _check_equal(entry, logger, {entry: entry.read_bytes()}, memo_analyze)
 
 
 def _project(tmp_path, lib=LIB, main=MAIN):

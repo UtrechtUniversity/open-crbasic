@@ -18,6 +18,8 @@ from opencrbasic.lsp.config import Config, parse_config, watch_pattern
 from opencrbasic.lsp.session import Session
 
 from .lspclient import LspClient
+
+pytestmark = pytest.mark.server
 from .test_server import (BAD_LIB, FAST, LIB, SMALL, bad, make_client, project,  # noqa: F401
                           small_project, started, summary)
 

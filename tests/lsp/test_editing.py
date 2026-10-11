@@ -766,7 +766,7 @@ def _sweep_text(text: str) -> None:
 
 @pytest.mark.parametrize("path", sorted(CRBASIC.glob("*.CR6")) + sorted(CRBASIC.glob("*.crb")),
                          ids=lambda p: p.name)
-def test_never_raises_on_crbasic(path):
+def test_never_raises_on_crbasic(path, memo_analyze):
     text = path.read_bytes().decode("latin-1")
     _sweep_text(text)
     _sweep_text(text.replace("\n", "\r\n"))
@@ -774,7 +774,7 @@ def test_never_raises_on_crbasic(path):
     for cut in range(0, len(text), step):
         _sweep_text_light(text[:cut])
     if path.suffix.upper() == ".CR6":
-        result = _analyze(path)
+        result = memo_analyze(AnalysisRequest(path))
         document_symbols(result, path)
         include_links(result)
         for n in range(0, text.count("\n"), 40):
@@ -800,9 +800,9 @@ def test_never_raises_on_chm_corpus():
         completion_candidates(None, text, mid, min(4, len(lines[mid])))
 
 
-def test_chm_corpus_outline_and_links_sample():
+def test_chm_corpus_outline_and_links_sample(memo_analyze):
     for path in CHM[:: max(1, len(CHM) // 60)]:
-        result = _analyze(path)
+        result = memo_analyze(AnalysisRequest(path))
         symbols = document_symbols(result, path)
         total = len(path.read_bytes().split(b"\n"))
         for s in _flat(symbols):
@@ -813,10 +813,10 @@ def test_chm_corpus_outline_and_links_sample():
         completion_candidates(result, path.read_bytes().decode("latin-1"), 2, 2)
 
 
-def test_chm_folds_equal_outline_blocks_where_the_program_compiles():
+def test_chm_folds_equal_outline_blocks_where_the_program_compiles(memo_analyze):
     checked = 0
     for path in CHM[:: max(1, len(CHM) // 80)]:
-        result = _analyze(path)
+        result = memo_analyze(AnalysisRequest(path))
         if not result.ok:
             continue
         text = path.read_bytes().decode("latin-1")
@@ -895,11 +895,12 @@ def test_scan_cache_follows_an_edited_buffer():
             if i.source == "program"] == ["y"]
 
 
-def test_completion_on_main_cr6_cached_equals_uncached(monkeypatch):
+@pytest.mark.slow
+def test_completion_on_main_cr6_cached_equals_uncached(monkeypatch, memo_analyze):
     # every line (at its end) and every fifth line (mid-line): the candidates through the cache
     # must equal those through the uncached scan, position by position
     text = MAIN.read_bytes().decode("latin-1")
-    result = _analyze(MAIN)
+    result = memo_analyze(AnalysisRequest(MAIN))
     lines = text.split("\n")
     positions = [(n, len(l)) for n, l in enumerate(lines)]
     positions += [(n, len(l) // 2) for n, l in enumerate(lines) if n % 5 == 0 and len(l) > 1]

@@ -54,6 +54,7 @@ def test_stress_program_is_generated_and_compiles(tmp_path):
     assert result.ok and not result.diagnostics
 
 
+@pytest.mark.slow
 def test_smoke_report(tmp_path):
     cfg = bench.Config(programs=(bench.MAIN,), cold_repeats=1, warm_runs=2, positions=5,
                        memory_iterations=4, stress_lines=120, edits=2, debounce_ms=50,

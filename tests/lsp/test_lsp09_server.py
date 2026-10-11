@@ -19,6 +19,8 @@ from opencrbasic.helpdocs import HelpProvider
 from .lspclient import LspClient
 from .test_features_server import locate, make_client, units  # noqa: F401
 
+pytestmark = pytest.mark.server
+
 ROOT = Path(__file__).resolve().parents[2]
 CHM = ROOT.parent / "extracted_chm"
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}

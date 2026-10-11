@@ -129,6 +129,7 @@ def _started(make_client, tmp_path: Path, text: str) -> tuple[LspClient, Path]:
     return client, path
 
 
+@pytest.mark.server
 def test_completion_edit_after_emoji_applies_to_the_editor_text(make_client, tmp_path):
     # review finding 3's stdio reproducer: the emoji is two UTF-16 units, one byte under latin-1
     client, path = _started(make_client, tmp_path, PROGRAM)
@@ -142,6 +143,7 @@ def test_completion_edit_after_emoji_applies_to_the_editor_text(make_client, tmp
     assert _apply(row, edit["range"], edit["newText"]) == 's = "😀" : oldName'
 
 
+@pytest.mark.server
 def test_hover_and_highlights_after_emoji_use_editor_columns(make_client, tmp_path):
     client, path = _started(make_client, tmp_path, PROGRAM)
     hover = client.at("textDocument/hover", path, 3, 13)
@@ -152,6 +154,7 @@ def test_hover_and_highlights_after_emoji_use_editor_columns(make_client, tmp_pa
     assert [slice_of(PROGRAM, r) for r in on_line] == ["oldName"]
 
 
+@pytest.mark.server
 def test_rename_edits_after_emoji_use_editor_columns(make_client, tmp_path):
     client, path = _started(make_client, tmp_path, PROGRAM)
     result = client.request("textDocument/rename", {
@@ -164,6 +167,7 @@ def test_rename_edits_after_emoji_use_editor_columns(make_client, tmp_path):
     assert all(e["newText"] == "newName" for e in edits)
 
 
+@pytest.mark.server
 def test_replacement_warning_range_is_the_whole_editor_line(make_client, tmp_path):
     first = "Public s As String * 20 ' 😀"
     text = first + "\nBeginProg\nEndProg\n"

@@ -1426,3 +1426,36 @@ render_table_fields(tables) -> str          # Markdown
 - Tests: `tests/lsp/test_commands.py` (stdout equality with in-process `cli.main` on temp copies
   for all `../crbasic/*.CR6`, every 25th CHM sample, an unsaved overlay and an overlay-only entry;
   table names, fields, units and processing equal to `build_tables` for `../crbasic/`).
+
+## Test tiers (LSP-08d)
+
+Environment for every command, from `opencrbasic/`: `export UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic PYTHONPATH=$PWD/src`
+(and `uv run --no-sync`). `pytest-xdist` is in the dev group; `-n 4` runs four workers, and
+`OPENCRBASIC_STRICT=1` is set by `tests/conftest.py` in every one of them
+(`tests/lsp/test_strict_mode.py` fails otherwise).
+
+| Tier | Selection | Command |
+|---|---|---|
+| fast | everything in `tests/lsp` except `slow` | `pytest tests/lsp -m "not slow" -n 4` |
+| slow | corpus sweeps above ~3 s | `pytest tests/lsp -m slow -n 4` |
+| server | tests that start the server subprocess | `pytest tests/lsp -m server -n 4` |
+| LSP, once per integration | fast + slow | `pytest tests/lsp -n 4` |
+| full | the whole suite | `pytest -q -n 4` |
+
+Markers are registered in `pyproject.toml` and `--strict-markers` is on: a misspelt marker is an
+error. `server` is a module-level mark on the subprocess test files; the server tests use
+`tmp_path` and a private process each, so they run in parallel.
+
+`tests/lsp/conftest.py` provides `memo_analyze`: a per-process memoised `analyze()` for unmodified
+repository sources (`crbasic/`, `tests/corpus/`). The cache key is the request (entry, logger,
+`warn_unused`, `signature`); a hit is returned only while every file and directory listing the
+stored result depends on still has the hash it was computed from. It raises for overlays and for
+paths outside the repository sources, so tests that write or overlay files cannot use it. The
+returned result is shared: tests must not mutate it.
+
+`tools/lsp_gate.py [--base REV] [--run]` prints (or runs) the gates a change needs, from
+`git diff --name-only <base>...HEAD` plus the working tree: compiler or unclassified files -> full
+suite and selfdiff; LSP-only files -> selfdiff and `tests/lsp`; `vscode/**` -> `npm test`; files in
+`[tool.pyrefly].project-includes` or `pyproject.toml` -> `pyrefly check`; documentation only -> a
+relative-link check (`--check-links FILE...`). Its classification is unit-tested in
+`tests/lsp/test_lsp_gate.py`.

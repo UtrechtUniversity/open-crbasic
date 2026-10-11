@@ -17,6 +17,8 @@ from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .lspclient import LspClient
 
+pytestmark = pytest.mark.server
+
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 LOGGERS = ("cr1000x", "cr300", "cr350")
 LIB = "Public lib_v As Long\n"
