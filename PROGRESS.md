@@ -187,6 +187,9 @@ are in `docs/lsp-rounds/`.
 12. **Include paths with a directory** (`CPU:sub/Lib.crb`) resolve only against the including file's
    directory and give "Cannot open include file"; real-compiler behaviour not yet probed
    (`LSP-06a-handoff.md`).
+13. **CR300/CR350 duplicate declaration in an include**: a library declaring a variable twice makes
+   `analyze` add "Too many parameters" and a duplicate "x is not defined." to the entry
+   (`LSP-06b-handoff.md`); real-compiler output not checked.
 9. **Statement labels**: in one LSP probe `Label1:` parsed as an unresolved call, not a `Label`
    (`LSP-07a-handoff.md`; not investigated, may depend on the statement shape).
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);
