@@ -54,6 +54,15 @@ editor encoding cannot represent a character -> LSP-R2b.
   smoke test switched strict mode off for every later test in the session (found as 2 failures in
   `tests/lsp/test_analysis.py` when run after it). Now only `main()` does it.
 
+## Final gates at `679f2f7` (2026-10-11)
+
+selfdiff 0 differ; npm 16/16; tests/lsp 596 passed; full pytest 22,101 passed / 507 skipped.
+`verify.py` (both runners): `BUILD  host tests 119 FAIL | ... | repository pass` -- three
+generated-output hash checks (`test_power_sim`, `test_power_workbook`, `test_solar_model`) fail
+because commit `2a1d36d` (human, PDF rename) edited `references/power/solar-panel/solar_params.json`
+without regenerating the power/solar outputs. Not LSP code; left to the human
+(`scripts/solar_model.py`, `power_sim.py`, `power_workbook.py` regenerate them).
+
 ## Regressions found after integration
 
 - `tests/lsp/test_rename.py::test_unresolved_and_unmodelled_and_quoted` fails on the branch since
@@ -346,7 +355,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire` -> `fe33b2e` | integrated, gates passed | at `810b8f9`: tests/lsp 578, selfdiff 0 differ, npm 16/16, full pytest 22,083 passed / 507 skipped, native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` | host T-12; review round 2 findings -> LSP-R2 |
 | LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename` -> `463a565` | integrated | combined tests/lsp 592 passed (coordinator); worker: reproducers failed before / pass after, full rename sweep 940/196, 0 problems, selfdiff 0 differ | server should pass open buffers as `source` -> LSP-06c; limit: a file absent at analysis that appears later is not detected |
 | LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding` -> `3d76e93` | integrated | combined tests/lsp 586 then 592; worker: reproducer failed before / pass after; one conversion point (`features.Ctx`, `positions.EditorBytes`) | - |
-| LSP-06c host H-06/H-07 + rename source | `codex/lsp-06-hostfix` -> `a42c7b0` | integrated | combined tests/lsp 596 passed (coordinator); worker: 596 x3, selfdiff 0 differ; info note for every open non-entry file; `**/*` delete watcher; rename gets open buffers as `source` | host T-13 |
+| LSP-06c host H-06/H-07 + rename source | `codex/lsp-06-hostfix` -> `a42c7b0` | integrated, gates passed | combined tests/lsp 596 passed (coordinator); worker: 596 x3, selfdiff 0 differ; info note for every open non-entry file; `**/*` delete watcher; rename gets open buffers as `source` | host T-13 |
 | LSP-08b-refresh user guide | `codex/lsp-08-guide2` -> cherry-picked | integrated | guide updated to `810b8f9`; 32 links, 0 broken; R2 findings listed as known limits | update after R2 lands |
 | LSP-01g contribute tuning settings | `codex/lsp-01-settings` -> cherry-picked | integrated | worker: npm 16/16, server tests 25, selfdiff 0 differ; sync test package.json vs config.py | Settings UI: host check |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
