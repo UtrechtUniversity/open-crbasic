@@ -33,6 +33,19 @@ Live implementation state and session handoff. Design and acceptance criteria:
   (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
   LSP-04a-rules.
 
+## Review findings
+
+[gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
+2026-10-11), four P2 findings, triaged by the coordinator:
+
+1. Two-word `End Sub`/`End Function` do not close routine scope (bindings, hover): accepted,
+   reproducer confirmed by the reviewer; LSP-R1 (Haiku). The compiler's `symbols.scoped_view` has
+   the same omission (compiler workstream; LSP-R1 reports whether verdicts are affected).
+2. Instruction token resolves to a same-name user declaration: accepted; LSP-R1.
+3. Diagnostic columns always UTF-16 regardless of negotiated encoding: accepted; added to the
+   LSP-wire worker's scope (it owns `lsp/` and position encoding).
+4. Quoted `DataTable("Hist")` missing from outline/declared names/completion: accepted; LSP-R1.
+
 ## Host findings to act on
 
 Host records: `docs/lsp-rounds/host-tests/` (`602f6462`, `8b25214a`, `7c450ed5`, `c0fd9bf1`). T-01
@@ -145,8 +158,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-wire features in server | `codex/lsp-wire`, base `b21c1e1`, Sonnet | active | - | verify, cherry-pick |
 | LSP-04a-optmark | `codex/lsp-04-optmark` -> cherry-picked | integrated | worker: helpdocs+hover 70 passed, tests/lsp 367, selfdiff 0 differ; FileOption optional in FTPClient/EMailSend/HTTPPost/HTTPPut | gap: `coverage_report` counts instructions only; FTPClient etc. are function-table entries (coordinator check) |
 | LSP-07a rename core | `codex/lsp-07-rename`, base `6ca749d`, Sonnet, brief [LSP-07.md](docs/lsp-rounds/LSP-07.md) | active | - | verify, cherry-pick |
-| LSP-07b formatting core | `codex/lsp-07-format`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
-| LSP-05c table fields | `codex/lsp-05-fields`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
+| LSP-07b formatting core | `codex/lsp-07-format` -> cherry-picked | integrated | coordinator rerun 22 passed; worker: tests/lsp 391, selfdiff 0 differ; CHM 198/198 accepted programs identical after formatting, idempotent 507/507 | `SlowSequence` indented inside BeginProg (style, differs from Main.CR6); initializer pulls not modelled; `xmlparse_1` message changes with indentation -> T-06 |
+| LSP-05c table fields | `codex/lsp-05-fields` -> `b2bdd39` | integrated | coordinator rerun 61 passed; worker: tests/lsp 376, selfdiff 0 differ; crbasic unmodelled 96 -> 6 (`Status.CardBytesFree` not in profile data), unresolved unchanged | derived-name fields have no source range |
 | LSP-04c function help coverage | `codex/lsp-04-funccov` -> cherry-picked | integrated | worker: helpdocs+hover 73 passed, selfdiff 0 differ; CR6 functions: 117 with help, 91 of 111 checked match `nargs` | follow-up LSP-04d: FTPClient/EmailSend `argspec` 0x9556/0x5556 = 6 args, the most a 16-bit packed argspec holds (docs/binary.md: 4-bit count + 2 bits per argument), so `nargs` 6 is probably a packing cap, not the real count; first establish how the checker validates their argument counts (checker code + fixtures), then decide label pairing |
 | LSP-08a benchmarks | `codex/lsp-08-bench`, base `6ca749d`, Haiku, brief [LSP-08.md](docs/lsp-rounds/LSP-08.md) | active | - | verify, cherry-pick |
 

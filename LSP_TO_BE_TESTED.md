@@ -186,3 +186,15 @@ and record stdout/exit for each, plus `crbc` (opencrbasic) on the same files. Al
 include file name is stored on disk (macOS NFD vs NFC). Save the raw outputs under a new host-tests
 directory. Acceptance is the record itself; the coordinator decides the behaviour from it.
 
+### T-06 Indentation-sensitive message (LSP-07b observation), appended 2026-10-11
+
+opencrbasic gives a different first error for `tests/corpus/chm/xmlparse_1.CR6` when its prose line
+`data from the xml file ...` is indented ("Illegal Data parameter") than when it is not ("Invalid
+symbol in expression"). Run the real CR6Comp on the original file and on a copy whose lines are
+indented by two spaces (opencrbasic: `uv run --no-sync python -c "from opencrbasic import
+formatting as f; import sys; t=open(sys.argv[1],encoding='latin-1').read();
+open(sys.argv[2],'w',encoding='latin-1').write(f.apply_edits(t, f.format_indentation(t)))"
+tests/corpus/chm/xmlparse_1.CR6 /tmp/xmlparse_1_indented.CR6`). Record both real outputs and
+`crbc` outputs. If the real compiler's message does not change with indentation, this is a
+compiler-workstream defect; the formatter refuses files with errors either way.
+
