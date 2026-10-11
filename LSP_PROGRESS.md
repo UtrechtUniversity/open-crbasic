@@ -101,9 +101,11 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-05a binding index | `codex/lsp-05-bindings` -> `eca1727` | integrated | coordinator rerun 37 passed; combined tests/lsp 193 passed; worker: full pytest 21,634/507, selfdiff 0 differ; crbasic/ 0 unresolved, CHM 439 unresolved / 188 ambiguous (fragments) | LSP-05b |
 | LSP-03b-core editing logic | `codex/lsp-03-editing` -> `6c39974` | integrated | coordinator rerun 110 passed; combined tests/lsp 341 passed; worker: selfdiff 0 differ | server wiring after 01d |
 | LSP-04b-core hover logic | `codex/lsp-04-hover` -> `cd943ff` | integrated | coordinator rerun 38 passed; worker: tests/lsp 175, selfdiff 0 differ | server wiring |
-| LSP-01d spans + client stop | `codex/lsp-01-spans`, base `6cddead`, Haiku | active | - | verify, cherry-pick |
+| LSP-01d spans + client stop | `codex/lsp-01-spans` -> `b21c1e1` | integrated | worker: tests/lsp 233 passed x3, selfdiff 0 differ, npm 10/10; coordinator: npm 10/10 on combined tree | host: T-02 log must not show `Client is not running and can't be stopped` |
 | LSP-04a-rules help syntax decisions | `codex/lsp-04-rules` -> cherry-picked | integrated | coordinator: helpdocs+hover+editing tests pass, spot checks MenuPick/ModbusSlave/PortSet; coverage matching 269 -> 270 (MenuPick) | leftover: `FileOption, [optional]` (FTPClient, EMailSend, HTTPPost) not marked optional -> fold into wiring chunk |
-| LSP-05b-core navigation logic | `codex/lsp-05-navigation`, base `6cddead`, Sonnet | active | - | verify, cherry-pick |
+| LSP-05b-core navigation logic | `codex/lsp-05-navigation` -> `3769504` | integrated-awaiting-gates | coordinator rerun 17 passed; selfdiff 0 differ at `3769504`; worker: full pytest 21,753/507; additive `stmt.origin` in parser.py | full pytest + native verify running |
+| LSP-wire features in server | `codex/lsp-wire`, base `b21c1e1`, Sonnet | active | - | verify, cherry-pick |
+| LSP-04a-optmark | `codex/lsp-04-optmark`, base `f2d8c00`, Haiku | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
