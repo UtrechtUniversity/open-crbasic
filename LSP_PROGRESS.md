@@ -27,10 +27,16 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | Round/chunk | Base / worktree / owner | State | Evidence / review | Next action |
 |---|---|---|---|---|
 | LSP-00 | `f42e471`, main checkout, coordinator | accepted pending review | LSP-00.md gate table; selfdiff 0 differ | human review |
-| LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01a/01c, then dispatch 01b |
-| LSP-01a sources+facade | `codex/lsp-01-sources`, `.claude/worktrees/lsp-01-sources`, Sonnet worker | active | - | verify, cherry-pick |
-| LSP-01c VS Code client | `codex/lsp-01-vscode`, `.claude/worktrees/lsp-01-vscode`, Haiku worker | active | - | verify, cherry-pick |
-| LSP-01b server | not dispatched (needs 01a) | planned | - | dispatch after 01a |
+| LSP-01 | base `25eeced`, brief [LSP-01.md](docs/lsp-rounds/LSP-01.md) | active | - | integrate 01b, round gates |
+| LSP-01a sources+facade | `codex/lsp-01-sources` -> `c7e5a6f` | integrated-awaiting-gates | selfdiff 0 differ; tests/lsp 42 passed (coordinator rerun) | full pytest + native verify |
+| LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
+| LSP-01b server | `codex/lsp-01-server`, `.claude/worktrees/lsp-01-server`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-02a positions | `codex/lsp-02-positions`, `.claude/worktrees/lsp-02-positions`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-03a catalog+grammar | `codex/lsp-03-catalog`, `.claude/worktrees/lsp-03-catalog`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-04a help provider | `codex/lsp-04-helpdocs`, `.claude/worktrees/lsp-04-helpdocs`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+
+Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
+more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
 
 States: planned, active, checkpointed-unverified, verified-not-integrated, integrated-awaiting-gates,
 accepted. Record exact SHAs and paths when assigned; do not substitute descriptions for identities.
