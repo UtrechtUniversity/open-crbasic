@@ -830,3 +830,52 @@ Labels and predefined/external declarations are not tokens. A constant is a `var
 
 Rendering in an editor, encoding conversion (server), rename (needs `quoted` tables refused),
 table field-level references, references through a stale AST while typing.
+
+## Formatting (LSP-07b)
+
+`opencrbasic.formatting` is the protocol-independent indentation formatter (no pygls, no other
+module changed). It imports `editing`'s private `_roles`, `_classify`, `_block_events` and
+`_tolerant_tokens`, so the block structure is the one folding and the outline use. Brief:
+`docs/lsp-rounds/LSP-07.md`; evidence and counts: `docs/lsp-rounds/LSP-07b-handoff.md`.
+
+| Function | Result |
+|---|---|
+| `format_indentation(text, profile="cr6", indent="  ") -> list[TextEdit]` | Edits for the whole buffer. |
+| `format_range(text, start_line, end_line, profile="cr6", indent="  ")` | The same edits restricted to the 0-based physical lines `start_line..end_line` (levels come from the whole text). |
+| `apply_edits(text, edits) -> str` | Applies edits (test and tooling helper). |
+| `format_refusal(result) -> str \| None` | Reason formatting must not be offered (the analysis has errors or failed internally); None: offer it. |
+
+`TextEdit(line, start, end, new_text)`: `line` 0-based, columns decoded (Latin-1), `start` is always
+0 (only leading whitespace is replaced). `text` is the decoded buffer; `\r` of CRLF is never part
+of an edit. `indent` must be non-empty spaces and tabs (`ValueError` otherwise).
+
+Rules:
+
+- Every opener of `editing.block_pairs` indents its body one level; the closer returns to the
+  opener's level (`End If`, `Next Scan`, ... too). `BeginProg` and `SlowSequence` are blocks, so
+  `SlowSequence` sits one level inside `BeginProg` (this repository's `Main.CR6` writes it at
+  column 0; a formatted copy differs there). A `SlowSequence` ends at the next one or at `EndProg`.
+- `Else`/`ElseIf` sit at the level of their `If`. `Case` sits one level inside `Select`, its body
+  one deeper (the repository's own style); `Case Else` likewise.
+- Continuation lines (a statement continued with `_`) are one level deeper than the first line.
+- Comment-only lines take the level of the next statement, or the current block depth when the
+  next line is a directive or there is none.
+- `#If`/`#ElseIf`/`#Else`/`#EndIf`/`#UnDef` are set to column 0 and do not change the level. Blocks
+  opened inside a branch are tracked per branch; if the branches leave different blocks open,
+  nothing after the `#EndIf` is edited.
+- Blank and whitespace-only lines are not touched.
+- Left alone: a statement with an unterminated string; a continuation line that begins inside a
+  string; every line after an unclosed block opener, after a closer with no opener, after an
+  `#EndIf` whose branches disagree, after the first overflow line, and after the top-level
+  `EndProg` (the compiler stops reading there).
+- A change that would push a physical line (or a continued statement, counted together as the
+  loader does) over the 510-character buffer is dropped for that statement.
+- Files with errors: formatting is not offered (`format_refusal`). The function itself works on
+  text alone.
+
+Preservation: for the programs in `crbasic/` (three indents) and the 198 CHM programs that compile
+on `cr6`, the formatted copy gives identical `ok`, mode, diagnostics, TDF bytes and table list
+(`ProgSignature` excluded), and formatting twice equals formatting once
+(`tests/lsp/test_formatting.py`). Declaration initializers that the compiler pulls from following
+lines are not modelled by the formatter's loader (`pull_init` off); those lines are indented as
+separate statements.
