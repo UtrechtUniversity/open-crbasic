@@ -115,10 +115,10 @@ while diagnostic ordering is still being reconstructed.
    difftest/replay with no false rejects/crashes/hangs or lowered exact agreement; then a fresh
    bounded fuzz seed after the family is stable. Finish with `cd scripts && uv run verify.py`.
 
-Use short GPT-5.6-sol agents for mechanical audits, tests, and report preparation. Use
-GPT-5.6-terra for bounded intermediate work when the agent API exposes it; otherwise keep that
-work with the primary agent. Keep architecture and interpretation centralised. Agents receive
-disjoint file ownership, do not commit without permission, and return observed validation.
+Who does what (current human instructions) is in PROGRESS.md "Work method": a coordinating
+session integrates and verifies; Claude subagents (Haiku for easy/medium chunks, Sonnet for rule
+discovery and reverse engineering) implement in their own worktrees; Codex `gpt-6.1-sol` does
+read-only reviews only. Workers get disjoint file ownership and return observed validation.
 
 ## Agreement metric
 
@@ -133,5 +133,4 @@ oracle runs are harness failures, never false accepts. Historical `examples/` ar
 ## Budget rule
 
 Keep PROGRESS.md accurate after every milestone so a new
-session can resume. Delegate boilerplate (CHM extraction, harness scripts, parser plumbing,
-tests) to cheaper agents; keep reverse-engineering interpretation and design centralised.
+session can resume. Delegation follows PROGRESS.md "Work method".
