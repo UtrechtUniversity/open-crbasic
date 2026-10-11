@@ -973,6 +973,8 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 _check_init_bounds(stmt, env, diags)
         elif fire_suppress:
             pass
+        elif isinstance(stmt, S.Unparsed) and _logical_assign_accepted(stmt, program, profile):
+            pass  # compiles (`X AND Y = 1`); only its string operands are reported, in pass 2
         elif isinstance(stmt, S.Unparsed):
             _check_unparsed_pass1(stmt, diags)
             for message in _junk_init_findings(stmt, profile):
@@ -1421,6 +1423,14 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
                     or is_hash_statement(stmt):
                 continue
+            if _logical_assign_accepted(stmt, program, profile):
+                from . import var_types
+                for message in var_types._string_operand_messages(
+                        var_types._Typer(program), S.Assignment(
+                            stmt.line, stmt.file, target=S.Name(stmt.line, name="_"),
+                            value=stmt.expr), every=True):
+                    diags.error(stmt.line, message, stmt.file)
+                continue
             bare = _bare_sub_link_name(stmt.text, link_ctx.subs)
             if bare is not None:
                 link_ctx.links.calls.append(bare)
@@ -1508,7 +1518,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
                                 show_file=False)
                 else:
-                    if verdict == ("pass2", "fallback"):  # an unknown name later in the line
+                    if verdict == ("pass2", "fallback") or (
+                            verdict is None and profile.known_first_word_pass1
+                            and _known_first_token(stmt.text, pass1_operands(program, profile))):
                         for message in _unparsed_string_messages(stmt, program, profile):
                             diags.error(stmt.line, message, stmt.file)
                     lead = re.match(r"\s*([A-Za-z_]\w*)\.", stmt.text)
@@ -1938,6 +1950,35 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         return ("pass1", "fallback") if verdict in (("pass1", "incomplete"),
                                                      ("pass1", "no_matching")) else verdict
     return None
+
+
+def _known_first_token(text: str, operands: set[str]) -> bool:
+    """The statement starts with a name pass 1 knows or a literal (not an unknown name)."""
+    try:
+        toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return False
+    return bool(toks) and (toks[0].kind in ("NUMBER", "STRING")
+                           or (toks[0].kind == "IDENT" and toks[0].upper in operands))
+
+
+def _logical_assign_accepted(stmt: S.Unparsed, program: S.Program, profile) -> bool:
+    """`X AND Y = 1`: a logical operator before an assignment compiles when every name resolves
+    (oracle, all four loggers, 2026-10-10; the parser marks it `parser.LOGICAL_ASSIGN`)."""
+    if stmt.reason != parser.LOGICAL_ASSIGN or expressions._undefined_names(
+            stmt.expr, expressions._known_names(program, profile)):
+        return False
+    variables = symbols.declared_variable_names(program)
+
+    def targets_ok(expr) -> bool:  # every nested assignment target is a plain declared variable
+        if not isinstance(expr, S.Binary):
+            return True
+        if expr.op == "ASSIGN" and not (isinstance(expr.left, S.Name)
+                                        and expr.left.name.upper() in variables):
+            return False
+        return targets_ok(expr.left) and targets_ok(expr.right)
+
+    return targets_ok(stmt.expr)
 
 
 def _unparsed_string_messages(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:

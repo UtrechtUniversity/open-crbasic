@@ -223,6 +223,7 @@ class Label(Stmt):
 class Unparsed(Stmt):
     """A line the parser could not handle; carries the reason for diagnostics."""
     reason: str = ""
+    expr: object = None  # the expression of a statement the parser took apart but cannot compile
 
 
 def hash_statement(st: "Stmt") -> "Unparsed | None":
