@@ -971,3 +971,79 @@ on `cr6`, the formatted copy gives identical `ok`, mode, diagnostics, TDF bytes 
 (`tests/lsp/test_formatting.py`). Declaration initializers that the compiler pulls from following
 lines are not modelled by the formatter's loader (`pull_init` off); those lines are indented as
 separate statements.
+
+## Quick fixes (LSP-07c)
+
+`opencrbasic.quickfix` is the protocol-independent core of quick fixes (no pygls; server wiring is
+a separate chunk). It imports `bindings` (resolution, `lookup`), `navigation` (exact token ranges;
+it reads `Navigation._site_of`, a private mapping) and `catalog`. Brief:
+`docs/lsp-rounds/LSP-07.md`; handoff: `docs/lsp-rounds/LSP-07c-handoff.md`.
+
+```python
+quickfix.code_actions(result, path, diagnostic, profile, *, index=None, source=None) -> list[CodeAction]
+quickfix.apply_edits(data: bytes, edits) -> bytes        # test and tooling helper
+quickfix.edit_distance(a, b) -> int                      # case-insensitive Damerau-Levenshtein
+```
+
+`result` is an `AnalysisResult`, `diagnostic` one of its `AnalysisDiagnostic`s, `path` the file the
+actions are for (edits are only returned for that file), `profile` a profile name or `Profile`.
+`CodeAction(title, edits, kind="quickfix", family)`; `Edit(path, line, start, end, new_text)` with
+`line` 0-based and columns decoded (Latin-1) as in `navigation.Location`. `source` (default: disk
+plus `result.request.overlays`) is read only by the include family. The call never raises for a
+program; no match means `[]`.
+
+### Message families
+
+Matched against `AnalysisDiagnostic.message` (the compiler text, exactly as `docs/messages.tsv`
+and the checker print it). The referenced name is a `bindings.Reference` with status `unresolved`
+on the diagnostic's physical line span (`diagnostic.span`); a diagnostic without a span gives
+nothing, except the line-less link message below.
+
+| Family | Message pattern | References considered |
+|---|---|---|
+| undefined symbol | `Invalid symbol in expression: <statement>.` (CR6, CR1000X); `<name> is not defined.` (CR300, CR350; the name must match) | every unresolved name on the line (read, write, call, argument, table, member base, alias/units target) |
+| undefined call or assignment target | `Invalid, or out of place expression: <statement>.` (the generic fallback; all loggers) | unresolved call and write references on the line |
+| undefined Sub | `Sub <name> not defined.` (no Sub declared; has a line); `<name> is not declared as a Subroutine.` (line 0, the link step) | unresolved call references of that name, in `path` |
+| missing include | `Cannot open include file  <name>.` (two spaces; CR6/CR1000X print the name without the drive) | the include string on the line |
+
+`Unknown instruction: <text>.` is the `#` directive stop (`checker/__init__.py`, observed with
+`#Frob`); there is no table of directives to propose from, so it gets no action. An unknown
+instruction written without `#` is one of the `Invalid, or out of place expression` or `Sub ... not
+defined` lines above.
+
+### Candidates and ranking
+
+Names come from the binding index (every declaration whose `lookup(name, ref.routine, ref.role)`
+at the use gives candidates and no ambiguity: a local of another routine is never offered) and
+the profile's catalog (instructions, functions, symbols, plus `NAN` and `INF`). A candidate must fit
+the role: an assignment target takes variables and parameters only; a bare `Call X` only Subs; a
+call statement Subs, Functions and catalog instructions/functions; a table reference tables; any
+other read variables, constants, functions and symbols (arguments also tables). Distance is the
+unrestricted Damerau-Levenshtein distance, case-insensitive, at most 2 (at most 1 when the
+misspelled name has up to 3 characters; a distance of 2 requires the same first letter, which
+removes short catalog names such as `PWR` for `pars`). Order: distance, user-declared before
+catalog, upper-cased name; at most 5 per reference. The inserted spelling is the declaration's
+own; a catalog name uses the spelling the program already writes for it, else the profile table's.
+The distance and first-letter rules are this project's choice, not compiler evidence.
+
+For the include family, candidates are the files in the directory listing of the including file
+(sources provider, so unsaved buffers count) whose names end `.crb` or `.cr6`, are not the entry
+program, and are within the same distance of the written name; only the file-name part of the
+string changes (a `cpu:` drive stays). The loader already matches include names case-insensitively
+(`source._resolve_include_path`), so a case-only mismatch never produces this message; the family is
+for misspelled names. Names with a path separator get nothing.
+
+### Limits
+
+- An edit needs an exact one-slice token range (`navigation`); a name from a continuation join that
+  splits it, a statement the parser could not take apart, or an unparsed token gives no action.
+- A file loaded twice (two includes of one library) can give the same edit once; the candidates of
+  the first load's reference win.
+- The compiler stops reporting after some errors (pass-1 errors hide the later checks), so a fix may
+  expose further diagnostics; each is handled in turn.
+- Only text replacement of one token: no action creates a declaration, adds an `Include`, or deletes
+  code.
+- Evidence: `tests/lsp/test_quickfix.py` applies each fix and compiles again (`compile_file` through
+  `analyze`), and sweeps one seeded misspelling per `crbasic/*.CR6` program (see the handoff for the
+  rate). Compilation shows the fixed program is accepted, not that the chosen name is what the
+  author meant.
