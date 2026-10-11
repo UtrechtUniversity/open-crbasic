@@ -8,7 +8,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - LSP-00 done (baseline, inventory, contracts): [docs/lsp-rounds/LSP-00.md](docs/lsp-rounds/LSP-00.md).
   The human-requested `gpt-6.1-sol` review through `39286384` is recorded in
   [review-2026-10-11-39286384.md](docs/lsp-rounds/review-2026-10-11-39286384.md);
-  findings await implementation. Usage is checked by the human; work proceeds per round.
+  the [second review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md)
+  records fix verification and new findings. Usage is checked by the human; work proceeds per round.
 - Active round: LSP-01. Host-only checks pending: [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md).
 - Released capabilities: none. No server/extension behaviour observed yet.
 - Container limits: no Wine (no oracle, difftest, live replay, probes), VS Code download host
@@ -53,6 +54,10 @@ Live implementation state and session handoff. Design and acceptance criteria:
   a variable rename left `Quoted.a` member references behind (unsafe; now refused).
 
 ## Review findings
+
+[Second gpt-6.1-sol review through `f3069825`](docs/lsp-rounds/review-2026-10-11-f3069825.md)
+(human-requested, 2026-10-11): findings and prior-fix verification are recorded in the report.
+The new findings await implementation.
 
 [gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
 2026-10-11), four P2 findings, triaged by the coordinator:
