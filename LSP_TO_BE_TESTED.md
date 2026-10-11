@@ -42,6 +42,27 @@ On macOS (and Windows/Linux when available), VS Code with Python 3.10+ and this 
    closing the edited file without saving restores the disk diagnostics.
 5. Record the VS Code version, OS, revision and screenshots/log excerpts.
 
+### T-03 Syntax highlighting (LSP-03a)
+
+With the extension running as in T-02, open `crbasic/Main.CR6`, `crbasic/SBDIridiumLib.crb` and a
+scratch file with the lines below. Accept when: `'` comments are comment-coloured to end of line
+but an `'` inside a string is not; `"a""b"` is one string; `&H1F`, `&B101`, `.5`, `1.5E3` are
+numbers; `#If`/`#EndIf` are directives; `If`/`Then`/`EndIf`/`Sub`/`Public`/`As` are keywords;
+`VoltSE`, `CallTable`, `PortSet` are instruction-coloured; `Chr$(65)` and `Sqr(x)` are builtin
+functions; `mV5000`, `ComC1` are constants; `Tmp.VoltSE`, `Scan1`, `MyIf` are **not** highlighted
+as instructions/keywords; nothing carries over to the next line after an unterminated string.
+Record the theme used and a screenshot.
+
+```
+Public s As String = "it's ""quoted""" ' comment with "quote"
+Const H = &H1F + &B101 + .5 + 1.5E3
+#If H > 0 Then
+VoltSE(Tmp, 1, mV5000, 1, 1, 0, 15000, 1, 0) : s = Chr$(65)
+#EndIf
+x = Tmp.VoltSE + Scan1 + MyIf
+s = "unterminated
+```
+
 ## Done
 
 None yet.

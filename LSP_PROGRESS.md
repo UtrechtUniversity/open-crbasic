@@ -32,8 +32,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-01c VS Code client | `codex/lsp-01-vscode` -> `b69ea37` | integrated | coordinator rerun: npm ci, compile exit 0, 5/5 tests | VS Code launch: T-02 |
 | LSP-01b server | `codex/lsp-01-server`, `.claude/worktrees/lsp-01-server`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
 | LSP-02a positions | `codex/lsp-02-positions`, `.claude/worktrees/lsp-02-positions`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
-| LSP-03a catalog+grammar | `codex/lsp-03-catalog`, `.claude/worktrees/lsp-03-catalog`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
-| LSP-04a help provider | `codex/lsp-04-helpdocs`, `.claude/worktrees/lsp-04-helpdocs`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
+| LSP-03a catalog+grammar | `codex/lsp-03-catalog` -> `4822b49` | integrated | coordinator rerun: 32 passed, `gen_grammar --check` up to date; combined tests/lsp 92 passed; npm compile 0, 5/5; worker: selfdiff 0 differ, full pytest 21,579/507 | highlighting: T-03 |
+| LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
