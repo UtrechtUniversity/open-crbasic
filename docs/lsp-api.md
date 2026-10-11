@@ -554,3 +554,129 @@ declarations(program) -> {UPPER_NAME: [Declaration, ...]}
 Not covered, and not observed: rendering in an editor, UTF-16 conversion (the server's job), the
 effect of a stale analysis while typing. Help text is Campbell Scientific documentation shown
 verbatim-reduced (internal use, `docs/legal.md`); help names never change checker rules.
+
+## Editing features (LSP-03b-core)
+
+`opencrbasic.editing` holds the logic behind the outline, folding, document links and completion.
+It is pure Python (no pygls), changes no compiler module (`tools/selfdiff.py --compare` 0 differ)
+and is wired to the protocol by LSP-03b-wire. Brief and criteria: `docs/lsp-rounds/LSP-03.md`;
+hand-off notes: `docs/lsp-rounds/LSP-03b-core-handoff.md`.
+
+### Ranges
+
+Every range is *before LSP position-encoding conversion*: `Span(start_line, start_col, end_line,
+end_col)` with **0-based** physical lines and 0-based decoded (Latin-1) columns, i.e. byte offsets
+into the physical line. `end_col=None` means "the end of `end_line`"; the AST carries lines only, so
+symbol ranges are whole-line spans (`start_col == 0`, `end_col is None`). The server converts with
+`positions.lsp_position(data, line + 1, col, ...)` (that function takes a 1-based line) and takes
+the line length from the file bytes for `end_col=None`. `FoldRange` carries line numbers only.
+Text arguments (`folding_ranges`, `completion_candidates`) are the buffer decoded as the compiler
+decodes, Latin-1, so a column is an index into the line of that string.
+
+### API
+
+| Function | Result |
+|---|---|
+| `document_symbols(result, path, profile=None) -> list[Symbol]` | Outline of the file at `path` from `result.program`. |
+| `folding_ranges(text, profile="cr6") -> list[FoldRange]` | Block, `#If` and comment-run folds from the buffer text alone. |
+| `include_links(result) -> list[IncludeLink]` | One entry per `Include` / `IncludeSection` statement of every file of the program. |
+| `completion_candidates(result, text, line, column, profile="cr6", declared=None) -> Completion` | Candidates at a position. `result` may be None or stale. |
+| `declared_names(program, profile="cr6") -> list[DeclaredName]` | The `(name, kind, scope)` list completion uses by default (LSP-05a's binding index replaces it). |
+| `block_pairs(profile) -> dict` | Opener word -> closer word of the profile (upper case). |
+
+### Block words
+
+`block_pairs` is derived from the instruction catalog (`catalog.InstructionCatalog`), not typed in:
+an instruction row `X` whose row `EndX` exists is a pair (If/EndIf, Select/EndSelect, Sub/EndSub,
+Function/EndFunction, ConstTable/EndConstTable, StructureType/EndStructureType, ObjectType,
+DialSequence, ModemHangup, SubMenu, ProChiPri, ApplyAndRestartSequence). Eight pairs are not named
+that way and are listed in `editing._IRREGULAR_PAIRS`: For/Next, Do/Loop, While/Wend,
+DataTable/EndTable, BeginProg/EndProg, Scan/NextScan, SubScan/NextSubScan,
+SlowSequence/EndSequence. A pair is used for a profile only when both rows are in its instruction
+table. The two-word closers (`End If`, `End Sub`, `Next Scan`, `Next SubScan`) are `End`/`Next`
+followed by the identifier that completes a closer word. `Case`, `Else`, `ElseIf` do not fold.
+
+`tests/lsp/test_editing.py` pins the CR6 pair table (`EXPECTED_CR6_PAIRS`), checks each word is an
+instruction row in all four profiles that have it, and checks with `parser.parse_text` that the
+parser reads each opener and each closer (one-word and two-word forms) as the statement
+`_ast_event` expects. The same classification serves the text scan (`folding_ranges`, completion
+scope) and the AST (`document_symbols`, `declared_names`).
+
+One rule is not from the catalog: a `SlowSequence` without `EndSequence` (this project's `Main.CR6`
+and CHM samples write none, and the compiler accepts them) is taken to end where the next
+`SlowSequence` or the enclosing `EndProg` begins. The compiler's own rule was not observed.
+
+### Folding
+
+`folding_ranges` reads the buffer with the source loader (`source.load_text`, includes unresolved),
+so continuation lines, comments and case follow the compiler; a line the loader calls an overflow
+(over 510 characters) ends its pass, and loading restarts after it so one long line does not hide
+the rest of the file. Per statement (split on top-level `:` like the parser) it takes the first
+word, plus the second for `End`/`Next`; words in strings and comments never count. An `If` is a
+block only in its multi-line form: `Then` ends the statement and, on CR6 and CR1000X, no further
+`:` segment follows it (`If c Then : x` is a one-line If, as the parser reads it). Matching is by nearest opener of the same family: a closer closes the
+innermost open block of its family and drops blocks opened inside it that were never closed; a
+closer without an opener is ignored; an unclosed block gives no range. `#If`..`#EndIf` fold as one
+range with `#ElseIf`/`#Else` inside; conditions are not evaluated, so inactive branches fold and
+their own blocks fold too. Two or more consecutive comment-only lines give a `comment` fold. A
+range runs from the opener's first line to the line before its closer (the closer stays visible)
+and exists only with at least one line between header and closer.
+
+### Outline
+
+`document_symbols` walks `result.program.statements`, attributes each statement to physical lines
+with `Program.line_map` (`positions.reported_spans`) and nests by block:
+
+| `kind` | Statement | Children |
+|---|---|---|
+| `sub`, `function` | `Sub` / `Function` (detail: parameters and return type) | `parameter` per parameter |
+| `datatable` | `DataTable` | `output`: each instruction in the body that is not a catalog keyword (so `Units` is left out; `DataInterval`, `Sample`, ... stay) |
+| `consttable` | `ConstTable` | `const` |
+| `structuretype` | `StructureType` | `member` |
+| `beginprog`, `scan`, `subscan`, `slowsequence` | the block words | declarations inside, nested blocks |
+| `public`, `dim`, `static`, `const`, `alias` | declarations at file level | none |
+
+`range` is the header through the closer; `selection` is the header (both whole-line spans over
+all physical lines of a continued statement). A block that is never closed has its header only.
+Declarations inside a `Sub`/`Function` are not listed. Only code the compiler reads has symbols:
+inactive `#If` branches and text after `EndProg` do not appear. The result lists the symbols of
+the file at `path`; for a file included twice there is one entry per `source.Occurrence`
+(`Symbol.occurrence`), at the same physical lines. Which occurrence a statement belongs to is
+inferred from order (the reported line going back means the next load), because the AST records no
+occurrence; an occurrence inside an inactive `#If` makes that attribution unreliable. `[]` when
+`result.program` is None or the path is not in the program.
+
+### Include links
+
+`include_links` finds the statements with the loader (`IncludeLink.range` is the file name inside
+the quotes, on the physical line where the literal is; `keyword` is the spelling written) reading
+each file of `Program.occurrences` through `OverlaySource(DiskSource(), request.overlays)`, so
+unsaved buffers count. `target` is `Program.include_paths[spec.strip()]` and is None for a missing
+file. A file included twice is listed once. With no parsed program only the entry file is scanned
+and every target is None.
+
+### Completion
+
+`completion_candidates` returns a `Completion(items, replace, prefix, member_of)`. `replace` is the
+identifier prefix before the cursor. There are no candidates inside a string (odd number of `"`
+before the cursor) or after a `'`. After `name.` the items are the fields of the table called
+`name` from `tables.build_tables(result.program)` (Status, Public, each DataTable, each
+StructureType variable), `kind="field"`; unknown name or no result: none. Otherwise the items are
+the program's names plus the catalog's. Catalog entries use the profile's spelling and one item per
+name: the language word (`keyword`) beats the instruction row, then instruction, function, symbol.
+`param_count` is `len(params)` for an instruction and `nargs` (else `len(argtypes)`) for a
+function where the table has them, None otherwise; it counts table parameters, optional ones
+included. Program names are `(name, kind, scope)`; `scope=None` is global, otherwise the name of a
+Sub/Function and the name is offered only inside it. The current routine is found from `text`
+(unclosed routines included), not from the possibly stale `result`. `declared=` replaces the AST
+walk with a caller-built list. Program names sort before catalog names, then case-insensitively.
+
+### Known limits
+
+- Everything depends on what the parser accepts: a `Sub` header the parser cannot read (it
+  rejects `ByVal`/`ByRef`, for instance) has no outline entry, though it still folds.
+- Folding does not evaluate `#If` and does not know a `Case` branch; `Else`/`ElseIf` branches do
+  not fold on their own.
+- Outline columns are not available (the AST has lines only): selection ranges are whole lines.
+- Completion offers every catalog name at an empty prefix and does not look at the statement
+  context (argument position, expected type). Locals are matched by routine name.
