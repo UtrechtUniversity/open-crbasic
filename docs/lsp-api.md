@@ -181,3 +181,82 @@ Python `re` (the patterns stay in the syntax shared with Oniguruma; they also co
 JavaScript `RegExp` when `(?i)` is turned into a flag), and tokenizes sample lines with a small
 matcher (earliest match wins, ties go to the earlier rule). That proves the patterns match the
 intended text under Python `re`; it does not prove how VS Code renders the grammar.
+
+## Source positions
+
+`opencrbasic.positions` (LSP-02a) maps what the compiler reports back to the physical files. It is
+read-only over provenance the loader records; no compiler output changed (`tools/selfdiff.py
+--compare` 0 differ). Brief and criteria: `docs/lsp-rounds/LSP-02.md`.
+
+### Recorded provenance
+
+- `source.Piece(start, end, file, line, col, occurrence)`: `LogicalLine.text[start:end]` is
+  physical line `line` (1-based, the true line of that file, unlike `LogicalLine.line`) from
+  decoded column `col` on. `LogicalLine.pieces` lists them in order and covers every character
+  that came from a physical line, through `_` continuation (including the blanks before the `_`
+  that the join keeps, the dropped `_`, and a lone `_` line) and `Public`/`Dim` initializer pulls
+  (CR6, CR1000X, CR300, CR350). The `" = "` or `" "` the pull inserts, and the text of
+  `include_*`/`overflow` lines, have no piece.
+- `LogicalLine.phys = (first, last)`: physical lines the statement spans (pulled lines included).
+  `LogicalLine.occurrence`: `Occurrence.id` of the load. Both default (`None`, `0`); the
+  `LogicalLine` constructor is unchanged. `include_begin`/`include_end`/`include_warning`/
+  `include_error` lines carry the span of the `Include`/`IncludeSection` statement. The
+  `unpulled` lines (the declaration as written, restored when an initializer is not read) carry
+  their own pieces.
+- `source.Occurrence(id, file, path, parent, site)`: one entry per load of a file, in load order
+  (`Program.occurrences`, `Diagnostics.occurrences`; id 0 is the entry). A file included twice has
+  two occurrences; `parent` is the including occurrence and `site` the physical line span of the
+  including statement, so the include-site chain is recoverable.
+- `Program.line_map: {file display name: {reported line: [LineSpan(first, last, occurrence)]}}`
+  (recorded by the parser, `parse_file` and `parse_text`). It uses the numbering the compiler
+  reports, including the parser's give-back of unread (inactive `#If`) initializer pulls, so after
+  a pull the reported line is smaller than the physical one. Several logical lines can share a
+  reported line and a doubly-included file has one span per occurrence: all are kept. Lines of an
+  inactive `#If` branch, directives, and lines the compiler never reads (after the first top-level
+  `EndProg`, after an overflow line) are mapped too; for those never-read lines pulls are treated
+  as unread. File keys are the same display names as `AnalysisDiagnostic.file`.
+
+### API
+
+| Function | Purpose |
+|---|---|
+| `reported_spans(line_map, file, line) -> list[LineSpan]` | All physical spans reported at that line (file name matched exactly, then case-insensitively). |
+| `line_span(line_map, file, line) -> (first, last) \| None` | Union of those spans; None when unknown. |
+| `logical_ranges(ll, start, end) -> list[PhysicalRange]` | Logical column range `[start, end)` -> `PhysicalRange(file, occurrence, line, start_col, end_col)`, one per physical line/contiguous slice; inserted characters map to nothing. An empty range gives one empty range, or none inside inserted text. |
+| `exact_range(ll, start, end) -> PhysicalRange \| None` | The range when it is one contiguous physical slice (a token from a single piece). |
+| `physical_lines(data) -> list[bytes]` | The loader's line split (CRLF and LF). |
+| `lsp_position(data, line, col, *, encoding="utf-16", editor_encoding="utf-8") -> (line0, character)` | Decoded column -> LSP position. |
+| `lsp_range(data, physical_range, ...)` | Both ends of a `PhysicalRange`. |
+
+Token columns are offsets into `LogicalLine.text`. The parser keeps no token or logical-line
+reference on AST nodes, so a consumer obtains tokens by `lexer.tokenize(ll.text)` on the loader's
+lines (`source.load_program`), then `exact_range`. Colon statements need nothing special: a
+segment is a substring of the logical text, so its columns convert like any other.
+
+`AnalysisDiagnostic.span` (default None) is `line_span` of the diagnostic's `(file, line)`: the
+physical first/last line in the diagnostic's file. None for line 0 and for unknown lines. The
+compiler reports lines only, so no column range is invented for a diagnostic.
+
+### Encoding
+
+The compiler decodes bytes as Latin-1, so a decoded column is a byte offset into the physical
+line's bytes. `lsp_position` decodes `line_bytes[:col]` with `editor_encoding` (errors replaced,
+a trailing incomplete sequence dropped, so a column inside a multi-byte character snaps to that
+character's start) and counts `utf-16` code units, `utf-8` bytes of the decoded text, or `utf-32`
+code points. A column past the end of the line is clamped; a line outside the file raises
+`IndexError`; an unknown position encoding raises `ValueError`. Bytes invalid in the editor
+encoding become U+FFFD (1 UTF-16 unit, 3 UTF-8 bytes), as an editor that reads the file with
+replacement would show them.
+
+### Known limits
+
+- Only ASCII-compatible editor encodings are meaningful (the line split is on bytes).
+- A lone CR (not part of CRLF) stays inside a loader line but is a line break for an editor; lines
+  after one differ. Not handled.
+- Diagnostics carry lines only. `span` of a diagnostic whose reported line is shared by several
+  logical lines, or by several occurrences, is their union.
+- A multi-piece range (across a continuation or pull) comes back as several `PhysicalRange`s; an
+  editor range for it is the caller's choice.
+- Statements are not annotated with columns; AST nodes still carry only `line`.
+- Not gated against the Wine oracle (none exists here); the map reproduces our own emulation of
+  the reported line numbers.

@@ -27,6 +27,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from pathlib import Path
+from typing import NamedTuple
 
 from .diagnostics import Diagnostics
 from .sources import DiskSource, SourceProvider
@@ -41,6 +42,45 @@ _INCLUDE_SECTION_RE = re.compile(
     r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*(?:,.*)?\)\s*$', re.IGNORECASE
 )
 _DRIVE_RE = re.compile(r'^(CPU|USR|CRD|USB):', re.IGNORECASE)
+
+
+class Piece(NamedTuple):
+    """Provenance: `text[start:end]` of a `LogicalLine` is the decoded characters of physical line
+    `line` (1-based, the true line in its file) from character `col` (0-based) on. Characters of
+    `text` that no piece covers were inserted by the loader (the `" = "`/`" "` joins of a pull)."""
+    start: int
+    end: int
+    file: str          # the file's display name, as `LogicalLine.file`
+    line: int
+    col: int
+    occurrence: int    # which load of that file (`Occurrence.id`)
+
+
+class Occurrence(NamedTuple):
+    """One load of a file: a file included twice has two. `parent` is the occurrence whose
+    `Include`/`IncludeSection` statement loaded it (None: the entry) and `site` the physical line
+    span (first, last) of that statement in the parent."""
+    id: int
+    file: str
+    path: Path | None
+    parent: int | None
+    site: tuple[int, int] | None
+
+
+class LineSpan(NamedTuple):
+    """The physical lines (first, last) of a logical line reported at some line of its file."""
+    first: int
+    last: int
+    occurrence: int
+
+
+def _clip(pieces: list[Piece], n: int) -> list[Piece]:
+    out = []
+    for p in pieces:
+        if p.start >= n:
+            break
+        out.append(p if p.end <= n else p._replace(end=n))
+    return out
 
 
 @dataclass
@@ -59,6 +99,10 @@ class LogicalLine:
     pulls: int = 0           # CR6/CR1000X initializer pull: physical lines folded into `text`
     unpulled: "list[LogicalLine] | None" = None  # the lines as written, for when `text` is not read
     bad_init: tuple[str, str] | None = None      # (message, variable) reported only when read
+    # Provenance (positions only; nothing in the compiler reads these): see `positions.py`.
+    pieces: tuple[Piece, ...] = ()   # where each character of `text` came from, in order
+    phys: tuple[int, int] | None = None  # physical lines (first, last) the statement spans
+    occurrence: int = 0              # `Occurrence.id` of the load this line belongs to
 
 
 def _split_physical_lines(raw: str) -> list[str]:
@@ -133,12 +177,15 @@ def _split_top_commas(text: str) -> list[str]:
     return parts
 
 
-def _pull_decl_initializer(text: str, physical: list[str], i: int):
+def _pull_decl_initializer(text: str, physical: list[str], i: int, trace: list | None = None):
     """CR6/CR1000X `Public`/`Dim` initializer line pulling (oracle, 2026-10-10, `docs/checker.md`
     "Round 7 CR6/CR1000X help-corpus families"): a declaration ending in `=` pulls the next line
     into itself, and a brace list ending in `,` or `{` keeps pulling; every pulled line is
     consumed without advancing the reported line counter. Returns `(text, i, pulls, bad)`; `bad`
-    is `(message, variable)` when the pulled line opens with `{` after a trailing `=` on an array."""
+    is `(message, variable)` when the pulled line opens with `{` after a trailing `=` on an array.
+    `trace`, when given, receives the provenance edits in order: `("cut", n)` keeps the first `n`
+    characters of `text`; `("add", gap, index, col, length)` appends `gap` inserted characters and
+    then `length` characters of physical line index `index` from column `col`."""
     pulls = 0
     n = len(physical)
 
@@ -156,6 +203,8 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int):
             return text, i, 0, None
         raw, stripped = nxt
         head = text.rstrip()[:-1].rstrip()
+        if trace is not None:
+            trace.append(("cut", len(head)))
         body = stripped.lstrip(" \t")
         names = _split_top_commas(head)
         first = names[-1]
@@ -171,6 +220,8 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int):
             return head, i + 1, 1, (f"{kind}: {echo}.", m.group(1))
         if not body.startswith("{"):
             body = _split_top_commas(body)[0]  # the rest of the pulled line is dropped, unread
+        if trace is not None:
+            trace.append(("add", 3, i + 1, len(stripped) - len(stripped.lstrip(" \t")), len(body)))
         return head + " = " + body, i + 1, 1, None
     while True:
         m = _mask_strings(text).rstrip()
@@ -180,6 +231,10 @@ def _pull_decl_initializer(text: str, physical: list[str], i: int):
         nxt = next_text()
         if nxt is None:
             break
+        if trace is not None:
+            trace.append(("cut", len(text.rstrip())))
+            trace.append(("add", 1, i + pulls + 1, len(nxt[1]) - len(nxt[1].lstrip(" \t")),
+                          len(nxt[1].lstrip(" \t"))))
         text = text.rstrip() + " " + nxt[1].lstrip(" \t")
         pulls += 1
     return text, i + pulls, pulls, None
@@ -202,6 +257,10 @@ class _Loader:
         self.own_ext = own_ext  # CR6/CR1000X only: the logger's own program extension
         self.cr3xx_exts = cr3xx_exts  # CR300/CR350 only: the extensions an include may load
         self.files: list[bytes] = []    # every file read, in order (ProgSignature input)
+        self.occurrences: list[Occurrence] = []  # every load of a file, in order (provenance)
+        self._cur: int | None = None     # the occurrence being loaded (provenance)
+        self._path: Path | None = None   # path of the file `load_file` is about to load
+        self._site_phys: tuple[int, int] | None = None  # physical span of the include being expanded
 
     def load_file(self, path: Path, *, section: str | None, in_include: bool,
                   display: str | None = None) -> list[LogicalLine]:
@@ -211,13 +270,22 @@ class _Loader:
         if data is None:
             return []
         self.files.append(data)
-        return self.load_text(data.decode("latin-1"), display or path.name, section=section,
-                              in_include=in_include)
+        saved = self._cur
+        self._path = path
+        try:
+            return self.load_text(data.decode("latin-1"), display or path.name, section=section,
+                                  in_include=in_include)
+        finally:
+            self._cur = saved
 
     def load_text(
         self, raw: str, filename: str, *, section: str | None, in_include: bool
     ) -> list[LogicalLine]:
         physical = _split_physical_lines(raw)
+        occ = len(self.occurrences)
+        self.occurrences.append(Occurrence(occ, filename, self._path, self._cur,
+                                           self._site_phys if self._cur is not None else None))
+        self._cur, self._path = occ, None
         out: list[LogicalLine] = []
         i = 0
         n = len(physical)
@@ -228,15 +296,18 @@ class _Loader:
             buffer_text = raw_line
             # The buffer includes an LF when present; see docs/frontend.md#source-line-buffer.
             if len(buffer_text) + (i < n - 1) > 510:
-                out.append(LogicalLine("", start_line - shift, filename, section, kind="overflow"))
+                out.append(LogicalLine("", start_line - shift, filename, section, kind="overflow",
+                                       phys=(start_line, start_line), occurrence=occ))
                 break
             text = _strip_comment(raw_line)
             had_comment = len(text) != len(raw_line)
+            pieces = [Piece(0, len(text), filename, start_line, 0, occ)] if text else []
             last_line = start_line
             while True:
                 cont, prefix = _is_continuation(text)
                 if not cont or i + 1 >= n:
                     text = prefix if cont else text
+                    pieces = _clip(pieces, len(text))
                     break
                 buffer_text = _strip_comment(buffer_text).rstrip(" \t")[:-1]
                 i += 1
@@ -244,7 +315,8 @@ class _Loader:
                 raw_line = physical[i]
                 buffer_text += raw_line
                 if len(buffer_text) + (i < n - 1) > 510:
-                    out.append(LogicalLine("", last_line - shift, filename, section, kind="overflow"))
+                    out.append(LogicalLine("", last_line - shift, filename, section, kind="overflow",
+                                           phys=(start_line, last_line), occurrence=occ))
                     return out
                 stripped = _strip_comment(raw_line)
                 had_comment = len(stripped) != len(raw_line)
@@ -253,34 +325,65 @@ class _Loader:
                 # too: `foo bar _` / `      baz` echoes `foo bar       baz`)
                 lone = (not prefix.strip() and _is_continuation(stripped)[0]
                         and not _is_continuation(stripped)[1].strip())
+                joined = len(text.rstrip(" \t")) - 1
                 text = stripped if lone else text.rstrip(" \t")[:-1] + stripped
+                pieces = [] if lone else _clip(pieces, joined)
+                if stripped:
+                    pieces.append(Piece(0 if lone else joined, len(text), filename, last_line, 0, occ))
             if text.strip() == "":
                 i += 1
                 continue
             pulls = 0
             orig = text
+            orig_pieces = pieces
             pos = (*self.site.get(filename, ()), start_line - shift)
             if self.pull_init and _DECL_START_RE.match(text) and (
                     self.pull_limit is None or pos < self.pull_limit):
-                text, i, pulls, bad = _pull_decl_initializer(text, physical, i)
+                trace: list = []
+                text, i, pulls, bad = _pull_decl_initializer(text, physical, i, trace)
+                size = len(orig)
+                for edit in trace:
+                    if edit[0] == "cut":
+                        pieces, size = _clip(pieces, edit[1]), edit[1]
+                    else:
+                        _, gap, index, col, length = edit
+                        pieces = pieces + [Piece(size + gap, size + gap + length, filename,
+                                                 index + 1, col, occ)]
+                        size += gap + length
                 if pulls:
                     self.pull_log.append((pos, (*self.site.get(filename, ()), last_line - shift)))
                 if pulls:
                     had_comment = len(_strip_comment(physical[i])) != len(physical[i])
+            self._site_phys = (start_line, i + 1)
             new = self._expand_or_keep(text, last_line - shift, filename, section, in_include,
                                        had_comment)
+            for made in new:
+                if made.phys is None:
+                    made.phys, made.occurrence = (start_line, i + 1), occ
+            if len(new) == 1 and new[0].kind == "code":
+                new[0].pieces = tuple(pieces)
             if pulls and len(new) == 1 and new[0].kind == "code":
                 # the parser decides whether this text is read (not in an inactive #If, not after
                 # EndProg; oracle, 2026-10-10) and otherwise restores the lines as written
                 base = last_line - shift - pulls
                 new[0].pulls, new[0].bad_init = pulls, bad
-                new[0].unpulled = [LogicalLine(orig, base, filename, section)] + [
+                new[0].unpulled = [LogicalLine(orig, base, filename, section,
+                                               pieces=tuple(orig_pieces), phys=(start_line, last_line),
+                                               occurrence=occ)] + [
                     LogicalLine(_strip_comment(physical[last_line - 1 + k]), base + k, filename,
-                                section) for k in range(1, pulls + 1)]
+                                section, pieces=self._whole(physical[last_line - 1 + k],
+                                                            filename, last_line + k, occ),
+                                phys=(last_line + k, last_line + k), occurrence=occ)
+                    for k in range(1, pulls + 1)]
             out.extend(new)
             shift += pulls
             i += 1
         return out
+
+    @staticmethod
+    def _whole(raw: str, filename: str, line: int, occ: int) -> tuple[Piece, ...]:
+        n = len(_strip_comment(raw))
+        return (Piece(0, n, filename, line, 0, occ),) if n else ()
 
     def _expand_or_keep(
         self, text: str, line: int, filename: str, section: str | None, in_include: bool,
@@ -366,6 +469,7 @@ def load_program(path: Path, own_ext: str | None = None,
     diags.pull_log = loader.pull_log
     diags.pull_site = loader.site
     diags.include_paths = loader.includes
+    diags.occurrences = loader.occurrences
     return lines, diags
 
 
@@ -376,4 +480,5 @@ def load_text(text: str, name: str = "t.cr6", directory: Path | None = None,
     diags = Diagnostics()
     loader = _Loader(directory, diags, own_ext, pull_init, cr3xx_exts)
     lines = loader.load_text(text, name, section=None, in_include=False)
+    diags.occurrences = loader.occurrences
     return lines, diags

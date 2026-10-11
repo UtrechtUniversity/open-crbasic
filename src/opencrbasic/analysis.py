@@ -11,7 +11,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Mapping
 
-from . import profiles
+from . import positions, profiles
 from .compiler import compile_file
 from .sources import DiskSource, OverlaySource, RecordingSource
 
@@ -39,6 +39,7 @@ class AnalysisDiagnostic:
     file: str                           # compiler display name ("" or entry name: the entry)
     path: Path | None                   # resolved file; None when the file cannot be resolved
     rendered: str                       # `Diagnostic.cr6comp()` text
+    span: tuple[int, int] | None = None  # physical first/last line in `path`'s file; None: unknown
 
 
 @dataclass(frozen=True)
@@ -68,14 +69,16 @@ def analyze(request: AnalysisRequest) -> AnalysisResult:
     includes = getattr(result.program_ast, "include_paths", None) or {}
     lowered = {name.lower(): path for name, path in includes.items()}
     drive = result.profile.include_drive_prefix
+    line_map = getattr(result.program_ast, "line_map", None)
     diagnostics = []
     for d in sorted(result.diagnostics.items, key=result._sort_key):
         if not d.file or d.file.lower() == result.program.lower():
             path = entry
         else:
             path = includes.get(d.file) or lowered.get(d.file.lower())
+        span = positions.line_span(line_map, d.file or result.program, d.line) if d.line else None
         diagnostics.append(AnalysisDiagnostic(d.severity, d.message, d.line, d.file, path,
-                                              d.cr6comp(result.program, drive)))
+                                              d.cr6comp(result.program, drive), span))
     return AnalysisResult(
         API_VERSION, request, result.ok, result.mode, tuple(diagnostics),
         tuple(result.result_lines(show_signature=request.signature)),

@@ -224,6 +224,7 @@ class _Parser:
         self.env = consteval.Env(profile)
         self.cond_stack: list[_CondFrame] = []
         self.program = S.Program(name="")
+        self.line_map: dict[str, dict[int, list[source.LineSpan]]] = {}  # reported line -> physical
         self._done = False  # set once a top-level EndProg is seen; see `run()`
         self._in_struct = False  # inside StructureType ... EndStructureType
         self.function_names: set[str] = set()
@@ -253,6 +254,7 @@ class _Parser:
                 todo.extendleft(reversed(ll.unpulled))
                 unshift[ll.file] = unshift.get(ll.file, 0) + ll.pulls
                 continue
+            self._note_line(ll)
             if skipped_include_depth:
                 if ll.kind == "include_begin":
                     skipped_include_depth += 1
@@ -300,12 +302,27 @@ class _Parser:
                 # the oracle: garbage (even unlexable text, even a second full program) after it
                 # compiles fine, because it is never looked at. See docs/frontend.md.
                 break
+        for ll in todo:  # never reached (after EndProg or an overflow line): positions only
+            for l in (ll.unpulled or [ll]):
+                self._note_line(dataclasses.replace(
+                    l, line=l.line + unshift.get(ll.file, 0) + (ll.pulls if ll.unpulled else 0)))
+            if ll.unpulled is not None:
+                unshift[ll.file] = unshift.get(ll.file, 0) + ll.pulls
         if self.cond_stack:  # read lines only: nothing after the first `EndProg` is looked at
             # `#If True : #Foo : #EndIf` leaves the `#If` open: the rest of a directive line is not read,
             # so its `#EndIf` is not seen (oracle, all four loggers, 2026-10-11)
             self.program.unclosed_if = True
         self.program.consts = dict(self.env.consts)
         return self.program, self.diags
+
+    def _note_line(self, ll: source.LogicalLine) -> None:
+        """Record, for `positions.py`, the physical lines of `ll` under the line it is reported at."""
+        if ll.phys is None or self._collect:
+            return
+        span = source.LineSpan(ll.phys[0], ll.phys[1], ll.occurrence)
+        spans = self.line_map.setdefault(ll.file, {}).setdefault(ll.line, [])
+        if span not in spans:
+            spans.append(span)
 
     def _active(self) -> bool:
         return all(f.current for f in self.cond_stack)
@@ -1763,6 +1780,8 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     program.pull_log = pull_log
     program.pull_site = diags.pull_site
     program.include_paths = diags.include_paths
+    program.line_map = parser.line_map
+    program.occurrences = diags.occurrences
     _include_warning_drives(diags, profile or _profile_for(path.name))
     main = (source or DiskSource()).read(path)
     if main is None:
@@ -1811,6 +1830,8 @@ def parse_text(text: str, name: str = "t.cr6", directory: Path | str | None = No
         _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(name)).name))
     parser = _Parser(profile or _profile_for(name), diags)
     program, diags = parser.run(lines, name)
+    program.line_map = parser.line_map
+    program.occurrences = diags.occurrences
     _include_warning_drives(diags, profile or _profile_for(name))
     _set_last_line(program, parser, text)
     return program, diags
