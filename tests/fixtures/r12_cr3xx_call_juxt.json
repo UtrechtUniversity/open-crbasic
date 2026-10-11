@@ -1,0 +1,211 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-0",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nSin (A B) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Sin (A B) tail\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-1",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nSin (A B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Sin (A B)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-2",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A B, 1) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Round (A B, 1) tail\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-3",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A B, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Round (A B, 1)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-4",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, 1 B) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, 1 B) tail\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-5",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, 1 B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, 1 B)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-6",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, B C, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: C is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, B C, 1)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-7",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nStrComp (A, B C)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: C is not defined.\nline 4: No Matching, or out of place ) in expression: StrComp (A, B C)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-8",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nUDPDataGram(\"IPAddress\",UDP Port, SendBuffer, SendLength, RecvBuffer,Timeout) - as it\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: UDP is not defined.\nline 4: Port is not defined.\nline 4: Expression expects , : UDPDataGram(\"IPAddress\",UDP Port, SendBuffer, SendLength, RecvBuffer,Timeout) - as it\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-9",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nUDPDataGram(\"IPAddress\",UDP Port, SendBuffer) - as it\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: UDP is not defined.\nline 4: Port is not defined.\nline 4: Expression expects , : UDPDataGram(\"IPAddress\",UDP Port, SendBuffer) - as it\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-10",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nLeft (A B, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Left (A B, 1)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-11",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nLeft (s, 1 2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: Left (s, 1 2)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-12",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIIF (A B, 1, 2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : IIF (A B, 1, 2)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_call_juxt-13",
+   "logger": "cr300",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIIF (A, 1, 2 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: No Matching, or out of place ) in expression: IIF (A, 1, 2 3)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-0",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nSin (A B) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Sin (A B) tail\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-1",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nSin (A B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Sin (A B)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-2",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A B, 1) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Round (A B, 1) tail\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-3",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A B, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Round (A B, 1)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-4",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, 1 B) tail\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, 1 B) tail\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-5",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, 1 B)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, 1 B)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-6",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nRound (A, B C, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: C is not defined.\nline 4: No Matching, or out of place ) in expression: Round (A, B C, 1)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-7",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nStrComp (A, B C)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: C is not defined.\nline 4: No Matching, or out of place ) in expression: StrComp (A, B C)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-8",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nUDPDataGram(\"IPAddress\",UDP Port, SendBuffer, SendLength, RecvBuffer,Timeout) - as it\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: UDP is not defined.\nline 4: Port is not defined.\nline 4: Expression expects , : UDPDataGram(\"IPAddress\",UDP Port, SendBuffer, SendLength, RecvBuffer,Timeout) - as it\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-9",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nUDPDataGram(\"IPAddress\",UDP Port, SendBuffer) - as it\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: UDP is not defined.\nline 4: Port is not defined.\nline 4: Expression expects , : UDPDataGram(\"IPAddress\",UDP Port, SendBuffer) - as it\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-10",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nLeft (A B, 1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : Left (A B, 1)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-11",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nLeft (s, 1 2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: Left (s, 1 2)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-12",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIIF (A B, 1, 2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: B is not defined.\nline 4: Expression expects , : IIF (A B, 1, 2)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_call_juxt-13",
+   "logger": "cr350",
+   "source": "Public x, s As String\nBeginProg\nScan (1,Sec,3,0)\nIIF (A, 1, 2 3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: A is not defined.\nline 4: No Matching, or out of place ) in expression: IIF (A, 1, 2 3)\n."
+  }
+ ]
+}

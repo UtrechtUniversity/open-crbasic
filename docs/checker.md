@@ -5274,3 +5274,19 @@ Matching, or out of place )`. The echo carries the CR300/CR350 line-end newline.
 four loggers: a bare call statement open at a trailing comma (`Round(x,`, `FileOpen (s, "r",`:
 real the generic fallback, accepted here), `x = Abs(x,` (real accepts), `x = XMLParse( s, s, s,
 s, s, s,` (real generic, `nargs` of the function in our table).
+
+### Adjacent operands inside a call's arguments; strings in the word chain (`chm/udpdatagram_1`; fixtures `r12_cr3xx_call_juxt.json`, `r12_cr3xx_string_chain.json`)
+
+- A built-in call with adjacent operands in an argument (`Round (A B, 1)`) is `Expression expects ,`
+  when that argument is not the function's last, otherwise `No Matching, or out of place )` (`Sin (A
+  B)`, `Round (A, 1 B)`, `Left (s, 1 2)`); `nargs` of the function decides (`IIF (A B, 1, 2)` and
+  `UDPDataGram("a",UDP Port, ...)` expect a comma). The text after the call's `)` is not read:
+  `Sin (A B) tail` is the same message with the whole line echoed. Seen before only for a call
+  that is the whole statement and always `No Matching` (`cr3xx.check_unknown_line_words`).
+  Not done: `UDPDataGram(a, b, c, d, e, f g) - tail` also names `f` and `g` (we stop at the fourth
+  argument).
+- A string literal is an operand of the word chain like a number (`IPAddress <> "" and IPAddress <>
+  "0.0.0.0" then` names `then`): the operator lookahead accepted only a letter or digit after an
+  operator, so the walk ended at the first string (`_LINE_OP_RUN_RE`, `_LINE_OP_WORD_RE`,
+  `_LINE_OPERAND_RE`). Not done: `st <> "" and x = 2 then` is `Incomplete expression` on the real
+  compilers (the `=` after a string-led chain), we print the generic fallback.

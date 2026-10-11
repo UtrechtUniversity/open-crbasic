@@ -887,14 +887,14 @@ _LEAD_OP_WORD_RE = re.compile(r"(?i)(is|mod|and|or|xor|imp|eqv|to)(?![A-Za-z0-9_
 _LEAD_OP_NO_OPERAND = frozenset({"IS", "MOD"})
 _LEAD_OP_SKIP_RE = re.compile(r"(?i)^[ \t]*(?:(?:and|or|xor|imp|eqv|to|not|mod|is)(?![A-Za-z0-9_])[ \t]*)*")
 _INSTRUCTION_PROSE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)[ \t]+([A-Za-z_][^(]*)$", re.S)
-_LINE_OPERAND_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?\b")
+_LINE_OPERAND_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?\b|\"[^\"]*\"")
 # Keyword operators join the chain like `+` (oracle, CR300, 2026-10-01: `foo and bar baz qux` ->
 # foo, bar, baz; `Is` and `Not` do not).
-_LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-Za-z_0-9])")
+_LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-Za-z_0-9\"])")
 # A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
 # declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
 _TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
-_LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*(?:<>|<=|>=|[-+*/^&<>=])[ \t]*)(?=[A-Za-z_0-9])|(?:<>|<=|>=|[-+*/^&<>=])")
+_LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*(?:<>|<=|>=|[-+*/^&<>=])[ \t]*)(?=[A-Za-z_0-9\"])|(?:<>|<=|>=|[-+*/^&<>=])")
 _LINE_WS_RE = re.compile(r"[ \t]+")
 _LINE_PAREN_RE = re.compile(r"[ \t]*\(")
 
@@ -1034,15 +1034,16 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
         if not operand:
             break
         pos = operand.end()
-        if operand.group(0)[0].isdigit():
-            pass  # a number is part of the chain but never reported
+        if operand.group(0)[0].isdigit() or operand.group(0)[0] == '"':
+            pass  # a number or a string is part of the chain but never reported
         elif text.startswith(".", pos):
             break  # `word.` is a table field reference, not a name (oracle, 2026-10-01)
         else:
             words.append(operand.group(0))
         if not extending:
             break
-        paren = None if operand.group(0)[0].isdigit() else _LINE_PAREN_RE.match(text, pos)
+        paren = None if operand.group(0)[0].isdigit() or operand.group(0)[0] == '"' \
+            else _LINE_PAREN_RE.match(text, pos)
         if paren and len(words) == 1 and (words[0].upper() not in known or words[0].upper() in callables):
             # `device (8 channels)`: the first word's parenthesis opens a second walk of the same
             # shape, which ends at the first `)`, and nothing after it is examined
@@ -1568,14 +1569,21 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         "incomplete": "Incomplete expression: ",
                         "no_matching": "No Matching, or out of place ) in expression: "}.get(
                             verdict[1] if verdict and verdict[0] == "pass1" else None)
-                call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)\)?\s*$", stmt.text)
+                call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)", stmt.text)
+                juxt = call and re.search(r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]",
+                                         call.group(2), re.I)
                 if (head is None and call and call.group(1).upper() in profile.functions
                         and call.group(1).upper() not in symbols.declared_variable_names(program)
-                        and re.search(r"[\w\"]\s+(?!(?:AND|OR|XOR|MOD|IMP|EQV)\b)[A-Za-z_\d\"]",
-                                      call.group(2), re.I)):
+                        and juxt):
                     # a built-in call whose argument list holds juxtaposed operands (oracle, CR300,
-                    # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`)
-                    head = "No Matching, or out of place ) in expression: "
+                    # 2026-10-10: `Sin (foo bar)`, `ArrayIndex (Array Index)`): `Expression expects ,`
+                    # when the argument is not the function's last, else `No Matching` (oracle,
+                    # CR300, 2026-10-11: `Round (A B, 1)`, `UDPDataGram("a",UDP Port, ...) - tail`
+                    # expect a comma, `Sin (A B)`, `Round (A, 1 B)` do not); text after the `)` is not read
+                    k = call.group(2)[:juxt.start() + 1].count(",") + 1
+                    nargs = profile.functions[call.group(1).upper()].get("nargs") or 0
+                    head = ("Expression expects , : " if k < nargs
+                            else "No Matching, or out of place ) in expression: ")
                 if head == "No Matching, or out of place ) in expression: " and cond is None and (
                         refined := structure._unclosed_call_message(
                             profile, stmt.text, stmt.at_eol, symbols.declared_variable_names(program))):
