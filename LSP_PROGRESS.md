@@ -21,8 +21,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
   [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
   sessions only **append** to that file (new items, or a dated amendment under an existing item);
   never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
-- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
-  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 
 ## Human decisions (2026-10-11)
 
@@ -58,8 +58,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
   [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
   sessions only **append** to that file (new items, or a dated amendment under an existing item);
   never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
-- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
-  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 
 ## Human decisions (2026-10-11)
 
@@ -82,8 +82,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
   [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
   sessions only **append** to that file (new items, or a dated amendment under an existing item);
   never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
-- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
-  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 
 ## Open questions for the human
 
@@ -103,8 +103,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
   [LSP_TO_BE_TESTED.md](LSP_TO_BE_TESTED.md), which pushes its findings to this branch. Cloud
   sessions only **append** to that file (new items, or a dated amendment under an existing item);
   never rewrite or reorder existing text. Pull with `git pull --rebase` before editing it.
-- Workers: up to four Claude subagents in parallel (budget allows); coordinator verifies and
-  cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
+- Workers: up to six Claude subagents in parallel (human, 2026-10-11: budget allows more than the
+  compiler workstream's four); coordinator verifies and cherry-picks. Reviews by `gpt-6.1-sol` are run manually by the human.
 
 ## Open questions for the human
 
