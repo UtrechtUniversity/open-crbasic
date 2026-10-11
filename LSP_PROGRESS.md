@@ -44,6 +44,13 @@ Live implementation state and session handoff. Design and acceptance criteria:
   smoke test switched strict mode off for every later test in the session (found as 2 failures in
   `tests/lsp/test_analysis.py` when run after it). Now only `main()` does it.
 
+## Regressions found after integration
+
+- `tests/lsp/test_rename.py::test_unresolved_and_unmodelled_and_quoted` fails on the branch since
+  LSP-07a was integrated after LSP-05c (field references now resolve, refusal reason changed from
+  `unmodelled` to `kind`). Coordinator did not rerun tests/lsp after that cherry-pick (rule
+  tightened: rerun tests/lsp after **every** integration). Fix assigned to LSP-05d.
+
 ## Review findings
 
 [gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
@@ -237,7 +244,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-07c quick-fix core | `codex/lsp-07-quickfix` -> cherry-picked | integrated | worker: 22 passed, selfdiff 0 differ (its 2 tests/lsp failures were the lsp_bench strict-mode leak, fixed); misspelling sweep 16/16 top suggestion exact | worker claim "no diagnostic for an undeclared name read inside a Sub" not reproduced by the coordinator for `x = Undeclared1` in a called Sub (reported, line 3); shape unknown |
 | LSP-06a workspace resilience | `codex/lsp-06-workspace`, base `b3ba175`, Sonnet, brief [LSP-06.md](docs/lsp-rounds/LSP-06.md) | active | - | verify, cherry-pick |
 | LSP-05d navigation accessor | `codex/lsp-05-accessor`, base `b3ba175`, Haiku | active | - | verify, cherry-pick |
-| LSP-03c completion performance | `codex/lsp-03-complperf`, base `b3ba175`, Haiku | active | - | verify, cherry-pick |
+| LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
