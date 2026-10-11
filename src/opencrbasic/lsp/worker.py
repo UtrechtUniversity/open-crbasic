@@ -15,8 +15,9 @@ SLEEP_ENV = "OPENCRBASIC_LSP_TEST_SLEEP"
 class JobResult:
     """Plain picklable data: no AST, no dataclasses from the facade."""
     ok: bool
-    # (severity, message, line, resolved path or None, compiler file name)
-    diagnostics: tuple[tuple[str, str, int, str | None, str], ...]
+    # (severity, message, line, resolved path or None, compiler file name,
+    #  physical (first, last) line in that path's file or None)
+    diagnostics: tuple[tuple[str, str, int, str | None, str, tuple[int, int] | None], ...]
     failures: tuple[str, ...]
     reads: tuple[tuple[str, str | None], ...]      # path -> sha256 or None (missing)
     listings: tuple[str, ...]                      # directories whose listing was read
@@ -38,7 +39,8 @@ def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...
         Path(entry), logger, {Path(p): data for p, data in overlays}))
     return JobResult(
         result.ok,
-        tuple((d.severity, d.message, d.line, None if d.path is None else str(d.path), d.file)
+        tuple((d.severity, d.message, d.line, None if d.path is None else str(d.path), d.file,
+               None if d.span is None else (int(d.span[0]), int(d.span[1])))
               for d in result.diagnostics),
         tuple(result.implementation_failures),
         tuple((str(p), h) for p, h in result.dependencies.reads.items()),

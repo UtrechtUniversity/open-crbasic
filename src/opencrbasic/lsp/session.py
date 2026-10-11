@@ -34,8 +34,9 @@ _LINE_END = re.compile(r"\r\n|\r|\n")
 
 @dataclass(frozen=True)
 class Diag:
-    line: int            # 0-based LSP line
-    end: int             # end character (UTF-16 units) of that line; the range starts at 0
+    line: int            # 0-based LSP line where the range starts; the range starts at character 0
+    end_line: int        # 0-based LSP line where the range ends (== line for one physical line)
+    end: int             # end character (UTF-16 units) of end_line
     severity: str        # "error" | "warning" | "information"
     message: str
     source: str
@@ -60,6 +61,7 @@ class Raw:
     message: str
     line: int            # compiler line (0: none)
     internal: bool = False
+    span: tuple[int, int] | None = None   # physical (first, last) line in the target file
 
 
 @dataclass
@@ -370,15 +372,15 @@ class Session:
         out: dict[Path, list[Raw]] = {}
         failures = "\n".join(result.failures)
         attached = False
-        for severity, message, line, path, file in result.diagnostics:
+        for severity, message, line, path, file, span in result.diagnostics:
             target = Path(path) if path else entry.path
             if not path:
                 message = f"{file}:{line}: {message}" if file else message
-                line = 0
+                line, span = 0, None
             internal = message in MARKERS
             if internal and failures and not attached:
                 message, attached = f"{message}\n{failures}", True
-            out.setdefault(target, []).append(Raw(severity, message, line, internal))
+            out.setdefault(target, []).append(Raw(severity, message, line, internal, span))
         if failures and not attached:
             out.setdefault(entry.path, []).append(
                 Raw("error", f"Internal error in the compiler:\n{failures}", 0, True))
@@ -404,9 +406,16 @@ class Session:
         doc = self.docs.get(path)
         current = doc.version if doc else None
 
-        def make(line: int, severity: str, message: str, source: str) -> Diag:
-            idx = min(max(line - 1, 0), len(lines) - 1) if line > 0 else 0
-            return Diag(idx, _utf16_len(lines[idx]), severity, message, source)
+        last_idx = len(lines) - 1
+
+        def make(line: int, severity: str, message: str, source: str,
+                 span: tuple[int, int] | None = None) -> Diag:
+            if span is not None:
+                first = min(max(span[0] - 1, 0), last_idx)
+                last = min(max(span[1] - 1, first), last_idx)
+            else:
+                first = last = min(max(line - 1, 0), last_idx) if line > 0 else 0
+            return Diag(first, last, _utf16_len(lines[last]), severity, message, source)
 
         contributors = [e for e in self.entries.values()
                         if e.contrib.get(path) and e.versions.get(path) == current]
@@ -416,7 +425,7 @@ class Session:
             for raw in e.contrib[path]:
                 message = f"[{e.path.name}] {raw.message}" if prefix else raw.message
                 out.append(make(raw.line, raw.severity, message,
-                                SRC_INTERNAL if raw.internal else SRC_COMPILE))
+                                SRC_INTERNAL if raw.internal else SRC_COMPILE, raw.span))
         for e in self.entries.values():
             if e.error and e.path == path:
                 out.append(make(0, "error", e.error, SRC_INTERNAL))

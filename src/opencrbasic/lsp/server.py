@@ -67,7 +67,7 @@ def build_server():
         server.text_document_publish_diagnostics(types.PublishDiagnosticsParams(
             uri=uri, version=version,
             diagnostics=[types.Diagnostic(
-                range=types.Range(types.Position(d.line, 0), types.Position(d.line, d.end)),
+                range=types.Range(types.Position(d.line, 0), types.Position(d.end_line, d.end)),
                 message=d.message, severity=severities[d.severity], source=d.source)
                 for d in diags]))
 

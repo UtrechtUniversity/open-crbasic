@@ -361,10 +361,13 @@ the disk file for every analysis. When replacement happened the document gets on
   severity error/warning.
 - A contribution is dropped while the file's open version differs from the one the entry's result
   was computed with, so stale ranges are never shown with a newer version.
-- Range: compiler line N is LSP line N-1, characters 0 to the end of that line in the file's
-  current text (open document, else disk decoded with `encoding`); line 0 is LSP line 0; a line
-  past the end clamps to the last line. A diagnostic whose file cannot be resolved (`path` is
-  `None`) is anchored at line 0 of the entry with the text `<file>:<line>: ` prepended.
+- Range: when `AnalysisDiagnostic.span` is known (LSP-01d), the range starts at character 0 of
+  the span's first physical line and ends at the end of its last physical line, in the diagnostic's
+  own file, so a continued statement covers all its lines. Otherwise compiler line N is LSP line
+  N-1, characters 0 to the end of that line; line 0 is LSP line 0. Line numbers clamp to the file's
+  current text (open document, else disk decoded with `encoding`). A diagnostic whose file cannot be
+  resolved (`path` is `None`) is anchored at line 0 of the entry with the text `<file>:<line>: `
+  prepended.
 - The implementation-failure marker diagnostics (`Internal error: unable to compile program.` /
   `... parse program.`) and `implementation_failures` are published with source
   `opencrbasic (internal)`, severity error, the failure strings appended to the message. Timeout,
@@ -374,9 +377,9 @@ the disk file for every analysis. When replacement happened the document gets on
 - An open `.crb` that no analyzed entry read gets one Information diagnostic at line 0: `No
   configured entry program includes this file; diagnostics come from the entry programs that
   include it.` (only after every entry has completed a first analysis).
-- Known limit: compiler line numbers are not yet mapped to physical lines, so a diagnostic can sit
-  on the wrong line after an initializer pull moved the compiler's line numbering (LSP-02
-  fixes this); ranges are whole lines, not token spans; columns are UTF-16 only for the line end.
+- Known limit: ranges are whole physical lines, not token spans; columns are UTF-16 only for the
+  line end. A file loaded twice (two occurrences) gets the union of its spans, which can cover
+  more lines than one occurrence.
 
 ### Test hooks
 

@@ -276,6 +276,35 @@ def test_unrepresentable_characters_warn(make_client, tmp_path):
     assert "not representable" in warning["message"]
 
 
+# A pulled `Public` initializer makes the compiler's line numbers differ from the physical ones
+# (compiler line 4 is `  Q = Nope`, physical line 5); `Q = Nope2 + _` continues onto line 7.
+PULLED = ("Public A = \n 1\nPublic Q\nBeginProg\n  Q = Nope\n  Q = Nope2 + _\n   1\nEndProg\n")
+
+
+def test_diagnostic_uses_physical_line_after_initializer_pull(make_client, tmp_path):
+    root = project(tmp_path, **{"Pull.CR6": PULLED, "Lib.crb": LIB})
+    pull = root / "Pull.CR6"
+    client = started(make_client, root)
+    client.open(pull, PULLED)
+    params = client.wait_diagnostics(pull, lambda d: any("Nope." in x["message"] for x in d))
+    (diag,) = [x for x in params["diagnostics"] if "Nope." in x["message"]]
+    assert diag["range"]["start"] == {"line": 4, "character": 0}
+    assert diag["range"]["end"] == {"line": 4, "character": len("  Q = Nope")}
+    assert client.shutdown() == 0
+
+
+def test_continued_statement_range_covers_both_lines(make_client, tmp_path):
+    root = project(tmp_path, **{"Pull.CR6": PULLED, "Lib.crb": LIB})
+    pull = root / "Pull.CR6"
+    client = started(make_client, root)
+    client.open(pull, PULLED)
+    params = client.wait_diagnostics(pull, lambda d: any("Nope2" in x["message"] for x in d))
+    (diag,) = [x for x in params["diagnostics"] if "Nope2" in x["message"]]
+    assert diag["range"]["start"] == {"line": 5, "character": 0}
+    assert diag["range"]["end"] == {"line": 6, "character": len("   1")}
+    assert client.shutdown() == 0
+
+
 # ---- worker failures ----------------------------------------------------------------------
 
 def test_worker_crash_recovers(make_client, tmp_path):
