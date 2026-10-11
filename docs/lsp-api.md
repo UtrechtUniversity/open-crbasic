@@ -1047,3 +1047,78 @@ for misspelled names. Names with a path separator get nothing.
   `analyze`), and sweeps one seeded misspelling per `crbasic/*.CR6` program (see the handoff for the
   rate). Compilation shows the fixed program is accepted, not that the chosen name is what the
   author meant.
+
+## Rename (LSP-07a)
+
+`opencrbasic.rename` is the protocol-independent core of `textDocument/prepareRename` and
+`textDocument/rename` (no pygls). It uses the binding index and the ranges of `navigation` only: the
+edits are the declaration's range plus the range of every reference that resolves to it, in every
+entry. No source text is searched to find occurrences. Positions in and out are physical, a 0-based
+line and a decoded-character column (a byte offset into the line, "Source positions"); the server
+converts to the client's encoding. Handoff with the observed sweep counts:
+[LSP-07a-handoff.md](lsp-rounds/LSP-07a-handoff.md).
+
+```python
+prepare_rename(results, path, line, column)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder)
+rename(results, path, line, column, new_name)          -> RenameResult(ok, refusal, edits, versions)
+TextEdit(line, start, end, new_text)                   # NamedTuple, physical 0-based, end exclusive
+Refusal(code, message)                                 # code is one of rename.REASONS
+```
+
+`results` is a list of `AnalysisResult`, **one per configured entry that depends on `path`**
+(the caller selects them; an entry whose reads do not include `path`, or that does not parse the
+position's line, for example because an `IncludeSection` or an inactive `#If` leaves that part of
+the file out, is skipped). On success `edits` is `{Path: [TextEdit]}`, sorted, non-overlapping and
+deduplicated across entries (a library included by several entries is edited once), and `versions`
+is `{Path: sha256 hex}` of the bytes each edited file had when it was analysed. The caller (the
+server) must apply the edits only to a document whose content still has that hash. The hash is
+checked here against the bytes `AnalysisRequest.overlays` (or the disk) give now, and a mismatch
+with `dependencies.reads` is the refusal `stale`.
+
+### Refusals (all-or-nothing; `Refusal.code`)
+
+| Code | Refused when |
+|---|---|
+| `no_results`, `no_ast` | no analysis depends on the file; the program could not be parsed |
+| `stale` | a file differs from the bytes the analysis read, or between entries |
+| `index_failure` | the binding index recorded a failure for a statement of an entry |
+| `not_a_name` | the position is not on a name the index records in some entry that parses that line (comment, string, keyword the index does not record) |
+| `unresolved`, `ambiguous`, `unmodelled` | the reference at the position, or any reference to the target, is not one proven single target (duplicate declarations, a table sharing a variable's spelling, a `Public` declared inside a routine used elsewhere); `unmodelled` is a table field name (`Tab.Field`, `Status.X`) |
+| `external` | the target is predefined: catalog instruction, function, symbol or keyword, `Status`, `Public`, `Settings`, `NAN`, `INF` |
+| `quoted` | the target is a table named by a string (`DataTable("T", ...)`); string names are never rewritten |
+| `kind` | the declaration kind has uses the index does not record (labels) |
+| `no_range` | the declaration or a reference has no exact physical range (token across a continuation join, digit-leading table name, no token) or its range is not the name |
+| `text_mismatch` | the bytes at an edit range are not the name (index and text disagree) |
+| `occurrences_differ` | a file loaded more than once gives declarations with different edit sets |
+| `entries_disagree` | the entries do not agree on the declaration set (the target's physical range and kind) |
+| `unparsed` | a statement the parser could not take apart mentions the name |
+| `unindexed_code` | the old name occurs, in code of any entry that is in no statement (inactive `#If` branch, `#If` directive, text after `EndProg`), at a place no entry edits; or the new name occurs there |
+| `table_field` | for a variable or alias: a `Table.Field` use whose field name equals the name or starts with `name_` (field names are derived from variable names and are not modelled) |
+| `unchanged` | the new name is spelled exactly as the current one (a case-only change is allowed) |
+| `invalid_name` | not `[A-Za-z_][A-Za-z0-9_]*` (the lexer's identifier rule); a trailing `$` is refused too |
+| `reserved_name` | the new name is a keyword, instruction, function or symbol of the profile (`InstructionCatalog.get`, any kind), `Status`, `Public`, `Settings`, `DataTableInfo`, `NAN` or `INF` |
+| `collision` | see below |
+| `overlap` | two edits overlap (should not happen) |
+
+### Collision rule (case-insensitive, checked in every entry)
+
+- Target is a **global** (`Public`, `Dim`, `Const`, `Sub`, `Function`, `Alias`, table, structure
+  type): refused if any declaration of any scope, including routine locals and parameters, has the
+  new name (conservative: a global is visible in every routine). Structure members are separate.
+- Target is a **routine local** (`Dim`, `Const`, parameter): refused if a global, a declaration
+  with unverified scope, or a local of the same routine has the new name.
+- Target is a **structure member**: refused if another member of the same structure type has it.
+- In all cases a reference with the new name that is not part of the rename (for example an
+  undeclared name) is also a collision, since renaming would bind it.
+
+### Notes
+
+- Private use: `rename.py` reads `Navigation._build`, `_at`, `_site_of` and `_occurrence_paths` to
+  get the declaration and reference objects behind a range (the public methods return only
+  locations). A public accessor in `navigation.py` would remove that.
+- Diagnostics are not required to be clean: a program with errors can be renamed when every check
+  above passes. The sweep compares diagnostics before and after.
+- Not covered: names inside strings (`FieldNames("x")`, `CallTable("T")`), data table field names,
+  `Static` declarations, anything after `EndProg` or in inactive `#If` branches (refused when the
+  old name occurs there), the 510-character loader line limit for a longer new name, a maximum
+  identifier length (no evidence found, not checked), and editor behaviour.
