@@ -782,6 +782,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     structs_seen: set[str] = set()
     const_tables = const_open = slow_sequences = 0
     seen_endprog = False
+    const_shadow_reported = False
     declared_kinds: dict[str, str] = {}
     struct_types = frozenset(
         st.args[0].name.upper() for st in program.statements
@@ -835,6 +836,14 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             dup_at = _check_duplicate_declaration(stmt, declared_kinds, dup_diags, profile)
         elif in_sub and not in_struct:
             symbols.check_local_name_collision(stmt, profile, diags)
+            if not seen_endprog:
+                # a Sub/Function parameter, Dim or Const named like a global Const declared earlier
+                # (oracle, all four loggers, 2026-10-11): `N is already declared as a CONST.`; CR300/
+                # CR350 report only the first such line in the file (`_local_const_conflicts`)
+                for name in _local_const_conflicts(stmt, declared_kinds):
+                    if not (profile.single_pass and const_shadow_reported):
+                        diags.error(stmt.line, f"{name} is already declared as a CONST.", stmt.file)
+                    const_shadow_reported = True
         if in_struct and isinstance(stmt, S.Declaration) and stmt.kind == "STRUCTUREMEMBER":
             struct_members.update(v.name.upper() for v in stmt.vars)
             _check_member_types(stmt, structs_seen, profile, diags)
@@ -2833,6 +2842,21 @@ def _bad_const_type(stmt: S.ConstDecl) -> str | None:
         return None
     m = re.search(r"\bAs\s+(\w+)", stmt.text or "", re.IGNORECASE)
     return m.group(1) if m else stmt.type
+
+
+def _local_const_conflicts(stmt: S.Stmt, declared: dict[str, str]) -> list[str]:
+    """Names in a `Sub`/`Function` header, a `Dim` or a `Const` inside its body that are already a
+    global `Const` declared before it (`declared` is pass 1's own kind map). Each name counts once
+    per occurrence, in source order: `Sub Foo(N,N)` -> two names (oracle, 2026-10-11)."""
+    if isinstance(stmt, S.SubDef):
+        names = [p.name for p in stmt.params]
+    elif isinstance(stmt, S.Declaration) and stmt.kind == "DIM":
+        names = [v.name for v in stmt.vars]
+    elif isinstance(stmt, S.ConstDecl):
+        names = [stmt.name]
+    else:
+        return []
+    return [name for name in names if declared.get(name.upper()) == "CONST"]
 
 
 def _check_duplicate_declaration(stmt: S.Stmt, declared: dict[str, str], diags: Diagnostics,

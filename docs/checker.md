@@ -4446,7 +4446,21 @@ instance number` (`avgrun_4`).
 
 A `Sub` parameter named like a `Const` declared *after* the `Sub` is local to it: the global constant is
 still accepted as that instance number (fixture `sub_param_const.json`, all four loggers; a `Const` declared
-first gives `N is already declared as a CONST.`, not modelled). `declared_variable_names` skips such names.
+first gives `N is already declared as a CONST.`, see "`Sub` names shadowing an earlier `Const`" below).
+`declared_variable_names` skips such names.
+
+## `Sub` names shadowing an earlier `Const` (oracle 2026-10-11, all four loggers; `tests/fixtures/const_shadow_sub.json`)
+
+A `Sub`/`Function` parameter, a `Dim` or a `Const` inside its body whose name is a global `Const` declared
+*earlier in the file* prints `N is already declared as a CONST.` at that line, one per name (`Sub Foo(N,N)`
+gives two lines on CR6/CR1000X), when the `Sub` comes before the `EndProg`: before `BeginProg`, or inside the
+program body (`BeginProg`, `Sub Foo(N)`, `EndSub`, `EndProg` reports the same line only). A `Const` declared
+after the `Sub`, or a `Sub` after `EndProg`, is not a conflict. CR300/CR350 print only the first such line in
+the file (`Sub Foo(N)` then `Sub Bar(N)` gives line 3 only); a later duplicate global `Const` still prints its
+own message. With `AvgRun(..., N, ...)` the CR300/CR350 `Too many parameters` cascade follows as before.
+Implemented in `structure.check_pass1` (`_local_const_conflicts`, `const_shadow_reported`). Not modelled:
+`Const N=2` then `Sub Foo` with `N=1` in its body prints `Invalid assignment in expression: N=1.` (a different
+family, still silent here).
 
 ### `R` (double-precision) number suffix; assignment inside a leading `( )` group (2026-10-10)
 
