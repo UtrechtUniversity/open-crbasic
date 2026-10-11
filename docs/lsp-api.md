@@ -70,3 +70,36 @@ it; a saved buffer then gives the same bytes, and the same analysis, as its disk
 - `DiskSource.list_dir` does not guard `iterdir` errors (permission), as before.
 - Not gated against the Wine oracle (none exists in this environment); equivalence with the CLI
   is tested by disk vs identical-bytes overlay and by `tools/selfdiff.py`.
+
+## Help provider (`opencrbasic.helpdocs`)
+
+Display-only instruction documentation, separate from the analysis facade and from the catalog.
+
+```python
+HelpProvider(directory)            # directory = root holding Instructions/*.htm and parameters/*.htm
+    .lookup(name) -> InstructionHelp | None      # case-insensitive; None for unknown/unparsable
+    .names() -> tuple[str, ...]                  # upper-case names with parsable help
+InstructionHelp(name, names, title, syntax, params: tuple[ParamHelp, ...], summary, source_path)
+ParamHelp(name, link, description, optional=False)
+pair_signature(name, type_codes, help) -> PairedSignature(matched, help_count, catalog_count, params, note)
+render_markdown(help, sig=None) / render_plain(help, sig=None) / render_signature_label(sig)
+coverage_report(profile, provider, names=None) -> CoverageReport(total, with_help, matching, mismatches, without_help)
+```
+
+- Lazy: the first `lookup` parses every `Instructions/*.htm` once. Nothing raises; a missing
+  directory, an unreadable page, malformed HTML or a page without a Syntax section gives `None`.
+- A page documents every name in its `<h1>` (split on `/`) and in its Syntax-section call forms;
+  `params` are the parameter links of the form for the looked-up name, in syntax order.
+  `description` comes from the page's Parameters section, else the linked parameter page, else `""`.
+  `optional` is `True` only where the syntax line says `optional`; `False` means "not stated".
+- Pairing is by count only. `pair_signature` uses help names when `len(params)` equals the catalog
+  type-code count and otherwise returns `matched=False` with a note and placeholder labels
+  (`arg1`...): no guessing. Help names never change checker rules; types come from the catalog.
+- Rendering is separate from parsing and returns text; Markdown escapes the help text.
+- Provenance: the help is Campbell Scientific documentation and is not redistributable
+  ([legal.md](legal.md)). No help text is stored in `src/`, tests or generated files; tests use
+  synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
+  setting `opencrbasic.helpDirectory`, default none: no help is shown unless configured.
+- Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
+  [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md). Documentation coverage is not
+  compiler-rule coverage.
