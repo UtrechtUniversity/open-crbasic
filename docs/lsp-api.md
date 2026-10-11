@@ -690,3 +690,90 @@ walk with a caller-built list. Program names sort before catalog names, then cas
 - Outline columns are not available (the AST has lines only): selection ranges are whole lines.
 - Completion offers every catalog name at an empty prefix and does not look at the statement
   context (argument position, expected type). Locals are matched by routine name.
+
+## Navigation (LSP-05b-core)
+
+`opencrbasic.navigation` is the protocol-independent logic behind go to definition, find
+references, document highlights and semantic tokens (no pygls). It reads an `AnalysisResult` and
+the binding index ("Binding index (LSP-05a)"); it changes no compiler output. Positions in and out
+are physical: 0-based line and decoded-character column (a byte offset into the line, "Source
+positions"); the server converts to the client's position encoding with `positions.lsp_position`.
+Handoff: [LSP-05b-core-handoff.md](lsp-rounds/LSP-05b-core-handoff.md).
+
+```python
+definition(result, path, line, col, *, index=None)                  -> [Location]
+references(result, path, line, col, include_declaration=True, *, index=None) -> [Location]
+document_highlights(result, path, line, col, *, index=None)         -> [Highlight]
+semantic_tokens(result, path, *, index=None)                        -> [SemanticToken]
+Navigation(result, index=None)     # the same four methods; builds the ranges once
+```
+
+`index` is a `BindingIndex` for `result.program`; when omitted one is built with
+`result.request.logger`. The module functions reuse one `Navigation` while the same
+`AnalysisResult` object is passed, so a new analysis rebuilds it. `path` is matched against the
+occurrence paths as given (absolute) and symlink-resolved.
+
+- `Location(path, file, line, start, end, occurrences)`: the range of a declared or referenced name
+  (`start` inclusive, `end` exclusive). `occurrences` lists the `Occurrence.id` of every load of
+  that file that gives the same range (a file included twice is one editor range, two loads). Sorted
+  by path, line, column.
+- `Highlight(line, start, end, kind)`, `kind` `write` (a declaration; an assignment or `For` target;
+  an assigned member), `read` (read, call, member base, member, table reference, alias target,
+  type, instruction) or `text` (instruction `argument` and `Units` targets, where the AST does not
+  say whether the name is read or written). Same-file only, all loads of that file.
+- `SemanticToken(line, start, length, type, modifiers)`: declared names of `path`, sorted, one
+  per position; `length` is in decoded characters. Only declarations are tokens, references are not.
+
+### Policy
+
+- The position is mapped through ranges, not text: each record's token (`BindingIndex.token_of`)
+  plus the statement's `origin` and the loader's `Piece`s give a physical range. A position inside
+  a name, or just after its last character, selects that record; anything else (whitespace,
+  comment, string content, keyword the index does not record) selects nothing.
+- A declaration at the position is its own target. A reference gives its resolved candidates: all
+  of them when ambiguous (`definition` returns every candidate, `references` the union of their
+  references), none when unresolved.
+- External (catalog) and predefined declarations have no location: `definition` is empty for
+  instruction names, built-in functions, `Status`, `Public`, `NAN`. `references` still lists
+  references to them in the program. The server may show hover for these.
+- Table field names (`Status.X`, `Tab.Field`) are `unmodelled` by the index and give nothing.
+- Names in an inactive `#If` branch, after `EndProg`, or in a statement the parser could not take
+  apart are not indexed, so they give nothing.
+- Range policy: a token from one physical piece gets an exact range; a token whose characters
+  cross a continuation join, or whose provenance or token is missing, gets none and is skipped
+  (never manufactured). A quoted `DataTable("T")` name is a declaration whose range includes the
+  quotes. Digit-leading table names (rewritten by the parser) have no token and no range.
+- `occurrences`: declarations of a doubly included file are distinct records but share one editor
+  range; they are merged into one `Location`.
+
+### Parser attribute
+
+`parser.py` sets `stmt.origin = (LogicalLine, segment offset)` on each top-level statement of a
+logical line (purely additive; not a dataclass field, so equality and `repr` are unchanged). The
+segment offset is the start of the statement's `:`-segment in `LogicalLine.text`; navigation
+verifies `unit.text` against the logical text (a `Units` text is stripped) before using it.
+
+### Semantic-token legend
+
+Types (`TOKEN_TYPES`, wire index = position): `variable`, `parameter`, `function`, `property`,
+`namespace`, `struct`, `type`. Modifiers (`TOKEN_MODIFIERS`): `declaration`, `readonly`.
+
+| Declaration kind | Type | Modifiers |
+|---|---|---|
+| `Public`, `Dim`, `Static`, `Alias` | variable | declaration |
+| `Const` | variable | declaration, readonly |
+| `Const` inside a `ConstTable` | property | declaration, readonly |
+| `Sub` parameter | parameter | declaration |
+| `Sub`, `Function` | function | declaration |
+| structure member | property | declaration |
+| `DataTable`, `ConstTable` | namespace | declaration |
+| `StructureType` | struct | declaration |
+| `ObjectType` | type | declaration |
+
+Labels and predefined/external declarations are not tokens. A constant is a `variable` with
+`readonly` because LSP has no standard `constant` type.
+
+### Not covered
+
+Rendering in an editor, encoding conversion (server), rename (needs `quoted` tables refused),
+table field-level references, references through a stale AST while typing.

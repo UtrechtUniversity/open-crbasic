@@ -393,6 +393,9 @@ class _Parser:
         # (found by corpus testing -- `Public TC(120) : Units TC = C` -- see docs/frontend.md).
         segments = _split_text_segments(ll.text)
         last_idx = len(segments) - 1
+        seg_offsets = [0]
+        for seg in segments:
+            seg_offsets.append(seg_offsets[-1] + len(seg) + 1)
         in_inline_if = False
         colon_if = False
         for idx, seg_text_raw in enumerate(segments):
@@ -410,6 +413,7 @@ class _Parser:
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
             stmt.at_eol = at_eol
+            stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
             if (isinstance(stmt, S.If) and stmt.inline is None and idx < last_idx
                     and self.profile.name in ("cr6", "cr1000x")
                     and re.search(r"\bThen\s*$", seg_text_raw, re.I)):
