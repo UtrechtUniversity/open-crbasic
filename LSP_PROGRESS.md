@@ -16,15 +16,14 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
 - Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
   host-retested. Not yet reviewed: `f3069825..HEAD`.
-- Active: LSP-08d (test-run speed), LSP-08f (VSIX packaging). LSP-08e done: Pyrefly 0 errors.
+- Active: LSP-08d (test-run speed), LSP-09a/09b (inlay hints, commands). Done: LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX).
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
 
 1. Finish and integrate LSP-08d and LSP-08e; refresh the user guide for them.
 2. Review round 3 (gpt-6.1-sol, human-run) over `f3069825..HEAD`; fix accepted findings.
-3. LSP-08 release validation still open: packaged VSIX (`vsce package`) + install-from-VSIX
-   check; Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
+3. LSP-08 release validation still open: install-from-VSIX on the host (T-14); Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
    (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
 4. LSP-09 (human request): parameter-name inlay hints and commands "Show compiler output" /
    "Show table fields" (cores 09a/09b active; wiring 09c after LSP-08f). Pull diagnostics: not adopted.
@@ -381,7 +380,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
 | LSP-08d test-run speed | `codex/lsp-08-speed`, base `636eff1`, Sonnet | active | profile in LSP-08.md | verify, cherry-pick |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
-| LSP-08f VSIX packaging | `codex/lsp-08-vsix`, base `621b7b4`, Haiku | active | - | verify, cherry-pick |
+| LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay`, base `9537c5a`, Sonnet, brief [LSP-09.md](docs/lsp-rounds/LSP-09.md) | active | - | verify, cherry-pick |
 | LSP-09b commands core (compiler output, table fields) | `codex/lsp-09-commands`, base `9537c5a`, Sonnet | active | - | verify, cherry-pick |
 

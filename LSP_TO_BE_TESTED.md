@@ -412,3 +412,15 @@ for `679f2f7009b8cd04c1a496851cf30b57dc660b8c`:
 Literal Explorer clicks and visual rendering/toasts remain unobserved, as do Windows/Linux.
 The report states the API/trace limits; it does not close those checks or all possible rename races.
 Original CRBasic sources and existing raw reports were untouched; no hardware was contacted.
+
+### T-14 Install the packaged VSIX (LSP-08f), appended 2026-10-11
+
+On a revision at or after the LSP-08f integration (see ledger), following
+[LSP-08f-handoff.md](docs/lsp-rounds/LSP-08f-handoff.md): `cd opencrbasic && uv sync`;
+`cd vscode && npm ci && npm run package`; `code --install-extension opencrbasic-0.0.1.vsix` into a
+VS Code **without** the development host; set `opencrbasic.pythonPath` to the uv environment's
+Python; open the repository root and `crbasic/Main.CR6`. Accept when: the extension activates from
+the installed VSIX (output channel startup line), Main shows its one expected warning, highlighting
+and hover work, and uninstalling removes it. Optionally also `uv run --no-sync python
+tools/vsix_check.py` on the host.
+
