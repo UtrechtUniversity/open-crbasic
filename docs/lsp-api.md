@@ -344,10 +344,13 @@ with a stdio transcript test in `tests/lsp/test_features_server.py`):
 | `documentLinkProvider` | no resolve | `editing.include_links` |
 | `definitionProvider`, `referencesProvider`, `documentHighlightProvider` | | `navigation.Navigation` |
 | `semanticTokensProvider` | `full` only; legend = `navigation.TOKEN_TYPES` / `TOKEN_MODIFIERS` | `Navigation.semantic_tokens` |
+| `renameProvider` | `prepareProvider` (advertised when the client declares `textDocument.rename.prepareSupport`, as pygls decides) | `rename.prepare_rename`, `rename.rename` |
+| `documentFormattingProvider`, `documentRangeFormattingProvider` | | `formatting.format_indentation`, `formatting.format_range` |
+| `codeActionProvider` | kinds `["quickfix"]` | `quickfix.code_actions` |
 
 pygls additionally advertises `workspace.workspaceFolders` (changes are handled, see "Workspace (LSP-06a)") and
-an empty `executeCommandProvider`; the server implements no command. Nothing else (no rename, code
-action, formatting, inlay hints, range or delta semantic tokens) is advertised.
+an empty `executeCommandProvider`; the server implements no command. Nothing else (no inlay hints,
+range or delta semantic tokens, no other code-action kinds, no on-type formatting) is advertised.
 
 ### Configuration
 
@@ -455,6 +458,13 @@ the disk file for every analysis. When replacement happened the document gets on
 - An open `.crb` that no analyzed entry read gets one Information diagnostic at line 0: `No
   configured entry program includes this file; diagnostics come from the entry programs that
   include it.` (only after every entry has completed a first analysis).
+- Display text (LSP-07-wire, host finding H-04): the compiler decodes source bytes as Latin-1, so
+  its message text for a name written in UTF-8 reads `Ã\x89`. The published `message` is the compiler
+  text re-decoded for display: `text.encode("latin-1").decode(encoding, "replace")` with the
+  configured `encoding` (`Session.display`, `session.display_text`); a message with a character above
+  U+00FF (not compiler text) and a codec that does not exist are left unchanged, and the server's own
+  messages and the internal-error markers are never re-decoded. Display only: `analysis`, the CLI and
+  the structured results are unchanged, and quick fixes match on the raw compiler text.
 - Known limit: ranges are whole physical lines, not token spans; the only column is the line end,
   counted in the negotiated position encoding (utf-16 by default). A file loaded twice (two occurrences) gets the union of its spans, which can cover
   more lines than one occurrence.
@@ -529,6 +539,56 @@ shared by several entries shows the first entry's view; `references` and `defini
 position in a stale document may land on the wrong name until the analysis arrives; folding of a
 file with lone-CR line breaks differs from the editor (as in "Source positions"); a completion at
 an empty prefix returns every catalog name (about a thousand items).
+
+### Rename, formatting and quick fixes (LSP-07-wire)
+
+`lsp/server.py` (handlers), `lsp/features.py` (conversion to LSP types), `lsp/session.py`
+(`entries_reading`, `current`, `unknown_entries`, `fresh_contributors`). No CRBasic rule is in
+`lsp/`: the cores are `rename.py`, `formatting.py` and `quickfix.py`. Handoff and host-test list:
+[LSP-07-wire-handoff.md](lsp-rounds/LSP-07-wire-handoff.md).
+
+**Inputs.** `Analysed` now also keeps the job's `reads` (path to sha256), the raw diagnostics and
+`ok`/`failures`, and `build()` returns them in the rebuilt `AnalysisResult` (`dependencies.reads`,
+`diagnostics`, `ok`, `implementation_failures`). `AnalysisDiagnostic.rendered` is empty and
+`dependencies.listings` empty in that rebuilt result.
+
+**Which entries.** `Session.entries_reading(path)` waits (bounded by `analysisTimeoutMs` + 2 s, without
+blocking the loop; an evicted program is re-analysed) until no entry the file can affect has an
+analysis pending, then returns every entry whose last analysis read the file. An entry is *current*
+when its newest analysis produced the program and every open document it read has the version the
+analysis saw. Rename and formatting refuse when any such entry is not current (reason `pending`) and
+when no entry reads the file (`no_entry`). Rename also refuses while an entry never completed an
+analysis (failed, timed out or still queued: what it reads is unknown; reason `unanalysed`).
+
+**Refusals** are LSP errors, code -32803 (`RequestFailed`), message `Cannot rename: <reason text>`,
+`data = {"reason": <code>}`. The codes are `rename.REASONS` plus `no_entry`, `pending`, `unanalysed`,
+`no_program`. `prepareRename` refuses the same way (the editor shows the message). pygls logs every
+exception a handler raises, so the server filters those log records and the error report for its own
+refusal exception.
+
+**`textDocument/prepareRename`** returns `{range, placeholder}` (range converted with the negotiated
+encoding). **`textDocument/rename`** returns a `WorkspaceEdit` with `documentChanges` only: one
+`TextDocumentEdit` per file, `textDocument.version` = the open document's version, `null` for a file
+that is not open. Versioned-edit rule: the analyses must match every open document they read
+(`current`), no `await` separates that check from the snapshot of the open documents' bytes, and after
+the (threaded) computation each edited open document must still have the snapshot's version and its
+sha256 must equal the content hash `rename.rename` reports; else the request is refused (`stale`). A
+closed file is checked by `rename` itself against the bytes on disk (`stale`).
+
+**`textDocument/formatting` / `rangeFormatting`** use `FormattingOptions`: `insertSpaces` with
+`tabSize` (1 to 16) gives that many spaces per level, otherwise one tab per level. A range that ends at
+character 0 of a later line does not include that line. Refusal (empty edit list plus a
+`window/showMessage` Info `opencrbasic: Cannot format: ...`): no entry reads the file, an entry is not
+current, or `formatting.format_refusal` of any entry that reads the file says the program has errors.
+Note this includes errors in other files of that entry.
+
+**`textDocument/codeAction`** (kind `quickfix`; a request whose `only` excludes it answers `[]`): for each
+diagnostic of the request context with source `opencrbasic`, the analysis diagnostic with the same
+displayed text (with the optional `[Entry] ` prefix) and the same first line is passed to
+`quickfix.code_actions`, for every entry whose published diagnostics for the file are from the current
+program. Each action carries the originating diagnostic and a `WorkspaceEdit` with one versioned
+`TextDocumentEdit` (the open document's version). The same fix from several entries is offered once;
+edits outside the requested file are dropped.
 
 ## Binding index (LSP-05a)
 

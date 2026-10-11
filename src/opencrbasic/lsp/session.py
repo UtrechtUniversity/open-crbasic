@@ -76,8 +76,12 @@ class Analysed:
     objects the core feature modules derive from the program (declared names, binding index...)."""
 
     def __init__(self, entry: Path, logger: str, overlays: tuple[tuple[str, bytes], ...],
-                 versions: dict[Path, int], blob: bytes):
+                 versions: dict[Path, int], blob: bytes, job: JobResult | None = None):
         self.entry = entry
+        self.ok = True if job is None else job.ok
+        self.failures = () if job is None else job.failures
+        self.reads = {} if job is None else {Path(p): h for p, h in job.reads}
+        self.raw_diagnostics = () if job is None else job.diagnostics
         self.logger = logger
         self.overlays = overlays
         self.versions = dict(versions)      # open documents (path -> version) the analysis read
@@ -103,9 +107,13 @@ class Analysed:
         self.blob = None
         request = analysis.AnalysisRequest(
             self.entry, self.logger, {Path(p): data for p, data in self.overlays})
+        diagnostics = tuple(
+            analysis.AnalysisDiagnostic(sev, msg, line, file, None if path is None else Path(path),
+                                        "", span)
+            for sev, msg, line, path, file, span in self.raw_diagnostics)
         return analysis.AnalysisResult(
-            analysis.API_VERSION, request, True, None, (), (), (),
-            analysis.Dependencies({}, {}), program)
+            analysis.API_VERSION, request, self.ok, None, diagnostics, (), tuple(self.failures),
+            analysis.Dependencies(dict(self.reads), {}), program)
 
     def cached(self, key: str, make: Callable[[], object]) -> object:
         with self._cache_lock:
@@ -204,6 +212,17 @@ def _units(text: str, encoding: str) -> int:
     if encoding == "utf-32":
         return len(text)
     return len(text.encode("utf-16-le", errors="surrogatepass")) // 2
+
+
+def display_text(message: str, encoding: str) -> str:
+    """Compiler message text for display. The compiler decodes source bytes as Latin-1, so a
+    name written in the editor's encoding shows as mojibake; encode back to the original bytes and
+    decode with the configured editor encoding. Display only (LSP-01f, host finding H-04).
+    Text with a character above U+00FF cannot be compiler text and is left unchanged."""
+    try:
+        return message.encode("latin-1").decode(encoding, "replace")
+    except (UnicodeEncodeError, LookupError):
+        return message
 
 
 def _kill(pool: ProcessPoolExecutor) -> None:
@@ -611,7 +630,7 @@ class Session:
             entry.analysed_current = outcome.program is not None
             if entry.analysed_current:
                 entry.analysed = Analysed(entry.path, snap.logger, snap.overlays, snap.versions,
-                                          outcome.program)
+                                          outcome.program, outcome)
                 entry.used = next(self._use)
                 entry.evicted = False
                 installed = True
@@ -678,6 +697,9 @@ class Session:
         except (OSError, LookupError):
             return ""
 
+    def display(self, message: str) -> str:
+        return display_text(message, self.config.encoding)
+
     def _compose(self, path: Path) -> list[Diag]:
         text = self._text_of(path)
         lines = _LINE_END.split(text)
@@ -701,7 +723,8 @@ class Session:
         out: list[Diag] = []
         for e in contributors:
             for raw in e.contrib[path]:
-                message = f"[{e.path.name}] {raw.message}" if prefix else raw.message
+                text = raw.message if raw.internal else self.display(raw.message)
+                message = f"[{e.path.name}] {text}" if prefix else text
                 out.append(make(raw.line, raw.severity, message,
                                 SRC_INTERNAL if raw.internal else SRC_COMPILE, raw.span))
         for e in self.entries.values():
@@ -817,6 +840,64 @@ class Session:
                 if ana.result is None and not ana.failed:
                     ana.result = await asyncio.to_thread(ana.build)
         return ana.result
+
+    # ---- edit features (rename, formatting, quick fixes) --------------------------------
+
+    @staticmethod
+    def _entry_pending(entry: Entry) -> bool:
+        return (not entry.settled or entry.done != entry.requested
+                or (entry.task is not None and not entry.task.done()))
+
+    async def entries_reading(self, path: Path) -> list[Entry]:
+        """The entries whose last analysis read `path`, sorted by path, once no entry that `path`
+        can affect has an analysis pending (bounded by the analysis timeout plus 2 s; after that
+        the entries as they are). An entry whose program the cache budget dropped is re-analysed."""
+        loop = asyncio.get_running_loop()
+        key = _key(path)
+        deadline = loop.time() + self.config.analysis_timeout_ms / 1000 + 2
+        while True:
+            affected = self._affected(path)
+            for entry in affected:
+                if entry.analysed is None and entry.evicted and entry.reads.get(key):
+                    entry.evicted = False
+                    self._request(entry, 0.0)
+            if self._closed or not any(self._entry_pending(e) for e in affected):
+                break
+            left = deadline - loop.time()
+            if left <= 0:
+                break
+            if self._event is None:
+                self._event = asyncio.Event()
+            try:
+                await asyncio.wait_for(self._event.wait(), min(left, 0.25))
+            except asyncio.TimeoutError:
+                pass
+        return [e for _, e in sorted(self.entries.items()) if e.reads.get(key)]
+
+    def unknown_entries(self) -> list[Entry]:
+        """Entries that never completed an analysis (failed, timed out, still waiting): what they
+        read is unknown, so an edit that must consider every dependent entry cannot be proven."""
+        return [e for _, e in sorted(self.entries.items())
+                if not e.reads and (e.error or not e.settled)]
+
+    def current(self, entry: Entry) -> bool:
+        """The entry's parsed program is the newest analysis and reflects the version of every
+        open document the entry read."""
+        ana = entry.analysed
+        if ana is None or not entry.analysed_current or entry.error:
+            return False
+        return all(ana.versions.get(p) == d.version for p, d in self.docs.items()
+                   if _key(p) in entry.reads)
+
+    def fresh_contributors(self, path: Path) -> list[Entry]:
+        """Entries whose diagnostics for `path` are published now (same rule as `_compose`) and
+        whose parsed program is the one that produced them."""
+        doc = self.docs.get(path)
+        current = doc.version if doc else None
+        return [e for _, e in sorted(self.entries.items())
+                if e.contrib.get(path) and e.versions.get(path) == current
+                and e.analysed is not None and e.analysed_current
+                and e.analysed.versions.get(path) == current]
 
     def help_provider(self) -> _LockedHelp | None:
         directory = self.config.help_directory

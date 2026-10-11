@@ -99,7 +99,9 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
                          "signatureHelpProvider", "documentSymbolProvider",
                          "foldingRangeProvider", "documentLinkProvider", "definitionProvider",
                          "referencesProvider", "documentHighlightProvider",
-                         "semanticTokensProvider"}, caps
+                         "semanticTokensProvider", "renameProvider",
+                         "documentFormattingProvider", "documentRangeFormattingProvider",
+                         "codeActionProvider"}, caps
     assert caps["executeCommandProvider"]["commands"] == []
     assert result["serverInfo"]["name"] == "opencrbasic"
     assert client.shutdown() == 0

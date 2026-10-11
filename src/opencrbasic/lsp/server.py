@@ -4,12 +4,16 @@ No language rules: everything about CRBasic comes from `opencrbasic.analysis` th
 and from the core feature modules through `features`. Capabilities advertised: full text document
 sync (open/close/change/save), published diagnostics, completion (trigger `.`), hover, signature
 help (triggers `(` `,`), document symbols, folding ranges, document links, definition,
-references, document highlights and full semantic tokens. Each has a stdio transcript test.
+references, document highlights, full semantic tokens, prepareRename/rename, document and range
+formatting and quick-fix code actions. Each has a stdio transcript test.
 """
 
 from __future__ import annotations
 
 import asyncio
+import contextlib
+import hashlib
+import logging
 import subprocess
 import sys
 import traceback
@@ -54,10 +58,12 @@ def check_api_version() -> str | None:
 
 def build_server():
     from lsprotocol import types
+    from pygls.exceptions import JsonRpcException
     from pygls.lsp.server import LanguageServer
     from pygls.uris import to_fs_path
 
     from .. import __version__
+    from .. import formatting
     from . import features
     from .config import Config, parse_config, watch_pattern
     from .session import CHANGED, CREATED, DELETED, Diag, Session
@@ -231,7 +237,7 @@ def build_server():
             async def run(params):
                 try:
                     return await handler(params)
-                except asyncio.CancelledError:
+                except (asyncio.CancelledError, JsonRpcException):
                     raise
                 except Exception:
                     session.log(f"{name} failed:\n{traceback.format_exc()}")
@@ -306,6 +312,156 @@ def build_server():
     async def on_semantic_tokens(params: types.SemanticTokensParams):
         path, ana, result = await prepared(params.text_document.uri, wait=True)
         return await asyncio.to_thread(features.semantic_tokens, await make_ctx(), ana, result, path)
+
+    # ---- rename, formatting, quick fixes (LSP-07-wire) ---------------------------------
+
+    class Refused(JsonRpcException):
+        """A refusal of an edit request: an LSP error carrying the reason (`data.reason`)."""
+        CODE = int(types.LSPErrorCodes.RequestFailed)
+
+    class QuietRefusals(logging.Filter):
+        """pygls logs every exception a handler raises with its traceback; a refusal is an
+        expected answer, not a server error."""
+
+        def filter(self, record: logging.LogRecord) -> bool:
+            return not (record.exc_info and isinstance(record.exc_info[1], Refused))
+
+    logging.getLogger("pygls.protocol.json_rpc").addFilter(QuietRefusals())
+    report_default = server.report_server_error
+
+    def report_server_error(error: Exception, source: Any) -> None:
+        if not isinstance(error, Refused):
+            report_default(error, source)
+
+    server.report_server_error = report_server_error  # type: ignore[method-assign]
+
+    def refuse(what: str, reason: str, message: str) -> Refused:
+        return Refused(f"{what}: {message}", data={"reason": reason})
+
+    def context_now() -> features.Ctx:
+        """The request context from the documents as they are now (no await in between)."""
+        return features.Ctx(session.config.logger, position_encoding(), session.config.encoding,
+                            session.blobs(), {p: d.uri for p, d in session.docs.items()},
+                            session.help_provider())
+
+    def locked(entries, function, *args):
+        """Runs in a thread: `function` with the core-call guard of every entry's program held
+        (always taken in entry-path order)."""
+        with contextlib.ExitStack() as stack:
+            for entry in entries:
+                stack.enter_context(entry.analysed.guard)
+            return function(*args)
+
+    async def current_entries(path: Path, what: str):
+        """(entries reading `path`, their `Analysed`) once none is pending; a refusal when no
+        entry reads the file or one of them has no program that matches the open documents."""
+        await session.configured()
+        entries = await session.entries_reading(path)
+        if not entries:
+            raise refuse(what, "no_entry", "no configured entry program includes this file")
+        for entry in entries:
+            if not session.current(entry):
+                raise refuse(what, "pending", f"the analysis of {entry.path.name} is not current "
+                             "(pending, failed or timed out); try again when it has finished")
+        return entries
+
+    async def prepare_or_rename(uri: str, position, new_name: str | None, what: str):
+        path = fs_path(uri)
+        entries = await current_entries(path, what)
+        unknown = session.unknown_entries()
+        if unknown:
+            raise refuse(what, "unanalysed", f"the analysis of {unknown[0].path.name} failed or "
+                         "has not finished, so it is unknown whether it depends on this file")
+        results = [await session.load(e.analysed) for e in entries]
+        if any(r is None for r in results):
+            raise refuse(what, "no_program", "a parsed program is not available")
+        # no await from the currency check to the snapshot: the edit fits these documents
+        if not all(session.current(e) for e in entries):
+            raise refuse(what, "pending", "a document changed while the request was prepared")
+        ctx = context_now()
+        versions = {p: d.version for p, d in session.docs.items()}
+        if new_name is None:
+            found, refusal = await asyncio.to_thread(
+                locked, entries, features.prepare_rename, ctx, results, path, position)
+            hashes = {}
+        else:
+            found, refusal, hashes = await asyncio.to_thread(
+                locked, entries, features.rename_edit, ctx, results, path, position, new_name,
+                versions)
+        if refusal is not None:
+            raise refuse(what, refusal.code, refusal.message)
+        for p, digest in hashes.items():        # an open document must still be what was renamed
+            doc = session.docs.get(p)
+            if doc is not None and (doc.version != versions.get(p)
+                                    or hashlib.sha256(doc.data).hexdigest() != digest):
+                raise refuse(what, "stale", f"{p.name} changed while the rename was computed")
+        return found
+
+    @server.feature(types.TEXT_DOCUMENT_PREPARE_RENAME)
+    @guarded("prepareRename", None)
+    async def on_prepare_rename(params: types.PrepareRenameParams):
+        return await prepare_or_rename(params.text_document.uri, params.position, None,
+                                       "Cannot rename")
+
+    @server.feature(types.TEXT_DOCUMENT_RENAME, types.RenameOptions(prepare_provider=True))
+    @guarded("rename", None)
+    async def on_rename(params: types.RenameParams):
+        return await prepare_or_rename(params.text_document.uri, params.position,
+                                       params.new_name, "Cannot rename")
+
+    def show_info(message: str) -> None:
+        server.window_show_message(types.ShowMessageParams(
+            type=types.MessageType.Info, message=f"opencrbasic: {message}"))
+
+    async def format_document(params, where):
+        path = fs_path(params.text_document.uri)
+        try:
+            entries = await current_entries(path, "Cannot format")
+            for entry in entries:
+                why = formatting.format_refusal(await session.load(entry.analysed))
+                if why:
+                    raise refuse("Cannot format", "errors", f"{entry.path.name}: {why}")
+        except Refused as exc:
+            show_info(exc.message)
+            return []
+        if not all(session.current(e) for e in entries):
+            show_info("Cannot format: a document changed while the request was prepared")
+            return []
+        ctx = context_now()
+        return await asyncio.to_thread(features.formatting_edits, ctx, path, params.options, where)
+
+    @server.feature(types.TEXT_DOCUMENT_FORMATTING)
+    @guarded("formatting", list)
+    async def on_formatting(params: types.DocumentFormattingParams):
+        return await format_document(params, None)
+
+    @server.feature(types.TEXT_DOCUMENT_RANGE_FORMATTING)
+    @guarded("rangeFormatting", list)
+    async def on_range_formatting(params: types.DocumentRangeFormattingParams):
+        return await format_document(params, params.range)
+
+    @server.feature(types.TEXT_DOCUMENT_CODE_ACTION,
+                    types.CodeActionOptions(code_action_kinds=[types.CodeActionKind.QuickFix]))
+    @guarded("codeAction", list)
+    async def on_code_action(params: types.CodeActionParams):
+        only = params.context.only
+        if only and types.CodeActionKind.QuickFix not in only:
+            return []
+        await session.configured()
+        path = fs_path(params.text_document.uri)
+        entries = session.fresh_contributors(path)
+        sources = []
+        for entry in entries:
+            result = await session.load(entry.analysed)
+            if result is not None:
+                sources.append((entry.path.name, result))
+        if not sources or [id(e) for e in session.fresh_contributors(path)] != [id(e) for e in entries]:
+            return []
+        doc = session.docs.get(path)
+        ctx = context_now()
+        return await asyncio.to_thread(
+            locked, entries, features.code_actions, ctx, sources, path,
+            list(params.context.diagnostics), doc.version if doc else None, session.display)
 
     def refresh_semantic_tokens() -> None:
         """New programs change the tokens of unchanged documents: ask the client to re-request."""

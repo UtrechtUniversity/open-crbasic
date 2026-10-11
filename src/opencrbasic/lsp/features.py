@@ -15,7 +15,7 @@ from typing import Any, Callable, Mapping
 
 from lsprotocol import types
 
-from .. import editing, hover as hovering, navigation, positions
+from .. import editing, formatting, hover as hovering, navigation, positions, quickfix, rename
 
 LEGEND = types.SemanticTokensLegend(token_types=list(navigation.TOKEN_TYPES),
                                     token_modifiers=list(navigation.TOKEN_MODIFIERS))
@@ -317,3 +317,117 @@ def semantic_tokens(ctx: Ctx, ana: Any, result: Any, path: Path) -> types.Semant
                      kinds[tok.type], sum(mods[m] for m in tok.modifiers)]
             last_line, last_start = begin.line, begin.character
     return types.SemanticTokens(data=data)
+
+
+# ---- formatting (LSP-07-wire) -----------------------------------------------------------------
+
+
+def _indent(options: types.FormattingOptions) -> str:
+    width = max(1, min(int(options.tab_size or 1), 16))
+    return " " * width if options.insert_spaces else "\t"
+
+
+def formatting_edits(ctx: Ctx, path: Path, options: types.FormattingOptions,
+                     where: types.Range | None = None) -> list[types.TextEdit]:
+    """Indentation edits for the document, or for the lines `where` touches (a range that ends at
+    character 0 of a later line does not include that line). Text-only: the refusal policy
+    (`formatting.format_refusal`) is the caller's."""
+    text = _text(ctx, path)
+    if text is None:
+        return []
+    indent = _indent(options)
+    if where is None:
+        found = formatting.format_indentation(text, ctx.profile, indent)
+    else:
+        end = where.end
+        if end.character == 0 and end.line > where.start.line:
+            end = types.Position(end.line - 1, 0)
+        first, last = ctx.decoded(path, where.start), ctx.decoded(path, end)
+        if first is None or last is None:
+            return []
+        found = formatting.format_range(text, first[0], last[0], ctx.profile, indent)
+    return [types.TextEdit(ctx.columns(path, e.line, e.start, e.end), e.new_text) for e in found]
+
+
+# ---- rename (LSP-07-wire) ---------------------------------------------------------------------
+
+
+def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position
+                   ) -> tuple[types.PrepareRenamePlaceholder | None, rename.Refusal | None]:
+    at = ctx.decoded(path, position)
+    if at is None:
+        return None, rename.Refusal("no_range", "the document cannot be read")
+    found = rename.prepare_rename(results, path, *at)
+    if not found.ok:
+        return None, found.refusal
+    return types.PrepareRenamePlaceholder(
+        range=ctx.columns(found.path, found.line, found.start, found.end),
+        placeholder=found.placeholder), None
+
+
+def rename_edit(ctx: Ctx, results: list, path: Path, position: types.Position, new_name: str,
+                versions: Mapping[Path, int]
+                ) -> tuple[types.WorkspaceEdit | None, rename.Refusal | None, dict]:
+    """(edit, refusal, file hashes). The edit is `documentChanges` with the document version for
+    every open document and `None` for a closed one. The hashes are `rename`'s content hashes."""
+    at = ctx.decoded(path, position)
+    if at is None:
+        return None, rename.Refusal("no_range", "the document cannot be read"), {}
+    found = rename.rename(results, path, at[0], at[1], new_name)
+    if not found.ok:
+        return None, found.refusal, {}
+    changes = []
+    for target, edits in sorted(found.edits.items(), key=lambda kv: str(kv[0])):
+        changes.append(types.TextDocumentEdit(
+            types.OptionalVersionedTextDocumentIdentifier(ctx.uri(target), versions.get(target)),
+            [types.TextEdit(ctx.columns(target, e.line, e.start, e.end), e.new_text)
+             for e in edits]))
+    return types.WorkspaceEdit(document_changes=changes), None, dict(found.versions)
+
+
+# ---- quick fixes (LSP-07-wire) ----------------------------------------------------------------
+
+
+def _first_line(diag: Any) -> int:
+    if diag.span:
+        return max(diag.span[0] - 1, 0)
+    return max(diag.line - 1, 0) if diag.line > 0 else 0
+
+
+def code_actions(ctx: Ctx, sources: list[tuple[str, Any]], path: Path,
+                 diagnostics: list[types.Diagnostic], version: int | None,
+                 display: Callable[[str], str]) -> list[types.CodeAction]:
+    """Quick fixes for the diagnostics of the request that this server published. `sources`:
+    (entry file name, `AnalysisResult`) of the entries that contributed diagnostics to `path`.
+    A request diagnostic is matched to an analysis diagnostic by the displayed text (with the
+    `[Entry] ` prefix the merge may add) and the first line; the same fix from several entries is
+    offered once."""
+    actions: list[types.CodeAction] = []
+    seen: set = set()
+    for lsp_diag in diagnostics:
+        if lsp_diag.source != "opencrbasic":
+            continue
+        for name, result in sources:
+            for diag in result.diagnostics:
+                if diag.path is None or not _same(diag.path, path):
+                    continue
+                shown = display(diag.message)
+                if _first_line(diag) != lsp_diag.range.start.line or not (
+                        lsp_diag.message == shown or lsp_diag.message == f"[{name}] {shown}"):
+                    continue
+                for act in quickfix.code_actions(result, path, diag, ctx.profile):
+                    if any(not _same(e.path, path) for e in act.edits):
+                        continue
+                    key = (lsp_diag.range.start.line, act.title, act.edits)
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    edits = [types.TextEdit(ctx.columns(path, e.line, e.start, e.end), e.new_text)
+                             for e in act.edits]
+                    actions.append(types.CodeAction(
+                        title=act.title, kind=types.CodeActionKind.QuickFix,
+                        diagnostics=[lsp_diag],
+                        edit=types.WorkspaceEdit(document_changes=[types.TextDocumentEdit(
+                            types.OptionalVersionedTextDocumentIdentifier(ctx.uri(path), version),
+                            edits)])))
+    return actions

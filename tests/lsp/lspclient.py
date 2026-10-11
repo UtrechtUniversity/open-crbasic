@@ -115,7 +115,9 @@ class LspClient:
     def initialize(self, folder: Path | None, options: dict | None = None,
                    position_encodings: list[str] | None = None,
                    semantic_refresh: bool = False, watched_files: bool = False) -> dict:
-        caps: dict = {"workspace": {"configuration": self.pull_configuration}}
+        caps: dict = {"workspace": {"configuration": self.pull_configuration,
+                                    "workspaceEdit": {"documentChanges": True}},
+                      "textDocument": {"rename": {"prepareSupport": True}}}
         if watched_files:
             caps["workspace"]["didChangeWatchedFiles"] = {"dynamicRegistration": True}
         if position_encodings is not None:

@@ -28,7 +28,8 @@ EXPECTED_CAPABILITIES = {
     "completionProvider", "hoverProvider", "signatureHelpProvider", "documentSymbolProvider",
     "foldingRangeProvider", "documentLinkProvider", "definitionProvider", "referencesProvider",
     "documentHighlightProvider", "semanticTokensProvider", "textDocumentSync",
-    "positionEncoding", "executeCommandProvider", "workspace"}
+    "positionEncoding", "executeCommandProvider", "workspace", "renameProvider",
+    "documentFormattingProvider", "documentRangeFormattingProvider", "codeActionProvider"}
 
 UNICODE = """Public x As Long
 Public y As Long
