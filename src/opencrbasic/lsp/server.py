@@ -18,6 +18,7 @@ from typing import Any
 
 EXPECTED_API_VERSION = 1       # the `analysis.API_VERSION` this server was written for
 SECTION = "opencrbasic"
+WATCH_ID = "opencrbasic-watch"
 CONFIG_PULL_TIMEOUT = 10.0
 
 
@@ -58,8 +59,8 @@ def build_server():
 
     from .. import __version__
     from . import features
-    from .config import Config, parse_config
-    from .session import Diag, Session
+    from .config import Config, parse_config, watch_pattern
+    from .session import CHANGED, CREATED, DELETED, Diag, Session
 
     server = LanguageServer(SECTION, __version__,
                             text_document_sync_kind=types.TextDocumentSyncKind.Full)
@@ -77,6 +78,14 @@ def build_server():
 
     session = Session(publish)
     state: dict[str, Any] = {"init_options": None}
+    background: set[asyncio.Task] = set()
+
+    def send_message(message: str) -> None:
+        if not state.get("shutdown"):
+            server.window_log_message(types.LogMessageParams(
+                type=types.MessageType.Warning, message=f"opencrbasic-lsp: {message}"))
+
+    session.on_message = send_message
 
     def fs_path(uri: str) -> Path:
         return Path(to_fs_path(uri)).absolute()
@@ -126,6 +135,42 @@ def build_server():
         server.window_log_message(types.LogMessageParams(type=types.MessageType.Info,
                                                          message=startup_line()))
         await reload(pull=True, first=True)
+        task = asyncio.get_running_loop().create_task(register_watchers())
+        background.add(task)
+        task.add_done_callback(background.discard)
+
+    async def register_watchers() -> None:
+        """Ask the client to report changes to closed program and library files (dynamic
+        registration, only when the client supports it). A failure is logged, never fatal: the
+        server still handles open documents and `didChangeConfiguration`."""
+        workspace = server.client_capabilities.workspace
+        support = workspace and workspace.did_change_watched_files
+        if not (support and support.dynamic_registration):
+            session.log("client does not support watched-file registration; changes to closed "
+                        "files are noticed when a document is saved, opened or closed")
+            return
+        try:
+            await asyncio.wait_for(server.client_register_capability_async(
+                types.RegistrationParams(registrations=[types.Registration(
+                    id=WATCH_ID, method=types.WORKSPACE_DID_CHANGE_WATCHED_FILES,
+                    register_options=types.DidChangeWatchedFilesRegistrationOptions(
+                        watchers=[types.FileSystemWatcher(glob_pattern=watch_pattern())]))])),
+                CONFIG_PULL_TIMEOUT)
+        except Exception as exc:
+            session.log(f"watched-file registration failed: {type(exc).__name__}: {exc}")
+
+    kinds = {types.FileChangeType.Created: CREATED, types.FileChangeType.Changed: CHANGED,
+             types.FileChangeType.Deleted: DELETED}
+
+    @server.feature(types.WORKSPACE_DID_CHANGE_WATCHED_FILES)
+    async def on_watched_files(params: types.DidChangeWatchedFilesParams) -> None:
+        await session.files_changed([(fs_path(e.uri), kinds[e.type]) for e in params.changes
+                                     if e.type in kinds])
+
+    @server.feature(types.WORKSPACE_DID_CHANGE_WORKSPACE_FOLDERS)
+    async def on_folders(params: types.DidChangeWorkspaceFoldersParams) -> None:
+        await session.set_folders([fs_path(f.uri) for f in params.event.added or []],
+                                  [fs_path(f.uri) for f in params.event.removed or []])
 
     @server.feature(types.WORKSPACE_DID_CHANGE_CONFIGURATION)
     async def on_config(params: types.DidChangeConfigurationParams) -> None:

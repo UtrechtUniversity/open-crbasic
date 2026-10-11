@@ -71,3 +71,29 @@ def test_ctx_clamps_a_line_past_the_end_and_converts_back():
     assert ctx.position(path, 99, 3) == types.Position(3, 0)
     assert ctx.position(path, 0, None) == types.Position(0, 6)
     assert ctx.decoded(Path("/nowhere/missing.cr6"), types.Position(0, 0)) is None
+
+
+def test_completion_reports_a_capped_list_as_incomplete(monkeypatch):
+    from dataclasses import dataclass
+    from pathlib import Path
+
+    from opencrbasic import editing
+    from opencrbasic.lsp import features
+
+    path = Path("/nowhere/x.cr6")
+    ctx = Ctx("cr6", "utf-16", "utf-8", {path: b"BeginProg\n"}, {})
+    real = editing.completion_candidates
+
+    @dataclass(frozen=True)
+    class Capped:                       # stands for an `editing.Completion` with is_incomplete
+        inner: object
+        is_incomplete: bool
+
+        def __getattr__(self, name):
+            return getattr(self.inner, name)
+
+    for flag in (True, False):
+        monkeypatch.setattr(editing, "completion_candidates",
+                            lambda *a, _f=flag, **k: Capped(real(*a, **k), _f))
+        got = features.completion(ctx, None, None, path, types.Position(1, 0))
+        assert got.is_incomplete is flag and got.items

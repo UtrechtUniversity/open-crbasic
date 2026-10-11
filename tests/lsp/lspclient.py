@@ -82,19 +82,29 @@ class LspClient:
 
     # ---- protocol ----
 
-    def request(self, method: str, params: Any = None, timeout: float = 30) -> Any:
+    def send_request(self, method: str, params: Any = None) -> int:
+        """Send a request without waiting; `response(id)` collects the raw reply."""
         with self._cond:
             self._next_id += 1
             rid = self._next_id
         self._send({"jsonrpc": "2.0", "id": rid, "method": method, "params": params})
+        return rid
+
+    def response(self, rid: int, timeout: float = 30, what: str = "request") -> dict:
         deadline = time.monotonic() + timeout
         with self._cond:
             while rid not in self._responses:
                 left = deadline - time.monotonic()
                 if left <= 0 or self.proc.poll() is not None and rid not in self._responses:
-                    raise TimeoutError(f"no response to {method}\nstderr:\n{self.stderr_text}")
+                    raise TimeoutError(f"no response to {what}\nstderr:\n{self.stderr_text}")
                 self._cond.wait(min(left, 0.2))
-            msg = self._responses.pop(rid)
+            return self._responses.pop(rid)
+
+    def cancel(self, rid: int) -> None:
+        self.notify("$/cancelRequest", {"id": rid})
+
+    def request(self, method: str, params: Any = None, timeout: float = 30) -> Any:
+        msg = self.response(self.send_request(method, params), timeout, method)
         if "error" in msg:
             raise RuntimeError(f"{method}: {msg['error']}")
         return msg.get("result")
@@ -104,8 +114,10 @@ class LspClient:
 
     def initialize(self, folder: Path | None, options: dict | None = None,
                    position_encodings: list[str] | None = None,
-                   semantic_refresh: bool = False) -> dict:
+                   semantic_refresh: bool = False, watched_files: bool = False) -> dict:
         caps: dict = {"workspace": {"configuration": self.pull_configuration}}
+        if watched_files:
+            caps["workspace"]["didChangeWatchedFiles"] = {"dynamicRegistration": True}
         if position_encodings is not None:
             caps["general"] = {"positionEncodings": position_encodings}
         if semantic_refresh:
@@ -132,6 +144,17 @@ class LspClient:
 
     def save(self, path: Path) -> None:
         self.notify("textDocument/didSave", {"textDocument": {"uri": path.as_uri()}})
+
+    def watched(self, *changes: tuple[Path, int]) -> None:
+        """`workspace/didChangeWatchedFiles` (1 created, 2 changed, 3 deleted)."""
+        self.notify("workspace/didChangeWatchedFiles", {"changes": [
+            {"uri": path.as_uri(), "type": kind} for path, kind in changes]})
+
+    def change_folders(self, added: list[Path] = (), removed: list[Path] = ()) -> None:
+        def folder(p: Path) -> dict:
+            return {"uri": p.as_uri(), "name": p.name}
+        self.notify("workspace/didChangeWorkspaceFolders", {"event": {
+            "added": [folder(p) for p in added], "removed": [folder(p) for p in removed]}})
 
     def close(self, path: Path) -> None:
         self.notify("textDocument/didClose", {"textDocument": {"uri": path.as_uri()}})

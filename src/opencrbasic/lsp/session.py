@@ -10,7 +10,9 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
+import itertools
 import multiprocessing
+import os
 import pickle
 import re
 import sys
@@ -32,6 +34,8 @@ MARKERS = ("Internal error: unable to compile program.", "Internal error: unable
 INFO_UNINCLUDED = ("No configured entry program includes this file; diagnostics come from the "
                    "entry programs that include it.")
 _LINE_END = re.compile(r"\r\n|\r|\n")
+MIB = 1024 * 1024
+CREATED, CHANGED, DELETED = "created", "changed", "deleted"
 
 
 @dataclass(frozen=True)
@@ -78,6 +82,7 @@ class Analysed:
         self.overlays = overlays
         self.versions = dict(versions)      # open documents (path -> version) the analysis read
         self.blob: bytes | None = blob
+        self.size = len(blob)               # pickled bytes, for the cache budget
         self.result = None                  # analysis.AnalysisResult with the program only
         self.failed = False
         self.lock: asyncio.Lock | None = None
@@ -143,6 +148,10 @@ class Entry:
     contrib: dict[Path, list[Raw]] = field(default_factory=dict)
     versions: dict[Path, int] = field(default_factory=dict)       # open docs at capture
     error: str | None = None
+    error_limit: bool = False                   # `error` is a server limit, not a failure
+    read_paths: tuple[Path, ...] = ()           # files the last analysis read (original case)
+    used: int = 0                               # last feature use (cache eviction order)
+    evicted: bool = False                       # its program was dropped by the cache budget
     analysed: Analysed | None = None            # newest program that was parsed, for features
     analysed_current: bool = False              # the newest applied analysis produced it
 
@@ -156,14 +165,36 @@ class Snapshot:
 
 
 class ServerError(Exception):
-    pass
+    def __init__(self, message: str, limit: bool = False, result: JobResult | None = None):
+        super().__init__(message)
+        self.limit = limit              # a configured bound was hit: reported as a server warning
+        self.result = result            # the analysis that was discarded (its reads still count)
 
 
 _BROKEN = object()          # a worker pool break, internal to `_run_job`
 
 
+def _oversize(paths: list[Path], overlays: dict[Path, int], limit: int) -> tuple[Path, int] | None:
+    """The first of `paths` (open text, else the disk file) larger than `limit` bytes."""
+    for path in paths:
+        try:
+            size = overlays[path] if path in overlays else path.stat().st_size
+        except OSError:
+            continue
+        if size > limit:
+            return path, size
+    return None
+
+
 def _key(path: Path) -> str:
     return str(path).lower()
+
+
+def _digest(path: Path) -> str | None:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError:
+        return None
 
 
 def _units(text: str, encoding: str) -> int:
@@ -206,12 +237,27 @@ class Session:
         self._event: asyncio.Event | None = None
         self._help: dict[str, _LockedHelp] = {}
         self._background: set[asyncio.Task] = set()
+        self._running = 0                          # entry tasks alive (<= config.max_queued_jobs)
+        self._deferred: dict[Path, Entry] = {}     # entries waiting for a task slot
+        self._discover_lock: asyncio.Lock | None = None
+        self._use = itertools.count(1)
+        self._noticed: set[str] = set()
+        self.on_message: Callable[[str], None] | None = None   # server message (limits)
 
     # ---- logging -------------------------------------------------------------------------
 
     @staticmethod
     def log(message: str) -> None:
         print(f"opencrbasic-lsp: {message}", file=sys.stderr, flush=True)
+
+    def notice(self, key: str, message: str) -> None:
+        """A bound was hit: logged and sent to the client once per `key` until `reset_notice`."""
+        if key in self._noticed:
+            return
+        self._noticed.add(key)
+        self.log(message)
+        if self.on_message is not None:
+            self.on_message(message)
 
     # ---- configuration and entries -------------------------------------------------------
 
@@ -232,14 +278,65 @@ class Session:
             for path, doc in self.docs.items():
                 doc.data, doc.replaced = self._encode(doc.text)
                 touched.add(path)
-        self.discovered = set(await asyncio.to_thread(
-            discover, self.folders, config.entries, config.exclude))
+        await self._rediscover()
         self._ready = True
         self._configured.set()
         self._sync_entries(force=old.analysis_key() != config.analysis_key())
         if touched:
             self._publish(touched)
         self._warm_help()
+
+    async def _rediscover(self) -> None:
+        if self._discover_lock is None:
+            self._discover_lock = asyncio.Lock()
+        async with self._discover_lock:           # the newest folders/config win, in order
+            self.discovered = set(await asyncio.to_thread(
+                discover, list(self.folders), self.config.entries, self.config.exclude))
+
+    async def set_folders(self, added: list[Path], removed: list[Path]) -> None:
+        """`workspace/didChangeWorkspaceFolders`: discovery runs again over the new folder set;
+        entries of a removed folder drop out (their diagnostics are cleared) unless open."""
+        gone = {p.absolute() for p in removed}
+        folders = [f for f in self.folders if f not in gone]
+        folders += [a.absolute() for a in added if a.absolute() not in folders]
+        if folders == self.folders:
+            return
+        self.folders = folders
+        await self._rediscover()
+        self._sync_entries()
+
+    async def files_changed(self, events: list[tuple[Path, str]]) -> None:
+        """`workspace/didChangeWatchedFiles` for files that are not open (an open document's text
+        wins over the disk, so its disk changes are ignored until it is closed). A created or
+        deleted file may be an entry, so discovery runs again; every entry whose last analysis
+        read the file, or listed its directory, is re-analysed (that is how a created include
+        resolves a missing one, and a deleted one is reported missing). An event for a path that
+        is not a program or library file is a directory: everything read below it is affected."""
+        if self._closed:
+            return
+        known = self.config.entry_suffixes() | {".crb"}
+        rediscover = False
+        files: list[Path] = []
+        trees: list[Path] = []
+        for path, kind in events:
+            path = path.absolute()
+            if path.suffix.lower() in known:
+                if kind != CHANGED:
+                    rediscover = rediscover or path.suffix.lower() != ".crb"
+                if path not in self.docs:
+                    files.append(path)
+            elif kind != CHANGED:
+                rediscover = True
+                trees.append(path)
+        if rediscover:
+            await self._rediscover()
+            self._sync_entries()
+        delay = self.config.debounce_ms / 1000
+        for path in dict.fromkeys(files):
+            shortcut = await asyncio.to_thread(_digest, path)
+            self._changed(path, delay, shortcut=shortcut)
+        for path in dict.fromkeys(trees):
+            self._changed_tree(path, delay)
 
     def _wanted_entries(self) -> set[Path]:
         suffixes = self.config.entry_suffixes()
@@ -251,6 +348,7 @@ class Session:
         for path in [p for p in self.entries if p not in wanted]:
             entry = self.entries.pop(path)
             entry.removed = True
+            self._deferred.pop(path, None)
             if entry.task:
                 entry.task.cancel()
             touched |= set(entry.contrib) | {path}
@@ -324,6 +422,16 @@ class Session:
                 continue
             self._request(entry, delay)
 
+    def _changed_tree(self, path: Path, delay: float) -> None:
+        """A directory appeared or disappeared: re-analyse the entries that read or listed it or
+        anything below it, and the entries that have not completed a first analysis."""
+        key = _key(path)
+        below = key.rstrip(os.sep) + os.sep
+        for entry in list(self.entries.values()):
+            names = [*entry.reads, *entry.dirs, _key(entry.path)]
+            if not entry.settled or any(n == key or n.startswith(below) for n in names):
+                self._request(entry, delay)
+
     # ---- scheduling ----------------------------------------------------------------------
 
     def _request(self, entry: Entry, delay: float) -> None:
@@ -331,7 +439,30 @@ class Session:
         entry.requested += 1
         entry.not_before = loop.time() + delay
         if entry.task is None or entry.task.done():
-            entry.task = loop.create_task(self._entry_loop(entry))
+            self._start(entry)
+
+    def _start(self, entry: Entry) -> None:
+        """Give `entry` a task, or hold it back while `maxQueuedJobs` entry tasks are alive."""
+        if self._running >= self.config.max_queued_jobs:
+            self._deferred[entry.path] = entry
+            if len(self._deferred) == 1:
+                self.notice("queue", f"{self._running} analyses are queued (maxQueuedJobs="
+                            f"{self.config.max_queued_jobs}); further entry programs wait for a "
+                            "free slot and are analysed in turn.")
+            return
+        self._running += 1
+        entry.task = asyncio.get_running_loop().create_task(self._entry_loop(entry))
+        entry.task.add_done_callback(self._task_done)
+
+    def _task_done(self, _task: asyncio.Task) -> None:
+        self._running -= 1
+        while self._deferred and self._running < self.config.max_queued_jobs and not self._closed:
+            first = next((p for p in self._deferred if p in self.docs), next(iter(self._deferred)))
+            entry = self._deferred.pop(first)
+            if not entry.removed and entry.done != entry.requested:
+                self._start(entry)
+        if not self._deferred:
+            self._noticed.discard("queue")
 
     def _snapshot(self) -> Snapshot:
         return Snapshot(tuple((str(p), d.data) for p, d in self.docs.items()),
@@ -348,7 +479,7 @@ class Session:
                     break
                 target = entry.requested
                 snap = self._snapshot()
-                outcome = await self._run_job(entry, snap)
+                outcome = await self._guarded_job(entry, snap)
                 entry.done = target
                 if entry.removed or entry.requested != target:
                     continue                         # superseded: discard
@@ -360,6 +491,31 @@ class Session:
             entry.done = entry.requested
             self._apply(entry, self._snapshot(), ServerError(
                 "Internal error in the language server scheduler; see the server log."))
+
+    async def _guarded_job(self, entry: Entry, snap: Snapshot) -> JobResult | ServerError:
+        """`_run_job` between two file-size checks: before the job on the files the entry is known
+        to read, after it on the files it actually read (a new include is only known then)."""
+        sizes = {Path(p): len(data) for p, data in snap.overlays}
+        over = await asyncio.to_thread(_oversize, [entry.path, *entry.read_paths], sizes,
+                                       self.config.max_file_bytes)
+        if over is None:
+            outcome = await self._run_job(entry, snap)
+            if isinstance(outcome, ServerError):
+                return outcome
+            over = await asyncio.to_thread(_oversize, [Path(p) for p, h in outcome.reads if h],
+                                           sizes, self.config.max_file_bytes)
+            if over is None:
+                return outcome
+            result = outcome
+        else:
+            result = None
+        path, size = over
+        self.notice(f"size:{path}", f"{path.name} is {size} bytes, above the maxFileBytes limit "
+                    f"of {self.config.max_file_bytes}; the entry programs that read it are not "
+                    "analysed.")
+        return ServerError(f"Analysis of {entry.path.name} skipped: {path.name} is {size} bytes, "
+                           f"above the maxFileBytes limit of {self.config.max_file_bytes}.",
+                           limit=True, result=result)
 
     def _semaphore(self) -> asyncio.Semaphore:
         if self._sem is None:
@@ -435,8 +591,11 @@ class Session:
         installed = False
         if isinstance(outcome, ServerError):
             entry.error = str(outcome)
+            entry.error_limit = outcome.limit
             entry.contrib = {}
             entry.analysed_current = False
+            if outcome.result is not None:          # keep watching what it read
+                self._record_reads(entry, outcome.result)
         else:
             reads = {_key(Path(p)): h for p, h in outcome.reads}
             stale = any((self.docs[p].version if p in self.docs else None) != snap.versions.get(p)
@@ -446,20 +605,45 @@ class Session:
                 self._request(entry, 0.0)
                 return
             entry.error = None
-            entry.reads = reads
-            entry.dirs = frozenset(_key(Path(d)) for d in outcome.listings)
+            entry.error_limit = False
+            self._record_reads(entry, outcome)
             entry.contrib = self._contributions(entry, outcome)
             entry.analysed_current = outcome.program is not None
             if entry.analysed_current:
                 entry.analysed = Analysed(entry.path, snap.logger, snap.overlays, snap.versions,
                                           outcome.program)
+                entry.used = next(self._use)
+                entry.evicted = False
                 installed = True
+                self._enforce_cache(entry)
         entry.versions = dict(snap.versions)
         entry.settled = True
         self._publish(old_paths | set(entry.contrib) | {entry.path} | self._open_crb_paths())
         self._notify()
         if installed and self.on_analysed is not None:
             self.on_analysed()
+
+    @staticmethod
+    def _record_reads(entry: Entry, result: JobResult) -> None:
+        entry.reads = {_key(Path(p)): h for p, h in result.reads}
+        entry.read_paths = tuple(Path(p) for p, h in result.reads if h)
+        entry.dirs = frozenset(_key(Path(d)) for d in result.listings)
+
+    def _enforce_cache(self, keep: Entry) -> None:
+        """Programs kept for the features stay within `maxCacheMb`: the least recently used
+        program of another entry is dropped (its diagnostics stay) and rebuilt by a new analysis
+        when a feature request needs it."""
+        budget = self.config.max_cache_mb * MIB
+        held = [e for e in self.entries.values() if e.analysed is not None]
+        total = sum(e.analysed.size for e in held)
+        for victim in sorted((e for e in held if e is not keep), key=lambda e: e.used):
+            if total <= budget:
+                break
+            total -= victim.analysed.size
+            victim.analysed, victim.analysed_current, victim.evicted = None, False, True
+            self.notice("cache", f"the parsed programs exceed maxCacheMb={self.config.max_cache_mb}"
+                        "; the least recently used ones are dropped and rebuilt when a language "
+                        "feature needs them.")
 
     @staticmethod
     def _contributions(entry: Entry, result: JobResult) -> dict[Path, list[Raw]]:
@@ -522,7 +706,8 @@ class Session:
                                 SRC_INTERNAL if raw.internal else SRC_COMPILE, raw.span))
         for e in self.entries.values():
             if e.error and e.path == path:
-                out.append(make(0, "error", e.error, SRC_INTERNAL))
+                out.append(make(0, "warning", e.error, SRC_SERVER) if e.error_limit
+                           else make(0, "error", e.error, SRC_INTERNAL))
         if doc is not None and doc.replaced:
             out.append(make(0, "warning",
                             f"Some characters in this file are not representable in the "
@@ -579,14 +764,23 @@ class Session:
         else:
             key = _key(path)
             candidates = [e for _, e in sorted(self.entries.items()) if e.reads.get(key)]
-        return next((e.analysed for e in candidates if e.analysed is not None), None)
+        entry = next((e for e in candidates if e.analysed is not None), None)
+        if entry is None:
+            for e in candidates:                  # dropped by the cache budget: rebuild
+                if e.evicted:
+                    e.evicted = False
+                    self._request(e, 0.0)
+            return None
+        entry.used = next(self._use)
+        return entry.analysed
 
     def _fresh(self, path: Path, ana: Analysed | None) -> bool:
         doc = self.docs.get(path)
         return ana is not None and ana.versions.get(path) == (doc.version if doc else None)
 
     def _pending(self) -> bool:
-        return any(not e.settled or (e.task is not None and not e.task.done())
+        return any(not e.settled or e.done != e.requested
+                   or (e.task is not None and not e.task.done())
                    for e in self.entries.values())
 
     async def analysed_for(self, path: Path, wait: bool = True) -> Analysed | None:
@@ -649,6 +843,7 @@ class Session:
 
     def close(self) -> None:
         self._closed = True
+        self._deferred.clear()
         self._notify()
         for entry in self.entries.values():
             entry.removed = True

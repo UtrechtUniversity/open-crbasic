@@ -345,7 +345,7 @@ with a stdio transcript test in `tests/lsp/test_features_server.py`):
 | `definitionProvider`, `referencesProvider`, `documentHighlightProvider` | | `navigation.Navigation` |
 | `semanticTokensProvider` | `full` only; legend = `navigation.TOKEN_TYPES` / `TOKEN_MODIFIERS` | `Navigation.semantic_tokens` |
 
-pygls additionally advertises `workspace.workspaceFolders` (changes are ignored until LSP-06) and
+pygls additionally advertises `workspace.workspaceFolders` (changes are handled, see "Workspace (LSP-06a)") and
 an empty `executeCommandProvider`; the server implements no command. Nothing else (no rename, code
 action, formatting, inlay hints, range or delta semantic tokens) is advertised.
 
@@ -353,7 +353,7 @@ action, formatting, inlay hints, range or delta semantic tokens) is advertised.
 
 Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
 `exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
-`analysisTimeoutMs` (10000), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
+`analysisTimeoutMs` (10000), `maxFileBytes`, `maxQueuedJobs`, `maxCacheMb` ("Workspace (LSP-06a)"), `helpDirectory` (`""`: no help text) and `featureWaitMs` (1500, see
 "Language features"; a tuning key that the VS Code extension does not contribute). Sources, in order: `initializationOptions`, then, when the client
 declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
 (after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
@@ -365,9 +365,46 @@ their diagnostics cleared); `debounceMs` and `analysisTimeoutMs` apply to later 
 
 Entry discovery globs the workspace folders (`entries` minus `exclude`; workspace-relative,
 case-insensitive; `*`, `?`, `**`, `{a,b}`; directories starting with `.` and `node_modules` are not
-walked) at startup and on configuration change; file watching is LSP-06. An opened file with
+walked) at startup, on configuration change, on workspace-folder changes and on watched-file events ("Workspace (LSP-06a)"). An opened file with
 extension `.CR6` (case-insensitive; additionally the extension of the configured logger, e.g.
 `.CR1X`) is an entry for itself while it is open, configured or not. A `.crb` is never an entry.
+
+### Workspace (LSP-06a)
+
+- **Watched files.** After `initialized`, when the client declares
+  `workspace.didChangeWatchedFiles.dynamicRegistration`, the server registers
+  `workspace/didChangeWatchedFiles` with one glob, `config.watch_pattern()`: `**/*.{...}` over `crb`
+  and the program extensions of every logger profile, each in lower and upper case (a mixed-case
+  extension is not watched). Without client support one stderr line says so and closed-file changes
+  are noticed only through save/open/close. Handling (`Session.files_changed`): events for an open
+  document are ignored (its text wins; closing restores the disk state); other events re-analyse
+  every entry whose last analysis read the file or listed its directory, so a created include
+  resolves the missing-include warning and a deleted one brings it back; a created or deleted
+  program file re-runs discovery (a new entry appears, a deleted one drops out and its diagnostics
+  are cleared); a rename is delete + create. A changed file whose bytes equal what the entries
+  last read re-runs nothing. An event for a path with another extension is a directory: discovery
+  runs again and entries that read, listed or live below it are re-analysed. Delay: `debounceMs`.
+  Includes are looked up in the entry's own directory only (observed: `CPU:sub/Lib.crb` is not
+  resolved by the loader), so directory events matter for discovery.
+- **Workspace folders.** `workspace/didChangeWorkspaceFolders` adds/removes folders, re-runs
+  discovery and clears diagnostics of entries that drop out (unless open).
+- **Bounds** (reported as `opencrbasic (server)` warnings at line 0 of the entry, plus a
+  `window/logMessage` Warning once per cause; never CRBasic errors; compiler semantics unchanged;
+  keys are tuning keys the VS Code extension does not contribute):
+
+  | Key | Default | Meaning |
+  |---|---|---|
+  | `maxFileBytes` | 2097152 | An entry whose file, or any file it reads (open text or disk), is larger is not analysed. Checked before the job on the entry and the files its last analysis read, and after it on the files it read. Changing it re-analyses every entry. |
+  | `maxQueuedJobs` | 64 | Entries with an analysis task alive at once. Further entries wait (open documents first) and run as slots free; none is dropped. |
+  | `maxCacheMb` | 256 | Pickled parsed programs kept for the language features. The least recently used program of another entry is dropped (its diagnostics stay); a later feature request re-analyses that entry. Results exist only for configured and open entries. |
+
+  Include depth and cycles are the loader's own business; the server adds only the existing job
+  timeout and pool restart. Observed: an entry that `IncludeSection`s itself ends in a
+  `RecursionError` inside the parser and is published as `opencrbasic (internal)`; the server
+  stays usable (see the LSP-06a handoff, compiler issue).
+- **Cancellation.** `$/cancelRequest` for a feature request that waits for a program is answered
+  with error -32800 (RequestCancelled) by pygls; a request already running in a thread finishes.
+- `completion`: `isIncomplete` follows `editing.Completion.is_incomplete` when the core provides it.
 
 ### Overlays and encoding
 

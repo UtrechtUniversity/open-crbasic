@@ -22,10 +22,13 @@ class Config:
     analysis_timeout_ms: int = 10000
     help_directory: str = ""            # "" : no help text
     feature_wait_ms: int = 1500         # bounded wait for a fresh analysis (docs/lsp-api.md)
+    max_file_bytes: int = 2 * 1024 * 1024   # larger files are not analysed (docs/lsp-api.md "Bounds")
+    max_queued_jobs: int = 64           # entries with an analysis task at once; the rest wait
+    max_cache_mb: int = 256             # parsed programs kept for the language features
 
-    def analysis_key(self) -> tuple[str, str]:
-        """What changes every entry's analysis input."""
-        return (self.logger, self.encoding)
+    def analysis_key(self) -> tuple[str, str, int]:
+        """What changes every entry's analysis input or outcome."""
+        return (self.logger, self.encoding, self.max_file_bytes)
 
     def entry_suffixes(self) -> frozenset[str]:
         """Extensions (lower case) that make an opened file an entry program."""
@@ -78,7 +81,10 @@ def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list
             warnings.append(f"ignoring 'encoding': unknown encoding {value!r}")
     for key, attr, minimum in (("debounceMs", "debounce_ms", 0), ("analysisTimeoutMs",
                                                                   "analysis_timeout_ms", 1),
-                                    ("featureWaitMs", "feature_wait_ms", 0)):
+                                    ("featureWaitMs", "feature_wait_ms", 0),
+                                    ("maxFileBytes", "max_file_bytes", 1),
+                                    ("maxQueuedJobs", "max_queued_jobs", 1),
+                                    ("maxCacheMb", "max_cache_mb", 1)):
         if key in options:
             value = _int(options[key], minimum)
             if value is None:
@@ -154,3 +160,12 @@ def discover(folders: list[Path], entries: tuple[str, ...], exclude: tuple[str, 
                         not any(rx.fullmatch(rel) for rx in skip):
                     found[Path(root, name).absolute()] = None
     return sorted(found)
+
+
+def watch_pattern() -> str:
+    """The `workspace/didChangeWatchedFiles` glob: library files and the program extensions of
+    every logger profile, each in lower and upper case (LSP globs are case-sensitive; the server
+    filters by the configured logger). A mixed-case extension such as `.Cr6` is not watched."""
+    suffixes = {".crb", ".cr6", *profiles.EXTENSIONS}
+    names = sorted({v for s in suffixes for v in (s.lower()[1:], s.upper()[1:])})
+    return "**/*.{" + ",".join(names) + "}"
