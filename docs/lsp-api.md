@@ -1308,16 +1308,29 @@ converts to the client's encoding. Handoff with the observed sweep counts:
 [LSP-07a-handoff.md](lsp-rounds/LSP-07a-handoff.md).
 
 ```python
-prepare_rename(results, path, line, column, source=None)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder)
+prepare_rename(results, path, line, column, source=None)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder, files)
 rename(results, path, line, column, new_name, source=None)          -> RenameResult(ok, refusal, edits, versions)
 TextEdit(line, start, end, new_text)                   # NamedTuple, physical 0-based, end exclusive
 Refusal(code, message)                                 # code is one of rename.REASONS
 ```
 
-`results` is a list of `AnalysisResult`, **one per configured entry that depends on `path`**
-(the caller selects them; an entry whose reads do not include `path`, or that does not parse the
-position's line, for example because an `IncludeSection` or an inactive `#If` leaves that part of
-the file out, is skipped). On success `edits` is `{Path: [TextEdit]}`, sorted, non-overlapping and
+`results` is a list of `AnalysisResult`, **one per configured entry that reads `path`, the
+declaration's file or an edited file** (the caller selects them). The clicked binding is resolved in
+the results that read `path` and parse the position's line (one whose reads do not include `path`,
+or that does not parse the line, for example because an `IncludeSection` or an inactive `#If`
+leaves that part of the file out, is skipped there). Then, until nothing changes, every other result
+that reads the declaration's file or an edited file joins: the same declaration is found in it at the
+declaration token's file and position, and its references, freshness and collisions are checked like
+the first. A result that parses an edited line but not the declaration is `entries_disagree`; one
+that parses none of them is skipped. `PrepareResult.files` is every file holding the declaration or
+a reference (LSP-R3a).
+
+**Server selection (LSP-R3a).** `prepare_or_rename` starts with the entries reading the request
+file; while the core's touched files (`PrepareResult.files`, or the edited files of a rename)
+include one some entry outside the set reads, it adds the entries reading it (each must be current,
+else `pending`) and recomputes. Renaming a use in entry A of a declaration in a library that entry
+B also includes therefore edits and checks B too. An entry that never completed an analysis refuses the request (`unanalysed`)
+as before. On success `edits` is `{Path: [TextEdit]}`, sorted, non-overlapping and
 deduplicated across entries (a library included by several entries is edited once), and `versions`
 is `{Path: sha256 hex}` of the bytes each edited file has now, which equal what it had when it was
 analysed. The caller (the server) must apply the edits only to a document whose content still has

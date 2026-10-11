@@ -66,6 +66,7 @@ class PrepareResult:
     start: int = 0
     end: int = 0
     placeholder: str = ""       # the name as spelled at the position
+    files: frozenset = frozenset()  # every file with the declaration or a reference to it
 
 
 @dataclass(frozen=True)
@@ -415,16 +416,25 @@ class _Current:
                 raise _Refuse("stale", f"{Path(q).name} differs from the bytes the analysis read")
 
 
+def _reads(result, path: Path) -> bool:
+    return any(Path(p) == path or _same(p, path) for p in result.dependencies.reads)
+
+
 def _collect(results, path, line, col, current):
+    """The entries of `results` that the rename concerns: those that read `path` and parse `line`
+    (the clicked binding), then, until nothing changes, every other result that reads the
+    declaration's file or an edited file. Such a result is identified with the same declaration
+    by the declaration token's file and position; one that parses an edited line but not the
+    declaration is refused (`entries_disagree`), one that parses none of them is skipped."""
     path = Path(path).absolute()
     if not results:
         raise _Refuse("no_results", "no analysis result was given")
     entries: list[_Entry] = []
+    used: set[int] = set()
     first = None
     for r in results:
         st = _state(r)
-        reads = r.dependencies.reads
-        if not any(Path(p) == path or _same(p, path) for p in reads):
+        if not _reads(r, path):
             continue                                    # this entry does not depend on the file
         if getattr(r, "program", None) is not None and not st.parses(path, line):
             continue                                    # the declaration is not in this entry's program
@@ -433,9 +443,33 @@ def _collect(results, path, line, col, current):
         if first is None:
             first = (placeholder, rng)
         entries.append(e)
+        used.add(id(r))
     if not entries:
         raise _Refuse("no_results", "no given analysis depends on the file")
     assert first is not None                # set with the first entry
+    decl = min(entries[0].key, key=lambda k: (str(k[0]), k[1], k[2]))[:4]
+    grown = True
+    while grown:                            # entries reached through the declaration or an edit
+        grown = False
+        union = set().union(*(e.ranges for e in entries))
+        for r in results:
+            if id(r) in used:
+                continue
+            touched = [k for k in union | {decl} if _reads(r, k[0])]
+            if not touched:
+                continue
+            st = _state(r)
+            if getattr(r, "program", None) is not None:
+                if not _reads(r, decl[0]) or not st.parses(decl[0], decl[1]):
+                    if any(st.parses(k[0], k[1]) for k in touched):
+                        raise _Refuse("entries_disagree", "an entry uses an edited line but does "
+                                      "not declare the target")
+                    continue
+            current.verify(r)
+            e, _, _ = _entry(st, decl[0], decl[1], decl[2])
+            entries.append(e)
+            used.add(id(r))
+            grown = True
     if any(e.key != entries[0].key or e.name != entries[0].name for e in entries):
         raise _Refuse("entries_disagree", "the entries disagree on the declaration set")
     for e in entries:
@@ -472,7 +506,8 @@ def prepare_rename(results, path, line: int, column: int, source=None) -> Prepar
     except _Refuse as e:
         return PrepareResult(False, e.refusal)
     p, ln, a, b = rng
-    return PrepareResult(True, None, p, ln, a, b, placeholder)
+    files = frozenset(k[0] for e in entries for k in e.ranges)
+    return PrepareResult(True, None, p, ln, a, b, placeholder, files)
 
 
 def rename(results, path, line: int, column: int, new_name: str, source=None) -> RenameResult:

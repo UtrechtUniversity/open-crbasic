@@ -155,6 +155,41 @@ def test_rename_across_a_library_and_two_entries(make_client, tmp_path):
     assert client.shutdown() == 0
 
 
+SHARED_USE = 'Include "Lib.crb"\n{extra}BeginProg\nsharedValue = 1\nEndProg\n'
+
+
+def test_rename_from_a_use_in_one_entry_edits_every_entry(make_client, tmp_path):
+    """LSP-R3a (review A1): a use in A of a declaration in a library B includes too."""
+    root = project(tmp_path, A_CR6=SHARED_USE.format(extra=""), B_CR6=SHARED_USE.format(extra=""),
+                   Lib_crb="Public sharedValue\n")
+    a, b, lib = root / "A.CR6", root / "B.CR6", root / "Lib.crb"
+    client = started(make_client, root)
+    client.open(a)
+    client.open(b)
+    edits = [rename_at(client, path, line, ch, "renamedValue")
+             for path, line, ch in ((a, 2, 3), (b, 2, 3), (lib, 0, 9))]
+    assert edits[0] == edits[1] == edits[2]
+    by_uri = {c["textDocument"]["uri"]: c["edits"] for c in edits[0]["documentChanges"]}
+    assert set(by_uri) == {a.as_uri(), b.as_uri(), lib.as_uri()}
+    for path in (a, b, lib):
+        path.write_text(apply(path.read_text(), by_uri[path.as_uri()]))
+    assert b.read_text() == SHARED_USE.format(extra="").replace("sharedValue", "renamedValue")
+    assert client.shutdown() == 0
+
+
+def test_rename_collision_only_in_another_entry_is_refused(make_client, tmp_path):
+    root = project(tmp_path, A_CR6=SHARED_USE.format(extra=""),
+                   B_CR6=SHARED_USE.format(extra="Public renamedValue\n"),
+                   Lib_crb="Public sharedValue\n")
+    a = root / "A.CR6"
+    client = started(make_client, root)
+    client.open(a)
+    err = error_of(client, "textDocument/rename", a, 2, 3, newName="renamedValue")
+    assert err["code"] == REQUEST_FAILED and err["data"]["reason"] == "collision"
+    assert client.at("textDocument/prepareRename", a, 2, 3)["placeholder"] == "sharedValue"
+    assert client.shutdown() == 0
+
+
 def test_rename_refusals_are_lsp_errors_with_the_reason(make_client, tmp_path):
     root = edit_project(tmp_path)
     a = root / "A.CR6"

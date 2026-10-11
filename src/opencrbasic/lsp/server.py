@@ -379,8 +379,31 @@ def build_server():
         return entries
 
     async def prepare_or_rename(uri: str, position, new_name: str | None, what: str):
+        """Starts with the entries reading the request file; while the declaration or an edit is
+        in a file some entry outside the set reads, adds the entries reading it and recomputes,
+        so every entry the rename changes is checked (LSP-R3a)."""
         path = fs_path(uri)
-        entries = await current_entries(path, what)
+        files = {path}
+        while True:
+            entries = {}
+            for f in sorted(files):
+                for e in await current_entries(f, what):
+                    entries[e.path] = e
+            entries = [entries[k] for k in sorted(entries)]
+            found, hashes, versions, touched = await rename_with(entries, path, position, new_name,
+                                                                 what)
+            if touched <= files:
+                break
+            files |= touched
+        for p, digest in hashes.items():        # an open document must still be what was renamed
+            doc = session.docs.get(p)
+            if doc is not None and (doc.version != versions.get(p)
+                                    or hashlib.sha256(doc.data).hexdigest() != digest):
+                raise refuse(what, "stale", f"{p.name} changed while the rename was computed")
+        return found
+
+    async def rename_with(entries, path: Path, position, new_name: str | None, what: str):
+        """One core call over `entries`: (result, hashes, document versions, touched files)."""
         unknown = session.unknown_entries()
         if unknown:
             raise refuse(what, "unanalysed", f"the analysis of {unknown[0].path.name} failed or "
@@ -395,21 +418,17 @@ def build_server():
         versions = {p: d.version for p, d in session.docs.items()}
         source = OverlaySource(DiskSource(), session.blobs())      # buffers as the analyses read them
         if new_name is None:
-            found, refusal = await asyncio.to_thread(
+            found, refusal, touched = await asyncio.to_thread(
                 locked, entries, features.prepare_rename, ctx, results, path, position, source)
             hashes = {}
         else:
             found, refusal, hashes = await asyncio.to_thread(
                 locked, entries, features.rename_edit, ctx, results, path, position, new_name,
                 versions, source)
+            touched = set(hashes)
         if refusal is not None:
             raise refuse(what, refusal.code, refusal.message)
-        for p, digest in hashes.items():        # an open document must still be what was renamed
-            doc = session.docs.get(p)
-            if doc is not None and (doc.version != versions.get(p)
-                                    or hashlib.sha256(doc.data).hexdigest() != digest):
-                raise refuse(what, "stale", f"{p.name} changed while the rename was computed")
-        return found
+        return found, hashes, versions, {Path(p) for p in touched}
 
     @server.feature(types.TEXT_DOCUMENT_PREPARE_RENAME)
     @guarded("prepareRename", None)

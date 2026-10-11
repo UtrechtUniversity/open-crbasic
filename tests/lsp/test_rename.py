@@ -472,6 +472,54 @@ def test_included_twice_same_range(tmp_path):
     assert not res.ok or spots(res, lib) == [(0, 4, 8)]
 
 
+SHARED_ENTRY = 'Include "Lib.crb"\n{extra}BeginProg\nsharedValue = 1\nEndProg\n'
+
+
+def shared(tmp_path, b_extra=""):
+    """LSP-R3a (review A1): `Public sharedValue` in a library both A and B include and use."""
+    lib = write(tmp_path, "Lib.crb", "Public sharedValue\n")
+    a = write(tmp_path, "A.CR6", SHARED_ENTRY.format(extra=""))
+    b = write(tmp_path, "B.CR6", SHARED_ENTRY.format(extra=b_extra))
+    return lib, a, b
+
+
+def test_rename_from_any_entry_edits_every_entry_of_the_declaration(tmp_path):
+    lib, a, b = shared(tmp_path)
+    results = [run(a), run(b)]
+    want = {lib: [(0, 7, 18)], a: [(2, 0, 11)], b: [(2, 0, 11)]}
+    for path, line in ((a, 2), (b, 2), (lib, 0)):
+        col = 3 if path != lib else 9
+        res = R.rename(results, path, line, col, "renamedValue")
+        assert res.ok, res.refusal
+        assert {p: spots(res, p) for p in res.edits} == want
+        assert set(res.versions) == set(want)
+        pr = R.prepare_rename(results, path, line, col)
+        assert pr.ok and pr.files == frozenset(want)
+    res = R.rename(results, a, 2, 3, "renamedValue")
+    for p, edits in res.edits.items():
+        p.write_bytes(apply(p.read_bytes(), edits))
+    assert all(run(e).ok for e in (a, b))
+
+
+def test_collision_only_in_the_other_entry_is_refused(tmp_path):
+    lib, a, b = shared(tmp_path, b_extra="Public renamedValue\n")
+    results = [run(a), run(b)]
+    for path, line, col in ((a, 2, 3), (b, 3, 3), (lib, 0, 9)):
+        assert code(R.rename(results, path, line, col, "renamedValue")) == "collision"
+    assert R.rename(results[:1], a, 2, 3, "renamedValue").ok       # A alone has no collision
+
+
+def test_entry_using_an_edited_line_without_the_declaration_is_refused(tmp_path):
+    lib, a, _ = shared(tmp_path)
+    write(tmp_path, "Use.crb", "Sub Touch()\n  sharedValue = 2\nEndSub\n")
+    a.write_text('Include "Lib.crb"\nInclude "Use.crb"\nBeginProg\nsharedValue = 1\nEndProg\n')
+    c = write(tmp_path, "C.CR6", 'Public sharedValue\nInclude "Use.crb"\nBeginProg\nEndProg\n')
+    ra, rc = run(a), run(c)
+    assert R.rename([ra], lib, 0, 9, "renamedValue").ok
+    assert code(R.rename([ra, rc], lib, 0, 9, "renamedValue")) == "entries_disagree"
+    assert code(R.rename([ra, rc], a, 3, 3, "renamedValue")) == "entries_disagree"
+
+
 # ------------------------------------------------------------------ semantic preservation sweep
 
 _BOUND = "(?<![A-Za-z0-9])"

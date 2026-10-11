@@ -391,17 +391,20 @@ def formatting_edits(ctx: Ctx, path: Path, options: types.FormattingOptions,
 
 
 def prepare_rename(ctx: Ctx, results: list, path: Path, position: types.Position,
-                   source: Any = None) -> tuple[types.PrepareRenamePlaceholder | None, rename.Refusal | None]:
+                   source: Any = None
+                   ) -> tuple[types.PrepareRenamePlaceholder | None, rename.Refusal | None, frozenset]:
+    """(placeholder, refusal, files): `files` are the files of the declaration and its references
+    (`PrepareResult.files`), empty on a refusal."""
     at = ctx.decoded(path, position)
     if at is None:
-        return None, rename.Refusal("no_range", "the document cannot be read")
+        return None, rename.Refusal("no_range", "the document cannot be read"), frozenset()
     found = rename.prepare_rename(results, path, *at, source=source)
     if not found.ok:
-        return None, found.refusal
+        return None, found.refusal, frozenset()
     assert found.path is not None           # an ok PrepareResult carries its range
     return types.PrepareRenamePlaceholder(
         range=ctx.columns(found.path, found.line, found.start, found.end),
-        placeholder=found.placeholder), None
+        placeholder=found.placeholder), None, found.files
 
 
 def rename_edit(ctx: Ctx, results: list, path: Path, position: types.Position, new_name: str,
