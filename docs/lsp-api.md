@@ -319,6 +319,9 @@ or the main checkout is imported. First stderr line:
 opencrbasic-lsp: opencrbasic=<path to opencrbasic/__init__.py> api_version=<N> git=<short sha|unknown>
 ```
 
+The same line is sent once as `window/logMessage` of type Info after `initialized`: clients show
+stderr at error level, so the stderr copy alone reads as an error on a successful start.
+
 The revision comes from `git -C <package dir> rev-parse --short HEAD` (failure is ignored). The
 server was written for `analysis.API_VERSION == 1`; any other value prints
 `opencrbasic-lsp: refusing to start: ...` and exits with status 2. Exit status after `shutdown` +

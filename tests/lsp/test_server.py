@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shutil
 import subprocess
@@ -11,11 +12,13 @@ from pathlib import Path
 
 import pytest
 
+from opencrbasic import profiles
 from opencrbasic.analysis import AnalysisRequest, analyze
 
 from .lspclient import SRC, LspClient
 
-CRBASIC = (Path(__file__).resolve().parents[2].parent / "crbasic").resolve()
+ROOT = Path(__file__).resolve().parents[2]
+CRBASIC = (ROOT.parent / "crbasic").resolve()
 FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
 
 SMALL = """Public x As Long
@@ -102,6 +105,30 @@ def test_lifecycle_and_capabilities(make_client, tmp_path):
     assert client.shutdown() == 0
     assert "opencrbasic-lsp: opencrbasic=" in client.stderr_text
     assert "api_version=1" in client.stderr_text and str(SRC) in client.stderr_text
+
+
+def test_startup_banner_is_also_an_info_log_message(make_client, tmp_path):
+    client = make_client()
+    client.initialize(small_project(tmp_path), FAST)
+    logs = client.wait_for(lambda: [m for m in client.messages
+                                    if m.get("method") == "window/logMessage"], 30, "logMessage")
+    assert len(logs) == 1, logs
+    assert logs[0]["params"]["type"] == 3          # MessageType.Info
+    assert logs[0]["params"]["message"].startswith("opencrbasic-lsp: opencrbasic=")
+    assert "opencrbasic-lsp: opencrbasic=" in client.stderr_text
+    assert client.shutdown() == 0
+
+
+def test_vscode_language_covers_logger_extensions():
+    manifest = json.loads((ROOT / "vscode" / "package.json").read_text(encoding="utf-8"))
+    language = next(lang for lang in manifest["contributes"]["languages"] if lang["id"] == "crbasic")
+    declared = language["extensions"]
+    lowered = {ext.lower() for ext in declared}
+    logger_exts = set(profiles.EXTENSIONS)
+    assert logger_exts <= lowered
+    assert lowered - logger_exts == {".crb"}       # the only non-logger extension
+    for ext in logger_exts:
+        assert ext.upper() in declared, ext        # both spellings, as .CR6 / .cr6 are declared
 
 
 def test_exit_without_shutdown_is_nonzero(make_client, tmp_path):

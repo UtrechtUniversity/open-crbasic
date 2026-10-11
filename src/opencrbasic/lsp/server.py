@@ -122,6 +122,9 @@ def build_server():
 
     @server.feature(types.INITIALIZED)
     async def on_initialized(params: types.InitializedParams) -> None:
+        # Also an Info log message: clients show stderr at error level, which would mark a good start as an error.
+        server.window_log_message(types.LogMessageParams(type=types.MessageType.Info,
+                                                         message=startup_line()))
         await reload(pull=True, first=True)
 
     @server.feature(types.WORKSPACE_DID_CHANGE_CONFIGURATION)
