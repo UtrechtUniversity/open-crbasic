@@ -21,8 +21,8 @@ from typing import NamedTuple
 
 from . import bindings, positions
 
-__all__ = ["Location", "Highlight", "SemanticToken", "Navigation", "navigation", "definition",
-           "references", "document_highlights", "semantic_tokens", "TOKEN_TYPES",
+__all__ = ["Location", "Highlight", "SemanticToken", "Site", "Navigation", "navigation", "definition",
+           "references", "document_highlights", "semantic_tokens", "path_keys", "TOKEN_TYPES",
            "TOKEN_MODIFIERS"]
 
 # Semantic-token legend (indices into these tuples are the LSP wire values; the server declares
@@ -67,7 +67,8 @@ class SemanticToken(NamedTuple):
     modifiers: tuple[str, ...]      # subset of TOKEN_MODIFIERS
 
 
-class _Site(NamedTuple):
+class Site(NamedTuple):
+    """The exact physical range of one declaration or reference (`rec`) of an analysis."""
     rec: object                     # Declaration | Reference
     path: Path | None
     file: str
@@ -77,7 +78,8 @@ class _Site(NamedTuple):
     end: int
 
 
-def _keys(path) -> set[str]:
+def path_keys(path) -> set[str]:
+    """The normalised spellings (absolute and symlink-resolved) under which `path` is matched."""
     p = Path(path)
     out = {os.path.normcase(str(p.absolute()))}
     try:
@@ -96,21 +98,22 @@ class Navigation:
         self.index = index
         if self.index is None and program is not None:
             self.index = bindings.build(program, result.request.logger)
-        self._sites: list[_Site] | None = None
-        self._by_line: dict[tuple[str, int], list[_Site]] = {}
-        self._by_path: dict[str, list[_Site]] = {}
-        self._site_of: dict[int, _Site] = {}
+        self._sites: list[Site] | None = None
+        self._by_line: dict[tuple[str, int], list[Site]] = {}
+        self._by_path: dict[str, list[Site]] = {}
+        self._site_of: dict[int, Site] = {}
 
     # ---------------------------------------------------------------- ranges
 
-    def _occurrence_paths(self) -> dict[int, Path | None]:
+    def occurrence_paths(self) -> dict[int, Path | None]:
+        """`Occurrence.id` -> the file of that load (`None` when unresolved); id 0 is the entry."""
         occs = getattr(getattr(self.result, "program", None), "occurrences", None) or []
         paths = {o.id: o.path for o in occs}
         if paths.get(0) is None:
             paths[0] = Path(self.result.request.entry).absolute()
         return paths
 
-    def _site(self, rec, paths) -> _Site | None:
+    def _site(self, rec, paths) -> Site | None:
         unit = rec.unit
         origin = getattr(unit, "origin", None)
         if origin is None:
@@ -134,15 +137,15 @@ class Navigation:
         r = positions.exact_range(ll, start, end)
         if r is None or r.end_col <= r.start_col:
             return None
-        return _Site(rec, paths.get(r.occurrence), r.file, r.occurrence, r.line - 1, r.start_col,
+        return Site(rec, paths.get(r.occurrence), r.file, r.occurrence, r.line - 1, r.start_col,
                      r.end_col)
 
-    def _build(self) -> list[_Site]:
+    def _build(self) -> list[Site]:
         if self._sites is not None:
             return self._sites
-        sites: list[_Site] = []
+        sites: list[Site] = []
         if self.index is not None:
-            paths = self._occurrence_paths()
+            paths = self.occurrence_paths()
             for rec in (*self.index.declarations, *self.index.references):
                 try:
                     site = self._site(rec, paths)
@@ -153,28 +156,31 @@ class Navigation:
                 sites.append(site)
                 self._site_of[id(rec)] = site
                 if site.path is not None:
-                    for key in _keys(site.path):
+                    for key in path_keys(site.path):
                         self._by_line.setdefault((key, site.line), []).append(site)
                         self._by_path.setdefault(key, []).append(site)
         self._sites = sites
         return sites
 
-    def _path_sites(self, path) -> list[_Site]:
+    def _path_sites(self, path) -> list[Site]:
         self._build()
         seen: set[int] = set()
         out = []
-        for key in _keys(path):
+        for key in path_keys(path):
             for s in self._by_path.get(key, ()):
                 if id(s) not in seen:
                     seen.add(id(s))
                     out.append(s)
         return out
 
-    def _at(self, path, line: int, col: int) -> list[_Site]:
+    def sites_at(self, path, line: int, col: int) -> list[Site]:
+        """The sites whose name covers the position (`line` 0-based, `col` decoded). A position
+        inside a name selects that name; a position just after one selects it only when no name
+        contains the position. Empty when none."""
         self._build()
         seen: set[int] = set()
         hits = []
-        for key in _keys(path):
+        for key in path_keys(path):
             for s in self._by_line.get((key, line), ()):
                 if id(s) not in seen and s.start <= col <= s.end:
                     seen.add(id(s))
@@ -182,9 +188,15 @@ class Navigation:
         inside = [s for s in hits if col < s.end]
         return inside or hits               # a position just after a name still counts
 
+    def site_of(self, record) -> Site | None:
+        """The site of a declaration or reference of this analysis, `None` when its range is not
+        exact (see "Range policy" in `docs/lsp-api.md`)."""
+        self._build()
+        return self._site_of.get(id(record))
+
     def _targets(self, path, line: int, col: int) -> list[bindings.Declaration]:
         out: list[bindings.Declaration] = []
-        for s in self._at(path, line, col):
+        for s in self.sites_at(path, line, col):
             cands = (s.rec,) if isinstance(s.rec, bindings.Declaration) else s.rec.resolved
             for d in cands:
                 if all(d is not o for o in out):
@@ -200,7 +212,7 @@ class Navigation:
 
     def references(self, path, line: int, col: int, include_declaration: bool = True) -> list[Location]:
         self._build()
-        sites: list[_Site] = []
+        sites: list[Site] = []
         for d in self._targets(path, line, col):
             if include_declaration and id(d) in self._site_of:
                 sites.append(self._site_of[id(d)])

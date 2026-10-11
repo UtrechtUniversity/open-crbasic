@@ -888,6 +888,29 @@ occurrence paths as given (absolute) and symlink-resolved.
 - `SemanticToken(line, start, length, type, modifiers)`: declared names of `path`, sorted, one
   per position; `length` is in decoded characters. Only declarations are tokens, references are not.
 
+### Accessors for rename (LSP-05d)
+
+The methods above return `Location`s only. `rename` needs the record behind a range, so the module
+exposes the same ranges with their records (no behaviour change):
+
+```python
+Site(rec, path, file, occurrence, line, start, end)    # NamedTuple; rec is a Declaration or Reference
+Navigation.sites_at(path, line, col)                   -> [Site]
+Navigation.site_of(record)                             -> Site | None
+Navigation.occurrence_paths()                          -> {int: Path | None}
+path_keys(path)                                        -> {str}
+```
+
+- `sites_at`: the sites whose name covers the position (0-based line, decoded column). A position
+  inside a name selects that name; a position just after its last character selects it only when no
+  name contains the position. Empty when none.
+- `site_of(record)`: the site of a declaration or reference of this analysis, `None` when its range
+  is not exact (see "Range policy" below).
+- `occurrence_paths()`: `Occurrence.id` to the file of that load (`None` when unresolved); id 0 is
+  the entry.
+- `path_keys(path)`: the normalised absolute and symlink-resolved spellings under which a path is
+  matched.
+
 ### Policy
 
 - The position is mapped through ranges, not text: each record's token (`BindingIndex.token_of`)
@@ -1134,9 +1157,9 @@ with `dependencies.reads` is the refusal `stale`.
 
 ### Notes
 
-- Private use: `rename.py` reads `Navigation._build`, `_at`, `_site_of` and `_occurrence_paths` to
-  get the declaration and reference objects behind a range (the public methods return only
-  locations). A public accessor in `navigation.py` would remove that.
+- Public use: `rename.py` gets the declaration and reference behind a range through the accessors
+  of "Navigation (LSP-05b-core)", "Accessors for rename (LSP-05d)" (`sites_at`, `site_of`,
+  `occurrence_paths`, `path_keys`). It reads no private name of `navigation.py`.
 - Diagnostics are not required to be clean: a program with errors can be renamed when every check
   above passes. The sweep compares diagnostics before and after.
 - Not covered: names inside strings (`FieldNames("x")`, `CallTable("T")`), data table field names,

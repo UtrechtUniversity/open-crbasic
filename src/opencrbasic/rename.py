@@ -109,16 +109,16 @@ class _State:
         if self._parsed is None:
             parsed = set()
             program = self.result.program
-            paths = self.nav._occurrence_paths()
+            paths = self.nav.occurrence_paths()
             line_map = getattr(program, "line_map", None) or {}
             for st in program.statements:
                 for sp in line_map.get(st.file, {}).get(st.line, ()):
                     p = paths.get(sp.occurrence)
                     if p is not None:
-                        parsed.update((k, n - 1) for k in navigation._keys(p)
+                        parsed.update((k, n - 1) for k in navigation.path_keys(p)
                                       for n in range(sp.first, sp.last + 1))
             self._parsed = parsed
-        return any((k, line) in self._parsed for k in navigation._keys(path))
+        return any((k, line) in self._parsed for k in navigation.path_keys(path))
 
     def unindexed(self) -> dict[str, list[tuple[Path, int, int, int]]]:
         """Words of the physical lines that are in no statement (inactive `#If`, directives, text
@@ -164,7 +164,7 @@ class _State:
     def _unparsed_lines(self):
         program = self.result.program
         covered = {(st.file, st.line) for st in program.statements}
-        paths = self.nav._occurrence_paths()
+        paths = self.nav.occurrence_paths()
         for file, by_line in (getattr(program, "line_map", None) or {}).items():
             for line, spans in by_line.items():
                 if (file, line) in covered:
@@ -215,8 +215,7 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
     if ix.failures:
         raise _Refuse("index_failure", f"the binding index failed for a statement: "
                       f"{ix.failures[0].message}")
-    nav._build()
-    sites = nav._at(path, line, col)
+    sites = nav.sites_at(path, line, col)
     if not sites:
         raise _Refuse("not_a_name", "the position is not on a name the program declares or uses")
     targets: list[bindings.Declaration] = []
@@ -242,6 +241,9 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
     if not targets:
         raise _Refuse("not_a_name", "the position is not on a name the program declares or uses")
     for d in targets:
+        if d.kind == "field":       # `Tab.Field`, `Status.X`: field names are not modelled (LSP-05c)
+            raise _Refuse("unmodelled", f"{d.name!r} is a table field name; field names are not "
+                          "modelled")
         if d.kind in ("external", "system_table") or d.scope == "predefined" or d.external is not None:
             raise _Refuse("external", f"{d.name!r} is predefined (catalog or system table)")
         if d.quoted:
@@ -261,7 +263,7 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
     sets = []
     ref_ids: set[int] = set()
     for d in targets:
-        dsite = nav._site_of.get(id(d))
+        dsite = nav.site_of(d)
         if dsite is None or dsite.path is None:
             raise _Refuse("no_range", f"the declaration of {d.name!r} has no exact physical range")
         rs = {_site_key(dsite)}
@@ -269,7 +271,7 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
             if r.status != "resolved":
                 raise _Refuse("ambiguous", f"a reference to {d.name!r} at {r.file}:{r.line} is "
                               f"{r.status}: {r.ambiguity or 'not a single proven target'}")
-            rsite = nav._site_of.get(id(r))
+            rsite = nav.site_of(r)
             if rsite is None or rsite.path is None:
                 raise _Refuse("no_range", f"the reference to {d.name!r} at {r.file}:{r.line} has "
                               "no exact physical range")
@@ -286,7 +288,7 @@ def _entry(state: _State, path: Path, line: int, col: int) -> tuple[_Entry, str,
     if targets[0].kind in _VARIABLE:
         _check_field_names(ix, name)
     key = frozenset((rk[0], rk[1], rk[2], rk[3], d.kind, name) for d in targets
-                    for rk in [_site_key(nav._site_of[id(d)])])
+                    for rk in [_site_key(nav.site_of(d))])
     return _Entry(state, name, tuple(targets), sets[0], frozenset(ref_ids), key), placeholder, \
         (clicked.path, clicked.line, clicked.start, clicked.end)
 
@@ -302,11 +304,12 @@ def lexer_tokens(stmt):
 
 
 def _check_field_names(ix, name: str) -> None:
-    """A variable's name can be a data table field name (`Sample`, `Average` -> `name_Avg`), and the
-    index does not model fields: a `Table.Field` use derived from the name would be missed."""
+    """A variable's name can be a data table field name (`Sample`, `Average` -> `name_Avg`), so a
+    `Table.Field` use derived from the name would not follow a rename. Field names are not renamed
+    (`unmodelled`), so every table member use is checked, whether it is unmodelled or resolves to a
+    field declaration (LSP-05c)."""
     for r in ix.references:
-        if (r.role == bindings.MEMBER and r.status == "unmodelled"
-                and any(c.kind == "datatable" for c in r.container)):
+        if r.role == bindings.MEMBER and any(c.kind == "datatable" for c in r.container):
             up = r.name.upper()
             if up == name or up.startswith(name + "_"):
                 raise _Refuse("table_field", f"the table field use {r.file}:{r.line} "
