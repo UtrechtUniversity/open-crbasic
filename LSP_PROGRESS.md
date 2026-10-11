@@ -61,7 +61,8 @@ selfdiff 0 differ; npm 16/16; tests/lsp 596 passed; full pytest 22,101 passed / 
 generated-output hash checks (`test_power_sim`, `test_power_workbook`, `test_solar_model`) fail
 because commit `2a1d36d` (human, PDF rename) edited `references/power/solar-panel/solar_params.json`
 without regenerating the power/solar outputs. Not LSP code; left to the human
-(`scripts/solar_model.py`, `power_sim.py`, `power_workbook.py` regenerate them).
+(`scripts/solar_model.py`, `power_sim.py`, `power_workbook.py` regenerate them). Host confirmed
+at `679f2f7`: the old parameter bytes reproduce both stored digests exactly.
 
 ## Regressions found after integration
 
@@ -102,7 +103,8 @@ rename/formatting/quick fix/H-04 display. Visual checks (F2 box, Ctrl+. menu, to
 rendering) still pending.
 
 Open:
-- H-06 / H-07: fixed in LSP-06c (`a42c7b0`); host retest T-13.
+- H-06 / H-07 and LSP-R2a/R2b: fixed and host-retested at `679f2f7`
+  (`docs/lsp-rounds/host-tests/2026-10-11-679f2f70/RESULTS.md`: all T-13 checks pass; T-04/T-10/T-11/T-12 rerun pass at API level).
 - Banner stderr copy and pygls' normal "Server shutting down" line show as `[error]` in the
   output channel (cosmetic; documented).
 - Undo after a multi-file rename closes files the rename opened (VS Code behaviour; documented).
