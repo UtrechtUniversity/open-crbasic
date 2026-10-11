@@ -363,6 +363,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
+| LSP-08d test-run speed | `codex/lsp-08-speed`, base `636eff1`, Sonnet | active | profile in LSP-08.md | verify, cherry-pick |
+| LSP-08e Pyrefly type checking | `codex/lsp-08-types`, base `7289caa`, Sonnet | active | Pyrefly 1.3.1, preset default, LSP modules: 38 errors at start | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
