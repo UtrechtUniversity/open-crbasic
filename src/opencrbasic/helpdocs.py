@@ -144,6 +144,56 @@ def _blocks(html: str) -> list[_Block]:
 _FORM = re.compile(r"^\s*(?:[A-Za-z_][\w.]*\s*=\s*)?([A-Za-z_]\w*)\s*\(")
 _OPTIONAL = re.compile(r"[\[(]\s*optional\s*[\])]", re.I)
 _NAME = re.compile(r"^[A-Za-z_]\w*$")
+# A parenthesised note after a bare statement name: `EndSequence (optional)`, `Data (or DataLong)`.
+_NOTE = re.compile(r"^\s*(?:optional|or\s+[A-Za-z_]\w*)\s*$", re.I)
+
+
+def _close(text: str, start: int) -> int:
+    """Index of the ')' closing a '(' that precedes `start`; len(text) when unclosed."""
+    depth = 1
+    for i in range(start, len(text)):
+        if text[i] == "(":
+            depth += 1
+        elif text[i] == ")":
+            depth -= 1
+            if depth == 0:
+                return i
+    return len(text)
+
+
+def _spans(text: str, start: int, end: int, link_starts: set[int]) -> list[tuple[int, int]]:
+    """Parameter spans of text[start:end].
+
+    A span ends at a top-level ',' or ';', or where a parameter link starts after other name text
+    (a separator the help omitted, e.g. `Count </a>TotalCalls`). Separators inside (), [] or double
+    quotes do not split.
+    """
+    out: list[tuple[int, int]] = []
+    depth = 0
+    quoted = False
+    piece = start
+    for i in range(start, end):
+        if i in link_starts and depth == 0 and not quoted and _bare(text[piece:i]):
+            out.append((piece, i))
+            piece = i
+        ch = text[i]
+        if ch == '"':
+            quoted = not quoted
+        elif not quoted:
+            if ch in "([":
+                depth += 1
+            elif ch in ")]":
+                depth = max(0, depth - 1)
+            elif ch in ",;" and depth == 0:
+                out.append((piece, i))
+                piece = i + 1
+    out.append((piece, end))
+    return out
+
+
+def _bare(raw: str) -> str:
+    """Name text of a span with optional markers and bracket notation removed ('' if none)."""
+    return re.sub(r"[\s\[\]]", "", _OPTIONAL.sub("", raw))
 
 
 @dataclass
@@ -159,26 +209,23 @@ def _parse_form(block: _Block) -> _Form | None:
     if not m:
         return None
     flat = _flat(text)
+    start = m.end()
+    end = _close(text, start)
     params: list[ParamHelp] = []
-    anchors = [a for a in sorted(block.anchors) if "parameters/" in a[2].lower().replace("\\", "/")]
-    anchors = [a for a in anchors if not any(o is not a and a[0] <= o[0] and o[1] <= a[1] for o in anchors)]
-    named = [(s, e, h, _flat(t).strip(" ,")) for s, e, h, t in anchors]
-    named = [a for a in named if a[3]]
-    if named:
-        for i, (s, e, h, t) in enumerate(named):
-            stop = named[i + 1][0] if i + 1 < len(named) else len(text)
-            params.append(ParamHelp(t, h, "", bool(_OPTIONAL.search(text[e:stop]))))
-    else:
-        inner = text[m.end():]
-        close = inner.rfind(")")
-        inner = inner[:close] if close >= 0 else inner
-        for piece in inner.split(","):
-            piece = _flat(piece)
-            if piece:
-                opt = bool(_OPTIONAL.search(piece))
-                piece = _flat(_OPTIONAL.sub("", piece))
-                if piece:
-                    params.append(ParamHelp(piece, None, "", opt))
+    if not _NOTE.match(text[start:end]):
+        links = [a for a in sorted(block.anchors) if "parameters/" in a[2].lower().replace("\\", "/")]
+        links = [a for a in links if not any(o is not a and a[0] <= o[0] and o[1] <= a[1] for o in links)]
+        # Every span of the syntax line is a parameter, linked or not. A span takes the parameter
+        # link that overlaps it: `Mult, Offse</a>t` is one link covering two names, and `Mult, Offset`
+        # with a link per name is two spans over two links.
+        for a, b in _spans(text, start, end, {s for s, _, _, _ in links}):
+            raw = text[a:b]
+            name = _flat(re.sub(r"[\[\]]", " ", _OPTIONAL.sub("", raw))).strip(" ,;")
+            if name:
+                # The link whose overlap with this span holds name text (not just a separator).
+                href = next((h for s, e, h, _ in links
+                             if s < b and a < e and re.search(r"\w", text[max(s, a):min(e, b)])), None)
+                params.append(ParamHelp(name, href, "", bool(_OPTIONAL.search(raw))))
     return _Form(m.group(1).upper(), flat, params)
 
 

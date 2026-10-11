@@ -89,7 +89,14 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
 - Lazy: the first `lookup` parses every `Instructions/*.htm` once. Nothing raises; a missing
   directory, an unreadable page, malformed HTML or a page without a Syntax section gives `None`.
 - A page documents every name in its `<h1>` (split on `/`) and in its Syntax-section call forms;
-  `params` are the parameter links of the form for the looked-up name, in syntax order.
+  `params` are the parameters of the form for the looked-up name, in syntax order. Every top-level
+  `,` or `;` span of the call parentheses is one parameter, linked or not (`link` is the
+  `../parameters/` target, or `None`). Rules: a link holding several names (`Mult, Offset`) gives one
+  parameter per name with that link; a word glued after a link (`Mult, Offse</a>t`) belongs to the
+  link's name; a link starting after other name text begins a new parameter; commas inside quotes or
+  brackets do not split; a parenthesised note directly after a bare statement name (`(optional)`,
+  `(or Alias)`) is not a parameter; `[ X ]` brackets are dropped from the name and do not set
+  `optional`, which follows the word `optional` only.
   `description` comes from the page's Parameters section, else the linked parameter page, else `""`.
   `optional` is `True` only where the syntax line says `optional`; `False` means "not stated".
 - Pairing is by count only. `pair_signature` uses help names when `len(params)` equals the catalog

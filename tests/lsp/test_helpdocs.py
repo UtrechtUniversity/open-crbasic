@@ -24,12 +24,13 @@ def test_normal_page(prov):
     assert h.title == "FooMeasure (Invented Measurement)"
     assert h.summary == "Synthetic summary line for FooMeasure & friends, written for tests."
     assert h.syntax == "FooMeasure ( Dest, Reps, fN1, Mult, Offset )"
-    assert [p.name for p in h.params] == ["Dest", "Reps", "fN1", "Mult, Offset"]
+    assert [p.name for p in h.params] == ["Dest", "Reps", "fN1", "Mult", "Offset"]
     assert h.params[0].link == "../parameters/fooDest.htm"
     assert h.params[0].description == "Invented description of the destination <variable>. Second sentence."
     assert h.params[1].description == "Invented repetition count."
     assert h.params[2].description == "Invented notch text."
-    assert h.params[3].description == "Invented scaling text."
+    assert h.params[3].description == h.params[4].description == "Invented scaling text."
+    assert h.params[3].link == h.params[4].link == "../parameters/foomult.htm"
     assert h.source_path == FIX / "Instructions" / "foomeasure.htm"
     assert not any(p.optional for p in h.params)
 
@@ -46,6 +47,36 @@ def test_multi_name_page(prov):
     assert [p.name for p in a.params] == ["Dest", "Reps"]
     assert b.params == () and b.syntax.startswith("FooStop")
     assert a.params[0].description == ""    # no Parameters section; linked page absent
+
+
+def test_split_glued_and_unlinked_names(prov):
+    h = prov.lookup("FooSplit")
+    assert [p.name for p in h.params] == [
+        "Dest", "Mult", "Offset", "Delay", "Count", "TotalCalls", "Module", '"quoted, text"', "Size"]
+    links = {p.name: p.link for p in h.params}
+    assert links["Mult"] == links["Offset"] == "../parameters/foomult.htm"   # one link, two names
+    assert links["Delay"] == "../parameters/foodelay.htm"                   # word glued after </a>
+    assert links["Count"] == "../parameters/foocount.htm"
+    assert links["TotalCalls"] == "../parameters/foototal.htm"              # no comma between links
+    assert links["Module"] is None and links['"quoted, text"'] is None     # unlinked; comma in quotes
+    assert [p.optional for p in h.params] == [False] * 3 + [True] + [False] * 4 + [True]
+
+
+def test_link_overlap_takes_name_text(prov):
+    h = prov.lookup("FooSep")
+    assert [(p.name, p.link, p.optional) for p in h.params] == [
+        ("Gain", "../parameters/foomult.htm", False), ("Return", "../parameters/fooret.htm", True)]
+
+
+def test_trailing_prose_after_form_is_ignored(prov):
+    assert [p.name for p in prov.lookup("FooNote").params] == ["Dest"]
+
+
+def test_bare_statement_notes_are_not_parameters(prov):
+    for name in ("FooBare", "FooAlias"):
+        h = prov.lookup(name)
+        assert h is not None and h.params == ()
+    assert prov.lookup("FooAlias").syntax == "FooAlias (or FooOther) list of constants"
 
 
 def test_nested_markup_in_syntax(prov):
@@ -113,10 +144,10 @@ def test_pairing_matches_by_count(prov):
 
 def test_pairing_reports_mismatch_without_guessing(prov):
     h = prov.lookup("FooMeasure")
-    sig = pair_signature("FooMeasure", [1, 2, 3, 4, 5], h)
-    assert not sig.matched and (sig.help_count, sig.catalog_count) == (4, 5)
-    assert "4" in sig.note and "5" in sig.note
-    assert [p.label for p in sig.params] == ["arg1", "arg2", "arg3", "arg4", "arg5"]
+    sig = pair_signature("FooMeasure", [1, 2, 3, 4, 5, 6], h)
+    assert not sig.matched and (sig.help_count, sig.catalog_count) == (5, 6)
+    assert "5" in sig.note and "6" in sig.note
+    assert [p.label for p in sig.params] == ["arg1", "arg2", "arg3", "arg4", "arg5", "arg6"]
     assert not any(p.from_help for p in sig.params)
 
 
@@ -145,14 +176,21 @@ def test_coverage_report_on_fixtures(prov):
     class P:
         instructions = {
             "FOOSTART": {"params": [1, 2]},
-            "FOOMEASURE": {"params": [1, 2, 3, 4, 5]},
+            "FOOMEASURE": {"params": [1, 2, 3, 4, 5, 6]},
             "FOONOLINKS": {"params": [1, 1, 1]},
             "ABSENT": {"params": []},
         }
     r = coverage_report(P, prov)
     assert (r.total, r.with_help, r.matching) == (4, 3, 2)
-    assert r.mismatches == (("FOOMEASURE", 4, 5),)
+    assert r.mismatches == (("FOOMEASURE", 5, 6),)
     assert r.without_help == ("ABSENT",)
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_voltse_parameters():
+    h = HelpProvider(CORPUS).lookup("VoltSE")
+    assert [p.name for p in h.params] == [
+        "Dest", "Reps", "Range", "SEChan", "MeasOff", "SettlingTime", "fN1", "Mult", "Offset"]
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
