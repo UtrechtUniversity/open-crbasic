@@ -246,7 +246,8 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-06a workspace resilience | `codex/lsp-06-workspace` -> `80a6fb8` | integrated-awaiting-gates | combined tests/lsp 534 passed (coordinator); worker: selfdiff 0 differ, npm 16/16; watched files, workspace folders, `maxFileBytes`/`maxQueuedJobs`/`maxCacheMb`, cancellation, 30-step replay; completion isIncomplete passthrough | gates + rename sweep running; host T-10 |
 | LSP-05d navigation accessor | `codex/lsp-05-accessor` -> `a2a7fe7` | integrated | worker: tests/lsp 504 passed, selfdiff 0 differ; fixed the rename regression (field refs refused as `unmodelled`) and a second one (rename of `a` left `Quoted.a` behind: all table member references now refuse) | coordinator: tests/lsp + full rename sweep running |
 | LSP-03d scan cache | `codex/lsp-03-scancache`, Haiku | active | - | verify, cherry-pick |
-| LSP-08b user guide | `codex/lsp-08-guide`, Haiku | active | - | verify, cherry-pick |
+| LSP-08b user guide | `codex/lsp-08-guide` -> `adf6654` | integrated | [docs/lsp-user-guide.md](docs/lsp-user-guide.md); 25 relative links checked, 0 broken; written on a base before LSP-06a/07-wire | refresh after LSP-07-wire; open question: default `entries` matches 2,781 files at the repo root |
+| LSP-07-wire rename/format/quick fixes in server + H-04 display | `codex/lsp-07-wire`, base `2c0bd6b`, Sonnet | active | - | verify, cherry-pick |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
