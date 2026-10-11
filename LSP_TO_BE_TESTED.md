@@ -475,3 +475,22 @@ Still open: T-15, T-16, Windows/Linux.
 T-12 step 5's expectation is corrected by the `ccba3666` host record: one Ctrl+Z after a multi-file
 rename reverts every text, and files the rename opened are open and **clean** afterwards, not dirty
 (VS Code behaviour). Accept that outcome.
+
+### T-17 Re-checks from the `ccba3666` host record qualifications, appended 2026-10-11
+
+On a revision at or after this entry (see ledger; the API-level probe of item 1 is LSP-R4b).
+1. `Status.` completion before the first analysis: open a fresh, saved copy of `crbasic/Main.CR6`
+   (or a new valid entry), then **immediately**, before diagnostics appear, type `x = Status.` in
+   the scan and trigger completion (Ctrl+Space). Record whether the field list (`SkippedScan`, ...)
+   appears, how long after opening, and whether it appears once the first diagnostics publish.
+   Repeat for `Public.`. Accept when the list appears within `featureWaitMs` (default 1500 ms) of
+   the request, or, if the documented behaviour from LSP-R4b differs, when it matches that
+   behaviour.
+2. Typing latency, measured: with the repository open and nothing else running, run
+   `cd opencrbasic && uv run --no-sync python tools/lsp_bench.py --json scratch/lsp/bench-host.json
+   --label "host, idle" > /tmp/bench-host.md` and record the "Stdio server" table
+   (`didChange -> publish` p50/p95, raw and after debounce). In VS Code, also time by stopwatch or
+   screen recording one keystroke in `Main.CR6` that introduces an error to the squiggle appearing
+   (5 tries). Accept when the measured after-debounce p95 is at or below the 500 ms target in
+   `docs/lsp-rounds/LSP-08a-bench-cloud.md` "Targets" and the editor time is about 1 s or less;
+   otherwise record the numbers.
