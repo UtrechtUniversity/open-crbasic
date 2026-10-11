@@ -390,6 +390,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |
 | LSP-09b commands core (compiler output, table fields) | `codex/lsp-09-commands` -> cherry-picked | integrated (core, not wired) | worker: 58 passed, tests/lsp -n 4 654, selfdiff 0 differ; `compiler_output` equals `crbc` stdout on all crbasic/ + CHM sample, writes no files | wire in LSP-09c |
+| LSP-09c wiring (inlay hints, two commands) | `codex/lsp-09-wire`, base local `eb61380`+brief, Sonnet | active | - | verify, cherry-pick; push held while the human reviews/tests `ccba366` |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
