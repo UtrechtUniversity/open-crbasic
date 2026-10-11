@@ -640,6 +640,52 @@ def test_completion_declared_argument_replaces_the_ast_walk():
     assert [i.label for i in c.items if i.source == "program"] == ["volA", "volB"]
 
 
+def test_completion_limit_and_is_incomplete_flag():
+    full = editing._catalog_items("cr6")
+    assert len(full) > editing.COMPLETION_LIMIT
+    c = _complete("x = 1 + ", 0, 8)                    # empty prefix: every catalog name matches
+    assert len(c.items) == editing.COMPLETION_LIMIT and c.is_incomplete
+    assert c.items == full[:editing.COMPLETION_LIMIT]   # the first names in completion order
+    narrow = _complete("Volt", 0, 4)
+    assert not narrow.is_incomplete and len(narrow.items) < editing.COMPLETION_LIMIT
+    assert _complete("x = \"", 0, 5).is_incomplete is False   # inside a string: nothing, complete
+
+
+def test_completion_limit_keeps_declared_names_first():
+    declared = [(f"Volume{k:03d}", "variable", None) for k in range(250)]
+    c = _complete("x = Vol", 0, 7, declared=declared)
+    assert len(c.items) == editing.COMPLETION_LIMIT and c.is_incomplete
+    assert all(i.source == "program" for i in c.items)  # 250 declared names fill the list
+    c = _complete("x = 1 + ", 0, 8, declared=declared[:3])
+    assert [i.source for i in c.items[:3]] == ["program"] * 3
+    assert c.is_incomplete and all(i.source == "catalog" for i in c.items[3:])
+
+
+def test_completion_limit_applies_to_members(tmp_path):
+    # one declaration per line: a physical line is limited to 510 characters
+    count = editing.COMPLETION_LIMIT + 5
+    decls = "".join(f"Public Var{k:03d}\n" for k in range(count))
+
+    def members(tail):
+        src = decls + f"BeginProg\n  {tail}\nEndProg\n"
+        return _complete(src, count + 1, 2 + len(tail), _analyze(_write(tmp_path, "p.CR6", src)))
+
+    c = members("Public.")
+    assert c.member_of == "Public" and len(c.items) == editing.COMPLETION_LIMIT and c.is_incomplete
+    c = members("Public.Var")                           # 205 names match `Var`
+    assert c.prefix == "Var" and len(c.items) == editing.COMPLETION_LIMIT and c.is_incomplete
+    c = members("Public.Var20")                         # Var200 .. Var204
+    assert c.prefix == "Var20" and not c.is_incomplete
+    assert [i.label for i in c.items] == [f"Var{k}" for k in range(200, 205)]
+
+
+def test_catalog_items_are_cached_per_profile():
+    assert editing._catalog_items("cr6") is editing._catalog_items("cr6")
+    assert isinstance(editing._catalog_items("cr6"), tuple)
+    labels = [(i.label.lower(), i.label) for i in editing._catalog_items("cr6")]
+    assert labels == sorted(labels)
+
+
 def test_completion_without_a_result_is_catalog_only():
     c = _complete("Vol", 0, 3, None)
     assert c.items and all(i.source == "catalog" for i in c.items)

@@ -824,7 +824,7 @@ and every target is None.
 
 ### Completion
 
-`completion_candidates` returns a `Completion(items, replace, prefix, member_of)`. `replace` is the
+`completion_candidates` returns a `Completion(items, replace, prefix, member_of, is_incomplete)`. `replace` is the
 identifier prefix before the cursor. There are no candidates inside a string (odd number of `"`
 before the cursor) or after a `'`. After `name.` the items are the fields of the table called
 `name` from `tables.build_tables(result.program)` (Status, Public, each DataTable, each
@@ -837,6 +837,13 @@ included. Program names are `(name, kind, scope)`; `scope=None` is global, other
 Sub/Function and the name is offered only inside it. The current routine is found from `text`
 (unclosed routines included), not from the possibly stale `result`. `declared=` replaces the AST
 walk with a caller-built list. Program names sort before catalog names, then case-insensitively.
+
+LSP-03c: at most `editing.COMPLETION_LIMIT` (200) items are returned, program names first, so the
+list is the first 200 of the complete order. `is_incomplete` is True when more matched; the server
+must then send `CompletionList.isIncomplete = true` so the client re-asks as the prefix grows (the
+current `lsp/features.py` sends `False`; see `docs/lsp-rounds/LSP-03c-handoff.md`). The cap applies
+to member lists too. The catalog's completion items are built once per profile (`_catalog_items`,
+cached; the items are immutable), not per call.
 
 ### Known limits
 

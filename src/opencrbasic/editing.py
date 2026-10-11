@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import NamedTuple, Sequence
 
-from . import lexer, positions, source
+from . import lexer, positions, profiles, source
 from . import syntax as S
 from .catalog import InstructionCatalog
 from .parser import _DIRECTIVE_RE, _split_text_segments
@@ -610,15 +610,24 @@ class Completion:
     replace: Span           # the identifier prefix before the cursor (empty at a word boundary)
     prefix: str
     member_of: str | None = None    # the name before the `.` when completing a member
+    is_incomplete: bool = False     # True when more matches exist than `items` holds (COMPLETION_LIMIT)
 
+
+# At most this many items per completion result, declared program names first. An empty prefix
+# matches about 1000 catalog names; the client re-asks as the prefix grows, and `is_incomplete`
+# tells it to (LSP `CompletionList.isIncomplete`).
+COMPLETION_LIMIT = 200
 
 _PREFIX_RE = re.compile(r"(?<![A-Za-z0-9_$])[A-Za-z_][A-Za-z0-9_]*\$?$")
 _BASE_RE = re.compile(r"(?<![A-Za-z0-9_$.])([A-Za-z_][A-Za-z0-9_]*\$?)\s*\.\s*$")
 
 
-def _catalog_items(cat: InstructionCatalog) -> list[CompletionItem]:
+@functools.lru_cache(maxsize=None)
+def _catalog_items(profile: str) -> tuple[CompletionItem, ...]:
+    """The catalog's completion items of a profile, in completion order (label, case-insensitive
+    then exact). Built once per profile: the items are immutable and the catalog is cached."""
     best: dict[str, CompletionItem] = {}
-    for entry in cat:
+    for entry in InstructionCatalog.for_profile(profile):
         if entry.kind == "instruction":
             count = len(entry.params)
         elif entry.kind == "function":
@@ -633,7 +642,11 @@ def _catalog_items(cat: InstructionCatalog) -> list[CompletionItem]:
         order = ("keyword", "instruction", "function", "symbol")
         if key not in best or order.index(entry.kind) < order.index(best[key].kind):
             best[key] = item
-    return list(best.values())
+    return tuple(sorted(best.values(), key=lambda i: (i.label.lower(), i.label)))
+
+
+def _limited(items: list[CompletionItem]) -> tuple[tuple[CompletionItem, ...], bool]:
+    return tuple(items[:COMPLETION_LIMIT]), len(items) > COMPLETION_LIMIT
 
 
 def _member_items(result, name: str, profile: str) -> list[CompletionItem]:
@@ -666,7 +679,8 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
     StructureType variable), none when the table is unknown. Otherwise: the program's names (the
     locals and parameters only inside their own Sub / Function, found from `text`) and the
     catalog's instructions, functions, symbols and keywords in the profile's spelling, matched
-    case-insensitively on the prefix. Program names come first, then alphabetically."""
+    case-insensitively on the prefix. Program names come first, then alphabetically. At most
+    `COMPLETION_LIMIT` items are returned (declared names first); `is_incomplete` is then True."""
     lines = source._split_physical_lines(text)
     row = lines[line] if 0 <= line < len(lines) else ""
     column = max(0, min(column, len(row)))
@@ -684,7 +698,8 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
         items = [i for i in _member_items(result, base.group(1), profile)
                  if i.label.lower().startswith(prefix.lower())]
         items.sort(key=lambda i: i.label.lower())
-        return Completion(tuple(items), replace, prefix, base.group(1))
+        shown, incomplete = _limited(items)
+        return Completion(shown, replace, prefix, base.group(1), incomplete)
     if before[:start].rstrip().endswith("."):
         return Completion((), replace, prefix)
     if declared is None:
@@ -695,7 +710,10 @@ def completion_candidates(result, text: str, line: int, column: int, profile: st
             routine = b.name.lower()
     program_items = [CompletionItem(n, k, "program") for n, k, s in declared
                      if s is None or (routine is not None and s.lower() == routine)]
-    items = [i for i in program_items + _catalog_items(InstructionCatalog.for_profile(profile))
-             if i.label.lower().startswith(prefix.lower())]
-    items.sort(key=lambda i: (i.source != "program", i.label.lower(), i.label))
-    return Completion(tuple(items), replace, prefix)
+    program_items.sort(key=lambda i: (i.label.lower(), i.label))
+    lower = prefix.lower()
+    items = [i for i in program_items if i.label.lower().startswith(lower)]
+    items += [i for i in _catalog_items(profiles.get(profile).name)
+              if i.label.lower().startswith(lower)]
+    shown, incomplete = _limited(items)
+    return Completion(shown, replace, prefix, None, incomplete)
