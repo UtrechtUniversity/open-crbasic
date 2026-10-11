@@ -145,6 +145,20 @@
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Parameter must be a variable of type long"
   },
   {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-19",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (hs(Zork),6785,0,5000,hs(Zork),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr300-r12_cr3xx_tcpopen_handle-20",
+   "logger": "cr300",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (hs(1),6785,0,5000,Nope(Zork),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Zork is not defined.\nline 4: Parameter must be a variable of type long"
+  },
+  {
    "id": "cr350-r12_cr3xx_tcpopen_handle-0",
    "logger": "cr350",
    "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,hl,3)\nNextScan\nEndProg\n",
@@ -276,6 +290,20 @@
    "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nNope = 1\nTCPOpen (\"\",3000,30,1000,hf,3)\nNextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 5: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-19",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (hs(Zork),6785,0,5000,hs(Zork),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-r12_cr3xx_tcpopen_handle-20",
+   "logger": "cr350",
+   "source": "Public x, hl As Long, hs(3) As Long, hf, st As String\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (hs(1),6785,0,5000,Nope(Zork),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined.\nline 4: Zork is not defined.\nline 4: Parameter must be a variable of type long"
   }
  ]
 }

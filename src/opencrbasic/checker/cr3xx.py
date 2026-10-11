@@ -1779,8 +1779,10 @@ def drop_calltable_error_with_other_errors(program: S.Program, profile, diags: D
     sites = {(st.line, st.file) for st in program.statements if not isinstance(st, S.Unparsed)}
     mine = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in sites
             and d.message.startswith("Could not find DataTable ")]
+    lines = {(d.line, d.file) for d in mine}  # (an error on the same line does not hide it: oracle,
+    # CR300/CR350, 2026-10-11, `X = Tmp.dat + Zed` prints both)
     if mine and any(d.severity == "error" and d not in mine and not _hides_nothing(d)
-                    for d in diags.items):
+                    and (d.line, d.file) not in lines for d in diags.items):
         diags.items[:] = [d for d in diags.items if d not in mine]
 
 
@@ -2021,6 +2023,10 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
             if len(args) < 5 or args[4] is None:
                 continue
             arg = args[4]
+            own_dims = any((d.line, d.file) == (stmt.line, stmt.file)
+                           and d.message.startswith("Dimensions not declared") for d in diags.items)
+            if own_dims and not (isinstance(args[4], S.Index) and args[4].name.upper() not in known):
+                continue  # (an earlier argument's dimension error ends the walk before the fifth)
             if isinstance(args[3], (S.Name, S.Index)) and args[3].name.upper() not in known:
                 continue  # (a non-constant fourth argument ends the list: `Parameter must be a constant integer`, not done)
             if isinstance(arg, (S.Name, S.Index)):

@@ -5307,3 +5307,8 @@ DataTable Nope.` then the generic fallback (`+ Nope.F(1)`; `+ Public.x(1)`, a sy
 only the fallback), and once the cascade has started the line is silent. A signed plain variable
 (`+ x`) keeps the fallback after errors. Not done: names inside signed lines (`+ Nope` also names
 `Nope`, `+ x y` names `y`, `- Nope + x` names `Nope`).
+
+Follow-up to the two table-field sections and the `TCPOpen` handle section above: an error on the
+same line does not hide a table field's `Could not find DataTable` (`X = Tmp.dat + Zed` prints both,
+`tests/fixtures/dotted_undeclared.json`), and an earlier argument's `Dimensions not declared` ends the
+`TCPOpen` walk before the handle (`chm/tcpopen_2.CR6`).
