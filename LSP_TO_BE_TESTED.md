@@ -209,3 +209,14 @@ host with nothing else running: `cd opencrbasic && uv run --no-sync python tools
 diagnostics p95 < 500 ms after debounce hold. Measurement only; no acceptance threshold is
 asserted.
 
+### T-08 Builtin function argument counts with the real compiler (LSP-04d), appended 2026-10-11
+
+Real CR6Comp only. For each of `EmailSend`, `EmailRecv`, `UDPDatagram`, `XMLParse`, `HTTPGet`,
+`UDPOpen`, `TCPOpen`, `HTTPPost`, `CheckSum`, compile `Result = F(a1, ..., an)` inside a minimal
+valid program for every n from 0 to (help parameter count + 1), with well-typed arguments (string
+variables/literals and Long variables as the help describes). Save as a fixture in the style of
+`tests/fixtures/ftpclient_arity.json` (use `tools/probe.py` with a `$BODY$` template and a cases
+file; `scratch/mkfixture.py` if present), audit it with `tools/fixture_audit.py`, and record the
+accepted counts per function. This feeds signature help (display only) and the compiler's own
+arity checks.
+
