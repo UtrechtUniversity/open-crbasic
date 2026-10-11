@@ -84,3 +84,18 @@ None yet.
 
 The existing pending requests above are preserved for newer integrations. This report does
 not advance the cloud coordinator's round ledger or claim acceptance of untested revisions.
+
+## Local host supplement (2026-10-11, tested revision 8b25214a)
+
+[Full supplementary results and raw evidence](docs/lsp-rounds/host-tests/2026-10-11-8b25214a/RESULTS.md).
+This revision includes LSP-02a (`43acb404`) and the help-parser fix (`665b40f7`).
+
+- T-01 for both LSP-01a and LSP-02a is now executed: full pytest passes; four-profile diagnostic
+  summaries and every replay case classification are unchanged from the first host run;
+  TDF totals and baseline caveats are unchanged; the real-compiler repository verifier passes.
+  Known reference faults still produce nonzero oracle gate exits. This is not full parity.
+- T-02 remains pending server integration; T-03 remains pending visual confirmation after
+  desktop restart. Their concrete first-run outcomes and logs are retained above.
+
+These are revision-specific host findings for the remote coordinator to integrate. Newer
+source changes require fresh affected checks; none are implicitly accepted by this record.
