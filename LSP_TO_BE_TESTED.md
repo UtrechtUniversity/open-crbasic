@@ -270,3 +270,13 @@ and `opencrbasic.helpDirectory` set to the repository's `extracted_chm`. Accept 
 Earlier requests and reports remain intact for coordinator integration. Results apply only to
 their named revisions; no later code or round acceptance is implied. No hardware was contacted.
 
+### T-04 amendment (2026-10-11, appended): LSP-01e client fixes
+
+On a revision with LSP-01e (`codex/lsp-01-client` integrated, see ledger): (1) H-02: change
+`opencrbasic.pythonPath` between two valid interpreters; expect no `Sending notification ...
+failed` / `Starting server failed` lines and no error toast, and the new server starts. (2)
+Changing `debounceMs`/`exclude` with the server running still applies without restart. (3) H-03:
+`.CR300`, `.CR1X`, `.CR350` files open as CRBasic (with logger `cr6` a `.CR300` gets the
+"no configured entry" note; with logger `cr300` it gets live diagnostics). (4) The startup line
+appears in the output channel as an info log message (record whether the stderr copy still shows
+at error level).
