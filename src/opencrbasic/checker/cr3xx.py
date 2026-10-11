@@ -327,7 +327,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 continue
             if isinstance(stmt, S.Unparsed) and dropped_names - registered_names:
                 _reword_prose(program, profile, diags, stmt, dropped_names - registered_names)
-            if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
+            if isinstance(stmt, S.Unparsed) and (_TABLE_LINE_RE.match(stmt.text)
+                                                 or _SIGNED_TABLE_RE.match(stmt.text)):
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
                     d.message.startswith("Could not find DataTable ")
                     or d.message == "Expr illegally occurs before BeginProg." or (
@@ -894,6 +895,9 @@ _LINE_OP_WORD_RE = re.compile(r"[ \t]+(?i:and|or|xor|eqv|imp|mod|to)[ \t]+(?=[A-
 # A line starting `word.` reads as a table field: `Could not find DataTable word.` (even for a
 # declared name), and nothing at all once the cascade has started (oracle, CR300, 2026-10-01).
 _TABLE_LINE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)\.")
+# the same with a sign in front (`+ Test.TCTemp(1)`, a wrapped string concatenation, oracle,
+# CR300/CR350, 2026-10-11): `Could not find DataTable` for an unknown table, nothing after the cascade
+_SIGNED_TABLE_RE = re.compile(r"\s*[-+][ \t]*([A-Za-z_][A-Za-z0-9_]*)\.(?=[A-Za-z_])")
 _LINE_OP_RUN_RE = re.compile(r"(?:[ \t]*(?:<>|<=|>=|[-+*/^&<>=])[ \t]*)(?=[A-Za-z_0-9\"])|(?:<>|<=|>=|[-+*/^&<>=])")
 _LINE_WS_RE = re.compile(r"[ \t]+")
 _LINE_PAREN_RE = re.compile(r"[ \t]*\(")
@@ -934,6 +938,11 @@ def prose_known(program: S.Program, profile) -> set[str]:
     instruction_only = set(profile.instructions) - set(profile.symbols) - set(profile.functions)
     known = expressions._known_names(program, profile)
     return set(known) - instruction_only - set(known.tables)
+
+
+def prose_known_tables(program: S.Program, profile) -> set[str]:
+    """Upper-cased user `DataTable` names (a table field line is not an unknown table)."""
+    return set(getattr(expressions._known_names(program, profile), "tables", ()))
 
 
 def first_declarations(program: S.Program) -> dict[str, tuple[str, int]]:
@@ -1398,6 +1407,11 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 changed = True
                 continue
             table = _TABLE_LINE_RE.match(text)
+            signed = None if table else _SIGNED_TABLE_RE.match(text)
+            if signed and (signed.group(1).upper() in symbols._ALWAYS_KNOWN_SYSTEM_TABLES
+                           or signed.group(1).upper() in prose_known_tables(program, profile)):
+                signed = None
+            table = table or signed
             if table:
                 new_items.append(Diagnostic("error", d.line, f"Could not find DataTable "
                                             f"{table.group(1)}.", d.file, cascade=False))

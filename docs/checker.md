@@ -5298,3 +5298,12 @@ Nope.` alone, but any other error in the file, before or after, removes it (`Zor
 `PanelTemp(x)` short, `PanelTemp(x,1,2,3)` too many; two unknown tables in a row print both when
 nothing else is wrong). Only the `CallTable` form was hidden before
 (`cr3xx.drop_calltable_error_with_other_errors`, now every statement but a prose line).
+
+### Signed table-field line (`chm/tablenamefieldname_1`; fixture `r12_cr3xx_signed_table.json`)
+
+A wrapped concatenation leaves a line `+ Test.TCTemp(1)`. CR300/CR350 treat `+`/`-` before
+`Name.Field` like the plain `word.` line (`_SIGNED_TABLE_RE`): an unknown table gets `Could not find
+DataTable Nope.` then the generic fallback (`+ Nope.F(1)`; `+ Public.x(1)`, a system or user table,
+only the fallback), and once the cascade has started the line is silent. A signed plain variable
+(`+ x`) keeps the fallback after errors. Not done: names inside signed lines (`+ Nope` also names
+`Nope`, `+ x y` names `y`, `- Nope + x` names `Nope`).
