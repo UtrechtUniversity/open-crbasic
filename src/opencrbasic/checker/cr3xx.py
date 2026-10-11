@@ -737,8 +737,7 @@ def _report_unregistered(program: S.Program, profile, diags: Diagnostics, taint_
                  if id(st) in tainted_subs and st.keyword == "FUNCTION"}
     affected: set[tuple[int, str]] = set()
     for st in program.statements[taint_at + 1:]:
-        if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef) or \
-                (isinstance(st, S.Instruction) and st.keyword.upper() == "RETURN"):
+        if id(st) in dropped or id(st) in rewritten or isinstance(st, S.SubDef):
             continue
         names: set[str] = set()
         unused._walk_stmt(st, names)

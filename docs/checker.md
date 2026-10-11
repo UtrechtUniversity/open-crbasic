@@ -4962,3 +4962,12 @@ names only `Zed`; `Nope = Tmp.dat` names only `Nope`). Implementation: `profiles
 (52 cases). Not done: CR6/CR1000X report `Could not find Tmp.` for the same shapes (plus the whole-
 expression `Invalid symbol` echo only when a plain undefined name follows); `Declared.nothing` on a
 data table (`Could not find T1.dat(1).`) is not checked on any logger.
+
+### `Return` after the CR300/CR350 cascade (2026-10-11)
+
+A `Return <expr>` after the cascade has started (`Dim W banana` earlier) is checked like any other
+statement against the names the cascade left unregistered: `Function F2(N1)` / `Return N1*3` ->
+`N1 is not defined.` (the tainted header lost its parameter), `Return Q` for a dropped `Public Q`
+-> `Q is not defined.`, `Return F2(N1)` -> `N1 is not defined.` then `No Matching, or out of place )
+in expression: F2(N1).`. `cr3xx._report_unregistered` no longer skips `Return`. Fixture:
+`tests/fixtures/return_tainted.json`; corpus: `chm/functionendfunction_4.CR6`.
