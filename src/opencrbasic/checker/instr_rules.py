@@ -1719,6 +1719,25 @@ def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics
                                        "resolved during compilation.", stmt.file)
 
 
+def check_matrix_destination(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: `Matrix`'s fourth argument (the destination) must be an array or variable; a
+    constant (`Matrix(1,X,X,3)`, `Matrix(1,X,X,"fuzz")`, `Matrix(1,X,X,-1)`, `Matrix(1,X,X,2+3)`)
+    gives `Illegal destination variable type, expecting Float.` (oracle, CR300 and CR350, 2026-10-11).
+    A subscripted element (`FA(1,1)`) and a variable (`Mv`, which gives `Illegal Matrix dimensioned`
+    instead, not modelled) are not this rule. The real compiler then also prints `Too many
+    parameters:` on the following `Matrix` lines (the argument after the second); not modelled."""
+    if not profile.single_pass:
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "MATRIX" or len(stmt.args) < 4:
+            continue
+        dest = stmt.args[3]
+        constant = isinstance(dest, (S.Number, S.String, S.Binary)) or (
+            isinstance(dest, S.Unary) and isinstance(dest.operand, S.Number))
+        if constant:
+            diags.error(stmt.line, "Illegal destination variable type, expecting Float.", stmt.file)
+
+
 def _fieldcal_bad_variable(arg) -> bool:
     if isinstance(arg, (S.String, S.Binary)):
         return True

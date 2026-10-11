@@ -1808,3 +1808,15 @@ Oracle, all four loggers, identical unless noted.
   evidence. The reproducer's exit code is now right and only that second line is missing.
 - The fixture's table holds no `SampleFieldCal` for this reason; with a `Sample` in the same table the real
   compiler page-faults (exit 5) on several of the bad-argument cases, so those are not in the fixture.
+
+## `Matrix` destination constant (CR300/CR350, 2026-10-11, fixture `tests/fixtures/matrix_destination.json`)
+
+- `Matrix`'s fourth argument on CR300/CR350: a constant (`3`, `-1`, `1.5`, `"fuzz"`, `2+3`) gives
+  `Illegal destination variable type, expecting Float.` A variable (`X`, `Subtract`), an array element
+  (`FA(1,1)`) and a whole array compile. `checker/instr_rules.py` `check_matrix_destination`, CR300
+  late stage only (`single_pass`).
+- On CR6/CR1000X the same constants give `Invalid Variable or Array: <arg>.` (not modelled, so the
+  fixture holds CR300/CR350 only). A variable holding a value (`Mv`) gives `Illegal Matrix
+  dimensioned` on all four loggers (not modelled).
+- The reproducer `cr300/false_accept/f4771af98130` is now exact: the following `Matrix` lines still get
+  `Too many parameters:` from the existing rule.

@@ -461,6 +461,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(expressions.check_splitstr_whole_array, program, profile, bounds, env)
             _run_pass(expressions.check_subcall_element_bounds, program, profile, bounds, env)
             _run_pass(instr_rules.check_fieldcal_variable_args, program, profile, bounds)
+            _run_pass(instr_rules.check_matrix_destination, program, profile, bounds)
             _run_pass(instr_rules.check_avgrun_options, program, profile, bounds, env)
             _run_pass(instr_data.check_eventcount_tables, program, profile, bounds)
         _run_pass(instr_data.check_table_reps_late, program, profile, diags, env)
