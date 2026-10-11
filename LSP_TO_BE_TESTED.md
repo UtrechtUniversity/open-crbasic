@@ -198,3 +198,14 @@ tests/corpus/chm/xmlparse_1.CR6 /tmp/xmlparse_1_indented.CR6`). Record both real
 `crbc` outputs. If the real compiler's message does not change with indentation, this is a
 compiler-workstream defect; the formatter refuses files with errors either way.
 
+### T-07 Benchmarks on an unloaded host (LSP-08a), appended 2026-10-11
+
+The cloud run ([LSP-08a-bench-cloud.md](docs/lsp-rounds/LSP-08a-bench-cloud.md)) shared 4 CPUs with
+five other workers (load average up to 9), so its diagnostics latency (server didChange -> publish
+p95 931 ms after the 300 ms debounce; LSP_PLAN.md target 500 ms) is inconclusive. On the macOS
+host with nothing else running: `cd opencrbasic && uv run --no-sync python tools/lsp_bench.py
+--json scratch/lsp/bench-host.json --label "macOS host, idle" > docs/lsp-rounds/LSP-08a-bench-<host>.md`
+(the tool records host, load and revision). Record whether hover/completion p95 < 100 ms and
+diagnostics p95 < 500 ms after debounce hold. Measurement only; no acceptance threshold is
+asserted.
+
