@@ -5137,3 +5137,39 @@ its undefined names even when indexed (`Sin(x) Arr(1)`). A built-in call with an
 keeps only its arity message (`Round(x) y`, `Sin(x,1) y`). Not done: other tails (`Fn(1) 1 +`).
 CR6/CR1000X are untouched (`StrComp (...) > 0 Then` there is `Invalid symbol in expression`; not
 modelled).
+
+### Instruction followed by prose (`chm/calibrate_1`, `calltable_1`, `histogram_1`, `ProgramStructure_1`; fixture `r12_cr3xx_instr_tail.json`)
+
+The instruction reads the text with its own parameter codes (`docs/type-codes.md`), so the
+prose messages follow the first parameter's code (`cr3xx.check_unknown_line_words`):
+
+- **Code 11 (deferred text: `Histogram`, `Histogram4D`, `FFT`, `RainFlow`, `LevelCrossing`,
+  `ETsz`, `ETClearSky`)** takes the whole text unread, so nothing is named; the next required
+  parameter is missing: `Invalid or missing parameter.` (no top-level comma in the text).
+- **Code 6 (a name token: `CallTable`, `DataTable`, `FileMark`, `ResetTable`, `StationName`)**
+  takes the first token unchecked (`foo` is never `not defined`). With no second parameter
+  (`FileMark`, CR350 `CallTable`) the next token is the surplus: `Too many parameters:  bar.`.
+  Otherwise the rest is the second parameter's text (CR300 `CallTable`'s optional expression,
+  `DataTable`'s code 2): `bar is not defined.`, `Incomplete expression: bar baz..`.
+- **Leading binary operator word.** A parameter text that starts `is`/`mod` is `Invalid, or out of
+  place expression: <text>.` with nothing named and nothing after it; `to`, `and`, `or`, `xor`,
+  `imp`, `eqv` name the next operand if it is a word, then the same message, then (constant-only
+  parameter) `Variable illegal in Parameter:` only when that operand was a word
+  (`SlowSequence to calibrate the datalogger`, `Delay and 3 baz`). Symbol-led texts (`+ - * / ^ \ <
+  > = <> << >> & (`) have their own shapes, probed but not modelled (`Delay * bar baz` -> invalid
+  alone, `Delay & bar` names `&` first, `Delay (bar baz` drops the parenthesis from the echo).
+- **Instructions without parameters** (`BeginProg PipeLineMode SequentialMode EndIf WEND
+  OpenInterval NextScan NextSubScan EndTable FillStop ExitScan ContinueScan ExitSub ExitDo ExitFor
+  Restore AngleDegrees ShutdownBegin ShutdownEnd EndSequence ExitFunction AbortScan SampleFieldCal
+  WaitTriggerSequence PulseCountReset WebPageEnd TableHide DHCPRenew Restart PreserveVariables
+  ApplyAndRestartSequence EndApplyAndRestartSequence`, listed from a CR300 and CR350 sweep with
+  `<name> foo bar baz.`): the first token after the name, delimiters `,:() =` skipped, is the
+  surplus: `BeginProg, EndProg (Begin Program, End Program)` -> `Too many parameters:  EndProg.`.
+  `EndProg` ignores its tail, `Alias`/`Const`/`Data`/`ReadOnly`/`Include*`/`ESSVariables`/
+  `SnmpVariable` read it themselves. Not done: the same instruction written without a `.`
+  (`ExitScan foo`) is accepted by us and rejected by the real compilers.
+- **After the cascade has started** (`check_too_many_cascade`): the deferred-text line prints
+  nothing (its shortfall goes, like a short instruction's), and a name-token instruction with a
+  second parameter prints only the second parameter's first token (`CallTable instruction is used
+  to ...` -> `Too many parameters:  is.`, CR300). CR300 `CallTable` itself differs from CR350
+  only by that optional second parameter (`profile.instructions`).

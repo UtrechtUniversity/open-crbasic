@@ -259,6 +259,22 @@ def _reword_prose(program: S.Program, profile, diags: Diagnostics, stmt: S.Unpar
         diags.items[own[0] if own else fb:fb] = fresh
 
 
+def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
+    """`""`: the prose is an instruction whose first parameter takes the text unread (no output);
+    a token: the surplus second parameter; `None`: not such a line."""
+    lead = _INSTRUCTION_PROSE_RE.match(stmt.text or "")
+    info = profile.instructions.get(lead.group(1).upper()) if lead else None
+    if not info or not info["params"] or lead.group(1).upper() in ("DATA", "DATALONG"):
+        return None
+    codes, rest = info["params"], lead.group(2)
+    if codes[0] % 100 == 11 and "," not in rest and len(codes) > 1 and codes[1] < 100:
+        return ""
+    if codes[0] % 100 == 6 and len(codes) > 1:
+        name_tok = instr_rules._next_simple_token(rest)
+        return instr_rules._next_simple_token(rest[rest.index(name_tok) + len(name_tok):]) or None
+    return None
+
+
 def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger and when nothing in the file ever taints
     (see this module's comment above for the oracle evidence and the exact shape implemented).
@@ -382,6 +398,18 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 if len(tokens) >= 2:
                     diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
                     diags.error(stmt.line, f"Too many parameters:  {tokens[1]}.", stmt.file)
+                continue
+            if isinstance(stmt, S.Unparsed) and (taken := _tainted_prose_instruction(stmt, profile)) is not None:
+                # an instruction written as prose, after the cascade started: a deferred-text first
+                # parameter loses its shortfall line, a name token is followed by the surplus second
+                # parameter (oracle, CR300/CR350, 2026-10-11: `Histogram instruction.`, `CallTable
+                # instruction is used to ...`)
+                diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+                if taken:
+                    at = next((i for i, d in enumerate(diags.items)
+                               if d.file == stmt.file and d.line > stmt.line), len(diags.items))
+                    diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                      f"Too many parameters:  {taken}.", stmt.file))
                 continue
             if isinstance(stmt, S.Unparsed) and re.fullmatch(r"(?i)\s*(?:do|loop)\s+(?:while|until)\s*", stmt.text or ""):
                 # (`Do While` with nothing after it: the incomplete-expression line is gone)
@@ -842,6 +870,21 @@ def _respliced_call_args(modified: S.Program, profile, diags: Diagnostics, scrat
 # implemented).
 _GENERIC_FALLBACK_PREFIX = "Invalid, or out of place expression: "
 _LINE_WORD_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+# Instructions without parameters: text after the name is a surplus parameter (oracle, CR300 and
+# CR350, 2026-10-11, one probe each; `EndProg` ignores its tail and `Alias`, `Const`, `Data`, ... read
+# it themselves, so they are not listed).
+_TAIL_REJECTING = frozenset(n.upper() for n in (
+    "BeginProg PipeLineMode SequentialMode EndIf WEND OpenInterval NEXTSCAN NEXTSUBSCAN ENDTABLE "
+    "FillStop ExitScan ContinueScan ExitSub ExitDo ExitFor Restore AngleDegrees ShutdownBegin "
+    "ShutdownEnd EndSequence ExitFunction AbortScan SampleFieldCal WaitTriggerSequence "
+    "PulseCountReset WebPageEnd TableHide DHCPRenew Restart PreserveVariables "
+    "ApplyAndRestartSequence EndApplyAndRestartSequence").split())
+_ZERO_TAIL_RE = re.compile(r"\s*([A-Za-z_]\w*)(?=[\s,(])(.*)$", re.S)
+# A parameter text that starts with a binary operator word: `Invalid, or out of place expression`
+# after the next operand is named (`is`/`mod` stop at once), not `Incomplete expression`.
+_LEAD_OP_WORD_RE = re.compile(r"(?i)(is|mod|and|or|xor|imp|eqv|to)(?![A-Za-z0-9_])")
+_LEAD_OP_NO_OPERAND = frozenset({"IS", "MOD"})
+_LEAD_OP_SKIP_RE = re.compile(r"(?i)^[ \t]*(?:(?:and|or|xor|imp|eqv|to|not|mod|is)(?![A-Za-z0-9_])[ \t]*)*")
 _INSTRUCTION_PROSE_RE = re.compile(r"\s*([A-Za-z_][A-Za-z0-9_]*)[ \t]+([A-Za-z_][^(]*)$", re.S)
 _LINE_OPERAND_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|\d+(?:\.\d+)?\b")
 # Keyword operators join the chain like `+` (oracle, CR300, 2026-10-01: `foo and bar baz qux` ->
@@ -1305,6 +1348,15 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     else f"{_GENERIC_FALLBACK_PREFIX}.")))
                 changed = True
                 continue
+            zero = _ZERO_TAIL_RE.match(bare)
+            if zero and zero.group(1).upper() in _TAIL_REJECTING and (
+                    tok := instr_rules._next_simple_token(zero.group(2))):
+                # an instruction with no parameters followed by text: the first token is the
+                # surplus (oracle, CR300/CR350, 2026-10-11: `BeginProg, EndProg (Begin Program,
+                # End Program)` -> `Too many parameters:  EndProg.`)
+                new_items.append(Diagnostic("error", d.line, f"Too many parameters:  {tok}.", d.file))
+                changed = True
+                continue
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
             if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
@@ -1314,17 +1366,49 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 # (oracle, CR300, 2026-10-01): its words, `Incomplete expression: <prose>.`, and
                 # for a constant-only first parameter `Variable illegal in Parameter: <prose>.`
                 rest = lead.group(2).rstrip("\n")
-                for word in _leading_unknown_words(rest, here):
-                    new_items.append(Diagnostic("error", d.line,
-                                                profile.unresolved_symbol_message.format(name=word),
-                                                d.file))
-                new_items.append(Diagnostic("error", d.line, f"Incomplete expression: {rest}.",
-                                            d.file))
-                if info["params"][0] in _CONST_FIRST_PARAM:
-                    new_items.append(Diagnostic("error", d.line,
-                                                f"Variable illegal in Parameter: {rest}.", d.file))
-                changed = True
-                continue
+                codes = list(info["params"])
+                if codes[0] % 100 == 11 and "," not in rest and len(codes) > 1 and codes[1] < 100:
+                    # a deferred-text first parameter (`Histogram`, `FFT`, ...) takes the whole text
+                    # unread; the next required parameter is then missing (oracle, CR300/CR350,
+                    # 2026-10-11)
+                    new_items.append(Diagnostic("error", d.line, "Invalid or missing parameter.", d.file))
+                    changed = True
+                    continue
+                if codes[0] % 100 == 6:
+                    # a name token (`CallTable`, `DataTable`, `FileMark`): the first word is taken
+                    # unchecked, the rest is the next parameter, or the surplus when there is none
+                    name_tok = instr_rules._next_simple_token(rest)
+                    rest = rest[rest.index(name_tok) + len(name_tok):] if name_tok else rest
+                    codes = codes[1:]
+                    if not codes:
+                        if (tok := instr_rules._next_simple_token(rest)):
+                            new_items.append(Diagnostic("error", d.line,
+                                                        f"Too many parameters:  {tok}.", d.file))
+                            changed = True
+                            continue
+                    rest = rest.lstrip(" \t")
+                if codes and rest:
+                    op = _LEAD_OP_WORD_RE.match(rest)
+                    words = [] if op else _leading_unknown_words(rest, here)
+                    after = ""
+                    if op and op.group(1).upper() not in _LEAD_OP_NO_OPERAND:
+                        # a leading binary operator word: the next operand is read, then the
+                        # expression is out of place (oracle, CR300/CR350, 2026-10-11)
+                        after = _LEAD_OP_SKIP_RE.sub("", rest[op.end():], count=1)
+                        words = _leading_unknown_words(after, here)[:1] if _LINE_WORD_RE.match(after) else []
+                    for word in words:
+                        new_items.append(Diagnostic("error", d.line,
+                                                    profile.unresolved_symbol_message.format(name=word),
+                                                    d.file))
+                    new_items.append(Diagnostic("error", d.line, (
+                        f"{_GENERIC_FALLBACK_PREFIX}{rest}." if op else f"Incomplete expression: {rest}."),
+                        d.file))
+                    if codes[0] in _CONST_FIRST_PARAM and not (
+                            op and not _LINE_WORD_RE.match(after)):
+                        new_items.append(Diagnostic("error", d.line,
+                                                    f"Variable illegal in Parameter: {rest}.", d.file))
+                    changed = True
+                    continue
             callables = frozenset(symbols.declared_variable_names(program) | set(profile.functions))
             fw = _LINE_WORD_RE.match(text, len(text) - len(text.lstrip(" \t")))
             needs_paren = bool(

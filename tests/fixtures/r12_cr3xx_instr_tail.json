@@ -1,0 +1,365 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-0",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nCallTable instruction is used to go\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is used to go."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nCallTable foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Incomplete expression: bar baz.."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-2",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nCallTable foo is bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is bar."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-3",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nHistogram foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-4",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nHistogram4D foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-5",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nFFT foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-6",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDataTable foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Incomplete expression: bar baz.."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-7",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nFileMark foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  bar."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-8",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nResetTable foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  bar."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-9",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nSlowSequence to calibrate the datalogger\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: calibrate is not defined.\nline 3: Invalid, or out of place expression: to calibrate the datalogger."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-10",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nSlowSequence to foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: to foo."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-11",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDelay is bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is bar baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-12",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDelay to bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: to bar baz.\nline 3: Variable illegal in Parameter: to bar baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-13",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDelay and 3 baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: and 3 baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-14",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDelay mod bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: mod bar baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-15",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nDelay xor bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: xor bar baz.\nline 3: Variable illegal in Parameter: xor bar baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-16",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nBeginProg, EndProg (Begin Program, End Program)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  EndProg."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-17",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nPipeLineMode foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  foo."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-18",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nExitScan foo bar baz.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  foo."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-19",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nEndSequence foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  foo."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-20",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nthe\nCallTable instruction is used to go\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  is."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-21",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nthe\nHistogram instruction.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-22",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nthe\nFileMark foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  bar."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-23",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nthe\nDelay to bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: to bar baz.\nline 4: Variable illegal in Parameter: to bar baz."
+  },
+  {
+   "id": "cr300-r12_cr3xx_instr_tail-24",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nthe\nBeginProg, EndProg (Begin)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  EndProg."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-0",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nCallTable instruction is used to go\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  is."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nCallTable foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  bar."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-2",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nCallTable foo is bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  is."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-3",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nHistogram foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-4",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nHistogram4D foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-5",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nFFT foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-6",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDataTable foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Incomplete expression: bar baz.."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-7",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nFileMark foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  bar."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-8",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nResetTable foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  bar."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-9",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nSlowSequence to calibrate the datalogger\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: calibrate is not defined.\nline 3: Invalid, or out of place expression: to calibrate the datalogger."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-10",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nSlowSequence to foo\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: foo is not defined.\nline 3: Invalid, or out of place expression: to foo."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-11",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDelay is bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: is bar baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-12",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDelay to bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: to bar baz.\nline 3: Variable illegal in Parameter: to bar baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-13",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDelay and 3 baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: and 3 baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-14",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDelay mod bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: mod bar baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-15",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nDelay xor bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: bar is not defined.\nline 3: Invalid, or out of place expression: xor bar baz.\nline 3: Variable illegal in Parameter: xor bar baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-16",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nBeginProg, EndProg (Begin Program, End Program)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  EndProg."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-17",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nPipeLineMode foo bar baz.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  foo."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-18",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nExitScan foo bar baz.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  foo."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-19",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nEndSequence foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  foo."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-20",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nthe\nCallTable instruction is used to go\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  is."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-21",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nthe\nHistogram instruction.\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-22",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nthe\nFileMark foo bar\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  bar."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-23",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nthe\nDelay to bar baz\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: to bar baz.\nline 4: Variable illegal in Parameter: to bar baz."
+  },
+  {
+   "id": "cr350-r12_cr3xx_instr_tail-24",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nthe\nBeginProg, EndProg (Begin)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: the is not defined.\nline 3: Invalid, or out of place expression: the\n.\nline 4: Too many parameters:  EndProg."
+  }
+ ]
+}
