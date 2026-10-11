@@ -23,6 +23,7 @@ from typing import NamedTuple, Sequence
 from . import bindings, lexer, navigation
 from .catalog import InstructionCatalog
 from .source import _strip_comment
+from .sources import DiskSource, OverlaySource
 
 __all__ = ["TextEdit", "Refusal", "PrepareResult", "RenameResult", "prepare_rename", "rename",
            "REASONS"]
@@ -349,10 +350,15 @@ def _check_new_name(entry: _Entry, new_name: str) -> None:
         for r in ix.references:
             if r.name.upper() != up or id(r) in entry.refs:
                 continue
-            if t.kind == "structure_member":
-                clash = r.role == bindings.MEMBER and any(c is t.container for c in r.container)
+            if r.role == bindings.MEMBER:
+                # a member use binds the new name when its container is the namespace of the target:
+                # the owning type, or the Public table for a Public variable or alias
+                clash = ((t.container is not None and any(c is t.container for c in r.container))
+                         or (t.kind in ("public", "alias")
+                             and any(c.kind == "system_table" and c.name.upper() == "PUBLIC"
+                                     for c in r.container)))
             else:
-                clash = r.role != bindings.MEMBER
+                clash = t.kind != "structure_member"
             if clash:
                 raise _Refuse("collision", f"{new_name!r} is already used at {r.file}:{r.line} "
                               f"({r.status})")
@@ -374,7 +380,41 @@ def _valid_identifier(new_name: str) -> bool:
 
 # ------------------------------------------------------------------- API
 
-def _collect(results, path, line, col):
+class _Current:
+    """The bytes the files have now, read at the operation boundary (never the `_State` cache, which
+    serves only checks derived from the analysis). `source` is the caller's provider, else each
+    result's own overlays on the disk."""
+
+    def __init__(self, source):
+        self.source = source
+        self._own: dict[int, OverlaySource] = {}
+        self._bytes: dict[tuple, object] = {}
+
+    def _provider(self, result):
+        if self.source is not None:
+            return self.source
+        got = self._own.get(id(result))
+        if got is None:
+            got = self._own[id(result)] = OverlaySource(DiskSource(), result.request.overlays)
+        return got
+
+    def read(self, result, path) -> bytes | None:
+        key = (id(result) if self.source is None else 0, Path(path))
+        if key not in self._bytes:
+            self._bytes[key] = self._provider(result).read(Path(path))
+        return self._bytes[key]
+
+    def verify(self, result) -> None:
+        """Every file the analysis read, edited or not, must have the analysed bytes now (and a
+        missing one must still be missing): bindings and collisions depend on all of them."""
+        for q, analysed in result.dependencies.reads.items():
+            data = self.read(result, q)
+            now = None if data is None else hashlib.sha256(data).hexdigest()
+            if now != analysed:
+                raise _Refuse("stale", f"{Path(q).name} differs from the bytes the analysis read")
+
+
+def _collect(results, path, line, col, current):
     path = Path(path).absolute()
     if not results:
         raise _Refuse("no_results", "no analysis result was given")
@@ -387,6 +427,7 @@ def _collect(results, path, line, col):
             continue                                    # this entry does not depend on the file
         if getattr(r, "program", None) is not None and not st.parses(path, line):
             continue                                    # the declaration is not in this entry's program
+        current.verify(r)
         e, placeholder, rng = _entry(st, path, line, col)
         if first is None:
             first = (placeholder, rng)
@@ -417,25 +458,30 @@ def _same(a, b) -> bool:
         return False
 
 
-def prepare_rename(results, path, line: int, column: int) -> PrepareResult:
+def prepare_rename(results, path, line: int, column: int, source=None) -> PrepareResult:
     """The range and current name at (`line`, `column`) when a rename of it can be offered, else
     the reason it cannot. `results`: the `AnalysisResult` of every configured entry that depends
-    on `path`."""
+    on `path`. `source`: optional `SourceProvider` giving the current bytes of every file (default:
+    each result's overlays on the disk)."""
     try:
-        entries, (placeholder, rng) = _collect(results, path, line, column)
-        _versions(entries, {rng[0]})
+        current = _Current(source)
+        entries, (placeholder, rng) = _collect(results, path, line, column, current)
+        _versions(entries, {rng[0]}, current)
     except _Refuse as e:
         return PrepareResult(False, e.refusal)
     p, ln, a, b = rng
     return PrepareResult(True, None, p, ln, a, b, placeholder)
 
 
-def rename(results, path, line: int, column: int, new_name: str) -> RenameResult:
+def rename(results, path, line: int, column: int, new_name: str, source=None) -> RenameResult:
     """Edits renaming the declaration at (`line`, `column`) and every reference to it, across
     every entry in `results`, or a `Refusal`. Edits are deduplicated; `versions` maps each edited
-    path to the sha256 of the bytes the edits were computed against (equal in every entry)."""
+    path to the sha256 of the bytes the edits were computed against (equal in every entry). Every
+    file any entry read must still have the analysed bytes now, read through `source` (optional
+    `SourceProvider`; default each result's overlays on the disk), else `stale`."""
     try:
-        entries, (placeholder, rng) = _collect(results, path, line, column)
+        current = _Current(source)
+        entries, (placeholder, rng) = _collect(results, path, line, column, current)
         if not _valid_identifier(new_name):
             raise _Refuse("invalid_name", f"{new_name!r} is not a valid identifier")
         if new_name == placeholder or (new_name.upper() == entries[0].name
@@ -445,10 +491,12 @@ def rename(results, path, line: int, column: int, new_name: str) -> RenameResult
             _check_new_name(e, new_name)
         ranges = sorted(set().union(*(e.ranges for e in entries)),
                         key=lambda k: (str(k[0]), k[1], k[2]))
-        versions = _versions(entries, {k[0] for k in ranges})
+        versions = _versions(entries, {k[0] for k in ranges}, current)
         edits: dict[Path, list[TextEdit]] = {}
         for p, ln, a, b in ranges:
-            data = entries[0].state.data(p)
+            data = current.read(entries[0].state.result, p)
+            if data is None:
+                raise _Refuse("stale", f"{p.name} can no longer be read")
             text = data.decode("latin-1").replace("\r\n", "\n").split("\n")[ln]
             if text[a:b].upper() != entries[0].name:
                 raise _Refuse("text_mismatch", f"{p.name}:{ln + 1}: the text at the range is "
@@ -462,19 +510,18 @@ def rename(results, path, line: int, column: int, new_name: str) -> RenameResult
         return RenameResult(False, e.refusal)
 
 
-def _versions(entries: list[_Entry], paths) -> dict:
-    """sha256 of each path's bytes, which must be what every entry that read the path analysed."""
+def _versions(entries: list[_Entry], paths, current: _Current) -> dict:
+    """sha256 of the current bytes of each edited path; `_Current.verify` has already shown that
+    they are what every entry that read the path analysed."""
     out = {}
     for p in sorted(paths, key=str):
         for e in entries:
-            analysed = next((h for q, h in e.state.result.dependencies.reads.items()
-                             if Path(q) == p or _same(q, p)), None)
-            if analysed is None:
+            r = e.state.result
+            if not any(Path(q) == p or _same(q, p) for q in r.dependencies.reads):
                 continue                                # this entry did not read the file
-            digest = hashlib.sha256(e.state.data(p)).hexdigest()
-            if analysed != digest:
-                raise _Refuse("stale", f"{p.name} differs from the bytes the analysis read")
-            if out.setdefault(p, digest) != digest:
+            data = current.read(r, p)
+            digest = None if data is None else hashlib.sha256(data).hexdigest()
+            if digest is None or out.setdefault(p, digest) != digest:
                 raise _Refuse("stale", f"{p.name} differs between entries")
         if p not in out:
             raise _Refuse("stale", f"{p.name} was not read by any analysis")

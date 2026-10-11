@@ -1223,8 +1223,8 @@ converts to the client's encoding. Handoff with the observed sweep counts:
 [LSP-07a-handoff.md](lsp-rounds/LSP-07a-handoff.md).
 
 ```python
-prepare_rename(results, path, line, column)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder)
-rename(results, path, line, column, new_name)          -> RenameResult(ok, refusal, edits, versions)
+prepare_rename(results, path, line, column, source=None)            -> PrepareResult(ok, refusal, path, line, start, end, placeholder)
+rename(results, path, line, column, new_name, source=None)          -> RenameResult(ok, refusal, edits, versions)
 TextEdit(line, start, end, new_text)                   # NamedTuple, physical 0-based, end exclusive
 Refusal(code, message)                                 # code is one of rename.REASONS
 ```
@@ -1234,17 +1234,27 @@ Refusal(code, message)                                 # code is one of rename.R
 position's line, for example because an `IncludeSection` or an inactive `#If` leaves that part of
 the file out, is skipped). On success `edits` is `{Path: [TextEdit]}`, sorted, non-overlapping and
 deduplicated across entries (a library included by several entries is edited once), and `versions`
-is `{Path: sha256 hex}` of the bytes each edited file had when it was analysed. The caller (the
-server) must apply the edits only to a document whose content still has that hash. The hash is
-checked here against the bytes `AnalysisRequest.overlays` (or the disk) give now, and a mismatch
-with `dependencies.reads` is the refusal `stale`.
+is `{Path: sha256 hex}` of the bytes each edited file has now, which equal what it had when it was
+analysed. The caller (the server) must apply the edits only to a document whose content still has
+that hash.
+
+**Freshness (LSP-R2a).** Before any binding or collision check, **every** file in
+`dependencies.reads` of each used result, edited or not, is read again at the call and its sha256
+compared with the recorded one; a difference (or a file that is gone) is `stale`. The bytes come from
+`source`, an optional `SourceProvider` (`sources.py`) giving the current content of any file; the
+default is each result's own `request.overlays` on the disk. A server holding newer unsaved buffers
+than the analyses should pass an `OverlaySource` of them, otherwise rename sees the disk and the
+analysis' overlays. The per-result cache of `rename.py` serves only checks derived from the analysis
+(unindexed code, string words); edit coordinates and `versions` come from the fresh read. Not
+detected: a file that did not exist at analysis and appears later (the loader records it only as a
+directory listing, which changes for unrelated files too).
 
 ### Refusals (all-or-nothing; `Refusal.code`)
 
 | Code | Refused when |
 |---|---|
 | `no_results`, `no_ast` | no analysis depends on the file; the program could not be parsed |
-| `stale` | a file differs from the bytes the analysis read, or between entries |
+| `stale` | any file the analysis read (edited or not) differs now from the bytes it read, is gone, or differs between entries |
 | `index_failure` | the binding index recorded a failure for a statement of an entry |
 | `not_a_name` | the position is not on a name the index records in some entry that parses that line (comment, string, keyword the index does not record) |
 | `unresolved`, `ambiguous`, `unmodelled` | the reference at the position, or any reference to the target, is not one proven single target (duplicate declarations, a table sharing a variable's spelling, a `Public` declared inside a routine used elsewhere); `unmodelled` is a table field name (`Tab.Field`, `Status.X`) |
@@ -1273,7 +1283,11 @@ with `dependencies.reads` is the refusal `stale`.
   with unverified scope, or a local of the same routine has the new name.
 - Target is a **structure member**: refused if another member of the same structure type has it.
 - In all cases a reference with the new name that is not part of the rename (for example an
-  undeclared name) is also a collision, since renaming would bind it.
+  undeclared name) is also a collision, since renaming would bind it. A member use (`X.name`) counts
+  when its container is the target's namespace: the owning type or `ConstTable` of a structure
+  member or table constant, and the `Public` table for a `Public` variable or alias (`Public.newName`
+  is bound by a `Public newName`). Member uses of other containers (`Status.newName`, data table
+  fields) are not captures.
 
 ### Notes
 

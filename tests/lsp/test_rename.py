@@ -191,6 +191,67 @@ def test_stale_file_is_refused(sample):
     assert R.prepare_rename([r], p, 0, 7).refusal.code == "stale"
 
 
+def test_unedited_dependency_that_changed_is_stale(tmp_path):      # review R2 finding 1
+    lib = write(tmp_path, "Lib.crb", "Public otherName\n")
+    m = write(tmp_path, "M.CR6", 'Include "Lib.crb"\nPublic oldName\nBeginProg\noldName=1\nEndProg\n')
+    r = run(m)
+    assert r.ok
+    lib.write_bytes(b"Public newName\n")
+    assert run(m).ok
+    res = R.rename([r], m, 1, 8, "newName")
+    assert code(res) == "stale" and "Lib.crb" in res.refusal.message
+    assert code(R.prepare_rename([r], m, 1, 8)) == "stale"
+    lib.write_bytes(b"Public otherName\n")                 # restored: current again
+    assert R.rename([r], m, 1, 8, "newName").ok
+    lib.unlink()                                             # a vanished dependency is stale too
+    assert code(R.rename([r], m, 1, 8, "newName")) == "stale"
+
+
+def test_unedited_dependency_read_through_given_source(tmp_path):
+    from opencrbasic.sources import DiskSource, OverlaySource
+    lib = write(tmp_path, "Lib.crb", "Public otherName\n")
+    m = write(tmp_path, "M.CR6", 'Include "Lib.crb"\nPublic oldName\nBeginProg\noldName=1\nEndProg\n')
+    r = run(m)
+    buf = OverlaySource(DiskSource(), {lib: b"Public newName\n"})      # unsaved buffer differs
+    assert code(R.rename([r], m, 1, 8, "newName", source=buf)) == "stale"
+    assert R.rename([r], m, 1, 8, "newName", source=OverlaySource(DiskSource())).ok
+
+
+def test_edited_file_changed_after_prepare_is_stale(tmp_path):     # review R2 finding 2
+    text = "Public oldName\nBeginProg\noldName=1\nEndProg\n"
+    p = write(tmp_path, "M.CR6", text)
+    r = run(p)
+    assert R.prepare_rename([r], p, 0, 8).ok
+    p.write_bytes(("' insert before analysed text\n" + text).encode())
+    assert code(R.rename([r], p, 0, 8, "newName")) == "stale"
+    assert code(R.prepare_rename([r], p, 0, 8)) == "stale"
+
+
+def test_public_member_use_of_new_name_is_a_capture(tmp_path):     # review R2 finding 4
+    p = write(tmp_path, "M.CR6", "Public oldName,out\nBeginProg\nout=Public.newName\nEndProg\n")
+    r = run(p)
+    res = R.rename([r], p, 0, 8, "newName")
+    assert code(res) == "collision" and "3" in res.refusal.message
+    assert R.rename([r], p, 0, 8, "fresh").ok
+
+
+def test_public_member_use_of_the_target_is_renamed_and_other_members_are_captures(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public oldName,out\nBeginProg\nout=Public.oldName\nEndProg\n")
+    res = R.rename([run(p)], p, 0, 8, "fresh")
+    assert res.ok and (2, 11, 18) in spots(res, p)
+    p2 = write(tmp_path, "N.CR6", "Public a,b\nBeginProg\nb=Public.zed\nEndProg\n")
+    assert code(R.rename([run(p2)], p2, 0, 7, "zed")) == "collision"
+    p3 = write(tmp_path, "K.CR6", "Const c = 1\nPublic a,b\nBeginProg\nb=Public.c\nEndProg\n")
+    assert code(R.rename([run(p3)], p3, 1, 7, "c")) == "collision"
+
+
+def test_member_use_of_other_container_is_not_a_collision(tmp_path):
+    p = write(tmp_path, "M.CR6", "Public oldName,out\nPublic Other As Long\nBeginProg\n"
+              "out=Status.newName\nEndProg\n")
+    r = run(p)
+    assert R.rename([r], p, 0, 8, "newName").ok
+
+
 # ------------------------------------------------------------------ refusals: the position
 
 def code(res) -> str:
