@@ -85,6 +85,7 @@ pair_signature(name, type_codes, help) -> PairedSignature(matched, help_count, c
 render_markdown(help, sig=None) / render_plain(help, sig=None) / render_signature_label(sig)
 coverage_report(profile, provider, names=None) -> CoverageReport(total, with_help, matching, mismatches, without_help)
 function_coverage_report(profile, provider, names=None) -> FunctionCoverageReport(total, with_nargs, with_help, checked, matching, mismatches, without_help, unchecked)
+function_arg_count_classes(profile, provider, names=None) -> tuple[ArgCountRow(name, help_count, help_required, nargs, category)]
 ```
 
 - Lazy: the first `lookup` parses every `Instructions/*.htm` once. Nothing raises; a missing
@@ -125,6 +126,11 @@ function_coverage_report(profile, provider, names=None) -> FunctionCoverageRepor
   when its table has `nargs`: the help parameter count must equal it. Rows with help and no `nargs`
   are `unchecked`; rows with `nargs` and no help are in `without_help`. Instruction numbers are
   unchanged. Signature help for functions uses `nargs` as the count (see Hover).
+- Argument-count classes (LSP-04d): `function_arg_count_classes` lists the functions whose help count
+  differs from `nargs` as `packing_cap` (`nargs` 6, the 16-bit `argspec` maximum), `optional_tail`
+  (help required count equals `nargs`) or `other`. It is a classification only. Signature help keeps
+  `argN` for these functions: names are not applied beyond `nargs`. Evidence and the decision are in
+  [LSP-04d-handoff.md](lsp-rounds/LSP-04d-handoff.md).
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
   [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md) and, after the 2026-10-11 rules,
   [LSP-04a-rules-handoff.md](lsp-rounds/LSP-04a-rules-handoff.md). Documentation coverage is not

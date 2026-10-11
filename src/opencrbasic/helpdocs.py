@@ -18,6 +18,7 @@ __all__ = [
     "ParamHelp", "InstructionHelp", "HelpProvider", "PairedParam", "PairedSignature",
     "pair_signature", "render_markdown", "render_plain", "render_signature_label",
     "CoverageReport", "coverage_report", "FunctionCoverageReport", "function_coverage_report",
+    "ArgCountRow", "function_arg_count_classes",
 ]
 
 
@@ -567,3 +568,39 @@ def function_coverage_report(profile, provider: HelpProvider, names: Iterable[st
     checked = with_help - len(unchecked)
     return FunctionCoverageReport(len(wanted), with_nargs, with_help, checked, checked - len(mism),
                                   tuple(mism), tuple(missing), tuple(unchecked))
+
+
+# `nargs` 6 is the 16-bit `argspec` maximum (low nibble 6, 2 bits per argument): docs/binary.md.
+_PACKING_CAP = 6
+
+
+@dataclass(frozen=True)
+class ArgCountRow:
+    name: str
+    help_count: int
+    help_required: int      # help parameters not marked optional
+    nargs: int
+    category: str           # "packing_cap" | "optional_tail" | "other"
+
+
+def function_arg_count_classes(profile, provider: HelpProvider, names: Iterable[str] | None = None
+                               ) -> tuple[ArgCountRow, ...]:
+    """Classify `profile.functions` whose help parameter count differs from `nargs`.
+
+    `packing_cap`: `nargs` is 6, the packed `argspec` maximum, so the table cannot list more.
+    `optional_tail`: not capped, and the help's required count equals `nargs` (the rest is optional).
+    `other`: neither. A classification only; it says nothing about which counts the compiler accepts.
+    """
+    table: Mapping[str, Mapping] = profile.functions
+    wanted = sorted(table) if names is None else sorted(n.upper() for n in names if n.upper() in table)
+    rows: list[ArgCountRow] = []
+    for n in wanted:
+        nargs = table[n].get("nargs")
+        h = provider.lookup(n)
+        if nargs is None or h is None or len(h.params) == nargs:
+            continue
+        required = sum(1 for p in h.params if not p.optional)
+        cat = ("packing_cap" if nargs == _PACKING_CAP
+               else "optional_tail" if required == nargs and len(h.params) > nargs else "other")
+        rows.append(ArgCountRow(n, len(h.params), required, nargs, cat))
+    return tuple(rows)

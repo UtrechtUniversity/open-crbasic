@@ -8,7 +8,7 @@ import pytest
 
 from opencrbasic import helpdocs, profiles
 from opencrbasic import hover
-from opencrbasic.helpdocs import HelpProvider, coverage_report, function_coverage_report, pair_signature
+from opencrbasic.helpdocs import HelpProvider, coverage_report, function_arg_count_classes, function_coverage_report, pair_signature
 
 FIX = Path(__file__).parent / "fixtures" / "help"
 CORPUS = Path(__file__).resolve().parents[3] / "extracted_chm"
@@ -267,6 +267,33 @@ def test_function_coverage_on_fixtures(prov):
     assert r.without_help == ("ABSENT",) and r.unchecked == ("FOONOLINKS",)
     sub = function_coverage_report(P, prov, names=["foostart", "nope"])
     assert (sub.total, sub.with_help, sub.matching) == (1, 1, 1)
+
+
+def test_function_arg_count_classes_on_fixtures(prov):
+    class P:
+        functions = {
+            "FOOSTART": {"nargs": 2},                 # match: not listed
+            "FOOMEASURE": {"nargs": 6},               # 5 help parameters, nargs at the packing cap
+            "FOOMENU": {"nargs": 1},                  # 2 help, 2 required: other
+            "FOONOLINKS": {},                         # no nargs: not listed
+            "ABSENT": {"nargs": 0},                   # no help: not listed
+        }
+    rows = function_arg_count_classes(P, prov)
+    assert [(r.name, r.help_count, r.help_required, r.nargs, r.category) for r in rows] == [
+        ("FOOMEASURE", 5, 5, 6, "packing_cap"), ("FOOMENU", 2, 2, 1, "other")]
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_function_arg_count_classes():
+    rows = function_arg_count_classes(profiles.get("cr6"), HelpProvider(CORPUS))
+    by = {c: sorted(r.name for r in rows if r.category == c) for c in ("packing_cap", "optional_tail", "other")}
+    assert by == {
+        "packing_cap": ["EMAILRECV", "EMAILSEND", "FTPCLIENT", "UDPDATAGRAM", "XMLPARSE"],
+        "optional_tail": ["HTTPGET", "SERIALOPEN", "TCPOPEN", "UDPOPEN"],
+        "other": ["CHECKSUM", "CTYPE", "EMAILRELAY", "GZIP", "HTTPPOST", "HTTPPUT", "IFTIME",
+                  "NETWORKTIMEPROTOCOL", "PPPOPEN", "SPRINTF", "TIMEINTOINTERVAL"]}
+    ftp = next(r for r in rows if r.name == "FTPCLIENT")
+    assert (ftp.help_count, ftp.help_required, ftp.nargs) == (11, 6, 6)
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
