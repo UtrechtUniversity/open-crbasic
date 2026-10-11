@@ -274,12 +274,7 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         params = _real_params(record["params"])
         required = _required_count(params)
-        given = len(stmt.args)
-        if profile.name in ("cr6", "cr1000x"):
-            # trailing empty arguments read as absent: `Sample(9,)` is short like `Sample(9)`
-            # (`Too few parameters`), `Sample(9, X, )` like `Sample(9, X)` (oracle, 2026-10-11)
-            while given and stmt.args[given - 1] is None:
-                given -= 1
+        given = given_count(stmt, profile)
         if given >= required:
             continue
         missing_code = params[given]
@@ -305,6 +300,18 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
         else:
             diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
     _check_unterminated_string_param(program, profile, diags)
+
+
+def given_count(stmt: S.Instruction, profile) -> int:
+    """The arguments actually given: a trailing comma leaves an empty last slot that is the
+    missing parameter, not a given one. CR6/CR1000X also drop every further trailing empty."""
+    given = len(stmt.args)
+    if profile.name in ("cr6", "cr1000x"):
+        while given and stmt.args[given - 1] is None:
+            given -= 1
+    else:
+        given -= bool(given and stmt.args[given - 1] is None)
+    return given
 
 
 def shortfall_message(record: dict, given: int) -> str | None:

@@ -1,0 +1,253 @@
+{
+ "observation_date": "2026-10-11",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-0",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-1",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-2",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,\n\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-3",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nx = 1\nPanelTemp(x,)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-4",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,\ny)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n.\nline 6: y is not defined.\nline 6: Invalid, or out of place expression: y)\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-5",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nSample(1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-6",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nSample(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-7",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nVoltSe(x,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-8",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias x(1)\n= Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: x(1)\n.\nline 5: Year is not defined.\nline 5: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-9",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias foo bar baz.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: foo bar baz.\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-10",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias x(1)\n= Year\nPanelTemp(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: x(1)\n.\nline 5: Year is not defined.\nline 5: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-11",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n= Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-12",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n= Year   \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: = Year   \n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-13",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n< Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: < Year\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-14",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n<> a b\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: a is not defined.\nline 4: Invalid, or out of place expression: <> a b\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-15",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n>= 3 b\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: >= 3 b\n."
+  },
+  {
+   "id": "cr300-r12_cr3xx_alias_eq-16",
+   "logger": "cr300",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nx = 1\n> x Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: > x Then\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-0",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-1",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-2",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,\n\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-3",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nx = 1\nPanelTemp(x,)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-4",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nPanelTemp(x,\ny)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n.\nline 6: y is not defined.\nline 6: Invalid, or out of place expression: y)\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-5",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nSample(1,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-6",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nSample(1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-7",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nfoo bar baz\nVoltSe(x,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: foo is not defined.\nline 4: bar is not defined.\nline 4: Invalid, or out of place expression: foo bar baz\n.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-8",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias x(1)\n= Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: x(1)\n.\nline 5: Year is not defined.\nline 5: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-9",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias foo bar baz.\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: foo bar baz.\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-10",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nAlias x(1)\n= Year\nPanelTemp(x,\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Need '=' in alias definition: x(1)\n.\nline 5: Year is not defined.\nline 5: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-11",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n= Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: = Year\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-12",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n= Year   \nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: = Year   \n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-13",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n< Year\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Year is not defined.\nline 4: Invalid, or out of place expression: < Year\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-14",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n<> a b\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: a is not defined.\nline 4: Invalid, or out of place expression: <> a b\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-15",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\n>= 3 b\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: >= 3 b\n."
+  },
+  {
+   "id": "cr350-r12_cr3xx_alias_eq-16",
+   "logger": "cr350",
+   "source": "Public x\nBeginProg\nScan (1,Sec,3,0)\nx = 1\n> x Then\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: > x Then\n."
+  }
+ ]
+}

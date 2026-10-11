@@ -5210,3 +5210,18 @@ what follows up to a blank (`& 6` -> `&`, `&6` -> `&6`, third item or earlier; a
 nothing). Not done: `foo (a, & b) text` (real also names `b`), the `text` that follows a plain
 `foo (a, b) text` is named by us and not by the real compilers, `x = & 6` (real `& is not defined.`
 and `Incomplete expression`), `&h0000 text more` (real names `text`).
+
+### Trailing comma, `Alias` without `=`, leading `=` (`chm/realtime_1`; fixtures `r12_cr3xx_trailing_comma.json`, `r12_cr3xx_alias_eq.json`)
+
+- **A trailing comma makes the next parameter the missing one, all four loggers**
+  (`instr_rules.check`, `given_count`): `Sample( 1,` is `Too few parameters in instruction.` (the
+  missing second parameter is deferred text), `Sample(1,x,)`, `PanelTemp(x,)`, `Average(1,x,FP2,`
+  are `Invalid or missing parameter.`; `Sample(1,x,FP2,)` (optional fourth) compiles. We counted the
+  empty last slot as given: the wrong message for the first, and no error at all for the others
+  (false accept on CR6/CR1000X/CR300/CR350). After an earlier error with undefined names the
+  shortfall is hidden as usual (`cr3xx.drop_shortfall_with_names`, the cascade branch for a short
+  instruction, both now use `given_count`).
+- **`Alias` without `=`** (`Alias rTime(1)` with the `=` on the next line): the line prints
+  `Need '=' in alias definition: ...` alone; the prose fallback and its names were extra.
+- **A line that starts with a comparison operator** (`= Year`, `< x`, `<> a b`, `>= 3 b`) names the
+  first following word and stops (`_leading_unknown_words`), then the generic fallback.

@@ -216,7 +216,7 @@ _DECLARATION_TRIGGER_PREFIXES = ("Too many Slow Sequences", "Duplicate Alias", "
 def _is_short_instruction(stmt, profile) -> bool:
     """An instruction call written with fewer arguments than it requires."""
     record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
-    return record is not None and len(stmt.args) < instr_rules._required_count(
+    return record is not None and instr_rules.given_count(stmt, profile) < instr_rules._required_count(
         instr_rules._real_params(record["params"]))
 
 
@@ -436,7 +436,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                              and _is_short_instruction(program.statements[taint_at], profile))
             kept_shortfall = [d for d in diags.items if (d.line, d.file) == key
                               and d.message in _SHORTFALL_MESSAGES][:1] if trigger_short else []
-            if (isinstance(stmt, S.Instruction) and len(stmt.args) == 1
+            if (isinstance(stmt, S.Instruction) and instr_rules.given_count(stmt, profile) == 1
                     and _is_short_instruction(stmt, profile)):
                 # a short instruction after the cascade started has no second argument to echo and
                 # its own shortfall disappears (oracle, CR300, 2026-10-10: `Delay(1)` then
@@ -999,6 +999,12 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
     this implements. `known` is the same upper-cased name set `expressions._known_names` builds;
     a word already in it is walked over (it can still be part of the chain) but never returned.
     """
+    lead_op = re.match(r"[ \t]*(?:<>|<=|>=|<<|>>|[=<>])[ \t]*(?=[A-Za-z_])", text)
+    if lead_op:
+        # a line that starts with a comparison operator reads the next word as its first operand
+        # and stops there (oracle, CR300/CR350, 2026-10-11: `= Year   ` -> `Year`)
+        word = _LINE_WORD_RE.match(text, lead_op.end())
+        return [word.group(0)] if word.group(0).upper() not in known else []
     # The chain starts at the first word or number (a leading `2 when the` reports `when`).
     pos = len(text) - len(text.lstrip(" \t"))
     if re.match(r"-\d", text[pos:pos + 2]):
@@ -1233,7 +1239,7 @@ def drop_shortfall_with_names(program: S.Program, profile, diags: Diagnostics) -
 
     def is_short(stmt) -> bool:
         record = profile.instructions.get(stmt.keyword.upper()) if isinstance(stmt, S.Instruction) else None
-        return record is not None and len(stmt.args) < instr_rules._required_count(
+        return record is not None and instr_rules.given_count(stmt, profile) < instr_rules._required_count(
             instr_rules._real_params(record["params"]))
 
     first = next((i for i, st in enumerate(stmts) if (st.line, st.file) in named and has_names(st)),
@@ -1371,6 +1377,13 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 first = first_declarations(program)
             here = known - declared_later(first, d.line, d.file)
             text = d.message[len(_GENERIC_FALLBACK_PREFIX):-1]
+            if re.match(r"(?i)\s*Alias\b", text) and any(
+                    (e.line, e.file) == (d.line, d.file) and e.message.startswith("Need '=' in alias definition")
+                    for e in diags.items):
+                # an `Alias` line without its `=` has been answered by the alias message alone
+                # (oracle, CR300/CR350, 2026-10-11: `Alias rTime(1)` / `= Year` on the next line)
+                changed = True
+                continue
             table = _TABLE_LINE_RE.match(text)
             if table:
                 new_items.append(Diagnostic("error", d.line, f"Could not find DataTable "
