@@ -97,6 +97,29 @@ def test_bare_brackets_mark_optional_and_others_stay_as_written(prov):
     ]
 
 
+def test_optional_marker_item_applies_to_preceding_parameter(prov):
+    h = prov.lookup("FooOpt")
+    assert [(p.name, p.link, p.optional) for p in h.params] == [
+        ("Dest", "../parameters/foodest.htm", False),
+        ("Mode", "../parameters/foomode.htm", False),
+        ("FileOption", "../parameters/foofileopt.htm", True),   # `FileOption, [optional],`
+        ("TimeOut", "../parameters/footimeout.htm", True),      # `TimeOut [optional]`
+        ("Tail", "../parameters/footail.htm", True),            # `Tail, (optional)`
+    ]
+    sig = pair_signature("FooOpt", [1, 2, 3, 4, 5], h)
+    assert sig.matched
+    assert helpdocs.render_signature_label(sig) == (
+        "FooOpt(Dest, Mode, FileOption (optional), TimeOut (optional), Tail (optional))")
+
+
+def test_leading_optional_marker_creates_nothing(tmp_path):
+    (tmp_path / "Instructions").mkdir()
+    (tmp_path / "Instructions" / "x.htm").write_text(
+        '<h1>FooLead</h1><h2>Syntax</h2><p>FooLead ( [optional], <a href="../parameters/foodest.htm">Dest</a> )</p>')
+    h = HelpProvider(tmp_path).lookup("FooLead")
+    assert [(p.name, p.optional) for p in h.params] == [("Dest", False)]
+
+
 def test_statement_brackets_are_not_parameters(prov):
     h = prov.lookup("FooStatement")
     assert h is not None and h.params == () and h.syntax == ""
@@ -246,6 +269,17 @@ def test_local_corpus_documented_syntax_rules():
     display = p.lookup("DisplayMenu")
     assert [x.name for x in display.params] == ['"MenuName"', "AddToSystem", "Cursor"]    # quotes kept
     assert [x.name for x in display.params if x.optional] == ["Cursor"]
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_optional_marker_item():
+    p = HelpProvider(CORPUS)
+    # `FileOption, [optional],` in the syntax line: the marker item is not a parameter.
+    for name in ("FTPClient", "EMailSend", "HTTPPost"):
+        h = p.lookup(name)
+        assert h is not None and not any("optional" in x.name for x in h.params)
+        flags = {x.name: x.optional for x in h.params}
+        assert flags["FileOption"] is True and flags["TimeOut"] is True
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")

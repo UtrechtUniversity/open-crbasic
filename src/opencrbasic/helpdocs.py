@@ -9,7 +9,7 @@ and prose are display information only: they never influence checker rules.
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from html.parser import HTMLParser
 from pathlib import Path
 from typing import Iterable, Mapping, Sequence
@@ -242,6 +242,7 @@ def _parse_form(block: _Block) -> _Form | None:
         # Every span of the syntax line is a parameter, linked or not. A span takes the parameter
         # link that overlaps it: `Mult, Offse</a>t` is one link covering two names, and `Mult, Offset`
         # with a link per name is two spans over two links.
+        previous_named = False
         for a, b in _spans(text, start, end, {s for s, _, _, _ in links}):
             raw = text[a:b]
             body = _flat(_OPTIONAL.sub("", raw)).strip(" ,;")
@@ -257,6 +258,11 @@ def _parse_form(block: _Block) -> _Form | None:
                 href = next((h for s, e, h, _ in links
                              if s < b and a < e and re.search(r"\w", text[max(s, a):min(e, b)])), None)
                 params.append(ParamHelp(name, href, "", optional))
+            elif previous_named and _OPTIONAL.search(raw):
+                # `FileOption, [optional],`: a marker that is a list item of its own applies to the
+                # parameter before it and creates no parameter.
+                params[-1] = replace(params[-1], optional=True)
+            previous_named = bool(name)
     return _Form(m.group(1).upper(), flat, _fold_repeat(params))
 
 

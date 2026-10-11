@@ -105,9 +105,13 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
     the stem (`Item`) with `repeatable=True`; the numbered run ending in that name collapses into
     it. The signature label shows `Item...`. An unnumbered `Extra...` is `Extra`, repeatable.
   - Quoted names keep their quotes (`"MenuName"`).
+  - An `[optional]` or `(optional)` span that is a list item of its own (`FileOption, [optional],` in
+    FTPClient, EMailSend, HTTPPost, HTTPPut) creates no parameter; it sets `optional=True` on the
+    parameter immediately before it. Only a span directly after a named parameter applies; a marker
+    with nothing before it is ignored.
   `description` comes from the page's Parameters section, else the linked parameter page, else `""`.
-  `optional` is `True` where the syntax line says `optional` or a bare `[X]` wraps the name; `False`
-  means "not stated".
+  `optional` is `True` where the syntax line says `optional` (inline, or as an item after the name) or a
+  bare `[X]` wraps the name; `False` means "not stated".
 - Pairing is by count only. `pair_signature` uses help names when `len(params)` equals the catalog
   type-code count and otherwise returns `matched=False` with a note and placeholder labels
   (`arg1`...): no guessing. Help names never change checker rules; types come from the catalog.
