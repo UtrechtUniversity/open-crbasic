@@ -27,6 +27,7 @@ class ParamHelp:
     link: str | None            # target of the syntax link, as written (e.g. "../parameters/x.htm")
     description: str            # plain text; "" when the help has none
     optional: bool = False      # True only where the syntax line states it; False means "not stated"
+    repeatable: bool = False    # `Item1, Item2, Item3...` collapsed to one `Item`; name is the stem
 
 
 @dataclass(frozen=True)
@@ -144,6 +145,8 @@ def _blocks(html: str) -> list[_Block]:
 _FORM = re.compile(r"^\s*(?:[A-Za-z_][\w.]*\s*=\s*)?([A-Za-z_]\w*)\s*\(")
 _OPTIONAL = re.compile(r"[\[(]\s*optional\s*[\])]", re.I)
 _NAME = re.compile(r"^[A-Za-z_]\w*$")
+# Brackets around exactly one name: `[ModbusOption]`, `[ Dimension ]`; `/` joins alternative names.
+_BARE = re.compile(r"\[\s*([A-Za-z_][\w/]*)\s*\]")
 # A parenthesised note after a bare statement name: `EndSequence (optional)`, `Data (or DataLong)`.
 _NOTE = re.compile(r"^\s*(?:optional|or\s+[A-Za-z_]\w*)\s*$", re.I)
 
@@ -203,6 +206,27 @@ class _Form:
     params: list[ParamHelp]
 
 
+def _fold_repeat(params: list[ParamHelp]) -> list[ParamHelp]:
+    """A trailing `...` on the last name makes one repeatable parameter. A numbered run ending in
+    that name (`Item1, Item2, Item3...`) collapses into one parameter named after the stem (`Item`).
+    """
+    if not params or not params[-1].name.endswith("..."):
+        return params
+    last = params[-1]
+    stem = last.name[:-3].rstrip()
+    m = re.fullmatch(r"(.*?)(\d+)", stem)
+    base = m.group(1) if m else stem
+    if not _NAME.match(base):
+        return params
+    run = [last]
+    rest = list(params[:-1])
+    if m:
+        numbered = re.compile(re.escape(base) + r"\d+")
+        while rest and numbered.fullmatch(rest[-1].name):
+            run.insert(0, rest.pop())
+    return rest + [ParamHelp(base, run[0].link, "", any(p.optional for p in run), True)]
+
+
 def _parse_form(block: _Block) -> _Form | None:
     text = block.text
     m = _FORM.match(text)
@@ -220,13 +244,20 @@ def _parse_form(block: _Block) -> _Form | None:
         # with a link per name is two spans over two links.
         for a, b in _spans(text, start, end, {s for s, _, _, _ in links}):
             raw = text[a:b]
-            name = _flat(re.sub(r"[\[\]]", " ", _OPTIONAL.sub("", raw))).strip(" ,;")
+            body = _flat(_OPTIONAL.sub("", raw)).strip(" ,;")
+            bare = _BARE.fullmatch(body)
+            if bare:
+                # `[X]` around exactly one name: optional, brackets dropped.
+                name, optional = bare.group(1), True
+            else:
+                # Other brackets stay as written (`Mode [A,B,C]`) and never set optional.
+                name, optional = body, bool(_OPTIONAL.search(raw))
             if name:
                 # The link whose overlap with this span holds name text (not just a separator).
                 href = next((h for s, e, h, _ in links
                              if s < b and a < e and re.search(r"\w", text[max(s, a):min(e, b)])), None)
-                params.append(ParamHelp(name, href, "", bool(_OPTIONAL.search(raw))))
-    return _Form(m.group(1).upper(), flat, params)
+                params.append(ParamHelp(name, href, "", optional))
+    return _Form(m.group(1).upper(), flat, _fold_repeat(params))
 
 
 def _norm(s: str) -> str:
@@ -365,7 +396,7 @@ class HelpProvider:
             desc = _describe(page.param_blocks, p.name)
             if not desc and p.link:
                 desc = self._linked_description(p.link, p.name)
-            params.append(ParamHelp(p.name, p.link, desc, p.optional))
+            params.append(ParamHelp(p.name, p.link, desc, p.optional, p.repeatable))
         return InstructionHelp(key, page.names, page.title, form.text if form else "",
                                tuple(params), page.summary, page.path)
 
@@ -388,11 +419,12 @@ class HelpProvider:
 
 @dataclass(frozen=True)
 class PairedParam:
-    label: str
+    label: str                          # help name, with "..." when repeatable; `argN` when unpaired
     type_code: int
     description: str
     optional: bool
     from_help: bool
+    repeatable: bool = False
 
 
 @dataclass(frozen=True)
@@ -415,7 +447,8 @@ def pair_signature(name: str, type_codes: Sequence[int], help: InstructionHelp |
     h = len(help.params)
     if h == n:
         return PairedSignature(name, True, h, n,
-                               tuple(PairedParam(p.name, t, p.description, p.optional, True)
+                               tuple(PairedParam(p.name + "..." if p.repeatable else p.name, t,
+                                                 p.description, p.optional, True, p.repeatable)
                                      for p, t in zip(help.params, type_codes)), "")
     return PairedSignature(name, False, h, n,
                            tuple(PairedParam(f"arg{i + 1}", t, "", False, False) for i, t in enumerate(type_codes)),

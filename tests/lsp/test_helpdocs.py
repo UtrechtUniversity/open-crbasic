@@ -87,6 +87,47 @@ def test_nested_markup_in_syntax(prov):
     assert prov.lookup("fooMeasure").params[2].name == "fN1"
 
 
+def test_bare_brackets_mark_optional_and_others_stay_as_written(prov):
+    h = prov.lookup("FooBracket")
+    assert [(p.name, p.link, p.optional) for p in h.params] == [
+        ("Dest", "../parameters/foodest.htm", False),
+        ("Mode [A,B,C]", None, False),                    # choice list: one parameter, not optional
+        ("FooInit", "../parameters/foolinked.htm", True),  # `[ X ]` around one name
+        ("Last", None, True),                              # `Name [optional]`
+    ]
+
+
+def test_statement_brackets_are_not_parameters(prov):
+    h = prov.lookup("FooStatement")
+    assert h is not None and h.params == () and h.syntax == ""
+
+
+def test_trailing_ellipsis_is_one_repeatable_parameter(prov):
+    h = prov.lookup("FooMenu")
+    assert [(p.name, p.link, p.repeatable) for p in h.params] == [
+        ("Dest", "../parameters/foodest.htm", False),
+        ("Item", "../parameters/foomenuitem.htm", True),
+    ]
+    assert h.params[1].description == "Invented item text."
+    assert not any(p.optional for p in h.params)
+
+
+def test_ellipsis_collapses_only_its_numbered_run(prov):
+    assert [(p.name, p.repeatable) for p in prov.lookup("FooMix").params] == [
+        ("Item1", False), ("Mode", True)]
+    assert [(p.name, p.repeatable) for p in prov.lookup("FooRest").params] == [
+        ("Dest", False), ("Extra", True)]
+
+
+def test_pairing_labels_repeatable_with_ellipsis(prov):
+    h = prov.lookup("FooMenu")
+    sig = pair_signature("FooMenu", [1, 2], h)
+    assert sig.matched and [p.repeatable for p in sig.params] == [False, True]
+    assert helpdocs.render_signature_label(sig) == "FooMenu(Dest, Item...)"
+    sig = pair_signature("FooMenu", [1], h)     # counts disagree: no pairing, no guessing
+    assert not sig.matched and not any(p.repeatable for p in sig.params)
+
+
 def test_missing_parameters_section_uses_linked_page(prov):
     h = prov.lookup("FooNoParams")
     assert [p.name for p in h.params] == ["Linked", "Gone"]
@@ -191,6 +232,20 @@ def test_local_corpus_voltse_parameters():
     h = HelpProvider(CORPUS).lookup("VoltSE")
     assert [p.name for p in h.params] == [
         "Dest", "Reps", "Range", "SEChan", "MeasOff", "SettlingTime", "fN1", "Mult", "Offset"]
+
+
+@pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")
+def test_local_corpus_documented_syntax_rules():
+    p = HelpProvider(CORPUS)
+    menu = p.lookup("MenuPick")
+    assert [(x.name, x.repeatable) for x in menu.params] == [("Item", True)]
+    assert pair_signature("MenuPick", [1], menu).matched
+    for name, optional in (("ModbusSlave", "ModbusOption"), ("ModbusServer", "ModbusOption"),
+                           ("FFTSpa", "FFTSpaInit"), ("SortSpa", "Dimension")):
+        assert [x.name for x in p.lookup(name).params if x.optional] == [optional]
+    display = p.lookup("DisplayMenu")
+    assert [x.name for x in display.params] == ['"MenuName"', "AddToSystem", "Cursor"]    # quotes kept
+    assert [x.name for x in display.params if x.optional] == ["Cursor"]
 
 
 @pytest.mark.skipif(not (CORPUS / "Instructions").is_dir(), reason="local help corpus not present")

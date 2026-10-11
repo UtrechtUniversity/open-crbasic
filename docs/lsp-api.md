@@ -80,7 +80,7 @@ HelpProvider(directory)            # directory = root holding Instructions/*.htm
     .lookup(name) -> InstructionHelp | None      # case-insensitive; None for unknown/unparsable
     .names() -> tuple[str, ...]                  # upper-case names with parsable help
 InstructionHelp(name, names, title, syntax, params: tuple[ParamHelp, ...], summary, source_path)
-ParamHelp(name, link, description, optional=False)
+ParamHelp(name, link, description, optional=False, repeatable=False)
 pair_signature(name, type_codes, help) -> PairedSignature(matched, help_count, catalog_count, params, note)
 render_markdown(help, sig=None) / render_plain(help, sig=None) / render_signature_label(sig)
 coverage_report(profile, provider, names=None) -> CoverageReport(total, with_help, matching, mismatches, without_help)
@@ -95,10 +95,19 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
   parameter per name with that link; a word glued after a link (`Mult, Offse</a>t`) belongs to the
   link's name; a link starting after other name text begins a new parameter; commas inside quotes or
   brackets do not split; a parenthesised note directly after a bare statement name (`(optional)`,
-  `(or Alias)`) is not a parameter; `[ X ]` brackets are dropped from the name and do not set
-  `optional`, which follows the word `optional` only.
+  `(or Alias)`) is not a parameter; statement-block brackets outside a call's parentheses
+  (`[statementblock]`, `Next [counter]`) are not parameters.
+  Decided by the human 2026-10-11 ([LSP_PROGRESS.md](../LSP_PROGRESS.md) "Human decisions"):
+  - A bare `[X]` (one name in brackets, linked or not, e.g. `[ModbusOption]`, `[ FFTSpaInit ]`)
+    sets `optional=True` and drops the brackets. Other brackets stay as written (`Mode [A,B,C]`)
+    and do not set `optional`.
+  - A trailing `...` on the last name (`Item1, Item2, Item3...`) makes one parameter named after
+    the stem (`Item`) with `repeatable=True`; the numbered run ending in that name collapses into
+    it. The signature label shows `Item...`. An unnumbered `Extra...` is `Extra`, repeatable.
+  - Quoted names keep their quotes (`"MenuName"`).
   `description` comes from the page's Parameters section, else the linked parameter page, else `""`.
-  `optional` is `True` only where the syntax line says `optional`; `False` means "not stated".
+  `optional` is `True` where the syntax line says `optional` or a bare `[X]` wraps the name; `False`
+  means "not stated".
 - Pairing is by count only. `pair_signature` uses help names when `len(params)` equals the catalog
   type-code count and otherwise returns `matched=False` with a note and placeholder labels
   (`arg1`...): no guessing. Help names never change checker rules; types come from the catalog.
@@ -108,7 +117,8 @@ coverage_report(profile, provider, names=None) -> CoverageReport(total, with_hel
   tests nevertheless use synthetic fixtures (`tests/lsp/fixtures/help/`). The server (LSP-04b) takes the directory from the
   setting `opencrbasic.helpDirectory`, default none: no help is shown unless configured.
 - Coverage (observed, CR6 catalog against the local `extracted_chm/`): see
-  [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md). Documentation coverage is not
+  [LSP-04a-handoff.md](lsp-rounds/LSP-04a-handoff.md) and, after the 2026-10-11 rules,
+  [LSP-04a-rules-handoff.md](lsp-rounds/LSP-04a-rules-handoff.md). Documentation coverage is not
   compiler-rule coverage.
 
 ## Instruction catalog (LSP-03a)
