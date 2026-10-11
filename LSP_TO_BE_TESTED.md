@@ -439,3 +439,25 @@ repository `.vscode/settings.json` does). Full list in
 5. Palette "opencrbasic: Show Table Fields" lists Main's DataTables with field names, units,
    processing.
 
+
+### T-16 Review round 3 fixes in VS Code (LSP-R3), appended 2026-10-11
+
+On a revision at or after the LSP-R3 integration (see ledger). Brief:
+[LSP-R3.md](docs/lsp-rounds/LSP-R3.md); handoffs `LSP-R3a..e-handoff.md`. API-level reproducers are
+regression tests already; these are the editor-visible checks:
+1. A1: two entries `A.CR6`, `B.CR6` both `Include "Lib.crb"` declaring `Public sharedValue`. F2 on
+   the use in A: the edit covers A, B and Lib; both entries compile after the rename. A collision
+   present only in B (`Public renamedValue` in B) refuses with a message.
+2. F1: `Sub Fill(p(sz) As Float, sz As Long)` -> F2 on `sz` in the body renames all three tokens;
+   Go to Definition lands on the parameter, not the dimension.
+3. A2: with `"opencrbasic.maxFileBytes": 100` and a large `Lib.crb` included, the size warning
+   shows; deleting the `Include` line (Lib unchanged) clears it and features return without restart.
+4. F4: `Units T = Deg _` / `        C` -> Format Document leaves that continuation line untouched.
+5. F9: signature help for `Sample` stays visible with the cursor inside `Temp(|1)` in
+   `Sample(1, Temp(1), FP2)`.
+6. F17: close the window right after changing `opencrbasic.pythonPath`: no orphan `opencrbasic.lsp`
+   process remains (`ps`).
+7. F18: set then remove a numeric setting (e.g. `debounceMs`) in settings.json; the settings UI
+   offers integers only; removal returns the server to the default (output channel trace).
+8. Windows only (F5): open an entry outside the `entries` globs with an error, close it: its
+   Problems entries are cleared.

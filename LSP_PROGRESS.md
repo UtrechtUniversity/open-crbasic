@@ -16,21 +16,18 @@ Live implementation state and session handoff. Design and acceptance criteria:
 - Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
 - Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
   host-retested. [Round 3, gpt-6-astra at high effort](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
-  cumulative through `ccba3666`: three new findings (one P1, two P2), awaiting triage and fixes.
+  cumulative through `ccba3666`: three new findings (one P1, two P2), fixed in LSP-R3.
   Second round-3 reviewer, Claude Fable 5.1 at high effort, same HEAD:
   [review-2026-10-11-ccba3666-fable.md](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md),
-  1 P1, 4 P2, 14 P3, non-overlapping; also awaiting triage and fixes.
-- Active: LSP-R3a-e (review round 3 fixes, [brief](docs/lsp-rounds/LSP-R3.md)). Done: LSP-08d (test tiers, xdist), LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
+  1 P1, 4 P2, 14 P3, non-overlapping; fixed in LSP-R3 (F2 refused rather than renamed; F12 three of four pairs, `BeginBurstTrigger` has no local help page; F15 `TO` still offered, catalog lists it as a function only). Not yet reviewed: `ccba3666..HEAD` (LSP-08d, LSP-09, LSP-R3).
+- Active: none. Done: LSP-R3a-e (review round 3 fixes, [brief](docs/lsp-rounds/LSP-R3.md)), LSP-08d (test tiers, xdist), LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
 - Remaining LSP work: see "Remaining work" below.
 
 ## Remaining work
 
 1. LSP-08d and LSP-08e integrated. Test tiers and `tools/lsp_gate.py` are developer tooling, documented
    in `docs/lsp-api.md` "Test tiers"; the user guide needs no change for them.
-2. Triage and fix the findings in [review round 3](docs/lsp-rounds/review-2026-10-11-ccba3666.md)
-   and in the [second round-3 report](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md) (rename
-   token-ordinal defects, structure-member field check, `Units` continuation in the formatter,
-   Windows URI clear, then its P3 list and documentation pass).
+2. Review round 3 fixed (LSP-R3); host check T-16. Next review (human-run) over `ccba3666..HEAD`.
 3. LSP-08 release validation still open: install-from-VSIX on the host (T-14); Windows/Linux host matrix (or narrow the release claim to macOS); visual checks
    (T-09/T-12: hover/signature rendering, F2 box, Ctrl+. menu, toasts, Problems, colours).
 4. LSP-09 (human request) done: parameter-name inlay hints and commands "Show Compiler Output" /
@@ -185,7 +182,7 @@ Open:
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
 | LSP-08d test-run speed | `codex/lsp-08-speed` -> cherry-picked | integrated | coordinator on combined tree: tests/lsp -n 4 721 passed in 96 s (serial was ~360 s), fast tier `-m "not slow"` 709 in 69 s, `-m server` 136 in 53 s, pyrefly 0, selfdiff 0 differ; `server` mark added to the LSP-09c server tests (`test_lsp09_server.py`, 4 tests in `test_features_positions.py`) that postdate the worker base; worker: full suite -n 4 359 s vs 653 s serial | - |
-| LSP-R3 review round 3 fixes | `codex/lsp-r3{a..e}` | active | [brief](docs/lsp-rounds/LSP-R3.md): all 22 findings accepted (astra A1-A3, Fable F1-F19); F19 ledger duplication removed by the coordinator | verify, cherry-pick |
+| LSP-R3 review round 3 fixes | `codex/lsp-r3{a..e}` -> cherry-picked | integrated | coordinator on combined tree `f6ce2b2`: tests/lsp -n 4 757 passed, full suite -n 4 22262 passed / 507 skipped, selfdiff 0 differ, pyrefly 0, npm 30/30; verify.py (CR6COMP=opencrbasic) `BUILD  host tests 119 FAIL | CRBasic 16/16 compiled, 6 warning(s) | repository pass` (the 3 known stale power/solar digests). Parser change additive only (`Param.dim_exprs`, compare=False). A2 added optional `AnalysisRequest.max_file_bytes` / `LimitedSource` (default unchanged) | host T-16 |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |
