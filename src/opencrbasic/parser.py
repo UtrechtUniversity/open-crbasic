@@ -208,6 +208,14 @@ _WORD_BINARY_OPS = {"MOD", "AND", "OR", "XOR", "EQV", "IMP"}  # `Fn(1) MOD 2` is
 _FUNCTION_DEF_RE = re.compile(r"\s*Function\s+([A-Za-z_][A-Za-z0-9_]*)", re.I)
 
 
+LOGICAL_ASSIGN = "logical-prefixed assignment"
+
+
+def _has_assign(expr) -> bool:
+    return isinstance(expr, S.Binary) and (expr.op == "ASSIGN" or _has_assign(expr.left)
+                                           or _has_assign(expr.right))
+
+
 class _Parser:
     def __init__(self, profile: profiles.Profile, diags: Diagnostics):
         self.profile = profile
@@ -220,6 +228,7 @@ class _Parser:
         self.function_names: set[str] = set()
         self._collect = False
         self._to_ok = False  # `To` as a binary operator: assignment values and `Select Case`
+        self._logical_assign = False  # `A AND B = C`: a logical operand may be an assignment
 
     # ------------------------------------------------------------ driver
 
@@ -781,6 +790,20 @@ class _Parser:
                 value = S.Binary(op_tok.line, file, base_op, target, value)
             return S.Assignment(line, file, target=target, value=value,
                                 compound=op_tok.text != "=")
+        if isinstance(target, (S.Name, S.Index)) and p.peek().kind == "IDENT" \
+                and p.peek().upper in _WORD_BINARY_OPS - {"MOD"}:
+            end = p.i
+            p.i = start
+            self._logical_assign = True
+            try:
+                expr = self._parse_expr(p, line, file)
+            except _ParseError:
+                expr = None
+            finally:
+                self._logical_assign = False
+            if expr is not None and p.at_end() and _has_assign(expr):
+                return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN, expr=expr)
+            p.i = end
         if isinstance(target, S.Name) and p.is_ident("AS"):
             # A StructureType member declaration (`Frequency As Float`, no Public/Dim prefix):
             # confirmed valid CRBasic inside StructureType...EndStructureType by corpus testing
@@ -1420,9 +1443,32 @@ class _Parser:
         left = self._parse_not(p, line, file)
         while p.peek().kind == "IDENT" and p.peek().upper in self._LOGICAL_OPS:
             op = p.next().upper
-            right = self._parse_not(p, line, file)
+            if self._logical_assign and self._at_assign_target(p):
+                # `=` binds below the logical words here: `A AND B = C AND D` is `A AND (B = (C AND
+                # D))` (oracle, all four loggers, 2026-10-10, docs/checker.md)
+                target = self._parse_atom(p, line, file)
+                p.next()
+                right = S.Binary(line, file, "ASSIGN", target, self._parse_logical(p, line, file))
+            else:
+                right = self._parse_not(p, line, file)
             left = S.Binary(line, file, op, left, right)
         return left
+
+    @staticmethod
+    def _at_assign_target(p: _TokStream) -> bool:
+        """`name =` or `name(...) =` ahead."""
+        if p.peek().kind != "IDENT" or p.peek().upper in _WORD_BINARY_OPS | {"NOT"}:
+            return False
+        k = 1
+        if p.is_op("(", 1):
+            depth = 0
+            while p.peek(k).kind != "EOF":
+                t = p.peek(k)
+                depth += (t.text == "(") - (t.text == ")") if t.kind == "OP" else 0
+                k += 1
+                if depth == 0:
+                    break
+        return p.is_op("=", k)
 
     def _parse_not(self, p: _TokStream, line: int, file: str) -> S.Expr:
         if p.is_ident("NOT"):
@@ -1667,7 +1713,13 @@ def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
                         start = j + 2 if j + 1 < len(toks) and toks[j + 1].text == "=" else 0
                         break
         parser_ = _Parser(profile, Diagnostics())
-        return parser_._parse_expr(_TokStream(toks[start:] + [_eof_like(0)], text), 0, "")
+        parser_._logical_assign = True
+        for cut in range(len(toks), start, -1):  # a dangling tail (`... AND state =`) is dropped
+            try:
+                return parser_._parse_expr(_TokStream(toks[start:cut] + [_eof_like(0)], text), 0, "")
+            except _ParseError:
+                continue
+        return None
     except Exception:  # a shape the expression grammar cannot take (`{`): nothing was parsed
         return None
 
