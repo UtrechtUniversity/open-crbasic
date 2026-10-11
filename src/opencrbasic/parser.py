@@ -455,6 +455,27 @@ class _Parser:
             # parameter: `DataTable (Ten Sec,True,-1)` names `Ten` and reports `Too many
             # parameters:  -1.`; `ConstTable (my Tab,0)` compiles (oracle, 2026-10-01)
             seg = seg[:3] + [lexer.Token("OP", ",", ",", seg[3].col, seg[3].line)] + seg[3:]
+        if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper == "CALLTABLE"
+                and seg[1].kind == "NUMBER"):
+            m = re.compile(r"\d\w*").match(seg_text, seg[1].col)
+            if m:
+                rest = [t for t in seg[2:] if t.col >= m.end()]
+                seg = seg[:1] + [lexer.Token("IDENT", m.group(0), m.group(0).upper(), seg[1].col,
+                                             seg[1].line)] + rest
+        if (len(seg) > 3 and seg[0].kind == "IDENT" and seg[0].upper == "DATATABLE"
+                and seg[1].kind == "OP" and seg[1].text == "(" and seg[2].kind in ("NUMBER", "STRING")):
+            # a table name starting with a digit (`DataTable(15Min,...)`, `("15Min")`) is one name,
+            # reported by the checker (oracle, all four loggers, 2026-10-11)
+            m = re.compile(r"\d\w*").match(seg_text, seg[2].col)
+            if seg[2].kind == "STRING" and re.fullmatch(r"\d\w*", str(seg[2].value)):
+                name, end = str(seg[2].value), seg[2].col + len(seg[2].text)
+            elif m and seg[2].kind == "NUMBER":
+                name, end = m.group(0), m.end()
+            else:
+                name = end = None
+            if name:
+                rest = [t for t in seg[3:] if t.col >= end]
+                seg = seg[:2] + [lexer.Token("IDENT", name, name.upper(), seg[2].col, seg[2].line)] + rest
         p = _TokStream(seg, seg_text)
         try:
             if (self._in_struct and seg and seg[0].kind == "IDENT"

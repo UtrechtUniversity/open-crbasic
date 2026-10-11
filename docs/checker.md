@@ -4971,3 +4971,24 @@ statement against the names the cascade left unregistered: `Function F2(N1)` / `
 -> `Q is not defined.`, `Return F2(N1)` -> `N1 is not defined.` then `No Matching, or out of place )
 in expression: F2(N1).`. `cr3xx._report_unregistered` no longer skips `Return`. Fixture:
 `tests/fixtures/return_tainted.json`; corpus: `chm/functionendfunction_4.CR6`.
+
+### Table names starting with a digit (2026-10-11)
+
+`DataTable(15Min,True,-1)` (also `("15Min")`, `(1)`, `(15)`) is a named table whose name is
+rejected: `Table name 15Min illegal, starts with a number.` at the `DataTable` line (message
+`docs/messages.tsv`), the body is then compiled normally and `CallTable 15Min` resolves (a
+`CallTable 15Min` with no such table is `Could not find DataTable 15Min.`). The parser reads
+digits-then-word after `DataTable(` / `CallTable` as one name.
+
+- CR6/CR1000X: one message per such table, in tier B (so a pass-1 error such as `Invalid Variable
+  declaration` hides it; body errors, pass 2 errors and a second illegal table do not).
+- CR300/CR350: only the first illegal table is reported, and only when nothing else was found
+  earlier: any error outside a table body, or a non-name error inside one (`Foo(1)` unknown,
+  `Invalid or missing parameter.`, `FieldClassify is not defined.`), hides it; an undefined name
+  inside a table body (`Zed is not defined.`) races it in file order and the first of the two is
+  the only error printed; `CallTable T9` / unclosed-table errors lose to it. Modelled as
+  `instr_data.finalize_illegal_table_names`; it is a fit to the probed shapes, not a traced
+  mechanism. A table with no fields (`DataTable(15Min..)` `EndTable`) additionally gets `Table
+  15Min declared with no output fields.` on CR6; not implemented.
+
+Fixture: `tests/fixtures/digit_table_names.json` (164 cases, four loggers).

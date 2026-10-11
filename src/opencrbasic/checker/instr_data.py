@@ -24,7 +24,7 @@ import re
 
 from .. import consteval
 from .. import syntax as S
-from ..diagnostics import Diagnostics
+from ..diagnostics import Diagnostic, Diagnostics
 from ..profiles import Profile
 from . import symbols
 
@@ -476,6 +476,8 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
         kw = st.keyword.upper()
         if kw == "DATATABLE":
             in_table, intervals, has_maxmin = True, 0, False
+            if not profile.single_pass:   # CR300/CR350: `finalize_illegal_table_names`
+                diags.items += _illegal_table_name(st)
         elif kw == "ENDTABLE":
             in_table = False
         elif in_table and kw in ("MAXIMUM", "MINIMUM"):
@@ -899,3 +901,50 @@ def _members(expr: S.Expr | None):
         yield from _members(expr.right)
     elif isinstance(expr, S.Unary):
         yield from _members(expr.operand)
+
+
+def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
+    """oracle, all four loggers, 2026-10-11 (docs/checker.md "Table names starting with a digit")"""
+    if st.args and isinstance(st.args[0], S.Name) and st.args[0].name[:1].isdigit():
+        return [Diagnostic("error", st.line, f"Table name {st.args[0].name} illegal, starts with a number.",
+                           st.file, cascade=False)]
+    return []
+
+
+def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Diagnostics) -> None:
+    """CR300/CR350 only: the first `Table name X illegal, starts with a number.` is the only one
+    reported, and only when no other error was found earlier in the compile (oracle, 2026-10-11,
+    docs/checker.md "Table names starting with a digit"). Errors outside table bodies and
+    unknown-statement errors inside them come first and hide it; an undefined name inside a table
+    body (`Zed is not defined.`) races it in file order, the first one wins and ends the rest."""
+    marks = [d for st in program.statements
+             if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE"
+             for d in _illegal_table_name(st)][:1]
+    if not marks:
+        return
+    bodies: list[tuple[str, int, int]] = []
+    start = None
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if kw == "DATATABLE":
+            start = st
+        elif kw == "ENDTABLE" and start is not None:
+            bodies.append((start.file, start.line, st.line))
+            start = None
+    if start is not None:
+        bodies.append((start.file, start.line, 10 ** 9))
+    unparsed = {(st.file, st.line) for st in program.statements if isinstance(st, S.Unparsed)}
+
+    def late(d) -> bool:   # resolved after the table names: `CallTable T9`, an unclosed table
+        return d.message.startswith("Could not find DataTable ") or d.message == \
+            "DataTable ... EndTable not matched."
+
+    def stage_b(d) -> bool:
+        return late(d) or d.message.endswith(" is not defined.") and (d.file, d.line) not in unparsed and \
+            any(f == d.file and a < d.line <= b for f, a, b in bodies)
+
+    others = [d for d in diags.items if d.severity == "error"]
+    if any(not stage_b(d) for d in others):
+        return
+    first = sorted([*marks, *others], key=lambda d: (late(d), d.file or "", d.line))[0]
+    diags.items[:] = [d for d in diags.items if d.severity != "error"] + [first]
