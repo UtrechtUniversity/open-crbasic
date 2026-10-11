@@ -10,6 +10,7 @@ the loader's historical behaviour. See `docs/lsp-api.md`.
 from __future__ import annotations
 
 import hashlib
+import stat
 from pathlib import Path
 from typing import Mapping, Protocol
 
@@ -57,6 +58,36 @@ class OverlaySource:
             return extra or None
         have = set(names)
         return names + [n for n in extra if n not in have]
+
+
+class LimitedSource:
+    """`inner` without the files larger than `limit` bytes: such a file reads as missing (None)
+    and is recorded in `oversized` (path -> size). The size of an overlay is its length; a disk
+    file is checked with `stat` before it is read, so an oversized file is never read."""
+
+    def __init__(self, inner: OverlaySource, limit: int):
+        self.inner = inner
+        self.limit = limit
+        self.oversized: dict[Path, int] = {}
+
+    def read(self, path: Path) -> bytes | None:
+        data = self.inner.overlays.get(Path(path).absolute())
+        if data is None:
+            try:
+                info = Path(path).stat()
+            except OSError:
+                info = None
+            if info is not None and stat.S_ISREG(info.st_mode) and info.st_size > self.limit:
+                self.oversized[Path(path)] = info.st_size
+                return None
+            data = self.inner.read(path)
+        if data is not None and len(data) > self.limit:       # an overlay, or a file that grew
+            self.oversized[Path(path)] = len(data)
+            return None
+        return data
+
+    def list_dir(self, directory: Path) -> list[str] | None:
+        return self.inner.list_dir(directory)
 
 
 class RecordingSource:

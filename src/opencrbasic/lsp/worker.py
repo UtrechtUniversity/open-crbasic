@@ -23,6 +23,7 @@ class JobResult:
     reads: tuple[tuple[str, str | None], ...]      # path -> sha256 or None (missing)
     listings: tuple[str, ...]                      # directories whose listing was read
     program: bytes | None = None                   # pickled parsed program (None: none or unpicklable)
+    oversized: tuple[tuple[str, int], ...] = ()    # files over max_file_bytes (read as missing)
 
 
 def _pickle_program(program: object) -> bytes | None:
@@ -34,7 +35,8 @@ def _pickle_program(program: object) -> bytes | None:
         return None
 
 
-def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...]) -> JobResult:
+def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...],
+                 max_file_bytes: int | None = None) -> JobResult:
     # Test hooks (docs/lsp-api.md "Test hooks"): only ever act on a substring of the entry path.
     crash = os.environ.get(CRASH_ENV)
     if crash and crash in entry:
@@ -47,7 +49,8 @@ def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...
     from .. import analysis
 
     result = analysis.analyze(analysis.AnalysisRequest(
-        Path(entry), logger, {Path(p): data for p, data in overlays}))
+        Path(entry), logger, {Path(p): data for p, data in overlays},
+        max_file_bytes=max_file_bytes))
     return JobResult(
         result.ok,
         tuple((d.severity, d.message, d.line, None if d.path is None else str(d.path), d.file,
@@ -56,4 +59,5 @@ def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...
         tuple(result.implementation_failures),
         tuple((str(p), h) for p, h in result.dependencies.reads.items()),
         tuple(str(p) for p in result.dependencies.listings),
-        _pickle_program(result.program))
+        _pickle_program(result.program),
+        tuple((str(p), size) for p, size in result.dependencies.oversized.items()))

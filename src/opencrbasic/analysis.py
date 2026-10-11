@@ -13,12 +13,16 @@ from typing import Mapping
 
 from . import positions, profiles
 from .compiler import compile_file
-from .sources import DiskSource, OverlaySource, RecordingSource
+from .sources import DiskSource, LimitedSource, OverlaySource, RecordingSource, SourceProvider
 
 API_VERSION = 1
 
 
 def _no_overlays() -> Mapping[Path, bytes]:
+    return MappingProxyType({})
+
+
+def _no_sizes() -> Mapping[Path, int]:
     return MappingProxyType({})
 
 
@@ -29,6 +33,7 @@ class AnalysisRequest:
     overlays: Mapping[Path, bytes] = field(default_factory=_no_overlays)  # unsaved buffers, encoded
     warn_unused: bool = False
     signature: bool = False             # compute ProgSignature (reads every included file again)
+    max_file_bytes: int | None = None   # a larger file reads as missing and is listed in `oversized`
 
 
 @dataclass(frozen=True)
@@ -46,6 +51,7 @@ class AnalysisDiagnostic:
 class Dependencies:
     reads: Mapping[Path, str | None]                    # path -> sha256 hex of the bytes, None: missing
     listings: Mapping[Path, tuple[str, ...] | None]     # directory -> sorted file names, None: no dir
+    oversized: Mapping[Path, int] = field(default_factory=_no_sizes)  # path -> size, over the limit
 
 
 @dataclass(frozen=True)
@@ -63,7 +69,10 @@ class AnalysisResult:
 
 def analyze(request: AnalysisRequest) -> AnalysisResult:
     entry = Path(request.entry).absolute()
-    recorder = RecordingSource(OverlaySource(DiskSource(), request.overlays))
+    overlay = OverlaySource(DiskSource(), request.overlays)
+    limited = None if request.max_file_bytes is None else LimitedSource(overlay, request.max_file_bytes)
+    inner: SourceProvider = overlay if limited is None else limited
+    recorder = RecordingSource(inner)
     result = compile_file(entry, profiles.get(request.logger), warn_unused=request.warn_unused,
                           source=recorder, signature=request.signature)
     includes = getattr(result.program_ast, "include_paths", None) or {}
@@ -83,4 +92,6 @@ def analyze(request: AnalysisRequest) -> AnalysisResult:
         API_VERSION, request, result.ok, result.mode, tuple(diagnostics),
         tuple(result.result_lines(show_signature=request.signature)),
         tuple(result.implementation_exceptions),
-        Dependencies(dict(recorder.reads), dict(recorder.listings)), result.program_ast)
+        Dependencies(dict(recorder.reads), dict(recorder.listings),
+                     {} if limited is None else dict(limited.oversized)),
+        result.program_ast)

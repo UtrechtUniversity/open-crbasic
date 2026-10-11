@@ -160,7 +160,8 @@ class Entry:
     versions: dict[Path, int] = field(default_factory=dict)       # open docs at capture
     error: str | None = None
     error_limit: bool = False                   # `error` is a server limit, not a failure
-    read_paths: tuple[Path, ...] = ()           # files the last analysis read (original case)
+    triggers: set[Path] | None = field(default_factory=set)  # paths re-requesting it while a job
+                                                # runs (None: a request not tied to a path)
     used: int = 0                               # last feature use (cache eviction order)
     evicted: bool = False                       # its program was dropped by the cache budget
     analysed: Analysed | None = None            # newest program that was parsed, for features
@@ -173,6 +174,7 @@ class Snapshot:
     versions: dict[Path, int]
     logger: str
     timeout: float
+    max_file_bytes: int | None = None
 
 
 class ServerError(Exception):
@@ -189,16 +191,13 @@ class _Broken:
 _BROKEN = _Broken()
 
 
-def _oversize(paths: list[Path], overlays: dict[Path, int], limit: int) -> tuple[Path, int] | None:
-    """The first of `paths` (open text, else the disk file) larger than `limit` bytes."""
-    for path in paths:
-        try:
-            size = overlays[path] if path in overlays else path.stat().st_size
-        except OSError:
-            continue
-        if size > limit:
-            return path, size
-    return None
+def _oversize(path: Path, overlays: dict[Path, int], limit: int) -> tuple[Path, int] | None:
+    """`path` and its size (open text, else the disk file) when larger than `limit` bytes."""
+    try:
+        size = overlays[path] if path in overlays else path.stat().st_size
+    except OSError:
+        return None
+    return (path, size) if size > limit else None
 
 
 def _key(path: Path) -> str:
@@ -243,6 +242,7 @@ class Session:
         self.entries: dict[Path, Entry] = {}
         self.discovered: set[Path] = set()
         self._last: dict[str, tuple] = {}
+        self._uris: dict[Path, str] = {}           # the client's URI of every path it opened
         self._pool: ProcessPoolExecutor | None = None
         self._pool_gen = 0
         self._sem: asyncio.Semaphore | None = None
@@ -397,6 +397,7 @@ class Session:
         doc = Doc(uri, version, text)
         doc.data, doc.replaced = self._encode(text)
         self.docs[path] = doc
+        self._uris[path] = uri
         self._sync_entries()
         self._changed(path, 0.0, shortcut=hashlib.sha256(doc.data).hexdigest())
         self._publish({path})
@@ -450,7 +451,7 @@ class Session:
                         versions[path] = doc.version
                 self._notify()
                 continue
-            self._request(entry, delay)
+            self._request(entry, delay, path)
 
     def _changed_tree(self, path: Path, delay: float) -> None:
         """A directory appeared or disappeared: re-analyse the entries that read or listed it or
@@ -464,9 +465,14 @@ class Session:
 
     # ---- scheduling ----------------------------------------------------------------------
 
-    def _request(self, entry: Entry, delay: float) -> None:
+    def _request(self, entry: Entry, delay: float, path: Path | None = None) -> None:
+        """Re-analyse `entry`. `path`: the file whose change asks for it (see `_unaffected`)."""
         loop = asyncio.get_running_loop()
         entry.requested += 1
+        if path is None:
+            entry.triggers = None
+        elif entry.triggers is not None:
+            entry.triggers.add(path)
         entry.not_before = loop.time() + delay
         if entry.task is None or entry.task.done():
             self._start(entry)
@@ -497,7 +503,8 @@ class Session:
     def _snapshot(self) -> Snapshot:
         return Snapshot(tuple((str(p), d.data) for p, d in self.docs.items()),
                         {p: d.version for p, d in self.docs.items()},
-                        self.config.logger, self.config.analysis_timeout_ms / 1000)
+                        self.config.logger, self.config.analysis_timeout_ms / 1000,
+                        self.config.max_file_bytes)
 
     async def _entry_loop(self, entry: Entry) -> None:
         loop = asyncio.get_running_loop()
@@ -508,8 +515,12 @@ class Session:
                 if entry.removed:
                     break
                 target = entry.requested
+                entry.triggers = set()
                 snap = self._snapshot()
                 outcome = await self._guarded_job(entry, snap)
+                if not entry.removed and entry.requested != target \
+                        and self._unaffected(entry, outcome):
+                    target = entry.requested         # the newer requests cannot change it
                 entry.done = target
                 if entry.removed or entry.requested != target:
                     continue                         # superseded: discard
@@ -522,30 +533,36 @@ class Session:
             self._apply(entry, self._snapshot(), ServerError(
                 "Internal error in the language server scheduler; see the server log."))
 
+    @staticmethod
+    def _unaffected(entry: Entry, outcome: JobResult | ServerError) -> bool:
+        """Whether the requests made while `outcome` was computed are all for files it neither
+        read (or missed) nor could find through a directory listing, the entry itself excluded:
+        the result then still stands, and `_apply` checks the open versions it read."""
+        if entry.triggers is None or not isinstance(outcome, JobResult):
+            return False
+        reads = {_key(Path(p)) for p, _ in outcome.reads}
+        dirs = {_key(Path(d)) for d in outcome.listings}
+        return all(p != entry.path and _key(p) not in reads and _key(p.parent) not in dirs
+                   for p in entry.triggers)
+
     async def _guarded_job(self, entry: Entry, snap: Snapshot) -> JobResult | ServerError:
-        """`_run_job` between two file-size checks: before the job on the files the entry is known
-        to read, after it on the files it actually read (a new include is only known then)."""
+        """`_run_job` with the `maxFileBytes` bound: the entry file is checked before the job, and
+        the worker refuses (without reading) every file of this analysis that is over the limit, so
+        the bound applies to what the current text includes, not to what an earlier one did."""
+        limit = self.config.max_file_bytes
         sizes = {Path(p): len(data) for p, data in snap.overlays}
-        over = await asyncio.to_thread(_oversize, [entry.path, *entry.read_paths], sizes,
-                                       self.config.max_file_bytes)
+        over = await asyncio.to_thread(_oversize, entry.path, sizes, limit)
+        result = None
         if over is None:
             outcome = await self._run_job(entry, snap)
-            if isinstance(outcome, ServerError):
+            if isinstance(outcome, ServerError) or not outcome.oversized:
                 return outcome
-            over = await asyncio.to_thread(_oversize, [Path(p) for p, h in outcome.reads if h],
-                                           sizes, self.config.max_file_bytes)
-            if over is None:
-                return outcome
-            result = outcome
-        else:
-            result = None
+            over, result = (Path(outcome.oversized[0][0]), outcome.oversized[0][1]), outcome
         path, size = over
         self.notice(f"size:{path}", f"{path.name} is {size} bytes, above the maxFileBytes limit "
-                    f"of {self.config.max_file_bytes}; the entry programs that read it are not "
-                    "analysed.")
+                    f"of {limit}; the entry programs that read it are not analysed.")
         return ServerError(f"Analysis of {entry.path.name} skipped: {path.name} is {size} bytes, "
-                           f"above the maxFileBytes limit of {self.config.max_file_bytes}.",
-                           limit=True, result=result)
+                           f"above the maxFileBytes limit of {limit}.", limit=True, result=result)
 
     def _semaphore(self) -> asyncio.Semaphore:
         if self._sem is None:
@@ -574,12 +591,14 @@ class Session:
             return outcome
         async with self._solo_lock():
             slots = self._semaphore()
-            for _ in range(self.workers):
-                await slots.acquire()
+            held = 0
             try:
+                while held < self.workers:      # every permit taken is released, even on cancel
+                    await slots.acquire()
+                    held += 1
                 outcome = await self._attempt(entry, snap)
             finally:
-                for _ in range(self.workers):
+                for _ in range(held):
                     slots.release()
         if isinstance(outcome, _Broken):
             return ServerError(f"The analysis worker process terminated unexpectedly while "
@@ -598,7 +617,8 @@ class Session:
         pool, gen = self._get_pool()
         try:
             future = loop.run_in_executor(
-                pool, run_analysis, str(entry.path), snap.logger, snap.overlays)
+                pool, run_analysis, str(entry.path), snap.logger, snap.overlays,
+                snap.max_file_bytes)
             return await asyncio.wait_for(future, snap.timeout)
         except asyncio.TimeoutError:
             self._reset_pool(gen)
@@ -657,7 +677,6 @@ class Session:
     @staticmethod
     def _record_reads(entry: Entry, result: JobResult) -> None:
         entry.reads = {_key(Path(p)): h for p, h in result.reads}
-        entry.read_paths = tuple(Path(p) for p, h in result.reads if h)
         entry.dirs = frozenset(_key(Path(d)) for d in result.listings)
 
     def _enforce_cache(self, keep: Entry) -> None:
@@ -764,7 +783,7 @@ class Session:
         for path in sorted(paths):
             diags = self._compose(path)
             doc = self.docs.get(path)
-            uri = doc.uri if doc else path.as_uri()
+            uri = doc.uri if doc else self._uris.get(path) or path.as_uri()
             version = doc.version if doc else None
             key = (version, tuple(diags))
             last = self._last.get(uri)

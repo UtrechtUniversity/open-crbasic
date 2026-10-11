@@ -16,6 +16,7 @@ a `SourceProvider` and a result mapping. It writes no files and does not raise f
 |---|---|
 | `DiskSource` | The loader's historical behaviour: `read` is `read_bytes` with `OSError` -> `None`; `list_dir` is `None` for a non-directory, else the names of the files (not subdirectories) in `iterdir` order. |
 | `OverlaySource(base, overlays)` | Overlay bytes win over `base`. An overlay file also appears in its directory's listing (after the base names, sorted), even when `base` has no such directory. |
+| `LimitedSource(inner, limit)` | `inner` is an `OverlaySource`. A file larger than `limit` bytes (an overlay by its length, a disk file by `stat` before any read) reads as `None` and is recorded in `oversized` (path -> size). |
 | `RecordingSource(inner)` | Records `reads` (path -> sha256 hex, `None` for a miss) and `listings` (directory -> sorted name tuple, `None` for a non-directory). Returns `inner`'s data and order unchanged. |
 
 Paths are `Path.absolute()`: not lowercased, symlinks not resolved. `OverlaySource` makes its
@@ -34,7 +35,8 @@ resolved to (`display name as written, stripped -> Path`) and exposes it as
 ### API
 
 ```python
-analyze(AnalysisRequest(entry, logger="cr6", overlays={}, warn_unused=False, signature=False))
+analyze(AnalysisRequest(entry, logger="cr6", overlays={}, warn_unused=False, signature=False,
+                        max_file_bytes=None))
     -> AnalysisResult(api_version, request, ok, mode, diagnostics, rendered_lines,
                       implementation_failures, dependencies, program)
 ```
@@ -54,7 +56,9 @@ analyze(AnalysisRequest(entry, logger="cr6", overlays={}, warn_unused=False, sig
   The marker `Internal error: unable to compile program.` also stays in `diagnostics`, as in the CLI.
 - `dependencies`: `reads` and `listings` from the `RecordingSource`. A missing include shows as a
   `None`/absent read plus the directory listing that lacked it; a changed file hash or listing is
-  what makes a cached result stale.
+  what makes a cached result stale. With `max_file_bytes`, `dependencies.oversized` lists every
+  file of this analysis over the limit (path -> size); such a file is not read and appears as a
+  `None` read (LSP-R3c). Without it `oversized` is empty and nothing changes.
 - `program`: the parsed AST (`None` when parsing failed). Opaque and unstable.
 
 ### Encoding
@@ -322,7 +326,10 @@ opencrbasic-lsp: opencrbasic=<path to opencrbasic/__init__.py> api_version=<N> g
 The same line is sent once as `window/logMessage` of type Info after `initialized`: clients show
 stderr at error level, so the stderr copy alone reads as an error on a successful start.
 
-The revision comes from `git -C <package dir> rev-parse --short HEAD` (failure is ignored). The
+The revision comes from `git -C <package dir> rev-parse --show-toplevel --short HEAD` and is
+reported only when the package directory is that checkout's `src/opencrbasic` or
+`opencrbasic/src/opencrbasic`; a wheel installed inside another repository, or any failure, gives
+`git=unknown` (LSP-R3c). The
 server was written for `analysis.API_VERSION == 1`; any other value prints
 `opencrbasic-lsp: refusing to start: ...` and exits with status 2. Exit status after `shutdown` +
 `exit` is 0; `exit` without `shutdown` (or stdin closing) is 1. Everything the server logs goes to
@@ -404,7 +411,7 @@ extension `.CR6` (case-insensitive; additionally the extension of the configured
 
   | Key | Default | Meaning |
   |---|---|---|
-  | `maxFileBytes` | 2097152 | An entry whose file, or any file it reads (open text or disk), is larger is not analysed. Checked before the job on the entry and the files its last analysis read, and after it on the files it read. Changing it re-analyses every entry. |
+  | `maxFileBytes` | 2097152 | An entry whose file, or any file it reads (open text or disk), is larger is not analysed. The entry file is checked before the job; inside the job every file the current text reads is checked before it is read (`LimitedSource`), so an oversized file is never read and removing its include recovers at once (LSP-R3c). Changing it re-analyses every entry. |
   | `maxQueuedJobs` | 64 | Entries with an analysis task alive at once. Further entries wait (open documents first) and run as slots free; none is dropped. |
   | `maxCacheMb` | 256 | Pickled parsed programs kept for the language features. The least recently used program of another entry is dropped (its diagnostics stay); a later feature request re-analyses that entry. Results exist only for configured and open entries. |
 
@@ -426,8 +433,11 @@ the disk file for every analysis. When replacement happened the document gets on
 
 - Per entry: a change schedules a re-analysis after `debounceMs` of quiet (open, save, close and
   configuration changes schedule immediately). One job per entry at a time; a newer request while
-  one is in flight discards that job's result and runs once more. A result is also discarded when
-  an open document it depends on changed version since the snapshot.
+  one is in flight discards that job's result and runs once more, unless every such request came
+  from a change to a file the result neither read (nor missed) nor could find through a listed
+  directory, and not the entry itself: the result is then kept and those requests count as done
+  (LSP-R3c; an unrelated open or edit no longer postpones a first analysis). A result is also
+  discarded when an open document it depends on changed version since the snapshot.
 - Jobs run in a spawn-context `ProcessPoolExecutor` (2 workers), at most 2 concurrently, awaited
   from asyncio so the event loop never blocks on analysis.
 - Affected entries for a change to file F: entries whose last `dependencies.reads` contain F or
@@ -440,6 +450,10 @@ the disk file for every analysis. When replacement happened the document gets on
   crash, or the kill above while another entry's job ran) retries each affected job once, alone in
   the pool; a second break is reported as a crash for that entry only. The error diagnostic is
   cleared by the entry's next successful analysis.
+- A cancelled isolated retry (its entry removed while it waited for the pool) releases exactly the
+  worker slots it had taken (LSP-R3c).
+- Diagnostics of a document are published under the URI the client opened it with, also after it
+  is closed (the client's spelling is remembered per path), so a close clears what was published.
 - `shutdown` kills the pool; the process then exits on `exit`.
 
 ### Diagnostics mapping
@@ -527,7 +541,8 @@ client-listed value of `utf-8`, `utf-16`, `utf-32`; `utf-16` when absent). The c
 boundary only, in `features.Ctx`, for every feature and for diagnostics. The core modules only see
 decoded (Latin-1) columns, which are byte offsets into the compiler bytes.
 
-- An open document's overlay bytes carry its editor text (`positions.EditorBytes`). When the file
+- An open document's overlay bytes carry its editor text (`positions.EditorBytes`; in the server
+  process only: it pickles as plain `bytes`, so an analysis job carries each document once). When the file
   `encoding` replaces characters, the mapping goes through that text, one editor character at a
   time: each counts `len(ch.encode(encoding, "replace"))` bytes and its own width in the negotiated
   position encoding (`positions.compiler_column` in, `positions.editor_character` out). So an

@@ -205,7 +205,11 @@ def test_compiler_and_editor_columns_per_character():
     assert positions.editor_character(line, 99, encoding="utf-16", file_encoding="latin-1") == 12
 
 
-def test_editor_bytes_keep_their_text_through_pickling():
-    data = positions.EditorBytes(b"ab", "t")
-    again = pickle.loads(pickle.dumps(data))
-    assert again == b"ab" and again.text == "t"
+def test_editor_bytes_pickle_as_plain_bytes():
+    # the analysis job sent to a worker needs only the bytes; the editor text stays in the server
+    text = "Public x\n" * 2000
+    data = positions.EditorBytes(text.encode(), text)
+    again = pickle.loads(pickle.dumps(data, 5))
+    assert type(again) is bytes and again == data
+    assert len(pickle.dumps(data, 5)) < len(pickle.dumps(bytes(data), 5)) + 100
+    assert data.text == text                               # the original keeps its text

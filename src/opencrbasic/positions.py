@@ -33,7 +33,8 @@ class EditorBytes(bytes):
     """A document's compiler bytes (its editor `text` encoded with `errors="replace"`) that keep
     the editor text they came from. Feature positions are mapped through that text when it is
     present (`compiler_column` / `editor_character`), so a replaced character keeps its editor
-    width. `text` is None for plain bytes (files read from disk, unpickled copies)."""
+    width. `text` exists only in the process that encoded it: pickling (the analysis job sent to a
+    worker process) and copying give plain `bytes`, so a job carries each document's bytes once."""
 
     text: str | None = None
 
@@ -41,6 +42,9 @@ class EditorBytes(bytes):
         out = super().__new__(cls, data)
         out.text = text
         return out
+
+    def __reduce__(self):
+        return bytes, (bytes(self),)
 
 
 def units(text: str, encoding: str) -> int:

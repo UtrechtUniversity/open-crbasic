@@ -31,13 +31,25 @@ COMMAND_TABLE_FIELDS = "opencrbasic.showTableFields"
 
 
 def _git_revision(src_dir: Path) -> str | None:
+    """HEAD of the checkout `src_dir` (the imported package directory) belongs to, or None when
+    `src_dir` is not that checkout's `src/opencrbasic` or `opencrbasic/src/opencrbasic` (a wheel
+    installed inside some other repository)."""
     try:
-        out = subprocess.run(["git", "-C", str(src_dir), "rev-parse", "--short", "HEAD"],
-                             capture_output=True, text=True, timeout=5)
+        out = subprocess.run(["git", "-C", str(src_dir), "rev-parse", "--show-toplevel",
+                              "--short", "HEAD"], capture_output=True, text=True, timeout=5)
     except (OSError, subprocess.SubprocessError):
         return None
-    rev = out.stdout.strip()
-    return rev if out.returncode == 0 and rev else None
+    lines = out.stdout.split()
+    if out.returncode != 0 or len(lines) != 2:
+        return None
+    top, rev = Path(lines[0]), lines[1]
+    try:
+        here = src_dir.resolve()
+        ours = any((top / sub).resolve() == here
+                   for sub in ("src/opencrbasic", "opencrbasic/src/opencrbasic"))
+    except OSError:
+        return None
+    return rev if ours else None
 
 
 def startup_line() -> str:
