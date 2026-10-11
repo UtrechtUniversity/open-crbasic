@@ -1545,7 +1545,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 else:
                     if verdict == ("pass2", "fallback") or (
                             verdict is None and profile.known_first_word_pass1
-                            and _known_first_token(stmt.text, pass1_operands(program, profile))):
+                            and _known_first_token(stmt.text, pass1_operands(program, profile))) or (
+                            verdict is None and profile.single_pass
+                            and _logical_led_string(stmt.text)):
                         for message in _unparsed_string_messages(stmt, program, profile):
                             diags.error(stmt.line, message, stmt.file)
                     lead = re.match(r"\s*([A-Za-z_]\w*)\.", stmt.text)
@@ -1985,6 +1987,14 @@ def _known_first_token(text: str, operands: set[str]) -> bool:
         return False
     return bool(toks) and (toks[0].kind in ("NUMBER", "STRING")
                            or (toks[0].kind == "IDENT" and toks[0].upper in operands))
+
+
+def _logical_led_string(text: str) -> bool:
+    """CR300/CR350: `X AND S = "a" AND X =` gets the string line before the fallback, as on
+    CR6/CR1000X (oracle, 2026-10-11, `logical_assign.json`). Only a name, `AND`, and a string
+    literal is probed: `X AND S =` (no literal) and `X = 1 AND S = "a" AND X =` (assignment) get
+    no string line on CR300/CR350."""
+    return re.match(r"\s*[A-Za-z_]\w*\s+AND\b", text, re.I) is not None and '"' in text
 
 
 def _logical_assign_accepted(stmt: S.Unparsed, program: S.Program, profile) -> bool:

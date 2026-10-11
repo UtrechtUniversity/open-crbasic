@@ -5034,3 +5034,13 @@ fallback, then `Expr illegally occurs before BeginProg.` (as on CR6/CR1000X); af
 has started the line is silent, placement line included (`cr3xx._loose_before_beginprog`).
 Not done: `foo. bar` also prints `bar is not defined.` first. Fixture
 `tests/fixtures/table_line_placement.json`; corpus `chm/const1_1.CR6`.
+
+### Logical-led assignment with a string literal, CR300/CR350 (2026-10-11)
+
+`X AND S = "a" AND X =` on CR300/CR350 prints `String is illegal here` before the fallback, as on
+CR6/CR1000X (`structure._logical_led_string`; the CR300/CR350 pass 2 had no string line for an
+unparsable statement). Only a name, `AND` and a string literal was probed: `X AND S =` (no
+literal), `X = 1 AND S = "a" AND X =` and `X AND "a" AND X =` shapes were checked for no new false
+string line. Not done: an assignment-led shape with a string operand (`X = "a" AND X =`,
+`S = "a" AND X =`, `X = "a" AND`) also gets the string line on CR300/CR350 and is still missing
+there. Fixture `tests/fixtures/logical_assign.json`.
