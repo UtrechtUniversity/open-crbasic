@@ -494,3 +494,10 @@ On a revision at or after this entry (see ledger; the API-level probe of item 1 
    (5 tries). Accept when the measured after-debounce p95 is at or below the 500 ms target in
    `docs/lsp-rounds/LSP-08a-bench-cloud.md` "Targets" and the editor time is about 1 s or less;
    otherwise record the numbers.
+
+### T-17 item 1 expectation after LSP-R4b, appended 2026-10-11
+
+[LSP-R4b-handoff.md](docs/lsp-rounds/LSP-R4b-handoff.md): the `Status.`/`Public.` field list should
+appear within `featureWaitMs` (default 1500 ms) of the completion request, also before the first
+diagnostics; if the first analysis takes longer, the popup is empty and the next typed letter asks
+again (`isIncomplete: true`). A valid file shows no visible marker for "first analysis done".
