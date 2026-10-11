@@ -290,6 +290,10 @@ class _Parser:
                 # the oracle: garbage (even unlexable text, even a second full program) after it
                 # compiles fine, because it is never looked at. See docs/frontend.md.
                 break
+        if self.cond_stack:  # read lines only: nothing after the first `EndProg` is looked at
+            # `#If True : #Foo : #EndIf` leaves the `#If` open: the rest of a directive line is not read,
+            # so its `#EndIf` is not seen (oracle, all four loggers, 2026-10-11)
+            self.program.unclosed_if = True
         self.program.consts = dict(self.env.consts)
         return self.program, self.diags
 

@@ -4603,8 +4603,8 @@ extra parameters. With `RONLY` the word itself is the excess parameter (`Too man
   reports only `#Foo`): `Program.hash_cut` is the parser's diagnostic count when the `#` statement
   was parsed -- after the whole line, so `#Foo : Public X` then `#Else` also reports only `#Foo`.
 - Inline statements after the `#` one are dropped too (`If True Then #Foo Else X=Scan(1)` reports only
-  `#Foo`, `syntax.cut_after_hash`). Fixture `r8_hash_cut.json`, all four loggers. Not modelled:
-  `#If True : #Foo : #EndIf` on one line (`#If with no #Endif`).
+  `#Foo`, `syntax.cut_after_hash`). Fixture `r8_hash_cut.json`, all four loggers. The one-line
+  `#If True : #Foo : #EndIf` case (`#If with no #Endif`) is in "Unclosed `#If`" at the end of this file.
 
 ## Round 8 review 7: bad-As recovery splits at top-level commas (oracle, 2026-10-10; `tests/fixtures/bad_as_nested_dims.json`)
 
@@ -4924,3 +4924,16 @@ so `X = 1 + Not 2`, `X = 1 + Not 2 To 3`, `X = 1 = Not 2`, `X = -Not 2`, `X = 2 
 above: `1 + Not 2 To 3 < 4`, `1 + Not 2 < 3 To 4`, `1 = Not 2 To 3` (`Incomplete expression`), `1 Mod Not`,
 `1 + Not 2 To Not` (`Invalid, or out of place expression`). Implemented in `parser._parse_unary` and
 `parser._parse_power_operand`; the `Not` at the start of a value is still the lowest-precedence logical `Not`.
+
+## Unclosed `#If`: `#If with no #Endif` (oracle 2026-10-11, all four loggers; `tests/fixtures/unclosed_if_oneline.json`)
+
+A `#If` still open at the end of the read lines prints `#If with no #Endif` (no line prefix, no period). The
+rest of a directive line is not read, so `#If True : #Foo : #EndIf` and `#If True : #EndIf` leave the `#If`
+open, while `#If True : #Foo` followed by an `#EndIf` line closes it, and `#If True : #EndIf` followed by
+`#EndIf` on its own line is accepted. Lines after the first top-level `EndProg` are never read, so
+`BeginProg`/`EndProg`/`#If True` compiles. Modelled only for a file with no other finding (`parser.run` sets
+`Program.unclosed_if`; `compiler._compile_once` adds the message when `diags` is empty). Not modelled: with
+other findings the real compilers differ (CR6/CR1000X print only `#If with no #Endif` even with `X = Nope`
+in the body, `No BeginProg` is suppressed there too; a `Public Q(` before the `#If` keeps its own message;
+CR300/CR350 print `Nope is not defined.` alone). Our `Unknown instruction` and `No BeginProg` findings still
+print in those mixed cases.

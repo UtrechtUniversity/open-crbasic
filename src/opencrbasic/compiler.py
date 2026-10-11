@@ -222,6 +222,10 @@ def _compile_once(path: Path, profile: Profile, name: str, pull_limit: int | Non
         result.record_implementation_failure("checker.check", exc)
         if os.environ.get("OPENCRBASIC_STRICT") == "1":
             raise
+    if program.unclosed_if and not diags.items:
+        # the message is printed alone: with other findings the real compilers differ in which
+        # messages win (`docs/checker.md` "Unclosed #If"), so only the clean-file case is modelled
+        diags.error(0, "#If with no #Endif")
     return result
 
 

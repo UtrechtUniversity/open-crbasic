@@ -256,6 +256,7 @@ class Program:
     statements: list[Stmt] = field(default_factory=list)
     last_line: int = 0      # `EndProg`'s line, else the main file's last physical line
     hash_cut: int | None = None  # parser diagnostics kept: those before the first `#...` statement ends
+    unclosed_if: bool = False  # a `#If` still open at the end of the file (before any `EndProg`)
     consts: dict[str, object] = field(default_factory=dict)   # name (upper) -> resolved value,
     # for every `Const` the parser could constant-fold in an active branch; `checker.py` reuses
     # this (via `consteval.Env`) instead of re-walking the program to rebuild it.
