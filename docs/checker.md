@@ -5121,3 +5121,19 @@ instruction-prose branch. An error on an earlier line does not hide them for `If
 after an earlier error stays silent (`cascade_do_loop`), so `Do`/`Loop` are excluded then. Not
 fixed: a bare `While` (`Invalid or missing parameter.` here, `Invalid or missing expression.`
 real, all four loggers), `Case Is`, `Case To 3`.
+
+### Built-in function as an expression statement (`chm/strcomp_2.CR6`, fixture `r12_cr3xx_fn_expr_stmt.json`)
+
+A statement that starts with a built-in function call is one expression, like a user `Function`
+call (`parser._parse_assignment_or_call`, now also for the CR300/CR350 built-ins): `Sin(x) > 0`
+and `StrComp (s(1),s(2)) > 0` compile (the generic fallback was a false reject), `Sin(x) y` is
+`Incomplete expression: <stmt> | .`, and a complete expression followed by an operand
+(`StrComp (a,b) > 0 Then`) names that operand (`Then is not defined.`) before the `Incomplete
+expression` line. Undefined names of the arguments and the expression come first; an undefined
+subscripted name over the running dimension count ends the walk with `Dimensions not declared:
+<stmt>` and no `Incomplete expression` (`StrComp (Arr(I),Arr(I+1)) > 0 Then`; the count is
+`DimsState`, so `StrComp (s(1),Arr(I))` does not print it). The first tail operand is named by
+its undefined names even when indexed (`Sin(x) Arr(1)`). A built-in call with an arity error
+keeps only its arity message (`Round(x) y`, `Sin(x,1) y`). Not done: other tails (`Fn(1) 1 +`).
+CR6/CR1000X are untouched (`StrComp (...) > 0 Then` there is `Invalid symbol in expression`; not
+modelled).

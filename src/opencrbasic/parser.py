@@ -823,7 +823,9 @@ class _Parser:
             return S.Declaration(line, file, kind="STRUCTUREMEMBER", vars=[var])
         if isinstance(target, S.Name):
             return S.Call(line, file, name=target.name, args=[], explicit=False)
-        if isinstance(target, S.Index) and target.name.upper() in self.function_names:
+        if isinstance(target, S.Index) and (target.name.upper() in self.function_names or (
+                self.profile.single_pass and target.name.upper() in self.profile.functions
+                and target.name.upper() not in self.profile.instructions)):
             # a `Function` call statement is one expression (oracle, 2026-10-08: `F0()+Nope`
             # and `Fn(1)+Zork` report the undefined name, `Fn(1)+1` compiles), not a Sub tail
             if p.at_end():
@@ -845,7 +847,17 @@ class _Parser:
             p.i = start
             expr = self._parse_expr(p, line, file)
             if not p.at_end():
-                raise _ParseError("expected an assignment or a call")
+                t = p.peek()
+                if not (self.profile.single_pass and t.kind in ("IDENT", "NUMBER", "STRING")
+                        and t.upper not in _WORD_BINARY_OPS):
+                    raise _ParseError("expected an assignment or a call")
+                # a complete expression, then a juxtaposed operand (`StrComp(a,b) > 0 Then`): CR300/
+                # CR350 (oracle, 2026-10-11) name the first operand, then `Incomplete expression`
+                juxt = []
+                while not p.at_end():
+                    juxt.append(self._parse_expr(p, line, file))
+                return S.Call(line, file, name=target.name, args=list(target.args), explicit=False,
+                              tail_expr=expr, juxtaposed=juxt)
             return S.Call(line, file, name=target.name, args=list(target.args), explicit=False,
                           tail_expr=expr)
         if isinstance(target, S.Index):

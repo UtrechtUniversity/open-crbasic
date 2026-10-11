@@ -1426,7 +1426,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if isinstance(stmt, S.Call):
             stop = _check_call_pass2(stmt, subs, profile, diags, before_bp and not in_table,
                                      in_body_block,
-                                     sub_params, known, link_ctx)
+                                     sub_params, known, link_ctx, dims_ds)
             if stop is not None:
                 return stop
         elif isinstance(stmt, S.Assignment):
@@ -2555,7 +2555,7 @@ def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
 
 
 def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagnostics,
-                           is_function: bool = False) -> None:
+                           is_function: bool = False, ds=None) -> None:
     """Undefined names in a `Sub` call's arguments, every argument (oracle, 2026-09-28: `Two(Q,
     Q2)` reports both). CR6/CR1000X echo the argument (`Invalid symbol in expression: Q+1.`);
     CR300/CR350 name each undefined name, plus `Dimensions not declared: Nope(1).`."""
@@ -2566,8 +2566,29 @@ def _report_call_arg_names(stmt: S.Call, known: set[str], profile, diags: Diagno
                 diags.error(stmt.line, f"Invalid symbol in expression: {stmt.text}.", stmt.file)
                 return
         else:  # names first; of the tail only a leading bare name is checked
-            tail = stmt.juxtaposed[:1] if not stmt.juxt_opaque and isinstance(
-                stmt.juxtaposed[0], S.Name) else []
+            builtin = stmt.name.upper() in profile.functions
+            if builtin and expressions._call_arity_problem(stmt.name, stmt.args, profile):
+                return  # (the arity message is the statement's verdict)
+            if builtin or stmt.tail_expr is not None:
+                # a built-in or an expression head (`StrComp(a,b) > 0 Then`, oracle, CR300/CR350,
+                # 2026-10-11): a subscripted undefined name ends the walk with `Dimensions not
+                # declared`, no `Incomplete expression`; the tail's first operand is named by its
+                # undefined names (an indexed one too)
+                names, dims = expressions._names_and_dims(
+                    known, ds, stmt, (), *([stmt.tail_expr] if stmt.tail_expr is not None else stmt.args))
+                for name in dict.fromkeys(names):
+                    diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
+                                stmt.file)
+                if dims:
+                    diags.error(stmt.line, expressions.dimensions_message(
+                        stmt.text, profile, True, stmt.at_eol), stmt.file)
+                    return
+                arg_bad = []
+                tail = stmt.juxtaposed[:1] if not stmt.juxt_opaque and isinstance(
+                    stmt.juxtaposed[0], (S.Name, S.Index)) else []
+            else:
+                tail = stmt.juxtaposed[:1] if not stmt.juxt_opaque and isinstance(
+                    stmt.juxtaposed[0], S.Name) else []
             bad = arg_bad + [n for a in tail for n in expressions._undefined_names(a, known)]
             for name in dict.fromkeys(bad):
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name),
@@ -2731,7 +2752,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
                        before_bp: bool, in_body_block: bool,
                        sub_params: dict | None = None,
                        known: set[str] | None = None,
-                       link_ctx: "_LinkContext | None" = None) -> int | None:
+                       link_ctx: "_LinkContext | None" = None, ds=None) -> int | None:
     """One `Call`-shaped statement's pass-2 check. Returns the line to stop pass 2 at, or `None`
     to keep going. Oracle-confirmed shapes (`docs/checker.md` "Pass model"), each independently
     verified this round:
@@ -2779,6 +2800,10 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
             return stmt.line
         return None
     if name in profile.functions:
+        if profile.single_pass and known is not None and (
+                stmt.tail_expr is not None or stmt.juxtaposed is not None):
+            _report_call_arg_names(stmt, known, profile, diags, is_function=True, ds=ds)  # (a built-in
+            # function is an expression statement like a user `Function`, oracle 2026-10-11)
         if before_beginprog:
             diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
             return stmt.line
