@@ -1,0 +1,147 @@
+"""Server configuration (`opencrbasic` section / initializationOptions) and entry discovery."""
+
+from __future__ import annotations
+
+import codecs
+import os
+import re
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Mapping
+
+from .. import profiles
+
+
+@dataclass(frozen=True)
+class Config:
+    entries: tuple[str, ...] = ("**/*.CR6",)
+    exclude: tuple[str, ...] = ()
+    logger: str = "cr6"
+    encoding: str = "utf-8"
+    debounce_ms: int = 300
+    analysis_timeout_ms: int = 10000
+
+    def analysis_key(self) -> tuple[str, str]:
+        """What changes every entry's analysis input."""
+        return (self.logger, self.encoding)
+
+    def entry_suffixes(self) -> frozenset[str]:
+        """Extensions (lower case) that make an opened file an entry program."""
+        return frozenset({".cr6"} | {ext for ext, name in profiles.EXTENSIONS.items()
+                                     if name == self.logger})
+
+
+def _str_list(value: Any) -> tuple[str, ...] | None:
+    if isinstance(value, (list, tuple)) and all(isinstance(v, str) for v in value):
+        return tuple(value)
+    return None
+
+
+def _int(value: Any, minimum: int) -> int | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    value = int(value)
+    return value if value >= minimum else None
+
+
+def parse_config(options: Any, base: Config | None = None) -> tuple[Config, list[str]]:
+    """`base` overlaid with the recognised, valid keys of `options`. Returns the config and one
+    warning per rejected value (the base value is kept)."""
+    cfg = base or Config()
+    warnings: list[str] = []
+    if not isinstance(options, Mapping):
+        return cfg, warnings
+    changes: dict[str, Any] = {}
+    for key, attr in (("entries", "entries"), ("exclude", "exclude")):
+        if key in options:
+            value = _str_list(options[key])
+            if value is None:
+                warnings.append(f"ignoring {key!r}: expected a list of strings")
+            else:
+                changes[attr] = value
+    if "logger" in options:
+        value = options["logger"]
+        if isinstance(value, str) and value in profiles.PROFILES:
+            changes["logger"] = value
+        else:
+            warnings.append(f"ignoring 'logger': expected one of {', '.join(profiles.PROFILES)}")
+    if "encoding" in options:
+        value = options["encoding"]
+        try:
+            if not isinstance(value, str):
+                raise LookupError(value)
+            codecs.lookup(value)
+            changes["encoding"] = value
+        except LookupError:
+            warnings.append(f"ignoring 'encoding': unknown encoding {value!r}")
+    for key, attr, minimum in (("debounceMs", "debounce_ms", 0), ("analysisTimeoutMs",
+                                                                  "analysis_timeout_ms", 1)):
+        if key in options:
+            value = _int(options[key], minimum)
+            if value is None:
+                warnings.append(f"ignoring {key!r}: expected an integer >= {minimum}")
+            else:
+                changes[attr] = value
+    return (Config(**{**cfg.__dict__, **changes}) if changes else cfg), warnings
+
+
+def glob_regex(pattern: str) -> re.Pattern[str]:
+    """Case-insensitive regex for a workspace-relative glob: `*`, `?`, `**`, `**/`, `{a,b}`."""
+    pat = pattern.replace("\\", "/")
+    while pat.startswith("./"):
+        pat = pat[2:]
+    out: list[str] = []
+    i = 0
+    depth = 0
+    while i < len(pat):
+        c = pat[i]
+        if pat.startswith("**/", i):
+            out.append("(?:.*/)?")
+            i += 3
+            continue
+        if pat.startswith("**", i):
+            out.append(".*")
+            i += 2
+            continue
+        if c == "*":
+            out.append("[^/]*")
+        elif c == "?":
+            out.append("[^/]")
+        elif c == "{":
+            out.append("(?:")
+            depth += 1
+        elif c == "}" and depth:
+            out.append(")")
+            depth -= 1
+        elif c == "," and depth:
+            out.append("|")
+        else:
+            out.append(re.escape(c))
+        i += 1
+    out.append(")" * depth)
+    return re.compile("".join(out), re.IGNORECASE | re.DOTALL)
+
+
+_SKIP_DIRS = {"node_modules", "__pycache__"}
+
+
+def discover(folders: list[Path], entries: tuple[str, ...], exclude: tuple[str, ...]) -> list[Path]:
+    """Files under `folders` matching an `entries` glob and no `exclude` glob (workspace-relative,
+    case-insensitive). Directories starting with `.` and `node_modules` are not walked."""
+    include = [glob_regex(p) for p in entries]
+    skip = [glob_regex(p) for p in exclude]
+    found: dict[Path, None] = {}
+    for folder in folders:
+        folder = Path(folder).absolute()
+        for root, dirs, files in os.walk(folder):
+            rel_root = Path(root).relative_to(folder).as_posix()
+            prefix = "" if rel_root == "." else rel_root + "/"
+            dirs[:] = sorted(d for d in dirs
+                             if not d.startswith(".") and d not in _SKIP_DIRS
+                             and not any(rx.fullmatch(f"{prefix}{d}/_") for rx in skip))
+            for name in sorted(files):
+                rel = prefix + name
+                if any(rx.fullmatch(rel) for rx in include) and \
+                        not any(rx.fullmatch(rel) for rx in skip):
+                    found[Path(root, name).absolute()] = None
+    return sorted(found)

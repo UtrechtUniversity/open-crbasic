@@ -1,0 +1,351 @@
+"""The stdio language server, driven as a real subprocess (LSP-01b)."""
+
+from __future__ import annotations
+
+import os
+import shutil
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+import pytest
+
+from opencrbasic.analysis import AnalysisRequest, analyze
+
+from .lspclient import SRC, LspClient
+
+CRBASIC = (Path(__file__).resolve().parents[2].parent / "crbasic").resolve()
+FAST = {"debounceMs": 50, "analysisTimeoutMs": 60000}
+
+SMALL = """Public x As Long
+Include("CPU:Lib.crb")
+DataTable(T,True,-1)
+  DataInterval(0,1,Min,10)
+  Sample(1,x,Long)
+EndTable
+BeginProg
+  Scan(1,Sec,0,0)
+    x = x + 1
+    CallTable T
+  NextScan
+EndProg
+"""
+LIB = "Public lib_v As Long\n"
+BAD_LIB = "Public lib_v As Long\nPublic lib_v As Long\n"
+BAD_LINE = 9                      # 1-based line of `x = x + 1` in SMALL
+
+
+def bad(text: str, name: str = "y") -> str:
+    return text.replace("x = x + 1", f"x = {name} + 1")
+
+
+@pytest.fixture
+def make_client(request):
+    clients: list[LspClient] = []
+
+    def factory(**kwargs) -> LspClient:
+        client = LspClient(**kwargs)
+        clients.append(client)
+        return client
+
+    yield factory
+    for client in clients:
+        client.kill()
+        time.sleep(0.1)
+        assert "Traceback" not in client.stderr_text, client.stderr_text
+
+
+def project(tmp_path: Path, **files: str) -> Path:
+    root = tmp_path / "proj"
+    root.mkdir()
+    for name, text in files.items():
+        (root / name).write_text(text)
+    return root
+
+
+def small_project(tmp_path: Path, entries=("Small.CR6",), lib: str = LIB) -> Path:
+    files = {name: SMALL for name in entries}
+    files["Lib.crb"] = lib
+    return project(tmp_path, **files)
+
+
+def started(make_client, root: Path, options=None, **kwargs) -> LspClient:
+    client = make_client(**kwargs)
+    client.initialize(root, {**FAST, **(options or {})})
+    return client
+
+
+def summary(params: dict) -> list[tuple]:
+    return [(d["range"]["start"]["line"], d["severity"], d["source"], d["message"])
+            for d in params["diagnostics"]]
+
+
+# ---- lifecycle ----------------------------------------------------------------------------
+
+def test_lifecycle_and_capabilities(make_client, tmp_path):
+    root = small_project(tmp_path)
+    client = make_client()
+    result = client.initialize(root, FAST)
+    caps = result["capabilities"]
+    assert caps["textDocumentSync"]["change"] == 1 and caps["textDocumentSync"]["openClose"]
+    # pygls adds an empty executeCommandProvider and workspace-folder support unconditionally;
+    # no language feature is advertised.
+    assert set(caps) <= {"textDocumentSync", "positionEncoding", "executeCommandProvider",
+                         "workspace"}, caps
+    assert caps["executeCommandProvider"]["commands"] == []
+    assert result["serverInfo"]["name"] == "opencrbasic"
+    assert client.shutdown() == 0
+    assert "opencrbasic-lsp: opencrbasic=" in client.stderr_text
+    assert "api_version=1" in client.stderr_text and str(SRC) in client.stderr_text
+
+
+def test_exit_without_shutdown_is_nonzero(make_client, tmp_path):
+    client = make_client()
+    root = project(tmp_path, **{"Broken.CR6": bad(SMALL), "Lib.crb": LIB})
+    client.initialize(root, FAST)
+    client.wait_diagnostics(root / "Broken.CR6", lambda d: bool(d))   # discovery finished
+    client.notify("exit")
+    assert client.proc.wait(30) == 1
+
+
+def test_refuses_other_api_version():
+    code = ("import opencrbasic.analysis as a; a.API_VERSION = 99; "
+            "from opencrbasic.lsp.server import main; main()")
+    env = {**os.environ, "PYTHONPATH": str(SRC)}
+    done = subprocess.run([sys.executable, "-c", code], env=env, capture_output=True, text=True,
+                          timeout=60)
+    assert done.returncode != 0
+    assert "refusing to start" in done.stderr and "99" in done.stderr
+
+
+def test_requests_after_failure_still_answer(make_client, tmp_path):
+    root = project(tmp_path, **{"Crash.CR6": SMALL, "Lib.crb": LIB})
+    client = started(make_client, root, env={"OPENCRBASIC_LSP_TEST_CRASH": "Crash"})
+    crash = root / "Crash.CR6"
+    client.wait_diagnostics(crash, lambda d: any("terminated unexpectedly" in x["message"]
+                                                 for x in d))
+    assert client.request("shutdown") is None            # the server still answers requests
+    client.notify("exit")
+    assert client.proc.wait(30) == 0
+
+
+# ---- diagnostics --------------------------------------------------------------------------
+
+def test_clean_repository_program_matches_facade(make_client, tmp_path):
+    root = tmp_path / "crbasic"
+    shutil.copytree(CRBASIC, root)
+    expected = analyze(AnalysisRequest(root / "Main.CR6"))
+    assert expected.ok
+    client = started(make_client, root, {"entries": ["Main.CR6"]})
+    client.open(root / "Main.CR6")
+    by_path: dict[Path, list[tuple]] = {}
+    for d in expected.diagnostics:
+        assert d.severity == "warning"
+        by_path.setdefault(d.path, []).append(
+            (max(d.line - 1, 0), 2, "opencrbasic", d.message))
+    assert by_path, "Main.CR6 is expected to produce warnings"
+    for path, items in by_path.items():
+        params = client.wait_diagnostics(path, lambda ds: len(ds) == len(items))
+        assert sorted(summary(params)) == sorted(items)
+    assert client.shutdown() == 0
+
+
+def test_invalid_edit_then_fix(make_client, tmp_path):
+    root = small_project(tmp_path)
+    small = root / "Small.CR6"
+    client = started(make_client, root)
+    client.open(small, SMALL)
+    first = client.wait_diagnostics(small, lambda d: True)
+    assert first["diagnostics"] == [] and first["version"] == 1
+
+    client.change(small, bad(SMALL), 2)
+    params = client.wait_diagnostics(small, lambda d: bool(d))
+    expected = analyze(AnalysisRequest(small, overlays={small: bad(SMALL).encode()}))
+    (diag,) = params["diagnostics"]
+    assert params["version"] == 2
+    assert diag["severity"] == 1 and diag["source"] == "opencrbasic"
+    assert diag["message"] == expected.diagnostics[0].message
+    assert diag["range"]["start"] == {"line": BAD_LINE - 1, "character": 0}
+    assert diag["range"]["end"] == {"line": BAD_LINE - 1,
+                                    "character": len(bad(SMALL).splitlines()[BAD_LINE - 1])}
+
+    client.change(small, SMALL, 3)
+    cleared = client.wait_diagnostics(small, lambda d: not d, after=len(client.publishes(small)) - 1)
+    assert cleared["version"] == 3 and cleared["diagnostics"] == []
+
+
+def test_unsaved_include_edit_save_and_close(make_client, tmp_path):
+    root = small_project(tmp_path)
+    small, lib = root / "Small.CR6", root / "Lib.crb"
+    client = started(make_client, root)
+    client.open(small, SMALL)
+    client.wait_diagnostics(small)
+    client.open(lib, LIB)
+    client.wait_diagnostics(lib, lambda d: not any(x["source"] == "opencrbasic"
+                                                   and x["severity"] != 3 for x in d))
+
+    client.change(lib, BAD_LIB, 2)
+    params = client.wait_diagnostics(lib, lambda d: any(x["severity"] == 1 for x in d))
+    (diag,) = params["diagnostics"]
+    assert diag["message"] == "lib_v already declared as a variable."
+    assert diag["range"]["start"]["line"] == 1 and diag["range"]["end"]["character"] == len(
+        "Public lib_v As Long")
+    assert client.latest(small)["diagnostics"] == []     # the entry itself is clean
+
+    # closing without saving restores the disk state (valid)
+    client.close(lib)
+    client.wait_diagnostics(lib, lambda d: not d, after=len(client.publishes(lib)) - 1)
+
+    # an edit that is then saved to disk stays after the document is closed
+    client.open(lib, LIB, version=1)
+    client.change(lib, BAD_LIB, 2)
+    client.wait_diagnostics(lib, lambda d: any(x["severity"] == 1 for x in d),
+                            after=len(client.publishes(lib)) - 1)
+    lib.write_text(BAD_LIB)
+    client.save(lib)
+    time.sleep(0.5)
+    n = len(client.publishes(lib))
+    client.close(lib)
+    final = client.wait_for(lambda: (client.latest(lib) if len(client.publishes(lib)) >= n
+                                     and client.latest(lib).get("version") is None else None))
+    assert [x["message"] for x in final["diagnostics"]] == ["lib_v already declared as a variable."]
+    assert client.shutdown() == 0
+
+
+def test_rapid_versions_publish_only_latest(make_client, tmp_path):
+    root = small_project(tmp_path)
+    small = root / "Small.CR6"
+    client = started(make_client, root)
+    client.open(small, SMALL)
+    client.wait_diagnostics(small)
+    names = ["aa", "bb", "cc", "dd", "final_var"]
+    for version, name in enumerate(names, start=2):
+        client.change(small, bad(SMALL, name), version)
+    client.wait_diagnostics(small, lambda d: any("final_var" in x["message"] for x in d))
+    time.sleep(1.0)
+    versions = [p["version"] for p in client.publishes(small)]
+    assert versions == sorted(versions) and versions[-1] == 6
+    last = client.latest(small)
+    assert last["version"] == 6 and "final_var" in last["diagnostics"][0]["message"]
+
+
+def test_uninclude_information_diagnostic(make_client, tmp_path):
+    root = small_project(tmp_path)
+    lone = root / "Lone.crb"
+    lone.write_text(LIB)
+    client = started(make_client, root)
+    client.open(lone, LIB)
+    params = client.wait_diagnostics(lone, lambda d: bool(d))
+    (diag,) = params["diagnostics"]
+    assert diag["severity"] == 3 and diag["range"]["start"]["line"] == 0
+    assert diag["message"] == ("No configured entry program includes this file; diagnostics come "
+                               "from the entry programs that include it.")
+    # an included library gets no such note
+    lib = root / "Lib.crb"
+    client.open(lib, LIB)
+    time.sleep(1.0)
+    published = client.latest(lib)
+    assert published is None or published["diagnostics"] == []
+
+
+def test_two_entries_get_prefixed_messages(make_client, tmp_path):
+    root = small_project(tmp_path, entries=("A.CR6", "B.CR6"))
+    lib = root / "Lib.crb"
+    client = started(make_client, root)
+    client.open(lib, LIB)
+    client.change(lib, BAD_LIB, 2)
+    params = client.wait_diagnostics(lib, lambda d: len(d) == 2 and d[0]["message"].startswith("["))
+    assert sorted(d["message"] for d in params["diagnostics"]) == [
+        "[A.CR6] lib_v already declared as a variable.",
+        "[B.CR6] lib_v already declared as a variable."]
+    # a single contributor is not prefixed
+    client.change(lib, LIB, 3)
+    client.wait_diagnostics(lib, lambda d: not d, after=len(client.publishes(lib)) - 1)
+
+
+def test_unrepresentable_characters_warn(make_client, tmp_path):
+    root = small_project(tmp_path)
+    small = root / "Small.CR6"
+    client = started(make_client, root, {"encoding": "ascii"})
+    client.open(small, "' café\n" + SMALL)
+    params = client.wait_diagnostics(small, lambda d: any(
+        x["source"] == "opencrbasic (server)" for x in d))
+    warning = next(x for x in params["diagnostics"] if x["source"] == "opencrbasic (server)")
+    assert warning["severity"] == 2 and warning["range"]["start"]["line"] == 0
+    assert "not representable" in warning["message"]
+
+
+# ---- worker failures ----------------------------------------------------------------------
+
+def test_worker_crash_recovers(make_client, tmp_path):
+    root = project(tmp_path, **{"Crash.CR6": SMALL, "Ok.CR6": bad(SMALL), "Lib.crb": LIB})
+    client = started(make_client, root, env={"OPENCRBASIC_LSP_TEST_CRASH": "Crash"})
+    crash, ok = root / "Crash.CR6", root / "Ok.CR6"
+    client.open(crash, SMALL)
+    client.open(ok, bad(SMALL))
+    err = client.wait_diagnostics(crash, lambda d: any(x["source"] == "opencrbasic (internal)"
+                                                       for x in d))
+    (diag,) = err["diagnostics"]
+    assert diag["severity"] == 1 and diag["range"]["start"]["line"] == 0
+    assert "terminated unexpectedly" in diag["message"]
+    # the innocent entry running at the same time is analysed normally, not blamed
+    good = client.wait_diagnostics(ok, lambda d: bool(d))
+    assert [x["source"] for x in good["diagnostics"]] == ["opencrbasic"]
+    # a later edit is analysed normally
+    client.change(ok, SMALL, 2)
+    client.wait_diagnostics(ok, lambda d: not d, after=len(client.publishes(ok)) - 1)
+    client.change(ok, bad(SMALL, "later"), 3)
+    client.wait_diagnostics(ok, lambda d: any("later" in x["message"] for x in d))
+    assert client.shutdown() == 0
+
+
+def test_analysis_timeout_recovers(make_client, tmp_path):
+    root = project(tmp_path, **{"Slow.CR6": SMALL, "Fast.CR6": SMALL, "Lib.crb": LIB})
+    client = started(make_client, root, {"analysisTimeoutMs": 1500},
+                     env={"OPENCRBASIC_LSP_TEST_SLEEP": "Slow:120"})
+    slow, fast = root / "Slow.CR6", root / "Fast.CR6"
+    client.open(slow, SMALL)
+    client.open(fast, SMALL)
+    err = client.wait_diagnostics(slow, lambda d: any(x["source"] == "opencrbasic (internal)"
+                                                      for x in d))
+    assert "timed out after 1500 ms" in err["diagnostics"][0]["message"]
+    client.change(fast, bad(SMALL, "after_timeout"), 2)
+    client.wait_diagnostics(fast, lambda d: any("after_timeout" in x["message"] for x in d))
+    t0 = time.monotonic()
+    assert client.shutdown() == 0
+    assert time.monotonic() - t0 < 20
+
+
+# ---- configuration ------------------------------------------------------------------------
+
+def test_exclude_change_via_configuration(make_client, tmp_path):
+    root = project(tmp_path, **{"Good.CR6": SMALL, "Broken.CR6": bad(SMALL), "Lib.crb": LIB})
+    broken = root / "Broken.CR6"
+    client = started(make_client, root, settings=dict(FAST))
+    client.wait_diagnostics(broken, lambda d: bool(d))           # analysed from disk, not open
+    client.settings = {**FAST, "exclude": ["Broken.CR6"]}
+    client.notify("workspace/didChangeConfiguration", {"settings": None})
+    cleared = client.wait_diagnostics(broken, lambda d: not d, after=1)
+    assert cleared["diagnostics"] == []
+    # an opened program is an entry for itself even when excluded
+    client.open(broken, bad(SMALL))
+    client.wait_diagnostics(broken, lambda d: bool(d), after=len(client.publishes(broken)) - 1)
+
+
+def test_configuration_pushed_without_pull_support(make_client, tmp_path):
+    root = project(tmp_path, **{"Broken.CR6": bad(SMALL), "Lib.crb": LIB})
+    broken = root / "Broken.CR6"
+    client = started(make_client, root, pull_configuration=False)
+    client.wait_diagnostics(broken, lambda d: bool(d))
+    client.notify("workspace/didChangeConfiguration",
+                  {"settings": {"opencrbasic": {"exclude": ["**/Broken.CR6"]}}})
+    client.wait_diagnostics(broken, lambda d: not d, after=1)
+
+
+def test_entries_glob_restricts_discovery(make_client, tmp_path):
+    root = project(tmp_path, **{"Good.CR6": bad(SMALL), "Other.CR6": bad(SMALL), "Lib.crb": LIB})
+    client = started(make_client, root, {"entries": ["Good.CR6"]})
+    client.wait_diagnostics(root / "Good.CR6", lambda d: bool(d))
+    time.sleep(1.0)
+    assert client.publishes(root / "Other.CR6") == []

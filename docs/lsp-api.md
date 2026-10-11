@@ -1,7 +1,7 @@
 # Language-server API
 
 Contracts for editor tooling on top of the compiler. Specification history: `docs/lsp-rounds/LSP-00.md`
-("Contracts for LSP-01"). The server section is added by LSP-01b.
+("Contracts for LSP-01"). The server section is "Language server (LSP-01)" below.
 
 ## Analysis facade (API_VERSION 1)
 
@@ -267,3 +267,111 @@ replacement would show them.
 - Statements are not annotated with columns; AST nodes still carry only `line`.
 - Not gated against the Wine oracle (none exists here); the map reproduces our own emulation of
   the reported line numbers.
+
+## Language server (LSP-01)
+
+`opencrbasic.lsp` is a protocol adapter on pygls 2.1.1 / lsprotocol 2025.0.0. It contains no
+language rules: all CRBasic knowledge comes from `analysis.analyze`. Modules: `server.py` (pygls
+handlers, `main`), `session.py` (documents, entries, scheduling, diagnostics merge; no pygls
+import), `config.py`, `worker.py` (the pool job; imports only the core compiler). The package
+`__init__` imports nothing third-party, so analysis workers never load pygls.
+
+### Launch
+
+`python -m opencrbasic.lsp` (or the `crbc-lsp` script, `opencrbasic.lsp.server:main`), stdio
+transport. With the editable install in a git worktree, set `PYTHONPATH=<worktree>/opencrbasic/src`
+or the main checkout is imported. First stderr line:
+
+```
+opencrbasic-lsp: opencrbasic=<path to opencrbasic/__init__.py> api_version=<N> git=<short sha|unknown>
+```
+
+The revision comes from `git -C <package dir> rev-parse --short HEAD` (failure is ignored). The
+server was written for `analysis.API_VERSION == 1`; any other value prints
+`opencrbasic-lsp: refusing to start: ...` and exits with status 2. Exit status after `shutdown` +
+`exit` is 0; `exit` without `shutdown` (or stdin closing) is 1. Everything the server logs goes to
+stderr; stdout carries only protocol frames.
+
+### Capabilities
+
+`textDocumentSync` with `openClose`, `change = 1` (Full) and `save`; diagnostics are pushed
+(`textDocument/publishDiagnostics`), there is no pull provider. pygls additionally advertises
+`positionEncoding` utf-16, `workspace.workspaceFolders` (changes are ignored until LSP-06) and an
+empty `executeCommandProvider`; the server implements no command and no other language feature.
+
+### Configuration
+
+Keys (defaults in `config.py` follow LSP-00 "Configured entries"): `entries` (`["**/*.CR6"]`),
+`exclude` (`[]`), `logger` (`"cr6"`), `encoding` (`"utf-8"`), `debounceMs` (300),
+`analysisTimeoutMs` (10000). Sources, in order: `initializationOptions`, then, when the client
+declares `workspace.configuration`, a `workspace/configuration` request for section `opencrbasic`
+(after `initialized` and on every `workspace/didChangeConfiguration`; a pulled value overrides the
+initial one key by key). A client without pull support may send the section in the
+`didChangeConfiguration` params (`settings` or `settings.opencrbasic`). An invalid value is
+ignored with a stderr line and the previous value kept. Changing `logger` or `encoding`
+re-analyzes every entry; changing `entries`/`exclude` re-discovers (entries that drop out have
+their diagnostics cleared); `debounceMs` and `analysisTimeoutMs` apply to later jobs.
+
+Entry discovery globs the workspace folders (`entries` minus `exclude`; workspace-relative,
+case-insensitive; `*`, `?`, `**`, `{a,b}`; directories starting with `.` and `node_modules` are not
+walked) at startup and on configuration change; file watching is LSP-06. An opened file with
+extension `.CR6` (case-insensitive; additionally the extension of the configured logger, e.g.
+`.CR1X`) is an entry for itself while it is open, configured or not. A `.crb` is never an entry.
+
+### Overlays and encoding
+
+Every open document is an overlay: its text encoded with `encoding` (`errors="replace"`) replaces
+the disk file for every analysis. When replacement happened the document gets one Warning
+(source `opencrbasic (server)`, line 0) saying that characters were not representable.
+
+### Scheduling
+
+- Per entry: a change schedules a re-analysis after `debounceMs` of quiet (open, save, close and
+  configuration changes schedule immediately). One job per entry at a time; a newer request while
+  one is in flight discards that job's result and runs once more. A result is also discarded when
+  an open document it depends on changed version since the snapshot.
+- Jobs run in a spawn-context `ProcessPoolExecutor` (2 workers), at most 2 concurrently, awaited
+  from asyncio so the event loop never blocks on analysis.
+- Affected entries for a change to file F: entries whose last `dependencies.reads` contain F or
+  whose `dependencies.listings` contain F's directory, F itself when it is an entry, and every
+  entry that has not completed a first analysis. All configured entries are analyzed once after
+  `initialized`. On open or close, an entry whose last analysis read exactly the bytes now in
+  effect (sha256 compared) is not re-run; only its recorded overlay version is updated.
+- Timeout (`analysisTimeoutMs`, counted from when the job starts): the pool's processes are
+  killed and the pool is recreated; the entry gets a server-error diagnostic. A pool break (worker
+  crash, or the kill above while another entry's job ran) retries each affected job once, alone in
+  the pool; a second break is reported as a crash for that entry only. The error diagnostic is
+  cleared by the entry's next successful analysis.
+- `shutdown` kills the pool; the process then exits on `exit`.
+
+### Diagnostics mapping
+
+- Per file, diagnostics from every entry that mention it are merged; the message gets the prefix
+  `[<EntryName>] ` when more than one entry contributes to that file. Source `opencrbasic`,
+  severity error/warning.
+- A contribution is dropped while the file's open version differs from the one the entry's result
+  was computed with, so stale ranges are never shown with a newer version.
+- Range: compiler line N is LSP line N-1, characters 0 to the end of that line in the file's
+  current text (open document, else disk decoded with `encoding`); line 0 is LSP line 0; a line
+  past the end clamps to the last line. A diagnostic whose file cannot be resolved (`path` is
+  `None`) is anchored at line 0 of the entry with the text `<file>:<line>: ` prepended.
+- The implementation-failure marker diagnostics (`Internal error: unable to compile program.` /
+  `... parse program.`) and `implementation_failures` are published with source
+  `opencrbasic (internal)`, severity error, the failure strings appended to the message. Timeout,
+  worker crash and scheduler errors are published the same way at line 0 of the entry.
+- Publishes carry the document `version` for open documents. A file that had diagnostics and now
+  has none gets an empty publish; identical consecutive publishes are suppressed.
+- An open `.crb` that no analyzed entry read gets one Information diagnostic at line 0: `No
+  configured entry program includes this file; diagnostics come from the entry programs that
+  include it.` (only after every entry has completed a first analysis).
+- Known limit: compiler line numbers are not yet mapped to physical lines, so a diagnostic can sit
+  on the wrong line after an initializer pull moved the compiler's line numbering (LSP-02
+  fixes this); ranges are whole lines, not token spans; columns are UTF-16 only for the line end.
+
+### Test hooks
+
+Read inside `worker.run_analysis` only (inherited by the spawned workers from the server's
+environment): `OPENCRBASIC_LSP_TEST_CRASH=<substring>` makes the worker call `os._exit(3)` when
+the entry path contains the substring; `OPENCRBASIC_LSP_TEST_SLEEP=<substring>:<seconds>` sleeps
+that long first (for timeout tests). `tests/lsp/test_server.py` drives the real server over stdio
+with `tests/lsp/lspclient.py`.
