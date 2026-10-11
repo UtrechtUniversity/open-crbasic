@@ -34,6 +34,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
 | LSP-02a positions | `codex/lsp-02-positions`, `.claude/worktrees/lsp-02-positions`, base `3c4cd44`, Sonnet | active | - | verify, cherry-pick |
 | LSP-03a catalog+grammar | `codex/lsp-03-catalog` -> `4822b49` | integrated | coordinator rerun: 32 passed, `gen_grammar --check` up to date; combined tests/lsp 92 passed; npm compile 0, 5/5; worker: selfdiff 0 differ, full pytest 21,579/507 | highlighting: T-03 |
 | LSP-04a help provider | `codex/lsp-04-helpdocs` -> `f252d1e` | integrated | coordinator rerun 18 passed; fixtures synthetic (no 8-word overlap with extracted_chm); worker: selfdiff 0 differ, full pytest 21,565/507 | defect: VoltSE last param `Mult, Offse` -> LSP-04a-fix |
+| LSP-04a-fix help param names | `codex/lsp-04-helpfix`, `.claude/worktrees/lsp-04-helpfix`, base `41c4c4a`, Haiku | active | - | verify, cherry-pick |
+| LSP-05a binding index | `codex/lsp-05-bindings`, `.claude/worktrees/lsp-05-bindings`, base `41c4c4a`, Sonnet, brief [LSP-05.md](docs/lsp-rounds/LSP-05.md) | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
 more workers (four at once, the PROGRESS.md maximum); their files are disjoint (briefs list them).
