@@ -332,3 +332,38 @@ later; retest rename after them). Full wording in
 10. UTF-8 `Include "CPU:É space.crb"`: Problems shows `É` (H-04 display).
 11. Windows file URIs in rename/quick-fix edits (if a Windows host is available).
 
+
+## Local host report (2026-10-11, new T-04/T-10/T-11/T-12 checks)
+
+Observed at `7d6db3b1`; client tuning/association follow-up at `572e54d4` after pulling 01g.
+Full results, commands, scripts, raw diagnostics and client traces:
+[host report](docs/lsp-rounds/host-tests/2026-10-11-7d6db3b1/RESULTS.md).
+
+- **T-11 PASS (macOS):** clean install 15/15, installed CLI parity and LSP stdio lifecycle.
+- **T-04 amendment partially observed:** two valid interpreter restarts succeed without the
+  earlier notification/start failures; debounce/exclude updates apply without restart; `.CR300`,
+  `.CR1X`, `.CR350` associate with CRBasic; switching to logger `cr300` gives live diagnostics.
+  **Finding:** an unmatched `.CR300` under logger `cr6` publishes no information note. Banner is
+  info via logMessage, with the stderr copy still error-level. Toast absence remains visual-only.
+- **T-10:** include creation/rename/deletion, entry rename, multi-root changes, watcher registration,
+  size-limit warning and capped/incomplete completion pass through the actual VS Code client.
+  01g's size setting also passes startup and configuration-API updates. Rapid edits during slow
+  analysis settle cleanly. **Finding:** deleting an entire folder externally or through workspace
+  file operations leaves stale diagnostics; neither file nor directory deletion reaches the
+  watched-file notification stream. A later workspace rescan clears them.
+- **T-12:** provider/API checks pass for cross-file rename including a closed entry, refusals,
+  pending unsaved edits, real Main-copy formatting, tabs/spaces, selected range, format-on-save,
+  error-format refusal, applying a quick fix, and Unicode diagnostic display. **Undo expectation
+  differs:** one undo restores all texts, but the originally closed file becomes closed and clean
+  again rather than staying open and dirty. Rename race review work remains open.
+- Full Python suite at 7d6db3b1: `22279 passed, 311 skipped`; client tests pass at both revisions;
+  focused server tests at 572e54d4 pass. Real Wine verification at both revisions ends:
+
+  ```text
+  BUILD  host tests 119 pass | CRBasic 16/16 compiled, 6 warning(s) | repository pass
+  ```
+
+The report distinguishes harness corrections from real findings. Interactive F2/Ctrl+. boxes,
+notification toasts, Problems/hover rendering, T-09 visuals, Windows/Linux and Windows edit URIs
+remain pending: native UI access still selected the original VS Code process rather than the
+isolated extension host. Original CRBasic sources were untouched; no hardware was contacted.
