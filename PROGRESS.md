@@ -181,6 +181,12 @@ are in `docs/lsp-rounds/`.
 7. **`Static` declarations** parse as `Unparsed` (`LSP-05a-handoff.md`); check against the oracle.
 10. **Malformed one-argument `IncludeSection "X"`**: CR6Comp crashes (exit 5), `crbc` exits 0
    (T-05 side observation, `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/RESULTS.md`); a reference fault, no verdict to match.
+11. **Self-including program**: `IncludeSection("A","CPU:<itself>.CR6")` ends in
+   `parser.parse_file: RecursionError` (reported as `Internal error: unable to parse program.`,
+   ~0.8 s) instead of a diagnostic. Real-compiler message not yet known (`LSP-06a-handoff.md`).
+12. **Include paths with a directory** (`CPU:sub/Lib.crb`) resolve only against the including file's
+   directory and give "Cannot open include file"; real-compiler behaviour not yet probed
+   (`LSP-06a-handoff.md`).
 9. **Statement labels**: in one LSP probe `Label1:` parsed as an unresolved call, not a `Label`
    (`LSP-07a-handoff.md`; not investigated, may depend on the statement shape).
 8. **`tools/tdftest.py`** conflates an absent and an empty LST (six CHM cases report no LST);

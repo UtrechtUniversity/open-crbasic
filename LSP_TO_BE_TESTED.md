@@ -288,3 +288,19 @@ T-09 provider checks are accepted at their tested revisions; T-06 closed as not 
 shows parity of include resolution (display follow-up LSP-01f). Still requested: T-04 amendment
 (LSP-01e: H-02 toast, H-03 association, banner), T-09 visual checks, Windows/Linux.
 
+### T-10 Workspace watching and limits in VS Code (LSP-06a), appended 2026-10-11
+
+On a revision at or after `80a6fb8`, VS Code with T-02 setup (details in
+[LSP-06a-handoff.md](docs/lsp-rounds/LSP-06a-handoff.md)):
+1. Create a closed missing include outside the editor (e.g. `git checkout`/copy): the entry's
+   missing-include warning clears without an edit.
+2. Delete or rename a closed include in the Explorer: entries show "Cannot open include file".
+3. Rename a `.CR6`: old diagnostics vanish; the new file becomes an entry.
+4. Delete a folder of entries: their diagnostics clear (do directory events arrive?).
+5. Multi-root workspace: add/remove a folder; entries follow.
+6. Output channel: no registration error for `workspace/didChangeWatchedFiles`.
+7. `opencrbasic.maxFileBytes` small in settings.json: an oversized include gives an
+   `opencrbasic (server)` warning, not an error squiggle.
+8. Typing quickly during a slow analysis gives no error toast.
+9. Completion with an empty prefix in a Scan body: the list grows as you type (isIncomplete).
+
