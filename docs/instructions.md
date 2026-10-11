@@ -1820,3 +1820,20 @@ Oracle, all four loggers, identical unless noted.
   dimensioned` on all four loggers (not modelled).
 - The reproducer `cr300/false_accept/f4771af98130` is now exact: the following `Matrix` lines still get
   `Too many parameters:` from the existing rule.
+
+## `CDM_Delay` option 0 duration (2026-10-11, not implemented)
+
+Reproducer `cr6/false_accept/f2c51b769e04` (`CDM_Delay (VOLT116,1,0,-1,mSec)`). Oracle, CR6 and
+CR1000X: `Measurement Delay Exceeds 60 min.` (the `Delay` instruction's own limit, option 0 only),
+printed once or twice on the same line, and this family is left unmodelled because the count is not
+explained by the probes so far:
+
+- Twice: `61,Min`, `3600001,mSec`, `-1` in mSec, Sec, Min, uSec and Day, `-2,mSec`, `-1000,mSec`, `-24,Hr`,
+  `1,Day` gives once.
+- Once: `-1,Hr`, `-2,Hr`, `-10,Hr`, `-100,Hr`, `-1000,Hr`, `1,Day`, `-3600000,mSec`, `86400000,mSec`.
+- Accepted: `60,Min`, `1,Hr`, `0,Day`, `500,mSec`, and every `uSec` value probed (`3600000001`,
+  `-3600000000`), so the unit does not scale as microseconds for this instruction.
+- `Delay(0,-1,Hr)` gives no limit message at all, while `Delay(0,-1,Sec)` does: the two instructions
+  do not share the wrap arithmetic, so the `Delay` rule in `checker/instr_measure.py` must not be reused.
+- `Insufficient time (1000 ms) for measurements from CPI address 1 (needs at least 3600000 ms).`
+  appears with a 1-second scan and a 60-minute delay; use a long scan in probes.
