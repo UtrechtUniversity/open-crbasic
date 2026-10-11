@@ -33,6 +33,12 @@ Live implementation state and session handoff. Design and acceptance criteria:
   (`MenuPick ( Item1, Item2, Item3... )`); quotes on quoted names are kept. Implemented in
   LSP-04a-rules.
 
+## Integration fixes by the coordinator
+
+- `tools/lsp_bench.py` (LSP-08a) removed `OPENCRBASIC_STRICT` from `os.environ` at import, so the
+  smoke test switched strict mode off for every later test in the session (found as 2 failures in
+  `tests/lsp/test_analysis.py` when run after it). Now only `main()` does it.
+
 ## Review findings
 
 [gpt-6.1-sol review through `39286384`](docs/lsp-rounds/review-2026-10-11-39286384.md) (human-run,
@@ -42,8 +48,8 @@ Live implementation state and session handoff. Design and acceptance criteria:
    reproducer confirmed by the reviewer; LSP-R1 (Haiku). The compiler's `symbols.scoped_view` has
    the same omission (compiler workstream; LSP-R1 reports whether verdicts are affected).
 2. Instruction token resolves to a same-name user declaration: accepted; LSP-R1.
-3. Diagnostic columns always UTF-16 regardless of negotiated encoding: accepted; added to the
-   LSP-wire worker's scope (it owns `lsp/` and position encoding).
+3. Diagnostic columns always UTF-16 regardless of negotiated encoding: accepted; fixed in LSP-wire
+   (utf-8/utf-16/utf-32 test).
 4. Quoted `DataTable("Hist")` missing from outline/declared names/completion: accepted; LSP-R1.
 
 ## Host findings to act on
@@ -155,14 +161,16 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-01d spans + client stop | `codex/lsp-01-spans` -> `b21c1e1` | integrated | worker: tests/lsp 233 passed x3, selfdiff 0 differ, npm 10/10; coordinator: npm 10/10 on combined tree | host: T-02 log must not show `Client is not running and can't be stopped` |
 | LSP-04a-rules help syntax decisions | `codex/lsp-04-rules` -> cherry-picked | integrated | coordinator: helpdocs+hover+editing tests pass, spot checks MenuPick/ModbusSlave/PortSet; coverage matching 269 -> 270 (MenuPick) | leftover: `FileOption, [optional]` (FTPClient, EMailSend, HTTPPost) not marked optional -> fold into wiring chunk |
 | LSP-05b-core navigation logic | `codex/lsp-05-navigation` -> `3769504` | integrated, gates passed | at `3769504`: selfdiff 0 differ, full pytest 21,869/507, native verify `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass`; additive `stmt.origin` in parser.py | oracle: T-01 amendment |
-| LSP-wire features in server | `codex/lsp-wire`, base `b21c1e1`, Sonnet | active | - | verify, cherry-pick |
+| LSP-wire features in server | `codex/lsp-wire` -> cherry-picked | integrated-awaiting-gates | worker: tests/lsp 405 x3, selfdiff 0 differ, npm 10/10; option (b) pickled program from the pool (first hover p50 39 ms vs 575 ms in-thread); review finding 3 fixed (negotiated encoding for diagnostics) | combined gates running; host T-09 |
+| LSP-01e client fixes H-02/H-03 | `codex/lsp-01-client`, base `e57c7f8`, Haiku | active | - | verify, cherry-pick |
+| LSP-04e checker arity in signature help | `codex/lsp-04-arity`, base `e57c7f8`, Haiku | active | - | verify, cherry-pick |
 | LSP-04a-optmark | `codex/lsp-04-optmark` -> cherry-picked | integrated | worker: helpdocs+hover 70 passed, tests/lsp 367, selfdiff 0 differ; FileOption optional in FTPClient/EMailSend/HTTPPost/HTTPPut | gap: `coverage_report` counts instructions only; FTPClient etc. are function-table entries (coordinator check) |
 | LSP-07a rename core | `codex/lsp-07-rename`, base `6ca749d`, Sonnet, brief [LSP-07.md](docs/lsp-rounds/LSP-07.md) | active | - | verify, cherry-pick |
 | LSP-07b formatting core | `codex/lsp-07-format` -> cherry-picked | integrated | coordinator rerun 22 passed; worker: tests/lsp 391, selfdiff 0 differ; CHM 198/198 accepted programs identical after formatting, idempotent 507/507 | `SlowSequence` indented inside BeginProg (style, differs from Main.CR6); initializer pulls not modelled; `xmlparse_1` message changes with indentation -> T-06 |
 | LSP-05c table fields | `codex/lsp-05-fields` -> `b2bdd39` | integrated | coordinator rerun 61 passed; worker: tests/lsp 376, selfdiff 0 differ; crbasic unmodelled 96 -> 6 (`Status.CardBytesFree` not in profile data), unresolved unchanged | derived-name fields have no source range |
 | LSP-04c function help coverage | `codex/lsp-04-funccov` -> cherry-picked | integrated | worker: helpdocs+hover 73 passed, selfdiff 0 differ; CR6 functions: 117 with help, 91 of 111 checked match `nargs` | follow-up LSP-04d: FTPClient/EmailSend `argspec` 0x9556/0x5556 = 6 args, the most a 16-bit packed argspec holds (docs/binary.md: 4-bit count + 2 bits per argument), so `nargs` 6 is probably a packing cap, not the real count; first establish how the checker validates their argument counts (checker code + fixtures), then decide label pairing |
 | LSP-08a benchmarks | `codex/lsp-08-bench` -> cherry-picked | integrated | [cloud results](docs/lsp-rounds/LSP-08a-bench-cloud.md) under load (avg 4-9 on 4 CPUs): hover p95 12 ms, completion p95 38 ms; Main.CR6 analysis warm p50 716 ms; server didChange->publish p95 931 ms after debounce (target 500 ms, inconclusive under load); 200-edit RSS flat at 34 MB | host rerun: T-07 |
-| LSP-R1 review fixes 1, 2, 4 | `codex/lsp-r1-fixes`, base `c05ff17`, Haiku | active | - | verify, cherry-pick |
+| LSP-R1 review fixes 1, 2, 4 | `codex/lsp-r1-fixes` -> cherry-picked | integrated | worker: reproducers 7 failed before / 13 pass after, tests/lsp 391, selfdiff 0 differ | compiler-side same omission (`symbols.scoped_view`, `cli._hides_times`, `timing.py`) suggested as a separate compiler task |
 | LSP-04d function argument counts | `codex/lsp-04-argcount` -> cherry-picked | integrated (classification only) | worker: 75 passed, selfdiff 0 differ; checker `_call_arity_problem` uses oracle-backed `_ARITY_ALLOWED` (FTPCLIENT {6,10,11}, HTTPPUT {4,8,9}) / `_ARITY_RANGE`; fixtures: EmailSend/EmailRecv min 9 | follow-up LSP-04e (after R1, edits hover.py): signature help uses the checker's accepted-count sets; host probe T-08 for the rest |
 | LSP-07c quick-fix core | `codex/lsp-07-quickfix`, base `1208bbc`, Sonnet | active | - | verify, cherry-pick |
 
