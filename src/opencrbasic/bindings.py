@@ -17,7 +17,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Iterable, NamedTuple
 
-from . import lexer, profiles
+from . import consteval, lexer, profiles, tables
 from . import syntax as S
 from .catalog import CatalogEntry, InstructionCatalog
 
@@ -36,6 +36,11 @@ _STRUCT_KINDS = ("structuretype", "objecttype")
 _ROUTINE_KINDS = ("sub", "function")
 _VARIABLE_KINDS = ("public", "dim", "static")
 _LEX_BLOCKS = {"ENDSUB", "ENDFUNCTION"}
+# `TableName.<property>` members of a data (or Status) table that are not fields
+# (extracted_chm/Info/datatableaccess.htm "Data Table Access").
+_TABLE_PROPERTIES = {n.upper(): n for n in (
+    "BytesPerRecord", "EventCount", "EventEnd", "Output", "Record", "TableBytes", "TableFull",
+    "TableSize", "TimeStamp")}
 
 
 @dataclass(eq=False)
@@ -45,10 +50,11 @@ class Declaration:
     name: str                          # source spelling
     kind: str                          # public dim static const sub function param alias datatable
     #                                    consttable structuretype objecttype structure_member label
-    #                                    system_table external
-    scope: str                         # "global" | "routine" | "structure" | "predefined"
+    #                                    field system_table external
+    scope: str                         # "global" | "routine" | "structure" | "table" | "predefined"
     routine: S.SubDef | None           # the owning Sub/Function (scope "routine"; params too)
-    container: "Declaration | None"    # StructureType owning a member; ConstTable owning a Const
+    container: "Declaration | None"    # StructureType owning a member; ConstTable owning a Const;
+    #                                    DataTable/system table owning a `field`
     file: str                          # compiler display name
     line: int                          # compiler-reported line
     node: object                       # VarDecl | ConstDecl | Param | SubDef | Instruction | Label
@@ -62,7 +68,12 @@ class Declaration:
     alias_target: "Reference | None" = None
     unverified_scope: bool = False     # scope inside a routine is not established by evidence
     tok_key: tuple = ()
+    modelled: bool = False             # table/system_table: every field name is known (`fields_of`)
     members: dict = None               # StructureType: upper member name -> [Declaration]
+    site: str = ""                     # `field`: "fieldnames" (the FieldNames string token is the
+    #                                    site, `quoted`), "instruction" (name derived from the Source;
+    #                                    only stmt/line locate it, no token) or "property" (a
+    #                                    `Table.Output`-style member, predefined)
 
     def __repr__(self) -> str:
         return f"Declaration({self.kind} {self.name!r} {self.file}:{self.line} {self.scope})"
@@ -95,8 +106,8 @@ class Reference:
         if self.resolved:
             return "resolved"
         if self.role == MEMBER and any(c.kind in ("datatable", "system_table")
-                                       for c in self.container):
-            return "unmodelled"        # a table field: the index does not model field names
+                                       and not c.modelled for c in self.container):
+            return "unmodelled"        # a table whose field names the index cannot list
         return "unresolved"
 
     def __repr__(self) -> str:
@@ -133,8 +144,19 @@ class BindingIndex:
         self._external: dict[tuple, Declaration] = {}
         self._system: dict[str, Declaration] = {}
         self._tokens: dict[int, list | None] = {}
+        self._fields: dict[int, list[Declaration]] = {}          # id(DataTable decl) -> fields, in order
+        self._field_names: dict[tuple, list[Declaration]] = {}   # (id(table), UPPER name) -> fields
+        self._sys_names: dict[str, dict[str, str] | None] = {}   # system table -> upper -> spelling
+        self._sys_fields: dict[tuple, Declaration] = {}
+        self._slow_seq = 0
 
     # ------------------------------------------------------------ queries
+
+    def fields_of(self, table: Declaration) -> tuple[Declaration, ...]:
+        """The fields of a user DataTable declaration (kind `field`, in TDF order) as
+        `tables.py` derives them. Fields are not in `declarations_named`; `()` for any other
+        declaration or a table whose fields could not be derived (`table.modelled` is False)."""
+        return tuple(self._fields.get(id(table), ()))
 
     def declarations_named(self, name: str) -> tuple[Declaration, ...]:
         return tuple(self._by_name.get(name.upper(), ()))
@@ -260,7 +282,14 @@ class BindingIndex:
                 found = [d for d in self._glob.get(member_upper, [])
                          if d.kind in ("public", "alias")]
                 return [cand], found
-            return [cand], []
+            sysf = self._system_field(cand, member_upper) or self._table_property(cand, member_upper)
+            return [cand], [sysf] if sysf is not None else []
+        if cand.kind == "datatable":
+            found = list(self._field_names.get((id(cand), member_upper), ()))
+            if not found:
+                prop = self._table_property(cand, member_upper)
+                found = [prop] if prop is not None else []
+            return [cand], found
         if cand.kind in _TABLE_KINDS:
             return [cand], []
         tname = (cand.type or "").rstrip("!")
@@ -268,6 +297,51 @@ class BindingIndex:
         if struct is not None and struct.members is not None:
             return [struct], list(struct.members.get(member_upper, []))
         return [], []
+
+    def _system_names(self, table_upper: str) -> dict[str, str] | None:
+        """Upper -> spelling of the fields the profile data lists for a system table, or None.
+        Status and DataTableInfo come from the CR6 TDF derivation of `tables.py` (CR6 only);
+        Settings from the profile's `settings_fields.json` `settings` list. A name outside the
+        list stays `unmodelled`: the lists are not proven complete (the project uses
+        `Status.CardBytesFree`, which is in neither Status list)."""
+        if table_upper not in self._sys_names:
+            names = None
+            try:
+                if table_upper == "SETTINGS":
+                    names = {n.upper(): n for n in self.profile.settings_fields["settings"]}
+                elif self.profile.name == "cr6" and table_upper == "STATUS":
+                    names = {f.name.upper(): f.name for f in tables._status_table(self._slow_seq).fields}
+                    for n in self.profile.settings_fields["status"]:
+                        names.setdefault(n.upper(), n)
+                elif self.profile.name == "cr6" and table_upper == "DATATABLEINFO":
+                    names = {f.name.upper(): f.name for f in tables._datatableinfo_table(1).fields}
+            except Exception:
+                names = None
+            self._sys_names[table_upper] = names
+        return self._sys_names[table_upper]
+
+    def _table_property(self, table: Declaration, member_upper: str) -> Declaration | None:
+        if member_upper not in _TABLE_PROPERTIES or table.name.upper() in ("SETTINGS", "PUBLIC"):
+            return None
+        key = (id(table), member_upper)
+        decl = self._sys_fields.get(key)
+        if decl is None:
+            decl = Declaration(_TABLE_PROPERTIES[member_upper], "field", "predefined", None, table,
+                               "", 0, None, None, None, -1, site="property")
+            self._sys_fields[key] = decl
+        return decl
+
+    def _system_field(self, table: Declaration, member_upper: str) -> Declaration | None:
+        names = self._system_names(table.name.upper())
+        if not names or member_upper not in names:
+            return None
+        key = (table.name.upper(), member_upper)
+        decl = self._sys_fields.get(key)
+        if decl is None:
+            decl = Declaration(names[member_upper], "field", "predefined", None, table, "", 0, None,
+                               None, None, -1)
+            self._sys_fields[key] = decl
+        return decl
 
     def _resolve_member(self, ref: Reference) -> None:
         base = ref.base
@@ -603,6 +677,101 @@ class _Builder:
             self.consttable = None
 
 
+def _add_data_table_fields(ix: BindingIndex, program, statements, decls, failures) -> None:
+    """Declare the fields of every user DataTable. Names, order and renaming come from
+    `tables.py` (private helpers `_scan_program`, `_emit_output_fields`, `_apply_fieldnames`,
+    `_split_by_alias`, `_build_public_table`; not modified): the loop below mirrors
+    `_build_data_table`'s grouping of output instructions and `FieldNames`, to know which
+    statement declares which field, and its names are checked against `_build_data_table`'s own
+    field list (a table that differs is left unmodelled)."""
+    tbl_decls = {id(d.stmt): d for d in decls if d.kind == "datatable" and d.scope == "global"}
+    if not tbl_decls:
+        return
+    env = consteval.Env(ix.profile, dict(getattr(program, "consts", None) or {}))
+    scanned = tables._scan_program(program)
+    ix._slow_seq = scanned["slow_seq_count"]
+    var_info: dict = {}
+    for v in scanned["all_vars"]:
+        var_info[v.name.upper()] = tables._make_var_info(v, env)
+        var_info[v.name.upper()].struct = scanned["struct_types"].get((v.type or "").upper())
+    _, by_display, by_base = tables._build_public_table(
+        scanned["publics"], var_info, scanned["alias_stmts"], scanned["units_stmts"],
+        scanned["readonly_names"])
+    pos = {id(st): i for i, st in enumerate(statements)}
+    added: list[Declaration] = []
+    for dt in scanned["data_tables"]:
+        head = statements[pos[id(dt.body[0])] - 1] if dt.body and id(dt.body[0]) in pos else None
+        table = tbl_decls.get(id(head))
+        try:
+            groups = _field_groups(dt, env, var_info, by_display, by_base)
+            tdf, _ = tables._build_data_table(dt, env, var_info, by_display, scanned["called"], by_base)
+            for f in tdf.fields:               # a later `Sample(1, Table.Field, ...)` source
+                if f.type != 11:
+                    var_info[f"{dt.name}.{f.name}".upper()] = tables.VarInfo(
+                        f.type, list(f.subdims) or ([f.dimension] if f.dimension > 1 else []),
+                        name=f.name)
+            derived = [of.name for _, _, fs in groups for of in fs]
+            if table is None or derived != [of.name for of in tdf._dup_fields if not of.name_only]:
+                continue
+        except Exception as e:                      # never raise out of the index
+            failures.append(IndexFailure(-1, "", dt.line, f"fields of {dt.name}: {type(e).__name__}: {e}"))
+            continue
+        out = ix._fields.setdefault(id(table), [])
+        table.modelled = True
+        for instr, fn, fields in groups:
+            for of in fields:
+                if fn is not None:
+                    arg = fn.args[0]
+                    unit, tok_key, occ, site = fn, (str(arg.value).upper(), "string"), 0, "fieldnames"
+                else:
+                    unit, tok_key, occ, site = instr, (), None, "instruction"
+                d = Declaration(of.name, "field", "table", None, table, unit.file, unit.line, instr,
+                                unit, unit, pos[id(unit)], occ, None, fn is not None,
+                                tok_key=tok_key, site=site)
+                added.append(d)
+                out.append(d)
+                ix._field_names.setdefault((id(table), of.name.upper()), []).append(d)
+    ix.declarations += tuple(added)
+
+
+def _field_groups(dt, env, var_info, by_display, by_base):
+    """`[(output instruction, its FieldNames statement | None, [_OutField])]` for one table, the
+    fields exactly as `tables._build_data_table` builds them (name_only fields dropped)."""
+    groups: list = []
+    pending: list = []
+    pending_src = None
+    instr = fn = None
+
+    def flush(fnames):
+        nonlocal pending, pending_src, instr
+        fields = pending
+        if pending_src is not None and by_base:
+            fields = tables._split_by_alias(pending, pending_src, var_info, by_base, env)
+        groups.append((instr, fnames, [of for of in fields if not of.name_only]))
+        pending, pending_src, instr = [], None, None
+
+    for s in dt.body:
+        kw = tables._kw(s)
+        if kw == "FIELDNAMES":
+            if s.args and isinstance(s.args[0], S.String) and pending:
+                pending = tables._apply_fieldnames(pending, s.args[0].value)
+                flush(s)
+        elif kw in tables._OUTPUT_KEYWORDS:
+            if pending:
+                flush(None)
+            s2 = tables._alias_source(s, var_info, by_display, by_base)
+            pending = tables._emit_output_fields(s2, var_info, by_display, env, by_base)
+            pending_src = s2.args[1] if len(s2.args) > 1 and not any(f.struct_members for f in pending) else None
+            instr = s
+        elif kw == "FFT":
+            if pending:
+                flush(None)
+            pending, pending_src, instr = [tables._fft_field(s, var_info, by_display, env)], None, s
+    if pending:
+        flush(None)
+    return groups
+
+
 def _scope_tables(ix: BindingIndex, decls: Iterable[Declaration]) -> None:
     for d in decls:
         ix._by_name.setdefault(d.name.upper(), []).append(d)
@@ -656,6 +825,10 @@ def _build(ix: BindingIndex, program) -> None:
     ix.references = tuple(b.refs)
     ix.unparsed = tuple(unparsed)
     _scope_tables(ix, b.decls)
+    try:
+        _add_data_table_fields(ix, program, statements, b.decls, failures)
+    except Exception as e:
+        failures.append(IndexFailure(-1, "", 0, f"table fields: {type(e).__name__}: {e}"))
     for unit, rec in b.order:
         ix._by_unit.setdefault(id(unit), []).append(rec)
     for ref in b.refs:                                       # emission order: bases before members

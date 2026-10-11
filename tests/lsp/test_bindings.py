@@ -135,8 +135,10 @@ def test_datatable_name_and_member_reference():
     base = refs(ix, "Tab", "member_base")[0]
     assert base.resolved == (tab,)
     member = refs(ix, "X", "member")[0]
-    assert member.container == (tab,) and member.resolved == () and member.base is base
-    assert member.status == "unmodelled"          # table field names are not modelled
+    assert member.container == (tab,) and member.base is base
+    (field,) = ix.fields_of(tab)
+    assert member.resolved == (field,) and member.status == "resolved"
+    assert (field.name, field.kind, field.scope, field.container) == ("X", "field", "table", tab)
     assert refs(ix, "Tab", "table_ref")[0].resolved == (tab,)
     assert targets(refs(ix, "Sec", "argument")[0]) == [("external", "predefined", 0)]
 
@@ -153,12 +155,128 @@ def test_quoted_table_name_is_declared_but_strings_are_not_references():
 def test_system_tables_and_public_members():
     ix = index("Public Z\nBeginProg\n  Z = Status.Battery + Public.Z\nEndProg\n")
     assert refs(ix, "Status", "member_base")[0].resolved[0].kind == "system_table"
-    assert refs(ix, "Battery", "member")[0].status == "unmodelled"
+    assert targets(refs(ix, "Battery", "member")[0]) == [("field", "predefined", 0)]
     pz = refs(ix, "Z", "member")[0]
     assert targets(pz) == [("public", "global", 1)]
     # DataTableInfo only exists once a DataTable does
     assert refs(index("Public Z\nBeginProg\n  Z = DataTableInfo.X\nEndProg\n"),
                 "DataTableInfo")[0].status == "unresolved"
+
+
+FIELD_SRC = """Public X, TC(2), A(3), S As String * 8
+Alias A(2) = Mid
+DataTable(Tab,True,10)
+  DataInterval(0,1,Min,10)
+  Average(1,X,FP2,False)
+  Sample(2,TC(),FP2)
+  FieldNames("One:desc,Two")
+  Maximum(1,X,FP2,False,True)
+  Sample(1,S,String)
+  Totalize(3,TC(),FP2,False)
+EndTable
+DataTable(Other,True,5)
+  Sample(1,Tab.X_Avg,FP2)
+EndTable
+BeginProg
+  Scan(1,Sec,0,0)
+    X = Tab.X_Avg + Tab.One + Tab.Two(1,1) + Tab.Nope + Tab.TC_Tot(1,2) + Tab.Record(1,1)
+    X = Tab.x_max + Tab.X_TMx + Tab.S + Other.X_Avg
+    CallTable Tab
+  NextScan
+EndProg
+"""
+
+
+def field_names(ix, table):
+    (tab,) = decls(ix, table, "datatable")
+    return [f.name for f in ix.fields_of(tab)]
+
+
+def test_table_fields_are_named_as_the_tdf_derivation_names_them():
+    ix = index(FIELD_SRC)
+    assert ix.failures == ()
+    assert field_names(ix, "Tab") == ["X_Avg", "One", "Two", "X_Max", "X_TMx", "S", "TC_Tot"]
+    assert field_names(ix, "Other") == ["X_Avg"]
+    assert decls(ix, "Tab", "datatable")[0].modelled
+
+
+def test_table_field_references_resolve_by_table_and_case_insensitively():
+    ix = index(FIELD_SRC)
+    fields = {(f.container.name, f.name): f for d in ix.declarations if d.kind == "datatable"
+              for f in ix.fields_of(d)}
+    want = {"X_Avg": [("Tab", "X_Avg"), ("Tab", "X_Avg"), ("Other", "X_Avg")], "One": [("Tab", "One")],
+            "Two": [("Tab", "Two")], "TC_Tot": [("Tab", "TC_Tot")], "x_max": [("Tab", "X_Max")],
+            "X_TMx": [("Tab", "X_TMx")], "S": [("Tab", "S")]}
+    for name, keys in want.items():
+        got = [r for r in refs(ix, name, "member")]
+        assert [r.resolved for r in got] == [(fields[k],) for k in keys], name
+    assert all(r.status == "resolved" for r in ix.references if r.role == "member"
+               and r.name != "Nope")
+
+
+def test_table_field_unknown_member_is_unresolved_but_table_properties_resolve():
+    ix = index(FIELD_SRC)
+    nope = refs(ix, "Nope", "member")[0]
+    assert nope.status == "unresolved" and nope.resolved == ()
+    rec = refs(ix, "Record", "member")[0]
+    assert [(d.kind, d.scope, d.site, d.container.name) for d in rec.resolved] == [
+        ("field", "predefined", "property", "Tab")]
+
+
+def test_table_field_sites_fieldnames_string_token_is_quoted_and_instruction_has_none():
+    ix = index(FIELD_SRC)
+    (tab,) = decls(ix, "Tab", "datatable")
+    by = {f.name: f for f in ix.fields_of(tab)}
+    for name in ("One", "Two"):
+        f = by[name]
+        assert (f.site, f.quoted, f.line) == ("fieldnames", True, 7)
+        tok = ix.token_of(f)
+        assert tok.kind == "STRING" and tok.value == "One:desc,Two"
+        assert isinstance(f.node, S.Instruction) and f.node.keyword.upper() == "SAMPLE"
+    f = by["X_Avg"]
+    assert (f.site, f.quoted, f.line, ix.token_of(f)) == ("instruction", False, 5, None)
+    assert f.node.keyword.upper() == "AVERAGE" and f.stmt is f.node
+    assert ix.references_to(by["X_Avg"]) and all(r.name == "X_Avg" for r in ix.references_to(f))
+    assert "ONE" not in [d.name.upper() for d in ix.declarations_named("One")]      # not in the name table
+
+
+def test_table_field_names_come_from_the_tdf_derivation_on_crbasic_and_chm():
+    from opencrbasic import consteval, tables
+    checked = 0
+    for path in sorted(CRBASIC.glob("*.CR6")) + CHM[::5]:
+        prog, _ = parser.parse_file(path, profiles.get("cr6"))
+        ix = bindings.build(prog, "cr6")
+        assert ix.failures == ()
+        try:
+            tdf_tables, _, _ = tables.build_tables(prog, profiles.get("cr6"), dict(prog.consts))
+        except Exception:
+            continue
+        tdf = {t.name: [f.name for f in t.fields] for t in tdf_tables}
+        for d in ix.declarations:
+            if d.kind == "datatable" and d.modelled and not d.quoted and d.name in tdf:
+                assert [f.name for f in ix.fields_of(d)] == tdf[d.name], (path.name, d.name)
+                checked += 1
+    assert checked > 20
+
+
+def test_system_table_members_come_from_profile_data():
+    ix = index("Public Z\nDataTable(T,True,1)\n  Sample(1,Z,FP2)\nEndTable\nBeginProg\n"
+               "  Z = Status.Battery + Status.SkippedScan + Settings.StationName + Status.Nope"
+               " + Settings.Nope + DataTableInfo.SkippedRecord + Status.TimeStamp\nEndProg\n")
+    got = {r.name: r for r in ix.references if r.role == "member"}
+    for name in ("Battery", "SkippedScan", "StationName", "SkippedRecord", "TimeStamp"):
+        assert got[name].status == "resolved", name
+    assert [(d.name, d.container.name) for d in got["StationName"].resolved] == [
+        ("StationName", "Settings")]
+    assert got["TimeStamp"].resolved[0].site == "property"
+    assert got["Nope"].status == "unmodelled" and got["Nope"].resolved == ()
+    assert [r.status for r in ix.references if r.name == "Nope"] == ["unmodelled", "unmodelled"]
+
+
+def test_status_fields_are_only_modelled_for_cr6():
+    src = "Public Z\nBeginProg\n  Z = Status.Battery\nEndProg\n"
+    assert refs(index(src, "cr6"), "Battery", "member")[0].status == "resolved"
+    assert refs(index(src, "cr1000x"), "Battery", "member")[0].status == "unmodelled"
 
 
 def test_structure_member_and_instance_type():
@@ -330,7 +448,7 @@ def test_every_record_token_matches_its_name_on_crbasic_sources():
         prog, _ = parser.parse_file(path, profiles.get("cr6"))
         ix = bindings.build(prog, "cr6")
         for rec in list(ix.declarations) + list(ix.references):
-            if rec.unit is None:
+            if rec.unit is None or getattr(rec, "kind", "") == "field":    # token: FieldNames string
                 continue
             tok = ix.token_of(rec)
             if tok is None or rec.name.upper().rstrip("!") != (

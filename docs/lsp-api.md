@@ -425,20 +425,22 @@ indexed inside its own `try`: on an internal error its records are discarded and
 
 `Declaration` (identity, not value, distinguishes records): `name` (source spelling), `kind`
 (`public dim static const sub function param alias datatable consttable structuretype objecttype
-structure_member label`, plus `system_table` and `external` for predefined targets), `scope`
-(`global`, `routine`, `structure`, `predefined`), `routine` (the owning `SubDef`, scope `routine`),
+structure_member label field`, plus `system_table` and `external` for predefined targets), `scope`
+(`global`, `routine`, `structure`, `table`, `predefined`), `routine` (the owning `SubDef`, scope `routine`),
 `container` (owning `StructureType`/`ConstTable`), `file`, `line` (the compiler's), `node` (the AST
 node: `VarDecl`, `ConstDecl`, `Param`, `SubDef`, `Instruction`, `Label`), `stmt` (innermost
 statement), `unit` (top-level statement of the `:`-segment: the owner of the text), `index`
 (position of `unit` in `program.statements`), `type`, `quoted`, `external` (the `CatalogEntry`),
-`alias_target` (a `Reference`), `unverified_scope`.
+`alias_target` (a `Reference`), `unverified_scope`, `modelled` (a table whose fields are all declared),
+`site` (a `field`: see "Table fields").
 
 `Reference`: `name` (spelling at the use), `role`, `file`, `line`, `resolved` (tuple), `ambiguity`
 (text), `container` (member references: the table/structure searched), `routine`, `node`, `stmt`,
 `unit`, `index`, `base` (member references: the base's reference), `is_write`, `forward`, and
 `status`: `resolved` (one proven target), `ambiguous` (several candidates, or a stated reason),
-`unmodelled` (a `Table.Field` or `Status.X` field name: the table is found, field names are not
-modelled), `unresolved` (nothing found).
+`unmodelled` (a member of a table whose field names the index cannot list: a `Status`/`Settings`/
+`DataTableInfo` name outside the profile data, any member of a DataTable whose derivation failed;
+see "Table fields" below), `unresolved` (nothing found).
 
 Roles, as far as the AST tells: `read`, `write` (assignment and `For` targets), `call` (`Call`,
 bare Sub calls, an indexed name that resolves only to Subs/Functions/built-in functions),
@@ -460,7 +462,7 @@ statement, resolved to the catalog).
 | CR6/CR1000X: a local `Dim`/parameter whose name is a built-in function resolves to the local. CR300/CR350: it does not shadow the built-in, so the reference is `ambiguous` with candidates (built-in, local). | `docs/checker.md` "Function-named assignment targets and CR300/CR350 local shadows" and "Expression expects (" section. The CR6 side rests on the accepted arithmetic probe; "CR6 scoping of a Sub-local" is listed there as unfinished. |
 | `Public` and `Alias` (and labels) inside a routine: scope inside the routine is recorded (`scope="routine"`, `unverified_scope=True`) and a use elsewhere gets that candidate with an `ambiguity` note. | No fixture establishes their visibility. |
 | Two or more global candidates stay `ambiguous` with a reason: duplicate declarations (the compiler rejects them), the same include used twice, or a table sharing a variable's spelling. | `tests/fixtures/routine_names.json` (duplicate Sub, variable/Function clash). The vendor sample `avgrun_1.CR6` declares `Public TCTemp` and `DataTable (TCTemp,...)`; whether the namespaces are separate is not established here, so no choice is made. |
-| `Table.Field`: the base resolves to the table; the field part is `unmodelled` for a `DataTable` and for `Status`, `Settings`, `DataTableInfo` (exists only once a `DataTable` does). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json` (field names come from `FieldNames` and the output instruction, `tables.py`; not re-derived here). |
+| `Table.Field` of a user `DataTable`: resolves to the `field` declaration of that table (see "Table fields"). `Public.X` resolves to a global `Public`/`Alias` of that name (inference from the Public table's contents, not oracle-tested). `ConstTable.Name` resolves to the `Const` inside that table. | `symbols.system_table_names`, `const_table_fields`; `tests/fixtures/table_members_scope.json`; field names come from `tables.py`. |
 | Structure members resolve through the base variable's declared type (also through nested members); an unknown member is `unresolved`. | `checker/structs.py` model (`_structure_members`, `_member_chain`). |
 | Predefined targets: names the catalog has (symbols, functions, instructions, per profile), plus `NAN` and `INF`, are `external` declarations (`index == -1`, shared per entry). Instruction keywords resolve to the catalog instruction. | `catalog.py`; `checker/expressions._EXTRA_PREDEFINED_SYMBOLS`. |
 | `Alias A(1) = N1, N2`: each right-hand name is an `alias` declaration with `alias_target` = the reference of `A`; `Units V = label`: `V` is a `units_target` reference. | `parser._parse_alias`, `_parse_units_segment`. |
@@ -496,10 +498,47 @@ statement kinds the AST models fully; array-parameter dimensions and `Alias` jun
 name are not in the AST and can shift later same-name occurrences in that statement (observed
 corpus rate in the handoff).
 
+### Table fields (LSP-05c)
+
+`Declaration` kind `field`. `Table.Field` and `Table.Field(i)` resolve by name (case-insensitive)
+to the fields of the table's declaration.
+
+- User `DataTable`: scope `table`, `container` = the table declaration, in TDF order, from
+  `ix.fields_of(table)` (they are not in `declarations_named`, not in `records_in`, and follow the
+  statement declarations in `ix.declarations`). Names, order, `FieldNames` renaming and
+  Alias splitting are `tables.py`'s: `bindings` imports its private helpers (`_scan_program`,
+  `_build_public_table`, `_emit_output_fields`, `_apply_fieldnames`, `_split_by_alias`,
+  `_alias_source`, `_fft_field`, `_build_data_table`) and mirrors only `_build_data_table`'s grouping
+  of output instructions with their `FieldNames`. A table whose names differ from
+  `_build_data_table`'s own list, or whose derivation raises (the latter also adds an
+  `IndexFailure`), stays unmodelled (`table.modelled` False). `name_only` fields (FFT, CH400
+  source) are not in the TDF and not declared. A table written as a string is also derived.
+- `node` is the output instruction; `site` says what locates the field:
+  `"fieldnames"` (a `FieldNames` string names it: `unit` is that statement, `token_of` gives the
+  whole string token, `quoted=True`, so a rename must refuse it) or `"instruction"` (name derived
+  from the Source, e.g. `TC_Avg`: `stmt`/`line`/`file` locate the output instruction, `token_of`
+  is `None`). No token is given for derived names because the only token in that statement is the
+  Source variable's own, which another record already owns; a second record at that range would
+  make definition list the field for the variable and make a rename of the variable see a quoted
+  target.
+- A user table with no field of that name also resolves the `TableName.<property>` members
+  (`BytesPerRecord EventCount EventEnd Output Record TableBytes TableFull TableSize TimeStamp`) to a
+  predefined `field` (`site="property"`, `scope="predefined"`, shared per table); this list is from
+  `extracted_chm/Info/datatableaccess.htm`. Any other member of a modelled table is `unresolved`.
+- `Status`, `Settings`, `DataTableInfo`: predefined `field` declarations (shared per table, `index
+  -1`) for names the profile data lists: `Status` = the CR6 `Status` TDF fields
+  (`tables._status_table`) plus `settings_fields.json` `status`; `Settings` = its `settings`;
+  `DataTableInfo` = `tables._datatableinfo_table` (Status and DataTableInfo for the `cr6` profile
+  only). `Status` also takes the property list (`Status.TimeStamp`). A name outside the lists stays
+  `unmodelled`, not `unresolved`: the project uses `Status.CardBytesFree`, which is in neither
+  Status list.
+- Navigation: `semantic_tokens` skips kind `field` (not in its legend map); `definition` on a
+  `FieldNames`-named field's use gives the string token; references to it list the use sites.
+
 ### Not modelled (recommendations only)
 
-- Data-table field names (`Table.Field` definitions, `FieldNames`): would need `tables.py`'s
-  field derivation exposed for reuse.
+- Fields of tables the TDF derivation does not name (structure-variable tables, `CPIStatus`,
+  `CH400Status`, `ConstTable` fields other than their `Const`s), and `Static` declarations.
 - Whether tables and variables share a namespace; visibility of `Public`/`Alias`/labels inside a
   routine; use-before-declare for variables. Each needs a focused oracle probe.
 - A checker could later take its declared-name and scoped-view helpers from this index, only after
