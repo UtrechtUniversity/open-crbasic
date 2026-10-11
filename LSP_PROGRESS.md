@@ -146,7 +146,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-07a rename core | `codex/lsp-07-rename`, base `6ca749d`, Sonnet, brief [LSP-07.md](docs/lsp-rounds/LSP-07.md) | active | - | verify, cherry-pick |
 | LSP-07b formatting core | `codex/lsp-07-format`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
 | LSP-05c table fields | `codex/lsp-05-fields`, base `6ca749d`, Sonnet | active | - | verify, cherry-pick |
-| LSP-04c function help coverage | `codex/lsp-04-funccov`, base `6ca749d`, Haiku | active | - | verify, cherry-pick |
+| LSP-04c function help coverage | `codex/lsp-04-funccov` -> cherry-picked | integrated | worker: helpdocs+hover 73 passed, selfdiff 0 differ; CR6 functions: 117 with help, 91 of 111 checked match `nargs` | follow-up LSP-04d: `nargs` looks like the required count (FTPClient 11 help - 5 optional = 6 = nargs; TCPOpen 6-3 = 3; EmailSend 14-5 = 9 vs 6 does not fit) -> confirm from `argspec`/checker evidence before pairing optional tails |
 | LSP-08a benchmarks | `codex/lsp-08-bench`, base `6ca749d`, Haiku, brief [LSP-08.md](docs/lsp-rounds/LSP-08.md) | active | - | verify, cherry-pick |
 
 Parallel dispatch of LSP-02a/03a/04a alongside 01b follows the human's 2026-10-11 instruction to use
