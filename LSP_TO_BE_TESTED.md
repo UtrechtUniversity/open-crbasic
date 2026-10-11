@@ -66,3 +66,21 @@ s = "unterminated
 ## Done
 
 None yet.
+
+
+## Local host report (2026-10-11, implementation revision 602f6462)
+
+[Full results and saved evidence](docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md).
+
+- T-01 for LSP-01a was executed: pytest and the real-compiler repository verifier pass;
+  differential/replay counts match the recorded compiler baseline. Known oracle faults still
+  give nonzero exits. TDF coverage-label and missing/empty LST caveats are in the record.
+  LSP-02a was added to T-01 after this run and still requires its own measured revision.
+- T-02: client build and five tests pass; real extension-host activation reaches Python, which
+  reports `No module named opencrbasic.lsp`. The server is absent at the tested revision.
+  Server-dependent acceptance remains pending.
+- T-03: 12 real TextMate/Oniguruma scope checks pass, including both requested repository
+  files. Visual colour/screenshot acceptance remains pending after the desktop app restart.
+
+The existing pending requests above are preserved for newer integrations. This report does
+not advance the cloud coordinator's round ledger or claim acceptance of untested revisions.
