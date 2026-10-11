@@ -4937,3 +4937,13 @@ other findings the real compilers differ (CR6/CR1000X print only `#If with no #E
 in the body, `No BeginProg` is suppressed there too; a `Public Q(` before the `#If` keeps its own message;
 CR300/CR350 print `Nope is not defined.` alone). Our `Unknown instruction` and `No BeginProg` findings still
 print in those mixed cases.
+
+### Excess arguments on deferred-text instructions (2026-10-10)
+
+`SampleMaxMin`, `Moment`, `Histogram`, `FFT`, `Covariance`, `RainFlow`, `LevelCrossing`, `ETsz`,
+`SendData`, `AcceptDataRecords` and similar take their arguments as `deferred_text`, which ends at
+the next top-level comma, so an excess argument is left over and reported as `Too many
+parameters:  <rest>.` (`instr_rules._TOO_MANY_KINDS`). On CR300/CR350 a `SampleMaxMin` with an
+excess argument drops the `Maximum() or Minimum() must precede SampleMaxMin().` error that
+CR6/CR1000X still emit. Evidence: `tests/fixtures/too_many_deferred.json` (84 cases, all four
+compilers, audited with `tools/fixture_audit.py`: 0 differing).

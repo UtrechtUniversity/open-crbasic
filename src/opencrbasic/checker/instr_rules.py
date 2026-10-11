@@ -376,6 +376,13 @@ _TOO_MANY_SAFE_KINDS = frozenset({
     "expr_typed", "expr_special", "expr_pair", "datatype_kw", "const_int_kw", "next_kw",
     "end_exit_kw",
 })
+# `deferred_text` (the source of `SampleMaxMin`, `Moment`, `Histogram`, `FFT`, `Covariance`,
+# `RainFlow`, `LevelCrossing`, `ETsz`, `SendData`, ...) ends at the next top-level comma like the
+# kinds above, so an excess argument is left over and reported (oracle, all four loggers,
+# 2026-10-10: `SampleMaxMin(1,X,FP2,False,"fuzz")`, `FFT(...,5)`, `Histogram4D(...,Nope)`,
+# `SendData(...,5)`, `AcceptDataRecords(...,5)`); it stays out of `_TOO_MANY_SAFE_KINDS`, which the
+# shortfall check shares for another purpose.
+_TOO_MANY_KINDS = _TOO_MANY_SAFE_KINDS | {"deferred_text"}
 
 # `FUN_004baf00`'s own "end of a simple token" delimiter set (`docs/type-codes.md` section 1,
 # `FUN_004ba440`): comma, colon, both parens, space, `=`, newline, tab, `>`. The "too many
@@ -414,7 +421,7 @@ def _too_many_eligible(params: list[int]) -> bool:
     for code in params:
         base = code - 100 if code >= 100 else code
         kind = kinds.get(base)
-        if kind != "none" and kind not in _TOO_MANY_SAFE_KINDS:
+        if kind != "none" and kind not in _TOO_MANY_KINDS:
             return False
     return True
 
