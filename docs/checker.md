@@ -5026,3 +5026,11 @@ A leftover line starting `(` is re-read as an expression and its inside echoed
 (`(Z = Z) x`) the real compiler accepts it (`Expr illegally occurs before BeginProg.` before
 `BeginProg`, nothing after); not implemented, we still print the fallback. Fixture
 `tests/fixtures/paren_assignment.json`.
+
+### `word.` line before `BeginProg`, CR300/CR350 (2026-10-11)
+
+`foo.` / `foo.bar` outside any body before `BeginProg` is `Could not find DataTable foo.`, the
+fallback, then `Expr illegally occurs before BeginProg.` (as on CR6/CR1000X); after the cascade
+has started the line is silent, placement line included (`cr3xx._loose_before_beginprog`).
+Not done: `foo. bar` also prints `bar is not defined.` first. Fixture
+`tests/fixtures/table_line_placement.json`; corpus `chm/const1_1.CR6`.

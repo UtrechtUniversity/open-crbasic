@@ -313,7 +313,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 _reword_prose(program, profile, diags, stmt, dropped_names - registered_names)
             if isinstance(stmt, S.Unparsed) and _TABLE_LINE_RE.match(stmt.text):
                 diags.items[:] = [d for d in diags.items if (d.line, d.file) != key or not (
-                    d.message.startswith("Could not find DataTable ") or (
+                    d.message.startswith("Could not find DataTable ")
+                    or d.message == "Expr illegally occurs before BeginProg." or (
                         d.message.startswith(_GENERIC_FALLBACK_PREFIX)
                         and stmt.text.strip() in d.message))]
                 continue
@@ -854,6 +855,22 @@ _LINE_WS_RE = re.compile(r"[ \t]+")
 _LINE_PAREN_RE = re.compile(r"[ \t]*\(")
 
 
+def _loose_before_beginprog(program: S.Program, line: int, file: str) -> bool:
+    """The statement at `line` precedes `BeginProg` outside any Sub/Function/table body."""
+    depth = 0
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if (st.line, st.file) == (line, file):
+            return depth == 0
+        if kw == "BEGINPROG":
+            return False
+        if isinstance(st, S.SubDef) or kw in ("DATATABLE", "CONSTTABLE", "DISPLAYMENU", "STRUCTURETYPE"):
+            depth += 1
+        elif kw in ("ENDSUB", "ENDFUNCTION", "ENDTABLE", "ENDCONSTTABLE", "ENDMENU", "ENDSTRUCTURETYPE"):
+            depth = max(0, depth - 1)
+    return False
+
+
 def prose_known(program: S.Program, profile) -> set[str]:
     """Names a prose word resolves to: an instruction keyword that is not also a symbol or function
     is reported (oracle, CR300, 2026-10-01: `foo Battery` -> `Battery is not defined.`, `foo Sin`
@@ -1266,6 +1283,12 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                                             f"{table.group(1)}.", d.file, cascade=False))
                 d = dataclasses.replace(d, cascade=False)  # (no cascade: oracle, `r1` probe)
                 changed = True
+                if _loose_before_beginprog(program, d.line, d.file):
+                    # (oracle, CR300, 2026-10-11: `foo.` before `BeginProg` also gets the placement line)
+                    new_items.append(d)
+                    new_items.append(Diagnostic("error", d.line, "Expr illegally occurs before BeginProg.",
+                                                d.file, cascade=False))
+                    continue
             lead = _INSTRUCTION_PROSE_RE.match(text)
             info = profile.instructions.get(lead.group(1).upper()) if lead else None
             if info and lead.group(1).upper() not in ("DATA", "DATALONG") and info["params"] \
