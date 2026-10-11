@@ -19,6 +19,7 @@ section).
 
 from __future__ import annotations
 
+import math
 import re
 
 from .. import consteval
@@ -510,10 +511,11 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
                 if kw == "MENUITEM" and isinstance(target, (S.Name, S.Index)):
                     if item_const:
                         value = env.consts.get(item_const)
+                        # a non-finite float (`Const F=1e999`) is a float item (real: any numeric pick)
                         item_kind = ("string" if isinstance(value, str) else "int"
                                      if isinstance(value, int) and not isinstance(value, bool)
                                      else "float" if isinstance(value, float)
-                                     and value != int(value) else None)
+                                     and (not math.isfinite(value) or value != int(value)) else None)
                     else:
                         item_kind = {"LONG": "int", "FLOAT": "float", "STRING": "string"}.get(
                             types.get(target.name.upper()))

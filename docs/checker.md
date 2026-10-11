@@ -4860,3 +4860,12 @@ makes `#If K=0` true, `K=""` and `K="a"` false, and `Public Y(K)` fails with `Il
 Only the right operand must be numeric in `consteval._binary`. A string right operand (`1 To "a"`,
 `"a" To "b"`) is `String is illegal here` at line 1 on the real compilers; ours reports no line 1
 finding for it (not modelled, pre-existing; the fixture omits those cases).
+
+### `MenuItem` with a non-finite ConstTable constant (CR6/CR1000X, oracle, 2026-10-11; `tests/fixtures/menuitem_nonfinite.json`)
+
+`Const F=1e999` (and `-1e999`, `1e308*1e308`) in a ConstTable is a float item: `MenuPick(F,2.5)` is
+accepted, as for a fractional constant, while `Const F=2` rejects `2.5` (`integer Const`). A finite
+integral constant (`1e300`) stays unclassified, as before. Before this, the classification called
+`int()` on infinity and the compile ended as `Internal error`. `checker/instr_data.py`, `item_kind`.
+Not modelled (pre-existing, not part of this fix): a second `DisplayMenu` gives `Only one DisplayMenu
+allowed.` on the real compilers; ours reports nothing.
