@@ -1696,6 +1696,37 @@ def _delay_option(stmt: S.Instruction, env):
         return None
 
 
+def check_fieldcal_variable_args(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`FieldCal` `Mult` (argument 4) and `Offset` (argument 5) must name a variable the compiler can
+    resolve: `FieldCal Mult must be a declared variable that can be resolved during compilation.` for
+    a string, a non-negative number (`1`, `1.5`, `0`) or an operator expression (`CMult(1)+1`), on
+    all four loggers, but only for some `Option` values: `Mult` for 2 and 3, `Offset` for 0, 1, 2 and
+    4 (oracle, 2026-10-11; `Option` 5 and up is `Invalid function option.`, not modelled). A declared variable, an array element (`CMult(1)`) and a
+    negative literal (`CMult(-1)`) compile. The real compiler also prints `Table <name> declared with
+    no output fields.` at the `EndTable` of a table whose only field is `SampleFieldCal` when a
+    `FieldCal` argument is bad; not modelled here (`docs/instructions.md`)."""
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction) or stmt.keyword.upper() != "FIELDCAL" or not stmt.args:
+            continue
+        option = stmt.args[0]
+        if not isinstance(option, S.Number) or isinstance(option.value, float):
+            continue
+        for index, label, options in ((3, "Mult", (2, 3)), (4, "Offset", (0, 1, 2, 4))):
+            # which `Option` values check which argument (oracle, all four loggers, 2026-10-11)
+            if option.value in options and index < len(stmt.args) and \
+                    _fieldcal_bad_variable(stmt.args[index]):
+                diags.error(stmt.line, f"FieldCal {label} must be a declared variable that can be "
+                                       "resolved during compilation.", stmt.file)
+
+
+def _fieldcal_bad_variable(arg) -> bool:
+    if isinstance(arg, (S.String, S.Binary)):
+        return True
+    if isinstance(arg, S.Index):  # `CMult("fuzz")`: a string subscript (oracle, 2026-10-11)
+        return any(isinstance(a, S.String) for a in arg.args)
+    return isinstance(arg, S.Number) and arg.value >= 0
+
+
 def check_samplefieldcal(program: S.Program, profile, diags: Diagnostics) -> None:
     """`SampleFieldCal with no FieldCal in program.` on the first `SampleFieldCal` when the program
     holds no `FieldCal` or `FieldCalStrain` call (docs/instructions.md "SampleFieldCal"); only the

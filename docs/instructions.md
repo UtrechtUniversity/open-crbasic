@@ -1787,3 +1787,24 @@ Oracle, all four loggers, identical unless noted.
 - Not modelled: a single subscript on a multi-dimensional array passed to a `Sub` (`S1(M(6))` on
   `Public M(2,3)` is out of bounds on the real compiler and accepted here); `S1(P(1,1))` on a 1-D array
   (`Dimensions not declared` on CR300/CR350, accepted here); a function call argument (`X = FN(P(10))`).
+
+## `FieldCal` Mult and Offset arguments (2026-10-11, fixture `tests/fixtures/fieldcal_variable_args.json`)
+
+- `FieldCal` argument 4 (`Mult`) and argument 5 (`Offset`) must be variables the compiler can resolve.
+  All four loggers: `FieldCal Mult must be a declared variable that can be resolved during
+  compilation.` (`Offset` likewise) for a string (`"fuzz"`), a non-negative number (`1`, `1.5`, `0`),
+  an operator expression (`2+3`, `CMult(1)+1`), and an array element with a string subscript
+  (`CMult("fuzz")`). Accepted: a variable (`Mv`), an array element with a number subscript (`CMult(1)`,
+  `COff(1)`), and a negative literal (`CMult(-1)`). Which argument is checked depends on `Option`
+  (first argument): `Mult` for 2 and 3 only, `Offset` for 0, 1, 2 and 4 only (`Option` 1 accepts
+  `Mult` 0 and 1; `Option` 3 accepts a bad `Offset`). `Option` 5 and above print `Invalid function
+  option.` (not modelled). `checker/instr_rules.py`
+  `check_fieldcal_variable_args`, at the same collected stage as the index bounds.
+- Reproducer `cr1000x/false_accept/11dd65c2d832` is only partly reproduced: the real compiler also
+  prints `Table FC_History declared with no output fields.` at the `EndTable` of a table whose only
+  field is `SampleFieldCal`, once a `FieldCal` argument is bad (or no `FieldCal` is present,
+  `SampleFieldCal with no FieldCal in program.` plus that line). Not modelled: the real output puts the
+  `FieldCal` line before the table line, and the table check runs in pass 2, so the order needs its own
+  evidence. The reproducer's exit code is now right and only that second line is missing.
+- The fixture's table holds no `SampleFieldCal` for this reason; with a `Sample` in the same table the real
+  compiler page-faults (exit 5) on several of the bad-argument cases, so those are not in the fixture.
