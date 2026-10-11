@@ -94,10 +94,10 @@ Names and defaults come from `vscode/package.json`. "Applied" says how a change 
   Observed at `7c450ed5`: changing `debounceMs` and `exclude` took effect without a restart.
 - An invalid value is ignored with a stderr line and the previous value is kept (`lsp/config.py`,
   `lsp-api.md`, Configuration). **Untested** in an editor.
-- Tuning keys that the extension does not contribute. They are not in `package.json`, so VS Code
-  does not offer them in the Settings editor. The server reads them from the `opencrbasic` section
-  when present. The client does not send them in its launch options, so the value is expected to
-  arrive through the configuration pull. That path is inferred from the code and **untested**.
+- Tuning keys. Since LSP-01g the extension contributes `maxFileBytes`, `maxQueuedJobs` and
+  `maxCacheMb` (Settings editor, `initializationOptions` and the configuration pull);
+  `featureWaitMs` stays internal (not contributed; the server still reads it from the
+  `opencrbasic` section). Delivery to the server in a real editor is **untested**.
 
   | Key | Default | Meaning |
   |---|---|---|

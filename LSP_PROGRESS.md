@@ -265,7 +265,7 @@ VS Code 1.141.0); T-04 partial. Open findings from `7c450ed5`:
 | LSP-R2a rename review fixes 1, 2, 4 | `codex/lsp-r2-rename`, Sonnet | active | - | verify, cherry-pick |
 | LSP-R2b encoding position mapping (review 3) | `codex/lsp-r2-encoding`, Haiku | active | - | verify, cherry-pick |
 | LSP-08b-refresh user guide | `codex/lsp-08-guide2` -> cherry-picked | integrated | guide updated to `810b8f9`; 32 links, 0 broken; R2 findings listed as known limits | update after R2 lands |
-| LSP-01g contribute tuning settings | `codex/lsp-01-settings`, base `9644fde`, Haiku | active | - | verify, cherry-pick |
+| LSP-01g contribute tuning settings | `codex/lsp-01-settings` -> cherry-picked | integrated | worker: npm 16/16, server tests 25, selfdiff 0 differ; sync test package.json vs config.py | Settings UI: host check |
 | LSP-03c completion performance | `codex/lsp-03-complperf` -> cherry-picked | integrated | worker: editing+features 147 passed, selfdiff 0 differ; catalog items cached, cap 200 with `is_incomplete`; speed-up not shown under load (`editing._scan` ~15 ms per call now dominates) | server passthrough of isIncomplete -> LSP-06a; next: cache `_scan` per text |
 | LSP-08c install check | `codex/lsp-08-install` -> cherry-picked | integrated | [cloud run](docs/lsp-rounds/LSP-08c-install-cloud.md) 15/15 checks: wheel 492 KiB / 105 files with all 46 profile data files; `crbc` output equals the checkout; core imports without pygls; `crbc-lsp` banner names the installed path | macOS/Windows: T-11 |
 | LSP-06b other-logger server tests | `codex/lsp-06-profiles` -> cherry-picked | integrated | worker: 24 passed x3, tests/lsp 563, selfdiff 0 differ; cr1000x/cr300/cr350 through the server match `analyze`; no server defects | - |
