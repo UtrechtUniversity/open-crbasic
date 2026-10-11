@@ -7,6 +7,10 @@ below, matching their observable behavior exactly. CR6 must remain a drop-in for
 This document is the stable plan. Live state is in `PROGRESS.md`; reverse-engineering findings
 are in `docs/`. If work stops mid-way, resume from `PROGRESS.md` -> "Next steps".
 
+The proposed compiler-backed CR6 editor workstream is planned in [LSP_PLAN.md](LSP_PLAN.md),
+with its own handoff ledger in [LSP_PROGRESS.md](LSP_PROGRESS.md). Planning does not change the
+compiler-parity priority or start implementation.
+
 ## What CR6Comp.exe is (established)
 
 - A 32-bit MSVC console build (PE timestamp 2025-03-04, version string `CR6.14.2.0`) of the CR6

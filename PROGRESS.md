@@ -2,6 +2,9 @@
 
 Living state. Update after every milestone. Plan: `PLAN.md`.
 
+Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
+[resume ledger](LSP_PROGRESS.md); compiler measurements and worker policy remain here.
+
 ## Environment setup (needed to resume)
 
 - Python: uv (`uv sync`, `uv run pytest -q`, `uv run tools/<tool>.py`), with
