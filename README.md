@@ -63,6 +63,15 @@ result.tables          # list of tdf.TdfTable (Status, DataTables, DataTableInfo
 In this repository, `CR6COMP=opencrbasic uv run verify.py` (from `scripts/`) compiles every
 program with opencrbasic instead of the exe.
 
+## Editor support
+
+`crbc-lsp` (`python -m opencrbasic.lsp`) is a language server for CRBasic programs; the `logger`
+setting selects the CR6 profile (default) or CR1000X, CR300 or CR350. It reports the compiler's
+diagnostics and offers hover, completion, signature help, outline, folding, go to definition,
+references and highlighting. Its highlighting names are the CR6 ones. A small VS Code client is in [`vscode/`](vscode/README.md).
+Setup, settings, feature limits and the host-tested status are in
+[`docs/lsp-user-guide.md`](docs/lsp-user-guide.md). Only macOS has been tested in VS Code so far.
+
 ## How it was built
 
 The exe is the logger's own compiler built for Windows. Its instruction, function and
