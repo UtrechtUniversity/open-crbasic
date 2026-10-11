@@ -4879,3 +4879,15 @@ BeginProg.` line, not the `If` line. Without one, the held error prints at its l
 `checker/expressions.py`, `check_function_arity`, `If` branch (`_hold`). Not modelled: `If
 Status.TimeStamp(1,1,1)+Nope2 Then`, which on CR300/CR350 hides the `Nope2` finding that ours still
 reports (the same family as the assignment case `X=Status.TimeStamp(1,1,1)+Nope`, pre-existing).
+
+### Held `Member` error does not hide another statement's findings on the same line (oracle, 2026-10-11; `tests/fixtures/same_line_member.json`)
+
+`X=Nope : X=Status.TimeStamp(1,1,1)` (CR6/CR1000X): the real compilers print both `Invalid symbol in
+expression: X=Nope .` and the `No Matching, or out of place )` line for the `Member` statement. The
+suppression in `checker/__init__.py` (held `Member` errors) removed every undefined-symbol finding on
+the same `(file, line)`. Now the held statement is identified by `Diagnostic.stmt` (the `id()` of its
+statement, the `instr_rules` convention): the undefined-symbol finding of the whole-echo branch
+(`expressions.check`, CR6/CR1000X) and the arity error of an assignment carry it. Untagged findings
+keep the line-based rule. Not modelled: the order of these findings when the `Member` statement comes
+first (`X=Status.TimeStamp(1,1,1) : X=Nope`, CR6 prints the `Member` line first; ours prints `Nope`
+first), and the position of a later `Y=2` finding (CR6/CR1000X print it last; ours first).

@@ -1277,7 +1277,8 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                             stmt.file)
             continue
         if profile.name in _WHOLE_EXPR_ECHO_LOGGERS:
-            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file)
+            diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.text), stmt.file,
+                        stmt=stmt)
         else:
             names, dims = _names_and_dims(known, ds, stmt, (stmt.target,), stmt.value)
             for name in names:
@@ -1874,7 +1875,8 @@ def check_function_arity(program: S.Program, profile, diags: Diagnostics,
                     mine.append(diags.items[-1])
             if problem:
                 diags.error(stmt.line, _arity_message(problem, stmt.text, profile, stmt.at_eol,
-                                                            whole_statement=True), stmt.file)
+                                                            whole_statement=True), stmt.file,
+                            stmt=stmt)
                 _hold(held, diags, problem)
                 if struct_value:
                     mine.append(diags.items[-1])

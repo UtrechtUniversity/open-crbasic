@@ -484,8 +484,10 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # (the failed statement's own undefined-symbol findings are not reported: the index error
     # aborts its compile -- `LoggerID=Status.StationName(1,1,Nope)`, oracle, cr6)
     own = {(d.file, d.line) for d in held_items}
+    own_stmts = {d.stmt for d in held_items if d.stmt}  # tagged: exact statement identity
     diags.items[:] = [d for d in diags.items if not (
-        (d.file, d.line) in own and d.severity == "error" and (
+        ((d.stmt in own_stmts) if d.stmt else (d.file, d.line) in own)
+        and d.severity == "error" and (
             d.message.startswith("Invalid symbol in expression") or d.message.endswith("is not defined.")))]
     diags.items.extend(held_items)
     generic_errors += held_items
