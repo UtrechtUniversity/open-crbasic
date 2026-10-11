@@ -60,4 +60,5 @@ project-includes = [
     "src/opencrbasic/formatting.py",
     "src/opencrbasic/quickfix.py",
     "src/opencrbasic/commands.py",
+    "src/opencrbasic/inlay.py",
 ]
