@@ -1880,3 +1880,14 @@ loggers; `FieldNames("A,B")` renames them). `tables.py` records them as name-onl
 written to the TDF or counted in the record size, still no TDF fields derived), so `Duplicate field name ETrs` /
 `Rso in DataTable T.` now appears for two of them in one table (also `ETsz` + `ETClearSky`, a `Sample` of a
 variable named `Rso`, three instructions give the usual pairwise list; renaming one pair apart removes it).
+
+### `ModemCallBack`: the first (result) argument is never resolved (CR6, CR1000X)
+
+`ModemCallBack(ResultX, ...)` with an undeclared `ResultX` (also `ResultX(2)`, `ResultX+1`) compiles
+clean on CR6 and CR1000X, as `AddPrecise`'s first argument does (`_UNDEFINED_CHECK_EXEMPT_POSITIONS`).
+The name is not declared by the call (a later `ResultX = 1` still fails), and the other arguments
+are still resolved (`AbortX` -> `Invalid symbol in expression: AbortX.`); a literal `5` is still
+`Invalid Variable or Array: 5.`. R14, `tests/fixtures/r14_modemcallback_result_undeclared.json`
+(audited 0 differing), fuzz reproducer `cr1000x/false_reject/5fe667412d48`. CR300/CR350 have no
+`ModemCallBack`. The other code-29 instructions probed (`RealTime`, `ReadIO`, `PortGet`, `SMSSend`)
+do report an undefined first argument.

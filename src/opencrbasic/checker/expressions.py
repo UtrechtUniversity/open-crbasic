@@ -215,6 +215,7 @@ _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
     "ADDPRECISE": frozenset({0}),
     "MOVEPRECISE": frozenset({0}),
+    "MODEMCALLBACK": frozenset({0}),  # CR6/CR1000X; fuzz cr1000x/false_reject/5fe667412d48
 }
 
 # Round 14 (oracle, CR6/CR1000X only, `docs/checker.md` "Round 14 multi-report order"): an undeclared
