@@ -502,7 +502,7 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
     return tokens
 
 
-_INLINE_BLOCK_WORDS = frozenset({"SELECT", "WHILE", "NEXT", "ENDSELECT", "WEND", "SUBSCAN", "NEXTSUBSCAN"})
+_INLINE_BLOCK_WORDS = frozenset({"SELECT", "WHILE", "NEXT", "ENDSELECT", "WEND"})
 
 
 def _is_block_statement(st: S.Stmt) -> bool:
