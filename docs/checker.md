@@ -6137,5 +6137,19 @@ all compile), so the blank model holds for them; the fixture's `SerialOpen(Com1 
 expression: ;.` then `Too many parameters:  -1.` (the `;` takes a parameter slot, like the second
 word of `DataTable (Ten Sec,...)`), and a glued `DataTable (T;,1,-1)` declares a table named `T;`,
 so `CallTable T` is `Could not find DataTable T.` (cases `*-r14c2-*` in
-`tests/fixtures/r14_semicolon.json`). Not modelled: CR300/CR350 reject a `;` inside instruction
-arguments with `Invalid symbol in expression: <argument> ;.` (`Sample(1,X ;,FP2)` -> `... X ;.`).
+`tests/fixtures/r14_semicolon.json`). A built-in function written as a statement with a trailing
+`;` (`SerialOpen(ComRS232,9600,0,0,50) ;`, `Timer(1,Sec,0) ;`) compiles on CR6/CR1000X (it was a
+false reject).
+
+CR300/CR350 (`parser._cr3xx_argument_semicolon`): a `;` inside an instruction's argument list is
+`Invalid symbol in expression: <argument up to the ;>.` (`Sample(1,X ;,FP2)` -> `X ;`, `Delay(0,10;,mSec)`
+-> `10;`); at a parameter that ends the argument list (`cr3xx._ABORTING_PARAMS`, `Delay`'s code 28)
+the next argument follows as `Too many parameters:  mSec.` and later arguments are not reported.
+The statement is otherwise read without the `;` (`Scan (1 ;,Sec,3,0)` still opens the scan). On a
+`DataTable` line the name slot behaves as on CR6 (`T;` names the table `T;`; `T ;` is `Invalid
+symbol in expression: ;.` then `Too many parameters:  1.`) and these errors start the `Too many
+parameters` cascade (`Diagnostic.trigger`), unlike on other instructions. Instructions whose first
+parameter is an expression (code 7: `Case (1 ;)`, `If`) keep the round-13 echo of the group. A
+built-in function written as a statement with a `;` anywhere (`Timer(1 ;,Sec,0)`,
+`SerialOpen(...) ;`) is `Invalid symbol in expression: <line>` with the line terminator, like the
+assignment form.

@@ -77,6 +77,7 @@ class Diagnostic:
     # True always, False never, "cr3xx" only on CR300/CR350 (pass-2 on CR6/CR1000X, pass-1 there);
     # see this module's docstring.
     cascade: bool = True    # CR300/CR350: may start the `Too many parameters` cascade (`cr3xx`)
+    trigger: bool = field(default=False, compare=False)  # starts it whatever the message (`cr3xx`)
     stmt: int = field(default=0, compare=False)  # id() of the statement that raised it, when tagged
 
     def cr6comp(self, main_file: str = "", drive_prefix: bool = False) -> str:

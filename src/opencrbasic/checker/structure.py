@@ -795,11 +795,20 @@ def _out_of_place(profile, text: str, at_eol: bool = True) -> str:
     CR6/CR1000X (`Profile.fallback_echo_newline`, docs/loggers.md, oracle-confirmed with `Zzq1(1,2)`
     / `Zzq2(3,4) 'comment` / `Zzq3(5,6):` probes on cr300comp.exe)."""
     sep = "\n" if getattr(profile, "fallback_echo_newline", False) and at_eol else ""
-    if getattr(profile, "fallback_echo_newline", False) and ";" in text and _semicolon_assignment(text):
+    if getattr(profile, "fallback_echo_newline", False) and ";" in text and (
+            _semicolon_assignment(text) or _function_statement(text, profile)):
         # CR300/CR350 reject a `;` inside an assignment as an invalid symbol (oracle, 2026-10-12,
         # docs/checker.md "Round 13"); CR6/CR1000X skip it instead (parser._drop_semicolons)
         return f"Invalid symbol in expression: {text}{sep}."
     return f"Invalid, or out of place expression: {text}{sep}."
+
+
+def _function_statement(text: str, profile) -> bool:
+    """A built-in function written as a statement (`Timer(1 ;,Sec,0)`, `SerialOpen(...) ;`): with a
+    `;` anywhere CR300/CR350 echo it as an invalid symbol (oracle, 2026-10-12)."""
+    m = re.match(r"\s*([A-Za-z_]\w*)\s*\(", text)
+    return bool(m) and m.group(1).upper() in profile.functions \
+        and m.group(1).upper() not in profile.instructions
 
 
 def _semicolon_assignment(text: str) -> bool:

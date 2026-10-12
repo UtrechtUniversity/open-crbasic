@@ -6647,6 +6647,328 @@
    "source": "Public X\nBeginProg\n  Scan (1 ;,Sec,3,0)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c2-p1",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1 ;,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C1 ;."
+  },
+  {
+   "id": "cr300-r14c2-p2",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 1 ;."
+  },
+  {
+   "id": "cr300-r14c2-p3",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(0,10 ;,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 10 ;.\nline 7: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr300-r14c2-p4",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(0,10;,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 10;.\nline 7: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr300-r14c2-p6",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X ;."
+  },
+  {
+   "id": "cr300-r14c2-p9",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(X,60 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 60 ;."
+  },
+  {
+   "id": "cr300-r14c2-p10",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(102 ;,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 102 ;."
+  },
+  {
+   "id": "cr300-r14c2-s1",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1 ;,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: 1 ;."
+  },
+  {
+   "id": "cr300-r14c2-t2",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X ;,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X ;."
+  },
+  {
+   "id": "cr300-r14c2-t1",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T ;,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: ;.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  X.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r14c2-t3",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1 ;,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 ;.\nline 2: Too many parameters:  -1.\nline 3: Too many parameters:  X.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r14c2-p1",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1 ;,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: C1 ;."
+  },
+  {
+   "id": "cr350-r14c2-p2",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(C1,1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 1 ;."
+  },
+  {
+   "id": "cr350-r14c2-p3",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(0,10 ;,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 10 ;.\nline 7: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-r14c2-p4",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Delay(0,10;,mSec)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 10;.\nline 7: Too many parameters:  mSec."
+  },
+  {
+   "id": "cr350-r14c2-p6",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X ;."
+  },
+  {
+   "id": "cr350-r14c2-p9",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(X,60 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 60 ;."
+  },
+  {
+   "id": "cr350-r14c2-p10",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    PortSet(102 ;,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: 102 ;."
+  },
+  {
+   "id": "cr350-r14c2-s1",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1 ;,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: 1 ;."
+  },
+  {
+   "id": "cr350-r14c2-t2",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X ;,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: X ;."
+  },
+  {
+   "id": "cr350-r14c2-t1",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T ;,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: ;.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  X.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r14c2-t3",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1 ;,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: 1 ;.\nline 2: Too many parameters:  -1.\nline 3: Too many parameters:  X.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r14c2-f1",
+   "logger": "cr6",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialFlush(ComRS232 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r14c2-f2",
+   "logger": "cr6",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1 ;,Sec,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r14c2-f3",
+   "logger": "cr6",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r14c2-f4",
+   "logger": "cr6",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r14c2-f5",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1,Sec,0) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14c2-f6",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Timer(1,Sec,4) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c2-f1",
+   "logger": "cr1000x",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialFlush(ComRS232 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r14c2-f2",
+   "logger": "cr1000x",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1 ;,Sec,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r14c2-f3",
+   "logger": "cr1000x",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r14c2-f4",
+   "logger": "cr1000x",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r14c2-f5",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1,Sec,0) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c2-f6",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Timer(1,Sec,4) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c2-f1",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialFlush(ComRS232 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialFlush(ComRS232 ;)\n."
+  },
+  {
+   "id": "cr300-r14c2-f2",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1 ;,Sec,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     Timer(1 ;,Sec,0)\n."
+  },
+  {
+   "id": "cr300-r14c2-f3",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialOpen(ComRS232,9600,0,0,50 ;)\n."
+  },
+  {
+   "id": "cr300-r14c2-f4",
+   "logger": "cr300",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialOpen(ComRS232,9600,0,0,50) ;\n."
+  },
+  {
+   "id": "cr300-r14c2-f5",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1,Sec,0) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Timer(1,Sec,0) ;\n."
+  },
+  {
+   "id": "cr300-r14c2-f6",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Timer(1,Sec,4) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Timer(1,Sec,4) ;\n."
+  },
+  {
+   "id": "cr350-r14c2-f1",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialFlush(ComRS232 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialFlush(ComRS232 ;)\n."
+  },
+  {
+   "id": "cr350-r14c2-f2",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1 ;,Sec,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     Timer(1 ;,Sec,0)\n."
+  },
+  {
+   "id": "cr350-r14c2-f3",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialOpen(ComRS232,9600,0,0,50 ;)\n."
+  },
+  {
+   "id": "cr350-r14c2-f4",
+   "logger": "cr350",
+   "source": "Public X, L As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    SerialOpen(ComRS232,9600,0,0,50) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression:     SerialOpen(ComRS232,9600,0,0,50) ;\n."
+  },
+  {
+   "id": "cr350-r14c2-f5",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    Timer(1,Sec,0) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Timer(1,Sec,0) ;\n."
+  },
+  {
+   "id": "cr350-r14c2-f6",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Timer(1,Sec,4) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Timer(1,Sec,4) ;\n."
   }
  ]
 }

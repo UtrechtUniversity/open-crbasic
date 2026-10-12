@@ -223,7 +223,7 @@ def _is_short_instruction(stmt, profile) -> bool:
 
 def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and diag.cascade and (
-        diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message == _TCPOPEN_HANDLE or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+        diag.trigger or diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message == _TCPOPEN_HANDLE or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
         or diag.message.startswith(_TOO_MANY_PREFIX)
         or diag.message == "Miss match of types"  # SNMPVariable (oracle, CR300/CR350)
         or diag.message.endswith(_DECLARATION_TRIGGERS)

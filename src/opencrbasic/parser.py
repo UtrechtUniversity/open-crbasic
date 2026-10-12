@@ -37,7 +37,7 @@ from pathlib import Path
 
 from . import consteval, lexer, profiles, source
 from . import syntax as S
-from .diagnostics import Diagnostics
+from .diagnostics import Diagnostic, Diagnostics
 from .lexer import Token
 from .sources import DiskSource, SourceProvider
 
@@ -258,6 +258,9 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
         # (`Do ; While c` and `Loop ; Until c` are rejected: only the condition skips a `;`)
         ok = (first and len(body) > 1 and not (head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"])
               and (head == "CASE" or real[1] is body[1]))
+    elif head in profile.functions and head not in profile.instructions and trailing_only and first \
+            and len(body) > 1 and body[1].text == "(" and body[-1].text == ")":
+        ok = True    # `SerialOpen(ComRS232,9600,0,0,50) ;` (oracle, CR6, 2026-10-12)
     else:
         member = len(body) > 1 and body[1].kind == "OP" and body[1].text == "."   # `Public.X = 1 ;`
         ok = (head not in profile.instructions or member and head in ("PUBLIC", "DIM")) and _is_assignment(body)
@@ -625,7 +628,78 @@ class _Parser:
         del real_tokens
         return line_text
 
+    def _cr3xx_argument_semicolon(self, seg: list[Token], line: int, file: str,
+                                  seg_text: str) -> list[Token]:
+        """CR300/CR350: a `;` inside an instruction's argument is `Invalid symbol in expression:
+        <argument up to the ;>.`; an argument at a parameter that ends the argument list
+        (`checker.cr3xx._ABORTING_PARAMS`) adds `Too many parameters:  <next argument>.`. The
+        statement is otherwise read without the `;` (oracle, 2026-10-12: `Delay(0,10 ;,mSec)`,
+        `PortSet(C1 ;,1)`, `Sample(1,X ;,FP2)`, `Scan (1 ;,Sec,3,0)`)."""
+        if len(seg) < 4 or seg[0].kind != "IDENT" or seg[1].text != "(" or \
+                seg[0].upper not in self.profile.instructions or \
+                self.profile.instructions[seg[0].upper]["params"][:1] == [7]:
+            return seg   # (code 7, `Case (1 ;)`/`If (c ;)`: a parenthesised expression)
+        depth, index, start = 1, 0, 2
+        for i in range(2, len(seg)):
+            t = seg[i]
+            if t.kind != "OP":
+                continue
+            if t.text == "(":
+                depth += 1
+            elif t.text == ")":
+                depth -= 1
+                if depth == 0:
+                    return seg
+            elif t.text == "," and depth == 1:
+                index, start = index + 1, i + 1
+            elif t.text == ";" and depth == 1 and i > start:
+                break
+        else:
+            return seg
+        from .checker.cr3xx import _ABORTING_PARAMS
+        table = seg[0].upper == "DATATABLE"   # (its errors start the cascade: oracle, 2026-10-12)
+        if table and index == 0 and i == 3 and seg[2].kind == "IDENT":
+            if t.col == seg[2].col + len(seg[2].text):
+                return seg   # `DataTable (T;,...)` names the table `T;` (`_parse_segment`)
+            index, symbol = 1, ";"   # `DataTable (T ;,1,-1)`: the `;` takes the next slot
+        else:
+            symbol = seg_text[seg[start].col:t.col + 1].strip()
+
+        def error(message: str) -> None:
+            self.diags.items.append(Diagnostic("error", line, message, file, trigger=table))
+
+        error(f"Invalid symbol in expression: {symbol}.")
+        params = self.profile.instructions[seg[0].upper]["params"]
+        if index < len(params) and params[index] in _ABORTING_PARAMS:
+            depth = 1
+            for j in range(i + 1, len(seg)):
+                u = seg[j]
+                if u.kind == "OP" and u.text in "()":
+                    depth += 1 if u.text == "(" else -1
+                if u.kind == "OP" and u.text == "," and depth == 1:
+                    m = re.match(r"\s*([^\s,()]+)", seg_text[u.col + 1:])
+                    if m:
+                        error(f"Too many parameters:  {m.group(1)}.")
+                    break
+                if depth == 0:
+                    break
+            # the list has ended: later arguments are not reported again (`DataTable (T ;,1,-1,0)`)
+            depth, commas = 0, 0
+            for j, u in enumerate(seg):
+                if u.kind == "OP" and u.text in "()":
+                    depth += 1 if u.text == "(" else -1
+                elif u.kind == "OP" and u.text == "," and depth == 1:
+                    commas += 1
+                    if commas == len(params):
+                        close = next(k for k in range(len(seg) - 1, j, -1)
+                                     if seg[k].kind == "OP" and seg[k].text == ")")
+                        seg = seg[:j] + seg[close:]
+                        break
+        return [u for u in seg if u is not t]
+
     def _parse_segment(self, seg: list[Token], line: int, file: str, seg_text: str) -> S.Stmt:
+        if self.profile.single_pass:
+            seg = self._cr3xx_argument_semicolon(seg, line, file, seg_text)
         if (len(seg) > 3 and seg[0].upper == "DATATABLE" and seg[1].text == "("
                 and seg[2].kind == "IDENT" and seg[3].kind == "OP" and seg[3].text == ";"):
             # CR6/CR1000X (`_drop_semicolons` keeps only this `;`): a glued `T;` is the table name
