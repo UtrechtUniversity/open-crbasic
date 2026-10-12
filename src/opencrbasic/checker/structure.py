@@ -1780,7 +1780,10 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
         if isinstance(stmt, S.If) and stmt.inline is not None:
-            if depth < len(frames) and frames[depth] == "SCAN":
+            if depth < len(frames) and frames[depth] == "SCAN" or any(
+                    _keyword(b) == "SCAN" for b in (stmt.inline or []) + (stmt.inline_else or [])):
+                # (a `Scan` as a one-line `If` body is a Scan block inside the `If`, oracle all
+                # four loggers 2026-10-12; a Scan with a wrong argument count is a pass-1 error)
                 diags.error(stmt.line, _CLOSER_MESSAGES["IF"][0], stmt.file)
         elif kw == "IF" or kw == "SELECT":
             push("IF")

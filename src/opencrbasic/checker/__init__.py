@@ -253,13 +253,13 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `ComPort` argument, and every other `Serial*` function's own first argument. Also ungated
     # (oracle-confirmed, `docs/loggers.md`).
     _run_pass(cr3xx.check, program, profile, diags)
-    _run_pass(instr_rules.check, program, profile, diags)
+    _run_pass(instr_rules.check, _with_inline(program), profile, diags)  # (a one-line `If` body too)
     _run_pass(instr_rules.check_return_placement, program, profile, diags)
     # The leftover line a required-parameter shortfall's own wrapped argument list spills onto
     # (`checker/structure.py`'s `check_missing_param_followup` docstring for the oracle evidence):
     # also ungated, since it fires precisely because the call just above already found something.
     _run_pass(structure.check_missing_param_followup, program, profile, diags)
-    _run_pass(instr_rules.check_too_many, program, profile, diags)
+    _run_pass(instr_rules.check_too_many, _with_inline(program), profile, diags)
     _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags)
     _run_pass(instr_rules.check_snmpvariable_too_many, program, profile, diags)
     _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags)

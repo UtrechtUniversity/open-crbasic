@@ -339,6 +339,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     tainted = False
     taint_at = 0
     stash: dict[tuple, list] = {}   # inline-`If` condition diagnostics set aside while the body is rewritten
+    inline_bodies = {id(b) for st in program.statements if isinstance(st, S.If)
+                     for b in (st.inline or []) + (st.inline_else or [])}
     dropped: set[int] = set()      # tainted declarations: their names are never registered
     tainted_subs: set[int] = set()  # tainted `Sub`/`Function` headers: parameters dropped
     rewritten: set[int] = set()
@@ -498,6 +500,8 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                               and d.message in _SHORTFALL_MESSAGES][:1] if trigger_short else []
             if (isinstance(stmt, S.Instruction) and instr_rules.given_count(stmt, profile) == 1
                     and _is_short_instruction(stmt, profile)):
+                if id(stmt) in inline_bodies:
+                    continue  # (a one-line `If` body keeps its shortfall, oracle 2026-10-12: `I = Nope` then `If X Then Delay`)
                 # a short instruction after the cascade started has no second argument to echo and
                 # its own shortfall disappears (oracle, CR300, 2026-10-10: `Delay(1)` then
                 # `PanelTemp(X)` prints one line; on a shared line the trigger's own line stays)

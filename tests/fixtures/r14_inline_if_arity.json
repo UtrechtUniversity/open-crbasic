@@ -1,0 +1,659 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-ar-0-s0",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-0-s0",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-0-s0",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-0-s0",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-1-s1",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-1-s1",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-1-s1",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-1-s1",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-2-s2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-2-s2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-2-s2",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-2-s2",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-3-s3",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-3-s3",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-3-s3",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-3-s3",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-4-s4",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-ar-4-s4",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr300-ar-4-s4",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr350-ar-4-s4",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-ar-5-s5",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr1000x-ar-5-s5",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr300-ar-5-s5",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-ar-5-s5",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Scan(1,Sec,3,0,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-ar-6-ss1",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-6-ss1",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-6-ss1",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-6-ss1",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-8-ss0",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-8-ss0",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-8-ss0",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-8-ss0",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-9-else_s1",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-9-else_s1",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-9-else_s1",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-9-else_s1",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-10-else_s4",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-ar-10-else_s4",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr300-ar-10-else_s4",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr350-ar-10-else_s4",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Scan(1,Sec,3,0)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-ar-11-plain_s1",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-11-plain_s1",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-11-plain_s1",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-11-plain_s1",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-12-delay0",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-12-delay0",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-12-delay0",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-12-delay0",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-13-delay_many",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr1000x-ar-13-delay_many",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr300-ar-13-delay_many",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr350-ar-13-delay_many",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec,5)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  5."
+  },
+  {
+   "id": "cr6-ar-14-portset1",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-14-portset1",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-14-portset1",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-14-portset1",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-15-else_delay",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-15-else_delay",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-15-else_delay",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-ar-15-else_delay",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-16-randomize_many",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-ar-16-randomize_many",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-ar-16-randomize_many",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-ar-16-randomize_many",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Too many parameters:  2."
+  },
+  {
+   "id": "cr6-ar-17-ok_delay",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-ar-17-ok_delay",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-ar-17-ok_delay",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ar-17-ok_delay",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-ar-18-ok_portset",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ar-18-ok_portset",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then PortSet(1,1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ar-19-ok_rand",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-ar-19-ok_rand",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-ar-19-ok_rand",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ar-19-ok_rand",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Randomize(1)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ar-20-ok_else",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-ar-20-ok_else",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-ar-20-ok_else",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-ar-20-ok_else",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then X = 1 Else Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-ar-21-short_then_ok",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  PortSet(1,1)\n  PortSet(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-21-short_then_ok",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  PortSet(1,1)\n  PortSet(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-ar-21-short_then_ok",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  PortSet(1,1)\n  PortSet(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  1.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-ar-21-short_then_ok",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  PortSet(1,1)\n  PortSet(1,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  1.\nline 5: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-ar-22-short_after_err",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   I = Nope."
+  },
+  {
+   "id": "cr1000x-ar-22-short_after_err",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression:   I = Nope."
+  },
+  {
+   "id": "cr300-ar-22-short_after_err",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-ar-22-short_after_err",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay(0,1,mSec)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-ar-23-short_inline_after_err",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-ar-23-short_inline_after_err",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  I = Nope\n  If X Then Delay\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-ar-24-two_bad",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  2."
+  },
+  {
+   "id": "cr1000x-ar-24-two_bad",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  2."
+  },
+  {
+   "id": "cr300-ar-24-two_bad",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  2."
+  },
+  {
+   "id": "cr350-ar-24-two_bad",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then Delay\n  If X Then Randomize(1,2)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  2."
+  }
+ ]
+}

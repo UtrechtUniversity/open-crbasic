@@ -6320,3 +6320,20 @@ not defined.` hides `Status.CardBytesFree` in `crbasic/SbdPayload_tester.CR6`). 
 (`Status.X = ...`) are unchanged. Not modelled:
 CR300/CR350 `Battery(Status.Nope)` also prints `Illegal destination variable type, expecting Float.`
 Cases in `tests/fixtures/r14_status_public_reads.json`.
+### Arity of a one-line `If` body (fixture `r14_inline_if_arity`)
+
+Oracle, all four loggers, 2026-10-12: the pass-1 parameter-count checks (`instr_rules.check`,
+`check_too_many`) never saw the body of a one-line `If`/`Else`, so every wrong-count instruction there
+was accepted: `If X Then Scan(1)` / `Scan` / `Scan(1,Sec)` / `SubScan(1)` / `Delay` / `PortSet(1)` are
+`Invalid or missing parameter.`, `Scan(1,Sec,3,0,1)` is `Too many parameters:  1.`, `Delay(0,1,mSec,5)`
+`... 5.`. Both passes now run over `_with_inline(program)`. A well-formed `If X Then Scan(1,Sec,3,0)`
+is `IF or SELECT statement illegally has SCAN without NEXT SCAN.` (`check_block_closers`). CR300/CR350
+cascade (`check_too_many_cascade`): a body is not "after" its own `If`, and a short body after an
+earlier cascade trigger keeps its shortfall. Not done: inside a `Scan` the real compiler adds
+`Scan without NextScan or nested Scans.` before the `IF or SELECT` line (ours prints the pair reversed on
+CR6/CR1000X, only the second on CR300/CR350); `If X Then SubScan(1,uSec,3)` outside a Scan
+(`SubScan used outside of Scan .. NextScan.`); the other block keywords as a body (`Do`, `While X`,
+`For ...`, `Select Case`, `Case 1`: `DO without LOOP.`, `FOR without NEXT.`, `IF or SELECT without EndIf
+or EndSelect.`, `Case outside Select.`; `If X Then Sub` is `Too few parameters in instruction.`) are
+accepted; a short body on CR300/CR350 after an earlier undefined name loses its
+`Invalid or missing parameter.` line (real keeps it).
