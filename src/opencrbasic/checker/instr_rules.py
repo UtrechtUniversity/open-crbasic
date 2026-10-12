@@ -1522,9 +1522,10 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
     element count of the Long handle variable (1 for a scalar): `Max number of concurrent
     connections must be 1..N` on the statement's line (oracle, CR6 and CR1000X, 2026-10-12,
     `tests/fixtures/r13_tcpopen_connections.json`). Only calls of 5-7 arguments with a constant integer count (a missing
-    count is 0) and a once-declared `Long` variable handle are judged; CR300/CR350 print nothing."""
-    if profile.name not in ("cr6", "cr1000x"):
-        return
+    count is 0) and a once-declared `Long` variable handle are judged; CR300/CR350 print nothing.
+    A count literal not written as an integer (`3.0`, `2.0`, `2.5`, `1E0`) is the range message
+    whatever its value, then `Parameter must be a constant integer: <statement>.`; CR300/CR350 print
+    only the second line (oracle, all four loggers, 2026-10-12; review R13C-6)."""
     from .expressions import _index_nodes, _stmt_exprs
     types = symbols.declared_variable_types(program)
     dims = symbols.declared_all_dims(program, env)
@@ -1555,13 +1556,22 @@ def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, e
                 continue
             lit = args[5].operand if len(args) > 5 and isinstance(args[5], S.Unary) \
                 and args[5].op in ("-", "+") else (args[5] if len(args) > 5 else None)
-            if isinstance(count, bool) or not isinstance(count, (int, float)) or count != int(count) \
-                    or (isinstance(lit, S.Number) and not re.fullmatch(r"\d+|&[Hh][0-9A-Fa-f]+", lit.text)):
-                continue   # 2.5 / 3.0 / 1E0 add `Parameter must be a constant integer`: not done
-            count = int(count)
             size = 1
             for d in dims[name]:
                 size *= d
+            if isinstance(lit, S.Number) and not re.fullmatch(r"\d+|&[Hh][0-9A-Fa-f]+", lit.text) \
+                    and lit is args[5] and (stmt.line, stmt.file) not in busy:
+                if not profile.single_pass:
+                    diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}",
+                                stmt.file, stmt=stmt)
+                sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
+                            stmt.file, stmt=stmt)
+                continue
+            if profile.single_pass or isinstance(count, bool) or not isinstance(count, (int, float)) \
+                    or count != int(count):
+                continue
+            count = int(count)
             if 1 <= count <= size or (stmt.line, stmt.file) in busy:
                 continue
             diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}", stmt.file,

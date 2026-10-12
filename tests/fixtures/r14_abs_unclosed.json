@@ -3378,6 +3378,174 @@
    "source": "Public X, Y, Z\nPublic A(3)\nPublic S As String * 8\nConst K = 5\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Y = TypeOf(X + (1\n    CallTable T\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: No Matching, or out of place ) in expression:     Y = TypeOf(X + (1\n."
+  },
+  {
+   "id": "cr6-r14c35-a1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(X) + Abs(Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(X) + Abs(Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(X) + Abs(Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Abs(X) + Abs(Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-a2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Abs(X) > Abs(Y Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Abs(X) > Abs(Y Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Abs(X) > Abs(Y Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If Abs(X) > Abs(Y Then Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-a3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    While Abs(X\n      X = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    While Abs(X\n      X = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    While Abs(X\n      X = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    While Abs(X\n      X = 1\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-a4",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      X = 1\n    Loop Until Abs(X\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a4",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      X = 1\n    Loop Until Abs(X\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      X = 1\n    Loop Until Abs(X\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Do\n      X = 1\n    Loop Until Abs(X\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-a5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n      Y = 1\n    ElseIf Abs(X Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n      Y = 1\n    ElseIf Abs(X Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n      Y = 1\n    ElseIf Abs(X Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    If X Then\n      Y = 1\n    ElseIf Abs(X Then\n      Y = 2\n    EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-a6",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X\n    Case Abs(Y\n      Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c35-a6",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X\n    Case Abs(Y\n      Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r14c35-a6",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X\n    Case Abs(Y\n      Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c35-a6",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X\n    Case Abs(Y\n      Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
   }
  ]
 }

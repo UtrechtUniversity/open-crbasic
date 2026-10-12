@@ -1153,6 +1153,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
             # `Public.Nope = 1`: not a variable (oracle, all four loggers, 2026-10-12)
             diags.error(stmt.line, f"Could not find Public.{stmt.target.member}(1).", stmt.file)
             diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
+        elif (isinstance(stmt, S.Assignment) and isinstance(stmt.target, S.Member)
+              and isinstance(stmt.target.base, S.Name) and stmt.target.base.name.upper() == "DIM"):
+            # `Dim.X = 1`: `Dim` is no table (oracle, all four loggers, 2026-10-12; review R14C-5)
+            base = stmt.target.base.name
+            diags.error(stmt.line, f"Could not find DataTable {base}." if profile.single_pass
+                        else f"Could not find {base}.", stmt.file)
+            diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
         elif (isinstance(stmt, S.Assignment) and (profile.known_first_word_pass1 or profile.single_pass)
               and isinstance(stmt.target, S.Name)
               and stmt.target.name.upper() not in profile.instructions
@@ -1626,8 +1633,12 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                     if profile.single_pass:  # (CR6/CR1000X report them in pass 1)
                         for message in _unparsed_string_messages(stmt, program, profile):
                             diags.error(stmt.line, message, stmt.file)
-                    diags.error(stmt.line, _unclosed_call_message(
-                        profile, stmt.text, stmt.at_eol, pass1_operands(program, profile))
+                    cond = condition_part(stmt.text)
+                    operands = pass1_operands(program, profile)
+                    diags.error(stmt.line, (cond and cond.strip() and _unclosed_call_message(
+                        profile, cond, False, operands))   # (`If Round(X, Then`, `While Round(X`:
+                        # the condition alone, as on CR6/CR1000X; oracle 2026-10-12, review R13C-5)
+                        or _unclosed_call_message(profile, stmt.text, stmt.at_eol, operands)
                         or _no_matching(profile, stmt.text, stmt.at_eol),
                         stmt.file, show_file=False)
             elif stmt.reason == _EXTRA_CLOSE_PAREN and not _assignment_head(stmt.text, program, profile):
@@ -2941,6 +2952,10 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None =
                                                    getattr(stmt, "at_eol", True),
                                                    operands)) is not None:
         return refined
+    if text is None and kind in ("fallback", "no_matching") and operands is not None and \
+            (inline := inline_if_condition(stmt.text)) and \
+            (refined := _unclosed_call_message(profile, inline, False, operands)) is not None:
+        return refined   # `If Round(X Then Y = 1` (oracle, CR6/CR1000X, 2026-10-12, review R13C-5)
     if text is None:
         text = stmt.text
     return {
@@ -3366,6 +3381,9 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
       -- the assignment itself compiles fine, only its position is illegal, same shape as a bare
       built-in-function call) and a stop when it precedes `BeginProg`.
     """
+    if isinstance(stmt.target, S.Member) and isinstance(stmt.target.base, S.Name) \
+            and stmt.target.base.name.upper() == "DIM":
+        return None   # (`Dim.X = 1` is answered by `check_pass1`, review R14C-5)
     before_beginprog = not in_body_block and before_bp
     target_names = expressions._undefined_names(stmt.target, known)
     if target_names and profile is not None and profile.single_pass:

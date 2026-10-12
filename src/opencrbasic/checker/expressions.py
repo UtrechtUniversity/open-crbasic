@@ -1197,7 +1197,10 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
         if not members or any(_undefined_names(e, known) for e in exprs):
             continue
         lines = []
-        for base, m in members:
+        target = len(_dotted_members(stmt.target)) if isinstance(stmt, S.Assignment) else 0
+        for k, (base, m) in enumerate(members):
+            if k == target and lines:
+                break   # a bad member target ends the statement (`X.Q = X.R + 1`: one line)
             upper = base.upper()
             if m is None:
                 if upper not in data_tables:

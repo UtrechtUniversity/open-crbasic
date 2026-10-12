@@ -277,9 +277,13 @@ def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
 
 
 def _inline_owner(statements, index: int):
-    """The one-line `If` whose body holds `statements[index]`, if any."""
+    """The one-line `If` whose body holds `statements[index]`, if any (on the same source line,
+    however many `:`-separated statements the body has; review R14C-6)."""
     stmt = statements[index]
-    for prev in reversed(statements[max(0, index - 8):index]):
+    for i in range(index - 1, -1, -1):
+        prev = statements[i]
+        if (prev.line, prev.file) != (stmt.line, stmt.file):
+            break
         if isinstance(prev, S.If) and any(x is stmt for x in (prev.inline or []) + (prev.inline_else or [])):
             return prev
     return None

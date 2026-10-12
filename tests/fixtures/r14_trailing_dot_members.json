@@ -1382,6 +1382,188 @@
    "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  C.x = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
    "expected_exit": 0,
    "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r14c35-d1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Dim.\nline 4: Invalid assignment in expression:     Dim.X = 1."
+  },
+  {
+   "id": "cr1000x-r14c35-d1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Dim.\nline 4: Invalid assignment in expression:     Dim.X = 1."
+  },
+  {
+   "id": "cr300-r14c35-d1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim.\nline 4: Invalid assignment in expression:     Dim.X = 1\n."
+  },
+  {
+   "id": "cr350-r14c35-d1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim.\nline 4: Invalid assignment in expression:     Dim.X = 1\n."
+  },
+  {
+   "id": "cr6-r14c35-d2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.Y = Dim.X + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Dim.\nline 4: Invalid assignment in expression:     Dim.Y = Dim.X + 1."
+  },
+  {
+   "id": "cr1000x-r14c35-d2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.Y = Dim.X + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find Dim.\nline 4: Invalid assignment in expression:     Dim.Y = Dim.X + 1."
+  },
+  {
+   "id": "cr300-r14c35-d2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.Y = Dim.X + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim.\nline 4: Invalid assignment in expression:     Dim.Y = Dim.X + 1\n."
+  },
+  {
+   "id": "cr350-r14c35-d2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Dim.Y = Dim.X + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim.\nline 4: Invalid assignment in expression:     Dim.Y = Dim.X + 1\n."
+  },
+  {
+   "id": "cr6-r14c35-x1",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q = 1."
+  },
+  {
+   "id": "cr1000x-r14c35-x1",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q = 1."
+  },
+  {
+   "id": "cr300-r14c35-x1",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q = 1\n."
+  },
+  {
+   "id": "cr350-r14c35-x1",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q = 1\n."
+  },
+  {
+   "id": "cr6-r14c35-x2",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = X.R + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q = X.R + 1."
+  },
+  {
+   "id": "cr1000x-r14c35-x2",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = X.R + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q = X.R + 1."
+  },
+  {
+   "id": "cr300-r14c35-x2",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = X.R + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q = X.R + 1\n."
+  },
+  {
+   "id": "cr350-r14c35-x2",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q = X.R + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q = X.R + 1\n."
+  },
+  {
+   "id": "cr6-r14c35-x3",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = X.R + X.S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Could not find X."
+  },
+  {
+   "id": "cr1000x-r14c35-x3",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = X.R + X.S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Could not find X."
+  },
+  {
+   "id": "cr300-r14c35-x3",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = X.R + X.S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-r14c35-x3",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = X.R + X.S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-r14c35-x4",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Dim.X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim."
+  },
+  {
+   "id": "cr350-r14c35-x4",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Dim.X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Dim."
+  },
+  {
+   "id": "cr6-r14c35-x5",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q(1) = X.R\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q(1) = X.R."
+  },
+  {
+   "id": "cr1000x-r14c35-x5",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q(1) = X.R\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find X.\nline 4: Invalid assignment in expression:     X.Q(1) = X.R."
+  },
+  {
+   "id": "cr300-r14c35-x5",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q(1) = X.R\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q(1) = X.R\n."
+  },
+  {
+   "id": "cr350-r14c35-x5",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Q(1) = X.R\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable X.\nline 4: Invalid assignment in expression:     X.Q(1) = X.R\n."
   }
  ]
 }

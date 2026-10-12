@@ -6153,3 +6153,39 @@ parameter is an expression (code 7: `Case (1 ;)`, `If`) keep the round-13 echo o
 built-in function written as a statement with a `;` anywhere (`Timer(1 ;,Sec,0)`,
 `SerialOpen(...) ;`) is `Invalid symbol in expression: <line>` with the line terminator, like the
 assignment form.
+
+**R14C-3, probed: not a defect.** `Y = Abs(X) + Abs(Y`, `If Abs(X) > Abs(Y Then Y = 1`, `While Abs(X`,
+`Loop Until Abs(X`, `ElseIf Abs(X Then` and `Case Abs(Y` compile on all four loggers, as
+`parser._close_open_call` accepts them (cases `*-r14c35-a*` in `tests/fixtures/r14_abs_unclosed.json`).
+
+**R14C-4** (the all-logger `MODEMCALLBACK` exemption is inert on CR300/CR350): no change.
+
+**R14C-5, fixed.** `Dim.X = 1` is `Could not find Dim.` (CR300/CR350 `Could not find DataTable Dim.`)
+then `Invalid assignment in expression: <line>.` on all four loggers (`structure.check_pass1`, next
+to `Public.Nope = 1`; pass 2 leaves the statement alone). Found with it: an assignment whose target
+is a bad member reports that target only (`X.Q = X.R + 1` with `Public X`: one `Could not find X.`,
+then `Invalid assignment`; `Y = X.R + X.S` still reports each access). Not modelled: a `Dim.X` read in
+a value on CR6/CR1000X (`Y = Dim.X` is `Could not find Dim.`; we echo `Invalid symbol in expression`).
+Cases `*-r14c35-d*`/`x*` in `tests/fixtures/r14_trailing_dot_members.json`.
+
+**R14C-6, fixed.** `cr3xx._inline_owner` scans back over the statements of the same source line
+instead of a fixed eight, so a one-line `If` body with more `:`-separated statements keeps its owner.
+
+## Round 13 cloud review follow-up, R13C-3..8 (2026-10-12)
+
+Probed on all four loggers (cases `*-r13c-*` in `tests/fixtures/r14_review_r13c.json`):
+
+- **R13C-3** (`Include "CPU:../Lib.crb"` from a `sub/` program): compiles, as we do. Not a defect.
+- **R13C-4** (an include error inside the `Scan` body, CR300/CR350): the following `Delay(1,1,Sec)`
+  gets `Too many parameters:  1.` on the real compilers too. Not a defect.
+- **R13C-5, fixed.** An unclosed built-in call in a condition echoes the condition alone on all
+  four loggers: `If Round(X, Then` is `Invalid, or out of place expression: Round(X, .` (CR300/CR350
+  printed `No Matching` with the whole line), `While Round(X` is `Expression expects , : Round(X.`
+  (CR300/CR350 printed the whole line), and the one-line `If Round(X Then Y = 1` is `Expression
+  expects , : Round(X .` (CR6/CR1000X printed the fallback with the whole line).
+- **R13C-6, fixed.** A `TCPOpen` connection count written as a non-integer literal (`3.0`, `2.0`,
+  `2.5`, `1E0`, `0.0`) is `Max number of concurrent connections must be 1..N` whatever its value,
+  then `Parameter must be a constant integer: <statement>.` on CR6/CR1000X; CR300/CR350 print only
+  the second line (with the line terminator). `Const N = 3.0` as the count matches already.
+- **R13C-7** (`For I = 1 To 10 Step`) and **R13C-8** (`X = C.5` with `Const C`, `X = Ya.5` with an
+  `Alias`): match the real compilers. Not defects.
