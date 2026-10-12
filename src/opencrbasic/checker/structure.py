@@ -999,7 +999,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 if isinstance(stmt, (S.If, S.ElseIf)) else None
             sep = "\n" if not cond and profile.fallback_echo_newline and getattr(stmt, "at_eol", False) else ""
             diags.error(stmt.line, "Incomplete expression: "
-                        f"{cond.group(1) if cond else stmt.text}{sep}.", stmt.file, show_file=False)
+                        f"{cond.group(1) if cond else stmt.text}{sep}.", stmt.file)
         if isinstance(stmt, S.Instruction):
             # Oracle, all four loggers, 2026-10-02: pass 1, in line order. Every `ConstTable`
             # after the first (open or not) is `Only one ConstTable allowed.`; the counter of
@@ -1155,14 +1155,13 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         elif profile.single_pass and isinstance(stmt, S.If):  # CR300/CR350: only the called keyword
             for sub in (stmt.inline or []) + (stmt.inline_else or []):
                 if _block_keyword_call(sub):
-                    diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file,
-                                show_file=False)
+                    diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file)
                 elif (isinstance(sub, S.Assignment) and isinstance(sub.target, S.Name)
                       and sub.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
                       and sub.target.name.upper() not in profile.instructions
                       and sub.target.name.upper() not in symbols.declared_variable_names(program)):
                     diags.error(sub.line, _pass1_message(profile, dataclasses.replace(sub, at_eol=False),
-                                                         "invalid_assignment"), sub.file, show_file=False)
+                                                         "invalid_assignment"), sub.file)
 
         # `S.Call` (a bare/implicit or explicit `Call`) and `S.Unparsed`'s generic "not a valid
         # statement" fallback are **not** handled here at all any more (round 4, this session):
@@ -2597,21 +2596,18 @@ def _check_if_pass1(stmt, operands: set[str], profile, diags: Diagnostics) -> No
         cond = condition_part(stmt.text)
         verdict = _pass1_scan(stmt.text, operands, profile) if cond is not None else None
         if verdict and verdict[0] == "pass1":
-            diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
-                        show_file=False)
+            diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file)
     for sub in (getattr(stmt, "inline", None) or []) + (getattr(stmt, "inline_else", None) or []):
         if (isinstance(sub, S.Call) and not sub.explicit and sub.name.upper() in operands
                 and sub.name.upper() not in profile.instructions
                 and sub.name.upper() not in profile.functions):
-            diags.error(sub.line, _out_of_place(profile, sub.text, sub.at_eol), sub.file,
-                        show_file=False)  # `If c Then Y`: a bare variable is a pass-1 error
+            diags.error(sub.line, _out_of_place(profile, sub.text, sub.at_eol), sub.file)  # `If c Then Y`: a bare variable is a pass-1 error
         if profile.known_first_word_pass1 and _block_keyword_call(sub):
-            diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file, show_file=False)
+            diags.error(sub.line, f"Incomplete expression: {sub.text}.", sub.file)
         if isinstance(sub, S.Unparsed) and _is_generic_unparsed(sub):
             verdict = _pass1_scan(sub.text, operands, profile)
             if verdict and verdict[0] == "pass1":
-                diags.error(sub.line, _pass1_message(profile, sub, verdict[1]), sub.file,
-                            show_file=False)
+                diags.error(sub.line, _pass1_message(profile, sub, verdict[1]), sub.file)
 
 
 _CALLED_BLOCK_KEYWORDS = frozenset({"CASE", "DO", "FOR", "FUNCTION", "SCAN", "SELECT", "SUB",

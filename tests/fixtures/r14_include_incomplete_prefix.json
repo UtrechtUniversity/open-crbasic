@@ -1,0 +1,655 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-incl_prefix-0-inline_scan_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-0-inline_scan_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-0-inline_scan_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr350-incl_prefix-0-inline_scan_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr6-incl_prefix-1-inline_scan_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-1-inline_scan_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-1-inline_scan_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-1-inline_scan_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-2-inline_scan_else_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 Else Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-2-inline_scan_else_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 Else Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-2-inline_scan_else_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 Else Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr350-incl_prefix-2-inline_scan_else_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 Else Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr6-incl_prefix-3-inline_scan_else_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 Else Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-3-inline_scan_else_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 Else Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-3-inline_scan_else_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 Else Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-3-inline_scan_else_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 Else Y = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1).\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-4-if_scan_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If Scan(1) Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr1000x-incl_prefix-4-if_scan_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If Scan(1) Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr300-incl_prefix-4-if_scan_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If Scan(1) Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr350-incl_prefix-4-if_scan_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If Scan(1) Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr6-incl_prefix-5-if_scan_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf Scan(1) Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr1000x-incl_prefix-5-if_scan_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf Scan(1) Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Scan(1) ."
+  },
+  {
+   "id": "cr300-incl_prefix-5-if_scan_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf Scan(1) Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Scan(1) .\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-5-if_scan_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf Scan(1) Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Scan(1) .\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-6-inline_bare_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr1000x-incl_prefix-6-inline_bare_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr300-incl_prefix-6-inline_bare_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr350-incl_prefix-6-inline_bare_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr6-incl_prefix-7-inline_bare_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr1000x-incl_prefix-7-inline_bare_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: Y."
+  },
+  {
+   "id": "cr300-incl_prefix-7-inline_bare_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: Y.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-7-inline_bare_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: Y.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-8-inline_status_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Status = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Status = 1."
+  },
+  {
+   "id": "cr1000x-incl_prefix-8-inline_status_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Status = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Status = 1."
+  },
+  {
+   "id": "cr300-incl_prefix-8-inline_status_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Status = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Status is not defined."
+  },
+  {
+   "id": "cr350-incl_prefix-8-inline_status_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Status = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Status is not defined."
+  },
+  {
+   "id": "cr6-incl_prefix-9-inline_status_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Status = 1\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Status = 1."
+  },
+  {
+   "id": "cr1000x-incl_prefix-9-inline_status_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Status = 1\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Status = 1."
+  },
+  {
+   "id": "cr300-incl_prefix-9-inline_status_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Status = 1\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Status is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-9-inline_status_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Status = 1\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Status is not defined.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-10-inline_unparsed_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr1000x-incl_prefix-10-inline_unparsed_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr300-incl_prefix-10-inline_unparsed_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr350-incl_prefix-10-inline_unparsed_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X Then Y = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr6-incl_prefix-11-inline_unparsed_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 +\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr1000x-incl_prefix-11-inline_unparsed_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 +\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: Y = 1 +."
+  },
+  {
+   "id": "cr300-incl_prefix-11-inline_unparsed_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 +\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: Y = 1 +.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-11-inline_unparsed_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X Then Y = 1 +\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: Y = 1 +.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-12-assign_scan_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-12-assign_scan_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-12-assign_scan_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)\n."
+  },
+  {
+   "id": "cr350-incl_prefix-12-assign_scan_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Y = Scan(1)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Incomplete expression: Y = Scan(1)\n."
+  },
+  {
+   "id": "cr6-incl_prefix-13-assign_scan_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nY = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr1000x-incl_prefix-13-assign_scan_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nY = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Incomplete expression: Y = Scan(1)."
+  },
+  {
+   "id": "cr300-incl_prefix-13-assign_scan_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nY = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-13-assign_scan_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nY = Scan(1)\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Incomplete expression: Y = Scan(1)\n.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-incl_prefix-16-if_cond_incomplete_inscan",
+   "logger": "cr6",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X = Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr1000x-incl_prefix-16-if_cond_incomplete_inscan",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X = Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr300-incl_prefix-16-if_cond_incomplete_inscan",
+   "logger": "cr300",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X = Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr350-incl_prefix-16-if_cond_incomplete_inscan",
+   "logger": "cr350",
+   "source": "Public X, Y\nBeginProg\n  Scan (1,Sec,3,0)\n    Include \"CPU:l.crb\"\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "If X = Then\nY = 1\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr6-incl_prefix-17-if_cond_incomplete_sub",
+   "logger": "cr6",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X = Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr1000x-incl_prefix-17-if_cond_incomplete_sub",
+   "logger": "cr1000x",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X = Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: X = ."
+  },
+  {
+   "id": "cr300-incl_prefix-17-if_cond_incomplete_sub",
+   "logger": "cr300",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X = Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = .\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-incl_prefix-17-if_cond_incomplete_sub",
+   "logger": "cr350",
+   "source": "Public X, Y\nInclude \"CPU:l.crb\"\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1\n  NextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Sub Q\nIf X = Then\nY = 1\nEndIf\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = .\nline 4: Too many parameters:  Sec."
+  }
+ ]
+}

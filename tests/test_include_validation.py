@@ -7,7 +7,7 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 CASES = [c for f in ("r7_include_cutoff", "r7_include_existing_ext", "r13_include_subdir",
-                                                "r13_include_nesting", "r13_two_word_routine_end", "r13_include_prefix", "r13_include_dupdecl", "r13_include_scan_cascade")
+                                                "r13_include_nesting", "r13_two_word_routine_end", "r13_include_prefix", "r13_include_dupdecl", "r13_include_scan_cascade", "r14_include_incomplete_prefix")
          if (Path(__file__).parent / "fixtures" / f"{f}.json").exists()
          for c in json.loads((Path(__file__).parent / "fixtures" / f"{f}.json").read_text(encoding="utf-8"))["cases"]]
 
