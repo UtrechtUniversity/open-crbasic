@@ -1,0 +1,1955 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_subscan_nextscan-0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  CallTable T\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0)\n  CallTable T\n  EndIf\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 8: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Y = 1 Else Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Y = 1 Else Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0) : Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then Scan(1,Sec,0,0) : Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: IF or SELECT statement illegally has SCAN without NEXT SCAN."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-15",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-15",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-15",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-16",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-16",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-16",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-17",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then NextScan\n  CallTable T\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then NextScan\n  CallTable T\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 7: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-17",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then NextScan\n  CallTable T\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-17",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then NextScan\n  CallTable T\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 7: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-18",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: EndIf never reached at run time.\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: EndIf never reached at run time.\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-18",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: EndIf never reached at run time.\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-18",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Warning: EndIf never reached at run time.\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-19",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Next Scan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Next Scan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-19",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Next Scan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-19",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Next Scan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-20",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 1 Else NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 1 Else NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-20",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 1 Else NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-20",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 1 Else NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-21",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-21",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-21",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  NextScan\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-22",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-22",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-22",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-23",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-23",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-23",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-24",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-24",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-24",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-25",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-25",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-25",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  If C Then SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  If C Then NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-26",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-26",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-26",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-27",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(0,1,mSec)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(0,1,mSec)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-27",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(0,1,mSec)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-27",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(0,1,mSec)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-28",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Battery(Y)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Battery(Y)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-28",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Battery(Y)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-28",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Battery(Y)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-29",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-29",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-29",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60)\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-30",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S not defined."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S not defined."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-30",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-30",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-31",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 11: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 11: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-31",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-31",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-32",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Next SubScan without SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Next SubScan without SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-32",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Next SubScan without SubScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-32",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextSubScan\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Next SubScan without SubScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-33",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SubScan without Next SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SubScan without Next SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-33",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SubScan without Next SubScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-33",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: SubScan without Next SubScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-34",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-34",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-34",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-35",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 10: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-35",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-35",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-36",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  Next Scan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  Next Scan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-36",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  Next Scan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-36",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then\n  Next Scan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-37",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-37",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-37",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-37",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then\n  NextScan\n  EndIf\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-38",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-38",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-38",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-38",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-39",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan : Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-39",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan : Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-39",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan : Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-39",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then NextScan : Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-40",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 2 Else NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-40",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 2 Else NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-40",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 2 Else NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-40",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then Y = 2 Else NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 8: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-41",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  For Z = 1 To 2\n  If C Then NextScan\n  Next\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-41",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  For Z = 1 To 2\n  If C Then NextScan\n  Next\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 9: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-41",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  For Z = 1 To 2\n  If C Then NextScan\n  Next\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-41",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  For Z = 1 To 2\n  If C Then NextScan\n  Next\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: EndIf never reached at run time."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-42",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then ExitScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-42",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then ExitScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-42",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then ExitScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-42",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  CallTable T\n  If C Then ExitScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-43",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-43",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-43",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-43",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,10)\n  CallTable T\n  If C Then NextScan\n  Y = 1\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-44",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-44",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-44",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-44",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-45",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-45",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-45",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-45",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-46",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-46",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-46",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-46",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  If C Then SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-47",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-47",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-47",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-47",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-48",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-48",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-48",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-48",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-49",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-49",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-49",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-49",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-50",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  VoltDiff(Y,1,mV5000,1,True,0,250,1,0)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-50",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  VoltDiff(Y,1,mV5000,1,True,0,250,1,0)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-50",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  VoltDiff(Y,1,mV5000,1,True,0,250,1,0)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: mV5000 is not defined.\nline 8: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-50",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  VoltDiff(Y,1,mV5000,1,True,0,250,1,0)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: mV5000 is not defined.\nline 8: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-51",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Sample(1,Y,FP2)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-51",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Sample(1,Y,FP2)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-52",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Y + 1\n  PanelTemp(Z,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-52",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Y + 1\n  PanelTemp(Z,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-52",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Y + 1\n  PanelTemp(Z,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-52",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Y + 1\n  PanelTemp(Z,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-53",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  For Z = 1 To 2\n  PanelTemp(Y,60)\n  Next\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-53",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  For Z = 1 To 2\n  PanelTemp(Y,60)\n  Next\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-53",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  For Z = 1 To 2\n  PanelTemp(Y,60)\n  Next\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-53",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  For Z = 1 To 2\n  PanelTemp(Y,60)\n  Next\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-54",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60) Else Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-54",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60) Else Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-54",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60) Else Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-54",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  If C Then PanelTemp(Y,60) Else Y = 1\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-55",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 9: No Measurements in SubScan.\nline 10: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-55",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 9: No Measurements in SubScan.\nline 10: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-55",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-55",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  NextSubScan\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-56",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-56",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-56",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-56",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-57",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-57",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-57",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-57",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-58",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 11: Invalid symbol in expression:   Y = Q.\nline 12: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-58",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot Nest SubScans.\nline 11: Invalid symbol in expression:   Y = Q.\nline 12: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-58",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-58",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-59",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:   Y = Q.\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-59",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:   Y = Q.\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-59",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-59",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = Q\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-60",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Z = Q\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:   Z = Q."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-60",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Z = Q\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:   Z = Q."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-60",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Z = Q\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 9: Too many parameters:  60."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-60",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Z = Q\n  PanelTemp(Y,60)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Q is not defined.\nline 9: Too many parameters:  60."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-61",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-61",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-61",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-61",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-62",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan.\nline 10: Invalid symbol in expression:   Z = Q."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-62",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan.\nline 10: Invalid symbol in expression:   Z = Q."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-62",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Q is not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-62",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  Z = Q\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Q is not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-63",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan.\nline 12: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-63",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan.\nline 12: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-63",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-63",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Y = 1\n  NextSubScan\n  SubScan(1,Sec,1)\n  CallTable T\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-64",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S9\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S9 not defined."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-64",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S9\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S9 not defined."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-64",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S9\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S9 not defined."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-64",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Call S9\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Sub S9 not defined."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-65",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(1,1,mSec)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-65",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(1,1,mSec)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-65",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(1,1,mSec)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-65",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  Delay(1,1,mSec)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-66",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SerialIn(S,1,1,1,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: S.\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-66",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SerialIn(S,1,1,1,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: S.\nline 9: No Measurements in SubScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-66",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SerialIn(S,1,1,1,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: S is not defined.\nline 8: A string variable destination is required\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-66",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1,Sec,1)\n  SerialIn(S,1,1,1,1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: S is not defined.\nline 8: A string variable destination is required\nline 8: Too many parameters:  1."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-67",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-67",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-67",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-67",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-68",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-68",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-68",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-68",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  If X Then SubScan(1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-69",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-69",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-69",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-69",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan(1,Sec,1)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-70",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-70",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-70",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-70",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  SubScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-71",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-71",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-71",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-71",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-72",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-72",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-72",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-72",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nBeginProg\n  Scan(1,Sec,0,0)\n  If X Then SubScan(1)\n  NextSubScan\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-73",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nSub S1\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-73",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nSub S1\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-73",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nSub S1\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-73",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nSub S1\n  SubScan(1,Sec,1)\n  PanelTemp(Y,60)\n  NextSubScan\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: SubScan used outside of Scan .. NextScan."
+  },
+  {
+   "id": "cr6-r15_subscan_nextscan-74",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nSub S1\n  PanelTemp(Y,60)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-r15_subscan_nextscan-74",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nSub S1\n  PanelTemp(Y,60)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-r15_subscan_nextscan-74",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nSub S1\n  PanelTemp(Y,60)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_subscan_nextscan-74",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nSub S1\n  PanelTemp(Y,60)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    Call S1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

@@ -502,7 +502,7 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
     return tokens
 
 
-_INLINE_BLOCK_WORDS = frozenset({"SELECT", "WHILE", "NEXT", "ENDSELECT", "WEND"})
+_INLINE_BLOCK_WORDS = frozenset({"SELECT", "WHILE", "NEXT", "ENDSELECT", "WEND", "SUBSCAN", "NEXTSUBSCAN", "NEXTSCAN"})
 
 
 def _is_block_statement(st: S.Stmt) -> bool:
@@ -524,7 +524,10 @@ def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
     for attr in ("inline", "inline_else"):
         body = getattr(stmt, attr)
         if body:
-            hoisted += [st for st in body if _is_block_statement(st)]
+            for position, st in enumerate(body):
+                if _is_block_statement(st):
+                    st.hoisted_last = position == len(body) - 1   # (the reachability warning)
+                    hoisted.append(st)
             setattr(stmt, attr, [st for st in body if not _is_block_statement(st)])
     for st in hoisted:
         if hasattr(stmt, "origin"):

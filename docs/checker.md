@@ -6473,3 +6473,43 @@ Message-only differences left: CR300/CR350 `If C Then Case 1` before `BeginProg`
 `Case 1` has the same extra `Too many parameters:  Sec.` from the next `Scan` line), `Sub S` / `If C Then EndSub` inside
 a `Sub` (`If without EndIf inside of Sub.`).
 
+## Round 15: `SubScan` rules and `NextScan`/`SubScan`/`NextSubScan` in a one-line `If` body (2026-10-12)
+
+Oracle, all four loggers unless noted (fixture `tests/fixtures/r15_subscan_nextscan.json`, 69 shapes x 4
+minus 24 message-only (logger, shape) pairs pruned, see below):
+
+- **Hoisting** (extends `parser._INLINE_BLOCK_WORDS`): `NextScan`, `SubScan`, `NextSubScan` in a one-line `If`
+  body (or its `Else` body) open and close their block like statements of their own. `Scan` ... `If C Then
+  NextScan` closes the `Scan` (a false reject before: `Scan without NextScan.`); `If C Then SubScan(1,Sec,1)`
+  ... `NextSubScan` and `SubScan` ... `If C Then NextSubScan` compile. With an endless `Scan(...,0)` the real
+  compiler warns `EndIf never reached at run time.` at the `If`'s line (the `If`'s own end follows the
+  `NextScan`); when more text follows the `NextScan` on that line (`If C Then NextScan : Y = 1`) there is no
+  warning at all, and later statements are not flagged either (`warnings._check_reachability`, hoisted
+  statements carry `hoisted_last`). A finite `Scan(1,Sec,0,10)` gives no warning. `If C Then NextScan` with no
+  `Scan` is `NextScan with no Scan.`. The CR300/CR350 cascade (`check_too_many_cascade`) now treats an `If` whose
+  body was hoisted out as a one-line `If` (its shortfall line stays with the hoisted `SubScan(1)`;
+  `r14_inline_if_arity` `ar-6-ss1` green again).
+- **`SubScan used outside of Scan .. NextScan.`**: a `SubScan` (valid arguments) with no open `Scan`, or in a
+  `Sub`/`Function` body, e.g. after the last `NextScan`, also `If C Then SubScan(1,Sec,1)`. A placement error:
+  it ends pass 2 (a later `Y = Q` is not reported on CR6/CR1000X; on CR300/CR350 the pass-1 `Q is not
+  defined.` wins) and the `SubScan never reached` warning is not printed. (The earlier note in this file that
+  we gave this message for the plain statement was wrong: it was never implemented.)
+- **`Cannot Nest SubScans.`** at the inner `SubScan`; compilation continues, the inner block is a real
+  block (its `NextSubScan` closes it, no `Next SubScan without SubScan.`).
+- **`No Measurements in SubScan.`** CR6/CR1000X only (CR300/CR350 accept), at the `NextSubScan` line, for a
+  `SubScan` that adds no time of its own (a nested one's time does not count: the outer block is reported). It
+  accumulates with other errors in the body (`Y = Q` -> `Invalid symbol ...` then this line). Zero-time bodies
+  observed: assignments, `CallTable` (a `SubScan` holding only `CallTable` is reported), `SerialIn`,
+  `Delay(1,1,mSec)` (option 1; `Delay(0,1,mSec)` counts as a measurement), `Battery` on the CR6 (the CR1000X
+  accepts it); `PanelTemp`, `VoltDiff`, an `If C Then PanelTemp(...)` or a `For` around it are measurements.
+  Implementation `structure.subscan_controls` (merged into `stray_controls`' stops in `check_stray_controls` and
+  `check_scan_placement_late`): reported only when every statement of the body is in the observed zero-time
+  set; any other instruction, `Call` or unparsed statement suppresses the message (false accepts remain for
+  those, e.g. `Sample` inside a `SubScan`, which the real compiler also counts as zero).
+- Message-only differences left (both sides reject; pruned from the fixture): a one-line `If C Then
+  Scan(...)`: the real order is `Scan without NextScan or nested Scans.` then `IF or SELECT statement
+  illegally has SCAN without NEXT SCAN.` (ours: reversed on CR6/CR1000X, only the second on CR300/CR350), and
+  with a following `NextScan`, CR300/CR350 say `NextScan with no Scan.`; a body line after it, `If C Then Y = 1`
+  while that `If` is open, adds a second `IF ... illegally has SCAN` in the real compiler; `Sample` in a
+  `SubScan` outside a table (`... No Measurements in SubScan.` after the Sample error).
+

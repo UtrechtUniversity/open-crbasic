@@ -542,6 +542,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     subs = symbols.declared_subs(program)
     stray = stray_controls(program)
     stray.update({k: (m, True) for k, m in scan_only_outside(program).items()})
+    stray.update(subscan_controls(program, profile))
     misplaced = first_misplaced_sub(program)
     for stmt in program.statements:
         if misplaced and stmt is misplaced[0]:
@@ -717,6 +718,71 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
     return found
 
 
+_SUBSCAN_ZERO_TIME = frozenset({"CALLTABLE", "SERIALIN", "ELSE", "ENDIF", "SELECT", "ENDSELECT", "NEXT", "END",
+                                "EXIT", "EXITSCAN", "CONTINUESCAN", "WHILE", "WEND"})
+_SUBSCAN_PLAIN = (S.Assignment, S.Declaration, S.ConstDecl, S.Label, S.If, S.ElseIf, S.Case, S.DoLoop, S.For)
+
+
+def _subscan_body_time(stmt: S.Stmt, profile) -> bool | None:
+    """Whether `stmt` adds time to the open `SubScan`: `False` when certainly not (an assignment, a
+    control statement, `CallTable`, `SerialIn`, a `Delay` whose option is a nonzero constant,
+    `Battery` on the CR6; the observed zero-time cases), `None` for anything the model does not
+    know."""
+    if isinstance(stmt, _SUBSCAN_PLAIN):
+        return False
+    if not isinstance(stmt, S.Instruction):
+        return None
+    kw = stmt.keyword.upper()
+    if kw in _SUBSCAN_ZERO_TIME or kw == "BATTERY" and profile.name == "cr6":
+        return False
+    if kw == "DELAY" and stmt.args and isinstance(stmt.args[0], S.Number) and stmt.args[0].value != 0:
+        return False
+    return None
+
+
+def subscan_controls(program: S.Program, profile) -> dict[int, tuple[str, bool]]:
+    """`id(stmt) -> (message, stops)` for `SubScan` blocks (oracle, 2026-10-12, `docs/checker.md`
+    "Round 15: SubScan"): a `SubScan` outside a `Scan` (or in a `Sub`) is `SubScan used outside of
+    Scan .. NextScan.` (stops pass 2, all four loggers), one inside a `SubScan` is `Cannot Nest
+    SubScans.`, and on CR6/CR1000X a `SubScan` that adds no time of its own (nested ones do not
+    count) is `No Measurements in SubScan.` at its `NextSubScan`. A body holding anything the model
+    does not know is never reported."""
+    found: dict[int, tuple[str, bool]] = {}
+    scans = 0
+    in_sub = False
+    frames: list[list] = []   # per open SubScan: [certainly_zero_so_far]
+    flat: list[S.Stmt] = []
+    for stmt in program.statements:
+        flat.append(stmt)
+        if isinstance(stmt, S.If):
+            flat.extend((stmt.inline or []) + (stmt.inline_else or []))
+    for stmt in flat:
+        kw = _keyword(stmt)
+        word = _block_word(getattr(stmt, "args", []) or []) if kw in ("END", "NEXT") else None
+        if isinstance(stmt, S.SubDef):
+            in_sub = True
+        elif S.ends_routine(stmt):
+            in_sub = False
+        elif kw == "SCAN":
+            scans += 1
+        elif kw == "NEXTSCAN" or (kw == "NEXT" and word == "SCAN"):
+            scans = max(0, scans - 1)
+            frames.clear()
+        elif kw == "SUBSCAN" and isinstance(stmt, S.Instruction):
+            if in_sub or scans == 0:
+                found[id(stmt)] = ("SubScan used outside of Scan .. NextScan.", True)
+                return found
+            if frames:
+                found[id(stmt)] = ("Cannot Nest SubScans.", False)
+            frames.append([True])
+        elif kw == "NEXTSUBSCAN" or (kw == "NEXT" and word == "SUBSCAN"):
+            if frames and frames.pop()[0] and not profile.single_pass:
+                found[id(stmt)] = ("No Measurements in SubScan.", False)
+        elif frames and frames[-1][0] and _subscan_body_time(stmt, profile) is None:
+            frames[-1][0] = False
+    return found
+
+
 def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int | None:
     """CR6/CR1000X pass 2 (`stray_controls`); returns the `(file, line)` pass 2 stops at, if any. CR300/CR350
     report these in `check_scan_placement_late`."""
@@ -724,6 +790,7 @@ def check_stray_controls(program: S.Program, profile, diags: Diagnostics) -> int
         return None
     found = stray_controls(program)
     found.update({k: (m, True) for k, m in scan_only_outside(program).items()})
+    found.update(subscan_controls(program, profile))
     statements: list[S.Stmt] = []
     for stmt in program.statements:
         statements.append(stmt)

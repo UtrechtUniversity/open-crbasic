@@ -264,6 +264,14 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             if not begun and profile.name in ("cr6", "cr1000x"):
                 dead = False   # `Scan illegally occurs before BeginProg.`: the scan is not
                 # compiled, so nothing after it is unreachable (oracle, 2026-10-12, fuzz R15)
+            closer = statements[j - 1] if j <= n and j > i + 1 else None
+            if dead and closer is not None and hasattr(closer, "hoisted_last"):
+                # `If C Then NextScan` closes the endless `Scan` from inside a one-line `If`: the
+                # `If`'s own end is the first thing after it (oracle, all four loggers, 2026-10-12);
+                # more statements after the `NextScan` in the body silence the check
+                if closer.hoisted_last and not (j < n and (statements[j].line, statements[j].file) == (closer.line, closer.file)):
+                    diags.warning(closer.line, "EndIf never reached at run time.", closer.file)
+                return
             open_depth = _open_conditional(statements, i, j)
             i = j
             continue
@@ -279,8 +287,8 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
         if dead and kw == "DELAY" and id(stmt) in pipeline_delays:
             i += 1  # its pipeline-mode error replaces its own warning (oracle); later ones follow
             continue
-        if dead and kw in structure.SCAN_ONLY:
-            return  # its compile error ends pass 2 before the reachability check (oracle)
+        if dead and (kw in structure.SCAN_ONLY or kw == "SUBSCAN"):
+            return  # its compile error ends pass 2 before the reachability check (oracle; a `SubScan` after the `NextScan` is outside any `Scan`)
         if dead and (isinstance(stmt, S.If) or kw in ("SELECT", "NEXTSCAN")):
             # An unreachable `If`/`Select` (block or one-line), or a stray `NextScan`, silences the
             # check for the rest of the file (oracle, CR6: `If X Then` / `EndIf` / `X = 2` after a `NextScan` gives no

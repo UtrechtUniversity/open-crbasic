@@ -355,7 +355,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if not tainted and isinstance(stmt, S.Declaration):
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
-        if isinstance(stmt, S.If) and (stmt.inline or stmt.inline_else):
+        if isinstance(stmt, S.If) and stmt.inline is not None:   # (a body hoisted out of it too)
             # only the condition's own lines belong to the `If`; the body's are its statements'
             existing = [d for d in existing if _names_in(stmt.cond, profile, d.message)]
         elif (owner0 := _inline_owner(program.statements, index)) is not None and not tainted:
