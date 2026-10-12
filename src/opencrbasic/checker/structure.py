@@ -1296,6 +1296,9 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
     # `check_end_blocks` below.
 
 
+_DO_ALIASES = {"WHILE": "DO", "WEND": "LOOP"}
+
+
 def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
     """End-of-program block balance, run only when passes 1 and 2 found nothing (oracle, CR6 and
     CR300, 2026-09-27: an unclosed `Scan`/`For`/`If` plus an unrelated pass-2 `X = Q` prints only
@@ -1321,7 +1324,7 @@ def check_end_blocks(program: S.Program, diags: Diagnostics) -> None:
     in_table = False
     table_name: str | None = None
     for stmt in program.statements:
-        kw = _keyword(stmt)
+        kw = _DO_ALIASES.get(_keyword(stmt), _keyword(stmt))
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
         if kw == "SCAN":
@@ -1752,7 +1755,7 @@ _CLOSER_MESSAGES = {
 def _unparsed_opener(text: str) -> str | None:
     if re.match(r"\s*IF\b", text, re.I) and not re.search(r"\bTHEN\s*\S", text, re.I):
         return "IF"
-    return "DO" if re.match(r"\s*DO\s+(?:WHILE|UNTIL)\b", text, re.I) else None
+    return "DO" if re.match(r"\s*(?:DO\s+(?:WHILE|UNTIL)|WHILE)\b", text, re.I) else None
 
 
 def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None:
@@ -1761,15 +1764,15 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
     without NEXT SCAN.`, and with no block of its own kind open it reports `END IF without IF or
     END SELECT without SELECT.`/`NEXT without FOR.`/`LOOP without DO.`; an `EndSelect` with no
     `Select` open reports only `EndSelect w/o Select` (`docs/checker.md` "Unmatched block ends").
-    Programs using `While`/`Wend` are skipped (not probed).
+    `While`/`Wend` are `Do`/`Loop` here and in `check_end_blocks` (oracle, all four loggers,
+    2026-10-12: `Do` ... `Wend` and `While` ... `Loop` compile, `While X` alone is `DO without LOOP.`,
+    a stray `Wend` is `LOOP without DO.`).
 
     The block stack is an array with a depth: only a `Scan`/`SubScan` writes its slot, so one that
     a stray closer popped stays in its slot (`stale`) and every later `If`/`For`/`Do`/`Select`
     opened at that depth reports `<kind> statement illegally has SCAN without NEXT SCAN.` at its
     own closer (a one-line `If` at its own line); a further stray closer at depth 0 reports only
     its `without` message (oracle, all four loggers, 2026-10-03)."""
-    if any(_keyword(st) in ("WHILE", "WEND") for st in program.statements):
-        return
     frames: list[str] = []
     depth = 0
     open_count = {"IF": 0, "FOR": 0, "DO": 0, "SCAN": 0}
@@ -1785,7 +1788,7 @@ def check_block_closers(program: S.Program, profile, diags: Diagnostics) -> None
         depth += 1
 
     for stmt in program.statements:
-        kw = _keyword(stmt)
+        kw = _DO_ALIASES.get(_keyword(stmt), _keyword(stmt))
         args = getattr(stmt, "args", []) or []
         word = _block_word(args) if kw in ("END", "NEXT") else None
         if isinstance(stmt, S.If) and stmt.inline is not None:

@@ -6437,3 +6437,20 @@ stray `Wend`, `If C Then Case 1` outside a `Select`, `If C Then Exit Do` outside
 - R15, `tests/fixtures/r15_unreachable_warning.json` (CR6/CR1000X only, audited 0 differing). Left on CR300/CR350
   (pre-existing, other mechanism): `Abs(x)` is `Expr` there, `Foo(1)` (wrong argument count) and `Nope.x` still print the
   warning, and `Foo` / `BeginProg` (second) loses it.
+
+## Round 15: `While`/`Wend` are `Do`/`Loop` for block balance (2026-10-12)
+
+Oracle, all four loggers (fixture `tests/fixtures/r15_while_wend.json`, 18 shapes x 4): `While` opens and
+`Wend` closes the same block as `Do`/`Loop`, and the two pairs mix freely: `Do` ... `Wend` and `While X`
+... `Loop` compile, `While X` alone is `DO without LOOP.` (also `While X : Y = 1`, `Do While X` ... `Wend`
+with no partner after another `Wend`), a stray `Wend` is `LOOP statement illegally has SCAN without NEXT
+SCAN.` + `LOOP without DO.` inside a `Scan` (`LOOP without DO.` outside), nested `While`/`Do` mix
+(`While X` / `Do` / `Wend` / `Loop` compiles). Implementation: `structure.check_block_closers` and
+`check_end_blocks` map `WHILE`->`DO`, `WEND`->`LOOP` (`_DO_ALIASES`; the former skip of programs using
+`While` is gone) and `_unparsed_opener` knows an unparsable `While` condition still opens its block.
+Message-only differences left (both sides reject, same as the `Do`/`Loop` forms): `If C Then Wend` / `If C
+Then Loop` order (real: `LOOP without DO.` then `IF or SELECT statement illegally has SCAN ...`),
+`While X` / `EndIf` on CR300/CR350 (`END IF without IF ...` only), a stray `Wend`/`Loop` inside a `Scan`
+that is then closed (the real compiler adds `Warning: CallTable never reached at run time.`; CR300/CR350
+also keep the two closer lines), `While` alone (`Invalid or missing expression.`, we say `... parameter.`),
+`Wend X` on CR300/CR350 (`Too many parameters:  X.`).
