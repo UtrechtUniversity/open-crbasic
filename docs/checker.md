@@ -6549,3 +6549,21 @@ earlier error elsewhere (`x = Nope`) still hides the placement lines and leaves 
 `Too many parameters:  Tangent.` cascade line on CR300/CR350 is unchanged). Inside a table the undefined source is
 still `Tangent is not defined.`. `instr_data._check_stage2a` reports an undefined table source on CR300/CR350 only
 inside a `DataTable` body.
+
+### The reachability warning and the walk-ending `Could not find DataTable` (oracle, 2026-10-12; `tests/fixtures/r15_unreached_and_unknown_table_walk.json`)
+
+`Warning: <X> never reached at run time.` (the statement after an infinite `Scan(...,0)` .. `NextScan`) is printed by the
+pass-2 walk, so:
+
+- CR6/CR1000X: any pass-1 error (declaration errors, `Too many parameters`, an arity or parse error such as
+  `x = Sin(1,2)`) hides it, wherever the error is; so does a stage-2a error (`Battery(3)`), also when it comes after the
+  dead statement. An `Invalid symbol in expression`, a held `Status.TimeStamp(1,1,1)` index error and a nested `Scan`
+  do not.
+- Errors that end the walk (`Scan illegally occurs before BeginProg.`, an unknown `CallTable`) cut the warnings behind
+  them, and a dead `CallTable` of an unknown table prints its `Could not find DataTable X.` without the warning of its own
+  (all four loggers).
+- CR300/CR350: an unknown `CallTable` ends the walk like `GetRecord`/`ResetTable` of a missing table, so a later
+  `NextScan with no Scan.`/`EndSub without Sub ...` is not printed; in the other order (a stray `NextScan` first) the
+  `Could not find DataTable X.` of the later statement is not printed. `Could not find` and a placement error: the
+  textually first one wins.
+- Not modelled: a nested `Scan` still loses the warning (`Scan without NextScan or nested Scans.` then the warning).

@@ -1,0 +1,611 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-0-dead-after-scan-before-beginprog",
+   "logger": "cr6",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-0-dead-after-scan-before-beginprog",
+   "logger": "cr1000x",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-0-dead-after-scan-before-beginprog",
+   "logger": "cr300",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndProg_Mut is not defined.\nline 4: Invalid, or out of place expression: EndProg_Mut\n."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-0-dead-after-scan-before-beginprog",
+   "logger": "cr350",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg_Mut\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: EndProg_Mut is not defined.\nline 4: Invalid, or out of place expression: EndProg_Mut\n."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-1-dead-scan-placement-stop",
+   "logger": "cr6",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\n  x = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-1-dead-scan-placement-stop",
+   "logger": "cr1000x",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\n  x = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-1-dead-scan-placement-stop",
+   "logger": "cr300",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\n  x = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-1-dead-scan-placement-stop",
+   "logger": "cr350",
+   "source": "Public x\n  Scan (1,Sec,3,0)\n  NextScan\n  x = 1\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-2-dead-ok",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-2-dead-ok",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-2-dead-ok",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-2-dead-ok",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-3-dead-pass1-error-after",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Delay(1,2,3,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  4."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-3-dead-pass1-error-after",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Delay(1,2,3,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  4."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-3-dead-pass1-error-after",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Delay(1,2,3,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  4."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-3-dead-pass1-error-after",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Delay(1,2,3,4)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Too many parameters:  4."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-4-dead-pass1-error-decl",
+   "logger": "cr6",
+   "source": "Public x, y\nPublic z As Foo\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-4-dead-pass1-error-decl",
+   "logger": "cr1000x",
+   "source": "Public x, y\nPublic z As Foo\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported"
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-4-dead-pass1-error-decl",
+   "logger": "cr300",
+   "source": "Public x, y\nPublic z As Foo\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-4-dead-pass1-error-decl",
+   "logger": "cr350",
+   "source": "Public x, y\nPublic z As Foo\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Foo not supported\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-5-dead-arity-error-before",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Sin(1,2)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1,2)."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-5-dead-arity-error-before",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Sin(1,2)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1,2)."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-5-dead-arity-error-before",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Sin(1,2)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1,2)\n."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-5-dead-arity-error-before",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Sin(1,2)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1,2)\n."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-6-dead-member-index-keeps",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Status.TimeStamp(1,1,1)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Status.TimeStamp(1,1,1).\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-6-dead-member-index-keeps",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Status.TimeStamp(1,1,1)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Status.TimeStamp(1,1,1).\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-6-dead-member-index-keeps",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Status.TimeStamp(1,1,1)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Status.TimeStamp(1,1,1)\n.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-6-dead-member-index-keeps",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Status.TimeStamp(1,1,1)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Status.TimeStamp(1,1,1)\n.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-7-dead-invalid-symbol-keeps",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Nope.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-7-dead-invalid-symbol-keeps",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Nope.\nline 6: Warning: Expr never reached at run time."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-7-dead-invalid-symbol-keeps",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-7-dead-invalid-symbol-keeps",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Nope is not defined."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-8-dead-stage2a-error-before",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(3)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-8-dead-stage2a-error-before",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(3)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-8-dead-stage2a-error-before",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(3)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-8-dead-stage2a-error-before",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    Battery(3)\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-9-dead-stage2a-error-after",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Battery(3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-9-dead-stage2a-error-after",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Battery(3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid Variable or Array: 3."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-9-dead-stage2a-error-after",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Battery(3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-9-dead-stage2a-error-after",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  y = 2\n  Battery(3)\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Illegal destination variable type, expecting Float."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-10-dead-calltable-unknown",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  CallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-10-dead-calltable-unknown",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  CallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-10-dead-calltable-unknown",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  CallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-10-dead-calltable-unknown",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    x = 1\n  NextScan\n  CallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-11-dead-calltable-unknown-in-scan",
+   "logger": "cr6",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-11-dead-calltable-unknown-in-scan",
+   "logger": "cr1000x",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-11-dead-calltable-unknown-in-scan",
+   "logger": "cr300",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-11-dead-calltable-unknown-in-scan",
+   "logger": "cr350",
+   "source": "Public x, y\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable Nope\n  NextScan\n  y = 2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-12-calltable-unknown-then-nextscan",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-12-calltable-unknown-then-nextscan",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-12-calltable-unknown-then-nextscan",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-12-calltable-unknown-then-nextscan",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-13-calltable-unknown-then-two-nextscan",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-13-calltable-unknown-then-two-nextscan",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-13-calltable-unknown-then-two-nextscan",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-13-calltable-unknown-then-two-nextscan",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nNextScan\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-14-nextscan-then-calltable-unknown",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nNextScan\nCallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-14-nextscan-then-calltable-unknown",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nNextScan\nCallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-14-nextscan-then-calltable-unknown",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nNextScan\nCallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-14-nextscan-then-calltable-unknown",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nNextScan\nCallTable Nope\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-15-calltable-unknown-then-endsub",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-15-calltable-unknown-then-endsub",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-15-calltable-unknown-then-endsub",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-15-calltable-unknown-then-endsub",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-16-calltable-unknown-then-later-call",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nx=1\nNextScan\nCallTable Nope2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-16-calltable-unknown-then-later-call",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nx=1\nNextScan\nCallTable Nope2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-16-calltable-unknown-then-later-call",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nx=1\nNextScan\nCallTable Nope2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-16-calltable-unknown-then-later-call",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nx=1\nNextScan\nCallTable Nope2\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-17-scan-nextscan-calltable-unknown-nextscan",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-17-scan-nextscan-calltable-unknown-nextscan",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-17-scan-nextscan-calltable-unknown-nextscan",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-17-scan-nextscan-calltable-unknown-nextscan",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nScan(1,Sec,0,0)\nNextScan\nCallTable Nope\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-18-calltable-known-then-nextscan",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 7: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-18-calltable-known-then-nextscan",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 7: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-18-calltable-known-then-nextscan",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 7: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-18-calltable-known-then-nextscan",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable T\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub.\nline 7: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-19-calltable-unknown-then-endif",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-19-calltable-unknown-then-endif",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-19-calltable-unknown-then-endif",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-19-calltable-unknown-then-endif",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nCallTable Nope\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-unreached_and_unknown_table_walk-20-calltable-unknown-in-if-then-nextscan",
+   "logger": "cr6",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nIf x Then\nCallTable Nope\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-unreached_and_unknown_table_walk-20-calltable-unknown-in-if-then-nextscan",
+   "logger": "cr1000x",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nIf x Then\nCallTable Nope\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-unreached_and_unknown_table_walk-20-calltable-unknown-in-if-then-nextscan",
+   "logger": "cr300",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nIf x Then\nCallTable Nope\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-unreached_and_unknown_table_walk-20-calltable-unknown-in-if-then-nextscan",
+   "logger": "cr350",
+   "source": "Public x\nDataTable(T,True,-1)\n  Sample(1,x,FP2)\nEndTable\nBeginProg\nIf x Then\nCallTable Nope\nNextScan\nEndIf\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Nope."
+  }
+ ]
+}

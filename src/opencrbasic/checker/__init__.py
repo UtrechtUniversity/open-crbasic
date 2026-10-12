@@ -110,6 +110,10 @@ from . import (
 _current_result: ContextVar = ContextVar("opencrbasic_checker_result", default=None)
 
 
+def _is_unreached(d) -> bool:
+    return d.severity == "warning" and d.message.endswith(" never reached at run time.")
+
+
 def _run_pass(fn, *args) -> None:
     """Never let one checker pass's bug take down the whole compile (AGENTS.md: a crash is worse
     than a wrong-but-returned answer; `docs/fuzz-findings.md` "Hang"/"Crash" -- both found by
@@ -327,6 +331,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             held_items = []
     pass1_errors = bool(diags.errors)
     result.pass1_errors = pass1_errors
+    if pass1_errors and not profile.single_pass:
+        # CR6/CR1000X: any pass-1 error hides the reachability warning (oracle, 2026-10-12)
+        diags.items[:] = [d for d in diags.items if not _is_unreached(d)]
     generic_errors: list = []  # pass-2 argument/expression findings (CR6/CR1000X: no tier-C gate)
     if pass1_errors:
         early.items = []  # hidden by any pass-1 error (oracle, CR6/CR1000X, 2026-10-03)
@@ -335,6 +342,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # here skips tier B (`instr_data.check_stage2a`).
         _run_pass(instr_data.check_stage2a, program, profile, diags, env)
         if diags.errors:
+            diags.items[:] = [d for d in diags.items if not _is_unreached(d)]  # (oracle, 2026-10-12)
             early.items = []  # hidden by a stage-2a error too (oracle, CR6/CR1000X, 2026-10-04:
             # `PanelTemp(1,15000)` under `Scan(0,Sec,3,0)` reports only `Invalid Variable or Array`)
     if not diags.errors or profile.single_pass:
@@ -370,6 +378,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             diags.items[pass2_start:] = [d for d in diags.items[pass2_start:]
                                          if d.message != structure.NESTED_SCAN]
         stops = [links.cutoff] if stop_line is not None and links.cutoff else []
+        unreached_off: set = set()   # statements whose own failure replaces their reachability warning
         stray_stop = _run_pass_capture(structure.check_stray_controls, program, profile, diags)
         if stray_stop is not None:
             stops.append(stray_stop)
@@ -385,6 +394,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if not profile.single_pass:
             for stmt, _name in instr_data.unknown_calltables(program):
                 stops.append((stmt.file, stmt.line))
+                unreached_off.add((stmt.file, stmt.line))
             for stmt, _message, ends in instr_data.unknown_table_references(program):
                 if ends:    # (`GetRecord`/`ResetTable`/`FileMark` of a missing table, round 14)
                     stops.append((stmt.file, stmt.line))
@@ -402,6 +412,11 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
                 return True
             return links.positions.get((diagnostic.file, diagnostic.line), stop_at) <= stop_at
 
+        # The reachability warning is printed by the walk that stops at these (oracle, 2026-10-12)
+        kept = [d for d in diags.items[:pass2_start] if not (
+            _is_unreached(d) and (not before_cutoff(d) or (d.file, d.line) in unreached_off))]
+        diags.items[:pass2_start] = kept
+        pass2_start = len(kept)
         n_generic = len(diags.items)
         _run_pass(expressions.check, flat, profile, diags, env, _placement_rejected(flat, profile, diags))
         _run_pass(expressions.check_table_members, flat, profile, diags)
@@ -525,9 +540,22 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         stop = _run_pass_capture(structure.check_scan_placement_late, program, profile, diags)
         # a `GetRecord`/`ResetTable`/`FileMark` of a missing table ends the walk (oracle, round 14)
         ref_lines = [st.line for st, _m, ends in instr_data.unknown_table_references(program) if ends]
+        if profile.single_pass:
+            ref_lines += [st.line for st, _name in instr_data.unknown_calltables(program)]
         if ref_lines:
             diags.items[n_late:] = [d for d in diags.items[n_late:]
                                     if d.severity != "error" or d.line <= min(ref_lines)]
+            if profile.single_pass:
+                # the dead statement that fails here prints no reachability warning, nor do later
+                # ones (oracle, CR300/CR350, 2026-10-12)
+                diags.items[:] = [d for d in diags.items if not (_is_unreached(d) and d.line >= min(ref_lines))]
+        if profile.single_pass and stop is not None and ref_lines and stop[1] < min(ref_lines):
+            # the earlier of the two ends the walk: a stray `NextScan` hides a later unknown table
+            drop = [i for i, d in enumerate(diags.items) if (
+                d.severity == "error" and d.message.startswith("Could not find ")
+                and d.file == stop[0] and d.line > stop[1])]
+            late_start -= sum(1 for i in drop if i < late_start)
+            diags.items[:] = [d for i, d in enumerate(diags.items) if i not in set(drop)]
         late_stop = stop
         if stop is not None:
             # The walk ends there, so later warnings are never printed (oracle: `SetSetting`
