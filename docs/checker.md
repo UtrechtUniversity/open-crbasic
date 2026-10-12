@@ -5335,3 +5335,18 @@ Oracle runs of 2026-10-12 (fixtures `r13_cr3xx_tcpopen_handle_types`, `r13_trail
   `Variable illegal in Parameter: x.`.
 - A fourth `&h0F` argument of an unresolved call names `h0F` only when `h0F` is not a declared variable
   (a `Public`/`Dim`/`Const`/`Alias` name is silent; a Sub or table of that name is still reported).
+## Two-word routine closers (`End Sub`, `End Function`)
+
+Oracle, 2026-10-12, all four loggers (`tests/fixtures/r13_two_word_routine_end.json`, 56 cases;
+`-t` cases in `tests/fixtures/timing.json`, CR6; `-t` also probed on the other three, 9 programs):
+`End Sub` / `End Function` (any case or spacing, trailing comment) end a routine exactly like
+`EndSub` / `EndFunction`. The parser gives them as `Instruction("END", [Name("Sub")])`, which
+several passes did not recognise, so everything after the routine was treated as still inside it:
+`-t` labelled the main `Scan` `(Subroutine)` (real: `Scan: 0`); `PulseCount` in a main `Scan` got
+`must be used within a Scan...NextScan.` (false reject); `X = 5` or `Delay` between the routine and
+`BeginProg` was not reported (`Expr`/`Delay illegally occurs before BeginProg.`); the
+`Delay never reached at run time.` warning was lost; a routine-local `Dim` shadowed a global in
+`GPS`'s NMEA-string check. All now use `syntax.ends_routine` (one definition, also behind
+`bindings.closes_routine`). Unrelated and closer-independent (not fixed): a variable declared
+inside a `Sub` and used in the main program is accepted by `crbc` while the real compiler reports
+it undefined (`Y = 2` -> `Invalid, or out of place expression` / CR300 `Y is not defined.`).

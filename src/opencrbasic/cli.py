@@ -117,7 +117,7 @@ def _hides_times(program_ast, diags, main) -> bool:
             in_sub = True
         if in_sub or isinstance(st, S.Assignment):
             keep.add((st.file, st.line))
-        if kw in ("ENDSUB", "ENDFUNCTION"):
+        if S.ends_routine(st):
             in_sub = False
     for d in diags.errors:
         if (d.message.startswith(_P1_HIDERS) or "must have valid program" in d.message

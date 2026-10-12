@@ -255,7 +255,7 @@ def scoped_view(program: S.Program, stmt: S.Stmt) -> S.Program:
     for st in program.statements:
         if isinstance(st, S.SubDef):
             cur = st
-        elif isinstance(st, S.Instruction) and st.keyword.upper() in ("ENDSUB", "ENDFUNCTION"):
+        elif S.ends_routine(st):
             cur = None
         if st is stmt:
             owner = cur

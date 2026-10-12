@@ -65,7 +65,7 @@ def times_lines(program: S.Program, profile: Profile, main_file: str) -> list[st
         if not isinstance(stmt, S.Instruction):
             continue
         kw = stmt.keyword
-        if kw in ("ENDSUB", "ENDFUNCTION"):
+        if S.ends_routine(stmt):
             in_sub = False
         if kw == "SCAN":
             if prev_kw != "SLOWSEQUENCE":

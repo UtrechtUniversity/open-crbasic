@@ -927,7 +927,7 @@ def _loose_before_beginprog(program: S.Program, line: int, file: str) -> bool:
             return False
         if isinstance(st, S.SubDef) or kw in ("DATATABLE", "CONSTTABLE", "DISPLAYMENU", "STRUCTURETYPE"):
             depth += 1
-        elif kw in ("ENDSUB", "ENDFUNCTION", "ENDTABLE", "ENDCONSTTABLE", "ENDMENU", "ENDSTRUCTURETYPE"):
+        elif S.ends_routine(st) or kw in ("ENDTABLE", "ENDCONSTTABLE", "ENDMENU", "ENDSTRUCTURETYPE"):
             depth = max(0, depth - 1)
     return False
 

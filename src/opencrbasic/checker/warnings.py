@@ -219,7 +219,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
         if sub_depth > 0:
             if kw in ("SUB", "FUNCTION"):
                 sub_depth += 1
-            elif kw in ("ENDSUB", "ENDFUNCTION"):
+            elif S.ends_routine(stmt):
                 sub_depth -= 1
             i += 1
             continue

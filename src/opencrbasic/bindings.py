@@ -406,13 +406,7 @@ def closes_routine(stmt: S.Stmt) -> bool:
     """True when `stmt` ends a Sub or Function: `EndSub` / `EndFunction`, or the two-word `End Sub` /
     `End Function`, which the parser gives as `Instruction(keyword="END", args=[Name("Sub")])`.
     Shared by the binding index, hover and the routine scope they track."""
-    if not isinstance(stmt, S.Instruction):
-        return False
-    kw = stmt.keyword.upper()
-    if kw in ("ENDSUB", "ENDFUNCTION"):
-        return True
-    return (kw == "END" and bool(stmt.args) and isinstance(stmt.args[0], S.Name)
-            and stmt.args[0].name.upper() in ("SUB", "FUNCTION"))
+    return S.ends_routine(stmt)
 
 
 def classified_tokens(stmt: S.Stmt):

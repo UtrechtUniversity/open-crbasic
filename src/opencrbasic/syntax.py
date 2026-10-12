@@ -229,6 +229,19 @@ class Unparsed(Stmt):
     expr: object = None  # the expression of a statement the parser took apart but cannot compile
 
 
+def ends_routine(stmt: "Stmt") -> bool:
+    """`EndSub`/`EndFunction`, or the two-word `End Sub`/`End Function` (parsed as `END` with the
+    word as its argument); the real compiler closes the routine with either spelling (oracle,
+    2026-10-12, all four loggers, `docs/checker.md` "Two-word routine closers")."""
+    if not isinstance(stmt, Instruction):
+        return False
+    kw = stmt.keyword.upper()
+    if kw in ("ENDSUB", "ENDFUNCTION"):
+        return True
+    return kw == "END" and bool(stmt.args) and isinstance(stmt.args[0], Name) and \
+        stmt.args[0].name.upper() in ("SUB", "FUNCTION")
+
+
 def hash_statement(st: "Stmt") -> "Unparsed | None":
     """The `#...` statement that ends the compile (`Unknown instruction`): `st` itself or one in
     an inline `If` body."""

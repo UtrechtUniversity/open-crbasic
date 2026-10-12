@@ -1,0 +1,791 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_two_word_end-0-End_Sub-PulseCount_in_main_scan",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-0-End_Sub-PulseCount_in_main_scan",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr300-r13_two_word_end-0-End_Sub-PulseCount_in_main_scan",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_two_word_end-0-End_Sub-PulseCount_in_main_scan",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_two_word_end-1-End_Sub-assignment_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-1-End_Sub-assignment_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-1-End_Sub-assignment_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-1-End_Sub-assignment_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-2-End_Sub-instruction_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-2-End_Sub-instruction_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-2-End_Sub-instruction_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-2-End_Sub-instruction_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-3-End_Sub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-3-End_Sub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr300-r13_two_word_end-3-End_Sub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr350-r13_two_word_end-3-End_Sub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr6-r13_two_word_end-4-EndSub-PulseCount_in_main_scan",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-4-EndSub-PulseCount_in_main_scan",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr300-r13_two_word_end-4-EndSub-PulseCount_in_main_scan",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_two_word_end-4-EndSub-PulseCount_in_main_scan",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_two_word_end-5-EndSub-assignment_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-5-EndSub-assignment_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-5-EndSub-assignment_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-5-EndSub-assignment_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-6-EndSub-instruction_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-6-EndSub-instruction_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-6-EndSub-instruction_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-6-EndSub-instruction_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-7-EndSub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-7-EndSub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr300-r13_two_word_end-7-EndSub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr350-r13_two_word_end-7-EndSub-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nSub Foo\n  X = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 9: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr6-r13_two_word_end-8-End_Function-PulseCount_in_main_scan",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-8-End_Function-PulseCount_in_main_scan",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr300-r13_two_word_end-8-End_Function-PulseCount_in_main_scan",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_two_word_end-8-End_Function-PulseCount_in_main_scan",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_two_word_end-9-End_Function-assignment_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-9-End_Function-assignment_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-9-End_Function-assignment_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-9-End_Function-assignment_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-10-End_Function-instruction_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-10-End_Function-instruction_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-10-End_Function-instruction_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-10-End_Function-instruction_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-11-End_Function-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-11-End_Function-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr300-r13_two_word_end-11-End_Function-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr350-r13_two_word_end-11-End_Function-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr6-r13_two_word_end-12-EndFunction-PulseCount_in_main_scan",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid port 1, use C1..C4 or U1..U12."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-12-EndFunction-PulseCount_in_main_scan",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid PulseCount channel, must be P1, P2, or C1..C8."
+  },
+  {
+   "id": "cr300-r13_two_word_end-12-EndFunction-PulseCount_in_main_scan",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_two_word_end-12-EndFunction-PulseCount_in_main_scan",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    PulseCount(P(1),1,1,0,0,1.0,0)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_two_word_end-13-EndFunction-assignment_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-13-EndFunction-assignment_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-13-EndFunction-assignment_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-13-EndFunction-assignment_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nX = 5\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-14-EndFunction-instruction_between_routine_and_BeginProg",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-14-EndFunction-instruction_between_routine_and_BeginProg",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r13_two_word_end-14-EndFunction-instruction_between_routine_and_BeginProg",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r13_two_word_end-14-EndFunction-instruction_between_routine_and_BeginProg",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nDelay(0,10,mSec)\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Delay illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r13_two_word_end-15-EndFunction-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr6",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-15-EndFunction-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr1000x",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr300-r13_two_word_end-15-EndFunction-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr300",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr350-r13_two_word_end-15-EndFunction-Delay_after_infinite_scan_(never_reached)",
+   "logger": "cr350",
+   "source": "Public X, P(4)\nFunction Foo\n  X = 1\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    X = 2\n  NextScan\n  Delay(0,10,mSec)\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 10: Warning: Delay never reached at run time."
+  },
+  {
+   "id": "cr6-r13_two_word_end-16-End_Sub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr6",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-16-End_Sub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_two_word_end-16-End_Sub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr300",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-16-End_Sub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr350",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-17-End_Sub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr6",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Optional parameter must be an array of type string of length >= 100\nline 9: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-17-End_Sub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Optional parameter must be an array of type string of length >= 100"
+  },
+  {
+   "id": "cr300-r13_two_word_end-17-End_Sub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr300",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-17-End_Sub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr350",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEnd Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-18-EndSub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr6",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-18-EndSub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_two_word_end-18-EndSub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr300",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-18-EndSub-GPS_nmea_global_ok,_local_short",
+   "logger": "cr350",
+   "source": "Public Y As String * 200\nPublic R(100)\nSub Foo\n  Dim Y As String * 8\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-19-EndSub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr6",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Optional parameter must be an array of type string of length >= 100\nline 9: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-19-EndSub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Optional parameter must be an array of type string of length >= 100"
+  },
+  {
+   "id": "cr300-r13_two_word_end-19-EndSub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr300",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-19-EndSub-GPS_nmea_global_short,_local_ok",
+   "logger": "cr350",
+   "source": "Public Y As String * 8\nPublic R(100)\nSub Foo\n  Dim Y As String * 200\n  Y = \"a\"\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: COMC1 is not defined.\nline 9: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-20-End_Function-GPS_nmea_global_ok,_local_short",
+   "logger": "cr6",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-20-End_Function-GPS_nmea_global_ok,_local_short",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_two_word_end-20-End_Function-GPS_nmea_global_ok,_local_short",
+   "logger": "cr300",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-20-End_Function-GPS_nmea_global_ok,_local_short",
+   "logger": "cr350",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-21-End_Function-GPS_nmea_global_short,_local_ok",
+   "logger": "cr6",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Optional parameter must be an array of type string of length >= 100\nline 10: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-21-End_Function-GPS_nmea_global_short,_local_ok",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Optional parameter must be an array of type string of length >= 100"
+  },
+  {
+   "id": "cr300-r13_two_word_end-21-End_Function-GPS_nmea_global_short,_local_ok",
+   "logger": "cr300",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-21-End_Function-GPS_nmea_global_short,_local_ok",
+   "logger": "cr350",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEnd Function\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-22-EndFunction-GPS_nmea_global_ok,_local_short",
+   "logger": "cr6",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-22-EndFunction-GPS_nmea_global_ok,_local_short",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_two_word_end-22-EndFunction-GPS_nmea_global_ok,_local_short",
+   "logger": "cr300",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-22-EndFunction-GPS_nmea_global_ok,_local_short",
+   "logger": "cr350",
+   "source": "Public Y As String * 200\nPublic R(100)\nFunction Foo\n  Dim Y As String * 8\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr6-r13_two_word_end-23-EndFunction-GPS_nmea_global_short,_local_ok",
+   "logger": "cr6",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Optional parameter must be an array of type string of length >= 100\nline 10: GPS pps synchronization is only available on COMU1."
+  },
+  {
+   "id": "cr1000x-r13_two_word_end-23-EndFunction-GPS_nmea_global_short,_local_ok",
+   "logger": "cr1000x",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Optional parameter must be an array of type string of length >= 100"
+  },
+  {
+   "id": "cr300-r13_two_word_end-23-EndFunction-GPS_nmea_global_short,_local_ok",
+   "logger": "cr300",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  },
+  {
+   "id": "cr350-r13_two_word_end-23-EndFunction-GPS_nmea_global_short,_local_ok",
+   "logger": "cr350",
+   "source": "Public Y As String * 8\nPublic R(100)\nFunction Foo\n  Dim Y As String * 200\n  Y = \"a\"\n  Return 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n    GPS(R(),COMC1,0,100,Y)\n  NextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: COMC1 is not defined.\nline 10: Variable illegal in Parameter: COMC1."
+  }
+ ]
+}

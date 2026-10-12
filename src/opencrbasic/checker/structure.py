@@ -533,7 +533,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
                                           bool(scans) and not in_body)
         if kw in _BODY_BLOCK_STARTS:
             in_body = True
-        elif kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
+        elif S.ends_routine(stmt) or kw in _BODY_BLOCK_ENDS:
             in_body = False
         elif not (seen_beginprog or in_body or in_table or in_decl) and \
                 (kw != "CALLTABLE" or _calltable_known(stmt, tables)):
@@ -635,7 +635,7 @@ def scan_only_outside(program: S.Program) -> dict[int, str]:
         kw = _keyword(stmt)
         if isinstance(stmt, S.SubDef):
             in_sub = True
-        elif kw in ("ENDSUB", "ENDFUNCTION"):
+        elif S.ends_routine(stmt):
             in_sub = False
         elif kw == "SCAN":
             scans += 1
@@ -1419,7 +1419,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if kw in _BODY_BLOCK_STARTS:
             in_body_block = True
             continue
-        if kw in ("ENDSUB", "ENDFUNCTION") or kw in _BODY_BLOCK_ENDS:
+        if S.ends_routine(stmt) or kw in _BODY_BLOCK_ENDS:
             in_body_block = False
             continue
 
