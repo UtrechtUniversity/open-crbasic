@@ -7,7 +7,9 @@ from opencrbasic import profiles
 from opencrbasic.compiler import compile_file
 
 FIXTURES = Path(__file__).parent / "fixtures"
-CASES = [c for f in sorted(FIXTURES.glob("r13_*.json")) for c in json.loads(f.read_text(encoding="utf-8"))["cases"]]
+# Multi-file fixtures (cases with "siblings") run in test_include_validation.py.
+_FILES = [json.loads(f.read_text(encoding="utf-8"))["cases"] for f in sorted(FIXTURES.glob("r13_*.json"))]
+CASES = [c for cases in _FILES if not any("siblings" in c for c in cases) for c in cases]
 
 
 @pytest.mark.parametrize("case", CASES, ids=lambda case: case["id"])
