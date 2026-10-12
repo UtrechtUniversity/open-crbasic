@@ -593,6 +593,10 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
         message, stops = None, False
         seen_beginprog = seen_beginprog or kw == "BEGINPROG"
         if isinstance(stmt, S.SubDef):
+            if opens and not in_sub:
+                # a block left open by an earlier Sub end is still open here (oracle, all four
+                # loggers, 2026-10-12)
+                message = "Sub declaration inside If..EndIf."
             in_sub = True
         elif kw in ("ENDSUB", "ENDFUNCTION") or (kw == "END" and word in ("SUB", "FUNCTION")):
             if not in_sub:

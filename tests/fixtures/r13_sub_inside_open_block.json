@@ -1,0 +1,247 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-sub_inside_open_block-0-f5_0",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-0-f5_0",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-0-f5_0",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-0-f5_0",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-1-f5_1",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-1-f5_1",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-1-f5_1",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-1-f5_1",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: If without EndIf inside of Sub.\nline 7: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-2-f5_2",
+   "logger": "cr6",
+   "source": "Public D As Long\nFunction A\n  If D = 1 Then\n    D = 1\nEndFunction\nFunction B\n  D = 2\n  Return(D)\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-2-f5_2",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nFunction A\n  If D = 1 Then\n    D = 1\nEndFunction\nFunction B\n  D = 2\n  Return(D)\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-2-f5_2",
+   "logger": "cr300",
+   "source": "Public D As Long\nFunction A\n  If D = 1 Then\n    D = 1\nEndFunction\nFunction B\n  D = 2\n  Return(D)\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-2-f5_2",
+   "logger": "cr350",
+   "source": "Public D As Long\nFunction A\n  If D = 1 Then\n    D = 1\nEndFunction\nFunction B\n  D = 2\n  Return(D)\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 9: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-3-f5_3",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nSub C\n  D = 3\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub.\nline 9: Sub declaration inside If..EndIf.\nline 11: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-3-f5_3",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nSub C\n  D = 3\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub.\nline 9: Sub declaration inside If..EndIf.\nline 11: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-3-f5_3",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nSub C\n  D = 3\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub.\nline 9: Sub declaration inside If..EndIf.\nline 11: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-3-f5_3",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nSub C\n  D = 3\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf.\nline 8: If without EndIf inside of Sub.\nline 9: Sub declaration inside If..EndIf.\nline 11: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-4-f5_4",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: Sub declaration inside If..EndIf.\nline 10: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-4-f5_4",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: Sub declaration inside If..EndIf.\nline 10: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-4-f5_4",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: Sub declaration inside If..EndIf.\nline 10: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-4-f5_4",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n  Select Case D\n  Case 1\n    D = 1\nEndSub\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: If without EndIf inside of Sub.\nline 8: Sub declaration inside If..EndIf.\nline 10: If without EndIf inside of Sub."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-5-f5_5",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-5-f5_5",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-5-f5_5",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-5-f5_5",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nSub B\n  D = 2\n  EndIf\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: Sub declaration inside If..EndIf."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-6-f5_6",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nEndIf\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-6-f5_6",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nEndIf\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-6-f5_6",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nEndIf\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-6-f5_6",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nEndIf\nSub B\n  D = 2\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 6: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-sub_inside_open_block-7-f5_7",
+   "logger": "cr6",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\nSub B\n  D = 2\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 8: Invalid, or out of place expression:     B."
+  },
+  {
+   "id": "cr1000x-sub_inside_open_block-7-f5_7",
+   "logger": "cr1000x",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\nSub B\n  D = 2\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If without EndIf inside of Sub.\nline 8: Invalid, or out of place expression:     B."
+  },
+  {
+   "id": "cr300-sub_inside_open_block-7-f5_7",
+   "logger": "cr300",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\nSub B\n  D = 2\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: B is not defined.\nline 8: Invalid, or out of place expression:     B\n."
+  },
+  {
+   "id": "cr350-sub_inside_open_block-7-f5_7",
+   "logger": "cr350",
+   "source": "Public D As Long\nSub A\n  If D = 1 Then\n    D = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    B\n  NextScan\nEndProg\nSub B\n  D = 2\nEndSub\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: B is not defined.\nline 8: Invalid, or out of place expression:     B\n."
+  }
+ ]
+}

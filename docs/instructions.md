@@ -1768,9 +1768,12 @@ Oracle, all four loggers, identical except where noted. The block stack is **not
   survives this message (`checker/cr3xx.py` `_hides_nothing`).
 - Reproducer: `cr1000x/false_accept/9ec2e021b721` (a `Select` inside a `Function`, closed by
   `EndSelect` after the `EndFunction`); the same output on all four loggers.
-- Not modelled: a second `Sub` declared while a block is open (`Sub declaration inside If..EndIf.`
-  at that line, then a second `If without EndIf` at its end). Ours does not print the middle line
-  (`tests/fixtures/sub_end_open_blocks.json` leaves those variants out).
+- A `Sub`/`Function` declared while a block is still open from an earlier Sub end prints `Sub declaration
+  inside If..EndIf.` alone at its line (no `executing sequence` line), then its own `If without EndIf inside
+  of Sub.` at its end; the same for an open `Select`, for `Function`, for each further Sub, and when the
+  later Sub closes the block (oracle, all four loggers, 2026-10-12, fixture
+  `tests/fixtures/r13_sub_inside_open_block.json`). Not modelled: the same with a duplicate Sub name on
+  CR6/CR1000X (the real run goes on to later pass-2 errors; ours stops).
 
 ## Whole-array `SplitStr` destination and `Sub` element arguments (2026-10-11, fixture `tests/fixtures/bounds_whole_array_subcall.json`)
 
