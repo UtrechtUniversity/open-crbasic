@@ -289,7 +289,8 @@ class _Loader:
 
     def __init__(self, directory: Path | None, diags: Diagnostics, own_ext: str | None = None,
                  pull_init: bool = False, cr3xx_exts: tuple[str, ...] | None = None,
-                 source: SourceProvider | None = None):
+                 source: SourceProvider | None = None, provenance: bool = True):
+        self.provenance = provenance  # False: skip `LogicalLine.pieces` (only the language server reads them)
         self.source = source or DiskSource()
         self.includes: dict[str, Path] = {}  # include display name -> the path it resolved to
         self.directory = directory
@@ -326,6 +327,7 @@ class _Loader:
         self, raw: str, filename: str, *, section: str | None, in_include: bool
     ) -> list[LogicalLine]:
         physical = _split_physical_lines(raw)
+        prov = self.provenance
         occ = len(self.occurrences)
         self.occurrences.append(Occurrence(occ, filename, self._path, self._cur,
                                            self._site_phys if self._cur is not None else None))
@@ -345,13 +347,13 @@ class _Loader:
                 break
             text = _strip_comment(raw_line)
             had_comment = len(text) != len(raw_line)
-            pieces = [Piece(0, len(text), filename, start_line, 0, occ)] if text else []
+            pieces = [Piece(0, len(text), filename, start_line, 0, occ)] if text and prov else []
             last_line = start_line
             while True:
                 cont, prefix = _is_continuation(text)
                 if not cont or i + 1 >= n:
                     text = prefix if cont else text
-                    pieces = _clip(pieces, len(text))
+                    pieces = _clip(pieces, len(text)) if prov else pieces
                     break
                 buffer_text = _strip_comment(buffer_text).rstrip(" \t")[:-1]
                 i += 1
@@ -371,8 +373,8 @@ class _Loader:
                         and not _is_continuation(stripped)[1].strip())
                 joined = len(text.rstrip(" \t")) - 1
                 text = stripped if lone else text.rstrip(" \t")[:-1] + stripped
-                pieces = [] if lone else _clip(pieces, joined)
-                if stripped:
+                pieces = [] if lone or not prov else _clip(pieces, joined)
+                if stripped and prov:
                     pieces.append(Piece(0 if lone else joined, len(text), filename, last_line, 0, occ))
             if text.strip() == "":
                 i += 1
@@ -386,7 +388,7 @@ class _Loader:
                 trace: list = []
                 text, i, pulls, bad = _pull_decl_initializer(text, physical, i, trace)
                 size = len(orig)
-                for edit in trace:
+                for edit in (trace if prov else ()):
                     if edit[0] == "cut":
                         pieces, size = _clip(pieces, edit[1]), edit[1]
                     else:
@@ -415,8 +417,8 @@ class _Loader:
                                                pieces=tuple(orig_pieces), phys=(start_line, last_line),
                                                occurrence=occ)] + [
                     LogicalLine(_strip_comment(physical[last_line - 1 + k]), base + k, filename,
-                                section, pieces=self._whole(physical[last_line - 1 + k],
-                                                            filename, last_line + k, occ),
+                                section, pieces=(self._whole(physical[last_line - 1 + k],
+                                                             filename, last_line + k, occ) if prov else ()),
                                 phys=(last_line + k, last_line + k), occurrence=occ)
                     for k in range(1, pulls + 1)]
             out.extend(new)
@@ -508,11 +510,12 @@ class _Loader:
 def load_program(path: Path, own_ext: str | None = None,
                  pull_init: bool = False, pull_limit: tuple[int, ...] | None = None,
                  cr3xx_exts: tuple[str, ...] | None = None,
-                 source: SourceProvider | None = None) -> tuple[list[LogicalLine], Diagnostics]:
+                 source: SourceProvider | None = None,
+                 provenance: bool = True) -> tuple[list[LogicalLine], Diagnostics]:
     """Load `path` and every file it `Include`s/`IncludeSection`s, as one logical-line stream."""
     path = Path(path)
     diags = Diagnostics()
-    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts, source)
+    loader = _Loader(path.parent, diags, own_ext, pull_init, cr3xx_exts, source, provenance)
     loader.pull_limit = pull_limit
     lines = loader.load_file(path, section=None, in_include=False)
     diags.pull_log = loader.pull_log

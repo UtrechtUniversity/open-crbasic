@@ -178,7 +178,8 @@ def main(argv: list[str] | None = None) -> int:
         except OSError:
             pass
 
-    result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"])
+    result = compile_file(program, profile, display_name=program.name, warn_unused=opts["u"],
+                          provenance=False)
     lines = result.result_lines(show_signature=opts["s"])
     print("\n".join(lines))
 
@@ -189,7 +190,7 @@ def main(argv: list[str] | None = None) -> int:
     if opts["t"] or opts["b"]:
         from . import parser as parser_mod
         try:
-            program_ast, _ = parser_mod.parse_file(program, profile=profile)
+            program_ast, _ = parser_mod.parse_file(program, profile=profile, provenance=False)
         except Exception:
             program_ast = None
 

@@ -482,7 +482,7 @@ def _run_ours_child(path_str: str, logger: str, result_pipe) -> None:
     """Runs in a spawned child; sends one result without a Queue feeder thread."""
     try:
         profile = profiles.get(logger)
-        result = compile_file(Path(path_str), profile)
+        result = compile_file(Path(path_str), profile, provenance=False)
         if result.implementation_exceptions:
             result_pipe.send((4, "IMPLEMENTATION EXCEPTION: " +
                               " | ".join(result.implementation_exceptions)))

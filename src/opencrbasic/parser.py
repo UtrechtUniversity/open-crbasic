@@ -527,7 +527,8 @@ def _hoist_block_statements(stmt: S.If) -> list[S.Stmt]:
             hoisted += [st for st in body if _is_block_statement(st)]
             setattr(stmt, attr, [st for st in body if not _is_block_statement(st)])
     for st in hoisted:
-        st.origin = stmt.origin
+        if hasattr(stmt, "origin"):
+            st.origin = stmt.origin
     return hoisted
 
 
@@ -575,7 +576,8 @@ def _has_assign(expr) -> bool:
 _DIGIT_NAME = re.compile(r"[\d.][\w.]*")
 
 class _Parser:
-    def __init__(self, profile: profiles.Profile, diags: Diagnostics):
+    def __init__(self, profile: profiles.Profile, diags: Diagnostics, provenance: bool = True):
+        self.provenance = provenance  # False: no `Stmt.origin`, no `line_map` (language-server-only data)
         self.profile = profile
         self.diags = diags
         self.env = consteval.Env(profile)
@@ -597,7 +599,7 @@ class _Parser:
         if not self._collect and any(_FUNCTION_DEF_RE.match(ll.text) for ll in lines):
             # only definitions the compiler really reads count (not after EndProg, not in an
             # inactive #If; oracle, 2026-10-10): a throwaway pass finds them
-            probe = _Parser(self.profile, Diagnostics())
+            probe = _Parser(self.profile, Diagnostics(), self.provenance)
             probe._collect = True
             probe.run(lines, name)
             self.function_names = probe.function_names
@@ -677,7 +679,7 @@ class _Parser:
 
     def _note_line(self, ll: source.LogicalLine) -> None:
         """Record, for `positions.py`, the physical lines of `ll` under the line it is reported at."""
-        if ll.phys is None or self._collect:
+        if ll.phys is None or self._collect or not self.provenance:
             return
         span = source.LineSpan(ll.phys[0], ll.phys[1], ll.occurrence)
         spans = self.line_map.setdefault(ll.file, {}).setdefault(ll.line, [])
@@ -773,7 +775,8 @@ class _Parser:
             else:
                 stmt = self._parse_text_segment(seg_text_raw, ll.line, ll.file)
             stmt.at_eol = at_eol
-            stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
+            if self.provenance:
+                stmt.origin = (ll, seg_offsets[idx])  # positions only: logical line and segment offset
             if (isinstance(stmt, S.If) and stmt.inline is None and idx < last_idx
                     and self.profile.name in ("cr6", "cr1000x")
                     and re.search(r"\bThen\s*$", seg_text_raw, re.I)):
@@ -2338,8 +2341,10 @@ _source_module = source  # parse_file's `source` parameter shadows the module
 
 def parse_file(path: Path | str, profile: profiles.Profile | None = None,
                pull_limit: tuple[int, ...] | None = None,
-               source: SourceProvider | None = None) -> tuple[S.Program, Diagnostics]:
-    """`profile` is normally left to the file's own extension (`profiles.for_file`, the historical
+               source: SourceProvider | None = None,
+               provenance: bool = True) -> tuple[S.Program, Diagnostics]:
+    """`provenance=False` skips the pieces/line-map/origin data only the language server reads (the CLI
+    path); everything the checker sees is unchanged. `profile` is normally left to the file's own extension (`profiles.for_file`, the historical
     default); the caller passes it explicitly when the logger was chosen another way (`--logger`,
     `compiler.compile_file`'s own `profile` argument) so `Const` folding during parsing (predefined
     symbols such as `U1`) uses the *same* profile the checker later runs with. Before this, a
@@ -2349,9 +2354,9 @@ def parse_file(path: Path | str, profile: profiles.Profile | None = None,
     lines, diags = _source_module.load_program(path, _INCLUDE_OWN_EXT.get((profile or _profile_for(path.name)).name),
                                        _pulls_init(profile or _profile_for(path.name)), pull_limit,
                                        _CR3XX_INCLUDE_EXTS.get((profile or _profile_for(path.name)).name),
-                                       source)
+                                       source, provenance)
     pull_log = diags.pull_log
-    parser = _Parser(profile or _profile_for(path.name), diags)
+    parser = _Parser(profile or _profile_for(path.name), diags, provenance)
     program, diags = parser.run(lines, path.name)
     program.pull_log = pull_log
     program.pull_site = diags.pull_site

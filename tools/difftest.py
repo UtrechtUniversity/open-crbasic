@@ -61,7 +61,7 @@ def gate_failed(rows: list[dict], gate: str) -> bool:
 
 def ours(path: Path, profile) -> tuple[int, str]:
     try:
-        result = compile_file(path, profile)
+        result = compile_file(path, profile, provenance=False)
         if result.implementation_exceptions:
             return 4, "IMPLEMENTATION EXCEPTION: " + " | ".join(result.implementation_exceptions)
         return (0 if result.ok else 1), "\n".join(result.result_lines())

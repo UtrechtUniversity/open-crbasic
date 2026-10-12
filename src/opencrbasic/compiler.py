@@ -166,8 +166,11 @@ class CompileResult:
 
 def compile_file(path: Path, profile: Profile | None = None, display_name: str | None = None,
                   warn_unused: bool = False, source: SourceProvider | None = None,
-                  signature: bool = True) -> CompileResult:
-    """Never lets an unexpected exception escape (`docs/checker.md` "Robustness"): the real
+                  signature: bool = True, provenance: bool = True) -> CompileResult:
+    """`provenance=False` (the CLI and the tools) skips the position data only the language server
+    reads (`LogicalLine.pieces`, `Program.line_map`, `Stmt.origin`); the compile output is unchanged.
+
+    Never lets an unexpected exception escape (`docs/checker.md` "Robustness"): the real
     compiler never crashes on a syntactically-loadable file, so an internal bug in this project
     should surface as a rejected program, not a Python traceback that takes down whatever called
     this (`tools/fuzz.py`'s own worker pool did exactly that before it grew its own timeout guard,
@@ -178,7 +181,7 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
     """
     profile = profile or profiles.for_file(path)
     name = display_name or path.name
-    result = _compile_once(path, profile, name, None, source)
+    result = _compile_once(path, profile, name, None, source, provenance)
     if profile.single_pass:
         # CR300/CR350 stop pulling a `Public`/`Dim` initializer's next line once any error has been
         # reported ahead of the declaration (oracle, 2026-10-10, `docs/checker.md` "Round 8"): re-run
@@ -194,17 +197,18 @@ def compile_file(path: Path, profile: Profile | None = None, display_name: str |
             if bad is None or (limit is not None and bad >= limit):
                 break
             limit = bad
-            result = _compile_once(path, profile, name, limit, source)
+            result = _compile_once(path, profile, name, limit, source, provenance)
     if result.program_ast is None:
         return result
     return _finish(result, path, warn_unused, source, signature)
 
 
 def _compile_once(path: Path, profile: Profile, name: str, pull_limit: int | None,
-                  source: SourceProvider | None = None):
+                  source: SourceProvider | None = None, provenance: bool = True):
     from . import checker, parser
     try:
-        program, diags = parser.parse_file(path, profile=profile, pull_limit=pull_limit, source=source)
+        program, diags = parser.parse_file(path, profile=profile, pull_limit=pull_limit, source=source,
+                                        provenance=provenance)
     except Exception as exc:
         diags = Diagnostics()
         diags.error(0, "Internal error: unable to parse program.")
