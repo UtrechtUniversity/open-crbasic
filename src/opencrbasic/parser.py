@@ -1811,6 +1811,18 @@ def partial_expression(text: str, profile: profiles.Profile) -> S.Expr | None:
                         break
         parser_ = _Parser(profile, Diagnostics())
         parser_._logical_assign = True
+        body = toks[start:]
+        depth = sum((t.text == "(") - (t.text == ")") for t in body if t.kind == "OP")
+        if body and ((body[-1].kind == "IDENT" and body[-1].upper in _Parser._LOGICAL_OPS)
+                     or (body[-1].kind == "OP" and body[-1].text == "=")):
+            # a logical word (or `=`) with no right operand still has its left operand's strings
+            # counted, as if a number followed (oracle, all four loggers, 2026-10-12)
+            body = body + [Token("NUMBER", "0", "0", 0, 0, 0)]
+        try:
+            return parser_._parse_expr(_TokStream(
+                body + [Token("OP", ")", ")", 0, 0)] * max(depth, 0) + [_eof_like(0)], text), 0, "")
+        except _ParseError:
+            pass
         for cut in range(len(toks), start, -1):  # a dangling tail (`... AND state =`) is dropped
             try:
                 return parser_._parse_expr(_TokStream(toks[start:cut] + [_eof_like(0)], text), 0, "")

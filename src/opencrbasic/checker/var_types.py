@@ -124,6 +124,15 @@ def _statement_expressions(stmt: S.Stmt):
             yield from _statement_expressions(inner)
 
 
+def _string_typed(typer: "_Typer", node: S.Expr) -> bool:
+    """A String operand, or a logical word whose right operand is one (`X AND "a" AND X`: the
+    first `AND` keeps its string operand's type, so the second also reports; `"a" AND X AND X`
+    reports once; oracle, all four loggers, 2026-10-12)."""
+    while isinstance(node, S.Binary) and node.op in _STRING_ILLEGAL_OPS:
+        node = node.right
+    return typer.of(node) == "STRING"
+
+
 def _string_operand_messages(typer: "_Typer", stmt: S.Stmt, every: bool = False) -> list[str]:
     """The messages for the one String-operand error a statement holds; none when it holds
     several (their number and order is not established), except `every`: several
@@ -133,7 +142,7 @@ def _string_operand_messages(typer: "_Typer", stmt: S.Stmt, every: bool = False)
         for node in _subexpressions(top):
             if not isinstance(node, S.Binary):
                 continue
-            left, right = typer.of(node.left) == "STRING", typer.of(node.right) == "STRING"
+            left, right = _string_typed(typer, node.left), _string_typed(typer, node.right)
             if node.op == "TO":  # a String on the right only (`S To 3` compiles); round 9
                 if right:
                     found.append(["String is illegal here"])

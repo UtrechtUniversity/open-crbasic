@@ -2004,6 +2004,31 @@ def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
         if messages:
             at = diags.items.index(final)
             diags.items[at:at] = [Diagnostic("error", stmt.line, m, stmt.file, True) for m in messages]
+    _order_arith_string_lines(diags)
+
+
+_ARITH_STRING_MESSAGES = ("Illegal String operand", "Illegal operand of type STRING")
+
+
+def _order_arith_string_lines(diags: Diagnostics) -> None:
+    """CR300/CR350: the arithmetic String errors (`Illegal String operand`) come before the
+    statement's `X is not defined.` lines, the logical `String is illegal here` after them (oracle,
+    CR300, 2026-10-12: `"a" * 2 foo`, `S * 2 foo`, `"a" MOD 2 foo` vs `X AND "a" foo`)."""
+    items = diags.items
+    strings = (*_ARITH_STRING_MESSAGES, "String is illegal here")
+    for key in {(d.line, d.file) for d in items if d.message in strings}:
+        slots = [i for i, d in enumerate(items) if (d.line, d.file) == key]
+        own = [items[i] for i in slots]
+        arith = [d for d in own if d.message in _ARITH_STRING_MESSAGES]
+        logical = [d for d in own if d.message == "String is illegal here"]
+        names = [d for d in own if d.message.endswith(" is not defined.")]
+        if not names or (arith and logical):
+            continue
+        rest = [d for d in own if d not in arith and d not in logical and d not in names]
+        order = arith + names + logical + rest
+        if order != own:
+            for i, d in zip(slots, order):
+                items[i] = d
 
 
 _TCPOPEN_HANDLE = "Parameter must be a variable of type long"

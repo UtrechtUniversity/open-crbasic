@@ -1,0 +1,1535 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-string_illegal_dangling-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" * 2 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" * 2 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-0",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" * 2 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-0",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" * 2 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \"a\" + 1 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: \"a\" + 1 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" + 1 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-1",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" + 1 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" + 1 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" / 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" / 2 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" / 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" / 2 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" / 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" / 2 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-2",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" / 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" / 2 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-3",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-4",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-4",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-5",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-5",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND \"c\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND \"c\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-6",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND \"c\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-6",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" AND \"c\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-7",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-7",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND \"b\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND \"b\" foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-8",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-8",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND \"c\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND \"c\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-9",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND \"c\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-9",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND \"c\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-10",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-10",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X AND X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-11",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-11",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: \"a\" AND X foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-12",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" MOD 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" MOD 2 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-12",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" MOD 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: \"a\" MOD 2 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-12",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" MOD 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" MOD 2 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-12",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\n\"a\" MOD 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: \"a\" MOD 2 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: S * 2 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Invalid, or out of place expression: S * 2 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-13",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: S * 2 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-13",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Invalid, or out of place expression: S * 2 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-14",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-14",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-14",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-14",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-15",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND X foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-15",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND X foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-15",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND X foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-15",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nS AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: S AND X foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-16",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Incomplete expression: X = \"a\" * 2 foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-16",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: Incomplete expression: X = \"a\" * 2 foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-16",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Incomplete expression: X = \"a\" * 2 foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-16",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" * 2 foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Illegal String operand\nline 5: foo is not defined.\nline 5: Incomplete expression: X = \"a\" * 2 foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-17",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-17",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-17",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-17",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-18",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-18",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-18",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-18",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-19",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND X AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-19",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND X AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-19",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND X AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-19",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" AND X AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-20",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = \"a\" AND X foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-20",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = \"a\" AND X foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-20",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Incomplete expression: X = \"a\" AND X foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-20",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" AND X foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Incomplete expression: X = \"a\" AND X foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-21",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" OR."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-21",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" OR."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-21",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" OR\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-21",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = \"a\" OR\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-22",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = (1 AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-22",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = (1 AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-22",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = (1 AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-22",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = (1 AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-23",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = (S + 1."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-23",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = (S + 1."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-23",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = (S + 1\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-23",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: No Matching, or out of place ) in expression: X = (S + 1\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-24",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND \"a\"."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-24",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND \"a\"."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-24",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND \"a\"\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-24",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND \"a\"\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-25",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND 1."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-25",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND 1."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-25",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND 1\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-25",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: X = (S AND 1\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-26",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-26",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-26",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-26",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-27",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-27",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-27",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-27",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-28",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" AND \"c\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-28",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" AND \"c\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-28",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" AND \"c\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-28",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Incomplete expression: X = 1 AND \"b\" AND \"c\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-29",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND \"c\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-29",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND \"c\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-29",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND \"c\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-29",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND \"c\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND \"c\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-30",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND X AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-30",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND X AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-30",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND X AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-30",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND \"b\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND \"b\" AND X AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-31",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-31",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-31",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-31",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-32",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND S AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-32",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND S AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-32",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND S AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-32",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1 AND S AND S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = 1 AND S AND S AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-33",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Len(\"a\") AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = Len(\"a\") AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-33",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Len(\"a\") AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = Len(\"a\") AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-33",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Len(\"a\") AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = Len(\"a\") AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-33",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = Len(\"a\") AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = Len(\"a\") AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-34",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = S AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-34",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = S AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-34",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = S AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-34",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = S AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = S AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-35",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"a\" AND X AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-35",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"a\" AND X AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-35",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"a\" AND X AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-35",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" AND X AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"a\" AND X AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-36",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = X AND \"a\" foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-36",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Incomplete expression: X = X AND \"a\" foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-36",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Incomplete expression: X = X AND \"a\" foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-36",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Incomplete expression: X = X AND \"a\" foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-37",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-37",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-37",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-37",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX = X AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X = X AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-38",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-38",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-38",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-38",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-39",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-39",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-39",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-39",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-40",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X =."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-40",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X =."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-40",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X =\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-40",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X =\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-41",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X AND X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-41",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X AND X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-41",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X AND X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-41",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" AND X AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" AND X AND X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-42",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" OR X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" OR X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-42",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" OR X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" OR X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-42",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" OR X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" OR X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-42",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" OR X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" OR X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-43",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" XOR \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" XOR \"b\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-43",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" XOR \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" XOR \"b\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-43",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" XOR \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" XOR \"b\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-43",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" XOR \"b\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" XOR \"b\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-44",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" foo."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-44",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" foo."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-44",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" foo\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-44",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"a\" foo\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: foo is not defined.\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"a\" foo\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-45",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"b\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-45",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"b\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-45",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"b\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-45",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND \"b\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND \"b\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-46",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND (\"a\" AND X) .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND (\"a\" AND X) .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-46",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND (\"a\" AND X) .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND (\"a\" AND X) .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-46",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND (\"a\" AND X) .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND (\"a\" AND X) .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-46",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND (\"a\" AND X) .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND (\"a\" AND X) .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-47",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = \"b\" AND \"c\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X = \"b\" AND \"c\" AND X =."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-47",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = \"b\" AND \"c\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X = \"b\" AND \"c\" AND X =."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-47",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = \"b\" AND \"c\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X = \"b\" AND \"c\" AND X =\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-47",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = \"b\" AND \"c\" AND X =\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X = \"b\" AND \"c\" AND X =\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-48",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-48",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-48",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-48",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-49",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" AND X .."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-49",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" AND X .."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-49",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" AND X .\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-49",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X AND \"a\" AND X .\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X AND X AND \"a\" AND X .\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-50",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" AND."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-50",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" AND."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-50",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" AND\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-50",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" AND\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" AND\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-51",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" OR."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-51",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" OR."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-51",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" OR\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-51",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX OR \"a\" OR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X OR \"a\" OR\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-52",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX XOR \"a\" XOR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X XOR \"a\" XOR."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-52",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX XOR \"a\" XOR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X XOR \"a\" XOR."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-52",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX XOR \"a\" XOR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X XOR \"a\" XOR\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-52",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nX XOR \"a\" XOR\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: String is illegal here\nline 5: String is illegal here\nline 5: Invalid, or out of place expression: X XOR \"a\" XOR\n."
+  },
+  {
+   "id": "cr6-string_illegal_dangling-53",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y = (S AND 1."
+  },
+  {
+   "id": "cr1000x-string_illegal_dangling-53",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Invalid, or out of place expression: Y = (S AND 1."
+  },
+  {
+   "id": "cr300-string_illegal_dangling-53",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined.\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: Y = (S AND 1\n."
+  },
+  {
+   "id": "cr350-string_illegal_dangling-53",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\n\nBeginProg\n  Scan (1,Sec,3,0)\nY = (S AND 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Y is not defined.\nline 5: String is illegal here\nline 5: No Matching, or out of place ) in expression: Y = (S AND 1\n."
+  }
+ ]
+}

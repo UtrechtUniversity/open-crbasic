@@ -1556,6 +1556,9 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         # CR300/CR350: `Y = (1` -> `Y is not defined.` first (oracle, 2026-10-01)
                         diags.error(stmt.line, profile.unresolved_symbol_message.format(
                             name=target.group(1)), stmt.file, show_file=False)
+                    if profile.single_pass:  # (CR6/CR1000X report them in pass 1)
+                        for message in _unparsed_string_messages(stmt, program, profile):
+                            diags.error(stmt.line, message, stmt.file)
                     diags.error(stmt.line, _unclosed_call_message(
                         profile, stmt.text, stmt.at_eol, pass1_operands(program, profile))
                         or _no_matching(profile, stmt.text, stmt.at_eol),

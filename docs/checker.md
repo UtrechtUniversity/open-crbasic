@@ -5508,3 +5508,21 @@ branch, `_logical_assign_eq`), and for CR300/CR350 the `_pass1_scan` call in
 `cr3xx.check_unknown_line_words`. Not done: `X AND X = 1 ;` (CR6/CR1000X accept it; CR300/CR350
 `Invalid symbol in expression`), `X AND X = Y foo` on CR6/CR1000X (`Invalid symbol`), CR300/CR350
 `X AND X = (1 foo` lacks its `foo is not defined.` line.
+
+### `String is illegal here` count with a dangling operator (round 13, A7)
+
+Oracle, all four loggers, 2026-10-12 (`tests/fixtures/r13_string_illegal_dangling.json`). A logical
+word (`AND OR XOR IMP EQV`) whose right operand is a String leaves its result String-typed, so the
+next logical word reports again: `X AND "a" AND X .` and `"a" AND "b" AND` print two `String is
+illegal here`, `"a" AND X AND X .` and `X AND X AND "a" .` one (counted per logical node, the chain
+is left-associative). A missing right operand counts like a number: `X = "a" AND`, `S AND`,
+`X OR "a" OR`, `X AND "a" AND X =` (and `X AND X = "b" AND "c" AND X =`) print the same lines as the
+complete expression. An unclosed `(` group is typed too: `X = (S AND 1` prints `String is illegal
+here` before `No Matching, or out of place )` (CR300/CR350 after the `Y is not defined.` line).
+CR300/CR350 order: the arithmetic `Illegal String operand` (`"a" * 2 foo`, `S * 2 foo`, `"a" MOD 2
+foo`) comes before `foo is not defined.`, the logical `String is illegal here` (`X AND "a" foo`)
+after it. Implementation: `var_types._string_typed`, `parser.partial_expression` (placeholder
+operand, closed groups), `cr3xx._order_arith_string_lines`. Not done: junk inside an unclosed group
+(`X = (S AND 1 foo` lacks its string line), CR300/CR350 `X AND "a" * 2 .` (we print
+`Illegal String operand` twice), CR6/CR1000X `X = 1 AND "b" AND X .` (we print `Invalid symbol`
+instead of the strings and `Incomplete expression`).
