@@ -5458,7 +5458,7 @@ print neither.
 ### Array bounds are resolved by the scope of the use site (round 13, 2026-10-12)
 
 A `Sub`-local `Dim P(5)` shadows a `Public P(20)` inside that `Sub` only; main code and other routines
-see the global. Oracle, all four loggers (fixture `tests/fixtures/bounds_scope_shadow.json`, cases
+see the global. Oracle, all four loggers (fixture `tests/fixtures/r13_bounds_scope_shadow.json`, cases
 `*-shadow*`): with `Public P(20)` and a `Dim P(5)` in `Sub S2`, `S1(P(15))`, `Battery(P(15))`,
 `Move(P(1),20,r,1)` and `SplitStr(P(),s,",",15,0)` in main code compile; `P(25)` there is out of
 bounds; inside `S2`, `P(3)` compiles and `P(0)`, `P(6)`, `Reps` 6 are out of bounds. The reverse layout (one
