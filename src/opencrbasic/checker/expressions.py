@@ -1059,6 +1059,76 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
                 break
 
 
+def _digit_members(expr: S.Expr | None) -> list[S.Member]:
+    """Every `Name.<digits...>` member in `expr`, in source order (`X.5`, `T.1(2)`, `Status.1`)."""
+    if expr is None:
+        return []
+    if isinstance(expr, S.Member):
+        out = _digit_members(expr.base)
+        if isinstance(expr.base, S.Name) and expr.member[:1].isdigit():
+            out.append(expr)
+        for a in expr.args or []:
+            out += _digit_members(a)
+        return out
+    if isinstance(expr, S.Index):
+        return [m for a in expr.args for m in _digit_members(a)]
+    if isinstance(expr, S.Unary):
+        return _digit_members(expr.operand)
+    if isinstance(expr, S.Binary):
+        return _digit_members(expr.left) + _digit_members(expr.right)
+    if isinstance(expr, S.ArrayLiteral):
+        return [m for item in expr.items for m in _digit_members(item)]
+    return []
+
+
+def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None:
+    """`Declared.<digits>` (`X = X.5`, `A.1`, `T.1`, `Status.1`): no variable, data table or
+    `Status` has a member starting with a digit. A declared variable base is `Could not find X.`
+    (CR300/CR350 `Could not find DataTable X.`), a data table or `Status` base is `Could not
+    find T.1(1).` (the index echoed as `_member_index_text`), one line per access in source order;
+    an assignment target adds `Invalid assignment in expression: <line>.` (oracle, all four
+    loggers, 2026-10-12, `docs/checker.md` "Digit-led members"). Statements that also name an
+    undefined symbol are left to the generic undefined-name reporting."""
+    from . import structs
+    variables = {n for n in symbols.declared_variable_names(program)
+                 if not symbols.is_reserved_predefined_name(n, profile)}
+    kinds = structs._variable_kinds(program, structs._structure_members(program))
+    variables = {n for n in variables if not str(kinds.get(n, "")).startswith("STRUCT")}
+    data_tables = {
+        stmt.args[0].name.upper() for stmt in program.statements
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE" and stmt.args
+        and isinstance(stmt.args[0], S.Name)
+    } | {"STATUS"}
+    known = _known_names(program, profile)
+    for stmt in program.statements:
+        if isinstance(stmt, S.Assignment):
+            exprs = [stmt.target, stmt.value]
+        elif isinstance(stmt, S.If):
+            exprs = [stmt.cond]
+        elif isinstance(stmt, (S.Instruction, S.Call)):
+            exprs = stmt.args
+        else:
+            continue
+        members = [m for e in exprs for m in _digit_members(e)]
+        if not members or any(_undefined_names(e, known) for e in exprs):
+            continue
+        lines = []
+        for m in members:
+            base = m.base.name
+            if base.upper() in data_tables:
+                lines.append(f"Could not find {base}.{m.member}{_member_index_text(m.args)}.")
+            elif base.upper() in variables:
+                lines.append(f"Could not find DataTable {base}." if profile.single_pass
+                             else f"Could not find {base}.")
+        if not lines:
+            continue
+        for line in lines:
+            diags.error(stmt.line, line, stmt.file)
+        if isinstance(stmt, S.Assignment) and _digit_members(stmt.target):
+            sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
+            diags.error(stmt.line, f"Invalid assignment in expression: {stmt.text}{sep}.", stmt.file)
+
+
 def check_const_family_args(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR6/CR1000X pass 1: the constant-family instruction positions (`_CONST_FAMILY_KINDS`) are
     folded while the statement is parsed, so an unresolved name there (`Invalid symbol in

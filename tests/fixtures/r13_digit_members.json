@@ -1,0 +1,527 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-digit_members-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nIf X.5 > 1 Then X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nT.1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1).\nline 7: Invalid assignment in expression: T.1 = 1."
+  },
+  {
+   "id": "cr6-digit_members-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr6-digit_members-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 2 * X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = A.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find A."
+  },
+  {
+   "id": "cr6-digit_members-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = H.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find H."
+  },
+  {
+   "id": "cr6-digit_members-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S."
+  },
+  {
+   "id": "cr6-digit_members-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5 + X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S.\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sqr(X.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(1)."
+  },
+  {
+   "id": "cr6-digit_members-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(2)."
+  },
+  {
+   "id": "cr6-digit_members-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1)."
+  },
+  {
+   "id": "cr6-digit_members-14",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(2)."
+  },
+  {
+   "id": "cr6-digit_members-15",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1."
+  },
+  {
+   "id": "cr6-digit_members-17",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-18",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5.6\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-19",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5a\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr6-digit_members-21",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX.5 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid assignment in expression: X.5 = 1."
+  },
+  {
+   "id": "cr1000x-digit_members-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nIf X.5 > 1 Then X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nT.1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1).\nline 7: Invalid assignment in expression: T.1 = 1."
+  },
+  {
+   "id": "cr1000x-digit_members-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr1000x-digit_members-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 2 * X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = A.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find A."
+  },
+  {
+   "id": "cr1000x-digit_members-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = H.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find H."
+  },
+  {
+   "id": "cr1000x-digit_members-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S."
+  },
+  {
+   "id": "cr1000x-digit_members-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5 + X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S.\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sqr(X.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(1)."
+  },
+  {
+   "id": "cr1000x-digit_members-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(2)."
+  },
+  {
+   "id": "cr1000x-digit_members-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1)."
+  },
+  {
+   "id": "cr1000x-digit_members-14",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(2)."
+  },
+  {
+   "id": "cr1000x-digit_members-15",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1."
+  },
+  {
+   "id": "cr1000x-digit_members-17",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-18",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5.6\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-19",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5a\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-digit_members-21",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX.5 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid assignment in expression: X.5 = 1."
+  },
+  {
+   "id": "cr300-digit_members-0",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nIf X.5 > 1 Then X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nT.1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1).\nline 7: Invalid assignment in expression: T.1 = 1\n."
+  },
+  {
+   "id": "cr300-digit_members-2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr300-digit_members-3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 2 * X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-4",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = A.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable A."
+  },
+  {
+   "id": "cr300-digit_members-6",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = H.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable H."
+  },
+  {
+   "id": "cr300-digit_members-7",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S."
+  },
+  {
+   "id": "cr300-digit_members-8",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5 + X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S.\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-9",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sqr(X.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-10",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(1)."
+  },
+  {
+   "id": "cr300-digit_members-11",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(2)."
+  },
+  {
+   "id": "cr300-digit_members-13",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1)."
+  },
+  {
+   "id": "cr300-digit_members-14",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(2)."
+  },
+  {
+   "id": "cr300-digit_members-15",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1."
+  },
+  {
+   "id": "cr300-digit_members-17",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-18",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5.6\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-19",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5a\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr300-digit_members-21",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX.5 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X.\nline 7: Invalid assignment in expression: X.5 = 1\n."
+  },
+  {
+   "id": "cr350-digit_members-0",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nIf X.5 > 1 Then X = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-1",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nT.1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1).\nline 7: Invalid assignment in expression: T.1 = 1\n."
+  },
+  {
+   "id": "cr350-digit_members-2",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nWarning: Table T, is declared but never called."
+  },
+  {
+   "id": "cr350-digit_members-3",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = 2 * X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-4",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = A.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable A."
+  },
+  {
+   "id": "cr350-digit_members-6",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = H.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable H."
+  },
+  {
+   "id": "cr350-digit_members-7",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S."
+  },
+  {
+   "id": "cr350-digit_members-8",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = S.5 + X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S.\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-9",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Sqr(X.5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-10",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(1)."
+  },
+  {
+   "id": "cr350-digit_members-11",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = Status.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Status.1(2)."
+  },
+  {
+   "id": "cr350-digit_members-13",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(1)."
+  },
+  {
+   "id": "cr350-digit_members-14",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1(2)."
+  },
+  {
+   "id": "cr350-digit_members-15",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = T.1(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find T.1."
+  },
+  {
+   "id": "cr350-digit_members-17",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-18",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5.6\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-19",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX = X.5a\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-digit_members-21",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, H As Long, A(3)\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX.5 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X.\nline 7: Invalid assignment in expression: X.5 = 1\n."
+  }
+ ]
+}

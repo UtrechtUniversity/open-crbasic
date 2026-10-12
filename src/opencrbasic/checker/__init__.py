@@ -367,6 +367,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         n_generic = len(diags.items)
         _run_pass(expressions.check, flat, profile, diags, env)
         _run_pass(expressions.check_table_members, flat, profile, diags)
+        _run_pass(expressions.check_digit_members, flat, profile, diags)
         generic_errors += diags.items[n_generic:]
         _run_pass(instr_rules.check_mqtt_publish_payload, flat, profile, diags)
         if not profile.single_pass:

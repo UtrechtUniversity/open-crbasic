@@ -5350,3 +5350,18 @@ several passes did not recognise, so everything after the routine was treated as
 `bindings.closes_routine`). Unrelated and closer-independent (not fixed): a variable declared
 inside a `Sub` and used in the main program is accepted by `crbc` while the real compiler reports
 it undefined (`Y = 2` -> `Invalid, or out of place expression` / CR300 `Y is not defined.`).
+### Digit-led members of a declared name (2026-10-12)
+
+`ident.digits` lexes as a member (`Tmp.001`, see "Undeclared dotted names"), so `X = X.5`,
+`A.1`, `T.1`, `Status.1` used to compile clean. No variable, data table or `Status` has a member
+starting with a digit; the real compilers (all four, oracle 2026-10-12) report, one line per access
+in source order, in assignment values, subscripts, `If` conditions and function arguments:
+`Could not find X.` for a declared variable (CR300/CR350 `Could not find DataTable X.`) and
+`Could not find T.1(1).` for a data table or `Status` (the index echoed as for an absent member:
+`T.1(2)` -> `(2)`, `T.1(X)` -> none). An assignment target (`X.5 = 1`, `T.1 = 1`) adds
+`Invalid assignment in expression: <line>.`. Implementation: `expressions.check_digit_members`;
+statements that also name an undefined symbol and structure-typed bases are not touched. Fixture:
+`tests/fixtures/r13_digit_members.json`. Not done: a letter-led member of a plain variable, table or
+`Status` (`X.dat` -> `Could not find X.`, `T.dat` -> `Could not find T.dat(1).`) is still
+accepted; CR6/CR1000X `Undeclared.digits` (`Could not find Tmp.`) still prints the `Invalid symbol`
+echo.

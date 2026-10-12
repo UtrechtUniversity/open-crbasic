@@ -1,0 +1,1283 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-la1-0",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A() = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(0) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = A(2)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-4",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Nope\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND A(1) = Nope."
+  },
+  {
+   "id": "cr6-la1-5",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND A(1) = Y."
+  },
+  {
+   "id": "cr6-la1-6",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-7",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(4) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-8",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(X) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-9",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(Y) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND A(Y) = 1."
+  },
+  {
+   "id": "cr6-la1-10",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-11",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-12",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-13",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Nope(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Nope(1) = 1."
+  },
+  {
+   "id": "cr6-la1-14",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Q(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-15",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S = 1 AND A(2) = 3\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-16",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-17",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-18",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND Status.Battery = Y."
+  },
+  {
+   "id": "cr6-la1-19",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-20",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-21",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-22",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = 1 AND X = Y."
+  },
+  {
+   "id": "cr6-la1-23",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND Y = 2\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = 1 AND Y = 2."
+  },
+  {
+   "id": "cr6-la1-24",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = A(Y)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = A(Y)."
+  },
+  {
+   "id": "cr6-la1-25",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y."
+  },
+  {
+   "id": "cr6-la1-26",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y + 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y + 1."
+  },
+  {
+   "id": "cr6-la1-27",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y AND X\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y AND X."
+  },
+  {
+   "id": "cr6-la1-28",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-29",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = A(1)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la1-30",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y = 1."
+  },
+  {
+   "id": "cr6-la1-31",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = Z\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y = Z."
+  },
+  {
+   "id": "cr6-la1-32",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y(1) = 1."
+  },
+  {
+   "id": "cr6-la1-33",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND A(1) = 1."
+  },
+  {
+   "id": "cr6-la1-34",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND X = 1."
+  },
+  {
+   "id": "cr6-la1-35",
+   "logger": "cr6",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND Z = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND Z = 1."
+  },
+  {
+   "id": "cr1000x-la1-0",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A() = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(0) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = A(2)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-4",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Nope\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND A(1) = Nope."
+  },
+  {
+   "id": "cr1000x-la1-5",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND A(1) = Y."
+  },
+  {
+   "id": "cr1000x-la1-6",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-7",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(4) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-8",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(X) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-9",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(Y) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND A(Y) = 1."
+  },
+  {
+   "id": "cr1000x-la1-10",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-11",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-12",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-13",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Nope(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Nope(1) = 1."
+  },
+  {
+   "id": "cr1000x-la1-14",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Q(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-15",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S = 1 AND A(2) = 3\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-16",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-17",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-18",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND Status.Battery = Y."
+  },
+  {
+   "id": "cr1000x-la1-19",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-20",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-21",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-22",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = 1 AND X = Y."
+  },
+  {
+   "id": "cr1000x-la1-23",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND Y = 2\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = 1 AND Y = 2."
+  },
+  {
+   "id": "cr1000x-la1-24",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = A(Y)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = A(Y)."
+  },
+  {
+   "id": "cr1000x-la1-25",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y."
+  },
+  {
+   "id": "cr1000x-la1-26",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y + 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y + 1."
+  },
+  {
+   "id": "cr1000x-la1-27",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y AND X\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid symbol in expression: X AND X = Y AND X."
+  },
+  {
+   "id": "cr1000x-la1-28",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-29",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = A(1)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la1-30",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y = 1."
+  },
+  {
+   "id": "cr1000x-la1-31",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = Z\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y = Z."
+  },
+  {
+   "id": "cr1000x-la1-32",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND Y(1) = 1."
+  },
+  {
+   "id": "cr1000x-la1-33",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND A(1) = 1."
+  },
+  {
+   "id": "cr1000x-la1-34",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND X = 1."
+  },
+  {
+   "id": "cr1000x-la1-35",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND Z = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: Y AND Z = 1."
+  },
+  {
+   "id": "cr300-la1-0",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A() = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(0) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = A(2)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-4",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Nope\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr300-la1-5",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-6",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND A(1,1) = 1\n."
+  },
+  {
+   "id": "cr300-la1-7",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(4) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-8",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(X) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-9",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(Y) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-10",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-11",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-12",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND M(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr300-la1-13",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Nope(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Invalid, or out of place expression: X AND Nope(1) = 1\n."
+  },
+  {
+   "id": "cr300-la1-14",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Q(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-15",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S = 1 AND A(2) = 3\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-16",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND S(1) = \"a\"\n."
+  },
+  {
+   "id": "cr300-la1-17",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-18",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-19",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-20",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-21",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la1-22",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-23",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND Y = 2\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-24",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = A(Y)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-25",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-26",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y + 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-27",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y AND X\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-28",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND X(1) = 1\n."
+  },
+  {
+   "id": "cr300-la1-29",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = A(1)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND X(1) = A(1)\n."
+  },
+  {
+   "id": "cr300-la1-30",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-31",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = Z\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr300-la1-32",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Invalid, or out of place expression: X AND Y(1) = 1\n."
+  },
+  {
+   "id": "cr300-la1-33",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-34",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr300-la1-35",
+   "logger": "cr300",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND Z = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr350-la1-0",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A() = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-1",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(0) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-2",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-3",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = A(2)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-4",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Nope\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined."
+  },
+  {
+   "id": "cr350-la1-5",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1) = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-6",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND A(1,1) = 1\n."
+  },
+  {
+   "id": "cr350-la1-7",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(4) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-8",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(X) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-9",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND A(Y) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-10",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-11",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-12",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND M(1,1,1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND M(1,1,1) = 1\n."
+  },
+  {
+   "id": "cr350-la1-13",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Nope(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Nope is not defined.\nline 7: Invalid, or out of place expression: X AND Nope(1) = 1\n."
+  },
+  {
+   "id": "cr350-la1-14",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Q(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-15",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S = 1 AND A(2) = 3\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-16",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND S(1) = \"a\"\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND S(1) = \"a\"\n."
+  },
+  {
+   "id": "cr350-la1-17",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-18",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-19",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Status.Battery(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-20",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-21",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND T.X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la1-22",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-23",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = 1 AND Y = 2\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-24",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = A(Y)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-25",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-26",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y + 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-27",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X = Y AND X\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-28",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND X(1) = 1\n."
+  },
+  {
+   "id": "cr350-la1-29",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND X(1) = A(1)\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Invalid, or out of place expression: X AND X(1) = A(1)\n."
+  },
+  {
+   "id": "cr350-la1-30",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-31",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y = Z\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr350-la1-32",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nX AND Y(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Invalid, or out of place expression: X AND Y(1) = 1\n."
+  },
+  {
+   "id": "cr350-la1-33",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND A(1) = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-34",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND X = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined."
+  },
+  {
+   "id": "cr350-la1-35",
+   "logger": "cr350",
+   "source": "Public X, S As String * 20, M(2,3), A(3), Q(2) As String * 8\nDataTable (T,1,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\nY AND Z = 1\n  CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Y is not defined.\nline 7: Z is not defined."
+  },
+  {
+   "id": "cr6-la2-0",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la2-1",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  X AND P = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la2-2",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la2-3",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  F AND X = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la2-4",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = P\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la2-5",
+   "logger": "cr6",
+   "source": "Public X\nFunction F(P) As Long\n  X AND Nope = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   X AND Nope = 1."
+  },
+  {
+   "id": "cr1000x-la2-0",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la2-1",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  X AND P = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la2-2",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la2-3",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  F AND X = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la2-4",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = P\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la2-5",
+   "logger": "cr1000x",
+   "source": "Public X\nFunction F(P) As Long\n  X AND Nope = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression:   X AND Nope = 1."
+  },
+  {
+   "id": "cr300-la2-0",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la2-1",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  X AND P = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la2-2",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la2-3",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  F AND X = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la2-4",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = P\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la2-5",
+   "logger": "cr300",
+   "source": "Public X\nFunction F(P) As Long\n  X AND Nope = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-la2-0",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la2-1",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  X AND P = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la2-2",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  F = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la2-3",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  F AND X = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la2-4",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  X AND F = P\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la2-5",
+   "logger": "cr350",
+   "source": "Public X\nFunction F(P) As Long\n  X AND Nope = 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  X = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-la3-0",
+   "logger": "cr6",
+   "source": "Public X\nSub Foo(N)\n  X AND N = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la3-1",
+   "logger": "cr6",
+   "source": "Public X\nSub Foo(N)\n  N AND X = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-la3-2",
+   "logger": "cr6",
+   "source": "Public X\nSub Foo(N)\n  X AND X = N\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la3-0",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Foo(N)\n  X AND N = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la3-1",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Foo(N)\n  N AND X = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-la3-2",
+   "logger": "cr1000x",
+   "source": "Public X\nSub Foo(N)\n  X AND X = N\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-la3-0",
+   "logger": "cr300",
+   "source": "Public X\nSub Foo(N)\n  X AND N = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la3-1",
+   "logger": "cr300",
+   "source": "Public X\nSub Foo(N)\n  N AND X = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-la3-2",
+   "logger": "cr300",
+   "source": "Public X\nSub Foo(N)\n  X AND X = N\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la3-0",
+   "logger": "cr350",
+   "source": "Public X\nSub Foo(N)\n  X AND N = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la3-1",
+   "logger": "cr350",
+   "source": "Public X\nSub Foo(N)\n  N AND X = 1\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-la3-2",
+   "logger": "cr350",
+   "source": "Public X\nSub Foo(N)\n  X AND X = N\nEndSub\nConst N = 2\nBeginProg\n  Scan (1,Sec,0,0)\n  Foo(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
