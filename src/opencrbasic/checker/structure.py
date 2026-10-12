@@ -267,7 +267,7 @@ def _ends_sub(stmt: S.Stmt, kw: str) -> bool:
         kw == "END" and _block_word(getattr(stmt, "args", []) or []) in ("SUB", "FUNCTION"))
 
 
-def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None:
+def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef | S.If, list[str]] | None:
     """The first `Sub`/`Function` declared where the compiler rejects it, with its messages, or
     `None`. Oracle, all four loggers, 2026-10-02: inside another `Sub`/`Function` (`Sub declared
     within a Sub.`, whatever the keywords), inside an `If`/`Select` (`Sub declaration inside
@@ -290,8 +290,23 @@ def first_misplaced_sub(program: S.Program) -> tuple[S.SubDef, list[str]] | None
     conditional_depth = active_scans = for_do_depth = 0
     routines: set[str] = set()
     consts: set[str] = set()
+    in_program = False
     for stmt in program.statements:
         kw = _keyword(stmt)
+        in_program = in_program or kw == "BEGINPROG"
+        if kw == "ENDPROG":
+            in_program = False
+        if isinstance(stmt, S.If) and stmt.inline is not None and (in_program or open_sub or in_table):
+            # `If C Then Sub S`: the `Sub` is inside an `If` and inside the executing code, anywhere
+            # between `BeginProg` and `EndProg` (oracle, all four loggers, 2026-10-12; before
+            # `BeginProg` it is `If illegally occurs before BeginProg.`)
+            for inner in (stmt.inline or []) + (stmt.inline_else or []):
+                if isinstance(inner, S.SubDef):
+                    msgs = ["Sub declared within a Sub."] if open_sub else []
+                    msgs += ["Sub declaration inside If..EndIf.",
+                             f"{'Function' if inner.keyword.upper() == 'FUNCTION' else 'Sub'} "
+                             "is declared in the middle of an executing sequence"]
+                    return stmt, msgs
         if isinstance(stmt, S.ConstDecl):
             consts.add(stmt.name.upper())
         elif isinstance(stmt, S.SubDef) and stmt.name.upper() in consts:
@@ -533,10 +548,11 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
             for message in misplaced[1]:
                 diags.error(stmt.line, message, stmt.file)
             return stmt.file, stmt.line
-        if id(stmt) in stray:
-            diags.error(stmt.line, stray[id(stmt)][0], stmt.file)
-            if stray[id(stmt)][1]:
-                return stmt.file, stmt.line
+        for item in [stmt] + (((stmt.inline or []) + (stmt.inline_else or [])) if isinstance(stmt, S.If) else []):
+            if id(item) in stray:
+                diags.error(item.line, stray[id(item)][0], item.file)
+                if stray[id(item)][1]:
+                    return item.file, item.line
         seen_beginprog = seen_beginprog or _keyword(stmt) == "BEGINPROG"
         if isinstance(stmt, S.SubDef):
             in_body = True
@@ -637,9 +653,9 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
                 elses[-1] = True
         elif kw == "ELSEIF" and not elses:
             message, stops = "Case with no Select.", True
-        elif kw in ("DO", "FOR"):
-            loops[kw] += 1
-        elif kw == "LOOP":
+        elif kw in ("DO", "FOR", "WHILE"):
+            loops["FOR" if kw == "FOR" else "DO"] += 1
+        elif kw in ("LOOP", "WEND"):
             loops["DO"] = max(0, loops["DO"] - 1)
         elif kw == "NEXT" and word not in ("SCAN", "SUBSCAN"):
             loops["FOR"] = max(0, loops["FOR"] - 1)
@@ -655,6 +671,19 @@ def stray_controls(program: S.Program) -> dict[int, tuple[str, bool]]:
             message = f"{'ExitScan' if kw == 'EXITSCAN' else 'ContinueScan'} not within a Scan."
         if message:
             found[id(stmt)] = (message, stops)
+        if isinstance(stmt, S.If) and stmt.inline is not None and (seen_beginprog or in_sub):
+            # the same checks for the statements of a one-line `If` body (oracle, all four loggers,
+            # 2026-10-12: `If C Then Exit Do` with no loop, `Exit For`, `Exit Sub`, `EndSub`)
+            for sub in (stmt.inline or []) + (stmt.inline_else or []):
+                sub_kw = _keyword(sub)
+                sub_word = _block_word(getattr(sub, "args", []) or []) if sub_kw in ("EXIT", "END") else None
+                if sub_kw == "EXIT" and sub_word in ("DO", "FOR") and loops[sub_word] == 0:
+                    found[id(sub)] = (f"Exit {sub_word.capitalize()} without {sub_word}.", False)
+                elif sub_kw == "EXIT" and sub_word in ("SUB", "FUNCTION") and not in_sub:
+                    found[id(sub)] = ("Exit Sub without Sub or nested subs.", False)
+                elif not in_sub and (sub_kw in ("ENDSUB", "ENDFUNCTION")
+                                     or sub_kw == "END" and sub_word in ("SUB", "FUNCTION")):
+                    found[id(sub)] = ("EndSub without Sub or nested subs.", False)
     return found
 
 
@@ -1227,6 +1256,11 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         # both are pass-2 ("Expr"/implicit-`Call` records, `docs/checker.md` "Pass model") --
         # `check_pass2` below.
 
+        if isinstance(stmt, S.If) and stmt.inline is not None and select_depth == 0:
+            # `If C Then Case 1` outside a `Select` (oracle, all four loggers, 2026-10-12)
+            for sub in (stmt.inline or []) + (stmt.inline_else or []):
+                if isinstance(sub, S.Case) and not _is_case_else(sub):
+                    diags.error(sub.line, "Case outside Select.", sub.file)
         if kw == "BEGINPROG":
             seen_beginprog = True
         elif kw == "SCAN":

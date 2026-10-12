@@ -6454,3 +6454,22 @@ Then Loop` order (real: `LOOP without DO.` then `IF or SELECT statement illegall
 that is then closed (the real compiler adds `Warning: CallTable never reached at run time.`; CR300/CR350
 also keep the two closer lines), `While` alone (`Invalid or missing expression.`, we say `... parameter.`),
 `Wend X` on CR300/CR350 (`Too many parameters:  X.`).
+
+## Round 15: stray `Case`, `Exit`, `EndSub` and `Sub` as the body of a one-line `If` (2026-10-12)
+
+Oracle, all four loggers (fixture `tests/fixtures/r15_inline_if_stray.json`, 48 shapes x 4): the body (or
+`Else` body) of a one-line `If` is checked like the plain statement. `If C Then Case 1` (also `... Else Case 1`,
+`... Case 1 : Y = 2`) outside a `Select` is `Case outside Select.` (inside one it compiles); `If C Then Exit Do`
+/ `Exit For` with no open loop of that kind is `Exit Do without DO.` / `Exit For without FOR.` (`Do` ... `If C
+Then Exit For` ... `Loop` is still rejected, `While` counts as a `Do` loop); `If C Then Exit Sub|Function`
+outside a routine is `Exit Sub without Sub or nested subs.`, `If C Then EndSub` is `EndSub without Sub or nested
+subs.`; `If C Then Sub S` / `Function F` anywhere between `BeginProg` and `EndProg` (also after the last
+`NextScan`, after `SlowSequence`) is `Sub declaration inside If..EndIf.` + `Sub|Function is declared in the
+middle of an executing sequence` (inside another `Sub`, `Sub declared within a Sub.` first). Before `BeginProg`
+the `If` itself is the error (`If illegally occurs before BeginProg.`; `Case outside Select.` still wins on
+CR6/CR1000X). Implementation: `check_pass1` (inline `Case`), `stray_controls` (inline `Exit`/`EndSub`, and
+`While`/`Wend` now count as `Do`/`Loop` loops), `first_misplaced_sub` (anchors on the `If`).
+Message-only differences left: CR300/CR350 `If C Then Case 1` before `BeginProg` / after `SlowSequence` (the plain
+`Case 1` has the same extra `Too many parameters:  Sec.` from the next `Scan` line), `Sub S` / `If C Then EndSub` inside
+a `Sub` (`If without EndIf inside of Sub.`).
+

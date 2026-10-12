@@ -1,0 +1,1367 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r15_inline_if_stray-0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-0",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-0",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-1",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-1",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Y = 1 Else Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-2",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-2",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Case 1\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    If C Then Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    If C Then Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-3",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    If C Then Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-3",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    If C Then Case 1\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n    If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n    If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-4",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n    If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-4",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Select Case X\n    Case 1\n    If C Then Case 2\n    EndSelect\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-5",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-5",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-5",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-6",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit For\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit For without FOR."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit For\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit For without FOR."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-6",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit For\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit For without FOR."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-6",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit For\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit For without FOR."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-7",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-7",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-7",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Exit Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit Do\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    If C Then Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    If C Then Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    If C Then Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    If C Then Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit Do\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit Do\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit Do\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit Do\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit For\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit For\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit For\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    Do\n    If C Then Exit For\n    Loop\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit For\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit For\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit For\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    For Z = 1 To 2\n    If C Then Exit For\n    Next\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Select Case X\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: IF or SELECT without EndIf or EndSelect."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1 : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1 : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1 : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Case 1 : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Case outside Select."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-15",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-15",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-15",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit Do : Y = 2\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-16",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-16",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-16",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    While X\n    Exit Do\n    Wend\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-17",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ExitScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ExitScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-17",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ExitScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-17",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ExitScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-18",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ContinueScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ContinueScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-18",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ContinueScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-18",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then ContinueScan\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-19",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndFunction\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndFunction\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-19",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndFunction\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-19",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then EndFunction\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-20",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then End Sub\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-20",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then End Sub\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-20",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then End Sub\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-20",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then End Sub\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-21",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit  Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-21",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit  Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-21",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit  Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-21",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nPublic A(3)\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    If C Then Exit  Do\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-22",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-22",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-22",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-22",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-23",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Function F\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-23",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Function F\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-23",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Function F\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-23",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Function F\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-24",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-24",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-24",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-24",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-25",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Sub S2\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declared within a Sub.\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-25",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Sub S2\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declared within a Sub.\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-25",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Sub S2\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declared within a Sub.\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-25",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Sub S2\nEndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declared within a Sub.\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-26",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Do\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-26",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Do\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-26",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Do\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-26",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Do\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-27",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit For\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-27",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit For\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-27",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit For\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-27",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit For\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit For without FOR."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-28",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-28",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-28",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-28",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-29",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then EndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-29",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then EndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-29",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then EndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-29",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then EndSub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-30",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S : Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-30",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S : Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-30",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S : Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-30",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  If C Then Sub S : Y = 1\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Sub declaration inside If..EndIf.\nline 9: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-31",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nEndSub\nIf C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-31",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nEndSub\nIf C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-31",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nEndSub\nIf C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-31",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nEndSub\nIf C Then Exit Sub\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-32",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Exit Sub\nEndSub\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-32",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Exit Sub\nEndSub\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-32",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Exit Sub\nEndSub\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-32",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  Sub S\nIf C Then Exit Sub\nEndSub\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-33",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-33",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-33",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-33",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-34",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Function F\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-34",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Function F\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-34",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Function F\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-34",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Function F\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Function is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-35",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-35",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-35",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-35",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-36",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Sub S2\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sub declared within a Sub.\nline 11: Sub declaration inside If..EndIf.\nline 11: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-36",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Sub S2\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sub declared within a Sub.\nline 11: Sub declaration inside If..EndIf.\nline 11: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-36",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Sub S2\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sub declared within a Sub.\nline 11: Sub declaration inside If..EndIf.\nline 11: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-36",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Sub S2\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Sub declared within a Sub.\nline 11: Sub declaration inside If..EndIf.\nline 11: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-37",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Do\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Do without DO."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-37",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Do\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Do without DO."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-37",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Do\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Do without DO."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-37",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Do\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Do without DO."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-38",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit For\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit For without FOR."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-38",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit For\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit For without FOR."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-38",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit For\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit For without FOR."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-38",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit For\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit For without FOR."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-39",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-39",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-39",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-39",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-40",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then EndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-40",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then EndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-40",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then EndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-40",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then EndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-41",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S : Y = 1\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-41",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S : Y = 1\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-41",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S : Y = 1\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-41",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  If C Then Sub S : Y = 1\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Sub declaration inside If..EndIf.\nline 10: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-42",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nEndSub\nIf C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-42",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nEndSub\nIf C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-42",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nEndSub\nIf C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-42",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nEndSub\nIf C Then Exit Sub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 12: Exit Sub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-43",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Exit Sub\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-43",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Exit Sub\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-43",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Exit Sub\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-43",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\n  SlowSequence\n  Sub S\nIf C Then Exit Sub\nEndSub\n  Scan (1,Sec,0,0)\n    Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-44",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Sub S\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-44",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Sub S\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-44",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Sub S\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-44",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Sub S\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-45",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-45",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-45",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-45",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Sub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-46",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Do\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-46",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Do\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-46",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Do\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-46",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nIf C Then Exit Do\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-r15_inline_if_stray-47",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nSub S\nIf C Then Sub S2\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Sub declared within a Sub.\nline 6: Sub declaration inside If..EndIf.\nline 6: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr1000x-r15_inline_if_stray-47",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nSub S\nIf C Then Sub S2\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Sub declared within a Sub.\nline 6: Sub declaration inside If..EndIf.\nline 6: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr300-r15_inline_if_stray-47",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nSub S\nIf C Then Sub S2\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Sub declared within a Sub.\nline 6: Sub declaration inside If..EndIf.\nline 6: Sub is declared in the middle of an executing sequence"
+  },
+  {
+   "id": "cr350-r15_inline_if_stray-47",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, C\nDataTable (T,1,10)\n  Sample (1,X,FP2)\nEndTable\nSub S\nIf C Then Sub S2\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Sub declared within a Sub.\nline 6: Sub declaration inside If..EndIf.\nline 6: Sub is declared in the middle of an executing sequence"
+  }
+ ]
+}
