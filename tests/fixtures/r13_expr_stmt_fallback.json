@@ -1,0 +1,575 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_expr_stmt_fallback-0",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-2",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-4",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-6",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-8",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-10",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-12",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-14",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + y z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + y z = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + y z = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + y z = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-16",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x = 1 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = 1 Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x = 1 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = 1 Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-20",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y = 1 + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y = 1 + 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-21",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 Then y = 1 + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 Then y = 1 + 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-22",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x > 2) Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x > 2) Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-23",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x > 2) Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x > 2) Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-24",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    1 > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     1 > 2 Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-25",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    1 > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     1 > 2 Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-26",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    y(1) > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     y(1) > 2 Then y = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-27",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    y(1) > 2 Then y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     y(1) > 2 Then y = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-28",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x * 2 > 2 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x * 2 > 2 = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-29",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x * 2 > 2 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x * 2 > 2 = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-30",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 + 1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 + 1 = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-31",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x > 2 + 1 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x > 2 + 1 = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-32",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 > 2 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 > 2 = 1."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-33",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 > 2 = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 > 2 = 1."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-34",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x < 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x < 2 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-35",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x < 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x < 2 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-36",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x <> 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x <> 2 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-37",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x <> 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x <> 2 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-38",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = 2 = 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = 2 = 3."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-39",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = 2 = 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = 2 = 3."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-40",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-41",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 = y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x + 1 = y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-42",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 y = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-43",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 y = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-44",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x ^ 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x ^ 2 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-45",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x ^ 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x ^ 2 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-46",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x - 1 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x - 1 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-47",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x - 1 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     x - 1 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-50",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    1 + x = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     1 + x = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-51",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    1 + x = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid assignment in expression:     1 + x = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-52",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 2 = 2."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-53",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    x + 1 2 = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x + 1 2 = 2."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-58",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = 1) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-59",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = 1) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-60",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = 1 AND y = 2) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = 1 AND y = 2) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-61",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = 1 AND y = 2) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = 1 AND y = 2) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-62",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin(x) < 0) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-63",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin(x) < 0) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-64",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin (x) < 0) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-65",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin (x) < 0) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-66",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x) < 0 AND y = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (Sin (x) < 0 AND y = 1) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-67",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x) < 0 AND y = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (Sin (x) < 0 AND y = 1) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-68",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp (s1,s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (StrComp (s1,s1) < 0) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-69",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp (s1,s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (StrComp (s1,s1) < 0) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-70",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp (s1,s1) < 0 AND x = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (StrComp (s1,s1) < 0 AND x = 1) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-71",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp (s1,s1) < 0 AND x = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (StrComp (s1,s1) < 0 AND x = 1) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-72",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp(s1,s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (StrComp(s1,s1) < 0) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-73",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (StrComp(s1,s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (StrComp(s1,s1) < 0) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-74",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Len (s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Len (s1) < 0) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-75",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Len (s1) < 0) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Len (s1) < 0) Then."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-76",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x < 0) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x < 0) y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-77",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x < 0) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x < 0) y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-78",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x) y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-79",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (x) y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-80",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin(x)) y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-81",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin(x)) y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-82",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin (x)) y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-83",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin (x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     (Sin (x)) y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-88",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = Sin(x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = Sin(x)) y."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-89",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (x = Sin(x)) y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (x = Sin(x)) y."
+  },
+  {
+   "id": "cr6-r13_expr_stmt_fallback-90",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x) < 0 OR y(1) = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (Sin(x) < 0 OR y(1) = 1) Then."
+  },
+  {
+   "id": "cr1000x-r13_expr_stmt_fallback-91",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    (Sin(x) < 0 OR y(1) = 1) Then\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     (Sin(x) < 0 OR y(1) = 1) Then."
+  }
+ ]
+}

@@ -1910,6 +1910,16 @@ def _invalid_assignment(toks) -> bool:
         return False
     if len(lhs) == 1 or (lhs[0].text == "-" and len(lhs) == 2):
         return lhs[-1].kind in ("NUMBER", "STRING")
+    # a comparison on the left, or junk (adjacent operands, `x > 2 Then y = 1`), is the generic
+    # fallback (oracle, CR6/CR1000X, 2026-10-12)
+    depth = 0
+    for t in lhs:
+        if t.kind == "OP" and t.text in ("(", ")"):
+            depth += 1 if t.text == "(" else -1
+        elif depth == 0 and t.kind == "OP" and t.text in ("<", ">", "<>", "<=", ">="):
+            return False
+    if _scan_expr(lhs, 0, _Everything(), {}, assign=True, start_operand=False) is not None:
+        return False
     depth = 0
     for t in lhs:
         if t.kind == "OP" and t.text == "(":
@@ -2022,6 +2032,17 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
             if lhs and lhs[0].kind == "IDENT" and lhs[0].upper in operands \
                     and lhs[0].upper not in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS:
                 return verdict
+        depth_, close = 0, len(toks)
+        for j, t in enumerate(toks):
+            if t.kind == "OP" and t.text in ("(", ")"):
+                depth_ += 1 if t.text == "(" else -1
+                if depth_ == 0:
+                    close = j
+                    break
+        if eq is not None and eq < close and verdict == ("pass1", "incomplete") and any(
+                (t.kind == "OP" and t.text in ("<", ">", "<>", "<=", ">=")) or
+                (t.kind == "IDENT" and t.upper in _BINARY_WORDS) for t in toks[1:eq]):
+            return verdict  # `(Sin (x) < 0 AND y = 1) Then`: a logical group with an `=` keeps it
         return ("pass1", "fallback") if verdict == ("pass1", "incomplete") else verdict
     elif first.kind == "OP" and len(toks) > 1 and first.text in _LEADING_OPS:
         # a statement starting with a binary operator (`+ 1`, `= -1`, `< 3`, `, x`) is a pass-1

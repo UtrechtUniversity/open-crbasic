@@ -5620,3 +5620,23 @@ operands `Incomplete expression:`, a trailing operator `Invalid, or out of place
 parameter.` whatever the expression (`For x = y +`, `For x = (y`). Not done: the CR300/CR350 headers
 (`structure._for_header_incomplete` stays as it was), `For x = (y +` followed by a continuation line is
 `Invalid or missing parameter.` in the real compiler and was already fixed by the no-`To` rule above.
+
+## Round 13, CR6/CR1000X: expression statements that are not assignments (`chm/strcomp_3`; fixture `r13_expr_stmt_fallback.json`)
+
+Oracle runs of 2026-10-12, CR6 and CR1000X.
+- `Invalid assignment in expression:` needs a well-formed arithmetic left side of the first `=`
+  (`x + 1 = 2`, `1 + x = 2`, `x ^ 2 = 2`). A comparison on the left (`x < 2 = 2`, `x > 2 Then y = 1`) or junk
+  (adjacent operands: `x + 1 y = 2`, `Swath > 2 Then Done = false`) is the generic
+  `Invalid, or out of place expression:` (`_invalid_assignment`).
+- `(a < 0 AND b = 1) Then` and the like: a parenthesised group that holds a comparison or logical word and an
+  `=` inside it is `Incomplete expression:` even when it contains a function call
+  (`(StrComp (s1,s1) < 0 AND x = 1) Then`); the group without an `=` stays generic
+  (`(Sin(x) < 0) Then`), and an `=` after the group does not count (`(x > 2) Then y = 1` generic).
+Not done, still wrong (probed): pre-existing FALSE REJECTS on all loggers, a logical operator after a
+longer left operand than a lone name: `x > 2 And y = 1`, `x + 1 And y = 1`, `x <> 2 Or y = 1`,
+`(x > 2) And y = 1`, `1 And y = 1`, `-x And y = 1`, `Not x And y = 1`, `x And y(1) = 1` all compile on
+the real compilers (the parser only tries the logical-assignment reading when the statement starts with a
+name followed by the logical word, `parser._parse_assignment_or_call`); we print `Invalid assignment` /
+the generic message. Also `(Sin(x) = 1) Then` is `Invalid assignment in expression:` (we: generic),
+`x(1) + 1 = 2`, `x Mod 1 = 2`, `x + (1 = 2` are `Invalid assignment` (we: generic), `(x(1) = 1) y`,
+`(x) = 1 y`, `(x = 1)(y = 2) z` are `Incomplete expression:` (we: generic).
