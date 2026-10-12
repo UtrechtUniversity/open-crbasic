@@ -5493,3 +5493,18 @@ subscript naming an undefined variable stays the fallback on CR6/CR1000X (`A(Len
 undeclared; CR300/CR350 print `S is not defined.` + `Incomplete expression`, not modelled), and on
 CR300/CR350 a call-like name that is a declared scalar in the subscript (`A(X(1)) = 1)`) is the
 fallback. Implementation: `structure._assignment_head`.
+
+### Junk after a logical-led assignment (round 13, A2)
+
+`X AND X = 1 foo`, `X AND S = "a" junk`, `X AND A(1) = 1 )`, `X OR X = 1 .`, `X XOR X = 1 foo`,
+`X AND X = 1 AND X = 2 foo`, `X AND X = 1 2` and `S AND X = 1 foo` (after its `String is illegal
+here`) are `Incomplete expression: <statement>.` on all four loggers: the compiler reads the
+statement as an assignment (the tail after the first top-level `=`) and the leftover is the
+assignment's. An unclosed `(` in the tail is `No Matching, or out of place ) in expression`. CR300/
+CR350 name the undefined junk first (`foo is not defined.`, only when the target is a plain name:
+`X AND A(1) = 1 foo` lacks that line, not done). Oracle, 2026-10-12,
+`tests/fixtures/r13_logical_assign_junk.json`. Implementation: `structure._pass1_scan` (operand-led
+branch, `_logical_assign_eq`), and for CR300/CR350 the `_pass1_scan` call in
+`cr3xx.check_unknown_line_words`. Not done: `X AND X = 1 ;` (CR6/CR1000X accept it; CR300/CR350
+`Invalid symbol in expression`), `X AND X = Y foo` on CR6/CR1000X (`Invalid symbol`), CR300/CR350
+`X AND X = (1 foo` lacks its `foo is not defined.` line.

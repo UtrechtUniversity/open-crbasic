@@ -1583,6 +1583,7 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                            if cond is not None
                            or re.match(r"\s*(?:[A-Za-z_]\w*\s*=|NOT\b)", stmt.text, re.I)
                            or re.match(r"\s*(?:\d[\w.]*|-\s*\d[\w.]*|\"[^\"]*\")\s*=", stmt.text)
+                           or re.match(r"\s*[A-Za-z_]\w*\s+(?:AND|OR|XOR|IMP|EQV)\b[^=]*[\w)]\s*=", stmt.text, re.I)
                            else None)  # (prose stays generic)
                 head = {"invalid_assignment": "Invalid assignment in expression: ",
                         "incomplete": "Incomplete expression: ",

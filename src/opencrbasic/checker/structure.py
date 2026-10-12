@@ -2030,8 +2030,38 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         verdict = _scan_expr(toks, i + 1, operands, functions, assign=False, start_operand=False)
         # a statement that starts with an operand has only the fallback: `X + 1 foo`, `X + 1 )`,
         # `X and (X foo)` (oracle, all four loggers, 2026-10-10)
-        return ("pass1", "fallback") if verdict in (("pass1", "incomplete"),
-                                                     ("pass1", "no_matching")) else verdict
+        if verdict is not None and verdict[0] == "pass1" and verdict[1] in (
+                "incomplete", "no_matching", "fallback"):
+            # ... unless a logical word leads into an assignment (`X AND X = 1 foo`): then the
+            # tail after its first `=` is read as an assignment's (oracle, 2026-10-12)
+            eq = _logical_assign_eq(toks, i) if nxt.kind == "IDENT" else None
+            if eq is not None:
+                tail = _scan_expr(toks, eq + 1, operands, functions, assign=True,
+                                  start_operand=False)
+                if tail in (("pass1", "incomplete"), ("pass1", "no_matching")):
+                    return tail
+            return ("pass1", "fallback")
+        return verdict
+    return None
+
+
+def _logical_assign_eq(toks, i: int) -> int | None:
+    """The index of the first top-level `=` after the logical word at `toks[i]` when a name or a
+    closing `)` precedes it (the `parser.LOGICAL_ASSIGN` shape), else None."""
+    if toks[i].upper not in ("AND", "OR", "XOR", "IMP", "EQV"):
+        return None
+    depth = 0
+    for k in range(i + 1, len(toks)):
+        t = toks[k]
+        if t.kind != "OP":
+            continue
+        if t.text == "(":
+            depth += 1
+        elif t.text == ")":
+            depth -= 1
+        elif t.text == "=" and depth == 0:
+            prev = toks[k - 1]
+            return k if k > i + 1 and (prev.kind == "IDENT" or prev.text == ")") else None
     return None
 
 
