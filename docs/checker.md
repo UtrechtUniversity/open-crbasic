@@ -5312,3 +5312,19 @@ Follow-up to the two table-field sections and the `TCPOpen` handle section above
 same line does not hide a table field's `Could not find DataTable` (`X = Tmp.dat + Zed` prints both,
 `tests/fixtures/dotted_undeclared.json`), and an earlier argument's `Dimensions not declared` ends the
 `TCPOpen` walk before the handle (`chm/tcpopen_2.CR6`).
+
+## Round 13 review fixes (CR300/CR350 `TCPOpen` handle, trailing empties, `&h` argument)
+
+Oracle runs of 2026-10-12 (fixtures `r13_cr3xx_tcpopen_handle_types`, `r13_trailing_empties`,
+`r13_cr3xx_call_hex_declared`); each case below was probed on the real compiler.
+
+- `TCPOpen` handle (CR300/CR350): the handle must be a Long or Boolean variable. `As Boolean` (scalar,
+  array element, `Dim`, or a Sub parameter `H As Boolean`) compiles; Float, String, the default type
+  and constants are still `Parameter must be a variable of type long`. The same holds for the
+  enclosing Sub's parameters: `H As Long` and `H As Boolean` compile, an untyped `H`, `H As Float`,
+  `H As String` and `Optional H = 1` are bad (`Optional H As Long = 1` compiles). `ByVal`/`ByRef`
+  parameters and array parameters are other families and are not judged. The error is a `Too many
+  parameters` cascade trigger: after a bad handle in a Sub, the following `Scan (1,Sec,3,0)` prints
+  `Too many parameters:  Sec.` and a following `Delay(1,1,Sec)` prints `Too many parameters:  1.`.
+  `check_tcpopen_handle_early` adds the line before the cascade pass; `check_tcpopen_handle` still
+  runs afterwards (names the cascade dropped, lines the cascade rewrote).

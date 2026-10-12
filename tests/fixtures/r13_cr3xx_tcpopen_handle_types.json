@@ -1,0 +1,183 @@
+{
+  "observation_date": "2026-10-12",
+  "compilers": {
+    "cr300": {
+      "exe": "cr300comp.exe",
+      "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+    },
+    "cr350": {
+      "exe": "cr350comp.exe",
+      "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+    }
+  },
+  "cases": [
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-0",
+      "logger": "cr300",
+      "source": "Public Sock As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-0",
+      "logger": "cr350",
+      "source": "Public Sock As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-1",
+      "logger": "cr300",
+      "source": "Public Sock(3) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock(2),3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-1",
+      "logger": "cr350",
+      "source": "Public Sock(3) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock(2),3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-2",
+      "logger": "cr300",
+      "source": "Dim Sock As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-2",
+      "logger": "cr350",
+      "source": "Dim Sock As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-3",
+      "logger": "cr300",
+      "source": "Public Sock As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-3",
+      "logger": "cr350",
+      "source": "Public Sock As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,Sock,3)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-4",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Boolean)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(B)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-4",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Boolean)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(B)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-5",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Long)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(L)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-5",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Long)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(L)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-6",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-6",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-7",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Float)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-7",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As Float)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(F)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-8",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As String)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(\"a\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-8",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(H As String)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(\"a\")\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-9",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(Optional H = 1)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-9",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(Optional H = 1)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(1)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-10",
+      "logger": "cr300",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(Optional H As Long = 1)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-10",
+      "logger": "cr350",
+      "source": "Public L As Long, B As Boolean, F\nSub Conn(Optional H As Long = 1)\nTCPOpen (\"\",3000,30,1000,H,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn(1)\nNextScan\nEndProg\n",
+      "expected_exit": 0,
+      "expected_stdout": "t.CR6 -- Compiled OK."
+    },
+    {
+      "id": "cr300-r13_cr3xx_tcpopen_handle_types-11",
+      "logger": "cr300",
+      "source": "Public F As Float\nSub Conn\nTCPOpen (\"\",3000,30,1000,F,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn\nDelay(1,1,Sec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec.\nline 8: Too many parameters:  1."
+    },
+    {
+      "id": "cr350-r13_cr3xx_tcpopen_handle_types-11",
+      "logger": "cr350",
+      "source": "Public F As Float\nSub Conn\nTCPOpen (\"\",3000,30,1000,F,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nConn\nDelay(1,1,Sec)\nNextScan\nEndProg\n",
+      "expected_exit": 1,
+      "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Parameter must be a variable of type long\nline 6: Too many parameters:  Sec.\nline 8: Too many parameters:  1."
+    }
+  ]
+}

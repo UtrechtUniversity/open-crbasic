@@ -15,6 +15,7 @@ import re
 from .. import consteval, lexer
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
+from .. import bindings
 from . import expressions, instr_rules, structure, symbols
 
 # `SerialOpen`'s own `ComPort` argument (position 0, the only position checked here) is the one
@@ -222,7 +223,7 @@ def _is_short_instruction(stmt, profile) -> bool:
 
 def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and diag.cascade and (
-        diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
+        diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message == _TCPOPEN_HANDLE or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
         or diag.message.startswith(_TOO_MANY_PREFIX)
         or diag.message == "Miss match of types"  # SNMPVariable (oracle, CR300/CR350)
         or diag.message.endswith(_DECLARATION_TRIGGERS)
@@ -2001,9 +2002,20 @@ def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
 _TCPOPEN_HANDLE = "Parameter must be a variable of type long"
 
 
-def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> None:
-    """CR300/CR350: `TCPOpen`'s fifth argument (the connection handle) must be a Long variable or
-    array: a Float or String variable, a constant, an expression or an undefined name (a
+def check_tcpopen_handle_early(program: S.Program, profile, diags: Diagnostics) -> None:
+    """The handle error is a `Too many parameters` cascade trigger (oracle, CR300/CR350,
+    2026-10-12: a bad handle inside a `Sub` makes the following `Scan (1,Sec,3,0)` and `Delay(1,..)`
+    print `Too many parameters:  Sec.` / `1.`), so it is added before `check_too_many_cascade`;
+    `check_tcpopen_handle` re-adds it afterwards on a line the cascade rewrote."""
+    check_tcpopen_handle(program, profile, diags, early=True)
+
+
+def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics, early: bool = False) -> None:
+    """CR300/CR350: `TCPOpen`'s fifth argument (the connection handle) must be a Long or Boolean
+    variable or array (a `Boolean` is a 4-byte integer: oracle, CR300/CR350, 2026-10-12, `Public
+    Sock As Boolean`, `Sock(3) As Boolean`, `H As Boolean` Sub parameter compile), including a
+    `Sub` parameter (`H As Long` / `H As Boolean`; an untyped, `As Float`, `As String` or defaulted
+    untyped `Optional H = 1` parameter is bad: same date): a Float or String variable, a constant, an expression or an undefined name (a
     declaration the cascade dropped too) is `Parameter must be a variable of type long` (oracle,
     CR300, CR350 and CR6, 2026-10-11, `chm/tcpopen_4.CR6`), printed after the statement's
     `X is not defined.` lines and before `Dimensions not declared`. CR6/CR1000X not done: their
@@ -2013,7 +2025,16 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
     types = symbols.declared_variable_types(program)
     known = expressions._known_names(program, profile)
     gone = getattr(diags, "cascade_gone", set())
+    params: dict[str, str | None] = {}  # the enclosing Sub/Function's plain parameters: name -> type
     for stmt in program.statements:
+        if isinstance(stmt, S.SubDef):
+            params = {p.name.upper(): ((p.type or "FLOAT").upper() if p.by_ref is None and not p.dims
+                                       and (p.type or "FLOAT").upper() in ("LONG", "BOOLEAN", "FLOAT", "STRING")
+                                       else None) for p in stmt.params}
+            continue
+        if bindings.closes_routine(stmt):
+            params = {}
+            continue
         if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
             calls = [stmt.args]
         else:
@@ -2031,10 +2052,14 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue  # (a non-constant fourth argument ends the list: `Parameter must be a constant integer`, not done)
             if isinstance(arg, (S.Name, S.Index)):
                 up = arg.name.upper()
-                if up in gone or up not in known:
+                if up in params:
+                    if params[up] is None:
+                        continue  # (a ByVal/ByRef, array or unusual-type parameter: not probed)
+                    bad = params[up] not in ("LONG", "BOOLEAN")
+                elif up in gone or up not in known:
                     bad = True
                 elif up in types:
-                    bad = types[up] != "LONG"
+                    bad = types[up] not in ("LONG", "BOOLEAN")
                 else:
                     continue  # (an alias or a constant: not probed)
             else:
@@ -2043,6 +2068,8 @@ def check_tcpopen_handle(program: S.Program, profile, diags: Diagnostics) -> Non
                 continue
             key = (stmt.line, stmt.file)
             own = [i for i, d in enumerate(diags.items) if (d.line, d.file) == key]
+            if any(diags.items[i].message == _TCPOPEN_HANDLE for i in own) and not early:
+                continue
             names = [i for i in own if diags.items[i].message.endswith(_UNRESOLVED_SUFFIX)]
             at = (names[-1] + 1) if names else (own[0] if own else len(diags.items))
             diags.items.insert(at, Diagnostic("error", stmt.line, _TCPOPEN_HANDLE, stmt.file, True))
