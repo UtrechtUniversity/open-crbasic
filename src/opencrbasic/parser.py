@@ -1483,7 +1483,8 @@ class _Parser:
             op = p.next().upper
             if self._logical_assign and self._at_assign_target(p):
                 # `=` binds below the logical words here: `A AND B = C AND D` is `A AND (B = (C AND
-                # D))` (oracle, all four loggers, 2026-10-10, docs/checker.md)
+                # D))` (oracle, all four loggers, 2026-10-10, docs/checker.md "Logical-prefixed
+                # assignment targets")
                 target = self._parse_atom(p, line, file)
                 p.next()
                 right = S.Binary(line, file, "ASSIGN", target, self._parse_logical(p, line, file))
@@ -1494,11 +1495,15 @@ class _Parser:
 
     @staticmethod
     def _at_assign_target(p: _TokStream) -> bool:
-        """`name =` or `name(...) =` ahead."""
+        """`name =`, `name(...) =` or `name.member[(...)] =` ahead."""
         if p.peek().kind != "IDENT" or p.peek().upper in _WORD_BINARY_OPS | {"NOT"}:
             return False
         k = 1
-        if p.is_op("(", 1):
+        while p.is_op(".", k) and p.peek(k + 1).kind == "IDENT":
+            k += 2
+        if k > 1 and not p.is_op("(", k):
+            return p.is_op("=", k)
+        if p.is_op("(", k):
             depth = 0
             while p.peek(k).kind != "EOF":
                 t = p.peek(k)

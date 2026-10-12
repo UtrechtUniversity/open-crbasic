@@ -1457,6 +1457,11 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             if stmt.reason.startswith(_KNOWN_PARSER_GAP_REASONS) or stmt.reason in _BENIGN_REASONS \
                     or is_hash_statement(stmt):
                 continue
+            if (messages := _logical_assign_undefined_messages(stmt, program, profile)) is not None:
+                for message in messages:
+                    diags.error(stmt.line, message, stmt.file,
+                                show_file=message.endswith(" is not defined."))
+                continue
             if _logical_assign_accepted(stmt, program, profile):
                 from . import var_types
                 for message in var_types._string_operand_messages(
@@ -2011,23 +2016,111 @@ def _logical_led_string(text: str) -> bool:
     return re.match(r"\s*[A-Za-z_]\w*\s+AND\b", text, re.I) is not None and '"' in text
 
 
-def _logical_assign_accepted(stmt: S.Unparsed, program: S.Program, profile) -> bool:
-    """`X AND Y = 1`: a logical operator before an assignment compiles when every name resolves
-    (oracle, all four loggers, 2026-10-10; the parser marks it `parser.LOGICAL_ASSIGN`)."""
-    if stmt.reason != parser.LOGICAL_ASSIGN or expressions._undefined_names(
-            stmt.expr, expressions._known_names(program, profile)):
-        return False
-    variables = symbols.declared_variable_names(program)
+def _enclosing_sub(stmt: S.Stmt, program: S.Program) -> S.SubDef | None:
+    """The `Sub`/`Function` whose body holds `stmt`, if any."""
+    current = None
+    for st in program.statements:
+        if st is stmt:
+            return current
+        if isinstance(st, S.SubDef):
+            current = st
+        elif isinstance(st, S.Instruction) and _ends_sub(st, st.keyword.upper()):
+            current = None
+    return None
 
-    def targets_ok(expr) -> bool:  # every nested assignment target is a plain declared variable
+
+def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile
+                          ) -> tuple[str, list[str], bool]:
+    """(`"ok"`, `"undefined"` or `"rejected"`, the undefined names in source order, whether an
+    undefined name is the base of an indexed target) for a `parser.LOGICAL_ASSIGN` statement:
+    `ok` when every name resolves and each nested assignment target is a declared variable, an
+    element of a declared array, a `Status`/data-table member, or the enclosing `Function`'s own
+    name; `undefined` when only unresolved plain names (and undefined target bases) keep it from
+    that (oracle, all four loggers, 2026-10-10 and 2026-10-12, `docs/checker.md`
+    "Logical-prefixed assignment targets")."""
+    if stmt.reason != parser.LOGICAL_ASSIGN:
+        return "rejected", [], False
+    sub = _enclosing_sub(stmt, program)
+    local = {p.name.upper() for p in sub.params} if sub is not None else set()
+    known = expressions._known_names(program, profile)
+    known.update(local)
+    undefined = expressions._undefined_names(stmt.expr, known)
+    variables = symbols.declared_variable_names(program) | local
+    if sub is not None and sub.keyword.upper() == "FUNCTION":
+        variables.add(sub.name.upper())
+    dims = {v.name.upper(): len(v.dims) for st in program.statements
+            if isinstance(st, S.Declaration) for v in st.vars}
+    tables = {st.args[0].name.upper() for st in program.statements
+              if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE" and st.args
+              and isinstance(st.args[0], S.Name)} | {"STATUS"}
+    base_undefined = False
+
+    def target_ok(t) -> bool:
+        nonlocal base_undefined
+        if isinstance(t, S.Name):
+            return t.name.upper() in variables or t.name in undefined
+        if isinstance(t, S.Index):
+            name = t.name.upper()
+            if name not in variables:
+                if t.name in undefined:
+                    base_undefined = True
+                    return True
+                return False
+            if not profile.single_pass or name in local or name not in dims:
+                return True  # CR6/CR1000X: any subscript count, even on a scalar
+            return len(t.args) <= dims[name] and (len(t.args) > 0 or dims[name] > 0)
+        if isinstance(t, S.Member):
+            return isinstance(t.base, S.Name) and t.base.name.upper() in tables \
+                and t.base.name not in undefined
+        return False
+
+    def targets_ok(expr) -> bool:
         if not isinstance(expr, S.Binary):
             return True
-        if expr.op == "ASSIGN" and not (isinstance(expr.left, S.Name)
-                                        and expr.left.name.upper() in variables):
+        if expr.op == "ASSIGN" and not target_ok(expr.left):
             return False
         return targets_ok(expr.left) and targets_ok(expr.right)
 
-    return targets_ok(stmt.expr)
+    if not targets_ok(stmt.expr):
+        return "rejected", [], False
+    if not undefined:
+        return "ok", [], False
+    if any(isinstance(n, DottedName) for n in undefined):
+        return "rejected", [], False
+    return "undefined", list(undefined), base_undefined
+
+
+def _logical_assign_accepted(stmt: S.Unparsed, program: S.Program, profile) -> bool:
+    """`X AND Y = 1` compiles (`_logical_assign_state`)."""
+    return _logical_assign_state(stmt, program, profile)[0] == "ok"
+
+
+def _logical_assign_undefined_messages(stmt: S.Unparsed, program: S.Program, profile
+                                       ) -> list[str] | None:
+    """The messages for a logical-prefixed assignment whose targets are fine but whose names are
+    not all defined, or None when the generic fallback applies. CR300/CR350: one `X is not
+    defined.` per name (an undefined indexed-target base, `X AND Y(1) = 1`, keeps the generic
+    path, which also prints the fallback). CR6/CR1000X: the fallback when a name is undefined before the first `=` (target,
+    left operand, target subscripts), else `Invalid symbol in expression: <statement>.` (oracle,
+    all four loggers, 2026-10-12)."""
+    state, undefined, base_undefined = _logical_assign_state(stmt, program, profile)
+    if state != "undefined" or base_undefined or '"' in stmt.text:
+        return None
+    if profile.single_pass:
+        return [profile.unresolved_symbol_message.format(name=n) for n in undefined]
+    try:
+        toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
+    except lexer.LexError:
+        return None
+    head = []
+    for t in toks:
+        if t.kind == "OP" and t.text == "=":
+            break
+        head.append(t)
+    names = {n.upper() for n in undefined}
+    if any(t.kind == "IDENT" and t.upper in names for t in head):
+        return None
+    return [f"Invalid symbol in expression: {stmt.text}."]
 
 
 def _unparsed_string_messages(stmt: S.Unparsed, program: S.Program, profile) -> list[str]:

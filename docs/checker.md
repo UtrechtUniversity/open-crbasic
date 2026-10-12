@@ -5365,3 +5365,27 @@ statements that also name an undefined symbol and structure-typed bases are not 
 `Status` (`X.dat` -> `Could not find X.`, `T.dat` -> `Could not find T.dat(1).`) is still
 accepted; CR6/CR1000X `Undeclared.digits` (`Could not find Tmp.`) still prints the `Invalid symbol`
 echo.
+
+### Logical-prefixed assignment targets (2026-10-12)
+
+`X AND Y = 1` reads `=` below the logical words (`A AND B = C AND D` is `A AND (B = (C AND D))`;
+parser `_parse_logical`, oracle all four loggers 2026-10-10) and compiles when every name resolves
+and each nested assignment target is assignable. Targets (oracle, all four loggers, 2026-10-12;
+`tests/fixtures/r13_logical_assign_targets.json`): a declared variable; an element of a declared array
+(`X AND A(1) = 1`, an out-of-range `A(4)`, `A(0)`, `A(X)`, `A()` are accepted, no bounds check);
+`Status.Field` and a data-table member `T.X`, with or without a subscript (member existence is not
+modelled: `X AND Status.Nope = 1` really is `Could not find Status.Nope(1).` plus `Invalid
+assignment in expression`, still accepted here); the enclosing `Function`'s own name; and a `Sub`
+parameter even when a later `Const` has the same name. Subscript count: CR6/CR1000X accept any
+count on any declared variable (`A(1,1)`, `X(1)`, `M(1)`, `M(1,1,1)`); CR300/CR350 accept 0..n
+subscripts for an n-dimensional array (`M(1)` on a 2-D array too) and reject a scalar or an extra
+subscript (`A(1,1)` on a 1-D array, `X(1)`, `M(1,1,1)`, `S(1)` on a scalar string) with the
+fallback. Undefined names: CR300/CR350 print only `Y is not defined.` per name (no fallback;
+`X AND Y = 1`, `Y AND X = 1`, `X AND X = Y`, `X AND A(Y) = 1`), except an undefined indexed-target
+base (`X AND Y(1) = 1`) which also prints the fallback. CR6/CR1000X print the fallback when a name
+is undefined before the first `=` (target, left operand, target subscript) and otherwise `Invalid
+symbol in expression: <statement>.` (`X AND X = Y`, `X AND A(1) = Y`, `X AND X = 1 AND Y = 2`).
+Implementation: `structure._logical_assign_state` and `_logical_assign_undefined_messages`;
+`parser._at_assign_target` also takes `name.member` targets. Not done: `X AND Y.a = 1` (`Could
+not find Y.` + `Invalid assignment in expression`), `X AND X MOD ...` (`Invalid assignment`), any
+statement with a string literal, an undefined `Y(1) = Z`.
