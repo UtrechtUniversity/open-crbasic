@@ -75,8 +75,8 @@ Help corpus: no remaining verdict or message diffs (only reference faults). Rema
 | 2 Front end | implemented; small residual gaps (`docs/frontend.md`, `docs/checker.md`) |
 | 3 Checker | near parity on the help corpus; long tail of message ordering in fuzz reproducers |
 | 4 Fuzzing | `tools/fuzz.py`, `tools/fuzz_replay.py`; 2,251 saved reproducers; seeds used: 0, 1, 42-54, 100, 201-208, 301-308 (`docs/fuzz-findings.md`) |
-| 5 Outputs | TDF/table list exact except one name; `-t` exact except one crash; exact auto-size model; CDM binary image not attempted |
-| 6 Complete parity gate | incomplete: 539 fuzz message diffs, 67 false accepts, storage limit, CDM image |
+| 5 Outputs | TDF/table list exact except one name; `-t` exact except one crash; exact auto-size model; CDM binary image excluded from parity (`PLAN.md` "Explicit exclusions from parity") |
+| 6 Complete parity gate | incomplete: 539 fuzz message diffs, 67 false accepts, storage limit |
 
 History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
@@ -294,6 +294,6 @@ are in `docs/lsp-rounds/`.
    46 from seeds 405-408 (docs/fuzz-findings.md "Round 15").
 3. Message diffs (569): docs/fuzz-findings.md "Round 15 message-diff ranking" open items.
 4. Fresh fuzz seeds 409+.
-5. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments;
+5. Outputs: `goestable_1` field name, timing for variable arguments;
    re-create the `-t` timing harness (lost with the old machine).
 6. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).

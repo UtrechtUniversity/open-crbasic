@@ -78,6 +78,21 @@ tdf.py         (phase 5) table definition file
 timing.py      -t timing estimates
 ```
 
+## Explicit exclusions from parity
+
+- **CDM binary image (`-b`).** The CPI Device Module image that `CR6Comp.exe -b <file>` writes
+  for programs using `CDM*`, `CPIAddModule2`, `CPISpeed2` or `CPIFileSend` is out of scope. It is
+  not required for the Phase 5 or Phase 6 exit criteria, and its absence is not a parity
+  difference, a known output difference, or a reason to keep Phase 6 open. No FirnMelt program
+  uses CPI/CDM hardware, and `verify.py` and `flash.py` do not pass `-b`.
+  - Kept behavior: `-b` still prints the real `No CDM devices used in this program ` message when
+    the program uses no CDM instruction, and still validates CDM instruction arguments, port sets
+    and channel rules like any other instruction (those checks stay in scope).
+  - For a program that does use CDM hardware, `-b` writes an empty file. That is documented and
+    accepted; it is not to be treated as a defect or reverse-engineered unless the human reopens
+    the decision.
+  - Decision: human, 2026-10-12.
+
 ## Phases and exit criteria
 
 | # | Phase | Exit criterion |
@@ -88,7 +103,7 @@ timing.py      -t timing estimates
 | 3 | Semantic checker + diagnostics | repo programs: identical output to oracle; corpus agreement rate reported |
 | 4 | Differential fuzzing (mutated corpus programs) | agreement rate tracked in PROGRESS.md; mismatches triaged |
 | 5 | Mode selection, warnings, TDF, ProgSignature | identical to oracle on the corpus |
-| 6 | Complete parity gate | all four profiles: zero known output/artifact differences, false accepts/rejects, crashes, hangs; coverage limits recorded |
+| 6 | Complete parity gate | all four profiles: zero known output/artifact differences, false accepts/rejects, crashes, hangs; coverage limits recorded. The CDM image (`-b`) is excluded (see "Explicit exclusions from parity") |
 
 ## Remaining-work strategy
 
@@ -113,7 +128,8 @@ while diagnostic ordering is still being reconstructed.
    would obscure which change improved or regressed parity. Checker exceptions currently get
    swallowed; validation must eventually expose these as implementation failures.
 5. Close output coverage separately: stdout, message-file bytes, signature, table list, TDF,
-   preprocessing, timing, and CDM image for each profile and supported option combination.
+   preprocessing, and timing for each profile and supported option combination. The CDM image
+   (`-b`) is excluded from parity (see "Explicit exclusions").
    Repository-program agreement alone cannot establish complete language or artifact parity.
 6. After each semantic chunk: focused oracle probes and tests, full pytest, four-profile
    difftest/replay with no false rejects/crashes/hangs or lowered exact agreement; then a fresh
