@@ -197,6 +197,19 @@ _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
     "GOESGPS": (0, 1), "CH400SENDOS": (0, 1),
     "MOVEBYTES": (0, 1, 3, 4, 2), "READIO": (1, 0), "IPROUTE": (0, 1, 2),
     "MQTTPUBLISHMETA": (0, 1, 2, 3, 4, 5),
+    # Round 14 (oracle sweep, `docs/checker.md` "Round 14 multi-report order"): positions listed
+    # are those the real compiler reports, in its order; a replaced position missing here is not
+    # reported (or not before another one).
+    "ARGOSDATAREPEAT": (0, 3), "AVGRUN": (0, 2), "AVW200": (4, 0), "PRT": (0, 2),
+    "STRAINCALC": (0, 2, 3), "CDM_TCSE": (7, 2), "DEBUG": (2, 3, 4),
+    "DEWPOINT": (0, 1, 2), "SENDVARIABLES": (0, 1, 8), "EC100CONFIGURE": (0, 3),
+    "GETVARIABLES": (0, 8), "GPS": (4, 0), "HYDRAPROBE": (0, 1), "MATRIX": (1, 2, 3),
+    "PEAKVALLEY": (0, 1, 3), "SATVP": (0, 1), "TIMEDCONTROL": (4, 5),
+    "SDMCD16MASK": (0, 1), "SDMGENERIC": (4, 0), "SDMIO16": (0, 1), "WETDRYBULB": (0, 1, 2, 3),
+    "SERIALINRECORD": (1, 5), "SORTSPA": (0, 2), "SORTSPAINDEXED": (0, 2), "SPLITSTR": (1, 0),
+    "TCPACTIVECONNECTIONS": (0, 1), "TOTALRUN": (0, 2), "VAPORPRESSURE": (0, 1, 2),
+    "MODBUSCLIENT": (0, 5), "PORTBRIDGE": (1, 0),
+    "SDMAO4A": (0, 1), "MODEMCALLBACK": (8,), "MONITORCOMMS": (), "SDMSIO4": (),
 }
 
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
@@ -959,7 +972,7 @@ def _report_statement(stmt: S.Instruction, positions: dict[int, str], known: set
         return bool(names)
 
     multi = _MULTI_REPORT_ORDER.get(stmt.keyword.upper())
-    if multi and profile.name in _WHOLE_EXPR_ECHO_LOGGERS and families == "general":
+    if multi is not None and profile.name in _WHOLE_EXPR_ECHO_LOGGERS and families == "general":
         reported = False
         for i in multi:
             if i in positions and _check_position(i):

@@ -5889,3 +5889,36 @@ function and are not modelled): `While F(X Then` (the `Then` is swallowed), nest
 `X = Abs(X,` / `Abs(X Y` for `Abs`/`AbsLong`/`ArrayLength`/`TypeOf` (`LineNum`/`Signature` say
 `Incomplete expression`), an empty `LineNum(` / `Signature(`, `A(LineNum(X) = 1`. `If Abs(X, 1 Then`
 is `Incomplete expression: Abs(X, 1 .` (we say `No Matching`).
+## Round 14 multi-report order (undeclared arguments of one instruction, CR6/CR1000X)
+
+Oracle, 2026-10-12, CR6 and CR1000X (`tests/fixtures/r14_multi_undeclared_args.json`, 185 cases): when an
+instruction call names more than one undeclared variable, the real compiler reports every one of them
+(`Invalid symbol in expression: <arg>.`, one line each), not only the first; opencrbasic stopped at the first
+position (`_report_statement`). The order is per instruction, not left to right: `SplitStr(a,b,...)` reports `b`
+then `a`, `GPS(a,c,0,100,e)` reports `e` then `a`, `AVW200` position 4 then 0, `CDM_TCSE` 7 then 2, `PortBridge`
+1 then 0, `SortSpaIndexed(a,6,b)` and `TotalRun(a,1,b,...)` a then b. The fuzz cluster was 58 reproducers
+(`SortSpaIndexed`, `TCDiff`-style `SendVariables`/`GetVariables`/`SDMIO16`/`SDMAO4A`/`SplitStr`/`TotalRun`/
+`TCPActiveConnections`). Found with a sweep: for every instruction with a CHM example, every variable-like
+argument replaced by an undeclared name and compared real vs ours, then all single/pair/triple subsets of the
+good ones. The orders are entered in `expressions._MULTI_REPORT_ORDER` (positions are independent in every probed
+subset; a position missing from an entry is not reported by the real compiler):
+
+- Added: `ArgosDataRepeat (0,3)`, `AvgRun (0,2)`, `AVW200 (4,0)`, `PRT (0,2)`, `StrainCalc (0,2,3)`,
+  `CDM_TCSE (7,2)`, `Debug (2,3,4)`, `DewPoint`, `SendVariables (0,1,8)`, `EC100Configure (0,3)`,
+  `GetVariables (0,8)`, `GPS (4,0)`, `HydraProbe`, `Matrix (1,2,3)`, `PeakValley (0,1,3)`, `SatVP`,
+  `TimedControl (4,5)`, `SDMCD16Mask`, `SDMGeneric (4,0)`, `SDMIO16`, `WetDryBulb`, `SerialInRecord (1,5)`,
+  `SortSpa`, `SortSpaIndexed`, `SplitStr (1,0)`, `TCPActiveConnections`, `TotalRun (0,2)`, `VaporPressure`,
+  `ModbusClient (0,5)`, `PortBridge (1,0)`, `SDMAO4A`.
+- **Positions never checked for an undeclared name (accepted by the real compiler)**: `SDMSIO4` and
+  `MonitorComms` position 0 (`SDMSIO4(Nope,1,0,4,...)` compiles clean; opencrbasic rejected it, a false reject), and
+  `ModemCallBack` position 0 (only position 8 is reported). Entries with an empty or short tuple.
+- Left out (the same sweep disagrees or follow-ups differ): `CovSpa` (position 0 is reported alone but dropped when
+  3 or 4 is also undeclared), `FieldCal`/`FieldCalStrain` (array positions; also `... must be a declared
+  variable` follow-ups), `WindVector` in a table (positions 2 then 1; CR300/CR350 report only the first and
+  add `Too many parameters`, not modelled).
+- Not modelled (unchanged): follow-up lines after the undeclared names that depend on the surviving argument
+  types (`Illegal parameter(s)` for `Debug`, `Illegal Matrix` for `Matrix`, `... must be an Array(2,3) of type long`
+  for `PortBridge`, `Source and Dest types must be the same` for `SortSpaIndexed` with one undeclared side,
+  AVW200 and `TimedControl` timing messages): the cases that carry them are not in the fixture.
+- CR300/CR350: the same sweep found no ordering difference besides `MQTTPublishTable` (`Zq5` then
+  `Too many parameters:  Zq6.`) and `CovSpa` (an extra `Dimensions not declared` for an undeclared array).
