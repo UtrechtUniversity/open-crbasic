@@ -55,7 +55,8 @@ class Diagnostic:
             return self.message
         prefix = ""
         name = _DRIVE_RE.sub("", self.file or "")
-        if self.show_file and name and name.lower() != main_file.lower():
+        if self.show_file and name and (name.lower() != main_file.lower()
+                                         or _DRIVE_RE.match(self.file)):
             # An included file prints as written in its `Include`: CR6/CR1000X without the drive
             # (`<lib.CRB>` for `"cpu:lib.CRB"`), CR300/CR350 with it, `cpu:` added when none was
             # written (`<cpu:Lib.crb>`) -- oracle, 2026-09-27, `docs/loggers.md`.

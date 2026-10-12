@@ -1,0 +1,1115 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_include_nesting-0-sec-sec",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-0-sec-sec",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-0-sec-sec",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-0-sec-sec",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-1-inc-inc",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-1-inc-inc",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-1-inc-inc",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-1-inc-inc",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-2-inc-sec",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-2-inc-sec",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-2-inc-sec",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-2-inc-sec",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-3-sec-inc",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-3-sec-inc",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-3-sec-inc",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-3-sec-inc",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Include \"CPU:n2.crb\"\nPublic W\n",
+    "n2.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-4-three-levels",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "IncludeSection(\"U\",\"CPU:n3.crb\")\nPublic Z\n",
+    "n3.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-4-three-levels",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "IncludeSection(\"U\",\"CPU:n3.crb\")\nPublic Z\n",
+    "n3.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-4-three-levels",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "IncludeSection(\"U\",\"CPU:n3.crb\")\nPublic Z\n",
+    "n3.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-4-three-levels",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.crb\")\nPublic W\n",
+    "n2.crb": "IncludeSection(\"U\",\"CPU:n3.crb\")\nPublic Z\n",
+    "n3.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-5-self-section",
+   "logger": "cr6",
+   "source": "Public X\nIncludeSection(\"A\",\"CPU:t.CR6\")\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<t.CR6> line 1: X already declared as a variable.\n<t.CR6> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-5-self-section",
+   "logger": "cr1000x",
+   "source": "Public X\nIncludeSection(\"A\",\"CPU:t.CR6\")\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r13_include_nesting-5-self-section",
+   "logger": "cr300",
+   "source": "Public X\nIncludeSection(\"A\",\"CPU:t.CR6\")\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r13_include_nesting-5-self-section",
+   "logger": "cr350",
+   "source": "Public X\nIncludeSection(\"A\",\"CPU:t.CR6\")\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r13_include_nesting-6-self-include",
+   "logger": "cr6",
+   "source": "Public X\nInclude \"CPU:t.CR6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<t.CR6> line 1: X already declared as a variable.\n<t.CR6> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-6-self-include",
+   "logger": "cr1000x",
+   "source": "Public X\nInclude \"CPU:t.CR6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r13_include_nesting-6-self-include",
+   "logger": "cr300",
+   "source": "Public X\nInclude \"CPU:t.CR6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r13_include_nesting-6-self-include",
+   "logger": "cr350",
+   "source": "Public X\nInclude \"CPU:t.CR6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:t.CR6 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r13_include_nesting-7-self-include-upper",
+   "logger": "cr6",
+   "source": "Public X\nInclude \"CPU:T.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<T.cr6> line 1: X already declared as a variable.\n<T.cr6> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-7-self-include-upper",
+   "logger": "cr1000x",
+   "source": "Public X\nInclude \"CPU:T.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:T.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr300-r13_include_nesting-7-self-include-upper",
+   "logger": "cr300",
+   "source": "Public X\nInclude \"CPU:T.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:T.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr350-r13_include_nesting-7-self-include-upper",
+   "logger": "cr350",
+   "source": "Public X\nInclude \"CPU:T.cr6\"\nBeginProg\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file CPU:T.cr6 must have valid program file extension."
+  },
+  {
+   "id": "cr6-r13_include_nesting-8-line3",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nPublic Q\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-8-line3",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nPublic Q\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-8-line3",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nPublic Q\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-8-line3",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nPublic Q\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-9-twice",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nIncludeSection(\"U\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal.\n<n1.crb> line 4: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-9-twice",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nIncludeSection(\"U\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal.\n<n1.crb> line 4: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-9-twice",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nIncludeSection(\"U\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal.\n<CPU:n1.crb> line 4: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-9-twice",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic Z\nIncludeSection(\"T\",\"CPU:n2.crb\")\nIncludeSection(\"U\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public R\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal.\n<CPU:n1.crb> line 4: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-10-nested-missing-file",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:nope.crb\")\nPublic W\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-10-nested-missing-file",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:nope.crb\")\nPublic W\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-10-nested-missing-file",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:nope.crb\")\nPublic W\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-10-nested-missing-file",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:nope.crb\")\nPublic W\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-11-nested-bad-extension",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.txt\")\nPublic W\n",
+    "n2.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-11-nested-bad-extension",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.txt\")\nPublic W\n",
+    "n2.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-11-nested-bad-extension",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.txt\")\nPublic W\n",
+    "n2.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-11-nested-bad-extension",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "IncludeSection(\"T\",\"CPU:n2.txt\")\nPublic W\n",
+    "n2.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-12-nested-in-false-if-sec",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-12-nested-in-false-if-sec",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-12-nested-in-false-if-sec",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-12-nested-in-false-if-sec",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_include_nesting-13-nested-in-false-if-inc",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nInclude \"CPU:n2.crb\"\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-13-nested-in-false-if-inc",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nInclude \"CPU:n2.crb\"\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-13-nested-in-false-if-inc",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nInclude \"CPU:n2.crb\"\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-13-nested-in-false-if-inc",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If False\nInclude \"CPU:n2.crb\"\n#EndIf\nPublic W\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_include_nesting-14-nested-in-else",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If True\nPublic W\n#Else\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-14-nested-in-else",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If True\nPublic W\n#Else\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-14-nested-in-else",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If True\nPublic W\n#Else\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-14-nested-in-else",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:n1.crb\")\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "#If True\nPublic W\n#Else\nIncludeSection(\"T\",\"CPU:n2.crb\")\n#EndIf\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_include_nesting-15-nested-after-endprog-sec",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nIncludeSection(\"T\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-15-nested-after-endprog-sec",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nIncludeSection(\"T\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-15-nested-after-endprog-sec",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nIncludeSection(\"T\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-15-nested-after-endprog-sec",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nIncludeSection(\"T\",\"CPU:n2.crb\")\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_include_nesting-16-nested-after-endprog-inc",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nInclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-16-nested-after-endprog-inc",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nInclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-16-nested-after-endprog-inc",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nInclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-16-nested-after-endprog-inc",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nBeginProg\nEndProg\nInclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_include_nesting-17-malformed-one-arg",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection(\"T\")\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-17-malformed-one-arg",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection(\"T\")\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-17-malformed-one-arg",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection(\"T\")\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-17-malformed-one-arg",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection(\"T\")\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-18-malformed-bare-include",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-18-malformed-bare-include",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-18-malformed-bare-include",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-18-malformed-bare-include",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-19-malformed-no-quotes",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude n2.crb\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-19-malformed-no-quotes",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude n2.crb\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-19-malformed-no-quotes",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude n2.crb\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-19-malformed-no-quotes",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude n2.crb\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-20-malformed-no-parens",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection \"T\",\"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-20-malformed-no-parens",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection \"T\",\"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-20-malformed-no-parens",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection \"T\",\"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-20-malformed-no-parens",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nIncludeSection \"T\",\"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-21-malformed-equals",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-21-malformed-equals",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-21-malformed-equals",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-21-malformed-equals",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude = 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-22-lowercase",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\ninclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-22-lowercase",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\ninclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-22-lowercase",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\ninclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-22-lowercase",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\ninclude \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-23-continued",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude _\n \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-23-continued",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude _\n \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-23-continued",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude _\n \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-23-continued",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nInclude _\n \"CPU:n2.crb\"\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 3: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-24-comment-after",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\n  Include \"CPU:n2.crb\" ' c\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-24-comment-after",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\n  Include \"CPU:n2.crb\" ' c\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-r13_include_nesting-24-comment-after",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\n  Include \"CPU:n2.crb\" ' c\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr350-r13_include_nesting-24-comment-after",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\n  Include \"CPU:n2.crb\" ' c\n",
+    "n2.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:n1.crb> line 2: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr6-r13_include_nesting-25-word-in-string",
+   "logger": "cr6",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic S As String *8 = \"Include\"\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_include_nesting-25-word-in-string",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic S As String *8 = \"Include\"\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_include_nesting-25-word-in-string",
+   "logger": "cr300",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic S As String *8 = \"Include\"\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_include_nesting-25-word-in-string",
+   "logger": "cr350",
+   "source": "Include \"CPU:n1.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "n1.crb": "Public W\nPublic S As String *8 = \"Include\"\n"
+   },
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

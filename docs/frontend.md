@@ -47,11 +47,27 @@ commands are given so they can be re-run.
   include. The regex now allows (and discards) `,` followed by anything up to the closing `)`,
   which handles a parenthesised extra argument (nested parens included) because the match is
   still anchored on the statement's own trailing `\)\s*$`.
-- `Include` (not `IncludeSection`) nested inside an already-included file is a hard error
-  (`Include file within an Include file is illegal.`); `source.py` does not expand a second level
-  of bare `Include` and records an error instead. Nothing in this repository's corpus nests
-  `IncludeSection`, and it is not observed to share this restriction, so it is expanded
-  recursively without a depth limit beyond Python's own recursion.
+- **An include inside an included file is an error, `Include` and `IncludeSection` alike**
+  (oracle, 2026-10-12, all four loggers, fixture `tests/fixtures/r13_include_nesting.json`, 104
+  cases): `Include file within an Include file is illegal.` at the nested statement's line in the
+  included file, printed `<file> line N:` (CR300/CR350 `<CPU:file>`). The nested file is not
+  loaded, at any depth, and a file that includes itself gets the same error from its second copy
+  (`X already declared as a variable.` at line 1 of the copy first when it declares `X`, and the
+  copy's messages carry the `<file>` prefix even though its name equals the main program's;
+  `diagnostics.Diagnostic.cr6comp` shows it when the name was written with a drive, `CPU:t.CR6`).
+  The error is a marker the parser reports only if it reads that line: not in an inactive `#If`
+  branch, not after `EndProg` (both compile cleanly). It fires for any statement that starts with
+  the keyword followed by blank, `(`, `=` or the line end, well formed or not (`Include = 1`,
+  `IncludeSection("T")`, `Include n2.crb`, `Include _` continued, lower case); `IncludeVar`,
+  `Includes`, `Include"x"` are other tokens. A lone `IncludeSection` crashes CR6Comp (no verdict).
+  Before this, `IncludeSection` nested was accepted and expanded recursively (a self-including
+  program ended in `RecursionError`, reported as `Internal error: unable to parse program.`) and
+  the bare `Include` error was raised even in an inactive branch or after `EndProg` (false
+  reject). Not covered: a self-include written without a drive (`Include "t.CR6"`) still prints
+  no `<t.CR6>` prefix (its name is indistinguishable from the main program's); an inline
+  `If x Then Include "f"` and `Include:"f"` in an included file are not recognised; CR300/CR350 omit
+  the `Too many parameters:  Sec.` cascade after an include error with `Scan (1,Sec,0,0)` in the
+  program (also for a bad include extension in the main file; pre-existing).
 - `Section` (as read by a `#If Section = "Name" Then` inside an `IncludeSection()`-included file)
   is bound to the `Name` argument only for the lines that call brought in. Referencing `Section`
   anywhere else is an ordinary undefined-symbol error: `Invalid symbol in expression: Section =

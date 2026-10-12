@@ -16,10 +16,10 @@ Quirks verified against the real compiler (`tools/oracle.py`); see `docs/fronten
 - A missing `Include`/`IncludeSection` target is only a *warning* (`Cannot open include file  %s.`,
   the double space is the real message text) and the inclusion contributes nothing; compilation
   continues.
-- `Include` nested inside an already-included file is a hard error in CR6Comp (`Include file
-  within an Include file is illegal.`); we do not expand a second level of bare `Include` and
-  record an error instead of recursing. `IncludeSection` is not observed to have this restriction
-  and nothing in this repository's corpus nests it, so it is expanded recursively.
+- An `Include` or `IncludeSection` inside an already-included file (either kind, any depth, a file
+  including itself too) is a hard error in CR6Comp on all four loggers: `Include file within an
+  Include file is illegal.`, reported at that statement's line in the included file. The nested
+  file is not loaded (`_nested_include`; oracle, 2026-10-12, `docs/frontend.md`).
 """
 
 from __future__ import annotations
@@ -41,6 +41,11 @@ _INCLUDE_RE = re.compile(r'^\s*Include\s*\(?\s*"([^"]*)"\s*\)?\s*$', re.IGNORECA
 _INCLUDE_SECTION_RE = re.compile(
     r'^\s*IncludeSection\s*\(\s*"([^"]*)"\s*,\s*"([^"]*)"\s*(?:,.*)?\)\s*$', re.IGNORECASE
 )
+# An `Include`/`IncludeSection` statement as the real compiler recognises it inside an included
+# file, well formed or not (oracle, 2026-10-12, `docs/frontend.md`): the keyword followed by
+# blank, `(`, `=` or the end of the line. `IncludeVar`, `Includes`, `Include"x"` are other tokens;
+# a lone `IncludeSection` crashes CR6Comp (no verdict) and is left alone.
+_NESTED_INCLUDE_RE = re.compile(r"^\s*(?:Include(?:Section)?(?=[\s(=])|Include\s*$)", re.IGNORECASE)
 _DRIVE_RE = re.compile(r'^(CPU|USR|CRD|USB):', re.IGNORECASE)
 
 
@@ -428,6 +433,8 @@ class _Loader:
         self, text: str, line: int, filename: str, section: str | None, in_include: bool,
         had_comment: bool = False,
     ) -> list[LogicalLine]:
+        if in_include and _NESTED_INCLUDE_RE.match(text):
+            return [self._nested_include(line, filename, section)]
         m = _INCLUDE_SECTION_RE.match(text)
         if m:
             name, spec = m.group(1), m.group(2)
@@ -438,14 +445,10 @@ class _Loader:
                 return [self._missing(spec, line, filename, section)]
             self.site.setdefault(spec.strip(), (*self.site.get(filename, ()), line))
             self.includes.setdefault(spec.strip(), target)
-            included = self.load_file(target, section=name, in_include=in_include,
-                                      display=spec.strip())
+            included = self.load_file(target, section=name, in_include=True, display=spec.strip())
             return self._include_lines(included, line, filename, section)
         m = _INCLUDE_RE.match(text)
         if m:
-            if in_include:
-                self.diags.error(line, "Include file within an Include file is illegal.", filename)
-                return []
             spec = m.group(1)
             if self._bad_extension(spec):
                 return [self._extension_error(spec, line, filename, section)]
@@ -475,6 +478,13 @@ class _Loader:
         file exists (oracle, 2026-10-10, `docs/checker.md` "Round 9")."""
         ext = spec.rpartition(".")[2].upper() if "." in spec else ""
         return self.cr3xx_exts is not None and ext != "CRB" and ext not in self.cr3xx_exts
+
+    @staticmethod
+    def _nested_include(line: int, filename: str, section: str | None) -> LogicalLine:
+        """An include inside an included file is an error whatever it names (a marker like the
+        other include errors: not reported after `EndProg` or in an inactive `#If`)."""
+        return LogicalLine("Include file within an Include file is illegal.", line, filename, section,
+                           kind="include_error")
 
     @staticmethod
     def _extension_error(spec: str, line: int, filename: str, section: str | None) -> LogicalLine:
