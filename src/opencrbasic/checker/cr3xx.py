@@ -1001,6 +1001,20 @@ def _split_top_commas(text: str) -> list[str]:
     return parts + [cur]
 
 
+def _inside_table(program: S.Program, line: int, file: str) -> bool:
+    """The statement at `line` sits in a `DataTable` body."""
+    inside = False
+    for st in program.statements:
+        kw = st.keyword.upper() if isinstance(st, S.Instruction) else ""
+        if (st.line, st.file) == (line, file):
+            return inside
+        if kw == "DATATABLE":
+            inside = True
+        elif kw == "ENDTABLE":
+            inside = False
+    return False
+
+
 def _loose_before_beginprog(program: S.Program, line: int, file: str) -> bool:
     """The statement at `line` precedes `BeginProg` outside any Sub/Function/table body."""
     depth = 0
@@ -1206,8 +1220,12 @@ def _adjacent_operands(arg: str) -> bool:
     return bool(_ADJACENT_RE.search(stripped)) and not _ADJACENT_OP_WORD_RE.search(arg)
 
 
-def _call_adjacent_arg_messages(inner: str, params: list[int], here: set[str], variables: frozenset,
-                                profile) -> list[str] | None:
+_ADJACENT_TABLE_SOURCES = frozenset({"SAMPLE", "AVERAGE", "MAXIMUM", "MINIMUM", "TOTALIZE", "STDDEV"})
+
+
+def _call_adjacent_arg_messages(inner: str, record: dict, here: set[str], variables: frozenset,
+                                profile, in_table: bool) -> list[str] | None:
+    params = record["params"]
     args = _split_args_quoted(inner)
     if args is None:
         return None
@@ -1217,6 +1235,8 @@ def _call_adjacent_arg_messages(inner: str, params: list[int], here: set[str], v
             arg = arg.rstrip()[:-1]
         if _adjacent_operands(arg):
             break
+        if k < len(params) and params[k] % 100 in (6, 11):
+            continue    # a name or deferred text: not looked at while the statement is read
         if not arg.strip() or arg.count("(") != arg.count(")") or _leading_unknown_words(arg, here):
             return None     # an earlier argument with problems of its own: not this shape
     else:
@@ -1224,6 +1244,17 @@ def _call_adjacent_arg_messages(inner: str, params: list[int], here: set[str], v
     if k >= len(params):
         return None
     code = params[k] % 100
+    if code == 11:
+        # a table source with adjacent operands: its words and the incomplete expression, in a table
+        # (outside one the placement error replaces them); a shortfall hides them
+        if not in_table or record["name"].upper() not in _ADJACENT_TABLE_SOURCES:
+            return None
+        carg = arg.strip() if last else arg.lstrip()
+        short = instr_rules.shortfall_message(record, instr_rules.given_count_of(args))
+        if short:
+            return [short]
+        return [profile.unresolved_symbol_message.format(name=w) for w in _leading_unknown_words(carg, here)] + [
+            f"Incomplete expression: {carg}."]
     if code not in _ADJACENT_CONST_CODES and code not in _ADJACENT_EXPR_CODES:
         return None
     carg = arg.strip() if last else arg.lstrip()
@@ -1639,9 +1670,9 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
             call = re.match(r"\s*([A-Za-z_]\w*)\s*\((.*)$", bare, re.S)
             cinfo = profile.instructions.get(call.group(1).upper()) if call else None
             if cinfo and cinfo["params"] and call.group(1).upper() not in _CALL_ADJACENT_EXCLUDED and (
-                    found := _call_adjacent_arg_messages(call.group(2), cinfo["params"], here,
+                    found := _call_adjacent_arg_messages(call.group(2), cinfo, here,
                                                          symbols.declared_variable_names(program),
-                                                         profile)) is not None:
+                                                         profile, _inside_table(program, d.line, d.file))) is not None:
                 for message in found:
                     new_items.append(Diagnostic("error", d.line, message, d.file))
                 changed = True

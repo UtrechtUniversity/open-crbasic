@@ -6593,3 +6593,14 @@ differ there). `cr3xx._call_adjacent_arg_messages`.
 Parameter: x.`, not `Invalid or missing parameter.`/`Too few parameters in instruction.` first (CR6/CR1000X already so),
 and, like an undefined name, it hides the shortfalls of the later statements too (`Delay(y)` then `PanelTemp(x)`; the
 earlier one is kept). Implemented by `drop_shortfall_with_names` counting these lines as names.
+
+### CR300/CR350: adjacent operands in a table source (code 11), inside a table (oracle, 2026-10-12; `tests/fixtures/r15_cr3xx_table_source_adjacent.json`)
+
+`Sample (1,ReadD  est2,String)`, `Average (1,Zork Q,FP2,False)`, `Maximum`, `Minimum`, `Totalize`, `StdDev` in a `DataTable`
+body with adjacent operands in the source print the source's undefined words and `Incomplete expression: <source>.`, nothing
+else (no `Variable illegal`, no `Too many parameters`); a shortfall (`Sample (1,x y)`) prints only the shortfall message.
+The deferred source and the table name are not looked at while the earlier arguments are checked, so
+`Sample (1,StringR,Str  ing)` (undefined source, adjacent third argument) gives the third argument's lines only
+(`Str`, `ing`, `Incomplete expression`, `Variable illegal in Parameter`). Outside a table the placement message alone is
+printed (not modelled for the unparsed shape: `Sample (1,x y,String)` outside a table still prints our fallback);
+`SampleMaxMin` and `Moment` add their own earlier messages (not modelled).

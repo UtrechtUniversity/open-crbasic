@@ -313,6 +313,14 @@ def given_count(stmt: S.Instruction, profile) -> int:
     return given
 
 
+def given_count_of(args: list[str]) -> int:
+    """`given_count` for a call's raw argument texts (empty slots at the end are not given)."""
+    given = len(args)
+    while given and not args[given - 1].strip().rstrip(")").strip():
+        given -= 1
+    return given
+
+
 def shortfall_message(record: dict, given: int) -> str | None:
     """The message for a statement of `given` arguments that is short of `record`'s required
     parameters (the rule `check` applies to a parsed `S.Instruction`), else None."""
