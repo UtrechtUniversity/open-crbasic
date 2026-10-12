@@ -5424,3 +5424,12 @@ Oracle, fixture `tests/fixtures/r13_semicolon.json` (probes `scratch/r13/c6.py`.
   `Loop ;` are `Illegal parameter ;, expecting constant integer.`, `EndIf ;` is `Too many parameters:  ;.`
   (CR6/CR1000X), `CallTable T ;` is `Invalid, or out of place expression: ;.` (CR300/CR350: `Invalid
   symbol in expression: ;.`) and `If X = 1 Then ;` is the fallback on `;` alone.
+
+## Round 13: `#If with no #Endif` with warnings (2026-10-12, review r13-A item A6)
+
+The message used to be added only when the file had no diagnostics at all, so a file whose only
+findings were warnings (`Table T, is declared but never called.`) compiled. Oracle, all four loggers
+(`tests/fixtures/r13_unclosed_if_warning.json`): the compile fails and prints `#If with no #Endif`
+alone, the warnings are not shown. `compiler.py` now tests for no errors and drops the warnings when
+it adds the line. With errors present the real output was already left unmodelled (CR6/CR1000X print
+the `#If` line alone even then, CR300/CR350 the errors alone).
