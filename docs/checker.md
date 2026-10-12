@@ -5389,3 +5389,13 @@ Implementation: `structure._logical_assign_state` and `_logical_assign_undefined
 `parser._at_assign_target` also takes `name.member` targets. Not done: `X AND Y.a = 1` (`Could
 not find Y.` + `Invalid assignment in expression`), `X AND X MOD ...` (`Invalid assignment`), any
 statement with a string literal, an undefined `Y(1) = Z`.
+
+## Round 13: `SampleMaxMin` order error and argument count on CR300/CR350 (2026-10-12)
+
+`Maximum() or Minimum() must precede SampleMaxMin().` was already dropped on CR300/CR350 for an excess
+argument (5e454911). Oracle, CR300/CR350 (`tests/fixtures/r13_samplemaxmin_order_arity.json`): it is
+dropped for every wrong argument count: `()`, `(1)`, `(1,X)`, `(1,X,FP2)`, `SampleMaxMin 1,X,FP2`, and an
+empty fourth argument `(1,X,FP2,)`; kept for `(1,X,FP2,False)` and for a trailing empty fifth
+`(1,X,FP2,False,)`. CR6/CR1000X keep it for all of these. Not modelled: an empty argument before the
+last (`(1,X,,False)`, `(1,,FP2,False)`) gives only `Invalid or missing parameter.` on all four loggers;
+ours still prints the order error (both reject).

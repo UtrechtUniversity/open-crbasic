@@ -487,10 +487,12 @@ def check_table_and_menu_placement(program: S.Program, profile: Profile,
             has_maxmin = True
         elif in_table and kw == "SAMPLEMAXMIN" and not has_maxmin:
             # oracle, all four loggers, 2026-10-08 (docs/fuzz-findings.md "Round 5"); CR300/CR350
-            # drop it when the same statement has an excess argument (2026-10-10)
+            # drop it when the same statement has an excess, missing or empty-last argument
+            # (2026-10-10/12, docs/checker.md "Round 13")
             from . import instr_rules
-            if profile.single_pass and len(st.args) > len(instr_rules._real_params(
-                    profile.instructions[kw]["params"])):
+            need = len(instr_rules._real_params(profile.instructions[kw]["params"]))
+            if profile.single_pass and (len(st.args) < need or st.args[need - 1] is None
+                                        or any(a is not None for a in st.args[need:])):
                 continue
             diags.error(st.line, "Maximum() or Minimum() must precede SampleMaxMin().", st.file)
         elif kw == "DATAINTERVAL" and in_table:
