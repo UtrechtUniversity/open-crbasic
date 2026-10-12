@@ -131,6 +131,13 @@ def check_members(program: S.Program, profile, diags: Diagnostics, flat: S.Progr
     if not structs:
         return
     kinds = _variable_kinds(program, structs)
+    declared = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+                for v in st.vars}
+    for st in program.statements:  # (`Sub S(C As Pt)`: `C.y` is checked too, oracle 2026-10-12)
+        if isinstance(st, S.SubDef):
+            for p in st.params:
+                if p.type and p.type.upper() in structs and p.name.upper() not in declared:
+                    kinds.setdefault(p.name.upper(), f"STRUCT:{p.type.upper()}")
     known = expressions._known_names(program, profile)
     for st in flat.statements:
         if not isinstance(st, S.Assignment) or st.compound or \

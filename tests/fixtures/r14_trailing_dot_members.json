@@ -1326,6 +1326,62 @@
    "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If X. Then X = 1\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-r14c1-struct_param_read",
+   "logger": "cr6",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  Z = C.x\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14c1-struct_param_assign",
+   "logger": "cr6",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  C.x = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14c1-struct_param_unknown_member",
+   "logger": "cr6",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  Z = C.y\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: In structure C, could not find .y"
+  },
+  {
+   "id": "cr1000x-r14c1-struct_param_read",
+   "logger": "cr1000x",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  Z = C.x\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c1-struct_param_assign",
+   "logger": "cr1000x",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  C.x = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14c1-struct_param_unknown_member",
+   "logger": "cr1000x",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  Z = C.y\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: In structure C, could not find .y"
+  },
+  {
+   "id": "cr300-r14c1-struct_param_assign",
+   "logger": "cr300",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  C.x = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14c1-struct_param_assign",
+   "logger": "cr350",
+   "source": "StructureType Pt\n  x As Float\nEndStructureType\nPublic P As Pt\nPublic Z\nFunction F(C As Pt)\n  Return C.x\nEndFunction\nSub S(C As Pt)\n  C.x = 1\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Z = F(P)\n    S(P)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
   }
  ]
 }

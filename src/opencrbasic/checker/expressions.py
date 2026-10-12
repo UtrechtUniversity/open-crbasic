@@ -1163,8 +1163,12 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
     from . import structs
     variables = {n for n in symbols.declared_variable_names(program)
                  if not symbols.is_reserved_predefined_name(n, profile)}
-    kinds = structs._variable_kinds(program, structs._structure_members(program))
+    struct_types = structs._structure_members(program)
+    kinds = structs._variable_kinds(program, struct_types)
     variables = {n for n in variables if not str(kinds.get(n, "")).startswith("STRUCT")}
+    # (a `Sub S(C As Pt)` parameter keeps its members too; oracle, CR6/CR1000X, 2026-10-12)
+    variables -= {p.name.upper() for st in program.statements if isinstance(st, S.SubDef)
+                  for p in st.params if p.type and p.type.upper() in struct_types}
     variables |= {str(n).upper() for n in program.consts}
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \

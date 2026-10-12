@@ -2311,7 +2311,9 @@ def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile
     if profile.single_pass and stmt.text.lstrip().startswith("("):
         return "rejected", [], False  # CR300/CR350 read a leading group as a lone operand
     struct_vars = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
-                   for v in st.vars if v.type and v.type.upper() not in _VARIABLE_TYPES}
+                   for v in st.vars if v.type and v.type.upper() not in _VARIABLE_TYPES} | {
+        p.name.upper() for st in program.statements if isinstance(st, S.SubDef)
+        for p in st.params if p.type and p.type.upper() not in _VARIABLE_TYPES}
 
     def public_member(m) -> bool:
         """`Public.X` names the declared variable `X` (oracle, CR6 and CR300, 2026-10-12)."""

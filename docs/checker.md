@@ -6113,3 +6113,28 @@ after instruction and keyword statements.
   four loggers and is rejected by us; `X AND Y = 1 ;` is item R14-3; `If c Then ;` adds an unwanted
   `IF or SELECT ... without NEXT SCAN` cascade after the correct first line; `X = A(1 2)` (array) is
   `No Matching ...` on the real compilers and `Incomplete expression` here.
+
+## Round 14 cloud review follow-up (2026-10-12)
+
+**R14C-1, fixed.** A `Sub`/`Function` parameter declared `As <StructureType>` keeps its members:
+`Sub S(C As Pt)` with `Z = C.x` or `C.x = 1` compiles on CR6/CR1000X (`Return C.x` in a `Function`
+too), while `Z = C.y` is `In structure C, could not find .y` (oracle, 2026-10-12). Round 14's
+letter-led member rule (`expressions.check_digit_members`) and the logical-assign struct test
+(`structure._logical_assign_state`) took such a parameter for a plain variable (`Could not find C.`);
+both now skip it, and `structs.check_members` checks its members like a declared structure variable
+(only when no `Public`/`Dim` declares the same name). CR300/CR350 accept the assignment form; reading
+`C.x` inside the routine crashes `cr300comp.exe`/`cr350comp.exe` (a reference fault, not recorded).
+Fixture cases `*-r14c1-struct_param_*` in `tests/fixtures/r14_trailing_dot_members.json`.
+
+**R14C-2, probed: not a defect except one shape.** The real compilers skip a `;` inside the
+parentheses of `PortSet(C1 ;,1)`, `PortSet(C1,1 ;)`, `PortSet(102 ;,1)`, `Delay(0,10 ;,mSec)`,
+`Battery(X ;)`, `PanelTemp(X,60 ;)`, `X = Sin(1 ;)`, `SerialOpen(ComRS232 ;,9600,0,0,50)`,
+`Scan (1 ;,Sec,3,0)`, `Sample(1,X ;,FP2)` and `DataTable (T,1 ;,-1)` / `(T,1,-1 ;)` (CR6 and CR1000X,
+all compile), so the blank model holds for them; the fixture's `SerialOpen(Com1 ;,...)` ->
+`ComPort 0 illegal.` stays the exception. Not modelled: the `DataTable` name slot. `DataTable (T ;,1,-1)`
+(also `( T ;` and with a fourth argument) is `Invalid, or out of place expression: ;.` then `Too
+many parameters:  -1.`, and a glued `DataTable (T;,1,-1)` declares a table named `T;`, so
+`CallTable T` is `Could not find DataTable T.`; we accept both. Simply keeping the `;` for every
+`DataTable` header turns the accepted later-argument shapes into false rejects, so the name slot
+needs its own handling. CR300/CR350 reject a `;` inside instruction arguments with `Invalid symbol
+in expression: <argument> ;.` (`Sample(1,X ;,FP2)` -> `... X ;.`), which we do not model either.
