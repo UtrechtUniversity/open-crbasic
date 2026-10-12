@@ -7,6 +7,11 @@ Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
 
 ## Environment setup (needed to resume)
 
+- macOS (Apple Silicon, set up 2026-10-12): Rosetta 2, then Wine 11.17 (Gcenx build) unpacked to
+  `~/.local/wine` per `scripts/README.md` "Compiling on macOS"; prefix `~/.wine-cr6` (created on
+  first run; then add the ShowCrashDialog key below). `uv sync` with the env variables of each
+  `.envrc`. Codex reviews are not available on this machine (see "Reviews").
+
 - Python: uv (`uv sync`, `uv run pytest -q`, `uv run tools/<tool>.py`), with
   `UV_PROJECT_ENVIRONMENT=$HOME/.uv-envs/opencrbasic` (`.envrc`); never a `.venv` in the
   repository (scripts/verify.py rejects it).
@@ -38,31 +43,30 @@ Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-11, end of session; resume in a clean session)
+## Status (2026-10-12, end of round 13; resume in a clean session)
 
-Measured on `claude/laughing-franklin-08z9vo` at `b844b7b9` (plus the docs commit that adds this
-text). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
+Measured on `claude/laughing-franklin-08z9vo` at `18f1b774` (plus the docs commit that adds this
+text), on the macOS M4 machine (Wine 11.17, CPython 3.13). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
 accepts, opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q` (strict: checker exceptions fail tests) | 21,701 passed, 311 skipped |
+| `uv run --no-sync pytest -q -n 8` (strict: checker exceptions fail tests) | 25,674 passed, 311 skipped, 0 failed |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 502/4/0/1, CR1000X 502/4/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
-| `tools/fuzz_replay.py` (2,251 reproducers) | 1,843 exact, 4 false accepts, 0 false rejects, 376 message diffs, 12 mode diffs, 16 oracle errors (`scratch/replay-r12.json`) |
-| `tools/tdftest.py --group all` | repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
-| `-t` [Times] (`scratch/timing_harness.py`, untracked) | repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 505/1/0/1, CR1000X 505/1/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
+| `tools/fuzz_replay.py` (2,251 reproducers) | 1,847 exact, 4 false accepts, 0 false rejects, 372 message diffs, 12 mode diffs, 16 oracle errors (`scratch/replay-r13.json`) |
+| `tools/tdftest.py --group all` | 2026-10-12 unchanged: table list 207/208 (only `goestable_1`). repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
+| `-t` [Times] (`scratch/timing_harness.py`, untracked, lost with the old machine) | 2026-10-11: repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash); not re-run in round 13 |
 | implementation exceptions (difftest/replay class) | 0 |
-| `cd ../scripts && uv run --no-sync verify.py` (env `$HOME/.uv-envs/firnmelt-scripts`) | 2026-10-11: `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
+| `cd ../scripts && uv run --no-sync verify.py` (env `$HOME/.uv-envs/firnmelt-scripts`) | 2026-10-12 (after round 13): `BUILD  host tests 119 pass \| CRBasic 16/16 compiled, 6 warning(s) \| repository pass` |
 
 Reference faults (`pointervariable_2.CR6` on all loggers, `strcomp_3.CR6` on CR300/CR350, 16
 replay reproducers) make the gates exit nonzero; they are counted separately, never as verdicts.
 Every fixture under `tests/fixtures/` records real-compiler output; recheck one with
 `uv run --no-sync tools/fixture_audit.py tests/fixtures/<x>.json` (must report 0 differing).
 
-Remaining help-corpus diffs: CR6/CR1000X `mqttpublishtable_1`, `clockset_1`, `sprintf_1`,
-`strcomp_3` (pass-1/pass-2 classification of certain arguments; see docs/checker.md "Round 12
-CR6/CR1000X"). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs/tdf-rules.md`
+Remaining help-corpus diff: CR6/CR1000X `strcomp_3` only: `!name` on a non-pointer variable is a
+false accept (docs/checker.md "Round 13 analysis"; pass placement unresolved, needs the tracer). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs/tdf-rules.md`
 "Storage limit"), Scan-interval overflow autoallocate (1), `CDM_Delay` >60 min message count (1).
 
 | Phase | State |
@@ -73,7 +77,7 @@ CR6/CR1000X"). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs
 | 3 Checker | near parity on the help corpus; long tail of message ordering in fuzz reproducers |
 | 4 Fuzzing | `tools/fuzz.py`, `tools/fuzz_replay.py`; 2,251 saved reproducers; seeds used: 0, 1, 42-54, 100, 201-208, 301-308 (`docs/fuzz-findings.md`) |
 | 5 Outputs | TDF/table list exact except one name; `-t` exact except one crash; exact auto-size model; CDM binary image not attempted |
-| 6 Complete parity gate | incomplete: 376 fuzz message diffs, 4 false accepts, 4 CR6/CR1000X help diffs, storage limit, CDM image |
+| 6 Complete parity gate | incomplete: 372 fuzz message diffs, 4 false accepts, 1 CR6/CR1000X help diff, storage limit, CDM image |
 
 History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
@@ -140,18 +144,39 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Resume here (2026-10-11)
+## Resume here (2026-10-12)
 
-- No rounds are scheduled; no worktrees exist; no WIP is pending on main. Old worker branches
-  (`ocb-*`) are all integrated except: `ocb-ranges` (WIP `3228f99`, unverified CDM range work;
-  compare with current CDM rules or discard).
-- Not yet reviewed by gpt-6.1-sol: rounds 10-12 after `75b94c1a` (`git log 75b94c1a..HEAD`);
-  `scratch/codex/review-round11.md` covers `46f79c5d..75b94c1a` and has NOT been acted on yet.
-- Local untracked state worth keeping: `scratch/re/` (Ghidra dumps, patched exes),
-  `scratch/tdf-sweep/` (allocator sweep data), `scratch/timing_harness.py` (`-t` comparison),
-  `scratch/mkfixture.py`, `scratch/codex/` (reviews, worker brief), `scratch/replay-r12.json`.
+- Round 13 (2026-10-12, first session on the macOS M4 machine) is integrated: 40 commits
+  `e39271da..18f1b774`. Three fresh-context Opus reviews replaced the lost round-11 Codex review
+  and covered rounds 10-12 and the LSP commits (`scratch/reviews/review-r13-{A,B,C}.md`; LSP work
+  changed no `crbc` output over 8,590 runs). Ten Sonnet workers fixed: scope-blind array bounds
+  (false rejects, all loggers), include paths with directories (false reject), nested and self
+  includes, two-word `End Sub`, `X.5`-style digit members (regression), logical-assign targets,
+  trailing empty arguments, TCPOpen handle types/connection count, `;` after statements (false
+  reject), ETsz/ETClearSky in tables (false reject), `#If` without `#Endif` with warnings, builtin
+  arity tables (compiler item 5), three of four help diffs, include `<file>` prefix by message
+  kind, CR300/CR350 cascade after an include error, the float32 `struct.pack` platform difference
+  in `check_sdm_address`, and smaller message families. Fixtures: `tests/fixtures/r13_*.json`,
+  tested by `tests/test_r13_fixtures.py` (multi-file ones with `siblings` by
+  `tests/test_include_validation.py`); all audit 0 differing.
+- Pending branch `ocb-r13-subscope` (`c6da3a4d`, WIP, unverified, NOT integrated): Dim/parameter
+  local to a Sub/Function is undefined elsewhere (false accept, observed on all four loggers) and
+  routine-body Public/Const in duplicate checks (review A9). Needs its fixture (cases and helper in
+  `scratch/r13-helpers/subscope/`), fixture_audit, full gates on all four loggers; it adds
+  rejections, so check false rejects carefully.
+- Untracked state lost with the old machine: `scratch/re/` dumps, `scratch/tdf-sweep/`,
+  `scratch/timing_harness.py`, `scratch/mkfixture.py`, `scratch/codex/`, `ocb-ranges` branch.
+  Recreated: worker brief `scratch/codex/brief-claude.md`; fixture helpers in
+  `scratch/r13-helpers/` (`mkfix.py` for multi-file fixtures).
+- Machine notes: background `uv run` jobs started with `&` or nohup die silently in this harness;
+  use the Bash tool's `run_in_background` or the foreground. Ghidra: `brew install ghidra`
+  (formula, openjdk@21, no sudo) was still installing at the end of the session.
 
 ## Compiler items found by the LSP work (recorded 2026-10-11, not executed)
+
+Round 13 status (2026-10-12): done 1 (two-word closers), 5 (arity tables), 11 (self/nested
+include), 12 (include paths with directories); closed as not a defect 7 (`Static`), 9 (labels),
+13 (duplicate declaration in an include matches on all loggers). Open: 2, 4, 6, 8, 10, 14.
 
 Human instruction 2026-10-11: compiler work found while building the language server is recorded
 here and left for the compiler workstream; the LSP session does not execute it. Evidence links
@@ -203,18 +228,21 @@ are in `docs/lsp-rounds/`.
 
 ## Next steps
 
-1. Act on `scratch/codex/review-round11.md` (one Haiku or Sonnet worker, confirm each finding
-   against the oracle first), then start a gpt-6.1-sol review of `75b94c1a..HEAD`.
-2. Remaining CR6/CR1000X help diffs (`mqttpublishtable_1`, `clockset_1`, `sprintf_1`,
-   `strcomp_3`): which pass reports `MQTTPublishTable(MQTT QoS, 5)`, `&` after a comma, `%`- or
-   float-led continuation lines. Use the tracer (which stage emits each message) instead of
-   probing blind (Sonnet + RE tools).
-3. Fuzz message diffs (376): rank by first differing line (`scratch/replay-r12.json`), prefer
-   shared ordering/gating rules; the tracer settles ordering questions.
-4. Remaining false accepts: storage limit (CR300/CR350; evidence in `docs/tdf-rules.md`; likely
-   readable from the decompiled allocator now), `CDM_Delay` >60 min count, Scan-interval overflow
-   autoallocate.
-5. Fresh fuzz seeds (next unused: 401+) to find new families; fix false rejects first.
-6. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments and
-   Reps > 1000.
-7. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
+1. Finish `ocb-r13-subscope` (see Resume here), then review rounds 13 with fresh-context Opus
+   reviewers (`git log e39271da..HEAD`).
+2. Known false rejects found in round 13, not yet fixed (all pre-existing): logical-assignment
+   readings other than a lone name before the logical word (`x > 2 And y = 1`, `(x > 2) And y = 1`,
+   `1 And y = 1`, `-x And y = 1`, `Not x And y = 1`, `x And y(1) = 1`; `parser._parse_assignment_or_call`);
+   `If Abs(X Then` (compiles on the real compiler).
+3. Known false accepts: `!name` on a non-pointer variable (`strcomp_3`); `X AND Status.Nope = 1`
+   and `X = Status.Nope`/`X.dat` (no Status/table field list); scalar Sub parameter indexed as an
+   array; some divide-by-zero SplitStr forms on CR300/CR350; `RainFlowSample` source check.
+4. Fuzz message diffs (372): rank by first differing line (`scratch/replay-r13.json`).
+5. Remaining fuzz false accepts: storage limit (CR300/CR350), `CDM_Delay` >60 min count,
+   Scan-interval overflow autoallocate; `crbc -z` traceback on the storage-limit programs
+   (compiler item 2).
+6. LSP cost on the CLI path: provenance built on every compile (+7% time, +49% peak memory on
+   `Main.CR6`; review C F1); optional flag the CLI leaves off.
+7. Fresh fuzz seeds (next unused: 401+); outputs: CDM binary image (`-b`), `goestable_1` field
+   name, timing for variable arguments and Reps > 1000.
+8. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
