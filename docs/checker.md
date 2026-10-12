@@ -5590,3 +5590,20 @@ the cut and the generic fallback printed the header line (and `Function` headers
 `Return outside of Function.`). Fixed in `parser._parse_subdef`/`_parse_param`. Not done: a header cut
 after `As String *` (real `Size of string missing.`), inside `a(` (real `a( is missing the ) character.`), after
 `a =` (real `Required parameter a cannot be initialized.`, CR300 prints `p`) or after `Optional` stay as before.
+
+## Round 13, CR6/CR1000X: a condition statement cut off inside an open parenthesis (`chm/strcomp_3`; fixture `r13_cond_open_fallback.json`)
+
+Oracle runs of 2026-10-12, CR6 and CR1000X. The CHM wraps `If (StrComp` / `(str1,str2) > 0 AND ...) Then`.
+- `If (x +`, `If x > 0 And (x +`, `ElseIf (x +`, `While (x +`, `Do While (x +`, `Select Case (x +`: a condition that ends
+  on an operator while a parenthesis is still open is the pass-1 generic fallback echoing the
+  condition only (`(x +.`, no keyword, `Select Case` keeps its leading blank). `_scan_expr` returned
+  "unknown shape" for it (`open_fallback`), so the line was silent and only the continuation line was
+  reported. Plain assignments (`x = (x +`) are unchanged (whole line, the existing unclosed paren rule).
+- `Expression expects ( :` for a bare built-in function in an unclosed condition echoes the condition as well
+  (`If (StrComp` -> `(StrComp.`, `If x > 0 And (StrComp` -> `x > 0 And (StrComp.`), not the whole line.
+Not done (older, all probed this round): `If StrComp Then` (real `Expression expects ( : StrComp .`, we
+accept the line), `If StrComp` + wrapped argument list (real prints the `Expression expects (` line, we
+only the continuation), `While (StrComp` (we echo `StrComp`, real `(StrComp`), `Select Case StrComp` +
+`EndSelect` (real adds `EndSelect w/o Select`), `For x = y To (y +` (real echoes only the `To`
+expression, `(y +`, we the whole line), and the CR300/CR350 versions of all of these (`No Matching` instead
+of `Expression expects (`; no verdict for `strcomp_3` there, the real CR300/CR350 compilers fault on it).

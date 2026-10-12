@@ -1936,7 +1936,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                 return ("pass1", "missing_expr")
             return ("pass1", "fallback")
         return _scan_expr(ctoks, 0, operands, profile.functions, assign=True, start_operand=False,
-                          cond=True, to_ok=bool(re.match(r"\s*(?:SELECT|IF|ELSEIF)\b", text, re.I)))
+                          cond=True, to_ok=bool(re.match(r"\s*(?:SELECT|IF|ELSEIF)\b", text, re.I)),
+                          open_fallback=True)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError as e:
@@ -2411,7 +2412,7 @@ def _later_arg_unknown(args, operands: set[str], functions: dict) -> bool:
 
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None,
-               cond: bool = False, to_ok: bool = True) -> tuple[str, str] | None:
+               cond: bool = False, to_ok: bool = True, open_fallback: bool = False) -> tuple[str, str] | None:
     """(`to_ok`: `To` is a binary operator, once per parenthesis level and argument; everywhere but
     `If`/`While`/`Do`/`Loop` conditions, oracle 2026-10-10, all four loggers.)"""
     to_levels: set[int] = set()
@@ -2512,7 +2513,9 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 return None
         i += 1
     if expect_operand:
-        return ("pass1", "fallback") if not parens else None
+        # (`If (x +`: the condition of an `If`/`While`/`Do` is the fallback even with a parenthesis
+        # still open, oracle, CR6/CR1000X, 2026-10-12)
+        return ("pass1", "fallback") if not parens or open_fallback else None
     if parens:
         return ("pass1", unclosed)
     return None if assign else ("pass1", "fallback")
@@ -2648,7 +2651,7 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None =
                                                    operands)) is not None:
         return refined
     text = condition_part(stmt.text)
-    if text is None or kind == "expects_paren":
+    if text is None:
         text = stmt.text
     return {
         "fallback": _out_of_place(profile, text, getattr(stmt, "at_eol", True)),
