@@ -43,18 +43,18 @@ Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-12, end of round 13; resume in a clean session)
+## Status (2026-10-12, end of round 14; resume in a clean session)
 
-Measured on `claude/laughing-franklin-08z9vo` at `18f1b774` (plus the docs commit that adds this
+Measured on `claude/laughing-franklin-08z9vo` at `6ca00592` (plus the docs commit that adds this
 text), on the macOS M4 machine (Wine 11.17, CPython 3.13). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
 accepts, opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q -n 8` (strict: checker exceptions fail tests) | 25,674 passed, 311 skipped, 0 failed |
+| `uv run --no-sync pytest -q -n 8 -m "not server" --deselect tests/lsp/test_lsp_bench.py::test_smoke_report` | 28,337 passed, 311 skipped, 0 failed. LSP server tests NOT run: POSIX semaphores exhausted until reboot (see Resume here) |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
-| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 505/1/0/1, CR1000X 505/1/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
-| `tools/fuzz_replay.py` (2,251 reproducers) | 1,847 exact, 4 false accepts, 0 false rejects, 372 message diffs, 12 mode diffs, 16 oracle errors (`scratch/replay-r13.json`) |
+| help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 506/0/0/1, CR1000X 506/0/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
+| `tools/fuzz_replay.py` (2,604 reproducers: 2,251 old + 353 from seeds 401-404) | 1,972 exact, 67 false accepts (4 old + 63 new-seed), 0 false rejects, 539 message diffs, 10 mode diffs, 16 oracle errors (`scratch/replay-r14.json`, before the last two follow-up commits) |
 | `tools/tdftest.py --group all` | 2026-10-12 unchanged: table list 207/208 (only `goestable_1`). repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
 | `-t` [Times] (`scratch/timing_harness.py`, untracked, lost with the old machine) | 2026-10-11: repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash); not re-run in round 13 |
 | implementation exceptions (difftest/replay class) | 0 |
@@ -65,8 +65,7 @@ replay reproducers) make the gates exit nonzero; they are counted separately, ne
 Every fixture under `tests/fixtures/` records real-compiler output; recheck one with
 `uv run --no-sync tools/fixture_audit.py tests/fixtures/<x>.json` (must report 0 differing).
 
-Remaining help-corpus diff: CR6/CR1000X `strcomp_3` only: `!name` on a non-pointer variable is a
-false accept (docs/checker.md "Round 13 analysis"; pass placement unresolved, needs the tracer). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs/tdf-rules.md`
+Help corpus: no remaining verdict or message diffs (only reference faults). Remaining fuzz false accepts: CR300/CR350 storage limit (2, `docs/tdf-rules.md`
 "Storage limit"), Scan-interval overflow autoallocate (1), `CDM_Delay` >60 min message count (1).
 
 | Phase | State |
@@ -77,7 +76,7 @@ false accept (docs/checker.md "Round 13 analysis"; pass placement unresolved, ne
 | 3 Checker | near parity on the help corpus; long tail of message ordering in fuzz reproducers |
 | 4 Fuzzing | `tools/fuzz.py`, `tools/fuzz_replay.py`; 2,251 saved reproducers; seeds used: 0, 1, 42-54, 100, 201-208, 301-308 (`docs/fuzz-findings.md`) |
 | 5 Outputs | TDF/table list exact except one name; `-t` exact except one crash; exact auto-size model; CDM binary image not attempted |
-| 6 Complete parity gate | incomplete: 372 fuzz message diffs, 4 false accepts, 1 CR6/CR1000X help diff, storage limit, CDM image |
+| 6 Complete parity gate | incomplete: 539 fuzz message diffs, 67 false accepts, storage limit, CDM image |
 
 History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
@@ -148,7 +147,26 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Resume here (2026-10-12)
+## Resume here (2026-10-12, after round 14)
+
+- Round 14 (2026-10-12) is integrated and pushed (`eaebfddd..6ca00592`). Reviews: local Opus
+  `scratch/reviews/review-r14.md` (all HIGH findings fixed) and cloud reviewer
+  `origin/reviews/r13-cloud` = `scratch/reviews/review-r13-cloud.md` (R13C-1..8 open, see Next
+  steps). Workers fixed: routine-local scope (ex-WIP branch), strcomp_3 pointer `!name`, R14-1/2/5/7/10,
+  logical-assign left operands and `Public.X` targets, unclosed `Abs(`-like calls, fuzz message-diff
+  top clusters (368 -> 296 on the old set), fuzz seeds 401-404 families, trailing-dot members,
+  CR300/CR350 For-header echo. Fixtures `tests/fixtures/r14_*.json` (tests/test_r14_fixtures.py).
+- Pending, NOT integrated:
+  - branch `ocb-r14-semicolon` (W7, `;` family R14-4/R14-6, 925x4-case fixture): conflicted with
+    the logical-assign commit in `parser.py`; W7 was rebasing at session end (check the branch
+    head and its report; re-run gates before integrating).
+  - branch `ocb-r14-followups` commit `2330aa24` (parameter counts in one-line If bodies): its
+    `cr3xx.check_too_many_cascade` change conflicts with the W8 inline-If cascade commit; a naive
+    combination fails `r14_inline_if_cascade` case `inlinecond_two_inline_ifs` (CR300/CR350).
+    Needs a worker. Pointer `!x` probe evidence for more statement forms: `scratch/r14-helpers/followups/`.
+- MACHINE STATE: the macOS POSIX semaphore table is exhausted (leaked by killed process trees;
+  `multiprocessing.Lock()` -> ENOSPC). Reboot before the next round; until then LSP server tests
+  (`-m server`, test_lsp_bench) cannot run. Workers must never use pkill/killall.
 
 - Round 13 (2026-10-12, first session on the macOS M4 machine) is integrated: 40 commits
   `e39271da..18f1b774`. Three fresh-context Opus reviews replaced the lost round-11 Codex review
@@ -163,11 +181,7 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   in `check_sdm_address`, and smaller message families. Fixtures: `tests/fixtures/r13_*.json`,
   tested by `tests/test_r13_fixtures.py` (multi-file ones with `siblings` by
   `tests/test_include_validation.py`); all audit 0 differing.
-- Pending branch `ocb-r13-subscope` (`c6da3a4d`, WIP, unverified, NOT integrated): Dim/parameter
-  local to a Sub/Function is undefined elsewhere (false accept, observed on all four loggers) and
-  routine-body Public/Const in duplicate checks (review A9). Needs its fixture (cases and helper in
-  `scratch/r13-helpers/subscope/`), fixture_audit, full gates on all four loggers; it adds
-  rejections, so check false rejects carefully.
+- Branch `ocb-r13-subscope` was finished and integrated in round 14 (fixture `r14_routine_local_scope.json`).
 - Untracked state lost with the old machine: `scratch/re/` dumps, `scratch/tdf-sweep/`,
   `scratch/timing_harness.py`, `scratch/mkfixture.py`, `scratch/codex/`, `ocb-ranges` branch.
   Recreated: worker brief `scratch/codex/brief-claude.md`; fixture helpers in
@@ -232,21 +246,20 @@ are in `docs/lsp-rounds/`.
 
 ## Next steps
 
-1. Finish `ocb-r13-subscope` (see Resume here), then review rounds 13 with fresh-context Opus
-   reviewers (`git log e39271da..HEAD`).
-2. Known false rejects found in round 13, not yet fixed (all pre-existing): logical-assignment
-   readings other than a lone name before the logical word (`x > 2 And y = 1`, `(x > 2) And y = 1`,
-   `1 And y = 1`, `-x And y = 1`, `Not x And y = 1`, `x And y(1) = 1`; `parser._parse_assignment_or_call`);
-   `If Abs(X Then` (compiles on the real compiler).
-3. Known false accepts: `!name` on a non-pointer variable (`strcomp_3`); `X AND Status.Nope = 1`
-   and `X = Status.Nope`/`X.dat` (no Status/table field list); scalar Sub parameter indexed as an
-   array; some divide-by-zero SplitStr forms on CR300/CR350; `RainFlowSample` source check.
-4. Fuzz message diffs (372): rank by first differing line (`scratch/replay-r13.json`).
-5. Remaining fuzz false accepts: storage limit (CR300/CR350), `CDM_Delay` >60 min count,
-   Scan-interval overflow autoallocate; `crbc -z` traceback on the storage-limit programs
-   (compiler item 2).
-6. LSP cost on the CLI path: provenance built on every compile (+7% time, +49% peak memory on
-   `Main.CR6`; review C F1); optional flag the CLI leaves off.
-7. Fresh fuzz seeds (next unused: 401+); outputs: CDM binary image (`-b`), `goestable_1` field
-   name, timing for variable arguments and Reps > 1000.
-8. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
+1. Reboot (semaphores), then run the FULL pytest suite incl. `-m server` once on the branch head.
+2. Integrate `ocb-r14-semicolon` and `ocb-r14-followups/2330aa24` (see Resume here).
+3. Cloud review R13C-1..8 (`scratch/reviews/review-r13-cloud.md`, probe list at its end): R13C-1
+   one-line `If c Then X AND Y = 1` false reject; R13C-2 `;` in one-line If false accept; others low.
+4. Push the round-14 range for a cloud review (`firnmelt-datalogger-reviewer`; may need the human
+   to approve the request in the cloud session).
+5. Known false rejects: one-line `ElseIf c Then Z = 1`; `While Abs(X Then`, `Abs(Abs(X`,
+   `X = Abs(X,`, empty `LineNum(`/`Signature(`; `If X Then SubScan(...)` etc. (see docs).
+6. False accepts: Status/table field existence (`Status.RecNum`, `T.Nope`, `Public.Nope`) needs
+   per-logger field lists (probed ~400 names; sets differ per logger) — design decision; 63 new
+   false accepts from seeds 401-404 (value models per instruction, docs/fuzz-findings.md "Round 14").
+7. Fuzz message diffs: ranking in docs/fuzz-findings.md "Round 14 message-diff ranking".
+8. Remaining fuzz false accepts: storage limit (CR300/CR350), `CDM_Delay` >60 min, Scan-interval
+   overflow autoallocate; `crbc -z` traceback (compiler item 2).
+9. LSP cost on the CLI path (provenance on every compile, review C F1).
+10. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments.
+11. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
