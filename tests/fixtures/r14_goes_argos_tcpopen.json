@@ -1,0 +1,443 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tm-a1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr1000x-tm-a1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr300-tm-a1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: ArgosData is not defined.\nline 8: T is not defined.\nline 8: Invalid, or out of place expression:     ArgosData(R,1,T,2,\"FP2\",\"fuzz\")\n."
+  },
+  {
+   "id": "cr6-tm-a2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr1000x-tm-a2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr300-tm-a2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\",7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: ArgosData is not defined.\nline 8: T is not defined.\nline 8: Invalid, or out of place expression:     ArgosData(R,1,T,2,\"FP2\",7)\n."
+  },
+  {
+   "id": "cr6-tm-a3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tm-a3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tm-a3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    ArgosData(R,1,T,2,\"FP2\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: ArgosData is not defined.\nline 8: T is not defined.\nline 8: Invalid, or out of place expression:     ArgosData(R,1,T,2,\"FP2\")\n."
+  },
+  {
+   "id": "cr6-tm-g1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr1000x-tm-g1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr300-tm-g1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  T."
+  },
+  {
+   "id": "cr6-tm-g2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr1000x-tm-g2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr300-tm-g2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1,7)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  T."
+  },
+  {
+   "id": "cr6-tm-g3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tm-g3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tm-g3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(R,T,0,0,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Illegal destination variable type, expecting Float.\nline 8: Too many parameters:  T."
+  },
+  {
+   "id": "cr6-tm-h1",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,\"fuzz\")\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr1000x-tm-h1",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,\"fuzz\")\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr300-tm-h1",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,\"fuzz\")\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr350-tm-h1",
+   "logger": "cr350",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,\"fuzz\")\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  \"fuzz\"."
+  },
+  {
+   "id": "cr6-tm-h2",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,7)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr1000x-tm-h2",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,7)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr300-tm-h2",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,7)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr350-tm-h2",
+   "logger": "cr350",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1,7)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Too many parameters:  7."
+  },
+  {
+   "id": "cr6-tm-h3",
+   "logger": "cr6",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tm-h3",
+   "logger": "cr1000x",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tm-h3",
+   "logger": "cr300",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tm-h3",
+   "logger": "cr350",
+   "source": "Public X, S As String * 50, R As Long\nDataTable (T,1,-1)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    GOESData(X,T,0,0,1)\n    Battery(X)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcp-h1",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr1000x-tcp-h1",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h1",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-tcp-h1",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr6-tcp-h2",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr1000x-tcp-h2",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h2",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-tcp-h2",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr6-tcp-h3",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,S,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr1000x-tcp-h3",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,S,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h3",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,S,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-tcp-h3",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,S,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr6-tcp-h4",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-h4",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcp-h4",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-h4",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,B,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcp-h5",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,L,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcp-h5",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,L,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcp-h5",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,L,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcp-h5",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,L,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcp-h6",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr1000x-tcp-h6",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h6",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-tcp-h6",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,5,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h7",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long\nline 4: Expression expects , :     R = TCPOpen (\"\",3002,1000,6000,F)\n."
+  },
+  {
+   "id": "cr350-tcp-h7",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    R = TCPOpen (\"\",3002,1000,6000,F)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long\nline 4: Expression expects , :     R = TCPOpen (\"\",3002,1000,6000,F)\n."
+  },
+  {
+   "id": "cr6-tcp-h8",
+   "logger": "cr6",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    F = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr1000x-tcp-h8",
+   "logger": "cr1000x",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    F = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr300-tcp-h8",
+   "logger": "cr300",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    F = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  },
+  {
+   "id": "cr350-tcp-h8",
+   "logger": "cr350",
+   "source": "Public F, S As String, B As Boolean, L As Long, R As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    F = TCPOpen (\"\",3002,1000,6000,F,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Parameter must be a variable of type long"
+  }
+ ]
+}

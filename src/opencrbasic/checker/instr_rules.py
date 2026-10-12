@@ -479,8 +479,11 @@ def check_too_many(program: S.Program, profile, diags: Diagnostics) -> None:
         # `CallTable` (`CallTable(T,X,Y)` -> `Too many parameters:  Y.`, 2026-09-28).
         if not record or not (_too_many_eligible(record["params"])
                               or stmt.keyword.upper() in _TOO_MANY_EXTRA
+                              or stmt.keyword.upper() in ("GOESDATA", "ARGOSDATA")
                               or (profile.name in ("cr6", "cr1000x")
                                   and stmt.keyword.upper() in ZERO_PARAM_INSTRUCTIONS)):
+            # (`GOESData(X,T,0,0,1,7)` all four loggers, `ArgosData(R,1,T,2,"FP2",7)` CR6/CR1000X:
+            # oracle, 2026-10-12)
             continue
         max_count = len(_real_params(record["params"]))
         if len(stmt.args) <= max_count:
@@ -1532,6 +1535,38 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
             at += 1
         new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
         diags.items[at:at] = new
+
+
+def check_tcpopen_handle_type(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR6/CR1000X: `TCPOpen`'s fifth argument (the handle) that is a Float or String variable, a
+    literal or an expression is `Parameter must be a variable of type long`, ahead of the
+    statement's other lines (oracle, 2026-10-12: `R = TCPOpen("",3002,1000,6000,F,1)`, the
+    statement form, `...,S,1)`, `...,5,1)`; a Long or Boolean variable compiles). CR300/CR350:
+    `cr3xx.check_tcpopen_handle`."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    from .expressions import _index_nodes, _stmt_exprs
+    types = symbols.declared_variable_types(program)
+    for stmt in program.statements:
+        if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
+            calls = [stmt.args]
+        else:
+            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e)
+                     if ix.name.upper() == "TCPOPEN"]
+        for args in calls[:1]:
+            if len(args) < 5 or args[4] is None:
+                continue
+            arg = args[4]
+            if isinstance(arg, (S.Name, S.Index)):
+                kind = types.get(arg.name.upper())
+                bad = kind is not None and kind not in ("LONG", "BOOLEAN")
+            else:
+                bad = isinstance(arg, (S.Number, S.String, S.Binary, S.Unary))
+            if bad:
+                at = next((i for i, d in enumerate(diags.items)
+                           if (d.line, d.file) == (stmt.line, stmt.file)), len(diags.items))
+                diags.items.insert(at, Diagnostic("error", stmt.line,
+                                                  "Parameter must be a variable of type long", stmt.file))
 
 
 def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:

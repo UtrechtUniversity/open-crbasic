@@ -6290,3 +6290,13 @@ Oracle-probed, fuzz false accepts (cases in `tests/fixtures/r14_movebytes_cdm_in
 - `MQTTPublishConstTable` outside `ConstTable..EndConstTable` (before `BeginProg` or in a `Scan`) is
   `MQTTPublishConstTable instruction must be in a ConstTable`, pass 1, and on CR300/CR350 it starts
   the `Too many parameters` cascade (`structure.check_pass1`).
+
+## `GOESData`/`ArgosData` extra arguments, `TCPOpen` handle type on CR6/CR1000X (2026-10-12)
+
+`GOESData` (all four loggers) and `ArgosData` (CR6/CR1000X) take five arguments; a sixth is `Too many
+parameters:  <token>.` (their table-name parameter, type code 6, kept them out of the generic check).
+`TCPOpen`'s fifth argument (the handle) that is a Float or String variable, a literal or an
+expression is `Parameter must be a variable of type long` on CR6/CR1000X too, first on its line
+(`instr_rules.check_tcpopen_handle_type`; CR300/CR350 had it). Not modelled: with a non-Long handle
+and no count argument CR6/CR1000X also print `Max number of concurrent connections must be 1..1`.
+Cases in `tests/fixtures/r14_goes_argos_tcpopen.json`.
