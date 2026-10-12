@@ -1999,3 +1999,37 @@ DestArray out of bounds.` before it (not modelled). A negative literal is not mo
 and `DestArray(1,-1)` (the last subscript) compile, `DestArray(-1)`, `DestArray(-1,1)` and `Arr(-2)` do not. R15,
 `tests/fixtures/r15_routers_neighbors_index.json` (audited 0 differing); fuzz reproducer
 `cr350/false_accept/00c15e34f28e`.
+
+### `DNPVariable` argument rules (all four loggers, round 15)
+
+Fixture `r15_dnp_variable_args.json` (audited against the real compilers). Supersedes the "Not modelled:
+`Illegal DNP3 group 42.`" note of "DNPVariable groups". Constant arguments convert like `Long` ones
+(`longconv`; `TRUE` is -1; a string or NAN is -2147483648); `Group` and `Variation` keep their low 16 bits as a
+signed value (`65537` is 1, `65536` is 0, `32768` is negative). Checks per statement, in this order, with
+`instr_rules.check_dnp_update`:
+
+1. `Swath` (truncated) outside `1..N` -> `Swath parameter illegal, must be 1..N`, N = elements left in the
+   source (scalar 1, `A()` the whole size, `A(n)` of a 1-D array size-n+1; `S` of group 110 is 1; a String
+   source is not measured for other groups). Nothing else is reported for the statement.
+2. `Variation` <= 0 -> `Variation must be greater than 0.`; stops there.
+3. `Group` not one of 1, 2, 10, 12, 20, 21, 22, 23, 30, 31, 32, 33, 40, 41, 110 (50 and 60 included) ->
+   `Illegal DNP3 group N.`; stops there.
+4. Static group needed first: 2<-1, 12<-10, 21<-20, 22<-20, 23<-21, 31<-30, 32<-30, 33<-31, 41<-40
+   (`Must assign group B before using group G.`; stops there).
+5. Source type: groups 1, 2, 10, 12 Boolean; 20-23 Long only; 30-33, 40, 41 Long or Float; 110 String
+   (`For DNP3 group G variable must be of type Boolean|Long|String.`).
+6. `Variation` above the group maximum (1:2, 2:3, 10:2, 12:1, 20:8, 21:12, 22:8, 23:8, 30:5, 31-33:7, 40:3,
+   41:3; none for 110) -> `Illegal Variation V, max for group G is M.` (V is the 16-bit value).
+7. `Class` (truncated) 1..3 on a static group (1, 10, 12, 20, 21, 30, 31, 40, 41, 110) -> `Static Data
+   Class: must be 0`, and the statement then fails (see below); any `Class` outside 0..3 (a string, `TRUE`, 4,
+   -1) -> `Illegal Class: must be 0..3`, which does not fail it. Event groups (2, 22, 23, 32, 33) take 0..3.
+8. `NumEvents`: nonzero on a static group -> `N Events allocated for a non-Event object` (N is the converted
+   value: `"a"` and NAN -2147483648, `2147483648` -2147483648 on CR6/CR1000X and 2147483647 on CR300/CR350);
+   zero on an event group -> `Event size must be non-zero to hold events` (negative is accepted).
+
+A statement stopped by 1-3 or by the static-class rule is not counted as defined, and is not "assigned"
+(a later event group gets `Must assign`); group 110 never counts as defined either, so a `DNPUpdate` after
+only those gets `DNP3Statics and/or DNP3Events are not defined`. Type, variation-range and
+`Illegal Class` failures still count. Not modelled: `L(6)` past the array end (`Variable L out of bounds.`
+plus `Cannot use a variable index reference.`), `Flag`. Fuzz reproducers cr6 `false_accept/b1e01ed1dd76`,
+cr350 `9ad721676cb3`.

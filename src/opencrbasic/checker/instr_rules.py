@@ -17,7 +17,7 @@ import struct
 from .. import consteval
 from .. import syntax as S
 from ..diagnostics import Diagnostic, Diagnostics
-from . import symbols
+from . import longconv, symbols
 from .expressions import _arg_text, _known_names, _type_code_kinds, _undefined_names, _variable_refs
 
 # `type_codes.json` codes exempt from the "missing required parameter" error: when the
@@ -1861,8 +1861,111 @@ def check_spi_open_order(program: S.Program, profile, diags: Diagnostics) -> Non
                 diags.error(stmt.line, f"SPIOpen must precede {name}.", stmt.file)
 
 
-# Event/frozen DNP3 groups and the static group a `DNPVariable` must have assigned before them.
-_DNP_BASE_GROUP = {2: 1, 22: 20, 31: 30, 32: 30}
+_DNP_BOOL = frozenset({"BOOLEAN"})
+_DNP_LONG = frozenset({"LONG"})
+_DNP_ANALOG = frozenset({"LONG", "FLOAT"})
+# `DNPVariable` object group -> (static group it needs assigned first, is an event group, source
+# types it accepts, name of that type in the message, highest variation). Oracle, all four loggers,
+# 2026-10-08 / 2026-10-12 (docs/instructions.md "DNPVariable groups"); any other group is
+# `Illegal DNP3 group N.`
+_DNP_GROUPS = {
+    1: (None, False, _DNP_BOOL, "Boolean", 2), 2: (1, True, _DNP_BOOL, "Boolean", 3),
+    10: (None, False, _DNP_BOOL, "Boolean", 2), 12: (10, False, _DNP_BOOL, "Boolean", 1),
+    20: (None, False, _DNP_LONG, "Long", 8), 21: (20, False, _DNP_LONG, "Long", 12),
+    22: (20, True, _DNP_LONG, "Long", 8), 23: (21, True, _DNP_LONG, "Long", 8),
+    30: (None, False, _DNP_ANALOG, "Long", 5), 31: (30, False, _DNP_ANALOG, "Long", 7),
+    32: (30, True, _DNP_ANALOG, "Long", 7), 33: (31, True, _DNP_ANALOG, "Long", 7),
+    40: (None, False, _DNP_ANALOG, "Long", 3), 41: (40, False, _DNP_ANALOG, "Long", 3),
+    110: (None, False, frozenset({"STRING"}), "String", None),
+}
+_DNP_KNOWN_TYPES = frozenset({"BOOLEAN", "LONG", "FLOAT", "STRING"})
+
+
+def _dnp_long(arg: S.Expr | None, conv, wrap16: bool = False) -> int | None:
+    """A constant `DNPVariable` parameter as the compiler converts it (`longconv`; `True` is -1);
+    group and variation then keep their low 16 bits as a signed value (`65537` is 1, `65536` is
+    0; oracle 2026-10-12)."""
+    env, profile, names, literals = conv
+    if env is None or arg is None:
+        return None
+    try:
+        value = consteval.value_of(arg, env)
+    except consteval.NotConstant:
+        value = None
+    if isinstance(value, bool):
+        number = -1 if value else 0
+    else:
+        number = longconv.long_value(arg, env, profile, names, literals)
+        if number is None:
+            return None
+    return ((number + 32768) & 0xFFFF) - 32768 if wrap16 else number
+
+
+def _dnp_swath_limit(stmt: S.Instruction, dims: dict) -> int | None:
+    """How many elements the `Source` leaves for `Swath`: 1 for a scalar, the whole size for `A()`,
+    the rest of a one-dimensional array for `A(n)` (oracle 2026-10-12: `L(2)` of `L(5)` allows
+    4, `L(5)` allows 1); None where not probed."""
+    src = stmt.args[0]
+    shape = dims.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+    if shape is None:
+        return None
+    if isinstance(src, S.Name):
+        return 1 if shape == (1,) else None
+    total = 1
+    for n in shape:
+        total *= n
+    if not src.args:
+        return total
+    if len(src.args) == 1 and len(shape) == 1 and isinstance(src.args[0], S.Number) \
+            and float(src.args[0].value).is_integer() and 1 <= src.args[0].value <= shape[0]:
+        return shape[0] - int(src.args[0].value) + 1
+    return None
+
+
+def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None) -> tuple:
+    """`(group, before, after, stops_early, fails_late)`: the group, the message that ends the
+    statement before the `Must assign` rule (swath, variation <= 0, illegal group, in that order),
+    the messages after it (type, variation range, class, event count) and whether a class on a
+    static group makes the statement fail after them. A failing statement is not assigned and not
+    counted as defined (oracle, all four loggers, 2026-10-12)."""
+    group = _dnp_long(stmt.args[2], conv, wrap16=True) if len(stmt.args) >= 3 else None
+    if group is None:
+        return None, [], [], False, False
+    full = len(stmt.args) == 8
+    before: list[str] = []
+    after: list[str] = []
+    swath = _dnp_long(stmt.args[1], conv) if full else None
+    # (a String source is only measured for group 110: `S,5,1,...` gets just the type message)
+    limit = _dnp_swath_limit(stmt, dims) if full and (kind != "STRING" or group == 110) else None
+    if swath is not None and limit is not None and not 1 <= swath <= limit:
+        return group, [f"Swath parameter illegal, must be 1..{limit}"], [], True, False
+    variation = _dnp_long(stmt.args[3], conv, wrap16=True) if full else None
+    if variation is not None and variation < 1:
+        return group, ["Variation must be greater than 0."], [], True, False
+    spec = _DNP_GROUPS.get(group)
+    if spec is None:
+        return group, [f"Illegal DNP3 group {group}."], [], True, False
+    _base, is_event, allowed, type_name, top = spec
+    if kind in _DNP_KNOWN_TYPES and kind not in allowed:
+        after.append(f"For DNP3 group {group} variable must be of type {type_name}.")
+    if variation is not None and top is not None and variation > top:
+        after.append(f"Illegal Variation {variation}, max for group {group} is {top}.")
+    if not full:
+        return group, before, after, False, False
+    klass = _dnp_long(stmt.args[4], conv)
+    if klass is not None:
+        if 1 <= klass <= 3 and not is_event:
+            after.append("Static Data Class: must be 0")
+            return group, before, after, False, True
+        if not 0 <= klass <= 3:
+            after.append("Illegal Class: must be 0..3")
+    events = _dnp_long(stmt.args[7], conv)
+    if events is not None:
+        if is_event and events == 0:
+            after.append("Event size must be non-zero to hold events")
+        elif not is_event and events != 0:
+            after.append(f"{events} Events allocated for a non-Event object")
+    return group, before, after, False, False
 
 
 def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) -> None:
@@ -1870,51 +1973,53 @@ def check_dnp_update(program: S.Program, profile, diags: Diagnostics, env=None) 
     not defined` (no period; docs/instructions.md). A `DNPVariable` of any kind counts, so a
     malformed one under-reports -- except a group whose static group is not assigned yet
     (`Must assign group 30 before using group 32.`), after which every `DNPUpdate` gets the line
-    too unless the static group is assigned later in the program. Also the `DNPVariable` type rules (docs/instructions.md "DNPVariable groups")."""
+    too unless the static group is assigned later in the program, and a statement that fails hard
+    (bad swath, variation 0, illegal group, class on a static group) or uses group 110, which do
+    not count. Also the `DNPVariable` argument rules (docs/instructions.md "DNPVariable groups")."""
     defined = False
     failed_bases: list[int] = []     # static groups an event group was used before
     assigned: set[int] = set()
     types = symbols.declared_variable_types(program)
-    every_group = {_dnp_group(st, env) for st in program.statements
-                   if isinstance(st, S.Instruction) and st.keyword.upper() == "DNPVARIABLE"}
+    tables = symbols.scope_tables(program, env) if env is not None else None
+    conv = (env, profile, longconv.float_names(program.statements),
+            longconv.literal_names(program.statements))
+    info: dict[int, tuple] = {}
+    for st in program.statements:
+        if isinstance(st, S.Instruction) and st.keyword.upper() == "DNPVARIABLE":
+            src = st.args[0] if st.args else None
+            kind = types.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+            dims = tables(st).dims if tables is not None else {}
+            info[id(st)] = _dnp_statement(st, conv, dims, kind)
+    every_group = {i[0] for i in info.values() if not (i[3] or i[4]) and i[0] != 110}
     for stmt in program.statements:
         if isinstance(stmt, S.Instruction):
             kw = stmt.keyword.upper()
             if kw == "DNPVARIABLE":
-                defined = True
-                group = _dnp_group(stmt, env)
+                group, before, after, stops, fails = info[id(stmt)]
                 if group is None:
+                    defined = True
                     continue
-                base = _DNP_BASE_GROUP.get(group)
+                for text in before:
+                    diags.error(stmt.line, text, stmt.file)
+                if stops:
+                    continue
+                base = _DNP_GROUPS[group][0]
                 if base is not None and base not in assigned:
                     diags.error(stmt.line, f"Must assign group {base} before using group {group}.",
                                 stmt.file)
                     failed_bases.append(base)
+                    defined = True
+                    continue
+                for text in after:
+                    diags.error(stmt.line, text, stmt.file)
+                if fails:
                     continue
                 assigned.add(group)
-                src = stmt.args[0]
-                kind = types.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
-                if group in (30, 32) and kind in ("STRING", "BOOLEAN"):
-                    diags.error(stmt.line, f"For DNP3 group {group} variable must be of type Long.",
-                                stmt.file)
-                elif group in (1, 2) and kind in ("FLOAT", "LONG", "STRING"):
-                    diags.error(stmt.line, f"For DNP3 group {group} variable must be of type Boolean.",
-                                stmt.file)
+                if group != 110:
+                    defined = True
             elif kw == "DNPUPDATE" and (not defined or any(b not in every_group
                                                               for b in failed_bases)):
                 diags.error(stmt.line, "DNP3Statics and/or DNP3Events are not defined", stmt.file)
-
-
-def _dnp_group(stmt: S.Instruction, env) -> int | None:
-    """The constant integer `Group` (third argument) of a `DNPVariable`, else None."""
-    if env is None or len(stmt.args) < 3 or stmt.args[0] is None or stmt.args[2] is None:
-        return None
-    try:
-        value = consteval.value_of(stmt.args[2], env)
-    except consteval.NotConstant:
-        return None
-    return int(value) if isinstance(value, (int, float)) and not isinstance(value, bool) \
-        and value == int(value) else None
 
 
 def check_portbridge_array(program: S.Program, profile, diags: Diagnostics, env) -> None:
