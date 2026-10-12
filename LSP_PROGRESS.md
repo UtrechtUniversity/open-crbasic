@@ -3,40 +3,46 @@
 Live implementation state and session handoff. Design and acceptance criteria:
 [LSP_PLAN.md](LSP_PLAN.md). Compiler state and worker policy: [PROGRESS.md](PROGRESS.md).
 
-## Current state (2026-10-11, end of cloud session work)
+## Current state (2026-10-12, LSP work in this configuration closed)
 
-- Implemented and integrated (rounds LSP-00..07 and parts of LSP-08): shared analysis facade and
-  source providers, physical positions, catalog + generated grammar, help provider, binding index,
-  stdio server (diagnostics, completion, hover, signature help, outline, folding, links,
-  definition/references/highlights, semantic tokens, rename, formatting, quick fixes), workspace
-  watching/folders/limits, VS Code client, user guide, benchmarks, install check.
-- Last full gates at `679f2f7`: tests/lsp 596, full pytest 22,101 passed / 507 skipped, selfdiff
-  0 differ, npm 16/16; `verify.py` host tests fail only from commit `2a1d36d` (stale generated
-  power/solar outputs, not LSP).
-- Host (macOS): API-level acceptance of T-01..T-13 except visual checks (see "Host findings").
-- Reviews: gpt-6.1-sol rounds 1 (`39286384`) and 2 (`f3069825`): all 8 findings fixed and
-  host-retested. [Round 3, gpt-6-astra at high effort](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
-  cumulative through `ccba3666`: three new findings (one P1, two P2), fixed in LSP-R3.
-  Second round-3 reviewer, Claude Fable 5.1 at high effort, same HEAD:
-  [review-2026-10-11-ccba3666-fable.md](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md),
-  1 P1, 4 P2, 14 P3, non-overlapping; fixed in LSP-R3 (F2 refused rather than renamed; F12 three of four pairs, `BeginBurstTrigger` has no local help page; F15 `TO` still offered, catalog lists it as a function only). Not yet reviewed: `ccba3666..HEAD` (LSP-08d, LSP-09, LSP-R3).
-- Active: LSP-R5a/b (review round 4 fixes, [brief](docs/lsp-rounds/LSP-R5.md)). Done: LSP-R3a-e (review round 3 fixes, [brief](docs/lsp-rounds/LSP-R3.md)), LSP-08d (test tiers, xdist), LSP-08e (Pyrefly 0 errors), LSP-08f (VSIX), LSP-09a/b/c (inlay hints, commands).
-- Remaining LSP work: see "Remaining work" below.
+Human instruction 2026-10-12: R5 is the last LSP work in this cloud configuration. The work below
+is integrated and pushed on `claude/laughing-franklin-08z9vo`; no worker worktree or `codex/*`
+branch remains (every worker commit was verified present on the branch before deletion).
 
-## Remaining work
+- Implemented and integrated: LSP-00..09 (analysis facade and source providers, positions, catalog
+  and generated grammar, help provider, binding index; stdio server with diagnostics, completion,
+  hover, signature help, outline, folding, links, definition/references/highlights, semantic
+  tokens, rename, formatting, quick fixes, inlay hints, "Show Compiler Output" and "Show Table
+  Fields"; workspace watching, folders and limits; VS Code client and packaged VSIX; user guide,
+  benchmarks, install check, test tiers, Pyrefly gate) and review/host fix rounds R1-R5.
+- Final gates on the integrated tree (R5 included, coordinator, cloud container):
+  `tests/lsp -n 4` 781 passed; full suite `-n 4` 22,286 passed / 507 skipped; selfdiff 4343 cases,
+  0 differ; `pyrefly check` 0 errors; `npm test` 30 pass; `tools/vsix_check.py` 11/11; `verify.py`
+  (`CR6COMP=opencrbasic`) `BUILD  host tests 119 FAIL | CRBasic 16/16 compiled, 6 warning(s) |
+  repository pass`, the 3 failures being the stale generated power/solar outputs from `2a1d36d`
+  (not LSP; fix: rerun `scripts/solar_model.py`, `power_sim.py`, `power_workbook.py`).
+- Reviews: rounds 1 (`39286384`), 2 (`f3069825`), 3 ([astra](docs/lsp-rounds/review-2026-10-11-ccba3666.md),
+  [Fable](docs/lsp-rounds/review-2026-10-11-ccba3666-fable.md)) and 4
+  ([`743da2ac`](docs/lsp-rounds/review-2026-10-12-743da2ac.md)): every finding fixed, except
+  round-3 F2 (`Alias` junk: rename refused, not renamed), F12 (`BeginBurstTrigger` pair: no local
+  help page) and F15 (`TO` still offered as a quick fix: catalog lists it as a function only).
+  The R5 fixes themselves are not reviewed.
+- Host (macOS only; release claim narrowed to macOS by human decision 2026-10-12): T-01..T-17 and
+  H-01..H-10 accepted per the host records under `docs/lsp-rounds/host-tests/`, last
+  [`e18cdf52`](docs/lsp-rounds/host-tests/2026-10-11-e18cdf52/RESULTS.md). Open host item: T-18
+  (bounded compiler-output command, LSP-R5a).
 
-1. LSP-08d and LSP-08e integrated. Test tiers and `tools/lsp_gate.py` are developer tooling, documented
-   in `docs/lsp-api.md` "Test tiers"; the user guide needs no change for them.
-2. Review round 3 fixed (LSP-R3); host check T-16. Next review (human-run) over `ccba3666..HEAD`.
-3. LSP-08 release validation on macOS done: T-14 (VSIX) at `ccba3666` and `e18cdf52`; T-09/T-12
-   visual checks at `ccba3666`; T-15/T-16/T-17 and H-08/H-10 at `e18cdf52`. Release claim is macOS
-   only (human decision 2026-10-12); Windows/Linux not claimed.
-4. LSP-09 (human request) done: parameter-name inlay hints and commands "Show Compiler Output" /
-   "Show Table Fields"; host check T-15. Pull diagnostics: not adopted.
-5. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
+## Remaining work (for a later session)
+
+1. Host T-18 on a revision at or after `1302f14`.
+2. Optional review of the R5 commits (`743da2ac..1302f14`).
+3. Known limits kept by design (documented in the user guide): whole-line diagnostic ranges, rename
    does not detect a file that appears after analysis, formatting refuses programs with errors,
-   completion capped at 200, CR6-only help.
-6. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
+   completion capped at 200, CR6-only help, references skip entries whose analysis is pending,
+   Windows/Linux not claimed; the open review items above.
+4. `scratch/lsp/selfdiff-base.json` is local to a checkout (untracked); a host or new session
+   recreates it at the round's base SHA before running selfdiff ("Resume here").
+5. Compiler items found by this work are recorded in PROGRESS.md (not executed here).
 
 ## Work rules (human instructions 2026-10-11)
 
@@ -211,7 +217,7 @@ Open:
 | LSP-R3 review round 3 fixes | `codex/lsp-r3{a..e}` -> cherry-picked | integrated | coordinator on combined tree `f6ce2b2`: tests/lsp -n 4 757 passed, full suite -n 4 22262 passed / 507 skipped, selfdiff 0 differ, pyrefly 0, npm 30/30; verify.py (CR6COMP=opencrbasic) `BUILD  host tests 119 FAIL | CRBasic 16/16 compiled, 6 warning(s) | repository pass` (the 3 known stale power/solar digests). Parser change additive only (`Param.dim_exprs`, compare=False). A2 added optional `AnalysisRequest.max_file_bytes` / `LimitedSource` (default unchanged) | host T-16 |
 | LSP-R4a host findings H-08..H-10 | `codex/lsp-r4a` -> cherry-picked | integrated | coordinator: tests/lsp -n 4 763 passed, selfdiff 0 differ, pyrefly 0, npm 30/30; references united across every current entry reading the declaration file (entries still pending are skipped, not awaited); comment/inactive-branch rename click refused `not_a_name` with an accurate message; worker's in-place edit of T-12 step 5 replaced by an appended amendment (append-only rule) | host: T-09 references re-check |
 | LSP-R4b member completion before the first analysis | `codex/lsp-r4b` -> cherry-picked | integrated | defect confirmed over stdio: with no finished analysis every member list (`Status.`, `Public.`) was empty with `isIncomplete: false`; host's Status/Public difference attributed to timing (inferred). Fix: completion waits up to `featureWaitMs` only while no program exists; without one it answers `isIncomplete: true`. Coordinator: tests/lsp -n 4 770 passed, selfdiff 0 differ, pyrefly 0, npm 30/30 | host T-17 item 1 |
-| LSP-R5 review round 4 fixes | `codex/lsp-r5{a,b}` | active | [review](docs/lsp-rounds/review-2026-10-12-743da2ac.md) over `ccba3666..743da2ac`: 3 P2, 1 P3, all accepted ([brief](docs/lsp-rounds/LSP-R5.md)) | verify, cherry-pick |
+| LSP-R5 review round 4 fixes | `codex/lsp-r5{a,b}` -> cherry-picked | integrated | coordinator on the combined tree: tests/lsp -n 4 781 passed, full suite 22,286 passed / 507 skipped, selfdiff 0 differ, pyrefly 0, npm 30, vsix_check 11/11, verify.py only the 3 known freshness failures. R5a: compiler-output command runs in the worker pool under maxFileBytes/analysisTimeoutMs, refusals `too_large`/`timeout`; R5b: link gate gets Markdown only, scheduler fixture commits unsigned, inlay `Units` match on a token boundary | host T-18 |
 | LSP-08e Pyrefly type checking | `codex/lsp-08-types` -> cherry-picked | integrated | coordinator on combined tree: `pyrefly check` 0 errors (was 38), tests/lsp `-n 4` 596 passed in 99 s; no new suppressions; latent bug fixed (`untitled:` URI gave a bare TypeError in `fs_path`) | - |
 | LSP-08f VSIX packaging | `codex/lsp-08-vsix` -> cherry-picked | integrated | coordinator rerun: npm 16/16, `tools/vsix_check.py` 11/11 (VSIX 232 files, ~396 KB, runtime closure 9 packages, no src/tests/help) | host T-14 |
 | LSP-09a inlay hints core | `codex/lsp-09-inlay` -> cherry-picked | integrated (core, not wired) | worker: 15 passed, tests/lsp -n 4 611, selfdiff 0 differ; Main.CR6 whole file 344 hints in 0.08 s, never `argN` | wire in LSP-09c |

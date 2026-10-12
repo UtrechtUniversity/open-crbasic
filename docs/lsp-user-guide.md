@@ -431,7 +431,8 @@ Host: see the hover row in section 8 (`1b01311d`).
 Each record applies to its own revision only. API or protocol level means VS Code's provider commands,
 workspace edits, configuration updates and client traces, not what is drawn on screen. Features added
 after `679f2f70` were tested at `ccba3666` (packaged `.vsix`, visual checks) and `e18cdf52`
-(LSP-09, LSP-R3, LSP-R4a in the installed `.vsix`; LSP-R4b at `e1769132` over stdio).
+(LSP-09, LSP-R3, LSP-R4a in the installed `.vsix`; LSP-R4b at `e1769132` over stdio). LSP-R5
+(bounded "Show Compiler Output", review round 4) has no host record yet (T-18).
 
 | Area | Observed | Record |
 |---|---|---|
