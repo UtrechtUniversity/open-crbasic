@@ -1517,6 +1517,57 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         diags.items[at:at] = new
 
 
+def check_tcpopen_connections(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
+    """CR6/CR1000X `TCPOpen(..., Handle, Count)` with a constant `Count` outside `1..N`, `N` the
+    element count of the Long handle variable (1 for a scalar): `Max number of concurrent
+    connections must be 1..N` on the statement's line (oracle, CR6 and CR1000X, 2026-10-12,
+    `tests/fixtures/r13_tcpopen_connections.json`). Only calls of 5-7 arguments with a constant integer count (a missing
+    count is 0) and a once-declared `Long` variable handle are judged; CR300/CR350 print nothing."""
+    if profile.name not in ("cr6", "cr1000x"):
+        return
+    from .expressions import _index_nodes, _stmt_exprs
+    types = symbols.declared_variable_types(program)
+    dims = symbols.declared_all_dims(program, env)
+    declared: dict[str, int] = {}
+    for st in program.statements:
+        if isinstance(st, S.Declaration):
+            for v in st.vars:
+                declared[v.name.upper()] = declared.get(v.name.upper(), 0) + 1
+    busy = {(d.line, d.file) for d in diags.items}
+    stmts = [st for top in program.statements for st in (top, *(getattr(top, "inline", None) or []),
+                                                       *(getattr(top, "inline_else", None) or []))]
+    for stmt in stmts:
+        if isinstance(stmt, S.Call) and stmt.name.upper() == "TCPOPEN":
+            calls = [stmt.args]
+        else:
+            calls = [ix.args for e in _stmt_exprs(stmt) for ix in _index_nodes(e)
+                     if ix.name.upper() == "TCPOPEN"]
+        for args in calls[:1]:
+            if len(args) not in (5, 6, 7) or args[4] is None or (len(args) > 5 and args[5] is None):
+                continue
+            handle = args[4]
+            name = handle.name.upper() if isinstance(handle, (S.Name, S.Index)) else None
+            if name is None or declared.get(name) != 1 or types.get(name) != "LONG" or name not in dims:
+                continue
+            try:
+                count = consteval.value_of(args[5], env) if len(args) > 5 else 0
+            except consteval.NotConstant:
+                continue
+            lit = args[5].operand if len(args) > 5 and isinstance(args[5], S.Unary) \
+                and args[5].op in ("-", "+") else (args[5] if len(args) > 5 else None)
+            if isinstance(count, bool) or not isinstance(count, (int, float)) or count != int(count) \
+                    or (isinstance(lit, S.Number) and not re.fullmatch(r"\d+|&[Hh][0-9A-Fa-f]+", lit.text)):
+                continue   # 2.5 / 3.0 / 1E0 add `Parameter must be a constant integer`: not done
+            count = int(count)
+            size = 1
+            for d in dims[name]:
+                size *= d
+            if 1 <= count <= size or (stmt.line, stmt.file) in busy:
+                continue
+            diags.error(stmt.line, f"Max number of concurrent connections must be 1..{size}", stmt.file,
+                        stmt=stmt)
+
+
 _PULSE_CHANNELS = {"cr6": re.compile(r"C[1-4]|U(?:[1-9]|1[0-2])"), "cr1000x": re.compile(r"C[1-8]")}
 
 

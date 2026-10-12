@@ -5678,3 +5678,16 @@ illegal.` on all four loggers (the string form is echoed without quotes), in the
 shared, checked with two illegal tables). `CallTable(15Min)` (parenthesised) and `CallTable 1.5` /
 `CallTable(1.5)` read the digit-led name as one name like `CallTable 15Min`. Fixture:
 `tests/fixtures/r13_digit_table_names_paren.json`.
+
+### `TCPOpen` connection count, CR6/CR1000X (2026-10-12, fixture `tests/fixtures/r13_tcpopen_connections.json`)
+
+`TCPOpen(..., Handle, Count)` with a `Long` variable handle and a constant integer `Count` outside
+`1..N` prints `Max number of concurrent connections must be 1..N` at the statement's line, `N` being the
+total element count of the handle variable (scalar 1, `H1(2)` 2, `H1(2,2)` 4; any subscript form of the
+handle, `H1`, `H1()`, `H1(1)`, gives the same `N`). Count 0, negative, above `N`, and a missing count
+(5 arguments, read as 0: the message precedes the usual arity line) are all out of range; `Const` counts
+fold. Also inside a one-line `If` and as `R = TCPOpen(...)`. A `Boolean` handle prints nothing on
+CR6 (probed). CR300/CR350 print nothing (unchanged). Implemented in `instr_rules.check_tcpopen_connections`
+for 5-7 arguments, a once-declared `Long` handle and a constant integer count. Not done (all probed on
+CR6): a non-constant or non-integer count (`2.5`, `3.0`, a variable) adds `Parameter must be a constant
+integer: <stmt>` (and `1..1` for a variable count), 8 arguments, trailing empty arguments.

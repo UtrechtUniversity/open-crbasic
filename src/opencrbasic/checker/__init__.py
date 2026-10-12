@@ -234,6 +234,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
     _run_pass(instr_rules.check_emailrecv_destination, program, profile, diags)
+    _run_pass(instr_rules.check_tcpopen_connections, program, profile, diags, env)
     # `AddPrecise`/`MovePrecise`'s own `PrecisionVariable` argument (`instr_rules.py`'s own
     # `_PRECISION_VARIABLE_POSITIONS` docstring for the oracle evidence). Also pass 1,
     # unconditional -- oracle-confirmed the same way as the two calls just above.

@@ -1,0 +1,919 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tcpopen_connections-0-tcp0",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-0-tcp0",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-0-tcp0",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-0-tcp0",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-1-tcp1",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-1-tcp1",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-1-tcp1",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-1-tcp1",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-2-tcp2",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-2-tcp2",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-2-tcp2",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-2-tcp2",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1(1),3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-3-tcp3",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-3-tcp3",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-3-tcp3",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-3-tcp3",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-4-tcp4",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-4-tcp4",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-4-tcp4",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-4-tcp4",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-5-tcp5",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-5-tcp5",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-5-tcp5",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-5-tcp5",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,0)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-6-tcp6",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-6-tcp6",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-6-tcp6",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-6-tcp6",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,-1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-7-tcp7",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-7-tcp7",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr300-tcpopen_connections-7-tcp7",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)\n."
+  },
+  {
+   "id": "cr350-tcpopen_connections-7-tcp7",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)\n."
+  },
+  {
+   "id": "cr6-tcpopen_connections-8-tcp8",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: No Matching, or out of place ) in expression: TCPOpen (\"\",3000,30,1000,H1,3,1)."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-8-tcp8",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: No Matching, or out of place ) in expression: TCPOpen (\"\",3000,30,1000,H1,3,1)."
+  },
+  {
+   "id": "cr300-tcpopen_connections-8-tcp8",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TCPOpen (\"\",3000,30,1000,H1,3,1)\n."
+  },
+  {
+   "id": "cr350-tcpopen_connections-8-tcp8",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: TCPOpen (\"\",3000,30,1000,H1,3,1)\n."
+  },
+  {
+   "id": "cr6-tcpopen_connections-9-tcp9",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-9-tcp9",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-9-tcp9",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-9-tcp9",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-10-tcp10",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-10-tcp10",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-10-tcp10",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-10-tcp10",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-11-tcp12",
+   "logger": "cr6",
+   "source": "Const N=4\nPublic H1(3) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,N)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Max number of concurrent connections must be 1..3"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-11-tcp12",
+   "logger": "cr1000x",
+   "source": "Const N=4\nPublic H1(3) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,N)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Max number of concurrent connections must be 1..3"
+  },
+  {
+   "id": "cr300-tcpopen_connections-11-tcp12",
+   "logger": "cr300",
+   "source": "Const N=4\nPublic H1(3) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,N)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-11-tcp12",
+   "logger": "cr350",
+   "source": "Const N=4\nPublic H1(3) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,N)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-12-tcp13",
+   "logger": "cr6",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-12-tcp13",
+   "logger": "cr1000x",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-12-tcp13",
+   "logger": "cr300",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-12-tcp13",
+   "logger": "cr350",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-13-tcp14",
+   "logger": "cr6",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..4"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-13-tcp14",
+   "logger": "cr1000x",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,5)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..4"
+  },
+  {
+   "id": "cr300-tcpopen_connections-13-tcp14",
+   "logger": "cr300",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-13-tcp14",
+   "logger": "cr350",
+   "source": "Public H1(2,2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,5)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-14-tcp15",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-14-tcp15",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-14-tcp15",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-14-tcp15",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-15-tcp16",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-15-tcp16",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-15-tcp16",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-15-tcp16",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-16-tcp19",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nZed = 1\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-16-tcp19",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nZed = 1\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-16-tcp19",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nZed = 1\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zed is not defined."
+  },
+  {
+   "id": "cr350-tcpopen_connections-16-tcp19",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nZed = 1\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zed is not defined."
+  },
+  {
+   "id": "cr6-tcpopen_connections-17-tcp20",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nZed = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-17-tcp20",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nZed = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-17-tcp20",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nZed = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zed is not defined."
+  },
+  {
+   "id": "cr350-tcpopen_connections-17-tcp20",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nZed = 1\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Zed is not defined."
+  },
+  {
+   "id": "cr6-tcpopen_connections-18-tcp21",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long, Q(0)\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public H1(2) As Long, Q(0)\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-18-tcp21",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long, Q(0)\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public H1(2) As Long, Q(0)\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-18-tcp21",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long, Q(0)\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public H1(2) As Long, Q(0)\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-tcpopen_connections-18-tcp21",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long, Q(0)\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public H1(2) As Long, Q(0)\n\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-tcpopen_connections-19-tcp22",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 5: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-19-tcp22",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,4)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 5: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-19-tcp22",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-19-tcp22",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,4)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-20-tcp23",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-20-tcp23",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2"
+  },
+  {
+   "id": "cr300-tcpopen_connections-20-tcp23",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-20-tcp23",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nTCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-21-tcp24",
+   "logger": "cr6",
+   "source": "Public H1(2) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-21-tcp24",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-21-tcp24",
+   "logger": "cr300",
+   "source": "Public H1(2) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-21-tcp24",
+   "logger": "cr350",
+   "source": "Public H1(2) As Boolean\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-22-tcp26",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nIf H1 = 1 Then TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-22-tcp26",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nIf H1 = 1 Then TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-22-tcp26",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nIf H1 = 1 Then TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-22-tcp26",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nIf H1 = 1 Then TCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-23-tcp27",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nSub S\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-23-tcp27",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nSub S\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-23-tcp27",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nSub S\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-23-tcp27",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nSub S\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-24-tcp28",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nSub S(H1 As Long)\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS(H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-24-tcp28",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nSub S(H1 As Long)\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS(H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-24-tcp28",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nSub S(H1 As Long)\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS(H1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-24-tcp28",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nSub S(H1 As Long)\nTCPOpen (\"\",3000,30,1000,H1,3)\nEndSub\nBeginProg\nScan (1,Sec,3,0)\nS(H1)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-25-tcp29",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",-3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-25-tcp29",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",-3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-25-tcp29",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",-3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-25-tcp29",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",-3000,30,1000,H1,3)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-26-tcp30",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3) : TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-26-tcp30",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3) : TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-26-tcp30",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3) : TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-26-tcp30",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3) : TCPOpen (\"\",3000,30,1000,H1,2)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-27-tcp31",
+   "logger": "cr6",
+   "source": "Public H1 As Long, Foo(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\nPublic Foo(3) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-27-tcp31",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long, Foo(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\nPublic Foo(3) As Long\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1"
+  },
+  {
+   "id": "cr300-tcpopen_connections-27-tcp31",
+   "logger": "cr300",
+   "source": "Public H1 As Long, Foo(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\nPublic Foo(3) As Long\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-27-tcp31",
+   "logger": "cr350",
+   "source": "Public H1 As Long, Foo(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1,3)\nNextScan\nEndProg\nPublic Foo(3) As Long\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-28-tcp33",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-28-tcp33",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tcpopen_connections-28-tcp33",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tcpopen_connections-28-tcp33",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000)\nNextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tcpopen_connections-29-tcp34",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: Expression expects , : R = TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-29-tcp34",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: Expression expects , : R = TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr300-tcpopen_connections-29-tcp34",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : R = TCPOpen (\"\",3000,30,1000,H1)\n."
+  },
+  {
+   "id": "cr350-tcpopen_connections-29-tcp34",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : R = TCPOpen (\"\",3000,30,1000,H1)\n."
+  },
+  {
+   "id": "cr6-tcpopen_connections-30-tcp35",
+   "logger": "cr6",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: No Matching, or out of place ) in expression: R = TCPOpen (\"\",3000,30,1000,H1,3,1)."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-30-tcp35",
+   "logger": "cr1000x",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..2\nline 4: No Matching, or out of place ) in expression: R = TCPOpen (\"\",3000,30,1000,H1,3,1)."
+  },
+  {
+   "id": "cr300-tcpopen_connections-30-tcp35",
+   "logger": "cr300",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: R = TCPOpen (\"\",3000,30,1000,H1,3,1)\n."
+  },
+  {
+   "id": "cr350-tcpopen_connections-30-tcp35",
+   "logger": "cr350",
+   "source": "Public H1(2) As Long, R\nBeginProg\nScan (1,Sec,3,0)\nR = TCPOpen (\"\",3000,30,1000,H1,3,1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: R = TCPOpen (\"\",3000,30,1000,H1,3,1)\n."
+  },
+  {
+   "id": "cr6-tcpopen_connections-31-tcp38",
+   "logger": "cr6",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr1000x-tcpopen_connections-31-tcp38",
+   "logger": "cr1000x",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Max number of concurrent connections must be 1..1\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)."
+  },
+  {
+   "id": "cr300-tcpopen_connections-31-tcp38",
+   "logger": "cr300",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)\n."
+  },
+  {
+   "id": "cr350-tcpopen_connections-31-tcp38",
+   "logger": "cr350",
+   "source": "Public H1 As Long\nBeginProg\nScan (1,Sec,3,0)\nTCPOpen (\"\",3000,30,1000,H1)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , : TCPOpen (\"\",3000,30,1000,H1)\n."
+  }
+ ]
+}
