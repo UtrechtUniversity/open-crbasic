@@ -1909,3 +1909,20 @@ After an endless `Scan`, `End` and `End Prog` (any whitespace between the words,
 only. R14, `tests/fixtures/r14_end_prog_alias.json` (audited 0 differing); fuzz mode_diff reproducers
 `cr6/mode_diff/901f027f907a`, `cr1000x/mode_diff/64c82a8749c9`, `cr300/mode_diff/158bf4c5872b`.
 Not modelled: `End 1` (`Illegal END or EXIT 1.`) and `End Prog 1` (`Too many parameters:  1.`).
+
+### `NewFile`: the third argument is not resolved (CR6, CR1000X)
+
+`NewFile(fa,"CRD:x.crb",Nope)` (also `Nope(2)`, `Nope+1`) with an undeclared third argument compiles
+clean on CR6 and CR1000X; CR300/CR350 still report `Nope is not defined.`. The first and second
+arguments are resolved as usual. Not modelled: `NewFile(fa,Nope,nf)` also gets `FileName parameter
+must be type String.` on CR6/CR1000X. R14, `tests/fixtures/r14_newfile_third_arg.json` (audited 0
+differing), fuzz reproducer `cr1000x/false_reject/802ff201c036`
+(`_UNDEFINED_CHECK_EXEMPT_POSITIONS_CR6X`).
+
+### `DataInterval` with a String `TintoInt` or `Interval` (CR300, CR350)
+
+`DataInterval("fuzz",15,Sec,10)` and `DataInterval(0,"fuzz",Sec,10)` compile clean on CR300/CR350
+(CR6/CR1000X: `DataInterval TintoInt and Interval parameters must be non-negative`, unchanged). The
+table builder raised `ValueError` from `float("fuzz")` (an `IMPLEMENTATION EXCEPTION`, reported as
+`Internal error`); the string is now taken as 0. R14, `tests/fixtures/r14_datainterval_string_arg.json`
+(audited 0 differing), fuzz reproducer `cr350/implementation_exception/25a45bf41175`.

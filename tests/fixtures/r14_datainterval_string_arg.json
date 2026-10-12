@@ -1,0 +1,611 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r14_datainterval_string_arg-0",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-1",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"fuzz\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-2",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,\"fuzz\",10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-3",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-4",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(Nope,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-5",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10.5)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-6",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0.5,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-7",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15.5,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-8",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-9",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-10",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,0,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-11",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,a>1,a<1,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-12",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(\"fuzz\",a>1,a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-13",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,\"fuzz\",a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-14",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",\"fuzz\",\"fuzz\",\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-15",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10) : DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Only one DataInterval allowed within DataTable..EndTable.\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-16",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"15\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-17",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(-1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-18",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,-15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-19",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,-10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r14_datainterval_string_arg-20",
+   "logger": "cr6",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,1e30,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-0",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-1",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"fuzz\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-2",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,\"fuzz\",10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-3",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-4",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(Nope,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-5",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10.5)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-6",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0.5,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-7",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15.5,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-8",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-9",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-10",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,0,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-11",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,a>1,a<1,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-12",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(\"fuzz\",a>1,a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-13",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,\"fuzz\",a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-14",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",\"fuzz\",\"fuzz\",\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-15",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10) : DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Only one DataInterval allowed within DataTable..EndTable.\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-16",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"15\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-17",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(-1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-18",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,-15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-19",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,-10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r14_datainterval_string_arg-20",
+   "logger": "cr1000x",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,1e30,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: DataInterval TintoInt and Interval parameters must be non-negative"
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-0",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-1",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"fuzz\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-2",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,\"fuzz\",10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-3",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-4",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(Nope,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Variable illegal in Parameter: Nope.\nline 4: Too many parameters:  a.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-5",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10.5)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-6",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0.5,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-7",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15.5,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-8",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  a.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-9",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-10",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,0,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-11",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,a>1,a<1,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-12",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(\"fuzz\",a>1,a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-13",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,\"fuzz\",a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-14",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",\"fuzz\",\"fuzz\",\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-15",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10) : DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Only one DataInterval allowed within DataTable..EndTable."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-16",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"15\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-17",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(-1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-18",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,-15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-19",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,-10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_datainterval_string_arg-20",
+   "logger": "cr300",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,1e30,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-0",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-1",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"fuzz\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-2",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,\"fuzz\",10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-3",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-4",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(Nope,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Nope is not defined.\nline 3: Variable illegal in Parameter: Nope.\nline 4: Too many parameters:  a.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-5",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10.5)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-6",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0.5,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-7",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15.5,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-8",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid or missing parameter.\nline 4: Too many parameters:  a.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-9",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-10",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,0,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-11",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,a>1,a<1,\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-12",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(\"fuzz\",a>1,a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-13",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataEvent(0,\"fuzz\",a<1,0)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-14",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(\"fuzz\",\"fuzz\",\"fuzz\",\"fuzz\")\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-15",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,10) : DataInterval(\"fuzz\",15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Only one DataInterval allowed within DataTable..EndTable."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-16",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,\"15\",Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-17",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(-1,15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-18",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,-15,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-19",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,15,Sec,-10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_datainterval_string_arg-20",
+   "logger": "cr350",
+   "source": "Public a\nDataTable (Test,1,-1)\n  DataInterval(0,1e30,Sec,10)\n  Sample (1,a,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,0,0)\n    CallTable Test\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

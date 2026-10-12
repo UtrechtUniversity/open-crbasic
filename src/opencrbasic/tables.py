@@ -1131,6 +1131,10 @@ def _interval_from_args(args: list, env: consteval.Env, into_idx: int, val_idx: 
     into_val = _fold(args[into_idx], env, 0) if len(args) > into_idx else 0
     interval_val = _fold(args[val_idx], env, 0) if len(args) > val_idx else 0
     ns_per_unit = _UNIT_NS.get(unit_name, _UNIT_NS["SEC"])
+    # A String `TintoInt`/`Interval` (`DataInterval("x",15,Sec,10)`) compiles on CR300/CR350
+    # (oracle, 2026-10-12): it is taken as 0 here rather than crashing in `float()`.
+    into_val = into_val if isinstance(into_val, (int, float)) else 0
+    interval_val = interval_val if isinstance(interval_val, (int, float)) else 0
     into_ns = int(round(float(into_val or 0) * ns_per_unit))
     interval_ns = int(round(float(interval_val or 0) * ns_per_unit))
     into = (into_ns // 1_000_000_000, into_ns % 1_000_000_000)
