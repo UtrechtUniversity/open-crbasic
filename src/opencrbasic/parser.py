@@ -216,19 +216,63 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
     if len(body) == len(real) or not body or body[0].kind != "IDENT":
         return tokens
     head = body[0].upper
-    trailing_only = all(semi(t) for t in real[real.index(body[-1]) + 1:])
+    trailing_only = real[:len(body)] == body   # every `;` follows the last other token
+    first = real[0] is body[0]
+
+    def glued(word: str) -> bool:   # `Then;`, `Next;`: the `;` makes the keyword part of a longer word
+        return any(semi(t) and a.kind == "IDENT" and a.upper == word and t.col == a.col + len(a.text)
+                   for a, t in zip(real, real[1:]))
+
     if head == "NEXT":
-        ok = trailing_only and real[0] is body[0]
+        ok = first and not glued("NEXT")
+    elif head == "ENDSELECT":
+        if first and semi(real[1]) and not glued("ENDSELECT"):
+            j = 1   # only the first gap-free group of `;` is skipped (`EndSelect ; ;` is `Too many parameters:  ;.`)
+            while j + 1 < len(real) and semi(real[j + 1]) and real[j + 1].col == real[j].col + 1:
+                j += 1
+            return [real[0], *real[j + 1:], *eof]
+        ok = False
+    elif head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"] and first and real[:2] == body:
+        ok = True    # `Case Else ;` (all four loggers)
+    elif (head == "ELSEIF" and body[-1].upper == "THEN" and real[:len(body)] == body and first
+          and len(body) > 2 and not glued("THEN")):
+        ok = True    # `ElseIf c Then ;` (all four loggers)
+    elif head in ("SUB", "FUNCTION"):
+        ok = trailing_only and first and len(body) > 1   # `Sub S ;`, `Function F(a) ;` (all four loggers)
     elif profile.name not in ("cr6", "cr1000x"):
         ok = False
-    elif head == "IF":
+    elif head in ("IF", "ELSEIF"):
         then = max((i for i, t in enumerate(body) if t.kind == "IDENT" and t.upper == "THEN"), default=-1)
-        ok = then >= 0 and then + 1 < len(body) and _is_assignment(body[then + 1:])
-    elif head in ("CONST", "FOR", "WHILE", "SELECT"):
-        ok = trailing_only and real[0] is body[0]
+        if then < 0 or not first or glued("THEN") or glued("ELSE"):
+            ok = False   # also `; If c Then`
+        elif then + 1 < len(body):
+            ok = _is_assignment(body[then + 1:])
+        else:
+            ok = head == "ELSEIF" or not any(semi(t) for t in real[real.index(body[then]) + 1:])
+    elif head == "CONST":
+        eq = next((i for i, t in enumerate(real) if t.kind == "OP" and t.text == "="), len(real))
+        ok = first and not any(semi(t) for t in real[:eq])   # `Const ; K = 1`, `Const K ; = 1` are rejected
+    elif head in ("FOR", "WHILE", "SELECT"):
+        ok = first
+    elif head in ("DO", "LOOP", "CASE"):
+        # (`Do ; While c` and `Loop ; Until c` are rejected: only the condition skips a `;`)
+        ok = (first and len(body) > 1 and not (head == "CASE" and [t.upper for t in body[1:]] == ["ELSE"])
+              and (head == "CASE" or real[1] is body[1]))
     else:
-        ok = head not in profile.instructions and _is_assignment(body)
-    return body + eof if ok else tokens
+        member = len(body) > 1 and body[1].kind == "OP" and body[1].text == "."   # `Public.X = 1 ;`
+        ok = (head not in profile.instructions or member and head in ("PUBLIC", "DIM")) and _is_assignment(body)
+    if ok:
+        return body + eof
+    if profile.name in ("cr6", "cr1000x") and head not in ("SUB", "FUNCTION"):
+        depth, kept = 0, []
+        for t in real:
+            if t.kind == "OP" and t.text in "()":
+                depth += 1 if t.text == "(" else -1
+            if not (semi(t) and depth > 0):
+                kept.append(t)
+        if len(kept) < len(real):
+            return kept + eof
+    return tokens
 
 
 _SELF_CLOSING_CALLS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF", "LINENUM", "SIGNATURE"})
@@ -321,6 +365,7 @@ class _Parser:
         self.program = S.Program(name="")
         self.line_map: dict[str, dict[int, list[source.LineSpan]]] = {}  # reported line -> physical
         self._done = False  # set once a top-level EndProg is seen; see `run()`
+        self._inline_body = False  # parsing the statements of a one-line `If`
         self._in_struct = False  # inside StructureType ... EndStructureType
         self.function_names: set[str] = set()
         self._collect = False
@@ -742,6 +787,8 @@ class _Parser:
                 spans.append((start_col, p.peek().col))
         elif not p.at_end():
             args, spans = self._parse_bare_arglist(p, line, file)
+            if p.is_op(";") and kw == "EXIT" and not self._inline_body:
+                self._absorb_trailing(p, args, spans, line, file, kw)
         if kw == "END" and len(args) == 1 and isinstance(args[0], S.Name) and args[0].name.upper() == "TABLE":
             # `End Table` is `EndTable` on all four loggers (oracle, 2026-10-08; docs/fuzz-findings.md).
             return S.Instruction(line, file, keyword="ENDTABLE")
@@ -764,6 +811,19 @@ class _Parser:
                 pieces[-1].append(t)
         params = self.profile.instructions[kw]["params"]
         found: list[tuple[S.Expr, tuple[int, int]]] = []
+        if (len(args) >= len(params) and rest[0].kind == "OP" and rest[0].text == ";"
+                and not self._inline_body):
+            # `Battery(X) ;`: a `;` after the last parameter is one more (gap-free) parameter
+            # (`Too many parameters:  ;.`, oracle, all four loggers, 2026-10-12)
+            end = 1
+            while end < len(rest) and rest[end].kind == "OP" and rest[end].text == ";" \
+                    and rest[end].col == rest[end - 1].col + 1:
+                end += 1
+            text = ";" * end
+            args.append(S.Name(line, file, name=text))
+            spans.append((rest[0].col, rest[0].col + end))
+            p.i = len(p.toks) - 1
+            return
         for piece in pieces:
             slot = len(args) + len(found)
             const_slot = slot >= len(params) or params[slot] in (4, 104)
@@ -895,6 +955,10 @@ class _Parser:
             ignored = self._absorb_sub_tail(p, args, line, file)
             return S.Call(line, file, name=name_tok.text, args=args, explicit=True,
                           tail_ignored=ignored)
+        elif p.is_op(";") and not self._inline_body:
+            # `Call Foo ;` links to the sub named `Foo;` (`structure._call_link_name`)
+            args = [S.Name(line, file, name=";")]
+            p.i = len(p.toks) - 1
         elif not p.at_end():
             args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
@@ -1100,7 +1164,11 @@ class _Parser:
                     start = min(start, bounds[0])
                 end = max(end, bounds[1])
             verbatim = outer[start:end] if outer and len(outer) >= end else ""
-            stmt = self._parse_segment(seg, line, file, verbatim or " ".join(t.text for t in real))
+            self._inline_body = True
+            try:
+                stmt = self._parse_segment(seg, line, file, verbatim or " ".join(t.text for t in real))
+            finally:
+                self._inline_body = False
             if verbatim:
                 if hasattr(stmt, "text"):
                     stmt.text = verbatim

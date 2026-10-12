@@ -6073,3 +6073,43 @@ init `1 4` -> ` 1 4` (leading blank kept), `To (3` -> `No Matching, or out of pl
 `To` expression is `Invalid, or out of place expression: .` (all four). Not done: both init and `To`
 empty prints two lines (we print one); `For I = 1 To Step 2` is `Invalid symbol in expression: Step 2.`
 on CR6/CR1000X (we print Incomplete).
+
+## Round 14: `;` in every expression context (2026-10-12, review r14 items R14-4, R14-6)
+
+Oracle, fixture `tests/fixtures/r14_semicolon.json` (925 cases, four loggers). The model is the one of
+round 13, widened: the real compilers skip `;` wherever an expression is read, and keep it as a token
+after instruction and keyword statements.
+
+- CR6/CR1000X skip every `;` of: a multi-line `If c ; Then` and `ElseIf c ; Then` (also `ElseIf c Then ;`),
+  `Case c ;` (any position inside the case list), `Do While|Until c ;`, `Loop While|Until c ;`, `While`,
+  `For` (init, `To` and `Step` values), `Select Case`, `Const` (value side only: `Const ; K = 1` and
+  `Const K ; = 1` are rejected), `Sub S ;` / `Function F(a) ;` (trailing only), `Public.X = 1;`, and any `;`
+  inside parentheses of a call or instruction (`Delay(1 ;,1,Sec)`, `Call Bar(1 ;)`, `Bar(1 ;)`; not in a
+  `Sub` header: `Sub S(a ;)` is `Invalid Variable declaration ;.`). The rest of the statement is then
+  judged as if the `;` were absent, with the raw text echoed: `X = 1 ; Y = 2` and `Do While X = 1 ; Y = 2`
+  are `Incomplete expression`. Not skipped: a `;` before the statement keyword (`; If c Then`), `Do ; While c`,
+  `Loop ; Until c`, and a `;` glued to a keyword (`Then;`, `Next;`, `EndSelect;`, `Else;` in a one-line `If`:
+  one longer word, `Incomplete expression: X Then;.`).
+- All four loggers: `EndSelect ;`, `Case Else ;`, `ElseIf c Then ;`, `Next ; Y`, `Sub S ;` compile. After
+  `EndSelect` only the first gap-free group is skipped (`EndSelect ; ;` is `Too many parameters:  ;.`).
+- Kept as a token (all four loggers): an instruction call after its last parameter is a gap-free extra
+  parameter, `Delay(1,1,Sec) ;` and `Battery(X) ;` are `Too many parameters:  ;.` (`;;` for `;;`), as is
+  `Exit Do ;`. `Call Foo ;` links to the sub `Foo;` (`Foo; is not declared as a Subroutine.`). Not modelled
+  (rejected on both sides, other text): `Else ;`, `Do ;`, `Loop ;` (`Illegal parameter ;, expecting constant
+  integer.`), `EndIf ;`/`End Sub ;` (`Too many parameters:  ;.`), `Delay ;`, `CallTable T ;`, `Delay(1) ;`.
+- The pass-1 expression scan (`structure._pass1_scan`) reads a statement without the `;` the parser skipped,
+  which gives `X = 1 ; Y = 2` its `Incomplete expression` echo.
+- CR300/CR350 (`Invalid symbol in expression:` instead of the fallback): a `;` in an If/ElseIf/Case/Do/Loop/While/
+  Select condition echoes the condition alone (`Do While X = 1 ;` -> `X = 1 ;.`, one-line `If X ; = 1 Then Y = 2`
+  -> `X ; = 1 .`); a `For` header or `Const` with a `;` is that single message echoing the value that holds the
+  first `;` up to the next `To`/`Step` (`Step 1 ;` -> `1 ;.`, `For Y = 1 ; To 3` -> ` 1 ;.`, `Const K = ; 1` -> `; 1.`;
+  `cr3xx.semicolon_headers`). A `;` before the `=` of an assignment is the generic fallback
+  (`A(1;) = 2`, `X ; = 1`). `Case Else ;`, `ElseIf c Then ;` and `Sub S ;` are accepted.
+- `Public.X = 1` (a Public variable through its table) compiled on all four loggers and was rejected by us
+  (`Public` is in `profile.instructions`); it parses as an assignment now. An unknown member
+  (`Public.Nope = 1`, as already `Y = Public.Nope` and `Status.Nope = 1`) is accepted by us and rejected by the
+  real compilers (`Could not find Public.Nope(1).`), not modelled.
+- Open, not `;` rules, found while probing: a one-line `ElseIf c Then Z = 1` (body after `Then`) compiles on all
+  four loggers and is rejected by us; `X AND Y = 1 ;` is item R14-3; `If c Then ;` adds an unwanted
+  `IF or SELECT ... without NEXT SCAN` cascade after the correct first line; `X = A(1 2)` (array) is
+  `No Matching ...` on the real compilers and `Incomplete expression` here.

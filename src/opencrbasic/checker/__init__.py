@@ -670,6 +670,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(cr3xx.check_tcpopen_handle, program, profile, diags)
     _run_pass(cr3xx.add_string_illegal, program, profile, diags)
     _run_pass(warnings.add_truncate_warnings, _with_inline(program), profile, diags)
+    _run_pass(cr3xx.semicolon_headers, program, profile, diags)
 
     def is_constant(expr: S.Expr | None) -> bool:
         return consteval.is_constant(expr, env)

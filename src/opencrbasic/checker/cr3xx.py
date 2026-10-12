@@ -1618,6 +1618,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                 cond = cond if cond and cond.strip() else None
                 scan_text = stmt.text
                 inline = structure.inline_if_condition(stmt.text) if cond is None else None
+                if inline and ";" in inline:
+                    cond, inline = inline, None   # `If X ; = 1 Then Y = 2`: the condition alone
                 if inline:
                     # `If X Y Then Y = 1`: an unreadable condition is reported alone, as for a block
                     # `If` (oracle, CR300/CR350 and CR6, 2026-10-10)
@@ -1670,6 +1672,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                         head = "Expression expects , : "
                     # a `While`/`Do While|Until`/`Loop While|Until` condition echoes alone, no
                     # line-end newline (oracle, CR300/CR350, 2026-10-10)
+                    if head is None and ";" in cond:   # (oracle, 2026-10-12: `Do While X ;`, `Case 1 ;`)
+                        head = "Invalid symbol in expression: "
                     d = dataclasses.replace(d, message=(head or _GENERIC_FALLBACK_PREFIX) + cond + ".")
                     changed = True
                 elif head:
@@ -2067,6 +2071,53 @@ def order_unterminated_string(program: S.Program, profile, diags: Diagnostics) -
         at = diags.items.index(own[0])
         diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
         diags.items[at:at] = [*names, Diagnostic("error", stmt.line, _STRING_END_QUOTE, stmt.file, True), final]
+
+
+def semicolon_headers(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: a `;` in a `For` header or `Const` value is one `Invalid symbol in expression:
+    <value> ;.` that replaces everything else reported for the line; the echo runs from the value
+    that holds the first `;` (after `=`, `To` or `Step`) to the next `To`/`Step` word or the end of the
+    statement, the blank before that word excluded (oracle, 2026-10-12:
+    `For Y = 1 To 3 Step 1 ;` -> `1 ;`, `For Y = 1 ; To 3` -> ` 1 ;`, `Const K = ; 1` -> `; 1`)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Unparsed) or ";" not in stmt.text:
+            continue
+        m = re.match(r"\s*(FOR|CONST)\b", stmt.text, re.I)
+        if not m:
+            continue
+        try:
+            toks = [t for t in lexer.tokenize(stmt.text, 0) if t.kind != "EOF"]
+        except lexer.LexError:
+            continue
+        semi = next((i for i, t in enumerate(toks) if t.kind == "OP" and t.text == ";"), None)
+        if semi is None or semi < 2:
+            continue
+        if m.group(1).upper() == "CONST":
+            eq = next((t for t in toks if t.kind == "OP" and t.text == "="), None)
+            if eq is None:
+                continue
+            echo = stmt.text[(toks[semi].col if toks[semi].col < eq.col else eq.col + 1):].lstrip()
+        else:
+            start = None
+            for t in toks[:semi]:
+                if t.kind == "OP" and t.text == "=":
+                    start = t.col + 1
+                elif t.kind == "IDENT" and t.upper in ("TO", "STEP"):
+                    rest = stmt.text[t.col + len(t.text):]
+                    start = t.col + len(t.text) + len(rest) - len(rest.lstrip())
+            if start is None:
+                continue
+            stop = next((t for t in toks[semi:] if t.kind == "IDENT" and t.upper in ("TO", "STEP")), None)
+            end = len(stmt.text) if stop is None else stop.col - (stop.col > 0 and stmt.text[stop.col - 1] in " \t")
+            echo = stmt.text[start:end]
+        key = (stmt.line, stmt.file)
+        at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), None)
+        if at is None:
+            continue
+        diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
+        diags.items.insert(at, Diagnostic("error", stmt.line, f"Invalid symbol in expression: {echo}.", stmt.file, True))
 
 
 def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:

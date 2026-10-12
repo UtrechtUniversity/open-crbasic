@@ -803,13 +803,23 @@ def _out_of_place(profile, text: str, at_eol: bool = True) -> str:
 
 
 def _semicolon_assignment(text: str) -> bool:
+    """An assignment whose `;` all come after its `=`: before the `=` it is the generic fallback."""
     from .. import parser
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
     except lexer.LexError:
         return False
-    return toks[:1] != [] and not (toks[0].kind == "OP" and toks[0].text == ";") and any(
-        t.kind == "OP" and t.text == ";" for t in toks) and parser._is_assignment(
+    if not toks or (toks[0].kind == "OP" and toks[0].text == ";"):
+        return False
+    depth = 0
+    for t in toks:
+        if t.kind == "OP" and t.text in "()":
+            depth += 1 if t.text == "(" else -1
+        elif t.kind == "OP" and t.text == ";":
+            return False   # a `;` before the assignment operator
+        elif depth == 0 and t.kind == "OP" and t.text in parser._ASSIGN_OPS:
+            break
+    return any(t.kind == "OP" and t.text == ";" for t in toks) and parser._is_assignment(
         [t for t in toks if not (t.kind == "OP" and t.text == ";")])
 
 
@@ -1970,6 +1980,18 @@ def _invalid_assignment(toks) -> bool:
     return False
 
 
+def _semicolons_dropped(text: str, profile) -> bool:
+    """Whether the parser read this statement with its `;` tokens skipped (`parser._drop_semicolons`)."""
+    if ";" not in text:
+        return False
+    from .. import parser
+    try:
+        toks = lexer.tokenize(text, 0)
+    except lexer.LexError:
+        return False
+    return len(parser._drop_semicolons(toks, profile)) < len(toks)
+
+
 def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | None:
     """Replays the CR6/CR1000X pass-1 left-to-right statement scan (`docs/checker.md` "Pass-1
     fallback: statements that start with a known word") over an unparsable statement.
@@ -1979,11 +2001,14 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     not oracle-probed. `kind` names the message: `fallback`, `incomplete`, `no_matching`,
     `symbol`."""
     cond = condition_part(text)
+    drop = _semicolons_dropped(text, profile)
     if cond is not None:
         try:
             ctoks = [t for t in lexer.tokenize(cond, 0) if t.kind != "EOF"]
         except lexer.LexError:
             return None
+        if drop:
+            ctoks = [t for t in ctoks if not (t.kind == "OP" and t.text == ";")]
         if not ctoks:
             # a bare keyword has no expression at all (oracle, CR6/CR1000X, 2026-10-08); `If Then`,
             # `If 'c` and `Select Case` echo the empty condition
@@ -1995,6 +2020,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                           open_fallback=True)
     try:
         toks = [t for t in lexer.tokenize(text, 0) if t.kind != "EOF"]
+        if drop:
+            toks = [t for t in toks if not (t.kind == "OP" and t.text == ";")]
     except lexer.LexError as e:
         # an unterminated string: the left-to-right scan has already failed on what precedes it
         # (`X here " + 1`, `string here "`; oracle, CR6/CR1000X, 2026-10-10)
