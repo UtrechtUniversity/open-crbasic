@@ -1117,10 +1117,12 @@ class _Parser:
         params: list[S.Param] = []
         if p.is_op("("):
             p.next()
-            if not p.is_op(")"):
+            if not p.is_op(")") and not p.at_end():
                 params.append(self._parse_param(p, line, file))
                 while p.is_op(","):
                     p.next()
+                    if p.at_end():
+                        break  # a header cut off at a comma is accepted (oracle, 2026-10-12)
                     params.append(self._parse_param(p, line, file))
             p.expect_close(")")
         return_type = None
@@ -1156,8 +1158,8 @@ class _Parser:
         strsize = None
         if p.is_ident("AS"):
             p.next()
-            type_tok = p.expect_ident()
-            vtype = type_tok.upper
+            type_tok = None if p.at_end() else p.expect_ident()  # `b As` cut off at the line end
+            vtype = type_tok.upper if type_tok else None
             if p.is_op("!"):
                 p.next()  # pointer type (see docs/frontend.md)
                 vtype += "!"

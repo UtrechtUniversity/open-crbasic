@@ -1,0 +1,639 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_sub_header_cut-0",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-1",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-2",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-3",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-4",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As Long,\nc As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: c As Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-5",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As Long,\nc As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: c As Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-6",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As Long,\nc As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: c is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: c As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-7",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As Long,\nc As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: c is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: c As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-8",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b\nAs Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: As Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-9",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b\nAs Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: As Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-10",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b\nAs Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-11",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b\nAs Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-12",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long,\nb As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b As Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-13",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long,\nb As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b As Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-14",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long,\nb As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: b As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-15",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long,\nb As Long)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: As is not defined.\nline 3: Invalid, or out of place expression: b As Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-16",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-17",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-18",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-19",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-20",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-21",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-22",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-23",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-24",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-25",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-26",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-27",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-28",
+   "logger": "cr6",
+   "source": "Public x\nFunction S1(a As Long, b As\nLong)\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-29",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction S1(a As Long, b As\nLong)\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-30",
+   "logger": "cr300",
+   "source": "Public x\nFunction S1(a As Long, b As\nLong)\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-31",
+   "logger": "cr350",
+   "source": "Public x\nFunction S1(a As Long, b As\nLong)\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-32",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1 +\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long).\nline 4: Invalid, or out of place expression: x = 1 +."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-33",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1 +\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long).\nline 4: Invalid, or out of place expression: x = 1 +."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-34",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1 +\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 4: Invalid, or out of place expression: x = 1 +\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-35",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = 1 +\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 4: Invalid, or out of place expression: x = 1 +\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-36",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong) foo\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) foo."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-37",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong) foo\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) foo."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-38",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong) foo\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) foo\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-39",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong) foo\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) foo\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-40",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-41",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-42",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-43",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-44",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-45",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-46",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-47",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-48",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-49",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-50",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-51",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-52",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-53",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-54",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-55",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long,\nb)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-56",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-57",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-58",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-59",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-60",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long,\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-61",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long,\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-62",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long,\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-63",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long,\n)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-64",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-65",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-66",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-67",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-68",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = a\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-69",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = a\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-70",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = a\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-71",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As\nLong)\nx = a\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long)\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-72",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long,\nb)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b).\nline 4: Invalid symbol in expression: x = b."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-73",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long,\nb)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b).\nline 4: Invalid symbol in expression: x = b."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-74",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long,\nb)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 4: b is not defined.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-75",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long,\nb)\nx = b\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b)\n.\nline 4: b is not defined.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-76",
+   "logger": "cr6",
+   "source": "Public x\nFunction F1(a As Long,\nb) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b) As Long."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-77",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F1(a As Long,\nb) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: b) As Long."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-78",
+   "logger": "cr300",
+   "source": "Public x\nFunction F1(a As Long,\nb) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b) As Long\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-79",
+   "logger": "cr350",
+   "source": "Public x\nFunction F1(a As Long,\nb) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: b is not defined.\nline 3: Invalid, or out of place expression: b) As Long\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-80",
+   "logger": "cr6",
+   "source": "Public x\nFunction F1(a As Long, b As\nLong) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) As Long."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-81",
+   "logger": "cr1000x",
+   "source": "Public x\nFunction F1(a As Long, b As\nLong) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) As Long."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-82",
+   "logger": "cr300",
+   "source": "Public x\nFunction F1(a As Long, b As\nLong) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) As Long\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-83",
+   "logger": "cr350",
+   "source": "Public x\nFunction F1(a As Long, b As\nLong) As Long\nReturn 1\nEndFunction\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Invalid, or out of place expression: Long) As Long\n.\nline 7: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-r13_sub_header_cut-84",
+   "logger": "cr6",
+   "source": "Public x\nSub S1(a As Long, b As Garbage\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Garbage not supported\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr1000x-r13_sub_header_cut-85",
+   "logger": "cr1000x",
+   "source": "Public x\nSub S1(a As Long, b As Garbage\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Garbage not supported\nline 3: Invalid, or out of place expression: Long)."
+  },
+  {
+   "id": "cr300-r13_sub_header_cut-86",
+   "logger": "cr300",
+   "source": "Public x\nSub S1(a As Long, b As Garbage\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Garbage not supported\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-r13_sub_header_cut-87",
+   "logger": "cr350",
+   "source": "Public x\nSub S1(a As Long, b As Garbage\nLong)\nEndSub\nBeginProg\n  Scan (1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Variable Type Garbage not supported\nline 3: Invalid, or out of place expression: Long)\n.\nline 6: Too many parameters:  Sec."
+  }
+ ]
+}

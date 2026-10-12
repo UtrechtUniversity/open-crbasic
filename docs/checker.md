@@ -5577,3 +5577,16 @@ are `Invalid or missing parameter.`); a const-family symbol still wins over the 
 accepts) prints the symbol, real prints the shortfall; an extra argument with adjacent operands
 (`PanelTemp (x, 15000, Zork Y)`, `3 4`) is `Too many parameters:  <first token>.` in the real compiler;
 `PanelTemp (x y, 15000, 3 4)` page-faults the real CR6Comp (no verdict).
+
+## Round 13, all loggers: a `Sub`/`Function` header cut off at the end of the line is accepted (`chm/strcomp_3`; fixture `r13_sub_header_cut.json`)
+
+Oracle runs of 2026-10-12, all four loggers. The CHM wraps `Sub SortStr(SrcPtr As Long,Swath As Long,Order As` /
+`Long)`. The header line itself is silent whatever the cut: after `As` (`b As`), after a comma
+(`Sub S1(a As Long,`), after the opening parenthesis (`Sub S1(`); the parameters read so far are
+declared (`x = b` in the body after `b As`-cut is fine, after `a As Long,` the missing `b` is
+`Invalid symbol in expression: x = b.`). The continuation line is an ordinary statement
+(`Long).`, `b).`, `10).` generic fallback; a lone `)` compiles). The parser rejected the header at
+the cut and the generic fallback printed the header line (and `Function` headers lost their body:
+`Return outside of Function.`). Fixed in `parser._parse_subdef`/`_parse_param`. Not done: a header cut
+after `As String *` (real `Size of string missing.`), inside `a(` (real `a( is missing the ) character.`), after
+`a =` (real `Required parameter a cannot be initialized.`, CR300 prints `p`) or after `Optional` stay as before.
