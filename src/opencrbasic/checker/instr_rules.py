@@ -10,6 +10,7 @@ module docstring). Rules and oracle evidence: `docs/checker.md` (the required-pa
 
 from __future__ import annotations
 
+import math
 import re
 import struct
 
@@ -1149,9 +1150,11 @@ def check_sdm_address(program: S.Program, profile, diags: Diagnostics, env: cons
             is_float = value != int(value) if abs(value) < 2**63 else True
         if is_float or not -2**31 <= value < 2**31:
             try:
-                value = struct.unpack("f", struct.pack("f", value))[0]
-            except OverflowError:   # float32 +inf saturates to Long max (255); -inf is 0
-                value = 2**31 - 1 if value > 0 else 0
+                rounded = struct.unpack("f", struct.pack("f", value))[0]
+            except OverflowError:   # some CPython builds raise on float32 overflow, others return +-inf
+                rounded = math.copysign(math.inf, value)
+            # float32 +inf saturates to Long max (255); -inf is 0
+            value = (2**31 - 1 if rounded > 0 else 0) if math.isinf(rounded) else rounded
             if not -2**31 <= value < 2**31:
                 continue
         address = int(value) & 0xFF

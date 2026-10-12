@@ -1349,6 +1349,11 @@ float-valued throughout, so only a literal's own spelling (or a fractional resul
 constant as float: an integer-valued expression that contains a decimal literal
 (`2147483520.0+15`; the real compiler says 128, we say 143) keeps the exact-integer reading.
 Reproducer: `tests/corpus/fuzz/cr6/false_reject/ab0c3e6336e7.CR6`.
+`struct.pack("f", 1e300)` raises `OverflowError` on some CPython builds (x86 Linux, the original
+machine) and returns `inf` on others (Apple Silicon, CPython 3.13.12, observed 2026-10-12);
+`check_sdm_address` handles both, so the `1e300` -> 255 case of `r5_sdm_address_float32` holds on
+either (oracle re-probed on the arm64/Wine machine: `1e300`, `1e39`, `3.5e38` give 255; `3.4e38`,
+`-1e300`, `-3.5e38`, `1e10` are accepted).
 
 ### SequentialMode: no scan-budget error, no busy-scan calibration warning
 
