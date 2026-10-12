@@ -1,0 +1,1303 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-include_prefix-0-pre-foobar-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo Bar.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-0-pre-foobar-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo Bar.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-0-pre-foobar-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Foo is not defined.\n<CPU:l.crb> line 2: Bar is not defined.\n<CPU:l.crb> line 2: Invalid, or out of place expression: Foo Bar\n."
+  },
+  {
+   "id": "cr350-include_prefix-0-pre-foobar-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Foo is not defined.\n<CPU:l.crb> line 2: Bar is not defined.\n<CPU:l.crb> line 2: Invalid, or out of place expression: Foo Bar\n."
+  },
+  {
+   "id": "cr6-include_prefix-1-pre-bare-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-1-pre-bare-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Foo.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-1-pre-bare-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Foo is not defined.\n<CPU:l.crb> line 2: Invalid, or out of place expression: Foo\n."
+  },
+  {
+   "id": "cr350-include_prefix-1-pre-bare-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nFoo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Foo is not defined.\n<CPU:l.crb> line 2: Invalid, or out of place expression: Foo\n."
+  },
+  {
+   "id": "cr6-include_prefix-2-pre-paren-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr1000x-include_prefix-2-pre-paren-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr300-include_prefix-2-pre-paren-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: 1,2."
+  },
+  {
+   "id": "cr350-include_prefix-2-pre-paren-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\n(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: 1,2."
+  },
+  {
+   "id": "cr6-include_prefix-3-pre-incompl-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr1000x-include_prefix-3-pre-incompl-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr300-include_prefix-3-pre-incompl-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = 1 +\n."
+  },
+  {
+   "id": "cr350-include_prefix-3-pre-incompl-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = 1 +\n."
+  },
+  {
+   "id": "cr6-include_prefix-4-pre-next-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNext i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NEXT without FOR.\nline 2: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-4-pre-next-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNext i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NEXT without FOR.\nline 2: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-4-pre-next-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNext i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NEXT without FOR.\nline 2: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-4-pre-next-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNext i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NEXT without FOR.\nline 2: NEXT illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-5-pre-scanbad-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(999999999999,msec,2,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-5-pre-scanbad-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(999999999999,msec,2,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan Interval parameter must be a non-negative integer\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-5-pre-scanbad-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(999999999999,msec,2,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scans > 10mSec must be a multiple of 10mSec.\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-5-pre-scanbad-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(999999999999,msec,2,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scans > 10mSec must be a multiple of 10mSec.\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-6-pre-scan-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(1,Sec,0,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-6-pre-scan-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(1,Sec,0,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-6-pre-scan-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(1,Sec,0,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-6-pre-scan-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nScan(1,Sec,0,0)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Scan illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-7-pre-if-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nIf X Then\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-7-pre-if-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nIf X Then\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-7-pre-if-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nIf X Then\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-7-pre-if-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nIf X Then\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: If illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-8-pre-endif-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-8-pre-endif-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-8-pre-endif-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-8-pre-endif-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: END IF without IF or END SELECT without SELECT.\nline 2: EndIf illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-9-pre-else-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nElse\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Else with no If."
+  },
+  {
+   "id": "cr1000x-include_prefix-9-pre-else-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nElse\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Else with no If."
+  },
+  {
+   "id": "cr300-include_prefix-9-pre-else-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nElse\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Else with no If."
+  },
+  {
+   "id": "cr350-include_prefix-9-pre-else-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nElse\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Else with no If."
+  },
+  {
+   "id": "cr6-include_prefix-10-pre-loop-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nLoop\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LOOP without DO.\nline 2: Loop illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-10-pre-loop-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nLoop\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LOOP without DO.\nline 2: Loop illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-10-pre-loop-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nLoop\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LOOP without DO.\nline 2: Loop illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-10-pre-loop-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nLoop\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: LOOP without DO.\nline 2: Loop illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-11-pre-nextscan-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-include_prefix-11-pre-nextscan-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-include_prefix-11-pre-nextscan-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-include_prefix-11-pre-nextscan-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-include_prefix-12-pre-endsub-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr1000x-include_prefix-12-pre-endsub-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr300-include_prefix-12-pre-endsub-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr350-include_prefix-12-pre-endsub-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndSub without Sub or nested subs."
+  },
+  {
+   "id": "cr6-include_prefix-13-pre-select-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCase 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Case outside Select."
+  },
+  {
+   "id": "cr1000x-include_prefix-13-pre-select-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCase 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: Case outside Select."
+  },
+  {
+   "id": "cr300-include_prefix-13-pre-select-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCase 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Case outside Select."
+  },
+  {
+   "id": "cr350-include_prefix-13-pre-select-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCase 1\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Case outside Select."
+  },
+  {
+   "id": "cr6-include_prefix-14-pre-endtable-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr1000x-include_prefix-14-pre-endtable-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr300-include_prefix-14-pre-endtable-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr350-include_prefix-14-pre-endtable-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: EndTable without DataTable."
+  },
+  {
+   "id": "cr6-include_prefix-15-pre-sample-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSample(1,X,IEEE4)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr1000x-include_prefix-15-pre-sample-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSample(1,X,IEEE4)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr300-include_prefix-15-pre-sample-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSample(1,X,IEEE4)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr350-include_prefix-15-pre-sample-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSample(1,X,IEEE4)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Sample must be used inside a table declaration."
+  },
+  {
+   "id": "cr6-include_prefix-16-pre-calltable-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCallTable Nope\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-include_prefix-16-pre-calltable-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCallTable Nope\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-include_prefix-16-pre-calltable-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCallTable Nope\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-include_prefix-16-pre-calltable-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nCallTable Nope\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-include_prefix-17-pre-expr-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-17-pre-expr-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-17-pre-expr-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-17-pre-expr-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-18-pre-battery-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nBattery(X)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-18-pre-battery-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nBattery(X)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-18-pre-battery-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nBattery(X)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-include_prefix-18-pre-battery-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nBattery(X)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Battery illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-include_prefix-19-pre-dupsub-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub A"
+  },
+  {
+   "id": "cr1000x-include_prefix-19-pre-dupsub-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub A"
+  },
+  {
+   "id": "cr300-include_prefix-19-pre-dupsub-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub A"
+  },
+  {
+   "id": "cr350-include_prefix-19-pre-dupsub-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nSub A\nEndSub\nSub A\nEndSub\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Duplicate Sub A"
+  },
+  {
+   "id": "cr6-include_prefix-20-pre-assign-undef-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Nope = 5.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-include_prefix-20-pre-assign-undef-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid, or out of place expression: Nope = 5.\nline 2: Expr illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-include_prefix-20-pre-assign-undef-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Nope is not defined."
+  },
+  {
+   "id": "cr350-include_prefix-20-pre-assign-undef-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nNope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: Nope is not defined."
+  },
+  {
+   "id": "cr6-include_prefix-21-pre-str-A",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = \"abc\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: String without end quote\n<l.crb> line 2: Invalid, or out of place expression: X = \"abc."
+  },
+  {
+   "id": "cr1000x-include_prefix-21-pre-str-A",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = \"abc\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: String without end quote\n<l.crb> line 2: Invalid, or out of place expression: X = \"abc."
+  },
+  {
+   "id": "cr300-include_prefix-21-pre-str-A",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = \"abc\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: String without end quote\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = \"abc\n."
+  },
+  {
+   "id": "cr350-include_prefix-21-pre-str-A",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nX = \"abc\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: String without end quote\n<CPU:l.crb> line 2: Invalid, or out of place expression: X = \"abc\n."
+  },
+  {
+   "id": "cr6-include_prefix-22-body-foobar-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo Bar."
+  },
+  {
+   "id": "cr1000x-include_prefix-22-body-foobar-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo Bar."
+  },
+  {
+   "id": "cr300-include_prefix-22-body-foobar-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Foo is not defined.\n<CPU:l.crb> line 1: Bar is not defined.\n<CPU:l.crb> line 1: Invalid, or out of place expression: Foo Bar\n."
+  },
+  {
+   "id": "cr350-include_prefix-22-body-foobar-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo Bar\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Foo is not defined.\n<CPU:l.crb> line 1: Bar is not defined.\n<CPU:l.crb> line 1: Invalid, or out of place expression: Foo Bar\n."
+  },
+  {
+   "id": "cr6-include_prefix-23-body-paren-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr1000x-include_prefix-23-body-paren-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr300-include_prefix-23-body-paren-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: 1,2."
+  },
+  {
+   "id": "cr350-include_prefix-23-body-paren-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: 1,2."
+  },
+  {
+   "id": "cr6-include_prefix-24-body-incompl-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "X = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr1000x-include_prefix-24-body-incompl-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "X = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: X = 1 +."
+  },
+  {
+   "id": "cr300-include_prefix-24-body-incompl-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "X = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: X = 1 +\n."
+  },
+  {
+   "id": "cr350-include_prefix-24-body-incompl-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "X = 1 +\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: X = 1 +\n."
+  },
+  {
+   "id": "cr6-include_prefix-25-body-next-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Next i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 1: NEXT without FOR."
+  },
+  {
+   "id": "cr1000x-include_prefix-25-body-next-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Next i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 1: NEXT without FOR."
+  },
+  {
+   "id": "cr300-include_prefix-25-body-next-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Next i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 1: NEXT without FOR."
+  },
+  {
+   "id": "cr350-include_prefix-25-body-next-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Next i\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: FOR NEXT statement illegally has SCAN without NEXT SCAN.\nline 1: NEXT without FOR."
+  },
+  {
+   "id": "cr6-include_prefix-26-body-nextscan-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "NextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-include_prefix-26-body-nextscan-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "NextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-include_prefix-26-body-nextscan-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "NextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-include_prefix-26-body-nextscan-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "NextScan\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-include_prefix-27-body-else-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Else\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Else with no If."
+  },
+  {
+   "id": "cr1000x-include_prefix-27-body-else-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Else\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Else with no If."
+  },
+  {
+   "id": "cr300-include_prefix-27-body-else-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Else\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Else with no If."
+  },
+  {
+   "id": "cr350-include_prefix-27-body-else-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Else\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Else with no If."
+  },
+  {
+   "id": "cr6-include_prefix-28-body-bare-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo."
+  },
+  {
+   "id": "cr1000x-include_prefix-28-body-bare-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Foo."
+  },
+  {
+   "id": "cr300-include_prefix-28-body-bare-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Foo is not defined.\n<CPU:l.crb> line 1: Invalid, or out of place expression: Foo\n."
+  },
+  {
+   "id": "cr350-include_prefix-28-body-bare-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Foo\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Foo is not defined.\n<CPU:l.crb> line 1: Invalid, or out of place expression: Foo\n."
+  },
+  {
+   "id": "cr6-include_prefix-29-body-endif-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 1: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr1000x-include_prefix-29-body-endif-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 1: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr300-include_prefix-29-body-endif-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 1: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr350-include_prefix-29-body-endif-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "EndIf\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: IF or SELECT statement illegally has SCAN without NEXT SCAN.\nline 1: END IF without IF or END SELECT without SELECT."
+  },
+  {
+   "id": "cr6-include_prefix-30-body-undef-D",
+   "logger": "cr6",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Nope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Nope = 5."
+  },
+  {
+   "id": "cr1000x-include_prefix-30-body-undef-D",
+   "logger": "cr1000x",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Nope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Invalid, or out of place expression: Nope = 5."
+  },
+  {
+   "id": "cr300-include_prefix-30-body-undef-D",
+   "logger": "cr300",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Nope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Nope is not defined."
+  },
+  {
+   "id": "cr350-include_prefix-30-body-undef-D",
+   "logger": "cr350",
+   "source": "Public X\nBeginProg\nScan(1,Sec,0,0)\nInclude \"CPU:l.crb\"\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Nope = 5\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Nope is not defined."
+  },
+  {
+   "id": "cr6-include_prefix-31-tbl-dup",
+   "logger": "cr6",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "DataTable(T,1,-1)\nSample(1,Nope,IEEE4)\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-include_prefix-31-tbl-dup",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "DataTable(T,1,-1)\nSample(1,Nope,IEEE4)\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-include_prefix-31-tbl-dup",
+   "logger": "cr300",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "DataTable(T,1,-1)\nSample(1,Nope,IEEE4)\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined."
+  },
+  {
+   "id": "cr350-include_prefix-31-tbl-dup",
+   "logger": "cr350",
+   "source": "IncludeSection(\"S\",\"CPU:l.crb\")\nBeginProg\nScan(1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "DataTable(T,1,-1)\nSample(1,Nope,IEEE4)\nEndTable\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Nope is not defined."
+  }
+ ]
+}

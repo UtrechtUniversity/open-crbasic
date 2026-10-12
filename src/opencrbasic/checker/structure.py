@@ -970,7 +970,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
         if profile.known_first_word_pass1 and re.match(r"\s*For\s", getattr(stmt, "text", "") or "", re.I) \
                 and (found := _for_header_findings(stmt.text, profile)):
             for message in found:
-                diags.error(stmt.line, message, stmt.file, show_file=False)
+                diags.error(stmt.line, message, stmt.file)
             continue
         if (profile.known_first_word_pass1 or profile.single_pass) and _block_keyword_call(stmt):
             cond = re.match(r"\s*(?:ELSEIF|IF)\s(.*?)THEN", stmt.text, re.I | re.S) \
@@ -1072,7 +1072,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 for stage, kind, arg_text in findings:
                     if stage == 1:
                         diags.error(stmt.line, _pass1_message(profile, S.Unparsed(
-                            stmt.line, stmt.file, text=arg_text), kind), stmt.file, show_file=False)
+                            stmt.line, stmt.file, text=arg_text), kind), stmt.file)
                     elif stage == 3 or stage == 5 and findings[0][0] == 4:
                         diags.error(stmt.line, kind, stmt.file)
                     elif stage == 4:
@@ -1092,7 +1092,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     for message in _unparsed_string_messages(stmt, program, profile):
                         diags.error(stmt.line, message, stmt.file)
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1], earlier),
-                                stmt.file, show_file=False)
+                                stmt.file)
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
                     select_depth += 1
@@ -1103,8 +1103,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
               and stmt.target.name.upper() not in symbols.declared_variable_names(program)):
             # `Sec = 3`, `String = "x"`: a predefined symbol cannot be assigned (oracle, CR6/CR1000X,
             # 2026-10-10)
-            diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file,
-                        show_file=False)
+            diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
         elif (isinstance(stmt, S.Call) and profile.known_first_word_pass1 and not stmt.explicit
               and stmt.name.upper() not in profile.instructions
               and stmt.name.upper() not in profile.functions):
@@ -1112,8 +1111,7 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 known = expressions._known_names(program, profile)
                 operands = pass1_operands(program, profile)
             if stmt.name.upper() in operands and stmt.name.upper() not in symbols.declared_subs(program):
-                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                            show_file=False)
+                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         elif kw == "ALIAS" and isinstance(stmt, S.Instruction):
             if known is None:
                 known = expressions._known_names(program, profile)
@@ -1441,7 +1439,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                 # CR6/CR1000X: an unresolved table-output source (`Sample (1,Nope,FP2)`) is
                 # `Invalid symbol in expression: Nope.` and ends pass 2 (oracle: a later `X = Q`
                 # and a second bad source in the same table are not reported).
-                diags.error(stmt.line, f"Invalid symbol in expression: {bad}.", stmt.file)
+                diags.error(stmt.line, f"Invalid symbol in expression: {bad}.", stmt.file, show_file=False)
                 return stmt.line
         elif kw == "BEGINPROG":
             if in_beginprog:
@@ -1578,8 +1576,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
             elif stmt.reason == _EXTRA_CLOSE_PAREN and not _assignment_head(stmt.text, program, profile):
                 # `Z)`, `Z + 1)`, `West)`: not an assignment, so the generic fallback (oracle, all
                 # four loggers, 2026-10-11, docs/checker.md "Stray close parenthesis")
-                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                            show_file=False)
+                diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
             elif stmt.reason == _EXTRA_CLOSE_PAREN:
                 sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
                 diags.error(stmt.line, f"Incomplete expression: {stmt.text}{sep}.", stmt.file,
@@ -1610,7 +1607,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                            if profile.known_first_word_pass1 else None)
                 if verdict == ("pass2", "symbol"):
                     diags.error(stmt.line, _pass1_message(profile, stmt, "symbol"), stmt.file,
-                                show_file=False)
+                                show_file="cr3xx")
                 elif verdict and verdict[0] == "pass1" and (verdict[1] != "fallback"
                                                           or condition_part(stmt.text) is not None):
                     diags.error(stmt.line, _pass1_message(profile, stmt, verdict[1]), stmt.file,
@@ -1629,7 +1626,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         # `times.`, `X.Y.Z`: the name before the dot is no table (oracle, 2026-10-10)
                         diags.error(stmt.line, f"Could not find {lead.group(1)}.", stmt.file)
                     diags.error(stmt.line, _leftover_message(profile, stmt), stmt.file,
-                                show_file=False)
+                                show_file="cr3xx")
                 if profile.undefined_call_message:
                     # CR300/CR350 only (`profiles.py`'s own field, reused here from
                     # `_check_call_pass2`'s identical carve-out below): no before-`BeginProg`
@@ -2806,7 +2803,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
             diags.error(nxt.line, f"Incomplete expression: {nxt.text}.", nxt.file,
                         show_file=False)
         else:
-            diags.error(nxt.line, _leftover_message(profile, nxt), nxt.file, show_file=False)
+            diags.error(nxt.line, _leftover_message(profile, nxt), nxt.file)
 
 
 def _check_call_args(stmt: S.Call, sub: S.SubDef, diags: Diagnostics) -> None:
@@ -3093,8 +3090,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
             # (a declared `x()` is not `not defined`, oracle 2026-10-04; a DataTable name is)
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=stmt.name),
                         stmt.file)
-        diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                    show_file=False)
+        diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         return None
     if re.fullmatch(r"[A-Za-z_]\w*\.", stmt.name) and re.match(r"\s*\w+\.", stmt.text) and not stmt.explicit and known is not None:
         base = stmt.name[:-1].upper()
@@ -3102,7 +3098,7 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
             # `times.`: the name before the dot is no table (oracle, CR6/CR1000X, 2026-10-10)
             diags.error(stmt.line, f"Could not find {stmt.name[:-1]}.", stmt.file)
     diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                show_file=False)
+                show_file="cr3xx")
     if before_beginprog:
         diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
         return stmt.line
@@ -3154,8 +3150,7 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
             # (an undefined array whose subscripts fit the running dimension count is not
             # a placement error, nor is a declared one with an undefined subscript: `Rv(1)=1`
             # then `Nope(1)=Sc` names only `Nope`; oracle 2026-10-04)
-            diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
-                        show_file=False)
+            diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file)
         else:
             plain_target = any(not isinstance(t, DottedName) for t in target_names)
             for name in expressions._undefined_names(stmt.value, known):
@@ -3174,7 +3169,7 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
         return None
     if target_names:
         diags.error(stmt.line, f"Invalid, or out of place expression: {stmt.text}.", stmt.file,
-                    show_file=False)
+                    show_file="cr3xx")
         if before_beginprog:
             diags.error(stmt.line, "Expr illegally occurs before BeginProg.", stmt.file)
             return stmt.line

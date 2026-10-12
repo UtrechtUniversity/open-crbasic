@@ -153,12 +153,12 @@ def _check_unterminated_string_param(program: S.Program, profile, diags: Diagnos
         elif shape == "assignment":
             diags.error(stmt.line, "String without end quote", stmt.file)
             diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                        stmt.file, show_file=False)
+                        stmt.file)
         elif shape == "if":
             rest = re.search(r"(?i)\bThen\b\s*(.*)$", stmt.text).group(1)
             diags.error(stmt.line, "String without end quote", stmt.file)
             diags.error(stmt.line, f"Invalid, or out of place expression: {rest}:endif.",
-                        stmt.file, show_file=False)
+                        stmt.file)
 
 
 def _real_params(params: list[int]) -> list[int]:

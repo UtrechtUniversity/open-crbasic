@@ -1366,7 +1366,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             # `R(2,1) = 1` for `Public R(5)`: the fallback (CR6/CR1000X only past 3 subscripts)
             from . import structure
             diags.error(stmt.line, structure._out_of_place(profile, stmt.text, stmt.at_eol),
-                        stmt.file, show_file=False)
+                        stmt.file, show_file="cr3xx")
             continue
         if not names:
             if not whole_echo and _over_indexed(stmt.value, dim_counts):
@@ -2062,7 +2062,7 @@ def check_function_call_counts(program: S.Program, profile, diags: Diagnostics) 
         else:
             sep = "\n" if whole and profile.fallback_echo_newline and stmt.at_eol else ""
             text = f"No Matching, or out of place ) in expression: {echo}{sep}."
-        diags.error(stmt.line, text, stmt.file, show_file=False)
+        diags.error(stmt.line, text, stmt.file)
 
     def visit(stmt: S.Stmt) -> None:
         if isinstance(stmt, S.Assignment):

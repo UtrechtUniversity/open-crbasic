@@ -779,7 +779,8 @@ def _report_undefined_source(st: S.Instruction, record: dict, known: set[str], p
         if not names:
             continue
         for name in names:
-            diags.error(st.line, profile.unresolved_symbol_message.format(name=name), st.file)
+            diags.error(st.line, profile.unresolved_symbol_message.format(name=name), st.file,
+                        show_file=False)
         if expressions._has_undefined_index(arg, known):
             diags.error(st.line, expressions.dimensions_message(
                 expressions._arg_text(st, i).strip(), profile, False), st.file)

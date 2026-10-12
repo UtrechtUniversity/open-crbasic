@@ -5707,3 +5707,41 @@ Follow-up to "Function calls after an undefined target".
 - Not done: `A(Z,1) = F2(1,2,3)` (a two-subscript target on a one-dimensional array: real prints the
   generic fallback instead of `No Matching`); on CR6/CR1000X an undefined name in the *value* also hides the
   call (`X = Zz + F2()` -> `Invalid symbol in expression:` only; ours still prints `Call argument required.`).
+
+
+## Prefix by message kind in an included file (oracle, 2026-10-12, all four loggers)
+
+Supersedes the "two exceptions" of "Errors from an included file: the `<file>` prefix" above: the
+real compiler prints `<file> line N:` from the file being *read* when the message is emitted.
+A message emitted while the line is read (pass 1, name resolution on CR300/CR350) carries it; a
+message emitted after the include was closed (block pairing, placement before `BeginProg`, the
+table/scan/array checks, `Could not find DataTable`, pass-2 symbol resolution on CR6/CR1000X)
+prints no prefix at all. When the *included file contains the `BeginProg`/`EndProg`* the deferred
+messages print a garbled name (`<SS@>`, `<>`, bytes from freed memory; not modelled, any output
+differs there), so the rule was measured on programs split around `BeginProg`: 2,390 corpus
+programs (fuzz + CHM, 4 loggers), the declarations before `BeginProg` as the include (variant A) or
+the body between `BeginProg` and `EndProg` as the include (variant B). Prefix mismatches against the
+real compiler fell from 1,043 of 10,615 compared lines to 62 (the rest are the families below left
+alone and pairing artefacts of the harness); fixtures `tests/fixtures/r13_include_prefix.json`
+(128 cases: statements before `BeginProg` in an include, and the include inside a `Scan` body).
+
+- Read-time, always prefixed: `Invalid, or out of place expression` for a syntax error
+  (`(1,2)`, `X = 1 +`, a quote, `ACOS()`), `Incomplete expression`, `Expression expects (`,
+  `Invalid or missing expression/parameter`, `Invalid assignment in expression`,
+  `No Matching, or out of place ) in expression`, declarations. The old `show_file=False` on these
+  call sites was wrong (it came from a probe where the include was the last thing in the compile).
+- `Invalid, or out of place expression` for an *unresolved name* statement (`Foo`, `Foo Bar`,
+  `X += 1` with `X` undeclared): CR6/CR1000X deferred (no prefix), CR300/CR350 read-time
+  (prefixed, next to `Foo is not defined.`). Modelled as `show_file="cr3xx"` (prefix only where
+  `drive_prefix` is true).
+- Deferred, no prefix (`diagnostics._DEFERRED`, one regex list per logger family, only families
+  with no prefixed observation): `<X> illegally occurs before BeginProg`, `NEXT/LOOP/END IF/Else/
+  Case/EndSub ... without`, `NextScan with no Scan`, `Scan without NextScan`, `Duplicate Sub`,
+  `Could not find ...`, `EndTable without DataTable`, `Table ... declared with no output fields`,
+  `Sample must be used inside a table`, `Variable ... out of bounds`, Scan interval/parameter
+  messages, `Invalid channel/port/reps`, `Can't assign units to`, `... already assigned Units`,
+  an undefined name as a table-field source (`Sample(1,Nope,IEEE4)`: `Invalid symbol in
+  expression: Nope.` / `Nope is not defined.`) and similar instruction checks (see the list).
+  A new family is added to the list only after a probe shows it unprefixed.
+- Still mixed and left as before: `Invalid symbol in expression` in a statement body (prefixed in
+  some positions, not in others), `Warning:` lines (never prefixed in `cr6comp`).
