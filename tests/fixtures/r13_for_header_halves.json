@@ -1,0 +1,547 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_for_header_halves-0",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 3 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 3 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-2",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (y +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (y +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-4",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To y +   \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: y +   ."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To y +   \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: y +   ."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-6",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To  (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  (y +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To  (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  (y +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-8",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y + 1) Step (1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y + 1) Step (1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-10",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y + 1 Step 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (y + 1."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y + 1 Step 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (y + 1."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-12",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-14",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y +  To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  y + ."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y +  To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  y + ."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-16",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y + 1 To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y + 1 To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-18",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-19",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-20",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 y."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-21",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 y."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-22",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (y 5."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-23",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (y 5."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-24",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y +\n 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (y +.\nline 5: Invalid, or out of place expression:  1)."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-25",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (y +\n 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: (y +.\nline 5: Invalid, or out of place expression:  1)."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-26",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y + To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  y +.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-27",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y + To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  y +.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-28",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-29",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-30",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (5.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-31",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To (5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (5.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-32",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 + Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5 +.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-33",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 + Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: 5 +.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-34",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 y Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 y.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-35",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 y Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 y.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-36",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-37",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-38",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Incomplete expression: 5 y."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-39",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Incomplete expression: 5 y."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-40",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-41",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 Step 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Invalid, or out of place expression: 1 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-42",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 Step 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-43",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 To 5 Step 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5.\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-44",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y 5)."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-45",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y 5)."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-46",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y ) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y )."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-47",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y ) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y )."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-48",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5 To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y 5."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-49",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5 To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y 5."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-50",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 + To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5 +.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-51",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5 + To 5 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:  y 5 +.\nline 4: Invalid, or out of place expression: 5 +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-52",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y + To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  (y +."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-53",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y + To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:  (y +."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-54",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-55",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  (y."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-56",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = ((y 5) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  ((y 5)."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-57",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = ((y 5) To 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:  ((y 5)."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-58",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-59",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-60",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-61",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-62",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-63",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-64",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-65",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-66",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-67",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-68",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-69",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = (y 5\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid or missing parameter."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-70",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 Step\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 Step."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-71",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = y To 5 Step\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 5 Step."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-72",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = 1 To 5 Step 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-73",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = 1 To 5 Step 1 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-r13_for_header_halves-74",
+   "logger": "cr6",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = 1 To (5 Step 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (5.\nline 4: Incomplete expression: 1)."
+  },
+  {
+   "id": "cr1000x-r13_for_header_halves-75",
+   "logger": "cr1000x",
+   "source": "Public x, y, s1 As String * 10\nBeginProg\n  Scan (1,Sec,0,0)\n    For x = 1 To (5 Step 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression: (5.\nline 4: Incomplete expression: 1)."
+  }
+ ]
+}

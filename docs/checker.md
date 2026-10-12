@@ -5607,3 +5607,16 @@ only the continuation), `While (StrComp` (we echo `StrComp`, real `(StrComp`), `
 `EndSelect` (real adds `EndSelect w/o Select`), `For x = y To (y +` (real echoes only the `To`
 expression, `(y +`, we the whole line), and the CR300/CR350 versions of all of these (`No Matching` instead
 of `Expression expects (`; no verdict for `strcomp_3` there, the real CR300/CR350 compilers fault on it).
+
+## Round 13, CR6/CR1000X: the broken expression of a `For` header is its own message (`chm/strcomp_3`; fixture `r13_for_header_halves.json`)
+
+Oracle runs of 2026-10-12. A `For v = init To limit [Step step]` header reads its three expressions
+separately, and every broken one prints its own pass-1 message echoing that expression as written
+(`structure._for_header_findings`, replacing the `Incomplete expression` only version): adjacent
+operands `Incomplete expression:`, a trailing operator `Invalid, or out of place expression:` (the limit
+`(y +`, `3 +   `, the init ` y + `: the text after `=`, one blank before `To` removed), an unmatched parenthesis
+`No Matching, or out of place ) in expression:` (`(y 5`, ` (y 5)`). Several broken expressions give several lines
+(`For x = 1 To (5 Step 1)`: `(5` and `1)`). A `For v = expr` with no `To` anywhere is `Invalid or missing
+parameter.` whatever the expression (`For x = y +`, `For x = (y`). Not done: the CR300/CR350 headers
+(`structure._for_header_incomplete` stays as it was), `For x = (y +` followed by a continuation line is
+`Invalid or missing parameter.` in the real compiler and was already fixed by the no-`To` rule above.

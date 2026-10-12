@@ -958,9 +958,15 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                             d.message == "Size of string missing." for d in diags.items)):
                         diags.error(stmt.line, message, stmt.file)
                     break
+        if profile.known_first_word_pass1 and isinstance(stmt, S.Unparsed) and stmt.reason != _FOR_MISSING \
+                and re.match(r"\s*For\s+\w+\s*=", stmt.text, re.I) and not re.search(r"\bTo\b", stmt.text, re.I):
+            # a `For` without `To` never gets to its expressions (oracle, CR6/CR1000X, 2026-10-12)
+            diags.error(stmt.line, "Invalid or missing parameter.", stmt.file)
+            continue
         if profile.known_first_word_pass1 and re.match(r"\s*For\s", getattr(stmt, "text", "") or "", re.I) \
-                and (echo := _for_header_incomplete(stmt.text, profile)) is not None:
-            diags.error(stmt.line, f"Incomplete expression: {echo}.", stmt.file, show_file=False)
+                and (found := _for_header_findings(stmt.text, profile)):
+            for message in found:
+                diags.error(stmt.line, message, stmt.file, show_file=False)
             continue
         if (profile.known_first_word_pass1 or profile.single_pass) and _block_keyword_call(stmt):
             cond = re.match(r"\s*(?:ELSEIF|IF)\s(.*?)THEN", stmt.text, re.I | re.S) \
@@ -2590,6 +2596,39 @@ def _for_header_incomplete(text: str, profile) -> str | None:
                                start_operand=False) == ("pass1", "incomplete"):
             return part
     return None
+
+
+_FOR_INIT_RE = re.compile(r"^\s*For\s(?:.*?)=(.*?)\sTo\s", re.I | re.S)
+
+
+def _for_header_findings(text: str, profile) -> list[str]:
+    """CR6/CR1000X pass-1 message of a `For` header whose init, `To` or `Step` expression is
+    broken, echoing that expression as written (oracle, 2026-10-12: `For x = y To (y +` is
+    `Invalid, or out of place expression: (y +.`, `To (y 5` is `No Matching, or out of place )
+    in expression: (y 5.`, `For x = y +  To 5` echoes ` y + `). Every broken half is reported, in
+    order."""
+    out: list[str] = []
+    m = _FOR_TO_RE.match(text)
+    if not m:
+        return out
+    halves = _FOR_STEP_RE.split(m.group(1), maxsplit=1)
+    init = _FOR_INIT_RE.match(text)
+    for part, is_init in [(init.group(1), True)] * bool(init) + [(h, False) for h in halves]:
+        try:
+            toks = [t for t in lexer.tokenize(part, 0) if t.kind != "EOF"]
+        except lexer.LexError:
+            return []
+        if not toks:
+            continue
+        verdict = _scan_expr(toks, 0, _Everything(), profile.functions, assign=True,
+                             start_operand=False, unclosed="no_matching", open_fallback=True)
+        if verdict == ("pass1", "incomplete"):
+            out.append(f"Incomplete expression: {part}.")
+        if verdict == ("pass1", "fallback"):
+            out.append(f"Invalid, or out of place expression: {part}.")
+        if verdict == ("pass1", "no_matching"):
+            out.append(f"No Matching, or out of place ) in expression: {part}.")
+    return out
 
 
 def _block_keyword_call(stmt: S.Stmt) -> bool:
