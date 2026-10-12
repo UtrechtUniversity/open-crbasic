@@ -5958,3 +5958,35 @@ back in front (`_inline_owner`, `_names_in`; 7 fuzz reproducers, `iproute_1`/`ge
 Still different (not in the fixture): `If A = 1 Then Delay(1,Nope,mSec)` prints `Nope is not defined.` then
 `Too many parameters:  mSec.` on CR300/CR350; opencrbasic's lone-line rule for the `Delay` follow-up (`per_line > 1` guard
 in `cr3xx`) still skips an `If` line.
+
+## Round 14 table references (`SendData`, `SendTableDef`, `GetRecord`, `ResetTable`, `FileMark`)
+
+Oracle, 2026-10-12, all four loggers (`tests/fixtures/r14_table_references.json`, 136 cases). These instructions
+name a table and the real compiler fails when none exists (opencrbasic compiled them clean: false accepts; 12 fuzz
+reproducers incl. `SendData (ComRS232,0,4094,Table1)` before `BeginProg`). Message tracer: `Cannot find DataTable %s.`
+(0x487c32 via 0x48359e) and `Could not find ...` come from the instruction's compile function during pass 2.
+
+| Instruction (argument) | Message | Ends pass 2 |
+|---|---|---|
+| `SendData`, `SendTableDef` (4th) | `Cannot find DataTable <text>.` | no, every one is printed in line order |
+| `GetRecord` (2nd), `ResetTable` (1st) | `Could not find DataTable <name>.` | yes, like an unknown `CallTable` |
+| `FileMark` (1st) | `Could not find FileMark table <name>.` | yes |
+
+- `SendData`/`SendTableDef` echo the argument's text trimmed (`T1 + 1`, `Nope()`, `"x"` with its quotes, `T1.A`, a
+  variable `A`); `GetRecord`/`ResetTable`/`FileMark` take a name or a string without quotes (`GetRecord(A,"x",1)` ->
+  `x`). `Status` is accepted as a table (`Public`, `Settings`, `DataTableInfo` assumed alike, not probed).
+- Several ending messages and unknown `CallTable`s: only the earliest is printed (`CallTable Nope2` then
+  `GetRecord(A,Nope,1)` prints only the first, and the reverse), later statements are not compiled (a following
+  `NextScan with no Scan.` or `SendData` of another missing table is gone). A `SendData` message is followed by later
+  statements normally (`A = Zork`, a second `SendData`, an unknown `CallTable`).
+- Before `BeginProg` the message precedes `SendData illegally occurs before BeginProg.` on the same line.
+- CR300/CR350 also stop at `GetRecord`/`ResetTable`/`FileMark` (the late scan-placement walk is cut there) and
+  treat `Cannot find DataTable` like `Could not find ...`: hidden by any other error elsewhere in the file
+  (`drop_calltable_error_with_other_errors`), and the late walk still runs beside it (`NextScan with no Scan.`,
+  `SendData illegally occurs before BeginProg.`).
+- Not modelled (probed, same family): `AcceptDataRecords` (3rd; `Could not find DataTable X.` then `Illegal table
+  name`), `GetDataRecord` (9th, CR6/CR1000X), `INSATData`/`EnviroSatData`/`GOESData` (2nd; `Could not find DataTable X`
+  without a period), `ArgosData` (3rd; `Could not find DataTable ` with an empty name), `WorstCase` (`Could not find
+  WorstCase table X.`), and a table declared *after* the statement (also not found). `EditTable(Nope,1)` crashes the
+  real compiler (page fault, no verdict). `SendData(...,T1)`/`GetRecord(...,T1)` do not count as a call of `T1` for
+  the "declared but never called" warning (opencrbasic treats them as a call: unfixed).

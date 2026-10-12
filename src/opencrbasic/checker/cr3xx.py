@@ -1861,7 +1861,8 @@ def drop_calltable_error_with_other_errors(program: S.Program, profile, diags: D
     # `x = Nope.Field(1,1)` with `Zork = 1` before or after it, `chm/tablenameeventend_1.CR6`)
     sites = {(st.line, st.file) for st in program.statements if not isinstance(st, S.Unparsed)}
     mine = [d for d in diags.items if d.severity == "error" and (d.line, d.file) in sites
-            and d.message.startswith("Could not find DataTable ")]
+            and d.message.startswith(("Could not find DataTable ", "Could not find FileMark table ",
+                                      "Cannot find DataTable "))]
     lines = {(d.line, d.file) for d in mine}  # (an error on the same line does not hide it: oracle,
     # CR300/CR350, 2026-10-11, `X = Tmp.dat + Zed` prints both)
     if mine and any(d.severity == "error" and d not in mine and not _hides_nothing(d)

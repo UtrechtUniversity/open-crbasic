@@ -383,6 +383,9 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if not profile.single_pass:
             for stmt, _name in instr_data.unknown_calltables(program):
                 stops.append((stmt.file, stmt.line))
+            for stmt, _message, ends in instr_data.unknown_table_references(program):
+                if ends:    # (`GetRecord`/`ResetTable`/`FileMark` of a missing table, round 14)
+                    stops.append((stmt.file, stmt.line))
         # An orphan `EndTable`/empty table ends pass 2 too (reported in tier C, `check_table_
         # structure`), cutting a later placement error.
         if not profile.single_pass:
@@ -480,7 +483,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
 
     late_start = len(diags.items)
     late_stop = None
-    if profile.single_pass and all(d.message.startswith("Could not find ")
+    if profile.single_pass and all(d.message.startswith(("Could not find ", "Cannot find DataTable "))
                                    for d in diags.errors):
         # CR300/CR350: runs unless an earlier finding other than an unknown `CallTable` table
         # exists (`docs/instructions.md`, SetSetting and SetStatus field names).
@@ -503,13 +506,19 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
             _run_pass(instr_rules.check_dnp_update, _with_inline(program), profile, diags, env)
             _run_pass(instr_rules.check_portbridge_array, _with_inline(program), profile, diags, env)
     if (not diags.errors or (profile.single_pass and all(
-            d.message.startswith("Could not find ") for d in diags.errors))) and \
+            d.message.startswith(("Could not find ", "Cannot find DataTable ")) for d in diags.errors))) and \
             profile.early_warnings_gated:
         # CR300/CR350: the early warnings follow the table `Reps` checks and precede `CallTable`
         # placement and the unclosed-block checks (oracle: `Illegal Reps 0` hides an fnotch
         # warning; `DO without LOOP.` and a `CallTable` placement error do not).
         _run_pass(warnings.check_early, program, profile, diags, env)
+        n_late = len(diags.items)
         stop = _run_pass_capture(structure.check_scan_placement_late, program, profile, diags)
+        # a `GetRecord`/`ResetTable`/`FileMark` of a missing table ends the walk (oracle, round 14)
+        ref_lines = [st.line for st, _m, ends in instr_data.unknown_table_references(program) if ends]
+        if ref_lines:
+            diags.items[n_late:] = [d for d in diags.items[n_late:]
+                                    if d.severity != "error" or d.line <= min(ref_lines)]
         late_stop = stop
         if stop is not None:
             # The walk ends there, so later warnings are never printed (oracle: `SetSetting`

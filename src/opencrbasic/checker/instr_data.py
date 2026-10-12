@@ -228,11 +228,68 @@ def _calltable_names(program: S.Program):
         yield stmt, name
 
 
+# Round 14 (oracle, all four loggers, 2026-10-12, `docs/checker.md` "Round 14 table references"):
+# instructions naming a table that does not exist. `(0-based argument, message, ends pass 2)`.
+# The ending ones behave like `CallTable` (only the earliest of them is printed, later statements
+# are not compiled); `SendData`/`SendTableDef` do not end pass 2 and every one is printed.
+TABLE_REFERENCES = {
+    "GETRECORD": (1, "Could not find DataTable {}.", True),
+    "RESETTABLE": (0, "Could not find DataTable {}.", True),
+    "FILEMARK": (0, "Could not find FileMark table {}.", True),
+    "SENDDATA": (3, "Cannot find DataTable {}.", False),
+    "SENDTABLEDEF": (3, "Cannot find DataTable {}.", False),
+}
+_SPECIAL_TABLES = frozenset({"STATUS", "PUBLIC", "SETTINGS", "DATATABLEINFO", "ENDTABLE"})
+
+
+def unknown_table_references(program: S.Program):
+    """`(statement, message, ends pass 2)` for each `TABLE_REFERENCES` statement whose table is
+    declared nowhere in the program (a table declared *later* is also not found by the real
+    compiler; not modelled, the report would only be missed)."""
+    declared = {st.args[0].name.upper() for st in _with_inline(program.statements)
+                if isinstance(st, S.Instruction) and st.keyword.upper() in ("DATATABLE", "CONSTTABLE")
+                and st.args and isinstance(st.args[0], S.Name)}
+    out = []
+    for stmt in _with_inline(program.statements):
+        if not isinstance(stmt, S.Instruction):
+            continue
+        spec = TABLE_REFERENCES.get(stmt.keyword.upper())
+        if spec is None or len(stmt.args) <= spec[0] or stmt.args[spec[0]] is None:
+            continue
+        arg = stmt.args[spec[0]]
+        if stmt.keyword.upper() in ("SENDDATA", "SENDTABLEDEF"):
+            from . import expressions
+            name = expressions._arg_text(stmt, spec[0]).strip()
+        elif isinstance(arg, S.Name):
+            name = arg.name
+        elif isinstance(arg, S.String):
+            name = arg.value
+        else:
+            continue
+        if not name or name.upper() in declared or name.upper() in _SPECIAL_TABLES:
+            continue
+        out.append((stmt, spec[1].format(name), spec[2]))
+    return out
+
+
 def check_unclosed_calltable(program: S.Program, diags: Diagnostics) -> None:
-    for stmt, name in unknown_calltables(program):
+    refs = unknown_table_references(program)
+    first = next(iter(unknown_calltables(program)), None)
+    ending = [(stmt, message) for stmt, message, ends in refs if ends]
+    stopper = None     # the earliest statement that ends the walk and prints its message
+    if ending and (first is None or (ending[0][0].file, ending[0][0].line) <= (first[0].file, first[0].line)):
+        stopper = ending[0]
+    elif first is not None:
+        stopper = (first[0], f"Could not find DataTable {first[1]}.")
+    for stmt, message, ends in refs:
+        if ends or (stopper is not None and stmt.line > stopper[0].line):
+            continue
+        at = next((i for i, d in enumerate(diags.items) if d.line == stmt.line and d.file == stmt.file
+                   and d.message.endswith("illegally occurs before BeginProg.")), len(diags.items))
+        diags.items.insert(at, Diagnostic("error", stmt.line, message, stmt.file))
+    if stopper is not None:
         # only the first one is printed (oracle, all four loggers, 2026-10-03)
-        diags.error(stmt.line, f"Could not find DataTable {name}.", stmt.file)
-        return
+        diags.error(stopper[0].line, stopper[1], stopper[0].file)
 
 
 def check_table_structure(program: S.Program, profile: Profile,

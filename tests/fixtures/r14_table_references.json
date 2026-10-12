@@ -1,0 +1,975 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-tableref_senddata_missing",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_missing",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_senddata_missing",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_senddata_missing",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_space",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094, Nope )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_space",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094, Nope )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_senddata_space",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094, Nope )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_senddata_space",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094, Nope )\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_string",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable \"x\"."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_string",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable \"x\"."
+  },
+  {
+   "id": "cr300-tableref_senddata_string",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable \"x\"."
+  },
+  {
+   "id": "cr350-tableref_senddata_string",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,\"x\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable \"x\"."
+  },
+  {
+   "id": "cr6-tableref_senddata_expr",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1 + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1 + 1."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_expr",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1 + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1 + 1."
+  },
+  {
+   "id": "cr300-tableref_senddata_expr",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1 + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1 + 1."
+  },
+  {
+   "id": "cr350-tableref_senddata_expr",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1 + 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1 + 1."
+  },
+  {
+   "id": "cr6-tableref_senddata_variable",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable A."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_variable",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable A."
+  },
+  {
+   "id": "cr300-tableref_senddata_variable",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable A."
+  },
+  {
+   "id": "cr350-tableref_senddata_variable",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable A."
+  },
+  {
+   "id": "cr6-tableref_senddata_field",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1.A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1.A."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_field",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1.A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1.A."
+  },
+  {
+   "id": "cr300-tableref_senddata_field",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1.A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1.A."
+  },
+  {
+   "id": "cr350-tableref_senddata_field",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1.A)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable T1.A."
+  },
+  {
+   "id": "cr6-tableref_senddata_status",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Status)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_status",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Status)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_senddata_status",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Status)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_senddata_status",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Status)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_senddata_known",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_known",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_senddata_known",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_senddata_known",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_sendtabledef_missing",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_sendtabledef_missing",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_sendtabledef_missing",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_sendtabledef_missing",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_sendtabledef_known",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_sendtabledef_known",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_sendtabledef_known",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_sendtabledef_known",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendTableDef(ComRS232,0,4094,T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_getrecord_missing",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_missing",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_getrecord_missing",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_getrecord_missing",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_getrecord_string",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,\"x\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable x."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_string",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,\"x\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable x."
+  },
+  {
+   "id": "cr300-tableref_getrecord_string",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,\"x\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable x."
+  },
+  {
+   "id": "cr350-tableref_getrecord_string",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,\"x\",1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable x."
+  },
+  {
+   "id": "cr6-tableref_getrecord_variable",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,A,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_variable",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,A,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr300-tableref_getrecord_variable",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,A,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr350-tableref_getrecord_variable",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,A,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr6-tableref_getrecord_known",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,T1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_known",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,T1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_getrecord_known",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,T1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_getrecord_known",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,T1,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_resettable_missing",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_resettable_missing",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_resettable_missing",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_resettable_missing",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_resettable_known",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_resettable_known",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_resettable_known",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_resettable_known",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_filemark_missing",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find FileMark table Nope."
+  },
+  {
+   "id": "cr1000x-tableref_filemark_missing",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find FileMark table Nope."
+  },
+  {
+   "id": "cr300-tableref_filemark_missing",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find FileMark table Nope."
+  },
+  {
+   "id": "cr350-tableref_filemark_missing",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find FileMark table Nope."
+  },
+  {
+   "id": "cr6-tableref_filemark_known",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-tableref_filemark_known",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-tableref_filemark_known",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-tableref_filemark_known",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    FileMark(T1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-tableref_senddata_then_assign",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Invalid symbol in expression:     A = Zork."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_then_assign",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Invalid symbol in expression:     A = Zork."
+  },
+  {
+   "id": "cr300-tableref_senddata_then_assign",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Zork is not defined."
+  },
+  {
+   "id": "cr350-tableref_senddata_then_assign",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = Zork\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Zork is not defined."
+  },
+  {
+   "id": "cr6-tableref_assign_then_resettable",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    A = Zork\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     A = Zork.\nline 9: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_assign_then_resettable",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    A = Zork\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     A = Zork.\nline 9: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_assign_then_resettable",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    A = Zork\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined."
+  },
+  {
+   "id": "cr350-tableref_assign_then_resettable",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    A = Zork\n    ResetTable(Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined."
+  },
+  {
+   "id": "cr6-tableref_resettable_then_calltable",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_resettable_then_calltable",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_resettable_then_calltable",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_resettable_then_calltable",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    ResetTable(Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_calltable_then_getrecord",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable Nope2\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr1000x-tableref_calltable_then_getrecord",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable Nope2\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr300-tableref_calltable_then_getrecord",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable Nope2\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr350-tableref_calltable_then_getrecord",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    CallTable Nope2\n    GetRecord(A,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr6-tableref_getrecord_then_senddata",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_then_senddata",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_getrecord_then_senddata",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_getrecord_then_senddata",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_twice",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Cannot find DataTable Nope2."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_twice",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Cannot find DataTable Nope2."
+  },
+  {
+   "id": "cr300-tableref_senddata_twice",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Cannot find DataTable Nope2."
+  },
+  {
+   "id": "cr350-tableref_senddata_twice",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    SendData(ComRS232,0,4094,Nope2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Cannot find DataTable Nope2."
+  },
+  {
+   "id": "cr6-tableref_senddata_then_calltable",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_then_calltable",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr300-tableref_senddata_then_calltable",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr350-tableref_senddata_then_calltable",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    CallTable Nope2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 9: Could not find DataTable Nope2."
+  },
+  {
+   "id": "cr6-tableref_getrecord_then_nextscan_error",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_then_nextscan_error",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_getrecord_then_nextscan_error",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_getrecord_then_nextscan_error",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(A,Nope,1)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_then_nextscan_error",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 10: NextScan with no Scan."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_then_nextscan_error",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 10: NextScan with no Scan."
+  },
+  {
+   "id": "cr300-tableref_senddata_then_nextscan_error",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 10: NextScan with no Scan."
+  },
+  {
+   "id": "cr350-tableref_senddata_then_nextscan_error",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    NextScan\n    NextScan\n    Scan(1,Sec,0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope.\nline 10: NextScan with no Scan."
+  },
+  {
+   "id": "cr6-tableref_getrecord_undeclared_arg",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(Zork,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zork.\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_getrecord_undeclared_arg",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(Zork,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zork.\nline 8: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_getrecord_undeclared_arg",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(Zork,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined.\nline 8: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr350-tableref_getrecord_undeclared_arg",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    GetRecord(Zork,Nope,1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined.\nline 8: Too many parameters:  Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_undeclared_arg",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(Zork,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zork.\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_undeclared_arg",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(Zork,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Zork.\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_senddata_undeclared_arg",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(Zork,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined.\nline 8: Too many parameters:  0."
+  },
+  {
+   "id": "cr350-tableref_senddata_undeclared_arg",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(Zork,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Zork is not defined.\nline 8: Too many parameters:  0."
+  },
+  {
+   "id": "cr6-tableref_inline_if_senddata",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    If A = 1 Then SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_inline_if_senddata",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    If A = 1 Then SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_inline_if_senddata",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    If A = 1 Then SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_inline_if_senddata",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    If A = 1 Then SendData(ComRS232,0,4094,Nope)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_senddata_before_beginprog",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSendData(ComRS232,0,4094,Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot find DataTable Nope.\nline 5: SendData illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr1000x-tableref_senddata_before_beginprog",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSendData(ComRS232,0,4094,Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot find DataTable Nope.\nline 5: SendData illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr300-tableref_senddata_before_beginprog",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSendData(ComRS232,0,4094,Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot find DataTable Nope.\nline 5: SendData illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr350-tableref_senddata_before_beginprog",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSendData(ComRS232,0,4094,Nope)\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Cannot find DataTable Nope.\nline 5: SendData illegally occurs before BeginProg."
+  },
+  {
+   "id": "cr6-tableref_pass1_error_hides",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A = 1 +."
+  },
+  {
+   "id": "cr1000x-tableref_pass1_error_hides",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A = 1 +."
+  },
+  {
+   "id": "cr300-tableref_pass1_error_hides",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A = 1 +\n."
+  },
+  {
+   "id": "cr350-tableref_pass1_error_hides",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    SendData(ComRS232,0,4094,Nope)\n    A = 1 +\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid, or out of place expression:     A = 1 +\n."
+  },
+  {
+   "id": "cr6-tableref_in_sub",
+   "logger": "cr6",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  GetRecord(A,Nope,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr1000x-tableref_in_sub",
+   "logger": "cr1000x",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  GetRecord(A,Nope,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr300-tableref_in_sub",
+   "logger": "cr300",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  GetRecord(A,Nope,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr350-tableref_in_sub",
+   "logger": "cr350",
+   "source": "Public A\nDataTable(T1,True,-1)\n  Sample(1,A,FP2)\nEndTable\nSub S\n  GetRecord(A,Nope,1)\nEndSub\nBeginProg\n  Scan(1,Sec,0,0)\n    CallTable T1\n    Call S\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Nope."
+  },
+  {
+   "id": "cr6-tableref_table_declared_later",
+   "logger": "cr6",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    SendData(ComRS232,0,4094,T9)\n  NextScan\nEndProg\nDataTable(T9,True,-1)\n  Sample(1,A,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot find DataTable T9."
+  },
+  {
+   "id": "cr1000x-tableref_table_declared_later",
+   "logger": "cr1000x",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    SendData(ComRS232,0,4094,T9)\n  NextScan\nEndProg\nDataTable(T9,True,-1)\n  Sample(1,A,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot find DataTable T9."
+  },
+  {
+   "id": "cr300-tableref_table_declared_later",
+   "logger": "cr300",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    SendData(ComRS232,0,4094,T9)\n  NextScan\nEndProg\nDataTable(T9,True,-1)\n  Sample(1,A,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot find DataTable T9."
+  },
+  {
+   "id": "cr350-tableref_table_declared_later",
+   "logger": "cr350",
+   "source": "Public A\nBeginProg\n  Scan(1,Sec,0,0)\n    SendData(ComRS232,0,4094,T9)\n  NextScan\nEndProg\nDataTable(T9,True,-1)\n  Sample(1,A,FP2)\nEndTable\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Cannot find DataTable T9."
+  }
+ ]
+}
