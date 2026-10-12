@@ -5640,3 +5640,22 @@ name followed by the logical word, `parser._parse_assignment_or_call`); we print
 the generic message. Also `(Sin(x) = 1) Then` is `Invalid assignment in expression:` (we: generic),
 `x(1) + 1 = 2`, `x Mod 1 = 2`, `x + (1 = 2` are `Invalid assignment` (we: generic), `(x(1) = 1) y`,
 `(x) = 1 y`, `(x = 1)(y = 2) z` are `Incomplete expression:` (we: generic).
+
+## Round 13 analysis, CR6/CR1000X: `!name` on a non-pointer variable (`chm/strcomp_3`, not implemented)
+
+The last remaining difference of `strcomp_3` (lines 49, 51, 61, 62). Oracle runs of 2026-10-12, CR6; we accept all of
+these (false accepts). `Public x As Long, s1 As String * 10, p As Long!, f As Float`:
+- `s1 = !x`, `x = !x`, `!x = 1`, `!x`, `x = 1 + !q`, `x = Len(!q)`, `s1 = !x + 1`: `x must be declared as a pointer type,
+  e.e., AS Float!, Long!, Double!, String!,...` followed by the generic fallback echoing the whole statement with its
+  indentation (`If !x = 1 Then ...`: the generic echoes the condition `!x = 1 `). `!x y` and a bare `!x` too.
+  A pointer variable (`p As Long!`) is silent. The name is the one after `!`, whatever the other side is.
+- `!nope` (undeclared): `Illegal ! operation`, then `<destination> must be declared as a pointer type...` (the other
+  variable of the statement, `s1` in `s1 = !nope`), then the generic; `!nope = s1` is `Illegal ! operation` alone;
+  `Call !x` is `Sub !x not defined.`.
+- Ordering: every such statement is reported, in line order (`s1 = !x` twice gives two pairs), but a
+  statement before or after it that has any other pass-1 or pass-2 error is silent (`Foo Bar`, `x = Zork`, `y = 1 +`,
+  `Call Zork`, `Sample` outside a table), including earlier ones. Inside `strcomp_3` the pointer errors sit between
+  the `For`/`If` pass-1 errors in line order, so the stage is not a pure pre-pass; which stage hides the `y = 1 +` of
+  the probe is unresolved. This needs the tracer on a pointer program and a model of the statement-compile stage
+  before it can be added; left for a later round.
+- Everything else of `strcomp_3` is now exact on CR6 and CR1000X; CR300/CR350 page-fault in the real compilers.
