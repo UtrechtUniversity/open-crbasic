@@ -137,6 +137,10 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   Human statement 2026-10-12: the Codex reviewer is not accessible on the current (macOS, M4)
   machine. There, reviews are done by fresh-context Opus agents (`deep-reasoner`, read-only, no
   builder transcript), output in `scratch/reviews/`.
+  Human instruction 2026-10-12: the cloud Claude session `firnmelt-datalogger-reviewer` (Fable
+  level) is available for reviews. The coordinator may push commits to `origin` and ask it to
+  review the pushed range; it cannot message back, so ask it to push its report to a branch
+  `reviews/<name>` (file `opencrbasic/docs/reviews/<name>.md` or similar) and fetch that.
 - **Usage pacing.** Check `mcp__ccd_session_mgmt__get_usage`; tell workers to wrap up at ~85% of
   the 5-hour window (they otherwise get cut off mid-task; a cut-off branch is recovered by saving
   uncommitted work as a WIP commit and verifying the last real commit).
