@@ -5333,3 +5333,5 @@ Oracle runs of 2026-10-12 (fixtures `r13_cr3xx_tcpopen_handle_types`, `r13_trail
   argument; on CR300/CR350 each starts the `Too many parameters` cascade). `given_count` is one loop.
   Not fixed (all four loggers, older): `Sample(1,,x)` prints `Invalid or missing parameter.`, we print
   `Variable illegal in Parameter: x.`.
+- A fourth `&h0F` argument of an unresolved call names `h0F` only when `h0F` is not a declared variable
+  (a `Public`/`Dim`/`Const`/`Alias` name is silent; a Sub or table of that name is still reported).

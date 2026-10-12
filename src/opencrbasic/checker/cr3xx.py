@@ -1106,7 +1106,8 @@ def _leading_unknown_words(text: str, known: set[str], callables: frozenset = fr
 MEMBER_STOP = "\0member"  # (oracle, CR300, 2026-10-01: `Foo(Bad,Tb.X)` -> Foo, Bad, nothing else)
 
 
-def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> list[str]:
+def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str],
+                              routines: frozenset[str] = frozenset()) -> list[str]:
     """The undefined names among an unresolved call's arguments, in source order -- see
     `check_undefined_call_args`'s module comment above for the oracle evidence and the rule."""
     names: list[str] = []
@@ -1140,7 +1141,8 @@ def _call_arg_undefined_names(args: list[S.Expr | None], known: set[str]) -> lis
         if not walk(arg):
             return names
     if len(args) > 3 and isinstance(args[3], S.Number) and args[3].text[:2].lower() == "&h":
-        names.append(args[3].text[1:])  # (oracle, CR300, 2026-10-11: a fourth `&h0000` names `h0000`)
+        if undefined(args[3].text[1:]) or args[3].text[1:].upper() in routines:  # (a declared variable `h0F` is not named, a Sub's name is: oracle, CR300/CR350, 2026-10-12)
+            names.append(args[3].text[1:])  # (oracle, CR300, 2026-10-11: a fourth `&h0000` names `h0000`)
     elif len(args) > 3:
         first = args[3]
         while isinstance(first, (S.Binary, S.Unary)):
@@ -1200,7 +1202,9 @@ def check_undefined_call_args(program: S.Program, profile, diags: Diagnostics) -
                 and nxt.message.startswith(_GENERIC_FALLBACK_PREFIX)):
             if known is None:
                 known = expressions._known_names(program, profile)
-            names = _call_arg_undefined_names(stmt.args, known)
+            routines = frozenset(st.name.upper() for st in program.statements if isinstance(st, S.SubDef)) \
+                - symbols.declared_variable_names(program)
+            names = _call_arg_undefined_names(stmt.args, known, routines)
             new_items.append(d)
             for undefined_name in names:
                 if undefined_name == MEMBER_STOP:
