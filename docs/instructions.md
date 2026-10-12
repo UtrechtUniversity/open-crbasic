@@ -678,8 +678,9 @@ per logger (boundary values in `min`/`hr`/`sec` units, and a string/variable `In
   0, so `999999999999`, `4294967297`, `-999999999999`, `-2147483649` and `1e38` compile; above the
   float32 maximum (`3.5e38`, `1e39`) the shown value is `255`, below it (`-1e39`) it compiles. Not
   modelled: CR300/CR350 report `255` for exactly `2147483648`, and a huge option with a `Hr`
-  interval on CR300/CR350 (`Delay(4294967297,25,Hr)` gives `Max Delay is 24 Hours` there); other
-  option-dependent checks still read the unmasked option on CR6/CR1000X (`Delay(256,61,min)`).
+  interval on CR300/CR350 (`Delay(4294967297,25,Hr)` gives `Max Delay is 24 Hours` there); the
+  `Scan interval too short` line that follows `Measurement Delay Exceeds 60 min.` is also missing for
+  `Delay(256,61,min)` (and differs by one second for `Delay(0,61,min)`) on CR6/CR1000X.
 - `Delay interval cannot be of type String.` (all four loggers, any `Option`) when `Interval` folds
   to a string constant -- this is the *only* diagnostic for a string interval (oracle: no
   accompanying "must be constant" line, unlike a non-constant *variable* interval).
