@@ -1,0 +1,267 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-for_member-0-to_tfield",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-0-to_tfield",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-0-to_tfield",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-0-to_tfield",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-1-init_tfield",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-1-init_tfield",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-1-init_tfield",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-1-init_tfield",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-2-step_tfield",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-2-step_tfield",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-2-step_tfield",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-2-step_tfield",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-3-to_tfield_plain",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-3-to_tfield_plain",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-3-to_tfield_plain",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-3-to_tfield_plain",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-4-to_struct",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Cfg.n\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-4-to_struct",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Cfg.n\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-4-to_struct",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Cfg.n\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-4-to_struct",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Cfg.n\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-5-to_status",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-5-to_status",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-5-to_status",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-5-to_status",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-6-step_status",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 9 Step Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-6-step_status",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 9 Step Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-6-step_status",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 9 Step Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-6-step_status",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 9 Step Status.SerialNumber(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-7-to_dotparen",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1) + 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-for_member-7-to_dotparen",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1) + 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-for_member-7-to_dotparen",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1) + 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-for_member-7-to_dotparen",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X(1) + 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-for_member-8-bad_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr1000x-for_member-8-bad_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr6-for_member-9-bad_dot2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  },
+  {
+   "id": "cr1000x-for_member-9-bad_dot2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  }
+ ]
+}

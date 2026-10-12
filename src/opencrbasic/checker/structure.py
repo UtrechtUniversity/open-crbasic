@@ -2645,6 +2645,34 @@ def _for_header_incomplete(text: str, profile) -> str | None:
 _FOR_INIT_RE = re.compile(r"^\s*For\s(?:.*?)=(.*?)\sTo\s", re.I | re.S)
 
 
+def _merge_members(toks: list) -> list:
+    """`T.X(1)`, `Cfg.n`, `Status.SerialNumber(1,1)`: a dotted member name is one operand in a
+    `For` header (it compiles on CR6/CR1000X; the assignment-only `X = 1 .` rule must not see the
+    dot). A trailing `.` after a name merges as well (`To T. ` compiles, oracle 2026-10-12)."""
+    out: list = []
+    i = 0
+    while i < len(toks):
+        t = toks[i]
+        if t.kind == "IDENT":
+            j = i + 1
+            text = t.text
+            while j < len(toks) and toks[j].kind == "OP" and toks[j].text == "." and (
+                    j + 1 >= len(toks) or toks[j + 1].kind == "IDENT"):
+                text += "."
+                j += 1
+                if j < len(toks) and toks[j].kind == "IDENT":
+                    text += toks[j].text
+                    j += 1
+            if j > i + 1:
+                t = lexer.Token("IDENT", text, text.upper(), t.col, t.line)
+            out.append(t)
+            i = j
+            continue
+        out.append(t)
+        i += 1
+    return out
+
+
 def _for_header_findings(text: str, profile) -> list[str]:
     """CR6/CR1000X pass-1 message of a `For` header whose init, `To` or `Step` expression is
     broken, echoing that expression as written (oracle, 2026-10-12: `For x = y To (y +` is
@@ -2664,6 +2692,7 @@ def _for_header_findings(text: str, profile) -> list[str]:
             return []
         if not toks:
             continue
+        toks = _merge_members(toks)
         verdict = _scan_expr(toks, 0, _Everything(), profile.functions, assign=True,
                              start_operand=False, unclosed="no_matching", open_fallback=True)
         if verdict == ("pass1", "incomplete"):
