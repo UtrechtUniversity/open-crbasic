@@ -5659,3 +5659,12 @@ these (false accepts). `Public x As Long, s1 As String * 10, p As Long!, f As Fl
   the probe is unresolved. This needs the tracer on a pointer program and a model of the statement-compile stage
   before it can be added; left for a later round.
 - Everything else of `strcomp_3` is now exact on CR6 and CR1000X; CR300/CR350 page-fault in the real compilers.
+
+## Unclosed built-in call inside a condition
+
+`If Round(X Then`, `ElseIf X = Round(X Then`, `If X + Round(X Then` (a call with fewer arguments than its
+count, left open in an `If`/`ElseIf` condition): all four loggers print `Expression expects , : <condition>.`
+with the condition echoed without the keyword and `Then` (oracle, 2026-10-12, `r13_unclosed_call_condition.json`),
+the same rule as the statement form (`_unclosed_call_message`). Not covered: a trailing comma (`If Round(X, Then`,
+real `Invalid, or out of place expression: Round(X, .`), `Round(Abs(X`, the one-line `If c Then stmt` on
+CR6/CR1000X, and `While`/`Do While` on CR300/CR350.

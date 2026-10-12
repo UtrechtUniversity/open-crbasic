@@ -1614,6 +1614,13 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     d = dataclasses.replace(d, message=refined)
                     changed = True
                 elif cond is not None:
+                    if head == "No Matching, or out of place ) in expression: " and (
+                            refined := structure._unclosed_call_message(
+                                profile, cond, False, symbols.declared_variable_names(program))
+                            ) and refined.startswith("Expression expects ,"):
+                        # `If Round(X Then`: a call left open in a condition, same count rule as a
+                        # statement (oracle, CR300/CR350, 2026-10-12)
+                        head = "Expression expects , : "
                     # a `While`/`Do While|Until`/`Loop While|Until` condition echoes alone, no
                     # line-end newline (oracle, CR300/CR350, 2026-10-10)
                     d = dataclasses.replace(d, message=(head or _GENERIC_FALLBACK_PREFIX) + cond + ".")

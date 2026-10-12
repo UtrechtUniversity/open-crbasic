@@ -2706,11 +2706,12 @@ def _unclosed_call_message(profile, text: str, at_eol: bool, operands: set[str])
 
 
 def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None = None) -> str:
-    if kind == "no_matching" and operands is not None and condition_part(stmt.text) is None \
-            and (refined := _unclosed_call_message(profile, stmt.text, getattr(stmt, "at_eol", True),
+    text = condition_part(stmt.text)
+    if kind == "no_matching" and operands is not None \
+            and (refined := _unclosed_call_message(profile, stmt.text if text is None else text,
+                                                   getattr(stmt, "at_eol", True),
                                                    operands)) is not None:
         return refined
-    text = condition_part(stmt.text)
     if text is None:
         text = stmt.text
     return {
