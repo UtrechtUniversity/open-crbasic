@@ -749,3 +749,15 @@ RoutersNeighbors value models (`Illegal OID`, `Illegal object id.`, `Settling ti
 `Invalid port`, `Option must be`, `cr300/c2df4fc25e40` and `cr300/8da22221926c` `MaxNeighbors is not defined.`);
 CR300/CR350 storage limit / autoallocate / `CDM_Delay` (`cr300/361cb4b5d2d5`, `cr350/7d495abe4b98`, `cr350/fa0787025392`,
 `cr350/c01544a79750`); message-diff ranking (everything in the list above).
+## Round 15 message-diff ranking (2026-10-12)
+
+`tools/fuzz_replay.py` on `main`: 2,604 reproducers, 2,017 exact, 33 false accepts, 528 message diffs, 10 mode diffs, 16 oracle
+errors; after the round-15 commits 2,157 exact, 388 message diffs left (0 false rejects). Ranking method as in round 14
+(first differing line, normalised). Largest clusters at the start: `ID is not defined.` count differences (26), `ID is not
+defined.`/`Sample must be used inside a table declaration.` (23, fixed), `NextScan with no Scan.` hidden by an unknown
+`CallTable` (18, fixed with the reachability warnings, 12), `ID is not defined.`/`Too many parameters` (13),
+`<END>`/`Invalid, or out of place expression` (12, over-indexed targets, fixed), CR6 `No BeginProg in Program.` (12, an `_`
+at the end of the file, fixed). Fixed families are in `docs/checker.md` "Round 15 message-diff families" and following
+sections. Left open: `Return (expr)` outside a `Function` on CR300/CR350 (names must not be printed), `CallTable (T  rimTab)`
+(`rimTab is not defined.` only), the rest of the `ID is not defined.` count cluster (unparsed `Const X Y=5`, `&B...X` names,
+declarations after a failed declaration), multi-variable `Illegally dimension` echo, `Units a  b = c`, `Function F("x")`.
