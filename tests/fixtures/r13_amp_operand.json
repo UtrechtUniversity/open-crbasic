@@ -1,0 +1,197 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-r13_amp_operand-0",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, & 6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-1",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, & 6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-2",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, & 6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-3",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, & 6)\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-4",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(& 6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-5",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(& 6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-6",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h6) with gt values."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-7",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h6) with gt values."
+  },
+  {
+   "id": "cr6-r13_amp_operand-8",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &hZ6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-9",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &hZ6) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-10",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-11",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-12",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h) with gt values."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-13",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h) with gt values\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h) with gt values."
+  },
+  {
+   "id": "cr6-r13_amp_operand-14",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h 6) w\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h 6) w."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-15",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, &h 6) w\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Invalid, or out of place expression: cv(4, 5, &h 6) w."
+  },
+  {
+   "id": "cr6-r13_amp_operand-16",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = & 6\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-17",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = & 6\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-18",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = 1 + &\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-19",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = 1 + &\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-20",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = 4 & 6 y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Incomplete expression: x = 4 & 6 y."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-21",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = 4 & 6 y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x.\nline 5: Incomplete expression: x = 4 & 6 y."
+  },
+  {
+   "id": "cr6-r13_amp_operand-22",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = cv(4, & x) y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-23",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\nx = cv(4, & x) y\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr6-r13_amp_operand-24",
+   "logger": "cr6",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, & 6, 7) w\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  },
+  {
+   "id": "cr1000x-r13_amp_operand-25",
+   "logger": "cr1000x",
+   "source": "Public x, cv(7), gt(4)\nBeginProg\nScan (1,Sec,0,0)\nx x\ncv(4, 5, & 6, 7) w\nNextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: x x."
+  }
+ ]
+}

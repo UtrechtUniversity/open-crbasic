@@ -1980,7 +1980,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
                 if depth == 0:
                     break
             if depth or _scan_expr(toks[i + 1:j], 0, operands, functions, assign=True,
-                                   start_operand=False) is not None:
+                                   start_operand=False) is not None or _later_arg_unknown(
+                    toks[i + 1:j + 1], operands, functions):
                 if u in profile.symbols and not depth:
                     return ("pass1", "fallback")  # `C1 (COM1 TX) to C4`, a predefined symbol
                 return None
@@ -2375,6 +2376,23 @@ _DEFERRED_DEST_CODES = frozenset({8, 27, 29})
 _CONST_ONLY_CODES = frozenset({1, 5, 20, 38})
 
 
+def _later_arg_unknown(args, operands: set[str], functions: dict) -> bool:
+    """A subscript scan stops at its first top-level comma; a later argument that names an unknown
+    symbol (`cv(4, 5, & 6) with x`, `&` before a non-literal is a name) still leaves the line to
+    pass 2 (oracle, CR6/CR1000X, 2026-10-12)."""
+    depth, start = 0, None
+    for k, t in enumerate(args):
+        if t.kind == "OP" and t.text in ("(", ")"):
+            depth += 1 if t.text == "(" else -1
+        elif t.kind == "OP" and t.text == "," and depth == 0:
+            if start is not None and _scan_expr(args[start:k], 0, operands, functions, assign=True,
+                                                start_operand=False) == ("pass2", "symbol"):
+                return True
+            start = k + 1
+    return start is not None and _scan_expr(args[start:], 0, operands, functions, assign=True,
+                                            start_operand=False) == ("pass2", "symbol")
+
+
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None,
                cond: bool = False, to_ok: bool = True) -> tuple[str, str] | None:
@@ -2425,6 +2443,10 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 rel_levels.discard(len(parens))
             elif t.kind == "OP" and t.text in ("-", "+"):
                 pass
+            elif t.kind == "OP" and t.text == "&" and not (
+                    nxt is not None and nxt.kind == "IDENT" and nxt.upper == "H" and nxt.col == t.col + 1
+                    and i + 2 < len(toks)):
+                return unknown  # `&` in operand position that is no hex literal names an unknown symbol
             elif t.kind == "OP" and t.text in _BINARY_OPS:
                 return ("pass1", "fallback")
             elif cond and t.kind == "OP" and t.text == ",":

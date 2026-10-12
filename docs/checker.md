@@ -5532,7 +5532,7 @@ instead of the strings and `Incomplete expression`).
 Oracle runs of 2026-10-12, CR6 and CR1000X (the tracer shows the generic `%s: %s.` message of the
 continuation line emitted by the same pass as the `Invalid or missing parameter.` lines, i.e. pass 1).
 A line that follows an unterminated-string line and starts with `%`, `[` or `]` (lexer-level
-failures), or with one of `, . ) ^ * / < > = \\` (a leading operator, with or without a quote later in
+failures), or with one of `, . ) ^ * / < > = \` (a leading operator, with or without a quote later in
 the line: `,x", x)`, `)"x`), is a pass-1 error: its `Invalid, or out of place expression: <line>.`
 is printed after `String without end quote` (`SprintF ( s, "...` / `%3.2f %c", x,10)`). We printed
 nothing for it because the scan (`structure._pass1_scan`) gave up at the lex error and left the line
@@ -5543,3 +5543,15 @@ unterminated string; a line starting with a number then a name and a quote (`.5 
 a real pass-1 error that we do not print; the echo of a line that fails at an unrecognised character
 keeps its indentation and trailing blanks in the real compiler on all four loggers (`   %3.2f x   `)
 and ours strips them.
+
+## Round 13, CR6/CR1000X: `&` in operand position names an unknown symbol (`chm/clockset_1`; fixture `r13_amp_operand.json`)
+
+Oracle runs of 2026-10-12, CR6 and CR1000X. In the pass-1 scan an `&` where an operand is expected
+(`x = & 6`, `cv(4, & 6) text`, `x = 1 + &`, `cv(4, 5, &)`, `&hZ6`) is a name that does not resolve, so the
+line is left to pass 2 like any unknown name and is silent after an earlier pass-1 error. A hex literal
+(`&h6`) is an operand; `&h` directly followed by more tokens (`cv(4, 5, &h) text`, `&h 6`) is still the
+pass-1 fallback, and `&` after an operand (`x = 4 & 6 y`) is the binary operator (`Incomplete
+expression`). The subscript scan of `name(...) text` stopped at the first comma and never saw a later
+argument; `_later_arg_unknown` scans each later argument for an unknown symbol. Not done: the same `&`
+inside an `If` condition (`If x = & 6 Then`, `If cv(4, & 6) Then`) is silent in the real compiler and
+still printed here.
