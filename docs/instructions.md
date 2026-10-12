@@ -1891,3 +1891,21 @@ are still resolved (`AbortX` -> `Invalid symbol in expression: AbortX.`); a lite
 (audited 0 differing), fuzz reproducer `cr1000x/false_reject/5fe667412d48`. CR300/CR350 have no
 `ModemCallBack`. The other code-29 instructions probed (`RealTime`, `ReadIO`, `PortGet`, `SMSSend`)
 do report an undefined first argument.
+
+### `AddPrecise` / `MovePrecise`: the second argument is not resolved either (CR6, CR1000X)
+
+`AddPrecise(a, Nope)`, `AddPrecise(Nope, Nope2)`, `AddPrecise(a, Nope+1)`, `AddPrecise(a, Nope(2))` and
+the `MovePrecise` equivalents compile clean (the first argument was already exempt,
+`_UNDEFINED_CHECK_EXEMPT_POSITIONS`). Nothing is declared by the call (`AddPrecise(a,Nope):Nope=1`
+still gives `Invalid, or out of place expression: Nope=1.`). An extra argument is still `Too many
+parameters:  3.`. R14, `tests/fixtures/r14_addprecise_second_arg.json` (audited 0 differing), fuzz
+reproducer `cr6/false_reject/9124242872d5`.
+
+### Reachability: bare `End` and `End Prog` are never flagged (all four loggers)
+
+After an endless `Scan`, `End` and `End Prog` (any whitespace between the words, any case) give no
+`End never reached at run time.` and do not end the search: `End` then `a = 1` warns only for `a = 1`
+(`Expr never reached at run time.`, the following line). `a = 1` then `End` still warns for `a = 1`
+only. R14, `tests/fixtures/r14_end_prog_alias.json` (audited 0 differing); fuzz mode_diff reproducers
+`cr6/mode_diff/901f027f907a`, `cr1000x/mode_diff/64c82a8749c9`, `cr300/mode_diff/158bf4c5872b`.
+Not modelled: `End 1` (`Illegal END or EXIT 1.`) and `End Prog 1` (`Too many parameters:  1.`).

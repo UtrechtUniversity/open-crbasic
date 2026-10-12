@@ -213,8 +213,8 @@ _MULTI_REPORT_ORDER: dict[str, tuple[int, ...]] = {
 }
 
 _UNDEFINED_CHECK_EXEMPT_POSITIONS: dict[str, frozenset[int]] = {
-    "ADDPRECISE": frozenset({0}),
-    "MOVEPRECISE": frozenset({0}),
+    "ADDPRECISE": frozenset({0, 1}),
+    "MOVEPRECISE": frozenset({0, 1}),
     "MODEMCALLBACK": frozenset({0}),  # CR6/CR1000X; fuzz cr1000x/false_reject/5fe667412d48
 }
 
