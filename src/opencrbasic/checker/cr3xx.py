@@ -122,6 +122,26 @@ def check(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         _check_baud(stmt, profile, diags, program.consts)
         is_variable = bool(expressions._variable_refs(arg, variable_names))
+        if not (names or is_variable or isinstance(arg, S.String)) and len(stmt.args) > 3 \
+                and stmt.args[3] is not None:
+            # `TXDelay` (oracle, all four loggers, 2026-10-12): a constant outside 0..14000000 is
+            # `%d usec delay before transmit is illegal, must be 0..14000000`; a variable is
+            # `Parameter must be a constant integer: <statement>.`
+            delay = stmt.args[3]
+            if expressions._variable_refs(delay, variable_names):
+                sep = "\n" if cr3 and stmt.at_eol else ""
+                diags.error(stmt.line, f"Parameter must be a constant integer: {stmt.text}{sep}.",
+                            stmt.file)
+                continue
+            try:
+                value = consteval.value_of(delay, consteval.Env(profile, dict(program.consts or {})))
+            except (consteval.NotConstant, TypeError, ValueError, ZeroDivisionError):
+                value = None
+            if isinstance(value, (int, float)) and not isinstance(value, bool) and value == int(value) \
+                    and -2**31 <= value < 2**31 and not 0 <= value <= 14000000:
+                # (beyond 32 bits: `Parameter must be a constant integer` only, `intervals.py`)
+                diags.error(stmt.line, f"{int(value)} usec delay before transmit is illegal, must be "
+                            "0..14000000", stmt.file)
         if names or is_variable or isinstance(arg, S.String):
             # A string or variable ComPort, all four loggers, pass 1 (oracle, 2026-10-01:
             # `SerialOpen("fuzz",...)`). CR300/CR350 echo the line end (`docs/loggers.md`).

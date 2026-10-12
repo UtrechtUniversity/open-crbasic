@@ -208,7 +208,10 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                 elif _indexed_past_first(typer, args[0]):
                     message = "Destination variable cannot be indexed"
         elif kw == "ARGOSERROR" and args:
-            if typer.variable(args[0]) is not None and typer.of(args[0]) not in (None, "STRING"):
+            if typer.variable(args[0]) is not None and typer.of(args[0]) not in (None, "STRING") \
+                    or isinstance(args[0], (S.String, S.Number, S.Binary, S.Unary)):
+                # (also a literal or an expression: `ArgosError("fuzz")`, `ArgosError((1+2))`,
+                # oracle CR6/CR1000X 2026-10-12)
                 message = "A string variable destination is required"
         elif kw == "SORTSPAINDEXED" and len(args) > 2:
             dest, source = typer.of(args[0]), typer.of(args[2])

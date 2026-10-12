@@ -6250,3 +6250,13 @@ pass-1 error hides it: `structure.check_pass2`); on CR300/CR350 it ends the late
 scan is still printed by the real compilers next to the error, which is not modelled when the file
 has other errors (fuzz `cr6/false_accept/46663179c624`). Cases in
 `tests/fixtures/r14_slowsequence_open_scan.json`.
+
+## `SerialOpen` transmit delay and `ArgosError` destination (2026-10-12, fuzz false accepts)
+
+`SerialOpen`'s fourth argument (`TXDelay`, µs): a constant outside 0..14000000 is `%d usec delay
+before transmit is illegal, must be 0..14000000` (`-1`, `(0-1)`, `-5`, `14000001`), a variable is
+`Parameter must be a constant integer: <statement>.` (CR300/CR350 with the line terminator), on all
+four loggers (`cr3xx.check`, next to the baud rate). `ArgosError`'s argument must be a String variable
+on CR6/CR1000X: a literal or an expression (`ArgosError("fuzz")`, `ArgosError((1+2))`) is `A string
+variable destination is required` like a Float or Long variable (`var_types`). Cases in
+`tests/fixtures/r14_serialopen_txdelay_argos.json`.
