@@ -911,9 +911,11 @@ def _members(expr: S.Expr | None):
 
 def _illegal_table_name(st: S.Instruction) -> list[Diagnostic]:
     """oracle, all four loggers, 2026-10-11 (docs/checker.md "Table names starting with a digit")"""
-    if st.args and isinstance(st.args[0], S.Name) and st.args[0].name[:1].isdigit():
-        return [Diagnostic("error", st.line, f"Table name {st.args[0].name} illegal, starts with a number.",
-                           st.file, cascade=False)]
+    if st.args and isinstance(st.args[0], S.Name) and st.args[0].name[:1] in "0123456789.":
+        name = st.args[0].name
+        text = (f"DataTable name {name} is illegal." if "." in name
+                else f"Table name {name} illegal, starts with a number.")
+        return [Diagnostic("error", st.line, text, st.file, cascade=False)]
     return []
 
 

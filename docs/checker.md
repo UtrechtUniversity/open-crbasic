@@ -5668,3 +5668,13 @@ with the condition echoed without the keyword and `Then` (oracle, 2026-10-12, `r
 the same rule as the statement form (`_unclosed_call_message`). Not covered: a trailing comma (`If Round(X, Then`,
 real `Invalid, or out of place expression: Round(X, .`), `Round(Abs(X`, the one-line `If c Then stmt` on
 CR6/CR1000X, and `While`/`Do While` on CR300/CR350.
+
+### Table names with a dot, `CallTable(15Min)` (2026-10-12)
+
+Follow-up to "Table names starting with a digit". A table name that starts with a digit or a dot and
+contains a `.` (`DataTable(1.5,...)`, `1.5e3`, `.5`, `1.`, `1.5x`, `"1.5"`) is `DataTable name 1.5 is
+illegal.` on all four loggers (the string form is echoed without quotes), in the same model as the
+`Table name ... illegal, starts with a number.` message (the CR300/CR350 first-error rule is
+shared, checked with two illegal tables). `CallTable(15Min)` (parenthesised) and `CallTable 1.5` /
+`CallTable(1.5)` read the digit-led name as one name like `CallTable 15Min`. Fixture:
+`tests/fixtures/r13_digit_table_names_paren.json`.
