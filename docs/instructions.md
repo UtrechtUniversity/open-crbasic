@@ -1864,3 +1864,10 @@ Histogram4D 17, LevelCrossing 9, Moment 5, RainFlow 9, RainFlowSample 2, SampleM
 the documented maximum, the maximum with the optional argument omitted or empty (`SendData(...,T,)`),
 and parenthesised or array-element arguments all match on the four loggers, and max+1 gives `Too many
 parameters:  <token>.` exactly.
+
+`ETsz` / `ETClearSky` output fields (2026-10-12, fixture `tests/fixtures/r13_et_duplicate_fields.json`): both
+instructions produce two fields, `ETrs` and `Rso` (real TDF of a lone `ETsz` / `ETClearSky` table, all
+loggers; `FieldNames("A,B")` renames them). `tables.py` records them as name-only fields (like FFT: never
+written to the TDF or counted in the record size, still no TDF fields derived), so `Duplicate field name ETrs` /
+`Rso in DataTable T.` now appears for two of them in one table (also `ETsz` + `ETClearSky`, a `Sample` of a
+variable named `Rso`, three instructions give the usual pairwise list; renaming one pair apart removes it).

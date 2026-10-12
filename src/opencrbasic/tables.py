@@ -1196,6 +1196,11 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             if pending:
                 out_fields.extend(split_pending())
             pending, pending_src = [_fft_field(s, var_info, by_display, env)], None
+        elif kw in ("ETSZ", "ETCLEARSKY"):
+            if pending:
+                out_fields.extend(split_pending())
+            pending, pending_src = [_OutField(n, 7, True, n, 1, 1, [], name_only=True, rng=(1, _FFT_UNBOUNDED))
+                                    for n in ("ETrs", "Rso")], None   # name-only: the TDF fields are not derived
     if pending:
         out_fields.extend(split_pending())
 

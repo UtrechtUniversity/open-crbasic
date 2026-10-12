@@ -1,0 +1,527 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-et_duplicate_fields-0-et0",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-0-et0",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-0-et0",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-0-et0",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-1-et1",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-1-et1",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-1-et1",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-1-et1",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-2-et2",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-2-et2",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-2-et2",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-2-et2",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-3-et3",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-3-et3",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-3-et3",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-3-et3",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-4-et4",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-4-et4",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-4-et4",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-4-et4",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,IEEE4,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-5-et5",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,True)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-5-et5",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,True)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-5-et5",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,True)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-5-et5",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,True)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-6-et6",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-6-et6",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-6-et6",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-6-et6",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-7-et7",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-7-et7",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-7-et7",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-7-et7",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-8-et8",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-8-et8",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-8-et8",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-8-et8",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name ETrs in DataTable T.\nDuplicate field name Rso in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-9-et9",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-9-et9",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-9-et9",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-9-et9",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-10-et10",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,C\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-10-et10",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,C\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-10-et10",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,C\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-10-et10",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,C\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-11-et11",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-11-et11",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-11-et11",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-11-et11",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name A in DataTable T.\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-12-et12",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-12-et12",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-12-et12",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-12-et12",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETClearSky (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-13-et13",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nSample(1,Rso,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-13-et13",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nSample(1,Rso,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-13-et13",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nSample(1,Rso,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-13-et13",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nSample(1,Rso,FP2)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name Rso in DataTable T."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-14-et14",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"ETrs,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-14-et14",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"ETrs,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-14-et14",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"ETrs,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-14-et14",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"ETrs,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-15-et15",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"Rso,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-15-et15",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"Rso,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-15-et15",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"Rso,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-15-et15",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"Rso,x\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-16-et16",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-16-et16",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-16-et16",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-16-et16",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nFieldNames(\"A,B\")\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-et_duplicate_fields-17-et17",
+   "logger": "cr6",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nFieldNames(\"ETrs\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T."
+  },
+  {
+   "id": "cr1000x-et_duplicate_fields-17-et17",
+   "logger": "cr1000x",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nFieldNames(\"ETrs\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T."
+  },
+  {
+   "id": "cr300-et_duplicate_fields-17-et17",
+   "logger": "cr300",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nFieldNames(\"ETrs\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T."
+  },
+  {
+   "id": "cr350-et_duplicate_fields-17-et17",
+   "logger": "cr350",
+   "source": "Public X, Y, Z, Rso, ETrs\nDataTable(T,True,-1)\nETsz (X,Y,Z,X,1.0,2.0,3.0,4.0,5.0,FP2,False)\nSample(1,X,FP2)\nFieldNames(\"ETrs\")\nEndTable\nBeginProg\n  Scan(1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name ETrs in DataTable T."
+  }
+ ]
+}
