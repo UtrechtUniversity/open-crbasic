@@ -130,6 +130,9 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   the model): `/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex exec -m gpt-6.1-sol -s read-only -C <repo> -o opencrbasic/scratch/codex/review-<n>.md "<prompt>" </dev/null`.
   Codex is for reviews and research summaries only, never implementation. Every review so far
   found real defects; act on them with a worker that confirms each against the oracle first.
+  Human statement 2026-10-12: the Codex reviewer is not accessible on the current (macOS, M4)
+  machine. There, reviews are done by fresh-context Opus agents (`deep-reasoner`, read-only, no
+  builder transcript), output in `scratch/reviews/`.
 - **Usage pacing.** Check `mcp__ccd_session_mgmt__get_usage`; tell workers to wrap up at ~85% of
   the 5-hour window (they otherwise get cut off mid-task; a cut-off branch is recovered by saving
   uncommitted work as a WIP commit and verifying the last real commit).
