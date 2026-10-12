@@ -113,7 +113,7 @@ def _strip_trailing_blank_lines(text: str) -> str:
 
 
 def _iter_sibling_files(siblings_dir: Path):
-    for entry in sorted(siblings_dir.iterdir()):
+    for entry in sorted(siblings_dir.rglob("*")):
         if entry.is_file():
             yield entry
 
@@ -125,7 +125,8 @@ def _cache_key(exe_path: Path, program_path: Path, siblings_dir: Path | None) ->
     h.update(program_path.read_bytes())
     if siblings_dir is not None:
         siblings = sorted(
-            (entry.name, entry.read_bytes()) for entry in _iter_sibling_files(siblings_dir)
+            (entry.relative_to(siblings_dir).as_posix(), entry.read_bytes())
+            for entry in _iter_sibling_files(siblings_dir)
         )
         for name, data in siblings:
             h.update(name.encode("utf-8"))
@@ -166,7 +167,9 @@ def run_oracle(
         tmp_dir = Path(tmp)
         if siblings_dir is not None:
             for entry in _iter_sibling_files(siblings_dir):
-                shutil.copy2(entry, tmp_dir / entry.name)
+                dest = tmp_dir / entry.relative_to(siblings_dir)
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(entry, dest)
         dest_program = tmp_dir / program_path.name
         shutil.copy2(program_path, dest_program)
 

@@ -24,6 +24,17 @@ commands are given so they can be re-run.
   matched case-insensitively against the program's directory, matching how this repository's own
   `crbasic/*.crb` libraries are already included (`IncludeSection("Definitions", "CPU:Lib.crb")`),
   which is established working behaviour, not separately re-verified here.
+- **Include paths with a directory** (oracle, 2026-10-12, all four loggers, fixture
+  `tests/fixtures/r13_include_subdir.json`, 56 cases): `Include "CPU:sub/Lib.crb"`,
+  `"sub\\Lib.crb"`, `a/b\\Lib.crb`, `./sub//Lib.crb`, `sub/../Lib.crb` and `IncludeSection` with
+  the same specs compile; `/` and `\\` both separate directories, directory and file names match
+  case-insensitively, `.` and empty parts are skipped and `..` cancels the part before it (even a
+  missing directory: `nosub/../Lib.crb` opens `Lib.crb`). Also probed directly (not in the fixture,
+  it needs files outside the program directory): `../Lib.crb`, `..\\Lib.crb`, `../main/sub/Lib.crb`.
+  A spec starting with `/` or `\\` (under Wine: not found), or with a `C:` part, and a missing file
+  or directory give the usual missing-include warning. Paths resolve from the main program's
+  directory (`source._resolve_include_path`). Before this the loader matched only a plain file
+  name, a false reject of working programs.
 - A missing `Include`/`IncludeSection` target is only a **warning** (`Cannot open include file
   %s.` -- note the real message has a *double* space before `%s`; `source.py` reproduces it), and
   the inclusion contributes no lines; compilation continues.

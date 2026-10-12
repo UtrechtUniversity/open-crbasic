@@ -144,14 +144,53 @@ def _is_continuation(line: str) -> tuple[bool, str]:
 
 def _resolve_include_path(spec: str, directory: Path | None,
                           source: SourceProvider | None = None) -> Path | None:
+    """The file `spec` names, searched from the main program's directory. `/` and `\\` both
+    separate directories; `.` and empty parts are skipped and `..` cancels the part before it, even a missing one (oracle, 2026-10-12,
+    all four loggers: `CPU:sub/Lib.crb`, `CPU:sub\\Lib.crb`, `./`, `..`, `a/b\\Lib.crb` and
+    `sub//Lib.crb` open the file, `docs/checker.md` "Include paths with a directory"). A spec
+    starting with a separator, or naming a drive-like part, is not found. Names match
+    case-insensitively."""
     name = _DRIVE_RE.sub("", spec.strip())
-    if directory is None or not name:
+    if directory is None or not name or name[0] in "/\\":
         return None
-    names = (source or DiskSource()).list_dir(directory)
+    source = source or DiskSource()
+    *folders, leaf = name.replace("\\", "/").split("/")
+    parts: list[str] = []
+    for part in folders:
+        if part in ("", "."):
+            continue
+        if ":" in part:
+            return None
+        if part == "..":  # lexical: `nosub/../Lib.crb` opens `Lib.crb` (oracle, 2026-10-12)
+            if parts:
+                parts.pop()
+            else:
+                directory = directory.absolute().parent
+        else:
+            parts.append(part)
+    for part in parts:
+        directory = _child_directory(directory, part, source)
+        if directory is None:
+            return None
+    if leaf in ("", ".", "..") or ":" in leaf:
+        return None
+    names = source.list_dir(directory)
     if names is None:
         return None
     for entry in names:
-        if entry.lower() == name.lower():
+        if entry.lower() == leaf.lower():
+            return directory / entry
+    return None
+
+
+def _child_directory(directory: Path, part: str, source: SourceProvider) -> Path | None:
+    """`directory/part`, matched case-insensitively when the provider can list subdirectories."""
+    exact = directory / part
+    if source.list_dir(exact) is not None:
+        return exact
+    subdirs = getattr(source, "list_subdirs", None)
+    for entry in (subdirs(directory) if subdirs else None) or ():
+        if entry.lower() == part.lower():
             return directory / entry
     return None
 

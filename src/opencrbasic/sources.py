@@ -36,6 +36,12 @@ class DiskSource:
             return None
         return [entry.name for entry in directory.iterdir() if entry.is_file()]
 
+    def list_subdirs(self, directory: Path) -> list[str] | None:
+        directory = Path(directory)
+        if not directory.is_dir():
+            return None
+        return [entry.name for entry in directory.iterdir() if entry.is_dir()]
+
 
 class OverlaySource:
     """`base` with `overlays` (path -> bytes) on top. An overlay file also appears in its
@@ -58,6 +64,10 @@ class OverlaySource:
             return extra or None
         have = set(names)
         return names + [n for n in extra if n not in have]
+
+    def list_subdirs(self, directory: Path) -> list[str] | None:
+        subdirs = getattr(self.base, "list_subdirs", None)
+        return subdirs(directory) if subdirs else None
 
 
 class LimitedSource:
@@ -89,6 +99,9 @@ class LimitedSource:
     def list_dir(self, directory: Path) -> list[str] | None:
         return self.inner.list_dir(directory)
 
+    def list_subdirs(self, directory: Path) -> list[str] | None:
+        return self.inner.list_subdirs(directory)
+
 
 class RecordingSource:
     """Wraps `inner` and records what was asked: `reads` maps path -> sha256 hex of the bytes (None
@@ -108,3 +121,7 @@ class RecordingSource:
         names = self.inner.list_dir(directory)
         self.listings[Path(directory)] = None if names is None else tuple(sorted(names))
         return names
+
+    def list_subdirs(self, directory: Path) -> list[str] | None:
+        subdirs = getattr(self.inner, "list_subdirs", None)
+        return subdirs(directory) if subdirs else None

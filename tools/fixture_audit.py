@@ -21,6 +21,7 @@ for fixture in sys.argv[1:]:
         with tempfile.TemporaryDirectory() as tmp:
             program = Path(tmp) / case["expected_stdout"].split(" -- ", 1)[0].strip()
             for name, text in case.get("siblings", {}).items():
+                (Path(tmp) / name).parent.mkdir(parents=True, exist_ok=True)
                 (Path(tmp) / name).write_text(text, encoding="utf-8")
             program.write_text(case["source"], encoding="utf-8")
             exe = oracle.REPO_ROOT / "compiler" / profiles.get(case["logger"]).exe_name
