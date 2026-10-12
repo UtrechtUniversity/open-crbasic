@@ -20,13 +20,13 @@ import threading
 import traceback
 from concurrent.futures import ProcessPoolExecutor
 from concurrent.futures.process import BrokenProcessPool
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Callable
 
 from .. import positions
 from .config import Config, discover
-from .worker import JobResult, run_analysis
+from .worker import JobResult, OutputResult, run_analysis, run_compiler_output
 
 SRC_COMPILE = "opencrbasic"
 SRC_INTERNAL = "opencrbasic (internal)"
@@ -175,13 +175,16 @@ class Snapshot:
     logger: str
     timeout: float
     max_file_bytes: int | None = None
+    kind: str = "analysis"              # the worker job: "analysis" or "compiler_output"
 
 
 class ServerError(Exception):
-    def __init__(self, message: str, limit: bool = False, result: JobResult | None = None):
+    def __init__(self, message: str, limit: bool = False, result: JobResult | None = None,
+                 reason: str = "failed"):
         super().__init__(message)
         self.limit = limit              # a configured bound was hit: reported as a server warning
         self.result = result            # the analysis that was discarded (its reads still count)
+        self.reason = reason            # "failed", "timeout" or "too_large" (command refusals)
 
 
 class _Broken:
@@ -555,6 +558,7 @@ class Session:
         result = None
         if over is None:
             outcome = await self._run_job(entry, snap)
+            assert not isinstance(outcome, OutputResult)
             if isinstance(outcome, ServerError) or not outcome.oversized:
                 return outcome
             over, result = (Path(outcome.oversized[0][0]), outcome.oversized[0][1]), outcome
@@ -562,7 +566,27 @@ class Session:
         self.notice(f"size:{path}", f"{path.name} is {size} bytes, above the maxFileBytes limit "
                     f"of {limit}; the entry programs that read it are not analysed.")
         return ServerError(f"Analysis of {entry.path.name} skipped: {path.name} is {size} bytes, "
-                           f"above the maxFileBytes limit of {limit}.", limit=True, result=result)
+                           f"above the maxFileBytes limit of {limit}.", limit=True, result=result,
+                           reason="too_large")
+
+    async def compiler_output(self, entry: Entry) -> OutputResult | ServerError:
+        """The `crbc` text for `entry` over the open documents, computed in the worker pool with
+        the analysis bounds: the `maxFileBytes` limit applies to the entry (checked first) and to
+        every file this compilation reads, and `analysisTimeoutMs` kills the worker as for an
+        analysis (docs/lsp-api.md "Inlay hints and commands (LSP-09c)")."""
+        snap = replace(self._snapshot(), kind="compiler_output")
+        limit = self.config.max_file_bytes
+        sizes = {Path(p): len(data) for p, data in snap.overlays}
+        over = await asyncio.to_thread(_oversize, entry.path, sizes, limit)
+        if over is None:
+            outcome = await self._run_job(entry, snap)
+            assert not isinstance(outcome, JobResult)
+            if isinstance(outcome, ServerError) or not outcome.oversized:
+                return outcome
+            over = Path(outcome.oversized[0][0]), outcome.oversized[0][1]
+        path, size = over
+        return ServerError(f"{path.name} is {size} bytes, above the maxFileBytes limit of "
+                           f"{limit}.", limit=True, reason="too_large")
 
     def _semaphore(self) -> asyncio.Semaphore:
         if self._sem is None:
@@ -581,10 +605,10 @@ class Session:
             self._pool_gen += 1
             _kill(pool)
 
-    async def _run_job(self, entry: Entry, snap: Snapshot) -> JobResult | ServerError:
-        """One analysis in the pool. When the pool breaks (a crash, or a kill after another
-        entry's timeout) the pool is recreated and the job is retried once with the pool to itself,
-        so a crash is only ever blamed on the job that was running alone."""
+    async def _run_job(self, entry: Entry, snap: Snapshot) -> JobResult | OutputResult | ServerError:
+        """One worker job (`snap.kind`) in the pool. When the pool breaks (a crash, or a kill after
+        another job's timeout) the pool is recreated and the job is retried once with the pool to
+        itself, so a crash is only ever blamed on the job that was running alone."""
         async with self._semaphore():
             outcome = await self._attempt(entry, snap)
         if not isinstance(outcome, _Broken):
@@ -601,8 +625,9 @@ class Session:
                 for _ in range(held):
                     slots.release()
         if isinstance(outcome, _Broken):
+            doing = "analysing" if snap.kind == "analysis" else "compiling"
             return ServerError(f"The analysis worker process terminated unexpectedly while "
-                               f"analysing {entry.path.name}; the worker pool was restarted.")
+                               f"{doing} {entry.path.name}; the worker pool was restarted.")
         return outcome
 
     def _solo_lock(self) -> asyncio.Lock:
@@ -610,28 +635,30 @@ class Session:
             self._solo = asyncio.Lock()
         return self._solo
 
-    async def _attempt(self, entry: Entry, snap: Snapshot) -> JobResult | ServerError | _Broken:
+    async def _attempt(self, entry: Entry, snap: Snapshot
+                       ) -> JobResult | OutputResult | ServerError | _Broken:
         if self._closed:
             return ServerError("server is shutting down")
         loop = asyncio.get_running_loop()
+        job = run_analysis if snap.kind == "analysis" else run_compiler_output
+        label = "Analysis" if snap.kind == "analysis" else "Compilation"
         pool, gen = self._get_pool()
         try:
-            future = loop.run_in_executor(
-                pool, run_analysis, str(entry.path), snap.logger, snap.overlays,
-                snap.max_file_bytes)
+            future = loop.run_in_executor(pool, job, str(entry.path), snap.logger, snap.overlays,
+                                          snap.max_file_bytes)
             return await asyncio.wait_for(future, snap.timeout)
         except asyncio.TimeoutError:
             self._reset_pool(gen)
-            return ServerError(f"Analysis of {entry.path.name} timed out after "
+            return ServerError(f"{label} of {entry.path.name} timed out after "
                                f"{round(snap.timeout * 1000)} ms; the analysis worker was "
-                               "restarted.")
+                               "restarted.", reason="timeout")
         except BrokenProcessPool:
             self._reset_pool(gen)
             return _BROKEN
         except asyncio.CancelledError:
             raise
         except Exception as exc:
-            return ServerError(f"Analysis of {entry.path.name} failed in the worker: "
+            return ServerError(f"{label} of {entry.path.name} failed in the worker: "
                                f"{type(exc).__name__}: {exc}")
 
     # ---- applying results ----------------------------------------------------------------

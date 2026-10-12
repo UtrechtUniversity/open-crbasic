@@ -1,4 +1,5 @@
-"""The analysis job that runs inside a spawned worker process. Imports only the core compiler."""
+"""The jobs that run inside a spawned worker process: an analysis, and the compiler output of the
+`opencrbasic.showCompilerOutput` command. Imports only the core compiler."""
 
 from __future__ import annotations
 
@@ -35,9 +36,16 @@ def _pickle_program(program: object) -> bytes | None:
         return None
 
 
-def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...],
-                 max_file_bytes: int | None = None) -> JobResult:
-    # Test hooks (docs/lsp-api.md "Test hooks"): only ever act on a substring of the entry path.
+@dataclass(frozen=True)
+class OutputResult:
+    """`commands.CompilerOutput` as plain picklable data."""
+    text: str
+    ok: bool
+    oversized: tuple[tuple[str, int], ...] = ()    # files over max_file_bytes (not read; no text)
+
+
+def _test_hooks(entry: str) -> None:
+    """Test hooks (docs/lsp-api.md "Test hooks"): only ever act on a substring of the entry path."""
     crash = os.environ.get(CRASH_ENV)
     if crash and crash in entry:
         os._exit(3)
@@ -46,6 +54,21 @@ def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...
         needle, _, seconds = sleep.rpartition(":")
         if needle and needle in entry:
             time.sleep(float(seconds))
+
+
+def run_compiler_output(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...],
+                        max_file_bytes: int | None = None) -> OutputResult:
+    _test_hooks(entry)
+    from .. import commands
+
+    out = commands.compiler_output(Path(entry), logger, {Path(p): data for p, data in overlays},
+                                   max_file_bytes)
+    return OutputResult(out.text, out.ok, tuple((str(p), size) for p, size in out.oversized.items()))
+
+
+def run_analysis(entry: str, logger: str, overlays: tuple[tuple[str, bytes], ...],
+                 max_file_bytes: int | None = None) -> JobResult:
+    _test_hooks(entry)
     from .. import analysis
 
     result = analysis.analyze(analysis.AnalysisRequest(

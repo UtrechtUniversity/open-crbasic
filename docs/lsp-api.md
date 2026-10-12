@@ -502,8 +502,8 @@ the disk file for every analysis. When replacement happened the document gets on
 
 ### Test hooks
 
-Read inside `worker.run_analysis` only (inherited by the spawned workers from the server's
-environment): `OPENCRBASIC_LSP_TEST_CRASH=<substring>` makes the worker call `os._exit(3)` when
+Read inside the worker jobs only (`worker.run_analysis` and `worker.run_compiler_output`;
+inherited by the spawned workers from the server's environment): `OPENCRBASIC_LSP_TEST_CRASH=<substring>` makes the worker call `os._exit(3)` when
 the entry path contains the substring; `OPENCRBASIC_LSP_TEST_SLEEP=<substring>:<seconds>` sleeps
 that long first (for timeout tests). `tests/lsp/test_server.py` drives the real server over stdio
 with `tests/lsp/lspclient.py`.
@@ -678,13 +678,19 @@ can affect have finished (bounded, as for rename). The result is a JSON string.
 
 | Command | Result |
 |---|---|
-| `opencrbasic.showCompilerOutput` | `commands.compiler_output(entry, logger, overlays)`: the text `crbc` prints for the entry, computed from the open buffers as overlays (unsaved text is used, a library buffer is compiled through its entry) and the disk, writing no file. Compiler text is passed through the same latin-1 to file-encoding display step as diagnostics (`session.display`); for ASCII the text equals the core's. |
+| `opencrbasic.showCompilerOutput` | `commands.compiler_output(entry, logger, overlays, maxFileBytes)`: the text `crbc` prints for the entry, computed from the open buffers as overlays (unsaved text is used, a library buffer is compiled through its entry) and the disk, writing no file. It runs as a job in the analysis worker pool (`Session.compiler_output`, `worker.run_compiler_output`; LSP-R5a) with the analysis bounds: `maxFileBytes` applies to the entry (checked before the job) and to every file the current text includes (`sources.LimitedSource`, not read), and `analysisTimeoutMs` kills and restarts the worker pool exactly as for an analysis. Compiler text is passed through the same latin-1 to file-encoding display step as diagnostics (`session.display`); for ASCII the text equals the core's. |
 | `opencrbasic.showTableFields` | `commands.render_table_fields(commands.table_fields(result))` for the entry's current parsed program; Markdown. A program that does not compile gives the core's "No tables" text. |
 
 Refusals are LSP errors (code -32803, `data.reason`), the same shape as rename: `bad_arguments` (not
-exactly one string argument, or a non-`file:` URI), `no_entry` (no entry reads the file), and for
-table fields `pending` (the entry's analysis is not current) and `no_program`. A command name the
-server does not advertise is answered by pygls with -32602.
+exactly one string argument, or a non-`file:` URI), `no_entry` (no entry reads the file), for
+compiler output `too_large` (`<file> is N bytes, above the maxFileBytes limit of L.`, the first
+oversized file), `timeout` (`Compilation of <entry> timed out after N ms; the analysis worker was
+restarted.`) and `failed` (the worker crashed or raised), and for table fields `pending` (the
+entry's analysis is not current) and `no_program`. A command name the server does not advertise is
+answered by pygls with -32602. pygls answers `$/cancelRequest` for a command with -32800 but does not
+cancel the handler: a cancelled compiler-output job still ends at its result or its timeout, and
+its answer is dropped. Table fields need no bound of their own: they read the entry's current
+analysis result, which the bounds already applied to.
 
 The VS Code client registers the palette commands `opencrbasic.openCompilerOutput` and
 `opencrbasic.openTableFields` (titles "opencrbasic: Show Compiler Output" and "opencrbasic: Show Table
@@ -1482,7 +1488,8 @@ read with `getattr` in `bindings.py`.
 function writes a file (tested: the temp tree, the cwd and the source tree are unchanged).
 
 ```python
-compiler_output(entry, logger="cr6", overlays=None) -> CompilerOutput(text, ok, program_name)
+compiler_output(entry, logger="cr6", overlays=None, max_file_bytes=None)
+    -> CompilerOutput(text, ok, program_name, oversized)
 table_fields(result) -> list[TableInfo(name, fields: tuple[FieldInfo(name, type, units, process,
                                        dimension)], interval)]
 render_table_fields(tables) -> str          # Markdown
@@ -1494,7 +1501,10 @@ render_table_fields(tables) -> str          # Markdown
   `crbc --logger L --no-message-file ENTRY` (header with the file name only, `line N:` messages cut
   by the 4096-byte buffer, warnings, mode). `crbc`'s `-s`, `-u`, `-t`, `-b` are not offered. An entry
   that is neither on disk nor in `overlays` gives the CLI's `<path> -- Compile Failed!` / `No Program
-  File` text (the path as given, absolute). `ok` is `CompileResult.ok`.
+  File` text (the path as given, absolute). `ok` is `CompileResult.ok`. With `max_file_bytes`
+  (the server's `maxFileBytes`, LSP-R5a) the source is `LimitedSource`: a file over the limit, entry
+  or include, is not read, and the result has `text == ""`, `ok` false and `oversized` (path ->
+  size); without it `oversized` is empty and the text is unchanged.
 - `table_fields` takes an `AnalysisResult` and calls `tables.build_tables(program, profile,
   consts)`, the call `tables_hook.attach` makes, so tables and fields are the TDF's, in TDF order,
   `Status`, `DataTableInfo` and `Public` included. `type` is the TDF type name (`IEEE4`, `FP2`,

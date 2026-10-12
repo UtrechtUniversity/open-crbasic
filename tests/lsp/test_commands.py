@@ -96,6 +96,20 @@ def test_overlay_only_entry_and_missing_entry(tmp_path):
     assert not missing.ok and missing.text.endswith("No Program File\n")
 
 
+def test_max_file_bytes_refuses_the_entry_and_its_includes(tmp_path):
+    entry, lib = tmp_path / "E.CR6", tmp_path / "Lib.crb"
+    entry.write_text('Public x\nInclude("CPU:Lib.crb")\nBeginProg\nx = lib_v\nEndProg\n')
+    lib.write_text("Public lib_v\n" + "' pad\n" * 30)
+    plain = compiler_output(entry, "cr6")
+    assert compiler_output(entry, "cr6", max_file_bytes=10_000) == plain and not plain.oversized
+    over = compiler_output(entry, "cr6", max_file_bytes=100)
+    assert over.text == "" and not over.ok and over.oversized == {lib: lib.stat().st_size}
+    tiny = compiler_output(entry, "cr6", max_file_bytes=10)
+    assert tiny.text == "" and tiny.oversized == {entry: entry.stat().st_size}
+    small = {lib: b"Public lib_v\n"}                   # an overlay under the limit replaces it
+    assert compiler_output(entry, "cr6", small, 100) == compiler_output(entry, "cr6", small)
+
+
 def test_other_logger_matches_cli(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
     sample = CHM[0]

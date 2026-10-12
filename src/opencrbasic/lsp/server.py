@@ -83,7 +83,7 @@ def build_server():
     from ..sources import DiskSource, OverlaySource
     from . import features
     from .config import Config, parse_config, watch_pattern
-    from .session import CHANGED, CREATED, DELETED, Diag, Session
+    from .session import CHANGED, CREATED, DELETED, Diag, ServerError, Session
 
     server = LanguageServer(SECTION, __version__,
                             text_document_sync_kind=types.TextDocumentSyncKind.Full)
@@ -577,7 +577,12 @@ def build_server():
 
     async def command_entry(args: tuple, what: str):
         """(document path, entry) for a command argument: the document URI. A `.crb` takes the
-        first sorted entry that reads it, as the other features do."""
+        first sorted entry that reads it, as the other features do. pygls does not cancel a
+        command's task on `$/cancelRequest` (it drops the answer), so the task's refusal is marked
+        retrieved here instead of being logged as never retrieved."""
+        task = asyncio.current_task()
+        if task is not None:
+            task.add_done_callback(lambda t: t.cancelled() or t.exception())
         if len(args) != 1 or not isinstance(args[0], str):
             raise refuse(what, "bad_arguments", "expected one argument: the document URI")
         try:
@@ -594,9 +599,11 @@ def build_server():
 
     @server.command(COMMAND_COMPILER_OUTPUT)
     async def on_compiler_output(*args):
-        _, entry = await command_entry(args, "Cannot show compiler output")
-        out = await asyncio.to_thread(commands.compiler_output, entry.path,
-                                      session.config.logger, session.blobs())
+        what = "Cannot show compiler output"
+        _, entry = await command_entry(args, what)
+        out = await session.compiler_output(entry)        # worker pool, analysis bounds
+        if isinstance(out, ServerError):
+            raise refuse(what, out.reason, str(out))
         return session.display(out.text)
 
     @server.command(COMMAND_TABLE_FIELDS)

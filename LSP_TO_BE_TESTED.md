@@ -510,3 +510,12 @@ T-12 step 5 (and its amendment): accept "one undo restores every text"; the open
 of the files the rename opened is VS Code's and varied between host runs (clean at `ccba3666`,
 dirty at `e18cdf52`), so it is not an acceptance criterion. Still open: T-16 item 8 (Windows),
 the Windows/Linux matrix, and the GUI empty-list/next-keystroke fallback of T-17 item 1 (API test only).
+
+### T-18 Bounded compiler-output command (LSP-R5a), appended 2026-10-12
+
+[LSP-R5a-handoff.md](docs/lsp-rounds/LSP-R5a-handoff.md). Workspace setting
+`"opencrbasic.maxFileBytes": 200`, then open a `.CR6` larger than 200 bytes and run "opencrbasic:
+Show Compiler Output": the output tab shows the refusal `Cannot show compiler output: <file> is N
+bytes, above the maxFileBytes limit of 200.` (readable, no error toast, no empty tab), and a small
+`.CR6` still shows its compiler output in the same window. Remove the setting afterwards. Accept
+when both are observed.

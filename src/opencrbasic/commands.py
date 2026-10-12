@@ -6,13 +6,13 @@ Neither writes a file. See `docs/lsp-api.md` "Commands (LSP-09b)".
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Mapping
 
 from . import profiles
 from .compiler import compile_file
-from .sources import DiskSource, OverlaySource
+from .sources import DiskSource, LimitedSource, OverlaySource, SourceProvider
 
 
 @dataclass(frozen=True)
@@ -20,6 +20,8 @@ class CompilerOutput:
     text: str                   # exactly what `crbc` prints to stdout (newline-terminated)
     ok: bool
     program_name: str           # the name in the header line (the entry's file name)
+    # files over `max_file_bytes` (path -> size): when not empty, `text` is "" (no output)
+    oversized: Mapping[Path, int] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -39,17 +41,26 @@ class TableInfo:
 
 
 def compiler_output(entry: Path, logger: str = "cr6",
-                    overlays: Mapping[Path, bytes] | None = None) -> CompilerOutput:
+                    overlays: Mapping[Path, bytes] | None = None,
+                    max_file_bytes: int | None = None) -> CompilerOutput:
     """The text `crbc [--logger LOGGER] --no-message-file ENTRY` prints, with `overlays` (path ->
     encoded unsaved buffer) on top of the disk. An entry that neither exists nor is overlaid gives
-    the CLI's "No Program File" text."""
+    the CLI's "No Program File" text. With `max_file_bytes`, a file larger than that (the entry or
+    one it includes) is not read (`sources.LimitedSource`); the result then has no text and lists
+    the files in `oversized`."""
     entry = Path(entry).absolute()
     profile = profiles.get(logger)
-    source = OverlaySource(DiskSource(), overlays)
+    overlay = OverlaySource(DiskSource(), overlays)
+    limited = None if max_file_bytes is None else LimitedSource(overlay, max_file_bytes)
+    source: SourceProvider = overlay if limited is None else limited
     if source.read(entry) is None:
+        if limited is not None and limited.oversized:
+            return CompilerOutput("", False, entry.name, dict(limited.oversized))
         lines = [f"{entry} -- Compile Failed!", "", "No Program File"]
         return CompilerOutput("\n".join(lines) + "\n", False, entry.name)
     result = compile_file(entry, profile, display_name=entry.name, source=source, signature=False)
+    if limited is not None and limited.oversized:
+        return CompilerOutput("", False, result.program, dict(limited.oversized))
     return CompilerOutput("\n".join(result.result_lines()) + "\n", result.ok, result.program)
 
 
