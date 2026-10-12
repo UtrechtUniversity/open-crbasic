@@ -267,6 +267,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     _run_pass(instr_rules.check_too_many, _with_inline(program), profile, diags)
     _run_pass(instr_rules.check_essinitialize_too_many, program, profile, diags)
     _run_pass(instr_rules.check_snmpvariable_too_many, program, profile, diags)
+    _run_pass(instr_rules.check_snmp_oid, program, profile, diags, env)
     _run_pass(instr_rules.check_modemcallback_baud, program, profile, diags)
     _run_pass(instr_rules.check_serialin_destination, program, profile, diags)
     _run_pass(instr_rules.check_emailrecv_destination, program, profile, diags)

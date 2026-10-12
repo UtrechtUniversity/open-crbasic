@@ -2041,3 +2041,32 @@ only those gets `DNP3Statics and/or DNP3Events are not defined`. Type, variation
 `Illegal Class` failures still count. Not modelled: `L(6)` past the array end (`Variable L out of bounds.`
 plus `Cannot use a variable index reference.`), `Flag`. Fuzz reproducers cr6 `false_accept/b1e01ed1dd76`,
 cr350 `9ad721676cb3`.
+
+### `SNMPVariable` object identifiers (all four loggers, round 15)
+
+Fixture `r15_snmp_oid.json`. `instr_rules.check_snmp_oid`; the parser (`parser.SNMP_OID_REASON`) now leaves
+any statement whose OID is a digits-and-dots literal as the known `Unparsed` gap (it used to be only the ones
+whose third component printed as `.6`: `1.4.9`, `2.5.7.1`, `5.5.5` and `10.20.30.40` compile on the real
+compilers and were false rejects here).
+
+- Floor `1.3.6.1.2.1.1.7`: an OID that sorts at or below it (component by component, a shorter prefix is
+  lower, an empty component such as a leading dot counts as 0) is `SNMP OID must be greater than
+  1.3.6.1.2.1.1.7`; CR6/CR1000X exclude only below (the equal OID is `Illegal OID since already declared.`
+  alone); CR300/CR350 include the equal one.
+- Already declared: CR6/CR1000X own `1.3.6.1.2.1.1.1` .. `.7` (so `.1.1.6` gets both lines, `.7` only
+  the second); CR300/CR350 own `1.3.6.1.2.1.1.7.0` and `1.3.6.1.2.1.1.7.` instead (`1.3.6.1.2.1.1.7.0`
+  compiles on CR6/CR1000X). A repeated OID gets one `Illegal OID since already declared.` per earlier
+  statement with the same OID, the earlier statement's own errors notwithstanding; `5.` and `5.0` differ
+  from `5`. Components past 65535 are not modelled (`...1.65543` counts as 7 on CR6/CR1000X; 4294967303 does
+  not) and non-numeric components compile.
+- Non-dotted OID argument (the argument after the variable, so a dropped OID shifts `Float` into it): a
+  declared or undefined name, `0`, `1`, `-1`, `""`, `"x"` give `Illegal object id.` then the greater line;
+  `2` adds `Variable array must be dimensioned at least 2` (not modelled); a decimal literal compares as an
+  OID (`1.3` is the greater line, `1.4`, `1.5`, `2.0`, `5.5` compile); a string of digits and dots gives only
+  the greater line (`"1.4"` too, whatever its value). An expression (`1+1`) is `Illegal object id.` too, not
+  modelled; a leading-dot literal (`.1.3.6.1.4.1.5`) is a parser gap here.
+- Messages stay on the statement's line before `Miss match of types` for a dotted OID; they hide neither
+  other lines nor `Too many parameters:  Sec.`-style CR300/CR350 cascades, which they start; an
+  `SNMPVariable` after a cascade is never rewritten to `Too many parameters:  <arg>.`. Not modelled: the
+  `Miss match of types` / `Too many parameters` ordering when both occur. Fuzz reproducers cr1000x
+  `false_accept/e3a11f6b9adc`, cr6 `f2f6e5d8b8e6`.

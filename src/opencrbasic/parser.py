@@ -61,6 +61,13 @@ UNCLOSED_PAREN_EXPR = "unclosed parenthesized expression"
 UNCLOSED_DIM_PREFIX = "unclosed dim: "
 
 
+# `SNMPVariable(Name,1.3.6.1.4.1.5,Float,RONLY)`: a dotted OID literal is not an expression; the real
+# compiler accepts any digits-and-dots OID there (oracle 2026-10-12: `1.4.9`, `2.5.7.1`, `10.20.30.40`
+# compile), so such a statement is `Unparsed` with this fixed reason.
+SNMP_OID_REASON = "dotted SNMP OID literal"
+_SNMP_OID_STATEMENT = re.compile(r"\s*SNMPVariable\s*\(\s*(?:[^,]+,\s*)?\d[\d.\s]*[,)]", re.I)
+
+
 class _ParseError(Exception):
     pass
 
@@ -1010,6 +1017,8 @@ class _Parser:
             stmt.text = seg_text
             return stmt
         except _ParseError as e:
+            if re.match(r"expected '\)', found '\.\d+'", str(e)) and _SNMP_OID_STATEMENT.match(seg_text):
+                return S.Unparsed(line, file, text=seg_text, reason=SNMP_OID_REASON)
             return S.Unparsed(line, file, text=seg_text, reason=str(e))
         except Exception as e:  # never raise out of the parser
             return S.Unparsed(line, file, text=seg_text, reason=f"internal error: {e!r}")

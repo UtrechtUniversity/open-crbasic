@@ -575,6 +575,89 @@ _SNMP_TAIL = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*[^,]+,\s*\d+(?:\.\d+)*\s*,", r
 _SNMP_TYPES = frozenset({"INTEGER", "COUNTER", "STRING", "TIMETICKS", "OPAQUE", "GAUGE", "FLOAT"})
 
 
+_SNMP_OID_LITERAL = re.compile(r"^\s*SNMPVARIABLE\s*\(\s*[^,]+,\s*([\d.]+)\s*[,)]", re.I)
+_SNMP_FLOOR = (1, 3, 6, 1, 2, 1, 1, 7)       # the highest OID the system group already owns
+
+
+def _snmp_components(text: str) -> tuple | None:
+    """`1.3.6.1` as integers; an empty component (`..`, a leading or trailing dot) is 0 for the
+    ordering and kept as '' for identity. None when a component does not fit 16 bits (not probed)."""
+    parts = text.split(".")
+    if any(len(p) > 5 or (p and int(p) > 65535) for p in parts):
+        return None
+    return tuple(int(p) if p else "" for p in parts)
+
+
+def check_snmp_oid(program: S.Program, profile, diags: Diagnostics, env=None) -> None:
+    """`SNMPVariable(Name,OID,...)` object identifier rules (oracle, all four loggers, 2026-10-12,
+    docs/instructions.md "SNMPVariable OID rules")."""
+    if "SNMPVARIABLE" not in profile.instructions:
+        return
+    cr3xx = profile.name in ("cr300", "cr350")
+    seen: list[tuple] = []
+    typer = None
+    for stmt in program.statements:
+        both = greater = False
+        key: tuple | None = None
+        before = len(diags.items)
+        if isinstance(stmt, S.Unparsed):
+            match = _SNMP_OID_LITERAL.match(stmt.text)
+            comps = _snmp_components(match.group(1)) if match else None
+            if comps is None or len(comps) < 3:
+                continue
+            key = comps
+        elif isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "SNMPVARIABLE" \
+                and len(stmt.args) >= 2:
+            arg = stmt.args[1]
+            if isinstance(arg, S.Number):
+                if arg.text.isdigit() and arg.value in (0, 1):
+                    both, key = True, (int(arg.value),)
+                elif re.fullmatch(r"\d+\.\d+", arg.text):
+                    key = _snmp_components(arg.text)
+                else:
+                    continue
+            elif isinstance(arg, S.Unary) and arg.op == "-" and isinstance(arg.operand, S.Number) \
+                    and arg.operand.text == "1":
+                both = True
+            elif isinstance(arg, S.String):
+                if re.fullmatch(r"\d+(?:\.\d+)+", arg.value):
+                    greater = True
+                elif not re.fullmatch(r"[\d.]*\d[\d.]*", arg.value):
+                    both = True
+            elif isinstance(arg, S.Name) and env is not None and arg.name.upper() not in env.consts \
+                    and arg.name.upper() not in ("TRUE", "FALSE", "NAN"):
+                both = True
+            else:
+                continue
+        else:
+            continue
+        low = [0 if c == "" else c for c in key] if key else None
+        if both:
+            diags.error(stmt.line, "Illegal object id.", stmt.file)
+        if both or greater or (low is not None and (tuple(low) < _SNMP_FLOOR
+                                                    or (cr3xx and tuple(low) == _SNMP_FLOOR))):
+            diags.error(stmt.line, f"SNMP OID must be greater than {'.'.join(map(str, _SNMP_FLOOR))}",
+                        stmt.file)
+        if key is not None:
+            declared = sum(1 for earlier in seen if earlier == key)
+            if cr3xx:
+                declared += key in ((*_SNMP_FLOOR, 0), (*_SNMP_FLOOR, ""))
+            else:
+                declared += len(key) == 8 and tuple(key[:7]) == _SNMP_FLOOR[:7] and \
+                    isinstance(key[7], int) and 1 <= key[7] <= 7
+            for _ in range(int(declared)):
+                diags.error(stmt.line, "Illegal OID since already declared.", stmt.file)
+            seen.append(key)
+        # (the type check is a later pass that these errors would hide; the real compiler prints it)
+        if len(diags.items) > before and isinstance(stmt, S.Unparsed):
+            from . import var_types
+            typer = typer or var_types._Typer(program)
+            m = var_types._SNMP_RE.match(stmt.text)
+            clash = bool(m) and var_types._snmp_mismatch(typer, S.Name(stmt.line, name=m.group(1)), m.group(2))
+            if clash:
+                diags.error(stmt.line, "Miss match of types", stmt.file)
+
+
 def check_modemcallback_baud(program: S.Program, profile, diags: Diagnostics) -> None:
     """`ModemCallBack(R,COMSDC7,<baud>,...)` -> `<baud> is illegal baud rate.` unless the baud,
     truncated toward zero (outside 32 bits it becomes -2147483648), is 0 or 600..460800 (oracle, CR6/CR1000X,
@@ -617,7 +700,7 @@ def check_snmpvariable_too_many(program: S.Program, profile, diags: Diagnostics)
     whitespace-split recovery shape, which emits the ordinary excess-parameter message.
     """
     for stmt in program.statements:
-        if not isinstance(stmt, S.Unparsed) or not stmt.reason.startswith("expected ')', found"):
+        if not isinstance(stmt, S.Unparsed) or not (stmt.reason == "dotted SNMP OID literal" or stmt.reason.startswith("expected ')', found")):
             continue
         match = _SNMP_SPACED_OID.match(stmt.text)
         if match:

@@ -265,7 +265,8 @@ def _is_cascade_trigger(diag) -> bool:
     return diag.severity == "error" and diag.cascade and (
         diag.trigger or diag.message.endswith(_UNRESOLVED_SUFFIX) or diag.message == _TCPOPEN_HANDLE or diag.message.startswith(_VARIABLE_ILLEGAL_PREFIX)
         or diag.message.startswith(_TOO_MANY_PREFIX)
-        or diag.message == "Miss match of types"  # SNMPVariable (oracle, CR300/CR350)
+        or diag.message in ("Miss match of types", "Illegal object id.", "Illegal OID since already declared.")
+        or diag.message.startswith("SNMP OID must be greater than")  # SNMPVariable (oracle, CR300/CR350)
         or diag.message.endswith(_DECLARATION_TRIGGERS)
         or diag.message.startswith(_DECLARATION_TRIGGER_PREFIXES)
     )
@@ -530,7 +531,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
                 continue
             if (isinstance(stmt, S.Instruction) and len(stmt.args) >= 2
                     and stmt.args[1] is not None
-                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE")):
+                    and stmt.keyword.upper() not in ("UNITS", "READONLY", "ALIAS", "CONSTTABLE", "SNMPVARIABLE")):
                 # (`Units X = m` is never rewritten: repository libraries, oracle; nor is an
                 # `Alias` or a `ConstTable (T,0)`, oracle 2026-10-03.)
                 # the next simple token, like a genuine overflow (oracle: `MainScanSecs * 4` ->

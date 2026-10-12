@@ -33,7 +33,7 @@ _MAX_DIM_VALUE = 2147483647
 # `reason` text is never accidentally suppressed.
 _KNOWN_PARSER_GAP_REASONS = (
     "unexpected trailing input starting at '+='",   # samplemaxmin_1.CR6: `X=X+=1`
-    "expected ')', found '.6'",                      # snmpvariable_1.CR6: a dotted-OID literal
+    "dotted SNMP OID literal",                       # snmpvariable_1.CR6: a dotted-OID literal
 )
 
 # `Unparsed.reason` values that never denote real statement content (nothing to echo or reject).
