@@ -414,6 +414,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         if not profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, flat, profile, bounds, env)
             _run_pass(instr_rules.check_avgrun_options, flat, profile, bounds, env)
+            _run_pass(instr_data.check_output_datatype, flat, profile, bounds, env)
             _run_pass(instr_rules.check_option_values, flat, profile, bounds, env)
             _run_pass(expressions.check_splitstr_whole_array, flat, profile, bounds, env)
             _run_pass(expressions.check_subcall_element_bounds, flat, profile, bounds, env)
@@ -495,6 +496,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
         # `Scan`/`For`/`Do`/`If` at end of program.
         if profile.single_pass:
             _run_pass(expressions.check_instruction_index_bounds, program, profile, bounds, env)
+            _run_pass(instr_data.check_output_datatype, program, profile, bounds, env)
             _run_pass(expressions.check_splitstr_whole_array, program, profile, bounds, env)
             _run_pass(expressions.check_subcall_element_bounds, program, profile, bounds, env)
             _run_pass(instr_rules.check_fieldcal_variable_args, program, profile, bounds)

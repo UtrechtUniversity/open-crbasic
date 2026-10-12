@@ -6202,3 +6202,19 @@ probed terminal kinds (`checker/terminals.py`) and `string_port_int_min` in `mea
 modelled: CR6 `VoltSe(X,1,mV1000,"abc",...)` is `Invalid port, must be C1..C4 or U1..U12.`; CR300
 `SW12("x",0)` is `Too many parameters:  0.`; CR1000X `SW12("x",0)` crashes the real compiler.
 Cases in `tests/fixtures/r14_string_ports.json`.
+
+## Numeric `DataType` codes in output instructions (2026-10-12, fuzz false accepts)
+
+A constant `DataType` that is a number rather than a data-type name is accepted when it equals a
+valid code and rejected otherwise with `Illegal data type parameter %d in %s instruction.` (the
+value truncated, `2.5` -> 2). Sweep of `Sample(1,X,n)` for n = 0..30 on all four loggers: CR6/CR1000X
+accept 2, 3, 6, 7, 9, 11, 18, 20, 24, 25, 28 (and -1, 2.5); CR300/CR350 accept 6, 7, 9, 11, 18, 20, 21,
+22, 24, 25, 28, so `Sample(1,X,(1+2))` (= UINT4 on CR6) fails there. `instr_data.check_output_datatype`
+reports the codes that fail with that line alone, for `Sample`, `Average` and `Maximum` (the probed
+instructions): CR6/CR1000X 4, 5, 8, 10, 12, 13, 15, 19, 21, 22, 23, 26, 27; CR300/CR350 2, 3, 4, 5, 8,
+10, 12, 13, 14, 15, 19, 26, 27. Like the index bounds it accumulates with pass-2 errors on CR6/CR1000X,
+appears only in an otherwise clean file on CR300/CR350, and hides the duplicate-field check. Not
+modelled: 0, 16, 29, 30 and values above 30 (some add `Table T declared with no output fields.`, in a
+pattern not worked out: 255 prints only that line, 256 and 263 differ by family); 1, 17 (`Reps 1
+illegal; with BOOL8 and UINT1 data types ...`), 14/23 (`Float to NSEC expects source array size >= 7`);
+a string `DataType` crashes all four real compilers. Cases in `tests/fixtures/r14_output_datatype.json`.

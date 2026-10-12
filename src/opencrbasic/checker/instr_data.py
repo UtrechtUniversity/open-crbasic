@@ -1024,3 +1024,43 @@ def finalize_illegal_table_names(program: S.Program, profile: Profile, diags: Di
         return
     first = sorted([*marks, *others], key=lambda d: (late(d), d.file or "", d.line))[0]
     diags.items[:] = [d for d in diags.items if d.severity != "error"] + [first]
+
+
+# Codes in 1..30 that the real compiler rejects with `Illegal data type parameter %d in %s
+# instruction.` alone (oracle sweep 0..30 of `Sample(1,X,n)`, 2026-10-12; 0, 16, 29 and 30 also print
+# a `declared with no output fields` line and 1, 14, 17 (CR6 family) / 1, 17, 23 (CR300 family)
+# other messages, so they are left out).
+_ILLEGAL_DATA_TYPES = {
+    "cr6": frozenset({4, 5, 8, 10, 12, 13, 15, 19, 21, 22, 23, 26, 27}),
+    "cr1000x": frozenset({4, 5, 8, 10, 12, 13, 15, 19, 21, 22, 23, 26, 27}),
+    "cr300": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
+    "cr350": frozenset({2, 3, 4, 5, 8, 10, 12, 13, 14, 15, 19, 26, 27}),
+}
+_DATA_TYPE_ARG = {"SAMPLE": 2, "AVERAGE": 2, "MAXIMUM": 2}
+
+
+def check_output_datatype(program: S.Program, profile: Profile, diags: Diagnostics,
+                          env: consteval.Env) -> None:
+    """A constant `DataType` that is no data type: `Sample(1,X,(1+2))` on CR300/CR350,
+    `Sample(1,X,4)` everywhere -> `Illegal data type parameter 3 in Sample instruction.` (the value
+    truncated: `2.5` is 2). Reported like `instr_rules.check_avgrun_options` (with pass 2 on
+    CR6/CR1000X, alone in an otherwise clean file on CR300/CR350); oracle, 2026-10-12."""
+    bad = _ILLEGAL_DATA_TYPES.get(profile.name)
+    if not bad:
+        return
+    for stmt in program.statements:
+        if not isinstance(stmt, S.Instruction):
+            continue
+        pos = _DATA_TYPE_ARG.get(stmt.keyword.upper())
+        if pos is None or pos >= len(stmt.args) or stmt.args[pos] is None:
+            continue
+        try:
+            value = consteval.value_of(stmt.args[pos], env)
+        except consteval.NotConstant:
+            continue
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
+            continue
+        if int(value) in bad:
+            name = profile.instructions[stmt.keyword.upper()]["name"]
+            diags.error(stmt.line, f"Illegal data type parameter {int(value)} in {name} instruction.",
+                        stmt.file)

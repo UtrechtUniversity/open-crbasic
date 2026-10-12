@@ -1,0 +1,1003 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-datatype-dts-v_10",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,10)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 10 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_10",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,10)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 10 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_10",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,10)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 10 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_10",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,10)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 10 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_11",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,11)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_11",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,11)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_11",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,11)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_11",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,11)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_12",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,12)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 12 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_12",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,12)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 12 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_12",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,12)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 12 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_12",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,12)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 12 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_13",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,13)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 13 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_13",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,13)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 13 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_13",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,13)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 13 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_13",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,13)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 13 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_15",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,15)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 15 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_15",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,15)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 15 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_15",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,15)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 15 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_15",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,15)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 15 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_18",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,18)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_18",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,18)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_18",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,18)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_18",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,18)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_19",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,19)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 19 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_19",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,19)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 19 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_19",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,19)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 19 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_19",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,19)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 19 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_2",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_2",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_2",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 2 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_2",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 2 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_20",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,20)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_20",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,20)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_20",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,20)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_20",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,20)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_21",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,21)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 21 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_21",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,21)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 21 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_21",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,21)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_21",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,21)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_22",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,22)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 22 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_22",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,22)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 22 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_22",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,22)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_22",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,22)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_24",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,24)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_24",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,24)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_24",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,24)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_24",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,24)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_25",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,25)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_25",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,25)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_25",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,25)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_25",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,25)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_26",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,26)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 26 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_26",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,26)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 26 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_26",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,26)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 26 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_26",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,26)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 26 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_27",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,27)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 27 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_27",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,27)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 27 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_27",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,27)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 27 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_27",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,27)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 27 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_28",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,28)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_28",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,28)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_28",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,28)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_28",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,28)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_2p5",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2.5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_2p5",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2.5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_2p5",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2.5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 2 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_2p5",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,2.5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 2 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_3",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_3",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_3",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_3",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_4",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_4",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_4",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_4",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_5",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 5 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_5",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 5 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_5",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 5 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_5",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,5)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 5 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_6",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,6)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_6",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,6)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_6",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,6)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_6",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,6)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_7",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_7",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_7",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_7",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,7)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dts-v_8",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,8)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 8 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_8",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,8)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 8 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dts-v_8",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,8)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 8 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dts-v_8",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,8)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 8 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dts-v_9",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,9)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dts-v_9",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,9)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dts-v_9",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,9)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dts-v_9",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,9)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dtp-d1",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(1+2))\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dtp-d1",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(1+2))\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dtp-d1",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(1+2))\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dtp-d1",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(1+2))\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dtp-d2",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dtp-d2",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dtp-d2",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dtp-d2",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dtp-d3",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,FP2+0)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dtp-d3",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,FP2+0)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dtp-d3",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,FP2+0)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-datatype-dtp-d3",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,FP2+0)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-datatype-dtp-d4",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Average(1,X,(1+2),False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dtp-d4",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Average(1,X,(1+2),False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dtp-d4",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Average(1,X,(1+2),False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Average instruction."
+  },
+  {
+   "id": "cr350-datatype-dtp-d4",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Average(1,X,(1+2),False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Average instruction."
+  },
+  {
+   "id": "cr6-datatype-dtp-d7",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Maximum(1,X,(1+2),False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-datatype-dtp-d7",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Maximum(1,X,(1+2),False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-datatype-dtp-d7",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Maximum(1,X,(1+2),False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Maximum instruction."
+  },
+  {
+   "id": "cr350-datatype-dtp-d7",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Maximum(1,X,(1+2),False,False)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Maximum instruction."
+  },
+  {
+   "id": "cr6-datatype-dtq-q1",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction.\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q1",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction.\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-datatype-dtq-q1",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr350-datatype-dtq-q1",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr6-datatype-dtq-q2",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,99,True,0,15000,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction.\nline 8: Invalid channel 99, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q2",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,99,True,0,15000,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction.\nline 8: Invalid channel 99, must use 1..16."
+  },
+  {
+   "id": "cr300-datatype-dtq-q2",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,99,True,0,15000,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: mV1000 is not defined.\nline 8: Variable illegal in Parameter: mV1000."
+  },
+  {
+   "id": "cr350-datatype-dtq-q2",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(X,1,mV1000,99,True,0,15000,1,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: mV1000 is not defined.\nline 8: Variable illegal in Parameter: mV1000."
+  },
+  {
+   "id": "cr6-datatype-dtq-q3",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q3",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression: Nope."
+  },
+  {
+   "id": "cr300-datatype-dtq-q3",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr350-datatype-dtq-q3",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Randomize(Nope)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Nope is not defined."
+  },
+  {
+   "id": "cr6-datatype-dtq-q4",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name X in DataTable T."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q4",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name X in DataTable T."
+  },
+  {
+   "id": "cr300-datatype-dtq-q4",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dtq-q4",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,3)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 3 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dtq-q5",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q5",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dtq-q5",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dtq-q5",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,4)\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr6-datatype-dtq-q6",
+   "logger": "cr6",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(2+2))\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr1000x-datatype-dtq-q6",
+   "logger": "cr1000x",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(2+2))\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr300-datatype-dtq-q6",
+   "logger": "cr300",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(2+2))\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  },
+  {
+   "id": "cr350-datatype-dtq-q6",
+   "logger": "cr350",
+   "source": "Public X\nDataTable (T,1,-1)\n  Sample(1,X,(2+2))\n  Sample(1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    Battery(X)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Illegal data type parameter 4 in Sample instruction."
+  }
+ ]
+}
