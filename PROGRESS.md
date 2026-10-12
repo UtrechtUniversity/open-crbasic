@@ -45,16 +45,16 @@ Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
 
 ## Status (2026-10-12, end of round 14; resume in a clean session)
 
-Measured on `claude/laughing-franklin-08z9vo` at `6ca00592` (plus the docs commit that adds this
+Measured on `claude/laughing-franklin-08z9vo` at `dd05e142` (plus the docs commit that adds this
 text), on the macOS M4 machine (Wine 11.17, CPython 3.13). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
 accepts, opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q -n 8 -m "not server" --deselect tests/lsp/test_lsp_bench.py::test_smoke_report` | 28,337 passed, 311 skipped, 0 failed. LSP server tests NOT run: POSIX semaphores exhausted until reboot (see Resume here) |
+| `uv run --no-sync pytest -q -n 8 -m "not server" --deselect tests/lsp/test_lsp_bench.py::test_smoke_report` | 29,304 passed, 311 skipped, 0 failed. LSP server tests NOT run: POSIX semaphores exhausted until reboot (see Resume here) |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
 | help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 506/0/0/1, CR1000X 506/0/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
-| `tools/fuzz_replay.py` (2,604 reproducers: 2,251 old + 353 from seeds 401-404) | 1,972 exact, 67 false accepts (4 old + 63 new-seed), 0 false rejects, 539 message diffs, 10 mode diffs, 16 oracle errors (`scratch/replay-r14.json`, before the last two follow-up commits) |
+| `tools/fuzz_replay.py` (2,604 reproducers: 2,251 old + 353 from seeds 401-404) | 1,972 exact, 67 false accepts (4 old + 63 new-seed), 0 false rejects, 539 message diffs, 10 mode diffs, 16 oracle errors (`scratch/replay-r14.json`) |
 | `tools/tdftest.py --group all` | 2026-10-12 unchanged: table list 207/208 (only `goestable_1`). repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
 | `-t` [Times] (`scratch/timing_harness.py`, untracked, lost with the old machine) | 2026-10-11: repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash); not re-run in round 13 |
 | implementation exceptions (difftest/replay class) | 0 |
@@ -155,11 +155,9 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   steps). Workers fixed: routine-local scope (ex-WIP branch), strcomp_3 pointer `!name`, R14-1/2/5/7/10,
   logical-assign left operands and `Public.X` targets, unclosed `Abs(`-like calls, fuzz message-diff
   top clusters (368 -> 296 on the old set), fuzz seeds 401-404 families, trailing-dot members,
-  CR300/CR350 For-header echo. Fixtures `tests/fixtures/r14_*.json` (tests/test_r14_fixtures.py).
+  CR300/CR350 For-header echo, `;` family (R14-4/R14-6) and R13C-1 (one-line If with a
+  logical-prefixed assignment body); R13C-2 probed: not a defect. Fixtures `tests/fixtures/r14_*.json` (tests/test_r14_fixtures.py).
 - Pending, NOT integrated:
-  - branch `ocb-r14-semicolon` (W7, `;` family R14-4/R14-6, 925x4-case fixture): conflicted with
-    the logical-assign commit in `parser.py`; W7 was rebasing at session end (check the branch
-    head and its report; re-run gates before integrating).
   - branch `ocb-r14-followups` commit `2330aa24` (parameter counts in one-line If bodies): its
     `cr3xx.check_too_many_cascade` change conflicts with the W8 inline-If cascade commit; a naive
     combination fails `r14_inline_if_cascade` case `inlinecond_two_inline_ifs` (CR300/CR350).
@@ -247,9 +245,9 @@ are in `docs/lsp-rounds/`.
 ## Next steps
 
 1. Reboot (semaphores), then run the FULL pytest suite incl. `-m server` once on the branch head.
-2. Integrate `ocb-r14-semicolon` and `ocb-r14-followups/2330aa24` (see Resume here).
-3. Cloud review R13C-1..8 (`scratch/reviews/review-r13-cloud.md`, probe list at its end): R13C-1
-   one-line `If c Then X AND Y = 1` false reject; R13C-2 `;` in one-line If false accept; others low.
+2. Integrate `ocb-r14-followups/2330aa24` (see Resume here).
+3. Cloud review R13C-3..8 (`scratch/reviews/review-r13-cloud.md`, probe list at its end; R13C-1
+   fixed, R13C-2 not a defect, R13C-9 closed); all low.
 4. Push the round-14 range for a cloud review (`firnmelt-datalogger-reviewer`; may need the human
    to approve the request in the cloud session).
 5. Known false rejects: one-line `ElseIf c Then Z = 1`; `While Abs(X Then`, `Abs(Abs(X`,
