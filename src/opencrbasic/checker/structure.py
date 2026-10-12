@@ -102,7 +102,28 @@ _UNCLOSED_DIM_PREFIX = parser.UNCLOSED_DIM_PREFIX
 # "Invalid, or out of place expression" fallback, `%s` = `stmt.text` (the whole statement, same
 # echo convention).
 _EXTRA_CLOSE_PAREN = "unexpected trailing input starting at ')'"
-_ASSIGNMENT_HEAD = re.compile(r"\s*[A-Za-z_]\w*\s*(?:\([^()]*\)\s*)?=")
+_ASSIGNMENT_HEAD = re.compile(r"\s*[A-Za-z_]\w*\s*(?:\((?:[^()]|\((?:[^()]|\([^()]*\))*\))*\)\s*)?[-+*/\\^&]?=")
+
+
+def _assignment_head(text: str, program, profile) -> bool:
+    """Whether `text` starts like an assignment (`X =`, `A(1) +=`, `A((1)) =`). A subscript with
+    nested parentheses is one only when every name in it is defined (`A(Len(S)) = 1)` with `S`
+    undeclared is the generic fallback) and, on CR300/CR350, no call-like name in it is a scalar
+    (`A(X(1)) = 1)`) (oracle, all four loggers, 2026-10-12)."""
+    head = _ASSIGNMENT_HEAD.match(text)
+    if head is None:
+        return False
+    inner = text[text.find("(") + 1:head.end()] if "(" in text[:head.end()] else ""
+    if "(" in inner:
+        known = expressions._known_names(program, profile)
+        if any(n.upper() not in known for n in re.findall(r"[A-Za-z_]\w*", inner)):
+            return False
+        if profile.fallback_echo_newline:
+            counts = symbols.declared_dim_counts(program)
+            if any(counts.get(n.upper()) == 0 for n in re.findall(r"([A-Za-z_]\w*)\s*\(", inner)):
+                return False
+    return True
+
 
 # Named, `EndXxx`-terminated body blocks conventionally declared before `BeginProg`, alongside
 # `Sub`/`Function` (`S.SubDef`, tracked separately since it is its own AST node type, not a plain
@@ -1539,7 +1560,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
                         profile, stmt.text, stmt.at_eol, pass1_operands(program, profile))
                         or _no_matching(profile, stmt.text, stmt.at_eol),
                         stmt.file, show_file=False)
-            elif stmt.reason == _EXTRA_CLOSE_PAREN and not _ASSIGNMENT_HEAD.match(stmt.text):
+            elif stmt.reason == _EXTRA_CLOSE_PAREN and not _assignment_head(stmt.text, program, profile):
                 # `Z)`, `Z + 1)`, `West)`: not an assignment, so the generic fallback (oracle, all
                 # four loggers, 2026-10-11, docs/checker.md "Stray close parenthesis")
                 diags.error(stmt.line, _out_of_place(profile, stmt.text, stmt.at_eol), stmt.file,
@@ -2634,7 +2655,7 @@ def check_missing_param_followup(program: S.Program, profile, diags: Diagnostics
         if nxt.reason == _UNCLOSED_PAREN_EXPR:
             diags.error(nxt.line, f"No Matching, or out of place ) in expression: {nxt.text}.",
                         nxt.file, show_file=False)
-        elif nxt.reason == _EXTRA_CLOSE_PAREN and not _ASSIGNMENT_HEAD.match(nxt.text):
+        elif nxt.reason == _EXTRA_CLOSE_PAREN and not _assignment_head(nxt.text, program, profile):
             diags.error(nxt.line, _out_of_place(profile, nxt.text, nxt.at_eol), nxt.file,
                         show_file=False)
         elif nxt.reason == _EXTRA_CLOSE_PAREN:

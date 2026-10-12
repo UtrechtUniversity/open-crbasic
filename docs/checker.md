@@ -5482,3 +5482,14 @@ CR300/CR350 treat every integer form as infinity too (`1/0`, `5/0`, `K/(K-3)`: o
 `-1/0`: accepted). Not modelled: `1/0+1` on CR300/CR350 (out of bounds on the real compiler, accepted
 here) and `SplitStr(S(1),...,1/0,...)` / other instructions' constant arguments (`x = 1/0` compiles).
 `5 MOD 0` page-faults the real compiler (no verdict).
+### Stray `)` after a compound assignment or a nested-paren target (round 13, A3)
+
+A statement that starts like an assignment and then has an unmatched `)` is `Incomplete
+expression: <statement>.`, otherwise the generic fallback. "Starts like an assignment" includes the
+compound operators (`X += 1)`, `-=`, `*=`, `/=`, `\=`, `^=`, `&=`) and a target subscript with
+nested parentheses (`A((1)) = 1)`, `A(B(1)) += 1)`, `A(Sqr(1)) = 1)`, `A(((1))) = 1)`); oracle,
+all four loggers, 2026-10-12 (`tests/fixtures/r13_stray_paren_compound.json`). Exceptions: a nested
+subscript naming an undefined variable stays the fallback on CR6/CR1000X (`A(Len(S)) = 1)`, `S`
+undeclared; CR300/CR350 print `S is not defined.` + `Incomplete expression`, not modelled), and on
+CR300/CR350 a call-like name that is a declared scalar in the subscript (`A(X(1)) = 1)`) is the
+fallback. Implementation: `structure._assignment_head`.
