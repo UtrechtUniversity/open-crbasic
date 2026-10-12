@@ -178,6 +178,59 @@ def _split_text_segments(text: str) -> list[str]:
 _RAW_NAME_FIRST = frozenset({"DATATABLE", "CONSTTABLE"})
 
 
+_ASSIGN_OPS = frozenset({"=", "+=", "-=", "*=", "/=", "\\=", "^=", "&="})
+
+
+def _is_assignment(toks: list[Token]) -> bool:
+    """`name`, optional `(...)` subscripts and `.member` parts, then an assignment operator."""
+    if not toks or toks[0].kind != "IDENT":
+        return False
+    i, depth = 1, 0
+    while i < len(toks):
+        t = toks[i]
+        if t.kind == "OP" and t.text == "(":
+            depth += 1
+        elif t.kind == "OP" and t.text == ")":
+            depth -= 1
+        elif depth == 0:
+            if t.kind == "OP" and t.text in _ASSIGN_OPS:
+                return True
+            if not (t.kind == "OP" and t.text == "." or t.kind == "IDENT" and toks[i - 1].text == "."):
+                return False
+        i += 1
+    return False
+
+
+def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
+    """CR6/CR1000X skip a `;` like a blank inside an assignment (also leading, `; X = 1`), and
+    after the trailing end of a `Const`, `For`, `Next`, `While` or `Select Case` header or of the
+    assignment body of a one-line `If`: `X = 1 ;`, `X =; 1` and `X = 1 ; + 2` compile, while
+    `X = 1 ; Y = 2` and `X = 1 ;)` are rejected as if the `;` were absent. CR300/CR350 accept a
+    trailing `;` only after `Next` (`Next Y ;`). Oracle, 2026-10-12, docs/checker.md "Round 13". An
+    instruction call (`Delay(1,1,Sec) ;`), `Do ;`, `CallTable T ;`, `EndIf ;` and `If c Then ;` keep
+    their own messages."""
+    real = [t for t in tokens if t.kind != "EOF"]
+    eof = tokens[len(real):]
+    semi = lambda t: t.kind == "OP" and t.text == ";"   # noqa: E731
+    body = [t for t in real if not semi(t)]
+    if len(body) == len(real) or not body or body[0].kind != "IDENT":
+        return tokens
+    head = body[0].upper
+    trailing_only = all(semi(t) for t in real[real.index(body[-1]) + 1:])
+    if head == "NEXT":
+        ok = trailing_only and real[0] is body[0]
+    elif profile.name not in ("cr6", "cr1000x"):
+        ok = False
+    elif head == "IF":
+        then = max((i for i, t in enumerate(body) if t.kind == "IDENT" and t.upper == "THEN"), default=-1)
+        ok = then >= 0 and then + 1 < len(body) and _is_assignment(body[then + 1:])
+    elif head in ("CONST", "FOR", "WHILE", "SELECT"):
+        ok = trailing_only and real[0] is body[0]
+    else:
+        ok = head not in profile.instructions and _is_assignment(body)
+    return body + eof if ok else tokens
+
+
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
     """Split a fully-tokenised logical line on top-level `:` (not inside `(...)`)."""
     segments: list[list[Token]] = []
@@ -464,6 +517,7 @@ class _Parser:
             # (`docs/checker.md` "Pass-1 fallback: statements that start with a known word").
             return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
         seg_text = self._segment_text(seg_text_raw, real)
+        tokens = _drop_semicolons(tokens, self.profile)
         return self._parse_segment(tokens, line, file, seg_text)
 
     @staticmethod

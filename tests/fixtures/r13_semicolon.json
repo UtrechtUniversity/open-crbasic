@@ -1,0 +1,758 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-semi-assign",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;\n."
+  },
+  {
+   "id": "cr350-semi-assign",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;\n."
+  },
+  {
+   "id": "cr6-semi-assign-nospace",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-nospace",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-nospace",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1;\n."
+  },
+  {
+   "id": "cr350-semi-assign-nospace",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1;\n."
+  },
+  {
+   "id": "cr6-semi-assign-comment",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-comment",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-comment",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; ."
+  },
+  {
+   "id": "cr350-semi-assign-comment",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 'c\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; ."
+  },
+  {
+   "id": "cr6-semi-assign-double",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-double",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-double",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;;\n."
+  },
+  {
+   "id": "cr350-semi-assign-double",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;;\n."
+  },
+  {
+   "id": "cr6-semi-assign-spaced-double",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-spaced-double",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-spaced-double",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-spaced-double",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; ;\n."
+  },
+  {
+   "id": "cr6-semi-assign-compound",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X += 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-compound",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X += 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-compound",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X += 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X += 1 ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-compound",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X += 1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X += 1 ;\n."
+  },
+  {
+   "id": "cr6-semi-assign-array",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    A(1) = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-array",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    A(1) = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-array",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    A(1) = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     A(1) = 2 ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-array",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    A(1) = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     A(1) = 2 ;\n."
+  },
+  {
+   "id": "cr6-semi-assign-func",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(S) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-func",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(S) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-func",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(S) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = Len(S) ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-func",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = Len(S) ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Y = Len(S) ;\n."
+  },
+  {
+   "id": "cr6-semi-assign-var",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-var",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-var",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Y ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-var",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = Y ;\n."
+  },
+  {
+   "id": "cr6-semi-lead",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    ; X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-lead",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    ; X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-lead",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    ; X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     ; X = 1\n."
+  },
+  {
+   "id": "cr350-semi-lead",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    ; X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     ; X = 1\n."
+  },
+  {
+   "id": "cr6-semi-mid-eq",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X =; 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-mid-eq",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X =; 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-mid-eq",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X =; 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X =; 1\n."
+  },
+  {
+   "id": "cr350-semi-mid-eq",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X =; 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X =; 1\n."
+  },
+  {
+   "id": "cr6-semi-op-after",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-op-after",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-op-after",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; + 2\n."
+  },
+  {
+   "id": "cr350-semi-op-after",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; + 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; + 2\n."
+  },
+  {
+   "id": "cr6-semi-assign-colon",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;: Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-colon",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;: Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-colon",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;: Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;."
+  },
+  {
+   "id": "cr350-semi-assign-colon",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;: Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;."
+  },
+  {
+   "id": "cr6-semi-assign-then-colon",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 : X = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-assign-then-colon",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 : X = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-assign-then-colon",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 : X = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  X = 2 ;\n."
+  },
+  {
+   "id": "cr350-semi-assign-then-colon",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Y = 1 : X = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:  X = 2 ;\n."
+  },
+  {
+   "id": "cr300-semi-junk-assign",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; Y = 2\n."
+  },
+  {
+   "id": "cr350-semi-junk-assign",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; Y = 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; Y = 2\n."
+  },
+  {
+   "id": "cr300-semi-junk-operand",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; 2\n."
+  },
+  {
+   "id": "cr350-semi-junk-operand",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ; 2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ; 2\n."
+  },
+  {
+   "id": "cr6-semi-junk-paren",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 ;)."
+  },
+  {
+   "id": "cr1000x-semi-junk-paren",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     X = 1 ;)."
+  },
+  {
+   "id": "cr300-semi-junk-paren",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;)\n."
+  },
+  {
+   "id": "cr350-semi-junk-paren",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = 1 ;)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = 1 ;)\n."
+  },
+  {
+   "id": "cr6-semi-open-paren",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = (1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 ;."
+  },
+  {
+   "id": "cr1000x-semi-open-paren",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = (1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     X = (1 ;."
+  },
+  {
+   "id": "cr300-semi-open-paren",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = (1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = (1 ;\n."
+  },
+  {
+   "id": "cr350-semi-open-paren",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = (1 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     X = (1 ;\n."
+  },
+  {
+   "id": "cr6-semi-string-and",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = \"a\" AND \"b\" ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+  },
+  {
+   "id": "cr1000x-semi-string-and",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = \"a\" AND \"b\" ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here"
+  },
+  {
+   "id": "cr300-semi-string-and",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = \"a\" AND \"b\" ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here\nline 4: Invalid symbol in expression:     X = \"a\" AND \"b\" ;\n."
+  },
+  {
+   "id": "cr350-semi-string-and",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    X = \"a\" AND \"b\" ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: String is illegal here\nline 4: Invalid symbol in expression:     X = \"a\" AND \"b\" ;\n."
+  },
+  {
+   "id": "cr6-semi-if-inline",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then Y = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-if-inline",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then Y = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-if-inline",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then Y = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Y = 2 ;."
+  },
+  {
+   "id": "cr350-semi-if-inline",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then Y = 2 ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression: Y = 2 ;."
+  },
+  {
+   "id": "cr6-semi-if-empty",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ;."
+  },
+  {
+   "id": "cr1000x-semi-if-empty",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ;."
+  },
+  {
+   "id": "cr300-semi-if-empty",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ;."
+  },
+  {
+   "id": "cr350-semi-if-empty",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    If X = 1 Then ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression: ;."
+  },
+  {
+   "id": "cr6-semi-for",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3 ;\n    X = 1\n    Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-for",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3 ;\n    X = 1\n    Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-semi-next",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-next",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-next",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-semi-next",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-semi-while",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    While X = 1 ;\n    Y = 2\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-while",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    While X = 1 ;\n    Y = 2\n    Wend\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-semi-next-bare",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-next-bare",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-next-bare",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-semi-next-bare",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-semi-next-two",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-next-two",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-semi-next-two",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-semi-next-two",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    Next Y ; ;\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-semi-next-lead",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    ; Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     ; Next Y."
+  },
+  {
+   "id": "cr1000x-semi-next-lead",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    ; Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     ; Next Y."
+  },
+  {
+   "id": "cr300-semi-next-lead",
+   "logger": "cr300",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    ; Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     ; Next Y\n."
+  },
+  {
+   "id": "cr350-semi-next-lead",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    For Y = 1 To 3\n    X = 1\n    ; Next Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     ; Next Y\n."
+  },
+  {
+   "id": "cr6-semi-select",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X ;\n    Case 1\n    Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-select",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    Select Case X ;\n    Case 1\n    Y = 1\n    EndSelect\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr350-semi-calltable",
+   "logger": "cr350",
+   "source": "Public X, Y, S As String * 20, A(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T ;\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Too many parameters:  ;."
+  },
+  {
+   "id": "cr6-semi-const",
+   "logger": "cr6",
+   "source": "Public X, Y, S As String * 20, A(3)\nConst K = 1 ;\nBeginProg\n  Scan (1,Sec,3,0)\n    X = K\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-semi-const",
+   "logger": "cr1000x",
+   "source": "Public X, Y, S As String * 20, A(3)\nConst K = 1 ;\nBeginProg\n  Scan (1,Sec,3,0)\n    X = K\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  }
+ ]
+}

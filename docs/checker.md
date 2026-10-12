@@ -5399,3 +5399,28 @@ empty fourth argument `(1,X,FP2,)`; kept for `(1,X,FP2,False)` and for a trailin
 `(1,X,FP2,False,)`. CR6/CR1000X keep it for all of these. Not modelled: an empty argument before the
 last (`(1,X,,False)`, `(1,,FP2,False)`) gives only `Invalid or missing parameter.` on all four loggers;
 ours still prints the order error (both reject).
+
+## Round 13: `;` in assignments (2026-10-12, review r13-A item A10)
+
+Oracle, fixture `tests/fixtures/r13_semicolon.json` (probes `scratch/r13/c6.py`..`c9.py`).
+
+- CR6/CR1000X skip a `;` like a blank inside an assignment statement (`=` or compound operator, array
+  or member target, any right side): `X = 1 ;`, `X = 1;`, `X = 1 ;;`, `X = 1 ; ;`, `X = 1 ; 'c`,
+  `X += 1 ;`, `A(1) = 2 ;`, `Y = Len(S) ;`, `; X = 1`, `X =; 1`, `X = 1 ; + 2` (the `;` is just
+  absent), `X = 1 ;: Y = 2` and the body of a one-line `If` (`If X = 1 Then Y = 2 ;`) all compile.
+  What follows the `;` is judged as if the `;` were absent: `X = 1 ; Y = 2`, `X = 1 ; 2`, `X = 1 ;)`
+  are `Incomplete expression` (we print the generic fallback: same verdict, message not modelled) and
+  `X = (1 ;` is `No Matching ...`. `Const K = 1 ;`, `For Y = 1 To 3 ;`, `Next Y ;`, `While c ;`,
+  `Select Case X ;` also compile (trailing `;` only; `; Next Y` is rejected). `parser._drop_semicolons`
+  removes the `;` tokens for exactly these shapes.
+- CR300/CR350 accept `Next ;` and `Next Y ;` (also `Next Y ; ;`) and reject a `;` in every other
+  statement above with `Invalid symbol in expression: <statement>` (newline echo as for the fallback;
+  `X = "a" AND "b" ;` keeps its `String is illegal here` line first). Done for plain assignments
+  (`structure._out_of_place` / `add_string_illegal`); a leading `; X = 1` stays the generic fallback.
+  Not done: CR300/CR350 `For`/`While`/`Const`/`Select Case` headers with `;` (`Invalid symbol in
+  expression: 3 ;.`, the value or condition only), `ElseIf ... Then ;`.
+- Unchanged, rejected on all four loggers with their own text, not modelled: an instruction call
+  `Delay (1,1,Sec) ;` / `PanelTemp (Y,60) ;` is `Too many parameters:  ;.`, `Do ;`, `Else ;` and
+  `Loop ;` are `Illegal parameter ;, expecting constant integer.`, `EndIf ;` is `Too many parameters:  ;.`
+  (CR6/CR1000X), `CallTable T ;` is `Invalid, or out of place expression: ;.` (CR300/CR350: `Invalid
+  symbol in expression: ;.`) and `If X = 1 Then ;` is the fallback on `;` alone.

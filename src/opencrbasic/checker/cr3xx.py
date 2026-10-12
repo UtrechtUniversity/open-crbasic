@@ -1994,7 +1994,9 @@ def add_string_illegal(program: S.Program, profile, diags: Diagnostics) -> None:
             continue
         key = (stmt.line, stmt.file)
         own = [d for d in diags.items if (d.line, d.file) == key]
-        final = next((d for d in own if d.message.startswith((_GENERIC_FALLBACK_PREFIX, "Incomplete expression:"))), None)
+        prefixes = (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:") + (
+            ("Invalid symbol in expression:",) if ";" in stmt.text else ())   # `X = "a" and "b" ;`
+        final = next((d for d in own if d.message.startswith(prefixes)), None)
         if final is None or any(d.message == "String is illegal here" for d in own):
             continue
         messages = structure._unparsed_string_messages(stmt, program, profile)
