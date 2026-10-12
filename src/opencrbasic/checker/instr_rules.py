@@ -1080,6 +1080,40 @@ _PRECISION_VARIABLE_POSITIONS: dict[str, frozenset[int]] = {
 }
 
 
+def _has_call(expr: S.Expr | None, variable_names: set[str]) -> bool:
+    """A function call (an `Index` that is not an array element) or a `Status.X`/`Public.X` member
+    reference anywhere in `expr`."""
+    if isinstance(expr, S.Member):
+        return True
+    if isinstance(expr, S.Index):
+        return expr.name.upper() not in variable_names or any(_has_call(a, variable_names) for a in expr.args)
+    if isinstance(expr, S.Unary):
+        return _has_call(expr.operand, variable_names)
+    if isinstance(expr, S.Binary):
+        return _has_call(expr.left, variable_names) or _has_call(expr.right, variable_names)
+    return False
+
+
+def _stringish(expr: S.Expr | None, str_consts: set[str]) -> bool:
+    """A string literal or string `Const`, alone or joined with `&`/`+` (not under unary minus or a
+    comparison, which are numeric)."""
+    if isinstance(expr, S.String):
+        return True
+    if isinstance(expr, S.Name):
+        return expr.name.upper() in str_consts
+    if isinstance(expr, S.Binary) and expr.op in ("&", "+"):
+        return _stringish(expr.left, str_consts) or _stringish(expr.right, str_consts)
+    return False
+
+
+def _string_consts(program: S.Program) -> set[str]:
+    out: set[str] = set()
+    for st in program.statements:
+        if isinstance(st, S.ConstDecl) and _stringish(st.value, out):
+            out.add(st.name.upper())
+    return out
+
+
 def check_precision_variable(program: S.Program, profile, diags: Diagnostics) -> None:
     """`Invalid Variable or Array: %s.` for `AddPrecise`/`MovePrecise`'s own `PrecisionVariable`
     argument when it has no genuine variable reference (declared or undeclared) anywhere in it.
@@ -1089,6 +1123,7 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
     """
     known: set[str] | None = None
     variable_names: set[str] | None = None
+    str_consts: set[str] | None = None
     for stmt in program.statements:
         if not isinstance(stmt, S.Instruction):
             continue
@@ -1109,6 +1144,10 @@ def check_precision_variable(program: S.Program, profile, diags: Diagnostics) ->
             arg = stmt.args[i]
             if _undefined_names(arg, known) or _variable_refs(arg, variable_names):
                 continue
+            if str_consts is None:
+                str_consts = _string_consts(program)
+            if _has_call(arg, variable_names) or _stringish(arg, str_consts):
+                continue   # (`AddPrecise(Sqr(4),.1)`, `("fuzz")`, `KS+1` compile: R15, fuzz false reject)
             diags.error(stmt.line, f"Invalid Variable or Array: {_arg_text(stmt, i)}.", stmt.file)
 
 

@@ -1950,3 +1950,13 @@ range) all compile; `5`, `32773`, `65541`, `-65531`, `-1`, `65535` and `INF` (sa
 whole value, a false reject for the mutant `MoveBytes(little,m,big,n,1,"fuzz")`. R15,
 `tests/fixtures/r15_movebytes_option.json` (audited 0 differing), fuzz false reject
 `cr1000x/false_reject/240340975c77`.
+
+### `AddPrecise`/`MovePrecise` first argument: strings, function calls and `Status.X` are not constants (CR6, CR1000X)
+
+`Invalid Variable or Array: <arg>.` (see `check_precision_variable`) is only for an argument made of
+numeric literals and `Const` names. `AddPrecise("fuzz",.1)`, `MovePrecise("",1)`, a string `Const`
+(`AddPrecise(KS,1)`), `"a"&"b"`, `"fuzz"+1`, `("fuzz")`, any function call (`Sqr(4)`, `Len("abc")`,
+`Left("abc",1)`, `Chr(65)`) and `Status.Battery`/`Public.x` all compile. Still rejected: `-"fuzz"` and `-KS`
+(a unary minus makes it numeric), `"a" = "b"`, `5`, `NAN`, `KN+KN`. `"a"*2` gives `Illegal String operand`
+(not modelled). R15, `tests/fixtures/r15_addprecise_string_arg.json` (audited 0 differing), fuzz false
+reject `cr1000x/false_reject/bea2207a74da`.
