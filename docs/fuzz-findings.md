@@ -708,10 +708,10 @@ option ... is illegal when spliting into a structure` (`cr300/fb802c166ba6`), `O
 `Variable Ver_Value out of bounds.` (`cr6/cbfffbba2919`), `GOESResult1 not yet declared so cannot be aliased.`
 (`cr6/2b97599754d2`). Three `Warning: Table X, is declared but never called` false accepts hide a missing `No Matching ) /
 Dimensions not declared / Expression expects ,` error inside a long `"got=" + FormatLong(...)` string expression
-(`cr1000x/cca13e3dfce5`, `cr6/fe18dc272183`, `cr6/9d2dd45508e6`, and `cr6/95e2a4d5d433`, `cr6/db82630bee84`); that is the
+(`cr1000x/cca13e3dfce5`, `cr6/fe18dc272183`, `cr6/9d2dd45508e6`, `cr6/95e2a4d5d433`, `cr6/db82630bee84`); not analysed, probably the
 unclosed-call family (see overlaps).
 
-Message-diff families (266 new, 173+ distinct signatures; the large ones):
+Message-diff families (266 new; the large ones, signatures not counted):
 - `NextScan with no Scan.` printed where the real compiler prints nothing, 14 on CR300/CR350 (`cr300/005046ba1509`,
   `5229bbe0cbb4`, `6406c500041e`, `96c2c3b42ded`): round-14 row 11 (typo'd `CallTable` hides it), still open.
 - `No BeginProg in Program.` where the real compiler reports a name error first (`Table name 1+2 illegal, starts with a
@@ -737,7 +737,7 @@ Message-diff families (266 new, 173+ distinct signatures; the large ones):
   `fa45417faea4`); `Warning: Attempt to initialize variable out of bounds.` missing (`cr1000x/e9385f666883`, `cr300/52e19bffe312`, round-14 row 12);
   `Duplicate variable name` echo with bytes `l\x93"` (`cr350/7c413416d561`, `e9adffc4ffb3`: the real compiler echoes a corrupted
   name, not reproducible); a trailing space in the echoed text `Dimensions not declared: X( I ) .` (`cr350/03da58aee91f`, `402a6e663007`).
-- Found while triaging, fixed above: `Call run(A,B,C,D` with an undeclared argument still lacks the leading
+- Found while probing the `Call` fix, left open: `Call run(A,B,C,D` with an undeclared argument still lacks the leading
   `Invalid symbol in expression: D.` (CR6/CR1000X) / `D is not defined.` (CR300/CR350) line, and `Call run(A` / `Call run(` /
   `Call run` print one `Call argument required.` where the real compiler prints two or three; `Call run(A,B,C,A` etc. are exact.
   CR300/CR350 `Abs(x)` after an endless scan is `Expr never reached`, `Foo(1)` (wrong count) and `Nope.x` keep their warning there.
