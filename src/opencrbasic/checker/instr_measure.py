@@ -109,7 +109,38 @@ def _tccomp_after_channel(stmt, env, profile, names, diags) -> None:
         diags.error(stmt.line, "Thermocouple type unsupported.", stmt.file)
 
 
+def _apply_cdm_channel(stmt, rule, env, profile, names, diags) -> None:
+    """CDM analog measurement channel (`channel_by_module`: module value -> last channel; oracle,
+    CR6/CR1000X, 2026-10-12, docs/instructions.md "CDM measurement channels"). A negative channel
+    is a two-measurement pair counted by magnitude; `-2147483648` (a string, overflow) is only
+    the range line; `Reps` that run past the last channel are `Reps cycle input beyond last
+    channel!` unless `Reps` is itself out of range."""
+    last = rule["channel_by_module"].get(str(_int_value(stmt.args[0], env)))
+    value = _long_arg(stmt, rule["pos"], rule, env, profile, names)
+    if last is None or value is None:
+        return
+    int_min = -2 ** 31
+    magnitude = -value if int_min < value < 0 else value
+    role = rule["role"]
+    if role == "ic":
+        if value == int_min or magnitude < 1 or magnitude > last:
+            diags.error(stmt.line, rule["message"].format(value=magnitude if value != int_min else value,
+                                                        max=last), stmt.file)
+    elif role == "rc":
+        reps = _long_arg(stmt, 4, rule, env, profile, names) if len(stmt.args) >= 4 else None
+        if value > last or (1 <= value and reps is not None and 1 <= reps <= 65536
+                            and value - 1 + reps > last):
+            diags.error(stmt.line, rule["message"], stmt.file)
+    elif role == "tm" and int_min < value < 0 and magnitude > last:
+        diags.error(stmt.line, rule["message"], stmt.file)
+
+
 def _apply_const_rule(stmt, rule, env, profile, names, diags) -> None:
+    if "channel_by_module" in rule:
+        _apply_cdm_channel(stmt, rule, env, profile, names, diags)
+        return
+    if "skip_modules" in rule and stmt.args and str(_int_value(stmt.args[0], env)) in rule["skip_modules"]:
+        return
     raw = _raw_arg(stmt, rule["pos"], env)
     if raw is None or (rule.get("skip_strings") and isinstance(raw, str)):
         return

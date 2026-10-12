@@ -2115,3 +2115,25 @@ module <name>.` (`CDM_PulsePort instruction ...` for that one) with no port line
 `VOLT408V1`, `VOLT408V10`, `VOLT408V60`, `TEMP408J`, `TEMP408K`, `TEMP408T`, `CURRENT408`(231), `SPECTRUM103`
 (260), `SPECTRUM109`; unnamed values are `NULL` as before. The same support matrix for the other CDM
 instructions is not modelled. Fuzz reproducers cr1000x `false_accept/496cca6dbced`, cr6 `05c461af995f`.
+
+### CDM measurement channels (CR6/CR1000X, round 15)
+
+Fixture `r15_cdm_channels.json`. `CDM_VoltSe`, `CDM_VoltDiff`, `CDM_TCSE` and `CDM_TCDiff` on the four
+standard modules (`measure.json` `const_ranges` entries with `channel_by_module`, handled by
+`instr_measure._apply_cdm_channel`; other modules keep the old rules):
+
+- Last channel: single-ended (`VoltSe`, `TCSE`) 16 for CDM-A108 and VOLT108, 32 for CDM-A116 and VOLT116;
+  differential (`VoltDiff`, `TCDiff`) 8 and 16. (`VoltDiff` was 1..16 for every module, which rejected the
+  negative channels below and wrongly accepted 9..16 on the 8-channel modules.)
+- A negative `SEChan` is a two-measurement pair counted by magnitude: `-1`, `-16` (and `-1.5`, `TRUE`) compile when
+  the magnitude is in range; a larger magnitude gives `Input channel: <magnitude>, out of range (1 - N).` and
+  `Two-measurement instruction starting on last input channel!` after the `Reps` lines.
+- Zero (also `0.5`, `-0.5`) gives `Input channel: 0, ...`; a string, NAN, a number past Long (`999999999999`) and
+  `-2147483648` give `Input channel: -2147483648, ...` alone (no follow-up line).
+- A channel above the last one adds `Reps cycle input beyond last channel!` (after the `Reps: ...` range line);
+  a valid channel adds it when `Reps` is 1..65536 and `channel - 1 + Reps` runs past the last one (`Reps 2` at
+  channel 16 of 16, `Reps 3` at 15).
+- Order on the line: `Settling time`, `Input channel`, `Reps: ... out of range`, `Reps cycle input...` or
+  `Two-measurement...`, `MeasPEx`. Not modelled: `Variable TT out of bounds.` for `Reps` above the destination, and
+  `When channel < 0, MeasPEx must equal Reps.` for an out-of-range `Reps` with a negative channel.
+Fuzz reproducer cr1000x `false_accept/f543da8c46ab`.
