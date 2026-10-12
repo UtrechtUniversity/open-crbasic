@@ -6513,3 +6513,26 @@ whose message differs are left out, see the last item):
   while that `If` is open, adds a second `IF ... illegally has SCAN` in the real compiler; `Sample` in a
   `SubScan` outside a table (`... No Measurements in SubScan.` after the Sample error).
 
+## Round 15: unclosed `Abs`-like groups, side-by-side expressions per nesting level (2026-10-12)
+
+Oracle, all four loggers (fixture `tests/fixtures/r15_abs_unclosed_second.json`, 61 shapes x 4 minus the
+message-only pairs): follow-up of "unclosed `Abs`-like groups beyond the flat `Abs(X`".
+
+- **`n` open `Abs`-family groups take up to `n + 1` side-by-side expressions, or `n` before a trailing
+  comma**: `Abs(X Z` (n=1), `Abs(Abs(X Z Z`, `Abs(Abs(1 2 3`, `Abs(Abs(X + 1 Z Z`, `Abs(X + Abs(Z Z Z`
+  (n=2: three), `Abs(Abs(Abs(X Z Z Z` (n=3: four) compile; one more does not (`Abs(Abs(Abs(X Z Z Z Z`,
+  `Abs(X Z Z`); `Abs(X,` | `Abs(Abs(X Z,` compile, `Abs(X Z,` | `Abs(Abs(X Z Z,` do not. Before this only two
+  expressions were accepted (`Abs(Abs(X Z Z` was a false reject). A side-by-side expression that is a call (`Abs(X
+  Q(1)`, `Abs(X Sin(Q)`, `Abs(Abs(X Z Abs(Z)`) is `Incomplete expression: <stmt>.` on all four loggers (a false
+  accept before).
+- **CR300/CR350 resolve the names of the dropped expressions**: `Y = Abs(X Q`, `Abs(X Then`, `If Abs(X Q Then`
+  `Y = Abs(X Q + 1`, `Y = Abs(Abs(X Z Q`, `While Abs(X Q` give `Q is not defined.` / `Then is not defined.` (also
+  `Else`), the loop-block error of the `While` is then hidden. CR6/CR1000X do not resolve the first token of a
+  dropped expression (`Y = Abs(X Q` compiles), but they do the names after an operator: `Y = Abs(X Z + Q`,
+  `Y = Abs(X Q + R` are `Invalid symbol in expression: <stmt>.` -- not modelled (false accept, CR6/CR1000X).
+  A dotted name (`Abs(X Q.R`) and numbers/strings are never reported. Implementation: `parser._Closed`
+  carries the dropped tokens, the statement gets `dropped_tail`, `cr3xx.check_dropped_tail` reports them.
+- Message-only differences left: when the group is rejected, CR300/CR350 still print `Q is not defined.` ahead
+  of `Incomplete expression:` for the second expression (`Y = Abs(X Q,`, `Y = Abs(X Q) `, `Y = Abs(X Q Then`,
+  `Y = Abs(X Q(1)`, `Y = LineNum(X Q`); `Y = Abs(X (Q)` adds `Dimensions not declared:`.
+

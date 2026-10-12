@@ -377,6 +377,12 @@ def _close_open_flat(tokens: list[Token], profile) -> list[Token]:
     return real[:end] + [close] + real[end:] + tokens[len(real):]
 
 
+class _Closed(list):
+    """Tokens of a statement whose unclosed group was closed; `dropped` holds the second,
+    side-by-side expression of `Abs(X Q` that the closing left out (see `cr3xx.check_dropped_tail`)."""
+    dropped: list = []
+
+
 def _close_open_call(tokens: list[Token], profile) -> list[Token]:
     """Unclosed groups the real compilers accept (oracle, all four loggers, 2026-10-12,
     `tests/fixtures/r14_abs_unclosed.json`, `r15_abs_unclosed.json`; `docs/checker.md` "Round 15").
@@ -446,23 +452,29 @@ def _close_open_extra(tokens: list[Token], profile) -> list[Token]:
                     prefix and not _is_binary(prefix[-1])):
                 return tokens
         if names[-1] in _S1_CALLS and content:
-            e1 = _expr_end(content, 0)
-            if e1 is None:
+            # `n` open groups take up to `n + 1` side-by-side expressions, or `n` of them before a
+            # trailing comma (oracle, all four loggers, 2026-10-12: `Abs(X Z` | `Abs(Abs(X Z Z` |
+            # `Abs(Abs(Abs(X Z Z Z` compile, one more does not; `Abs(X,` | `Abs(Abs(X Z,` compile,
+            # `Abs(X Z,` | `Abs(Abs(X Z Z,` do not)
+            exprs: list[list[Token]] = []
+            tail = content
+            while tail and tail[0].text != ",":
+                e = _expr_end(tail, 0)
+                if not e:
+                    return tokens
+                exprs.append(tail[:e])
+                tail = tail[e:]
+            comma = len(tail) == 1 and tail[0].text == ","
+            if (tail and not comma) or len(exprs) > (n if comma else n + 1) or not exprs:
                 return tokens
-            if e1 == len(content):
-                return closed(content) if n > 1 and not any(t.text == "," for t in content) else tokens
-            rest = content[e1:]
-            if any(t.kind == "OP" and t.text == "," for t in content[:e1]):
-                return tokens
-            if rest == [content[-1]] and content[-1].text == ",":
-                return closed(content[:e1])
-            e2 = _expr_end(rest, 0)
-            if e2 == len(rest) and not any(t.text == "," for t in rest):
-                return closed(content[:e1])
-            if n > 1 and e2 is not None and rest[e2:] == [rest[-1]] and rest[-1].text == "," \
-                    and not any(t.text == "," for t in rest[:e2]):
-                return closed(content[:e1])
-            return tokens
+            if len(exprs) == 1 and not comma:
+                return closed(content) if n > 1 else tokens
+            dropped = [t for part in exprs[1:] for t in part]
+            if any(part[0].kind == "IDENT" and len(part) > 1 and part[1].text == "(" for part in exprs[1:]):
+                return tokens   # `Abs(X Q(1)`: Incomplete expression (oracle, 2026-10-12)
+            out = _Closed(closed(exprs[0]))
+            out.dropped = dropped
+            return out
         if names[-1] in _S2_CALLS and (not content or n == 1 and [t.text for t in content] == [","]) \
                 and not any(t.kind == "IDENT" and t.upper in _S2_CALLS for t in real[:inner - 1]):
             return closed([mk("NUMBER", "0", 0)])
@@ -834,7 +846,11 @@ class _Parser:
         seg_text = self._segment_text(seg_text_raw, real)
         tokens = _drop_semicolons(tokens, self.profile)
         tokens = _close_open_call(tokens, self.profile)
-        return self._parse_segment(tokens, line, file, seg_text)
+        dropped = getattr(tokens, "dropped", None)
+        stmt = self._parse_segment(tokens, line, file, seg_text)
+        if dropped:
+            stmt.dropped_tail = dropped
+        return stmt
 
     @staticmethod
     def _segment_text(line_text: str, real_tokens: list[Token]) -> str:

@@ -253,6 +253,7 @@ def _check(program: S.Program, profile: Profile, diags: Diagnostics, result) -> 
     # `ComPort` argument, and every other `Serial*` function's own first argument. Also ungated
     # (oracle-confirmed, `docs/loggers.md`).
     _run_pass(cr3xx.check, program, profile, diags)
+    _run_pass(cr3xx.check_dropped_tail, program, profile, diags)
     _run_pass(instr_rules.check, _with_inline(program), profile, diags)  # (a one-line `If` body too)
     _run_pass(instr_rules.check_return_placement, program, profile, diags)
     # The leftover line a required-parameter shortfall's own wrapped argument list spills onto

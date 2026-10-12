@@ -91,6 +91,26 @@ def _check_baud(stmt: S.Call, profile, diags: Diagnostics, consts: dict | None =
         diags.error(stmt.line, f"{baud} is illegal baud rate.", stmt.file)
 
 
+def check_dropped_tail(program: S.Program, profile, diags: Diagnostics) -> None:
+    """CR300/CR350: the second, side-by-side expression of an unclosed `Abs`-like call (`Y = Abs(X
+    Q`, `If Abs(X Q Then`, `Abs(X Then`) is name-resolved, unlike on CR6/CR1000X: `Q is not defined.`,
+    `Then is not defined.` (oracle, 2026-10-12, `docs/checker.md` "Round 15"). The parser drops it
+    from the statement and keeps the tokens in `dropped_tail`; a call (`Q(1)`) or a dotted name in
+    it is left alone (those shapes have their own messages)."""
+    if profile.name not in ("cr300", "cr350"):
+        return
+    known = None
+    for stmt in program.statements:
+        tail = getattr(stmt, "dropped_tail", None)
+        if not tail or any(t.kind == "OP" and t.text in ("(", ".", ",") for t in tail):
+            continue
+        if known is None:
+            known = expressions._known_names(program, profile)
+        for t in tail:
+            if t.kind == "IDENT" and t.upper not in known:
+                diags.error(stmt.line, profile.unresolved_symbol_message.format(name=t.text), stmt.file)
+
+
 def check(program: S.Program, profile, diags: Diagnostics) -> None:
     """`SerialOpen`'s `ComPort`: a string or variable on all four loggers; on CR300/CR350 also an
     undefined name, and the other `Serial*` functions' undefined first argument. Oracle-confirmed
