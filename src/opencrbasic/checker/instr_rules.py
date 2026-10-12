@@ -1253,8 +1253,10 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
     - `CDM_Delay` `Option` (third argument, CR6/CR1000X): the value modulo 256 other than 0 or 1
       -> `Illegal option %d` (0 draws a different message about the module, not modelled).
     - `Matrix` `Option` (first argument): `(value & 0x7FFFFFFF)` outside 1..5 -> `Illegal option.`.
-    - `MoveBytes` `Option` (sixth argument), all four loggers: outside 0..4 -> `Invalid transfer
-      option %d, must be 0..4.` (oracle, 2026-10-12).
+    - `MoveBytes` `Option` (sixth argument), all four loggers: `(value & 0x7FFF)` outside 0..4 ->
+      `Invalid transfer option %d, must be 0..4.` with the whole value (oracle, 2026-10-12 and
+      round 15: `-65536`, `65540`, `32772`, `-2^31`, a string and `NAN` (INT_MIN) are accepted;
+      `65541`, `-65531` and `INF` (2147483647) are not).
     - `CDM_TCSE`/`CDM_VoltSe` settling time (CR6/CR1000X): not 0 and outside 100..100000 ->
       `Settling time: %d, out of range (100 - 100000, or 0 for default).` (oracle, 2026-10-12).
     """
@@ -1281,7 +1283,9 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
                 diags.error(stmt.line, f"Invalid option {v}", stmt.file)
         elif kw == "MOVEBYTES":
             v = value(5)
-            if v is not None and not 0 <= v <= 4:
+            if len(args) > 5 and isinstance(args[5], S.Name) and args[5].name.upper() == "INF":
+                v = 2147483647   # (INF saturates here; NAN and strings give INT_MIN, see below)
+            if v is not None and v & 0x7FFF > 4:   # (only the low 15 bits are tested)
                 diags.error(stmt.line, f"Invalid transfer option {v}, must be 0..4.", stmt.file)
         elif kw in _CDM_SETTLING_ARG:
             v = value(_CDM_SETTLING_ARG[kw])

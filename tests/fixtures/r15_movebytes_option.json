@@ -1,0 +1,471 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-movebytes_option-str",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-str",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-str",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-str",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,\"fuzz\")\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-nan",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-nan",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-nan",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-nan",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,NAN)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-inf",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-inf",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-inf",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-inf",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,INF)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-m2e31",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-m2e31",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-m2e31",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-m2e31",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-p2e31",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-p2e31",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-p2e31",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-p2e31",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,2147483648)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 2147483647, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-65536",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65536)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-65536",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65536)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-65536",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65536)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-65536",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65536)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-65540",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65540)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-65540",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65540)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-65540",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65540)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-65540",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65540)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-65541",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65541)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 65541, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-65541",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65541)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 65541, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-65541",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65541)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 65541, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-65541",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,65541)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 65541, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-32772",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32772)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-32772",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32772)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-32772",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32772)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-32772",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32772)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-32773",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32773)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 32773, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-32773",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32773)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 32773, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-32773",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32773)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 32773, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-32773",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,32773)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 32773, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-neg65532",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65532)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-neg65532",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65532)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-neg65532",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65532)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-neg65532",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65532)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-neg65531",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65531)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -65531, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-neg65531",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65531)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -65531, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-neg65531",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65531)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -65531, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-neg65531",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-65531)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -65531, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-neg1",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-neg1",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-neg1",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-neg1",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-4",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-4",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-4",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-4",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-movebytes_option-5",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr1000x-movebytes_option-5",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr300-movebytes_option-5",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr350-movebytes_option-5",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr6-movebytes_option-big",
+   "logger": "cr6",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,1e10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-movebytes_option-big",
+   "logger": "cr1000x",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,1e10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-movebytes_option-big",
+   "logger": "cr300",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,1e10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-movebytes_option-big",
+   "logger": "cr350",
+   "source": "Public a As Long\nPublic b As Long\nPublic s As String * 10\nBeginProg\n  Scan (1,sec,0,0)\n    MoveBytes(a,0,b,0,1,1e10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}

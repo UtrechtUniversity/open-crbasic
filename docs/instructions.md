@@ -1939,3 +1939,14 @@ instruction (`Sample (1,P(1),VW) : Sample (1,P(2),VW)` -> `F`, `A`). CR6/CR1000X
 duplicate lists there are long and not re-verified here). R14, `tests/fixtures/r14_cr3xx_struct_source_reps.json`
 (CR300/CR350 only, audited 0 differing); fuzz false rejects `structuretype_1.CR6` mutants (seed 403,
 `Average (&HFF,Piezometer,...)` and an `EndTable` moved above the last `Fieldnames`).
+
+### `MoveBytes` option: only the low 15 bits are tested (all four loggers)
+
+`MoveBytes(dest,off,src,off,n,Option)` reports `Invalid transfer option N, must be 0..4.` (N is the whole
+value) only when `Option & 0x7FFF` is above 4. `65536`, `65540`, `32768`, `32772`, `-65532`, `-65536`,
+`-16777216`, `-2^31` and the INT_MIN foldings (a string such as `"fuzz"`, `NAN`, numbers beyond the Long
+range) all compile; `5`, `32773`, `65541`, `-65531`, `-1`, `65535` and `INF` (saturates to
+2147483647) are rejected. Identical on CR6, CR1000X, CR300, CR350. Before this the check was `0..4` on the
+whole value, a false reject for the mutant `MoveBytes(little,m,big,n,1,"fuzz")`. R15,
+`tests/fixtures/r15_movebytes_option.json` (audited 0 differing), fuzz false reject
+`cr1000x/false_reject/240340975c77`.
