@@ -384,7 +384,7 @@ def scope_tables(program: S.Program, env: consteval.Env, scalars: bool = False):
     for st in program.statements:
         if isinstance(st, S.SubDef):
             cur = st
-        elif isinstance(st, S.Instruction) and st.keyword.upper() in ("ENDSUB", "ENDFUNCTION"):
+        elif S.ends_routine(st):
             cur = None
         owner[id(st)] = cur
     cache: dict[int, ScopeTables] = {}

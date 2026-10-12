@@ -1,0 +1,225 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-end_sub_scope-0-EndSub_panel",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-0-EndSub_panel",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-0-EndSub_panel",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-end_sub_scope-0-EndSub_panel",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end_sub_scope-1-EndSub_volt",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-1-EndSub_volt",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-1-EndSub_volt",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: mV5000 is not defined.\nline 9: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-end_sub_scope-1-EndSub_volt",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: mV5000 is not defined.\nline 9: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-end_sub_scope-2-EndSub_move",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-2-EndSub_move",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-2-EndSub_move",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-end_sub_scope-2-EndSub_move",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end_sub_scope-3-EndSub_panel",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-3-EndSub_panel",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-3-EndSub_panel",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-end_sub_scope-3-EndSub_panel",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 9: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end_sub_scope-4-EndSub_volt",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: Invalid channel 1, must use U1..U12."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-4-EndSub_volt",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-4-EndSub_volt",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: mV5000 is not defined.\nline 9: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr350-end_sub_scope-4-EndSub_volt",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    VoltSe(P(15),3,mV5000,1,1,0,15000,1,0)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 9: mV5000 is not defined.\nline 9: Variable illegal in Parameter: mV5000."
+  },
+  {
+   "id": "cr6-end_sub_scope-5-EndSub_move",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-5-EndSub_move",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-5-EndSub_move",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-end_sub_scope-5-EndSub_move",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(1),15000)\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Move(P(15),6,0,1)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end_sub_scope-6-fn_endfunction",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nFunction F(a)\n  Dim P(5)\n  PanelTemp(P(1),15000)\n  Return a\nEnd Function\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    r = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-6-fn_endfunction",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nFunction F(a)\n  Dim P(5)\n  PanelTemp(P(1),15000)\n  Return a\nEnd Function\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    r = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in SequentialMode."
+  },
+  {
+   "id": "cr300-end_sub_scope-6-fn_endfunction",
+   "logger": "cr300",
+   "source": "Public P(20)\nPublic r\nFunction F(a)\n  Dim P(5)\n  PanelTemp(P(1),15000)\n  Return a\nEnd Function\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    r = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 10: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr350-end_sub_scope-6-fn_endfunction",
+   "logger": "cr350",
+   "source": "Public P(20)\nPublic r\nFunction F(a)\n  Dim P(5)\n  PanelTemp(P(1),15000)\n  Return a\nEnd Function\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    r = F(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 5: Warning: Invalid fnotch value, must be 50,60 400 or 4000\nline 10: Warning: Invalid fnotch value, must be 50,60 400 or 4000"
+  },
+  {
+   "id": "cr6-end_sub_scope-7-local_oob_in_sub",
+   "logger": "cr6",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(6),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable P out of bounds."
+  },
+  {
+   "id": "cr1000x-end_sub_scope-7-local_oob_in_sub",
+   "logger": "cr1000x",
+   "source": "Public P(20)\nPublic r\nSub S2\n  Dim P(5)\n  PanelTemp(P(6),15000)\nEnd Sub\nBeginProg\n  Scan (1,Sec,3,0)\n    PanelTemp(P(18),15000)\n    S2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Variable P out of bounds."
+  }
+ ]
+}
