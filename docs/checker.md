@@ -5821,3 +5821,26 @@ the generic fallback, already reproduced), so the check is off on `single_pass` 
   `Illegal ! operation`, then `<destination> must be declared as a pointer type...`, then the generic. `F1 = !c`
   with `c As Long!` assigned to a `Long` function is `Assigning a pointer to the wrong type of pointer 8000 101`
   (not implemented). A pointer misuse inside a misplaced `DataTable` prints only the placement error.
+
+## Round 14 review fixes (R14-1, R14-2, R14-5, R14-7, R14-10)
+
+Oracle-confirmed on all four loggers, 2026-10-12 (fixtures `r14_for_header_member`,
+`r14_end_sub_scope`, `r14_end_sub_open_if`, `r14_cascade_inline_if`, `r14_include_incomplete_prefix`):
+
+- **`For` header operands may be dotted members.** `For I = 1 To T.X(1)`, `For I = T.X To 3`,
+  `... Step T.X`, `To Cfg.n` (structure member), `To Status.SerialNumber(1,1)` compile; the
+  header scan merges `Name.Member` into one operand so the assignment-only `X = 1 .` rule does
+  not fire. Garbage after the member (`To T.X 3`) is still `Incomplete expression: T.X 3.`
+  (CR6/CR1000X). Known, separate: `To Status.RecNum` is `Could not find Status.RecNum(1).` in
+  the real compiler (we accept); `To T. ` compiles (we print a symbol message); CR300/CR350
+  echo the half only (`T.X 3`), we echo the statement.
+- **Two-word `End Sub`/`End Function` closes the routine's scope** for `scope_tables` (local
+  `Dim` arrays no longer leak into main code) and reports `If without EndIf inside of Sub.`
+  like `EndSub`.
+- **`include_error_at` is re-indexed by `_with_inline`**, so earlier one-line `If` bodies do not
+  start the CR300/CR350 `Too many parameters` cascade early.
+- **`<file>` prefix** also applies to the pass-1 messages of an included file's one-line `If`
+  bodies and called block keywords (`If X Then Y = Scan(1)`, `If Scan(1) Then`, `If X Then Y`,
+  `If X Then Y = 1 +`, `If X = Then`, `If X Then Status = 1` on CR300/CR350): CR6/CR1000X
+  `<l.crb> line N:`, CR300/CR350 `<CPU:l.crb> line N:`. Open: `If X Then Scan(1)` in an include
+  is `Invalid or missing parameter.` in the real compiler (we differ, with or without include).
