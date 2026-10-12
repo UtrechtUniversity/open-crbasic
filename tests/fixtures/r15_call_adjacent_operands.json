@@ -1,0 +1,2039 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-call_adjacent_operands-0-c23-0",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (Fi  leHandle1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = FileClose (Fi  leHandle1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-0-c23-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (Fi  leHandle1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = FileClose (Fi  leHandle1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-0-c23-0",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (Fi  leHandle1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fi is not defined.\nline 4: leHandle1 is not defined.\nline 4: No Matching, or out of place ) in expression:     x = FileClose (Fi  leHandle1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-0-c23-0",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (Fi  leHandle1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fi is not defined.\nline 4: leHandle1 is not defined.\nline 4: No Matching, or out of place ) in expression:     x = FileClose (Fi  leHandle1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-1-c23-1",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (x  y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose (x  y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-1-c23-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (x  y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose (x  y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-1-c23-1",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (x  y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose (x  y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-1-c23-1",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose (x  y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose (x  y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-2-c23-2",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-2-c23-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-2-c23-2",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Pro is not defined.\nline 4: CRLF is not defined.\nline 4: Expression expects , :     x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-2-c23-2",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Pro is not defined.\nline 4: CRLF is not defined.\nline 4: Expression expects , :     x = SerialOut(ComUSB, Zork + Pro  CRLF, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-3-c23-3",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = SerialOut(ComUSB, x + y z, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-3-c23-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = SerialOut(ComUSB, x + y z, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-3-c23-3",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: z is not defined.\nline 4: Expression expects , :     x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-3-c23-3",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: z is not defined.\nline 4: Expression expects , :     x = SerialOut(ComUSB, x + y z, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-4-c23-4",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Abs(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-4-c23-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Abs(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-4-c23-4",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     x = Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-4-c23-4",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     x = Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-5-c23-5",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-5-c23-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-5-c23-5",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-5-c23-5",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-6-c23-6",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-6-c23-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-6-c23-6",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-6-c23-6",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-7-c23-7",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-7-c23-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-7-c23-7",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-7-c23-7",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-8-c23-8",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork + Q  R)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork + Q  R)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-8-c23-8",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork + Q  R)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork + Q  R)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-8-c23-8",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork + Q  R)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Q is not defined.\nline 4: R is not defined.\nline 4: Incomplete expression:     Abs(Zork + Q  R)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-8-c23-8",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork + Q  R)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Q is not defined.\nline 4: R is not defined.\nline 4: Incomplete expression:     Abs(Zork + Q  R)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-9-c23-9",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-9-c23-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-9-c23-9",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-9-c23-9",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-10-c23-10",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-10-c23-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-10-c23-10",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-10-c23-10",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-11-c23-11",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose (Zork)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-11-c23-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose (Zork)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-11-c23-11",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-11-c23-11",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-12-c23-12",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Fi leHandle1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose (Fi leHandle1, 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-12-c23-12",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Fi leHandle1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose (Fi leHandle1, 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-12-c23-12",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Fi leHandle1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fi is not defined.\nline 4: leHandle1 is not defined.\nline 4: No Matching, or out of place ) in expression:     FileClose (Fi leHandle1, 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-12-c23-12",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (Fi leHandle1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Fi is not defined.\nline 4: leHandle1 is not defined.\nline 4: No Matching, or out of place ) in expression:     FileClose (Fi leHandle1, 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-13-c23-13",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (x y, 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-13-c23-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (x y, 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-13-c23-13",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (x y, 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-13-c23-13",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (x y, 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-14-c23-14",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-14-c23-14",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-14-c23-14",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-14-c23-14",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose (1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose (1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-15-c23-15",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-15-c23-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-15-c23-15",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-15-c23-15",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-16-c23-16",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, 1 2, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, 1 2, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-16-c23-16",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, 1 2, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, 1 2, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-16-c23-16",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, 1 2, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, 1 2, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-16-c23-16",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, 1 2, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, 1 2, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-17-c23-17",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(Zork Q, x, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOut(Zork Q, x, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-17-c23-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(Zork Q, x, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOut(Zork Q, x, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-17-c23-17",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(Zork Q, x, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Q is not defined.\nline 4: Expression expects , :     SerialOut(Zork Q, x, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-17-c23-17",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(Zork Q, x, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Q is not defined.\nline 4: Expression expects , :     SerialOut(Zork Q, x, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-18-c23-18",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x, \"\", 0 1, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x, \"\", 0 1, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-18-c23-18",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x, \"\", 0 1, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x, \"\", 0 1, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-18-c23-18",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x, \"\", 0 1, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x, \"\", 0 1, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-18-c23-18",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x, \"\", 0 1, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x, \"\", 0 1, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-19-c23-19",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Sin(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-19-c23-19",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Sin(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-19-c23-19",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-19-c23-19",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-20-c23-20",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-20-c23-20",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-20-c23-20",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-20-c23-20",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-21-c24-0",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-21-c24-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-21-c24-0",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-21-c24-0",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-22-c24-1",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Sin(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-22-c24-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Sin(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-22-c24-1",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     x = Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-22-c24-1",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     x = Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-23-c24-2",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Round(x y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-23-c24-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Round(x y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-23-c24-2",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Round(x y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-23-c24-2",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Round(x y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-24-c24-3",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(1, x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-24-c24-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(1, x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-24-c24-3",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(1, x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-24-c24-3",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(1, x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-25-c24-4",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Round(Zork Y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-25-c24-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Round(Zork Y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-25-c24-4",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     x = Round(Zork Y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-25-c24-4",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     x = Round(Zork Y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-26-c24-5",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Left(s, 1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-26-c24-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Left(s, 1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-26-c24-5",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Left(s, 1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-26-c24-5",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Left(s, 1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-27-c24-6",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(x y, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(x y, 1, 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-27-c24-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(x y, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(x y, 1, 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-27-c24-6",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(x y, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(x y, 1, 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-27-c24-6",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(x y, 1, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(x y, 1, 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-28-c24-7",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-28-c24-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-28-c24-7",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-28-c24-7",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Abs(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-29-c24-9",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Ln(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Ln(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-29-c24-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Ln(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Ln(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-29-c24-9",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Ln(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Ln(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-29-c24-9",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Ln(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Ln(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-30-c24-10",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Len(s s)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-30-c24-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Len(s s)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-30-c24-10",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Len(s s)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-30-c24-10",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Len(s s)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-31-c24-11",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-31-c24-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-31-c24-11",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-31-c24-11",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = FileClose(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-32-c24-12",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-32-c24-12",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-32-c24-12",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-32-c24-12",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-33-c24-13",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Sin(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-33-c24-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Sin(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-33-c24-13",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-33-c24-13",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     Sin(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-34-c24-14",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Round(x y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-34-c24-14",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Round(x y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-34-c24-14",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Round(x y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-34-c24-14",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     Round(x y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-35-c24-15",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Round(Zork Y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-35-c24-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Round(Zork Y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-35-c24-15",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     Round(Zork Y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-35-c24-15",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Round(Zork Y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     Round(Zork Y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-36-c24-16",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Left(s, 1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-36-c24-16",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Left(s, 1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-36-c24-16",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Left(s, 1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-36-c24-16",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Left(s, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Left(s, 1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-37-c24-17",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Len(s s)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-37-c24-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Len(s s)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-37-c24-17",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Len(s s)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-37-c24-17",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Len(s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Len(s s)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-38-c24-18",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-38-c24-18",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-38-c24-18",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-38-c24-18",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     Abs(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-39-c24-19",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-39-c24-19",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     Abs(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-39-c24-19",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-39-c24-19",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Abs(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Incomplete expression:     Abs(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-40-c24-20",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-40-c24-20",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-40-c24-20",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-40-c24-20",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     FileClose(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-41-c24-21",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose(Zork Y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-41-c24-21",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     FileClose(Zork Y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-41-c24-21",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     FileClose(Zork Y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-41-c24-21",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    FileClose(Zork Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: No Matching, or out of place ) in expression:     FileClose(Zork Y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-42-c24-22",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-42-c24-22",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-42-c24-22",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-42-c24-22",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, x y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     SerialOut(ComUSB, x y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-43-c24-23",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOut(ComUSB, Zork Y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-43-c24-23",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     SerialOut(ComUSB, Zork Y, \"\", 0, 0)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-43-c24-23",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-43-c24-23",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Expression expects , :     SerialOut(ComUSB, Zork Y, \"\", 0, 0)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-44-c25-0",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Mid(s, 1, 2 3)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-44-c25-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Mid(s, 1, 2 3)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-44-c25-0",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Mid(s, 1, 2 3)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-44-c25-0",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Mid(s, 1, 2 3)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-45-c25-1",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1 2, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s, 1 2, 3)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-45-c25-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1 2, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s, 1 2, 3)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-45-c25-1",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1 2, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s, 1 2, 3)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-45-c25-1",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s, 1 2, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s, 1 2, 3)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-46-c25-2",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s y, 1, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s y, 1, 3)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-46-c25-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s y, 1, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s y, 1, 3)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-46-c25-2",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s y, 1, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s y, 1, 3)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-46-c25-2",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mid(s y, 1, 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Mid(s y, 1, 3)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-47-c25-3",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s s, \"a\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s s, \"a\", \"b\")."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-47-c25-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s s, \"a\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s s, \"a\", \"b\")."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-47-c25-3",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s s, \"a\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s s, \"a\", \"b\")\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-47-c25-3",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s s, \"a\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s s, \"a\", \"b\")\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-48-c25-4",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s, \"a\" \"c\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s, \"a\" \"c\", \"b\")."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-48-c25-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s, \"a\" \"c\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s, \"a\" \"c\", \"b\")."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-48-c25-4",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s, \"a\" \"c\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s, \"a\" \"c\", \"b\")\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-48-c25-4",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Replace(s, \"a\" \"c\", \"b\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     s = Replace(s, \"a\" \"c\", \"b\")\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-49-c25-5",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1 2, s, \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1 2, s, \"a\")."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-49-c25-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1 2, s, \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1 2, s, \"a\")."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-49-c25-5",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1 2, s, \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1 2, s, \"a\")\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-49-c25-5",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1 2, s, \"a\")\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1 2, s, \"a\")\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-50-c25-6",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1, s, s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1, s, s s)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-50-c25-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1, s, s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1, s, s s)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-50-c25-6",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1, s, s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1, s, s s)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-50-c25-6",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = InStr(1, s, s s)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = InStr(1, s, s s)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-51-c25-7",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-51-c25-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-51-c25-7",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-51-c25-7",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-52-c25-8",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Cos(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-52-c25-8",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Cos(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-52-c25-8",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Cos(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-52-c25-8",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Cos(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-53-c25-9",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Exp(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Exp(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-53-c25-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Exp(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Exp(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-53-c25-9",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Exp(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Exp(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-53-c25-9",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Exp(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Exp(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-54-c25-10",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Int(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Int(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-54-c25-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Int(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Int(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-54-c25-10",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Int(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Int(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-54-c25-10",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Int(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Int(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-55-c25-11",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sqr(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sqr(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-55-c25-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sqr(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sqr(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-55-c25-11",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sqr(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sqr(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-55-c25-11",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sqr(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sqr(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-56-c25-12",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Atn(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Atn(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-56-c25-12",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Atn(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Atn(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-56-c25-12",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Atn(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Atn(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-56-c25-12",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Atn(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Atn(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-57-c25-13",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = ATN2(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = ATN2(x y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-57-c25-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = ATN2(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = ATN2(x y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-57-c25-13",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = ATN2(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = ATN2(x y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-57-c25-13",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = ATN2(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = ATN2(x y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-58-c25-15",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Min(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Min(1, x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-58-c25-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Min(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Min(1, x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-58-c25-15",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Min(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Min(1, x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-58-c25-15",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Min(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Incomplete expression:     x = Min(1, x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-59-c25-16",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mod(x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x = Mod(x y, 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-59-c25-16",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mod(x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x = Mod(x y, 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-59-c25-16",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mod(x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x = Mod(x y, 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-59-c25-16",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Mod(x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x = Mod(x y, 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-60-c25-17",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(1, x y, 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-60-c25-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(1, x y, 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-60-c25-17",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(1, x y, 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-60-c25-17",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, x y, 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = IIF(1, x y, 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-61-c25-18",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, 2, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = IIF(1, 2, x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-61-c25-18",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, 2, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = IIF(1, 2, x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-61-c25-18",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, 2, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = IIF(1, 2, x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-61-c25-18",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = IIF(1, 2, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = IIF(1, 2, x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-62-c25-19",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Timer(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Timer(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-62-c25-19",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Timer(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Timer(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-62-c25-19",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Timer(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Timer(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-62-c25-19",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Timer(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Expression expects , :     x = Timer(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-63-c25-21",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Sin(x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(Sin(x y))."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-63-c25-21",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Sin(x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(Sin(x y))."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-63-c25-21",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Sin(x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(Sin(x y))\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-63-c25-21",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(Sin(x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(Sin(x y))\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-64-c25-22",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x) + Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x) + Cos(x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-64-c25-22",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x) + Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x) + Cos(x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-64-c25-22",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x) + Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x) + Cos(x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-64-c25-22",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x) + Cos(x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x) + Cos(x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-65-c25-23",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1 + Sin(1 2) * 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = 1 + Sin(1 2) * 3."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-65-c25-23",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1 + Sin(1 2) * 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = 1 + Sin(1 2) * 3."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-65-c25-23",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1 + Sin(1 2) * 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = 1 + Sin(1 2) * 3\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-65-c25-23",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = 1 + Sin(1 2) * 3\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = 1 + Sin(1 2) * 3\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-66-c25-24",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin((x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin((x y))."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-66-c25-24",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin((x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin((x y))."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-66-c25-24",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin((x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin((x y))\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-66-c25-24",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin((x y))\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin((x y))\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-67-c25-25",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y, 1)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-67-c25-25",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y, 1)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-67-c25-25",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y, 1)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-67-c25-25",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(x y, 1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(x y, 1)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-68-c25-26",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1, x y)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-68-c25-26",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1, x y)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-68-c25-26",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1, x y)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-68-c25-26",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Sin(1, x y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Sin(1, x y)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-69-c25-27",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Left(s, 1 2) + \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     s = Left(s, 1 2) + \"a\"."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-69-c25-27",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Left(s, 1 2) + \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     s = Left(s, 1 2) + \"a\"."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-69-c25-27",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Left(s, 1 2) + \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     s = Left(s, 1 2) + \"a\"\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-69-c25-27",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s = Left(s, 1 2) + \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     s = Left(s, 1 2) + \"a\"\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-70-c25-28",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(1 2)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-70-c25-28",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(1 2)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-70-c25-28",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(1 2)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-70-c25-28",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    Sin(1 2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     Sin(1 2)\n."
+  },
+  {
+   "id": "cr6-call_adjacent_operands-71-c25-29",
+   "logger": "cr6",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1, 2 3)."
+  },
+  {
+   "id": "cr1000x-call_adjacent_operands-71-c25-29",
+   "logger": "cr1000x",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1, 2 3)."
+  },
+  {
+   "id": "cr300-call_adjacent_operands-71-c25-29",
+   "logger": "cr300",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1, 2 3)\n."
+  },
+  {
+   "id": "cr350-call_adjacent_operands-71-c25-29",
+   "logger": "cr350",
+   "source": "Public x, y, s As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Round(x, 1, 2 3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: No Matching, or out of place ) in expression:     x = Round(x, 1, 2 3)\n."
+  }
+ ]
+}

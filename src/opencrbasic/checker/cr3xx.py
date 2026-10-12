@@ -1812,7 +1812,8 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                            else None)  # (prose stays generic)
                 head = {"invalid_assignment": "Invalid assignment in expression: ",
                         "incomplete": "Incomplete expression: ",
-                        "no_matching": "No Matching, or out of place ) in expression: "}.get(
+                        "no_matching": "No Matching, or out of place ) in expression: ",
+                        "expects_comma": "Expression expects , : "}.get(
                             verdict[1] if verdict and verdict[0] == "pass1" else None)
                 call = re.match(r"\s*([A-Za-z_]\w*)\s*\(([^()]*)", stmt.text)
                 juxt = call and stmt.reason != "lex error: unterminated string" and re.search(
@@ -1829,6 +1830,22 @@ def check_unknown_line_words(program: S.Program, profile, diags: Diagnostics) ->
                     nargs = profile.functions[call.group(1).upper()].get("nargs") or 0
                     head = ("Expression expects , : " if k < nargs
                             else "No Matching, or out of place ) in expression: ")
+                    if call.group(1).upper() in structure._SELF_CLOSING_FUNCTIONS:
+                        head = "Incomplete expression: "   # (`Abs(x y)`, oracle, CR300, 2026-10-12)
+                rhs_call = re.match(r"\s*[A-Za-z_]\w*\s*=\s*([A-Za-z_]\w*)\s*\((.*)$", stmt.text, re.S)
+                if (verdict and verdict[0] == "pass1" and rhs_call
+                        and rhs_call.group(1).upper() in profile.functions and not words
+                        and (verdict[1] in ("no_matching", "expects_comma") or (
+                            verdict[1] == "incomplete"
+                            and rhs_call.group(1).upper() in structure._SELF_CLOSING_FUNCTIONS))):
+                    # the bad argument's own undefined words come first (oracle, CR300, 2026-10-12:
+                    # `x = Sin(Zork Y)` -> `Zork is not defined.` then the message)
+                    parts = _split_args_quoted(rhs_call.group(2)) or []
+                    bad = next((a for a in parts if _adjacent_operands(a)), None)
+                    for word in (_leading_unknown_words(bad.strip(), here) if bad else []):
+                        new_items.append(Diagnostic("error", d.line,
+                                                    profile.unresolved_symbol_message.format(name=word),
+                                                    d.file, True))
                 if head == "No Matching, or out of place ) in expression: " and cond is None \
                         and stmt.reason != "lex error: unterminated string" and (
                         refined := structure._unclosed_call_message(

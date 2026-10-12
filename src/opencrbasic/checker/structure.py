@@ -2203,7 +2203,7 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
         if u in functions and u not in operands:
             if i < len(toks) and toks[i].kind == "OP" and toks[i].text == "(":
                 return _scan_expr(toks, 0, operands, functions, assign=False, start_operand=False,
-                                  unclosed="no_matching")
+                                  unclosed="no_matching", symbol_unknown=True)
             if _bare_function_needs_paren(u, functions):
                 return ("pass1", "expects_paren")
             return None
@@ -2759,16 +2759,22 @@ def _later_arg_unknown(args, operands: set[str], functions: dict) -> bool:
                                             start_operand=False) == ("pass2", "symbol")
 
 
+_SELF_CLOSING_FUNCTIONS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF", "LINENUM", "SIGNATURE"})
+
+
 def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                start_operand: bool, unclosed: str | None = None,
-               cond: bool = False, to_ok: bool = True, open_fallback: bool = False) -> tuple[str, str] | None:
+               cond: bool = False, to_ok: bool = True, open_fallback: bool = False,
+               symbol_unknown: bool = False) -> tuple[str, str] | None:
     """(`to_ok`: `To` is a binary operator, once per parenthesis level and argument; everywhere but
     `If`/`While`/`Do`/`Loop` conditions, oracle 2026-10-10, all four loggers.)"""
     to_levels: set[int] = set()
     rel_levels: set[int] = set()  # levels holding a comparison; none may sit beside a `To`
-    unknown = ("pass2", "symbol" if assign else "fallback")
+    unknown = ("pass2", "symbol" if assign or symbol_unknown else "fallback")
     unclosed = unclosed or ("no_matching" if assign else "fallback")
     parens: list[str] = []          # "call" or "group"
+    pnames: list[str | None] = []   # the built-in function a "call" parenthesis belongs to
+    argn: list[int] = []            # the commas seen so far in each open parenthesis
     expect_operand = not start_operand
     while i < len(toks):
         t = toks[i]
@@ -2790,12 +2796,16 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                         expect_operand = False
                     else:
                         parens.append("call")
+                        pnames.append(u)
+                        argn.append(0)
                         to_levels.discard(len(parens))
                         rel_levels.discard(len(parens))
                         i += 1
                 elif u in operands:
                     if opens:
                         parens.append("call")
+                        pnames.append(u if u in functions and isinstance(operands, _Everything) else None)
+                        argn.append(0)
                         to_levels.discard(len(parens))
                         rel_levels.discard(len(parens))
                         i += 1
@@ -2805,6 +2815,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return unknown
             elif t.kind == "OP" and t.text == "(":
                 parens.append("group")
+                pnames.append(None)
+                argn.append(0)
                 to_levels.discard(len(parens))
                 rel_levels.discard(len(parens))
             elif t.kind == "OP" and t.text in ("-", "+"):
@@ -2824,6 +2836,8 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 if not parens:
                     return ("pass1", "incomplete" if assign or cond else "fallback")
                 parens.pop()
+                pnames.pop()
+                argn.pop()
             elif t.kind == "OP" and t.text == ",":
                 to_levels.discard(len(parens))
                 rel_levels.discard(len(parens))
@@ -2833,6 +2847,7 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                     return None if assign else ("pass1", "fallback")
                 if parens[-1] != "call":
                     return ("pass1", "no_matching" if assign else "fallback")
+                argn[-1] += 1
                 expect_operand = True
             elif t.kind == "OP" and t.text in _BINARY_OPS:
                 if to_ok and t.text in ("=", "<>", "<", ">", "<=", ">="):
@@ -2855,7 +2870,12 @@ def _scan_expr(toks, i: int, operands: set[str], functions: dict, assign: bool,
                 return ("pass1", "incomplete" if assign else "fallback")
             elif t.kind in ("IDENT", "NUMBER", "STRING"):
                 # an operand right after an operand: inside a plain `( )` group the real
-                # compiler calls the group unmatched (oracle, 2026-10-03)
+                # compiler calls the group unmatched (oracle, 2026-10-03); inside a built-in
+                # call's arguments it expects a comma unless this is the call's last argument
+                if parens and parens[-1] == "call" and pnames[-1] and \
+                        pnames[-1] not in _SELF_CLOSING_FUNCTIONS:
+                    nargs = functions[pnames[-1]].get("nargs") or 0
+                    return ("pass1", "expects_comma" if argn[-1] + 1 < nargs else "no_matching")
                 return ("pass1", "no_matching" if parens and (
                     parens[-1] == "group" or (to_ok and t.upper == "TO")) else "incomplete")
             else:
@@ -3090,6 +3110,7 @@ def _pass1_message(profile, stmt: S.Stmt, kind: str, operands: set[str] | None =
         "fallback": _out_of_place(profile, text, getattr(stmt, "at_eol", True)),
         "incomplete": f"Incomplete expression: {text}.",
         "no_matching": f"No Matching, or out of place ) in expression: {text}.",
+        "expects_comma": f"Expression expects , : {text}.",
         "symbol": f"Invalid symbol in expression: {text}.",
         "expects_paren": f"Expression expects ( : {text}.",
         "missing_expr": "Invalid or missing expression.",

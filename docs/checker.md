@@ -6622,3 +6622,17 @@ read at all, on all four loggers: `Public x` / `x = Nope + _` gives only `line 2
 `BeginProg` / `x = 1 + _` compiles. The line still counts for the end-of-program messages (`line 2`, the file's last line).
 A further line after the `_` (even an empty one) is joined as before and the statement is read, reported on that line.
 `source.load_text`; `tests/lsp/test_positions.py` no longer expects the underscore to be dropped from a kept statement.
+
+### Adjacent operands inside a built-in call's arguments, all four loggers (oracle, 2026-10-12; `tests/fixtures/r15_call_adjacent_operands.json`)
+
+`x = Sin(x y)`, `x = Round(x y, 1)`, `x = Left(s, 1 2)`, `x = IIF(x y, 1, 2)`, `x = FileClose(x y)` and the same calls as
+statements (`Sin(x y)`, `SerialOut(ComUSB, x y, "", 0, 0)`) print `Expression expects , : <statement>.` when the argument with
+the adjacent operands is not the function's last (`nargs` of the function), else `No Matching, or out of place ) in
+expression: <statement>.`; the statement is echoed whole, as for the existing call-statement rule (28 function shapes
+compared on all four loggers). The self-closing calls (`Abs`, `AbsLong`, `ArrayLength`, `TypeOf`, `LineNum`, `Signature`)
+keep `Incomplete expression: <statement>.` (also as a CR300/CR350 call statement). With an undefined name in the argument:
+CR6/CR1000X `Invalid symbol in expression: <statement>.` also for the call statement (`Sin(Zork Y)`; ours printed the
+generic fallback); CR300/CR350 name it first (`x = Sin(Zork Y)`: `Zork is not defined.` then the message).
+`structure._scan_expr` (the `expects_comma` verdict, per-parenthesis function name and argument counter),
+`cr3xx.check_unknown_line_words`. Not modelled: a user `Function`/array named like the call, `x = Sqrt(x y)` on CR300/CR350
+(`Sqrt` is no function there: `Dimensions not declared`), `TimeIntoInterval`'s truncation warnings.
