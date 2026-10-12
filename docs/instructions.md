@@ -1734,6 +1734,19 @@ unit conversion `FUN_005082c0`) and verified 2026-10-10 on all four compilers (3
   also `(0,2,Sec)`; `Scan("fuzz",uSec,..)` (step -21474836) fails every `IfTime`. On CR6/CR1000X
   this pass-1 error hides the scan's own pass-2 messages (`Scan Interval parameter ...`).
 
+- **Zero interval and float32 2^31 (round 15, `tests/fixtures/r15_scan_zero_interval.json`, 88
+  cases, all four loggers)**: a `Scan` whose seconds and microseconds both come out 0 is outside any
+  Scan for `CallTable` placement exactly like the literal `Scan(0,Sec,..)`: `Cannot autoallocate
+  memory for DataTable T called outside of Scan, e.g., called by Sub.` for an auto-sized table (the
+  DataInterval-table messages are not printed). That covers `0.5` Sec, `0.9` mSec, `1073741824` Min,
+  `268435456` Hr, `33554432` Day (the wrap), `999999999999` Min/Hr/Day (a past-Long value is
+  -2^31, times the factor 0), and a string or unknown unit (`Scan(&HFF,"fuzz",3,0)`). A table
+  `DataInterval` is not divisibility-checked against such a scan. `Scan(4294967296,Sec,..)` is -2^31
+  seconds, not zero, so it stays a Scan. On CR300/CR350 a float32 of exactly +2^31 (`2147483648`,
+  `2147483776`) converts to `INT_MAX`, not -2^31: `Scan(2147483648,Sec,..)` is `Maximum Scan interval
+  is 1 Day.`, `Scan(2147483648,Min,..)` is -60 s (clean); `2147483904` (float32 2^31+256) is
+  -2^31. CR6/CR1000X keep -2^31 (`Scan 0uSec invalid` for the Min case).
+
 ## `SerialOpen` TxDelay and buffer arguments (2026-10-11, fixture `tests/fixtures/serialopen_constint.json`)
 
 - The 4th and 5th `SerialOpen` arguments (`checker/expressions.py`, `_CONST_INTEGER_BAD_ARGS`) must

@@ -203,15 +203,23 @@ def _calltable_known(stmt: S.Stmt, state: dict) -> bool:
 NESTED_SCAN = "Scan without NextScan or nested Scans."
 
 
-def _scan_counts_for_table_placement(stmt: S.Stmt) -> bool:
-    """Whether this parsed ``Scan`` contains a valid literal interval for ``CallTable`` placement.
+def _scan_counts_for_table_placement(stmt: S.Stmt, env: consteval.Env | None = None) -> bool:
+    """Whether this parsed ``Scan`` contains a valid interval for ``CallTable`` placement.
 
-    The compilers leave a literal-zero ``Scan`` structurally open for its matching ``NextScan``,
-    but a ``CallTable`` within it is still outside a Scan for an auto-sized table.  Keep this
-    intentionally narrow: only the observed literal-zero case is excluded here.
+    The compilers leave a zero-interval ``Scan`` structurally open for its matching ``NextScan``,
+    but a ``CallTable`` within it is still outside a Scan for an auto-sized table.  The interval
+    is zero for a literal zero and for every constant the compiler's own `long` arithmetic turns
+    into zero seconds and zero microseconds (``instr_rules.scan_split``): ``0.5`` Sec, ``0.9``
+    mSec, ``1073741824`` Min (wraps), a string or unknown unit, and a value beyond float32's
+    long range times a unit factor that wraps to zero (oracle, all four loggers, 2026-10-12,
+    ``r15_scan_zero_interval.json``).
     """
     args = getattr(stmt, "args", []) or []
-    return not (args and isinstance(args[0], S.Number) and args[0].value == 0)
+    if args and isinstance(args[0], S.Number) and args[0].value == 0:
+        return False
+    if env is not None and isinstance(stmt, S.Instruction):
+        return instr_rules.scan_split(stmt, env) != (0, 0)
+    return True
 
 
 def _check_calltable_outside_scan(stmt: S.Instruction, program: S.Program, diags: Diagnostics,
@@ -512,6 +520,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
     returned so the caller can drop later warnings. CR6/CR1000X report these in `check_pass2`."""
     if not profile.single_pass:
         return None
+    env = consteval.Env(profile, dict(program.consts))
     in_table = in_body = in_decl = seen_beginprog = False
     scans: list[bool] = []
     tables: dict = {}
@@ -545,7 +554,7 @@ def check_scan_placement_late(program: S.Program, profile, diags: Diagnostics) -
         elif kw == "SCAN":
             if scans:
                 diags.error(stmt.line, NESTED_SCAN, stmt.file)
-            scans.append(_scan_counts_for_table_placement(stmt))
+            scans.append(_scan_counts_for_table_placement(stmt, env))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if not scans:
                 diags.error(stmt.line, "NextScan with no Scan.", stmt.file)
@@ -1526,7 +1535,7 @@ def check_pass2(program: S.Program, profile, diags: Diagnostics,
         if kw == "SCAN":
             if pass2_scans and not profile.single_pass:
                 diags.error(stmt.line, NESTED_SCAN, stmt.file)
-            pass2_scans.append(_scan_counts_for_table_placement(stmt))
+            pass2_scans.append(_scan_counts_for_table_placement(stmt, env))
         elif kw == "NEXTSCAN" or (kw == "NEXT" and _block_word(getattr(stmt, "args", []) or []) == "SCAN"):
             if pass2_scans:
                 pass2_scans.pop()

@@ -804,7 +804,8 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
     (`FUN_005082c0`, all four loggers identical): the value converted as a `long` (a string, NaN
     or overflow is -2^31), then in 32-bit C arithmetic `uSec` -> `/1000000`, `%1000000`; `mSec` ->
     `/1000`, `%1000*1000`; `Sec` itself; `Min`, `Hr`, `Day` times 60, 3600, 86400 (wrapping); any
-    other unit 0. No validity check: a negative, string or wrapped interval is used as it is
+    other unit 0 (a float32 of exactly +2^31 is `INT_MAX` on CR300/CR350, `-2^31` elsewhere:
+    `Scan(2147483648,Sec)` is `Maximum Scan interval is 1 Day.` there). No validity check: a negative, string or wrapped interval is used as it is
     (oracle, 2026-10-10; `docs/instructions.md` "Scan interval arithmetic")."""
     args = stmt.args
     if len(args) < 2 or args[0] is None or args[1] is None or \
@@ -815,6 +816,9 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
     except consteval.NotConstant:
         return None
     n = consteval.to_long(-1 if value is True else 0 if value is False else value)
+    if n == -2147483648 and env.profile.name in ("cr300", "cr350") and isinstance(value, (int, float)) \
+            and not isinstance(value, bool) and _f32_is_2_31(value):
+        n = 2147483647      # CR300/CR350 saturate a float32 of exactly +2^31 (CR6/CR1000X: -2^31)
     unit = unit if isinstance(unit, (int, float)) and not isinstance(unit, bool) else None
     if unit is None or int(unit) not in _US_PER_UNIT:
         return 0, 0
@@ -829,6 +833,14 @@ def scan_split(stmt: S.Instruction, env: consteval.Env) -> tuple[int, int] | Non
         return n, 0
     wrapped = (n * {3: 60, 4: 3600, 5: 86400}[unit]) & 0xFFFFFFFF
     return (wrapped - 2**32 if wrapped >= 2**31 else wrapped), 0
+
+
+def _f32_is_2_31(value) -> bool:
+    import struct
+    try:
+        return struct.unpack("f", struct.pack("f", float(value)))[0] == 2147483648.0
+    except (OverflowError, ValueError):
+        return False
 
 
 def _cdiv(a: int, b: int) -> int:
@@ -988,6 +1000,8 @@ def check_data_interval(program: S.Program, profile, diags: Diagnostics, env: co
             scan_interval_us = _divisible_interval_us(
                 args[0] if args else None, args[1] if len(args) > 1 else None, env
             ) if _scan_raw(stmt, env) else None
+            if scan_split(stmt, env) == (0, 0):
+                scan_interval_us = None   # wraps to a zero interval: no divisibility check (r15)
             continue
         if kw == "NEXTSCAN":
             scan_interval_us = None

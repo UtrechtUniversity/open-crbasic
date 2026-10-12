@@ -1,0 +1,639 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  },
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-auto-0",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-1",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-2",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.9,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-3",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-4",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (268435456,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-5",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (33554432,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-6",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824.5,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-7",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-8",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-9",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-10",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-11",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (&HFF,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr300-auto-12",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-auto-13",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr300-auto-14",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483776,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr300-auto-15",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483904,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-auto-16",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (4294967296,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-auto-17",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,uSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-auto-18",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-auto-19",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (86401,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr350-auto-0",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-1",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-2",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.9,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-3",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-4",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (268435456,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-5",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (33554432,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-6",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824.5,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-7",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-8",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-9",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-10",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-11",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (&HFF,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr350-auto-12",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-auto-13",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr350-auto-14",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483776,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr350-auto-15",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483904,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-auto-16",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (4294967296,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-auto-17",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,uSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-auto-18",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-auto-19",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (86401,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr6-auto-0",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-1",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-2",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.9,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-3",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-4",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (268435456,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-5",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (33554432,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-6",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824.5,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-7",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-8",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-9",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-10",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-11",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (&HFF,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-12",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr6-auto-13",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-auto-14",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483776,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-auto-15",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483904,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-auto-16",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (4294967296,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr6-auto-17",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,uSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr6-auto-18",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-auto-19",
+   "logger": "cr6",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (86401,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr1000x-auto-0",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-1",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-2",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.9,mSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-3",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-4",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (268435456,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-5",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (33554432,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-6",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824.5,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-7",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-8",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-9",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Day,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-10",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-11",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (&HFF,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-12",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer\nline 7: Scan 0uSec invalid must be at least 1mSec.\nline 8: Cannot autoallocate memory for DataTable T called outside of Scan, e.g., called by Sub."
+  },
+  {
+   "id": "cr1000x-auto-13",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483648,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-auto-14",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483776,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-auto-15",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (2147483904,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-auto-16",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (4294967296,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan Interval parameter must be a non-negative integer"
+  },
+  {
+   "id": "cr1000x-auto-17",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,uSec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Scan 1uSec invalid must be at least 1mSec."
+  },
+  {
+   "id": "cr1000x-auto-18",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Hr,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-auto-19",
+   "logger": "cr1000x",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (86401,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Maximum Scan interval is 1 Day."
+  },
+  {
+   "id": "cr300-interval-0",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-interval-1",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-interval-2",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-interval-3",
+   "logger": "cr300",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-interval-0",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (0.5,Sec,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-interval-1",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1073741824,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-interval-2",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (999999999999,Min,0,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-interval-3",
+   "logger": "cr350",
+   "source": "Public X, Y As String, Z As String * 200\n\nDataTable (T,True,100)\n  DataInterval (0,1,Sec,10)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,\"fuzz\",3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  }
+ ]
+}
