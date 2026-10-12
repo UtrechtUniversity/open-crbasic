@@ -5945,3 +5945,16 @@ error and stops pass 2 (opencrbasic missed it). CR300/CR350 are unaffected (`Tim
 `Nope is not defined.` both print).
 Implementation: `checker.__init__._placement_rejected` gives `expressions.check` a skip set;
 `structure.scan_only_outside`/`check_stray_controls` now walk a one-line `If`'s statements.
+
+## Round 14 one-line `If` condition kept under the cascade (CR300/CR350)
+
+Oracle, 2026-10-12, CR300 and CR350 (`tests/fixtures/r14_inline_if_cascade.json`, 50 cases, all four loggers):
+`If Nope Then GetVariables(Other,ComSDC7,...)`, `If Nope Then Delay(1,Other,mSec)`, `... PanelTemp(Other,250)` print
+`Nope is not defined.` for the condition, then the body's own lines (`Other is not defined.`, `Too many
+parameters:  ComSDC7.`). `cr3xx.check_too_many_cascade` rewrites by physical line, so the body's rewrite dropped the
+condition's line and the `If` itself (whose line holds the body's diagnostics) was taken as the cascade trigger.
+Now the `If` counts only its condition's lines, the body is rewritten alone, and the condition's lines are put
+back in front (`_inline_owner`, `_names_in`; 7 fuzz reproducers, `iproute_1`/`getvariables_1` family).
+Still different (not in the fixture): `If A = 1 Then Delay(1,Nope,mSec)` prints `Nope is not defined.` then
+`Too many parameters:  mSec.` on CR300/CR350; opencrbasic's lone-line rule for the `Delay` follow-up (`per_line > 1` guard
+in `cr3xx`) still skips an `If` line.

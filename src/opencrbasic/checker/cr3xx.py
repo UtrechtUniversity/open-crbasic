@@ -276,6 +276,22 @@ def _tainted_prose_instruction(stmt: S.Unparsed, profile) -> str | None:
     return None
 
 
+def _inline_owner(statements, index: int):
+    """The one-line `If` whose body holds `statements[index]`, if any."""
+    stmt = statements[index]
+    for prev in reversed(statements[max(0, index - 8):index]):
+        if isinstance(prev, S.If) and any(x is stmt for x in (prev.inline or []) + (prev.inline_else or [])):
+            return prev
+    return None
+
+
+def _names_in(cond, profile, message: str) -> bool:
+    """Whether `message` is the unresolved-symbol line for a name written in `cond`."""
+    if cond is None:
+        return False
+    return any(message == profile.unresolved_symbol_message.format(name=n) for n in _expr_names(cond))
+
+
 def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> None:
     """CR300/CR350 only; a no-op on every other logger and when nothing in the file ever taints
     (see this module's comment above for the oracle evidence and the exact shape implemented).
@@ -298,6 +314,7 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     # its identical-shaped successor is swallowed).
     tainted = False
     taint_at = 0
+    stash: dict[tuple, list] = {}   # inline-`If` condition diagnostics set aside while the body is rewritten
     dropped: set[int] = set()      # tainted declarations: their names are never registered
     tainted_subs: set[int] = set()  # tainted `Sub`/`Function` headers: parameters dropped
     rewritten: set[int] = set()
@@ -312,7 +329,20 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if not tainted and isinstance(stmt, S.Declaration):
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
+        if isinstance(stmt, S.If) and (stmt.inline or stmt.inline_else):
+            # only the condition's own lines belong to the `If`; the body's are its statements'
+            existing = [d for d in existing if _names_in(stmt.cond, profile, d.message)]
+        elif (owner0 := _inline_owner(program.statements, index)) is not None and not tainted:
+            existing = [d for d in existing if not _names_in(owner0.cond, profile, d.message)]
         if tainted:
+            owner = _inline_owner(program.statements, index)
+            if owner is not None:
+                # the body of a one-line `If` is rewritten like any statement, the condition's own
+                # `X is not defined.` lines stay (oracle, CR300/CR350, 2026-10-12)
+                held = [d for d in existing if d.severity == "error" and _names_in(owner.cond, profile, d.message)]
+                if held:
+                    stash.setdefault(key, []).extend(held)
+                    diags.items[:] = [d for d in diags.items if not any(d is h for h in held)]
             if (isinstance(stmt, S.Call) and stmt.name.upper() == "SERIALOPEN" and len(stmt.args) > 1
                     and isinstance(stmt.args[1], (S.Unary, S.Binary))):
                 # a negative or computed baud is swallowed once the cascade has started, a plain
@@ -470,6 +500,9 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
         if any(_is_cascade_trigger(d) for d in existing):
             tainted = True
             taint_at = index
+    for (line, file), held in stash.items():   # condition diagnostics go back before the body's
+        at = next((i for i, d in enumerate(diags.items) if d.file == file and d.line >= line), len(diags.items))
+        diags.items[at:at] = held
     diags.cascade_gone = dropped_names - registered_names  # (names the cascade left unregistered)
     if rewritten:
         _report_rewritten_first_arg(program, profile, diags, dropped, rewritten)
