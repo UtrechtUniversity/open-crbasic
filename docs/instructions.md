@@ -2027,7 +2027,15 @@ signed value (`65537` is 1, `65536` is 0, `32768` is negative). Checks per state
    value: `"a"` and NAN -2147483648, `2147483648` -2147483648 on CR6/CR1000X and 2147483647 on CR300/CR350);
    zero on an event group -> `Event size must be non-zero to hold events` (negative is accepted).
 
-A statement stopped by 1-3 or by the static-class rule is not counted as defined, and is not "assigned"
+0. Before all of these, the `Source` subscripts (all four loggers): only a literal, a negated literal or a `Const`
+   name is usable; `B(M)`, `B(1+1)`, `B("x")`, `B(F(1))`, `D2(M,1)` and `D2(-1,1)` (a negative non-last
+   subscript) give `Cannot use a variable index reference.` alone; a truncated constant outside `1..size`
+   (`B(0)`, `B(6)`, `B(0.5)`, `D2(4,2)`) gives `Variable B out of bounds.` first. A negative last subscript counts by
+   magnitude (`B(-2)` of `B(5)` leaves 4 for `Swath`); the elements left are counted row-major (`D2(2,1)` of
+   `D2(3,2)` leaves 4). Not modelled: `B(TRUE)` (out of bounds plus the line), `B(1,"x")` on a 1-D array,
+   the `Flag` argument (`L("x")` is `Variable L out of bounds.`). Fuzz reproducer cr300 `false_accept/2b28ebdf538a`.
+
+A statement stopped by 0-3 or by the static-class rule is not counted as defined, and is not "assigned"
 (a later event group gets `Must assign`); group 110 never counts as defined either, so a `DNPUpdate` after
 only those gets `DNP3Statics and/or DNP3Events are not defined`. Type, variation-range and
 `Illegal Class` failures still count. Not modelled: `L(6)` past the array end (`Variable L out of bounds.`

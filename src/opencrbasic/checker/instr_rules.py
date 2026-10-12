@@ -1901,25 +1901,58 @@ def _dnp_long(arg: S.Expr | None, conv, wrap16: bool = False) -> int | None:
     return ((number + 32768) & 0xFFFF) - 32768 if wrap16 else number
 
 
-def _dnp_swath_limit(stmt: S.Instruction, dims: dict) -> int | None:
-    """How many elements the `Source` leaves for `Swath`: 1 for a scalar, the whole size for `A()`,
-    the rest of a one-dimensional array for `A(n)` (oracle 2026-10-12: `L(2)` of `L(5)` allows
-    4, `L(5)` allows 1); None where not probed."""
+def _dnp_source(stmt: S.Instruction, conv, dims: dict) -> tuple[list[str], int | None]:
+    """The messages of the `Source` subscripts and how many elements it leaves for `Swath` (None
+    where not probed). Oracle, all four loggers, 2026-10-12: only a literal, a negated literal or
+    a `Const` name is a usable subscript (`B(M)`, `B(1+1)`, `B("x")`, `B(F(1))` ->
+    `Cannot use a variable index reference.`); a truncated constant outside `1..size` adds
+    `Variable B out of bounds.` before it; a negative last subscript counts by magnitude
+    (`B(-2)` of `B(5)` leaves 4) but a negative earlier one is a variable reference. The
+    elements left are counted row-major from the subscripts (`D(2,1)` of `D(3,2)` leaves 4)."""
     src = stmt.args[0]
-    shape = dims.get(src.name.upper()) if isinstance(src, (S.Name, S.Index)) else None
+    if not isinstance(src, (S.Name, S.Index)):
+        return [], None
+    shape = dims.get(src.name.upper())
     if shape is None:
-        return None
-    if isinstance(src, S.Name):
-        return 1 if shape == (1,) else None
+        return [], None
     total = 1
     for n in shape:
         total *= n
+    if isinstance(src, S.Name):
+        return [], (1 if shape == (1,) else None)
     if not src.args:
-        return total
-    if len(src.args) == 1 and len(shape) == 1 and isinstance(src.args[0], S.Number) \
-            and float(src.args[0].value).is_integer() and 1 <= src.args[0].value <= shape[0]:
-        return shape[0] - int(src.args[0].value) + 1
-    return None
+        return [], total
+    if len(src.args) > len(shape):
+        return [], None
+    values: list[int] = []
+    for a in src.args:
+        number = a.operand if isinstance(a, S.Unary) and a.op in ("-", "+") else a
+        simple = isinstance(number, S.Number) or (
+            isinstance(number, S.Name) and number.name.upper() in conv[0].consts)
+        value = None
+        if isinstance(number, S.Name) and number.name.upper() in ("TRUE", "FALSE"):
+            return [], None     # (`B(TRUE)` is out of bounds plus the variable-reference line; not modelled)
+        if simple:
+            try:
+                value = consteval.value_of(a, conv[0])
+            except consteval.NotConstant:
+                pass
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            return ["Cannot use a variable index reference."], None
+        values.append(int(value))
+    last = len(values) - 1
+    if any(v < 0 for v in values[:last]):
+        return ["Cannot use a variable index reference."], None
+    if values[last] < 0:
+        values[last] = -values[last]
+    if any(not 1 <= v <= shape[i] for i, v in enumerate(values)):
+        return [f"Variable {src.name} out of bounds.", "Cannot use a variable index reference."], None
+    if len(values) != len(shape):
+        return [], None
+    offset = 0
+    for v, n in zip(values, shape):
+        offset = offset * n + (v - 1)
+    return [], total - offset
 
 
 def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None) -> tuple:
@@ -1932,11 +1965,14 @@ def _dnp_statement(stmt: S.Instruction, conv, dims, kind: str | None) -> tuple:
     if group is None:
         return None, [], [], False, False
     full = len(stmt.args) == 8
+    source_messages, left = _dnp_source(stmt, conv, dims) if conv[0] is not None else ([], None)
+    if source_messages:
+        return group, source_messages, [], True, False
     before: list[str] = []
     after: list[str] = []
     swath = _dnp_long(stmt.args[1], conv) if full else None
     # (a String source is only measured for group 110: `S,5,1,...` gets just the type message)
-    limit = _dnp_swath_limit(stmt, dims) if full and (kind != "STRING" or group == 110) else None
+    limit = left if full and (kind != "STRING" or group == 110) else None
     if swath is not None and limit is not None and not 1 <= swath <= limit:
         return group, [f"Swath parameter illegal, must be 1..{limit}"], [], True, False
     variation = _dnp_long(stmt.args[3], conv, wrap16=True) if full else None

@@ -7900,6 +7900,1182 @@
    "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic L2(3,2) As Long\nPublic L1 As Long\nPublic F(5)\nPublic S As String * 20\nPublic Flg(5) As Long\nConst K = 3\nBeginProg\n  DNP(20000,115200,1000)\n  DNPVariable (B(),5,1,1,\"1\",0,0,0)\n  Scan (1,Sec,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
    "expected_exit": 1,
    "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Illegal Class: must be 0..3"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-393",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-394",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-395",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,0,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-396",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,3,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-397",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-398",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (L(\"1\"),5,30,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-399",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-400",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1.5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-401",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),5,1,1,0,0,0,0)\n    DNPVariable (B(\"fuzz\"),5,2,1,0,0,0,5)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Cannot use a variable index reference."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-402",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,M,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable illegal in Parameter: M."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-403",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-404",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-405",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(K),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-406",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(F(1)),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-407",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-408",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-409",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-410",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-411",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-412",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-413",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-414",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-415",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-416",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-417",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-418",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-419",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-420",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-421",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(4,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-422",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,3),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-423",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(0,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-424",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-425",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,\"a\"),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-426",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-427",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(-1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-428",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-429",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),7,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..6\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-430",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-431",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-432",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-433",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr6-r15_dnp_variable_args-434",
+   "logger": "cr6",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-170",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-171",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-172",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,0,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-173",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,3,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-174",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-175",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (L(\"1\"),5,30,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-176",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-177",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1.5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-178",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),5,1,1,0,0,0,0)\n    DNPVariable (B(\"fuzz\"),5,2,1,0,0,0,5)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Cannot use a variable index reference."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-179",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,M,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable illegal in Parameter: M."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-180",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-181",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-182",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(K),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-183",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(F(1)),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-184",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-185",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-186",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-187",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-188",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-189",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-190",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-191",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-192",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-193",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-194",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-195",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-196",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-197",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-198",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(4,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-199",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,3),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-200",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(0,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-201",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-202",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,\"a\"),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-203",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-204",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(-1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-205",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-206",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),7,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..6\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-207",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-208",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-209",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-210",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr1000x-r15_dnp_variable_args-211",
+   "logger": "cr1000x",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-170",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-171",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-172",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,0,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-173",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,3,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-174",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-175",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (L(\"1\"),5,30,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-176",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-177",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1.5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-178",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),5,1,1,0,0,0,0)\n    DNPVariable (B(\"fuzz\"),5,2,1,0,0,0,5)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Cannot use a variable index reference."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-179",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,M,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable illegal in Parameter: M.\nline 11: Too many parameters:  10."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-180",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-181",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-182",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(K),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-183",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(F(1)),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-184",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-185",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-186",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-187",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-188",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-189",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-190",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-191",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-192",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-193",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-194",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-195",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-196",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-197",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-198",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(4,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-199",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,3),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-200",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(0,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-201",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-202",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,\"a\"),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-203",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-204",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(-1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-205",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-206",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),7,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..6\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-207",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-208",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-209",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-210",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr300-r15_dnp_variable_args-211",
+   "logger": "cr300",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-393",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-394",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-395",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,1,0,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-396",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,3,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-397",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"\"),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-398",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (L(\"1\"),5,30,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-399",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-400",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1.5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-401",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),5,1,1,0,0,0,0)\n    DNPVariable (B(\"fuzz\"),5,2,1,0,0,0,5)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Cannot use a variable index reference."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-402",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(\"fuzz\"),5,M,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable illegal in Parameter: M.\nline 11: Too many parameters:  10."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-403",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-404",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1+1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-405",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(K),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-406",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(F(1)),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-407",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-408",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-409",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-410",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-411",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-412",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(M),9,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-413",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-414",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-415",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(-1),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-416",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(5.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-417",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(0.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-418",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (B(6.5),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable B out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-419",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-420",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-421",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(4,2),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-422",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,3),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-423",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(0,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable D2 out of bounds.\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-424",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-425",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,\"a\"),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-426",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,-1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-427",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(-1,1),1,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Cannot use a variable index reference.\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-428",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,2),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-429",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),7,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..6\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-430",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-431",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(1,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: For DNP3 group 1 variable must be of type Boolean."
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-432",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),6,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-433",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(2,1),5,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..4\nline 11: DNP3Statics and/or DNP3Events are not defined"
+  },
+  {
+   "id": "cr350-r15_dnp_variable_args-434",
+   "logger": "cr350",
+   "source": "Public B(5) As Boolean\nPublic L(5) As Long\nPublic F(5), V(2), W(2), C(2)\nPublic M As Long\nPublic D2(3,2) As Long\nConst K = 2\nBeginProg\n  DNP(20000,115200,1000)\n  Scan (1,Sec,0,0)\n    DNPVariable (D2(3,2),2,1,1,0,0,0,0)\n    DNPUpdate (1,10)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Swath parameter illegal, must be 1..1\nline 11: DNP3Statics and/or DNP3Events are not defined"
   }
  ]
 }
