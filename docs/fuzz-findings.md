@@ -493,7 +493,7 @@ Reproducer `cr1000x/false_accept/03ecff3743a0` (`Const myString As String2 = "12
   `Scan("fuzz",Sec,3,0)` with `IfTime(0,24,Hr)`, but not with `IfTime(0,5,Min)`; `Scan(-1,Sec)`
   fails only for a sub-second `IfTime`), CR6/CR1000X replacing the interval message. The effective
   scan step is not derivable from these probes (`cr300/false_accept/1376c224f200`).
-- `Measurement Delay Exceeds 60 min.` (`CDM_Delay`, `cr6/false_accept/f2c51b769e04`), `Variable
+- (fixed in round 15: `Measurement Delay Exceeds 60 min.` count, `docs/instructions.md`) `Variable
   rt2 out of bounds.` / paren-dimension arrays (`cr6/false_accept/2435be9885e1`,
   `cr350/false_accept/73c3fc153711`), `FieldCal Mult` (`cr1000x/false_accept/11dd65c2d832`),
   `Parameter must be a constant integer` for `SerialOpen` (`cr300/false_accept/7be9f5d53b3a`),

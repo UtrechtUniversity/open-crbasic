@@ -1349,6 +1349,9 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
             v = value(2)
             if v is not None and v % 256 not in (0, 1):
                 diags.error(stmt.line, f"Illegal option {v % 256}", stmt.file)
+            elif v is not None and v % 256 == 0:
+                for _ in range(_cdm_delay_overlong(args, env, profile, names, literals)):
+                    diags.error(stmt.line, "Measurement Delay Exceeds 60 min.", stmt.file)
         elif kw == "MATRIX":
             v = value(0)
             if v is not None and not 1 <= v & 0x7FFFFFFF <= 5:
@@ -1368,6 +1371,46 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
             opt = value(2)
             if opt is not None and opt not in (0, 1):
                 diags.error(stmt.line, f"{opt} is illegal option", stmt.file)
+
+
+def _cdm_delay_overlong(args: list, env: consteval.Env, profile, names, literals) -> int:
+    """How many `Measurement Delay Exceeds 60 min.` lines a `CDM_Delay` with `Option` 0 prints
+    (CR6/CR1000X; decompiled `FUN_004160c0` / `FUN_0040f1c0`, oracle 2026-10-12). The integer
+    interval becomes seconds and microseconds as in `scan_split` (32-bit C arithmetic). The
+    instruction's own check prints once when either is negative, seconds exceed 3600, or they are
+    exactly 3600 s plus any microseconds; the device module then prints it again when the total
+    `us + sec * 1000000` (unsigned 32-bit) exceeds 3,600,000,000. So 61 Min, 3600001 mSec and every
+    small negative interval print twice, -1 Hr, 1 Day and 86400000 mSec once, 60 Min none. Only an
+    integral constant is modelled (a fraction goes through float arithmetic, not reproduced)."""
+    from . import longconv
+    if len(args) < 5 or args[3] is None or args[4] is None:
+        return 0
+    try:
+        raw = consteval.value_of(args[3], env)
+        unit = consteval.value_of(args[4], env)
+    except consteval.NotConstant:
+        return 0
+    if isinstance(raw, bool) or not isinstance(raw, (int, float)) or raw != int(raw) \
+            or not -2**31 <= raw < 2**31 or isinstance(unit, bool) or unit not in _US_PER_UNIT:
+        return 0
+    n = longconv.long_value(args[3], env, profile, names, literals)
+    if n is None:
+        return 0
+    if unit == 0:
+        sec, us = _cdiv(n, 1_000_000), _crem(n, 1_000_000)
+    elif unit == 1:
+        sec, us = _cdiv(n, 1000), _crem(n, 1000) * 1000
+    elif unit == 2:
+        sec, us = n, 0
+    else:
+        wrapped = (n * {3: 60, 4: 3600, 5: 86400}[unit]) & 0xFFFFFFFF
+        sec, us = (wrapped - 2**32 if wrapped >= 2**31 else wrapped), 0
+    count = 0
+    if sec < 0 or us < 0 or sec > 3600 or (sec == 3600 and us > 0):
+        count += 1
+    if ((us + sec * 1_000_000) & 0xFFFFFFFF) > 3_600_000_000:
+        count += 1
+    return count
 
 
 def _matrix_shapes(program: S.Program, env: consteval.Env) -> dict[str, tuple[int, int]]:

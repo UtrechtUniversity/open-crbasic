@@ -1,0 +1,1527 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-mSec-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-mSec-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-mSec-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Sec-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Sec-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Min-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Min-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Min-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Min--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Min-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Hr-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Hr-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Hr--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Hr-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-uSec--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-uSec-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Day-61",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-3600001",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--2",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--1000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--24",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-60",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-500",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-1",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-0",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Day-86400000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--3600000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--100",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-3601",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-3600",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day-2147483647",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr6-Day--2147483648",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr6-Day-4000000",
+   "logger": "cr6",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-mSec-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-mSec-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,mSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Sec-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Sec-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Sec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Min-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Min-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Min-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Min--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Min-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Min)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Hr-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Hr-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Hr--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Hr-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Hr)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-uSec--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-uSec-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,uSec)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Day-61",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,61,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-3600001",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600001,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--2",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--1000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-1000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--24",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-24,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-60",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,60,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-500",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,500,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-1",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,1,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-0",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,0,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Day-86400000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,86400000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--3600000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-3600000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--100",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-100,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-3601",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3601,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-3600",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,3600,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day-2147483647",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,2147483647,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min.\nline 5: Measurement Delay Exceeds 60 min."
+  },
+  {
+   "id": "cr1000x-Day--2147483648",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,-2147483648,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-Day-4000000",
+   "logger": "cr1000x",
+   "source": "Public Volt1\nBeginProg\n  Scan (1,Day,3,0)\n    CDM_SW12 (VOLT116,1,1,1,0)\n    CDM_Delay (VOLT116,1,0,4000000,Day)\n    CDM_VoltDiff (VOLT116,1,Volt1,1,mv5000C,1,True,200,15000,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: Measurement Delay Exceeds 60 min."
+  }
+ ]
+}
