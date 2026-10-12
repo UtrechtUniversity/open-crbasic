@@ -184,7 +184,10 @@ def _indexed_past_first(typer: "_Typer", dest: S.Expr) -> bool:
 def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -> None:
     typer = _Typer(program)
     tables = symbols.scope_tables(program, env)
+    in_prog = False
     for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "BEGINPROG":
+            in_prog = True
         for text in _string_operand_messages(typer, stmt):
             diags.error(stmt.line, text, stmt.file)
         if isinstance(stmt, S.Unparsed):  # a dotted OID is not an expression
@@ -207,6 +210,14 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
                     message = "Destination variable must be type LONG"
                 elif _indexed_past_first(typer, args[0]):
                     message = "Destination variable cannot be indexed"
+        elif kw == "INSTRUCTIONTIMES" and args and typer.variable(args[0]) is not None:
+            # (oracle, all four loggers, 2026-10-12: a Float/String/Boolean destination anywhere;
+            # a Long one is only accepted before `BeginProg`)
+            kind = typer.of(args[0])
+            if kind is not None and kind != "LONG":
+                message = "Destination variable must be type LONG"
+            elif kind == "LONG" and in_prog:
+                message = "TimesOfInstructions() must be declared before BeginProg."
         elif kw == "ARGOSERROR" and args:
             if typer.variable(args[0]) is not None and typer.of(args[0]) not in (None, "STRING") \
                     or isinstance(args[0], (S.String, S.Number, S.Binary, S.Unary)):

@@ -213,7 +213,7 @@ _TOO_MANY_PREFIX = "Too many parameters:"
 
 # Declaration errors taint the same way (oracle, CR300 and CR350, 2026-09-27: each of these
 # followed by a clean `Scan (1,Sec,0,0)` gives `Too many parameters:  Sec.` on it).
-_DECLARATION_TRIGGERS = ("already declared as a variable.", "is already declared as a CONST.",
+_DECLARATION_TRIGGERS = ("instruction must be in a ConstTable", "already declared as a variable.", "is already declared as a CONST.",
                          "illegal, starts with a number.", "not yet declared.", "so cannot be aliased.",
                          "not supported", "Variable not named.", " is illegal baud rate.",
                          "already defined as an internal function.", "is a predefined CONST.",

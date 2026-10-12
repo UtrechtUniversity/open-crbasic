@@ -1232,6 +1232,10 @@ def check_avgrun_options(program: S.Program, profile, diags: Diagnostics,
                         "must be > 0.", stmt.file)
 
 
+# CDM measurements' `SettlingTime` argument (0-based position; oracle, CR6/CR1000X, 2026-10-12).
+_CDM_SETTLING_ARG = {"CDM_TCSE": 9, "CDM_VOLTSE": 7}
+
+
 def check_option_values(program: S.Program, profile, diags: Diagnostics,
                         env: consteval.Env) -> None:
     """Constant option arguments (oracle, 2026-10-02, `docs/checker.md` "Option arguments"),
@@ -1246,6 +1250,10 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
     - `CDM_Delay` `Option` (third argument, CR6/CR1000X): the value modulo 256 other than 0 or 1
       -> `Illegal option %d` (0 draws a different message about the module, not modelled).
     - `Matrix` `Option` (first argument): `(value & 0x7FFFFFFF)` outside 1..5 -> `Illegal option.`.
+    - `MoveBytes` `Option` (sixth argument), all four loggers: outside 0..4 -> `Invalid transfer
+      option %d, must be 0..4.` (oracle, 2026-10-12).
+    - `CDM_TCSE`/`CDM_VoltSe` settling time (CR6/CR1000X): not 0 and outside 100..100000 ->
+      `Settling time: %d, out of range (100 - 100000, or 0 for default).` (oracle, 2026-10-12).
     """
     from . import longconv
     names = longconv.float_names(program.statements)
@@ -1256,8 +1264,8 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
         if not isinstance(stmt, (S.Instruction, S.Call)):
             continue
         kw = stmt.keyword.upper() if isinstance(stmt, S.Instruction) else stmt.name.upper()
-        if kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY") or \
-                kw not in profile.instructions:
+        if kw not in ("SPLITSTR", "IPROUTE", "MATRIX", "CDM_DELAY", "MOVEBYTES") + \
+                tuple(_CDM_SETTLING_ARG) or kw not in profile.instructions:
             continue
         args = list(stmt.args)
 
@@ -1268,6 +1276,15 @@ def check_option_values(program: S.Program, profile, diags: Diagnostics,
             v = value(4)
             if v is not None and v < 0:
                 diags.error(stmt.line, f"Invalid option {v}", stmt.file)
+        elif kw == "MOVEBYTES":
+            v = value(5)
+            if v is not None and not 0 <= v <= 4:
+                diags.error(stmt.line, f"Invalid transfer option {v}, must be 0..4.", stmt.file)
+        elif kw in _CDM_SETTLING_ARG:
+            v = value(_CDM_SETTLING_ARG[kw])
+            if v is not None and v != 0 and not 100 <= v <= 100000:
+                diags.error(stmt.line, f"Settling time: {v}, out of range (100 - 100000, or 0 for "
+                            "default).", stmt.file)
         elif kw == "CDM_DELAY":
             v = value(2)
             if v is not None and v % 256 not in (0, 1):

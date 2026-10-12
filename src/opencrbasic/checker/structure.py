@@ -1046,6 +1046,10 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                     const_open -= 1
                 else:
                     diags.error(stmt.line, "EndConstTable with no ConstTable.", stmt.file)
+            elif kw == "MQTTPUBLISHCONSTTABLE" and not const_open and kw in profile.instructions:
+                # (oracle, all four loggers, 2026-10-12: before `BeginProg` or in a `Scan`)
+                diags.error(stmt.line, "MQTTPublishConstTable instruction must be in a ConstTable",
+                            stmt.file)
             elif kw == "ENDPROG":
                 seen_endprog = True
             elif kw == "SLOWSEQUENCE" and not seen_endprog:

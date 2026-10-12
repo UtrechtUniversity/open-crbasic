@@ -1,0 +1,667 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-params-ct1",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-params-ct1",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr300-params-ct1",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n."
+  },
+  {
+   "id": "cr350-params-ct1",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,-1,60,1.0,0)\n."
+  },
+  {
+   "id": "cr6-params-ct2",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-params-ct2",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 99, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr300-params-ct2",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n."
+  },
+  {
+   "id": "cr350-params-ct2",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,99,60,1.0,0)\n."
+  },
+  {
+   "id": "cr6-params-ct3",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-ct3",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-ct3",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n."
+  },
+  {
+   "id": "cr350-params-ct3",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100,60,1.0,0)\n."
+  },
+  {
+   "id": "cr6-params-ct4",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-params-ct4",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: 100001, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr300-params-ct4",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n."
+  },
+  {
+   "id": "cr350-params-ct4",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_TCSE is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_TCSE(CDM_A108,1,TT(),3,mv200,1,TypeT,X,True,100001,60,1.0,0)\n."
+  },
+  {
+   "id": "cr6-params-ct5",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr1000x-params-ct5",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Settling time: -1, out of range (100 - 100000, or 0 for default)."
+  },
+  {
+   "id": "cr300-params-ct5",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_VoltSe is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n."
+  },
+  {
+   "id": "cr350-params-ct5",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: CDM_VoltSe is not defined.\nline 4: CDM_A108 is not defined.\nline 4: Invalid, or out of place expression:     CDM_VoltSe(CDM_A108,1,TT(),1,mV5000,1,0,-1,60,0.1,0)\n."
+  },
+  {
+   "id": "cr6-params-it1",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(A())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr1000x-params-it1",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(A())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr300-params-it1",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(A())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr350-params-it1",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(A())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr6-params-it10",
+   "logger": "cr6",
+   "source": "Public Q As Long\nInstructionTimes(Q)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-it10",
+   "logger": "cr1000x",
+   "source": "Public Q As Long\nInstructionTimes(Q)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-it10",
+   "logger": "cr300",
+   "source": "Public Q As Long\nInstructionTimes(Q)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-params-it10",
+   "logger": "cr350",
+   "source": "Public Q As Long\nInstructionTimes(Q)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-params-it2",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr1000x-params-it2",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr300-params-it2",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr350-params-it2",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr6-params-it3",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr1000x-params-it3",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr300-params-it3",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr350-params-it3",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(Q)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr6-params-it4",
+   "logger": "cr6",
+   "source": "Public TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(TimesOfInstructions())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr1000x-params-it4",
+   "logger": "cr1000x",
+   "source": "Public TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(TimesOfInstructions())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr300-params-it4",
+   "logger": "cr300",
+   "source": "Public TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(TimesOfInstructions())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr350-params-it4",
+   "logger": "cr350",
+   "source": "Public TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(TimesOfInstructions())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr6-params-it5",
+   "logger": "cr6",
+   "source": "Public L(4) As Long, TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr1000x-params-it5",
+   "logger": "cr1000x",
+   "source": "Public L(4) As Long, TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr300-params-it5",
+   "logger": "cr300",
+   "source": "Public L(4) As Long, TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr350-params-it5",
+   "logger": "cr350",
+   "source": "Public L(4) As Long, TimesOfInstructions(10) As Long\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(L())\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr6-params-it6",
+   "logger": "cr6",
+   "source": "Public S As String, B As Boolean\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(S)\n    InstructionTimes(B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG\nline 5: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr1000x-params-it6",
+   "logger": "cr1000x",
+   "source": "Public S As String, B As Boolean\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(S)\n    InstructionTimes(B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG\nline 5: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr300-params-it6",
+   "logger": "cr300",
+   "source": "Public S As String, B As Boolean\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(S)\n    InstructionTimes(B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG\nline 5: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr350-params-it6",
+   "logger": "cr350",
+   "source": "Public S As String, B As Boolean\nBeginProg\n  Scan (1,Sec,3,0)\n    InstructionTimes(S)\n    InstructionTimes(B)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Destination variable must be type LONG\nline 5: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr6-params-it7",
+   "logger": "cr6",
+   "source": "Public L(4) As Long\nBeginProg\n  InstructionTimes(L())\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr1000x-params-it7",
+   "logger": "cr1000x",
+   "source": "Public L(4) As Long\nBeginProg\n  InstructionTimes(L())\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr300-params-it7",
+   "logger": "cr300",
+   "source": "Public L(4) As Long\nBeginProg\n  InstructionTimes(L())\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr350-params-it7",
+   "logger": "cr350",
+   "source": "Public L(4) As Long\nBeginProg\n  InstructionTimes(L())\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: TimesOfInstructions() must be declared before BeginProg."
+  },
+  {
+   "id": "cr6-params-it8",
+   "logger": "cr6",
+   "source": "Public L(4) As Long\nInstructionTimes(L())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-it8",
+   "logger": "cr1000x",
+   "source": "Public L(4) As Long\nInstructionTimes(L())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-it8",
+   "logger": "cr300",
+   "source": "Public L(4) As Long\nInstructionTimes(L())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-params-it8",
+   "logger": "cr350",
+   "source": "Public L(4) As Long\nInstructionTimes(L())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-params-it9",
+   "logger": "cr6",
+   "source": "Public A(4)\nInstructionTimes(A())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr1000x-params-it9",
+   "logger": "cr1000x",
+   "source": "Public A(4)\nInstructionTimes(A())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr300-params-it9",
+   "logger": "cr300",
+   "source": "Public A(4)\nInstructionTimes(A())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr350-params-it9",
+   "logger": "cr350",
+   "source": "Public A(4)\nInstructionTimes(A())\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Destination variable must be type LONG"
+  },
+  {
+   "id": "cr6-params-mb1",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr1000x-params-mb1",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr300-params-mb1",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr350-params-mb1",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,-1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option -1, must be 0..4."
+  },
+  {
+   "id": "cr6-params-mb2",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr1000x-params-mb2",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr300-params-mb2",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr350-params-mb2",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,5)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid transfer option 5, must be 0..4."
+  },
+  {
+   "id": "cr6-params-mb3",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-mb3",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-mb3",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-params-mb3",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,4)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-params-mb4",
+   "logger": "cr6",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-mb4",
+   "logger": "cr1000x",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-mb4",
+   "logger": "cr300",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-params-mb4",
+   "logger": "cr350",
+   "source": "Public X, A(4), L(4) As Long, Q As Long, TT(3)\nBeginProg\n  Scan (1,Sec,3,0)\n    MoveBytes(A,0,L,0,4,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-params-mq1",
+   "logger": "cr6",
+   "source": "Public X\nMQTTPublishConstTable (X)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: MQTTPublishConstTable instruction must be in a ConstTable\nline 2: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr1000x-params-mq1",
+   "logger": "cr1000x",
+   "source": "Public X\nMQTTPublishConstTable (X)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: MQTTPublishConstTable instruction must be in a ConstTable\nline 2: Variable illegal in Parameter: X."
+  },
+  {
+   "id": "cr300-params-mq1",
+   "logger": "cr300",
+   "source": "Public X\nMQTTPublishConstTable (X)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: MQTTPublishConstTable instruction must be in a ConstTable\nline 2: Variable illegal in Parameter: X.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-params-mq1",
+   "logger": "cr350",
+   "source": "Public X\nMQTTPublishConstTable (X)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: MQTTPublishConstTable instruction must be in a ConstTable\nline 2: Variable illegal in Parameter: X.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-params-mq2",
+   "logger": "cr6",
+   "source": "Public X\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    MQTTPublishConstTable (K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr1000x-params-mq2",
+   "logger": "cr1000x",
+   "source": "Public X\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    MQTTPublishConstTable (K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr300-params-mq2",
+   "logger": "cr300",
+   "source": "Public X\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    MQTTPublishConstTable (K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr350-params-mq2",
+   "logger": "cr350",
+   "source": "Public X\nConst K = 1\nBeginProg\n  Scan (1,Sec,3,0)\n    MQTTPublishConstTable (K)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 5: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr6-params-mq3",
+   "logger": "cr6",
+   "source": "Public X\nConstTable\n  Const K = 1\n  MQTTPublishConstTable (K)\nEndConstTable\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-params-mq3",
+   "logger": "cr1000x",
+   "source": "Public X\nConstTable\n  Const K = 1\n  MQTTPublishConstTable (K)\nEndConstTable\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-params-mq3",
+   "logger": "cr300",
+   "source": "Public X\nConstTable\n  Const K = 1\n  MQTTPublishConstTable (K)\nEndConstTable\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-params-mq3",
+   "logger": "cr350",
+   "source": "Public X\nConstTable\n  Const K = 1\n  MQTTPublishConstTable (K)\nEndConstTable\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-params-mq4",
+   "logger": "cr6",
+   "source": "Public X\nConst K = 1\nMQTTPublishConstTable (K)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr1000x-params-mq4",
+   "logger": "cr1000x",
+   "source": "Public X\nConst K = 1\nMQTTPublishConstTable (K)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTTPublishConstTable instruction must be in a ConstTable"
+  },
+  {
+   "id": "cr300-params-mq4",
+   "logger": "cr300",
+   "source": "Public X\nConst K = 1\nMQTTPublishConstTable (K)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTTPublishConstTable instruction must be in a ConstTable\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-params-mq4",
+   "logger": "cr350",
+   "source": "Public X\nConst K = 1\nMQTTPublishConstTable (K)\nBeginProg\n  Scan (1,Sec,3,0)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: MQTTPublishConstTable instruction must be in a ConstTable\nline 5: Too many parameters:  Sec."
+  }
+ ]
+}

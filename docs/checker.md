@@ -6274,3 +6274,19 @@ preceding MenuItem must be a variable or a Const within ConstTable..EndConstTabl
 Not modelled: CDM port arguments (`CDM_PulsePort`, `CDM_SW12`) give `Unrecognized port!` by a
 per-device port set (`CDM_A108` takes ports 1 and 2 for `CDM_PulsePort` and none for `CDM_SW12`; a
 string, `0` and `-1` always fail); two fuzz false accepts stay open.
+
+## `MoveBytes` option, CDM settling time, `InstructionTimes`, `MQTTPublishConstTable` (2026-10-12)
+
+Oracle-probed, fuzz false accepts (cases in `tests/fixtures/r14_movebytes_cdm_insttimes_mqtt.json`):
+
+- `MoveBytes`'s sixth argument outside 0..4 is `Invalid transfer option %d, must be 0..4.` (all
+  four loggers; `instr_rules.check_option_values`).
+- `CDM_TCSE` (tenth argument) and `CDM_VoltSe` (eighth) settling time, not 0 and outside 100..100000:
+  `Settling time: %d, out of range (100 - 100000, or 0 for default).` (CR6/CR1000X). Other CDM
+  measurements are not probed.
+- `InstructionTimes(Dest)`: a Float, String or Boolean destination is `Destination variable must be
+  type LONG` wherever it is; a Long one is accepted before `BeginProg` only, and after it is
+  `TimesOfInstructions() must be declared before BeginProg.` (all four loggers; `var_types`).
+- `MQTTPublishConstTable` outside `ConstTable..EndConstTable` (before `BeginProg` or in a `Scan`) is
+  `MQTTPublishConstTable instruction must be in a ConstTable`, pass 1, and on CR300/CR350 it starts
+  the `Too many parameters` cascade (`structure.check_pass1`).
