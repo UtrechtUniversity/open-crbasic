@@ -43,18 +43,18 @@ Proposed CR6 language-server work has a separate [plan](LSP_PLAN.md) and
   This preserves Wine's console crash report. It applies to runners using this prefix, including
   the oracle, differential tools, and `scripts/cr6comp.py`. It does not close existing dialogs.
 
-## Status (2026-10-12, end of round 14; resume in a clean session)
+## Status (2026-10-12, end of round 15; resume in a clean session)
 
-Measured on `claude/laughing-franklin-08z9vo` at `dd05e142` (plus the docs commit that adds this
+Measured on `claude/laughing-franklin-08z9vo` at the round-15 head (plus the docs commit that adds this
 text), on the macOS M4 machine (Wine 11.17, CPython 3.13). Exact = equal exit code and normalized ordered stdout. False reject = real compiler
 accepts, opencrbasic rejects: **none observed** in any differential, replay or fixture run.
 
 | Gate | Result |
 |---|---|
-| `uv run --no-sync pytest -q -n 8 -m "not server" --deselect tests/lsp/test_lsp_bench.py::test_smoke_report` | 29,304 passed, 311 skipped, 0 failed. LSP server tests NOT run: POSIX semaphores exhausted until reboot (see Resume here) |
+| `uv run --no-sync pytest -q -n 8` (full suite) and `-m server` | 37,418 passed, 311 skipped; server 161 passed (round 15, after reboot) |
 | `tools/difftest.py --group all`, crbasic/ (16) exact | CR6 16, CR1000X 16, CR300 6, CR350 6 (the rest are matching-verdict rejections of CR6 programs) |
 | help corpus (507) exact / msg differs / verdict mismatch / oracle err | CR6 506/0/0/1, CR1000X 506/0/0/1, CR300 505/0/0/2, CR350 505/0/0/2 |
-| `tools/fuzz_replay.py` (2,604 reproducers: 2,251 old + 353 from seeds 401-404) | 1,972 exact, 67 false accepts (4 old + 63 new-seed), 0 false rejects, 539 message diffs, 10 mode diffs, 16 oracle errors (`scratch/replay-r14.json`) |
+| `tools/fuzz_replay.py` (2,923 reproducers incl. seeds 401-408) | 2,272 exact, 52 false accepts, 0 false rejects, 569 message diffs, 14 mode diffs, 16 oracle errors (`scratch/replay-r15.json`) |
 | `tools/tdftest.py --group all` | 2026-10-12 unchanged: table list 207/208 (only `goestable_1`). repo 16/16; combined repo+CHM 208 compared (16 repo + 192 CHM) TDF 207/208, table list 207/208 (only `goestable_1` field name), so CHM 191/192. Of the 507 CHM inputs: 192 compared, 308 rejected by the real compiler, 6 with no non-empty LST seen by the harness (it conflates absent and empty), 1 oracle fault. Label corrected 2026-10-11 from host evidence `docs/lsp-rounds/host-tests/2026-10-11-602f6462/RESULTS.md` |
 | `-t` [Times] (`scratch/timing_harness.py`, untracked, lost with the old machine) | 2026-10-11: repo 16/16, CHM 506/507 (only `pointervariable_2`, a real-compiler crash); not re-run in round 13 |
 | implementation exceptions (difftest/replay class) | 0 |
@@ -147,7 +147,23 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
   `scratch/crbasic-field-notes.html`, Codex summary `scratch/crbasic-lessons-source.md`): update
   ONLY when the human asks; publish with `url` to keep the link.
 
-## Resume here (2026-10-12, after round 14)
+## Resume here (2026-10-12, after round 15)
+
+- Round 15 (2026-10-12, Mac, after reboot) integrated and pushed: ~45 commits on top of the cloud
+  hand-off `ca091574`. Done: held-back inline-If arity commit (13e07c21), one-line ElseIf body,
+  unclosed Abs-like groups (nested, n+1 side-by-side, LineNum/Signature), block keywords and
+  SubScan/NextScan in one-line If bodies, While/Wend blocks, stray statements in one-line If
+  bodies, CR300/CR350 storage limit from the decompiled allocator (`checker/storage.py`), DataTable
+  size argument (no `-z` traceback), Scan intervals wrapping to zero, CDM_Delay double message,
+  fuzz seeds 405-408 (MoveBytes option, AddPrecise string arg, Call name spaces, unreachable
+  warnings), nine message-diff families (adjacent operands, EOF continuation, Matrix, ...),
+  RoutersNeighbors/DNPVariable/SNMPVariable/FieldCal/CDM port and channel value rules, CLI skips
+  LSP provenance (-25% peak memory). Fixtures `tests/fixtures/r15_*.json` (tests/test_r15_fixtures.py,
+  tests/test_r15_table_sizes.py). Decompiled dumps in `scratch/re/` (untracked).
+- No pending branches. Not reviewed yet: round 15 (cloud review requested; report expected on
+  `origin/reviews/r15-cloud`).
+
+## Round 14 notes (2026-10-12)
 
 - Cloud session (Linux container, Wine 9.0, 2026-10-12, after round 14): `3835326..235db55`, each
   rule oracle-probed, recorded in a fixture and gated (full pytest, `difftest --group all` on all
@@ -269,22 +285,15 @@ are in `docs/lsp-rounds/`.
 
 ## Next steps
 
-1. Reboot (semaphores), then run the FULL pytest suite incl. `-m server` once on the branch head
-   (it passed in the cloud container on 14072c8).
-2. Integrate `ocb-r14-followups/2330aa24` (see Resume here; the branch exists only on the Mac).
-3. Done in the cloud session: R13C-3..8 and R14C-1..6 (see Resume here).
-4. The 33 remaining fuzz false
-   accepts (`fuzz_replay` "still false_accept" lines): storage limits and autoallocate (CR300/
-   CR350), DNP3 rules, SNMP object ids, CDM port sets per device, FieldCal/Debug parameters,
-   `RoutersNeighbors` string index.
-5. Known false rejects: one-line `ElseIf c Then Z = 1`; `While Abs(X Then`, `Abs(Abs(X`,
-   `X = Abs(X,`, empty `LineNum(`/`Signature(`; `If X Then SubScan(...)` etc. (see docs).
-6. False accepts: Status/table field existence (`Status.RecNum`, `T.Nope`, `Public.Nope`) needs
-   per-logger field lists (probed ~400 names; sets differ per logger) — design decision; 63 new
-   false accepts from seeds 401-404 (value models per instruction, docs/fuzz-findings.md "Round 14").
-7. Fuzz message diffs: ranking in docs/fuzz-findings.md "Round 14 message-diff ranking".
-8. Remaining fuzz false accepts: storage limit (CR300/CR350), `CDM_Delay` >60 min, Scan-interval
-   overflow autoallocate; `crbc -z` traceback (compiler item 2).
-9. LSP cost on the CLI path (provenance on every compile, review C F1).
-10. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments.
-11. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
+1. Act on the cloud review of round 15 (`origin/reviews/r15-cloud`; confirm each finding against
+   the oracle first).
+2. Remaining false accepts (52 in the replay): Debug arguments (rules probed, see
+   docs/instructions.md / round-15 notes), GZip/HTTPPut/FTPClient constant-integer and arity,
+   MinRun with a user Function, FFT scan interval, auto-table storage sharing (CR300/CR350),
+   DataEvent/AcceptDataRecords storage, CR300/CR350 auto-table size constants for `-z`, and the
+   46 from seeds 405-408 (docs/fuzz-findings.md "Round 15").
+3. Message diffs (569): docs/fuzz-findings.md "Round 15 message-diff ranking" open items.
+4. Fresh fuzz seeds 409+.
+5. Outputs: CDM binary image (`-b`), `goestable_1` field name, timing for variable arguments;
+   re-create the `-t` timing harness (lost with the old machine).
+6. Publishing is not planned: internal use only (human decision 2026-10-11, `docs/legal.md`).
