@@ -114,6 +114,16 @@ _NON_EXECUTABLE_KEYWORDS = frozenset({
 })
 
 
+def _is_program_end(stmt: S.Stmt) -> bool:
+    """Bare `End` and `End Prog` (any whitespace between the words) are never flagged as unreachable
+    and do not stop the search (oracle, all four loggers, 2026-10-12: `End` then `a = 1` after an
+    endless `Scan` warns only for `a = 1`)."""
+    if not (isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "END"):
+        return False
+    return not stmt.args or (len(stmt.args) == 1 and isinstance(stmt.args[0], S.Name)
+                             and stmt.args[0].name.upper() == "PROG")
+
+
 def _display_name(stmt: S.Stmt, profile: Profile) -> str:
     """The name the real compiler echoes in `%s never reached at run time.` -- an `Instruction`'s
     canonical table spelling (`Delay`, `Scan`, proper-cased; oracle:
@@ -276,6 +286,7 @@ def _check_reachability(program: S.Program, profile: Profile, diags: Diagnostics
             is_declaration = (
                 isinstance(stmt, (S.Declaration, S.ConstDecl, S.Label))
                 or kw in _NON_EXECUTABLE_KEYWORDS or kw == "EXITSCAN"
+                or _is_program_end(stmt)
             )
             if not is_declaration:
                 diags.warning(stmt.line, f"{_display_name(stmt, profile)} never reached at run time.", stmt.file)
