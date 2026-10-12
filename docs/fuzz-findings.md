@@ -501,3 +501,75 @@ Reproducer `cr1000x/false_accept/03ecff3743a0` (`Const myString As String2 = "12
   EndIf inside of Sub` (`cr1000x/false_accept/9ec2e021b721`).
 - The 52 message_diff reproducers are mostly extra or missing follow-on lines in undefined-name
   cascades and structure messages (`No BeginProg` vs a specific first error), not triaged.
+
+
+## Round 14 message-diff ranking
+
+Baseline `tools/fuzz_replay.py` on `main` (2026-10-12): 2,251 reproducers, 1,851 exact, 4 false accepts, 368 message
+diffs (311 recorded as `message_diff` plus 57 recorded as `false_accept` that now differ only in messages), 12 mode diffs,
+16 oracle errors. Signature of a message diff = the first differing line of the ordered output, normalised (line number,
+numbers and names removed: `X is not defined.` and `Invalid symbol in expression: ...` become `ID is not defined.`/
+`Invalid symbol: ...`), as `ours-first-line | theirs-first-line`; `<END>` means that side has no line there (a missing or
+extra line). The 368 reproducers fall into 173 signatures; the 20 largest are below. "Fixed" counts the cluster's members
+that are exact after the round-14 commits (replay of 2026-10-12, 1,908 exact / 311 message diffs left). The table is by first
+differing line, which is often a symptom: several clusters share a cause and one cause is spread over several rows.
+
+| # | Count | Per logger | Ours (first differing line) | Theirs (first differing line) | Fixed | Smallest reproducer |
+|---|---|---|---|---|---|---|
+| 1 | 19 | cr300 7, cr350 12 | `ID is not defined.` | `ID is not defined.` | 9 | `PortsConfig (&B10010010X,&B11111111)` |
+| 2 | 18 | cr1000x 11, cr6 7 | `ID illegally occurs before BeginProg.` | `Invalid symbol: ...` | 16 | `SortSpaIndexed(iout,6,Iarray)` |
+| 3 | 14 | cr1000x 3, cr6 11 | `Invalid symbol: ...` | `<END>` | 13 | `TimerInput(TimeIn(1),C1,0,2,0,usec)` |
+| 4 | 14 | cr1000x 8, cr6 6 | `Invalid symbol: ...` | `Invalid symbol: ...` | 10 | `SplitStr (ResultString(1),SearchString,",",6,1)` |
+| 5 | 9 | cr300 5, cr350 4 | `ID is not defined.` | `Too many parameters: ...` | 0 | `Return (x+y+z)` |
+| 6 | 9 | cr1000x 1, cr300 6, cr350 1, cr6 1 | `Expression expects , : ...` | `Warning: Parameter will truncate to the nearest integer.` | 0 | `If IFTime(0,Hr) Then` |
+| 7 | 8 | cr1000x 2, cr300 3, cr350 2, cr6 1 | `ID illegally occurs before BeginProg.` | `Cannot find DataTable X` | 7 | `SendData (ComRS232,0,4094,Table1)` |
+| 8 | 8 | cr1000x 2, cr6 6 | `Invalid, or out of place expression: ...` | `No BeginProg in Program.` | 0 | `Function PlusTwo("fuzz")` |
+| 9 | 7 | cr300 4, cr350 3 | `Invalid, or out of place expression: ...` | `ID is not defined.` | 0 | `Scan (1,S  ec,3,0)` |
+| 10 | 7 | cr300 4, cr350 3 | `<END>` | `Too many parameters: ...` | 0 | `Broadcast (C  omRS232,14)` |
+| 11 | 6 | cr300 2, cr350 3, cr6 1 | `NextScan X no Scan.` | `<END>` | 0 | `CalltAble (SS1990Tab) / NextScan` |
+| 12 | 6 | cr1000x 1, cr300 2, cr350 1, cr6 2 | `<END>` | `Warning: Attempt to initialize variable out of bounds.` | 0 | `Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}` |
+| 13 | 6 | cr1000x 1, cr300 2, cr350 3 | `<END>` | `Invalid, or out of place expression: ...` | 0 | `Public NumEx AS LONG, Shift(8) AS LONG / Shift(3,UndeclaredFuzzName123)=NumEx >> 3` |
+| 14 | 6 | cr1000x 2, cr6 4 | `Sub X not defined.` | `Invalid symbol: ...` | 0 | `BeginProg / SerialIn (InString,ComRS232,100,0,20) / Call  Table (SerialT)` |
+| 15 | 5 | cr300 4, cr350 1 | `<END>` | `ID is not defined.` | 0 | `Public DestArray("fuzz",MaxNeighbors) As Long` |
+| 16 | 5 | cr300 4, cr350 1 | `Invalid or missing parameter.` | `Variable X in Parameter: ...` | 0 | `Public TrimRight as String * 50, TrimLeft as String * 50, TrimAll as String * 50 / Public InputString AS String * 50 / S` |
+| 17 | 5 | cr1000x 4, cr6 1 | `Invalid, or out of place expression: ...` | `Invalid symbol: ...` | 0 | `DataTable(VWTable1,T  rue,-1)` |
+| 18 | 4 | cr300 3, cr350 1 | `<END>` | `Warning: Invalid fnotch value, must be N,N N or N` | 0 | `Public PTemp, BattVolt / DataTable( Test,True,-1 ) / DataInterval( 0, 1,Min,10 ) / DataInterval( 0, 1,Min,10 ) / Sample ` |
+| 19 | 4 | cr300 1, cr350 3 | `Could not find DataTable X` | `<END>` | 0 | `Public SSDateString As String * 25 / Public SSDateLong As Long / Public Tref / SSDateString=SecsSince1990(Public.Timesta` |
+| 20 | 4 | cr300 2, cr350 2 | `Too many parameters: ...` | `Dimensions not declared: ...` | 0 | `Public ResultString(6) As String * 10 / SplitStr (ResultString(1,UndeclaredFuzzName123),SearchString,",",6,1)` |
+
+Causes behind the rows, by what was done about them:
+
+- **Rows 2, 3, 4, 14 (partly) and the CR6/CR1000X "missing Invalid symbol" signatures: fixed in part.** One instruction
+  naming several undeclared variables reports each, in an instruction-specific order (`expressions._MULTI_REPORT_ORDER`,
+  commits "several undeclared variables" and "TotalRun/StdDevRun/AvgRun", `docs/checker.md` "Round 14 multi-report order");
+  `TimerInput` outside a `Scan` and `MenuItem`/`MenuRecompile` outside `DisplayMenu` give only the placement error
+  ("Round 14 placement before arguments"). Not fixed: `Call run(a,b,c)` / `Call Table (SerialT)` of an undefined `Sub` still
+  omit the argument names (row 14, 6 reproducers), and `FieldCal`, `FieldCalStrain`, `CovSpa`, `WindVector` in a table
+  have their own orders (see the doc).
+- **Row 7 (`SendData`/`SendTableDef`/`GetRecord`/`ResetTable` of a missing table): fixed** ("Round 14 table references").
+  Same family, not fixed: `AcceptDataRecords`, `GetDataRecord`, `INSATData`/`EnviroSatData`/`GOESData`/`ArgosData`,
+  `WorstCase`.
+- **Row 1 (CR300/CR350 `... is not defined.` count), partly fixed:** the cascade lost a one-line `If` condition's names
+  (`If Nope Then GetVariables(...)`), alias names of an illegally dimensioned `Alias` and constants with a bad built-in
+  call stayed registered ("Round 14 one-line If condition" and "declaration tails"). Left: names inside a `Function` body
+  that the cascade drops (`x is not defined.` at the `Return`/`Exit Function` lines of `functionendfunction_3`), `ThenX` after
+  `If cond ThenX` (an `X is not defined.` line before `Incomplete expression`), `NetworkTimeProtocol(...,Undeclared)`,
+  `TCPActiveConnections(Dest,...)`.
+- **Row 5, 9, 10, 15, 16, 20 (CR300/CR350 `Too many parameters` cascade variants): open.** Examples: `Return (x+y+z)` in
+  a `Function` header with an optional parameter, `Scan (1,S  ec,3,0)` as the first error, `Broadcast (C  omRS232,14)` after
+  a trigger, `SplitStr (ResultString(1,Undeclared),...)` (`Dimensions not declared`), `Public DestArray("fuzz",Max) As Long`.
+- **Row 6:** `If IFTime(0,Hr) Then` (one argument short) prints `Warning: Parameter will truncate to the nearest integer.`
+  before `Expression expects , :` (all four loggers); opencrbasic prints `If illegally occurs before BeginProg.` because the
+  program has no `BeginProg`; open.
+- **Row 8:** `Function PlusTwo("fuzz")` outside any block prints `No BeginProg in Program.` then `Sub ... EndSub not matched.`
+  on CR6/CR1000X (structure message ordering); open.
+- **Rows 11, 12, 13, 17, 18, 19:** `NextScan with no Scan.` hidden by a typo'd `CallTable`; a missing
+  `Warning: Attempt to initialize variable out of bounds.` for negative dimensions (`Dim X(3,-1) = {...}`); a table-array
+  assignment `Shift(3,Undeclared)=NumEx >> 3` ; `DataTable(VWTable1,T  rue,-1)`; `Warning: Invalid fnotch value` after a
+  doubled `DataInterval`; `Could not find DataTable` hidden by a CR300 cascade. All open.
+- Found while probing, outside this ranking (false rejects fixed): an unmatched `)`/`}` after a `Const`/`Public`/`Dim` value,
+  `SDMSIO4`/`MonitorComms`/`ModemCallBack` first argument and `NewFile` third argument (CR6/CR1000X) naming an undeclared
+  variable. False accepts left: CR6/CR1000X `Const Pi = 1 / 0` (`Divide by zero in expression: 1 / 0.`), `TotalRun` condition
+  with an undeclared name was a false accept (fixed with the multi-report order), `SendData(...,T1)` etc. counted as calling
+  `T1` for the "declared but never called" warning, and `PulseCount` outside a `Scan` (argument errors come before the
+  placement message).
