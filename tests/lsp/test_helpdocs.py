@@ -375,4 +375,5 @@ def test_local_corpus_function_signature_labels():
         "SERIALOUT": "SERIALOUT(ComPort, OutString, WaitString, NumberTries, TimeOut)",
     }
     tcp = hover.signature_help("TCPOPEN", 0, "cr6", p)
-    assert not tcp.paired and tcp.label == "TCPOPEN(arg1, arg2, arg3)"
+    assert tcp.paired and tcp.label == ("TCPOPEN(IPAddr, TCPPort, IPBuffer, IPTimeOut (optional), "
+                                        "ConnectHandle (optional), MaxConnect (optional))")

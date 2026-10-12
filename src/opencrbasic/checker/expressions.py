@@ -345,7 +345,15 @@ _ARITY_RANGE = {"NETWORKTIMEPROTOCOL": {5: (3, 4), 3: (3, 3)}}
 # 2026-10-10, all four loggers): `HTTPPut` takes 4, 8 or 9 (2, 3, 5, 6, 7 are `few`, 10+ `many`).
 # `FTPClient` (table nargs 6) takes 6, 10 or 11 (oracle, all four loggers, 2026-10-11: 7-9 are
 # `Expression expects , :`, 12+ `No Matching, or out of place )`).
-_ARITY_ALLOWED = {"HTTPPUT": {5: frozenset({4, 8, 9})}, "FTPCLIENT": {6: frozenset({6, 10, 11})}}
+# `EmailSend` (table nargs 6) takes 9, 13 or 14; `EmailRecv` 9-13; `UDPDatagram` 6-8; `XMLParse` 8;
+# `HTTPGet` 3-4; `UDPOpen` 3-4; `TCPOpen` 3, 4 or 6; `HTTPPost` 4, 8 or 9; `CheckSum` 3, 4 or 6
+# (CR6 host sweep 2026-10-11, `tests/fixtures/r13_function_arity.json`; fewer is `few`, more `many`).
+_ARITY_ALLOWED = {"HTTPPUT": {5: frozenset({4, 8, 9})}, "FTPCLIENT": {6: frozenset({6, 10, 11})},
+                  "EMAILSEND": {6: frozenset({9, 13, 14})}, "EMAILRECV": {6: frozenset(range(9, 14))},
+                  "UDPDATAGRAM": {6: frozenset({6, 7, 8})}, "XMLPARSE": {6: frozenset({8})},
+                  "HTTPGET": {3: frozenset({3, 4})}, "UDPOPEN": {3: frozenset({3, 4})},
+                  "TCPOPEN": {3: frozenset({3, 4, 6})}, "HTTPPOST": {5: frozenset({4, 8, 9})},
+                  "CHECKSUM": {3: frozenset({3, 4, 6})}}
 
 # CR300/CR350 echo this rule's messages with the offending statement's text followed by a literal
 # embedded newline, then the closing `.` alone on the next line -- CR6/CR1000X put the `.`

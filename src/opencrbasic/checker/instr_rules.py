@@ -1486,6 +1486,7 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
         if isinstance(stmt, S.Assignment) and _undefined_names(stmt.target, known):
             continue  # an unresolved target is the generic `Invalid, or out of place expression`
         call = stmt.value if isinstance(stmt, S.Assignment) else stmt
+        fname = getattr(call, "name", "").upper()
         if isinstance(call, (S.Index, S.Call)) and call.name.upper() in _EMAIL_FUNCTIONS:
             args = call.args
         elif isinstance(call, S.Name) and call.name.upper() in _EMAIL_FUNCTIONS \
@@ -1497,9 +1498,12 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
             if not nested:
                 continue
             args = nested[0].args
+            fname = nested[0].name.upper()
         else:
             continue
-        tail = args[8:]
+        # destinations: `EmailRecv` arguments 9-12, `EmailSend` argument 9 only; the rest are
+        # numbers (host sweep, oracle 2026-10-11, `tests/fixtures/r13_function_arity.json`)
+        tail = args[8:12] if fname == "EMAILRECV" else args[8:9]
         if None in tail or (tail and not any(
                 not isinstance(a, (S.Binary, S.Unary)) and bad(a) for a in tail)):
             continue
@@ -1510,11 +1514,6 @@ def check_emailrecv_destination(program: S.Program, profile, diags: Diagnostics)
                 and diags.items[at].message.endswith(" is not defined."):
             at += 1
         new = [Diagnostic("error", stmt.line, _SERIALIN_DEST_MESSAGE, stmt.file)]
-        if 6 <= len(args) < 9 and isinstance(stmt, S.Assignment):
-            # The table `nargs` (6) leaves 6..8 arguments to this pass; fewer reach the arity check.
-            from .expressions import _arity_message
-            new.append(Diagnostic("error", stmt.line, _arity_message("few", stmt.text, profile),
-                                  stmt.file))
         diags.items[at:at] = new
 
 

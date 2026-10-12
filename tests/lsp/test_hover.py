@@ -530,11 +530,18 @@ def test_function_accepted_counts_pair_help_names_with_optional_tail():
 
 
 def test_function_help_count_not_an_accepted_maximum_keeps_argn():
-    # EMAILSEND (nargs 6): the checker has a lower bound only, so no largest count; help has 14.
-    s = H.signature_help("EmailSend", 0, "cr6", FakeHelp(emailsend=page("EmailSend", [(f"P{i}", "d") for i in range(1, 15)])))
-    assert not s.paired and s.label == "EMAILSEND(arg1, arg2, arg3, arg4, arg5, arg6)"
+    # MQTTSUBSCRIBE (table nargs 4): the checker has a lower bound only, so no largest count; help has 8.
+    s = H.signature_help("MQTTSubscribe", 0, "cr6", FakeHelp(mqttsubscribe=page("MQTTSubscribe", [(f"P{i}", "d") for i in range(1, 9)])))
+    assert not s.paired and s.label == "MQTTSUBSCRIBE(arg1, arg2, arg3, arg4)"
     assert all(p.documentation == "" and not p.optional for p in s.parameters)
     assert "Accepted argument counts" not in s.documentation
+
+
+def test_function_allowed_counts_pair_when_help_matches_the_maximum():
+    # EMAILSEND (table nargs 6) takes 9, 13 or 14 arguments (checker `_ARITY_ALLOWED`); help names 14.
+    s = H.signature_help("EmailSend", 0, "cr6", FakeHelp(emailsend=page("EmailSend", [(f"P{i}", "d") for i in range(1, 15)])))
+    assert s.paired and s.catalog_count == s.help_count == 14
+    assert "Accepted argument counts (checker): 9, 13 or 14." in s.documentation
 
 
 def test_function_range_counts_pair_when_help_matches_the_maximum():
@@ -558,7 +565,8 @@ def test_accepted_counts_helper():
     assert H._accepted_counts("HTTPPut", 5) == (4, 8, 9)
     assert H._accepted_counts("NetworkTimeProtocol", 5) == (3, 4)
     assert H._accepted_counts("Left", 2) == (2,)         # both bounds are nargs in the checker tables
-    assert H._accepted_counts("EmailSend", 6) is None    # minimum only in the checker tables
+    assert H._accepted_counts("EmailSend", 6) == (9, 13, 14)
+    assert H._accepted_counts("MQTTSubscribe", 4) is None    # minimum only in the checker tables
     assert H._accepted_counts("NoSuchFunction", 3) is None
 
 

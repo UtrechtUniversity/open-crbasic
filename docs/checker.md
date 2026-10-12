@@ -5433,3 +5433,25 @@ findings were warnings (`Table T, is declared but never called.`) compiled. Orac
 alone, the warnings are not shown. `compiler.py` now tests for no errors and drops the warnings when
 it adds the line. With errors present the real output was already left unmodelled (CR6/CR1000X print
 the `#If` line alone even then, CR300/CR350 the errors alone).
+
+## Round 13: builtin argument counts from the host sweep (2026-10-12, PROGRESS "Compiler items" 5)
+
+The CR6 sweep `docs/lsp-rounds/host-tests/2026-10-11-e77ee5cc/function-arity-fixture.json` (T-08, audited
+0 differing) was repeated on all four loggers from the same 130 sources; the result, with
+`TCPOpen-5` left out on CR6/CR1000X, is `tests/fixtures/r13_function_arity.json` (518 cases, our output
+identical). Accepted counts, now in `expressions._ARITY_ALLOWED` (fewer than the largest is
+`Expression expects , :`, more is `No Matching, or out of place )`; identical on the four loggers):
+`EmailSend` 9, 13, 14; `EmailRecv` 9-13; `UDPDatagram` 6-8; `XMLParse` 8; `HTTPGet` 3-4; `UDPOpen` 3-4;
+`TCPOpen` 3, 4, 6; `HTTPPost` 4, 8, 9; `CheckSum` 3, 4, 6. Signature help and hover follow these tables
+(two tests that pinned the old minimum-only behaviour now pin the new one).
+
+The `A string variable destination is required` rule (`instr_rules.check_emailrecv_destination`) was
+wider than the evidence: it required every argument from the ninth on to be a String variable. Oracle:
+`EmailSend` checks argument 9 only (`..., S1, 0, 0, Sec, 8, 100` compiles), `EmailRecv` arguments 9-12 (the
+13th is a number). The old per-rule `Expression expects ,` for 6-8 arguments is now the ordinary arity
+message.
+
+Not done: CR6/CR1000X `TCPOpen` with a handle and no connection count prints
+`Max number of concurrent connections must be 1..N` first (N = the handle array's size, 1 for a scalar;
+also a count above N, `TCPOpen(..., H1, 3)` with `H1(2)`, which we accept: a false accept). CR300/CR350
+print neither.
