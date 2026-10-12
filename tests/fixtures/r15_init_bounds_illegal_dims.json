@@ -1,0 +1,520 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-init_bounds_illegal_dims-0-c26-0",
+   "logger": "cr6",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-0-c26-0",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-0-c26-0",
+   "logger": "cr300",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-0-c26-0",
+   "logger": "cr350",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-1-c26-1",
+   "logger": "cr6",
+   "source": "Dim X(3,-1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1)"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-1-c26-1",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1)"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-1-c26-1",
+   "logger": "cr300",
+   "source": "Dim X(3,-1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1)"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-1-c26-1",
+   "logger": "cr350",
+   "source": "Dim X(3,-1)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1)"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-2-c26-2",
+   "logger": "cr6",
+   "source": "Dim X(-1) = 5\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = 5"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-2-c26-2",
+   "logger": "cr1000x",
+   "source": "Dim X(-1) = 5\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = 5"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-2-c26-2",
+   "logger": "cr300",
+   "source": "Dim X(-1) = 5\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = 5"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-2-c26-2",
+   "logger": "cr350",
+   "source": "Dim X(-1) = 5\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = 5"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-3-c26-3",
+   "logger": "cr6",
+   "source": "Dim X(-1) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = {5}"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-3-c26-3",
+   "logger": "cr1000x",
+   "source": "Dim X(-1) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = {5}"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-3-c26-3",
+   "logger": "cr300",
+   "source": "Dim X(-1) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = {5}"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-3-c26-3",
+   "logger": "cr350",
+   "source": "Dim X(-1) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1) = {5}"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-4-c26-4",
+   "logger": "cr6",
+   "source": "Dim X(0) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0) = {5}"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-4-c26-4",
+   "logger": "cr1000x",
+   "source": "Dim X(0) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0) = {5}"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-4-c26-4",
+   "logger": "cr300",
+   "source": "Dim X(0) = {5}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0) = {5}"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-5-c26-5",
+   "logger": "cr6",
+   "source": "Dim X(0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0)"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-5-c26-5",
+   "logger": "cr1000x",
+   "source": "Dim X(0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0)"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-5-c26-5",
+   "logger": "cr300",
+   "source": "Dim X(0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0)"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-5-c26-5",
+   "logger": "cr350",
+   "source": "Dim X(0)\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(0)"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-6-c26-6",
+   "logger": "cr6",
+   "source": "Public X(0) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-6-c26-6",
+   "logger": "cr1000x",
+   "source": "Public X(0) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-6-c26-6",
+   "logger": "cr300",
+   "source": "Public X(0) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-6-c26-6",
+   "logger": "cr350",
+   "source": "Public X(0) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(0) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-7-c26-7",
+   "logger": "cr6",
+   "source": "Public X(-2) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(-2) = 1"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-7-c26-7",
+   "logger": "cr1000x",
+   "source": "Public X(-2) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(-2) = 1"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-7-c26-7",
+   "logger": "cr300",
+   "source": "Public X(-2) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(-2) = 1"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-7-c26-7",
+   "logger": "cr350",
+   "source": "Public X(-2) = 1\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(-2) = 1"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-8-c26-8",
+   "logger": "cr6",
+   "source": "Public X(\"fuzz\") = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(\"fuzz\") = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-8-c26-8",
+   "logger": "cr1000x",
+   "source": "Public X(\"fuzz\") = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(\"fuzz\") = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-8-c26-8",
+   "logger": "cr300",
+   "source": "Public X(\"fuzz\") = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(\"fuzz\") = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-8-c26-8",
+   "logger": "cr350",
+   "source": "Public X(\"fuzz\") = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(\"fuzz\") = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-9-c26-9",
+   "logger": "cr6",
+   "source": "Public X(999999999999,3) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(999999999999,3) = {1,2}"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-9-c26-9",
+   "logger": "cr1000x",
+   "source": "Public X(999999999999,3) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(999999999999,3) = {1,2}"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-9-c26-9",
+   "logger": "cr300",
+   "source": "Public X(999999999999,3) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(999999999999,3) = {1,2}"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-9-c26-9",
+   "logger": "cr350",
+   "source": "Public X(999999999999,3) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Public X(999999999999,3) = {1,2}"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-10-c26-10",
+   "logger": "cr6",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-10-c26-10",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-10-c26-10",
+   "logger": "cr300",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-10-c26-10",
+   "logger": "cr350",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}, Y = 3\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-11-c26-12",
+   "logger": "cr6",
+   "source": "Dim X(3,-1) As Long = {1,2,3}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As Long = {1,2,3}"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-11-c26-12",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1) As Long = {1,2,3}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As Long = {1,2,3}"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-11-c26-12",
+   "logger": "cr300",
+   "source": "Dim X(3,-1) As Long = {1,2,3}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As Long = {1,2,3}"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-11-c26-12",
+   "logger": "cr350",
+   "source": "Dim X(3,-1) As Long = {1,2,3}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As Long = {1,2,3}"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-12-c26-13",
+   "logger": "cr6",
+   "source": "Dim X(3,-1) As String * 4 = {\"a\",\"b\"}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As String * 4 = {\"a\",\"b\"}"
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-12-c26-13",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1) As String * 4 = {\"a\",\"b\"}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As String * 4 = {\"a\",\"b\"}"
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-12-c26-13",
+   "logger": "cr300",
+   "source": "Dim X(3,-1) As String * 4 = {\"a\",\"b\"}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As String * 4 = {\"a\",\"b\"}"
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-12-c26-13",
+   "logger": "cr350",
+   "source": "Dim X(3,-1) As String * 4 = {\"a\",\"b\"}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) As String * 4 = {\"a\",\"b\"}"
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-13-c26-14",
+   "logger": "cr6",
+   "source": "Dim X(2,2,2,2) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable X(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-13-c26-14",
+   "logger": "cr1000x",
+   "source": "Dim X(2,2,2,2) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable X(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-13-c26-14",
+   "logger": "cr300",
+   "source": "Dim X(2,2,2,2) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable X(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-13-c26-14",
+   "logger": "cr350",
+   "source": "Dim X(2,2,2,2) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Variable X(2 dimension exceeds max of 3."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-14-c26-15",
+   "logger": "cr6",
+   "source": "Dim X(3,3) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-14-c26-15",
+   "logger": "cr1000x",
+   "source": "Dim X(3,3) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-14-c26-15",
+   "logger": "cr300",
+   "source": "Dim X(3,3) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-14-c26-15",
+   "logger": "cr350",
+   "source": "Dim X(3,3) = {1,2,3,4,5,6,7,8,9}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-15-c26-16",
+   "logger": "cr6",
+   "source": "Dim X(-1,-1) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-15-c26-16",
+   "logger": "cr1000x",
+   "source": "Dim X(-1,-1) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-15-c26-16",
+   "logger": "cr300",
+   "source": "Dim X(-1,-1) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-15-c26-16",
+   "logger": "cr350",
+   "source": "Dim X(-1,-1) = {1,2}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Illegally dimension: Dim X(-1,-1) = {1,2}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-16-c26-17",
+   "logger": "cr6",
+   "source": "Dim X(2) = {1,2,3,4}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Attempt to initialize variable out of bounds.\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-16-c26-17",
+   "logger": "cr1000x",
+   "source": "Dim X(2) = {1,2,3,4}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Attempt to initialize variable out of bounds.\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-16-c26-17",
+   "logger": "cr300",
+   "source": "Dim X(2) = {1,2,3,4}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Attempt to initialize variable out of bounds.\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-16-c26-17",
+   "logger": "cr350",
+   "source": "Dim X(2) = {1,2,3,4}\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Warning: Attempt to initialize variable out of bounds.\nline 1: No BeginProg in Program."
+  },
+  {
+   "id": "cr6-init_bounds_illegal_dims-17-c26-18",
+   "logger": "cr6",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr1000x-init_bounds_illegal_dims-17-c26-18",
+   "logger": "cr1000x",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr300-init_bounds_illegal_dims-17-c26-18",
+   "logger": "cr300",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  },
+  {
+   "id": "cr350-init_bounds_illegal_dims-17-c26-18",
+   "logger": "cr350",
+   "source": "Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\nBeginProg\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Illegally dimension: Dim X(3,-1) = {1,2,3,4,5,6,7,8,9}\n\nline 1: Warning: Attempt to initialize variable out of bounds."
+  }
+ ]
+}

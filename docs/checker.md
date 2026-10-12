@@ -6636,3 +6636,12 @@ generic fallback); CR300/CR350 name it first (`x = Sin(Zork Y)`: `Zork is not de
 `structure._scan_expr` (the `expects_comma` verdict, per-parenthesis function name and argument counter),
 `cr3xx.check_unknown_line_words`. Not modelled: a user `Function`/array named like the call, `x = Sqrt(x y)` on CR300/CR350
 (`Sqrt` is no function there: `Dimensions not declared`), `TimeIntoInterval`'s truncation warnings.
+
+### `Attempt to initialize variable out of bounds.` with an illegal dimension (oracle, 2026-10-12; `tests/fixtures/r15_init_bounds_illegal_dims.json`)
+
+After `Illegally dimension: <declaration>` the initializer is still counted: an illegal dimension (zero, negative, a string)
+counts as 1 elements, and `Warning: Attempt to initialize variable out of bounds.` follows when the list is longer than the
+product (`Dim X(3,-1) = {1,...,9}`, `Public X(0) = {1,2}`, `Public X("fuzz") = {1,2}`, `Dim X(-1,-1) = {1,2}`); no warning for
+`Dim X(-1) = {5}`, `Dim X(3,-1) As Long = {1,2,3}` or a huge dimension (`X(999999999999,3)`). All four loggers.
+`structure._check_init_bounds`. Not modelled: an illegal dimension on a later variable of a multi-variable `Dim` echoes only
+`Dim Y = 3` on the real compilers.

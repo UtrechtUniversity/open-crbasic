@@ -3942,7 +3942,7 @@ def _check_header_types(stmt: S.SubDef, structs_seen: set[str], profile, diags: 
 def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnostics) -> None:
     """`Warning: Attempt to initialize variable out of bounds.`, once per variable with more
     initializer values than elements, all four loggers (oracle, 2026-09-28: `Public A(2) = {1,2,3}`,
-    `Public A = {1,2}`, `Dim A(2,2) = {1,2,3,4,5}`; an unresolved dimension counts as 1)."""
+    `Public A = {1,2}`, `Dim A(2,2) = {1,2,3,4,5}`; an unresolved or illegal dimension counts as 1)."""
     for v in stmt.vars:
         if not v.init:
             continue
@@ -3953,8 +3953,8 @@ def _check_init_bounds(stmt: S.Declaration, env: consteval.Env, diags: Diagnosti
             except consteval.NotConstant:
                 continue
             if isinstance(n, bool) or not isinstance(n, (int, float)) or int(n) < 1:
-                size = None
-                break
+                continue    # an illegal dimension (zero, negative, a string) counts as 1
+                # (oracle, 2026-10-12: `Dim X(3,-1) = {...9 values}`, `Public X(0) = {1,2}`)
             size *= int(n)
         if size is not None and len(v.init) > size:
             diags.warning(stmt.line, "Attempt to initialize variable out of bounds.", stmt.file)
