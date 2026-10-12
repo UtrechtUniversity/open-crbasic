@@ -1370,25 +1370,34 @@ def check_for_header(program: S.Program, profile, diags: Diagnostics) -> None:
         text = getattr(stmt, "text", None) or ""
         if not re.match(r"\s*For\s", text, re.I):
             continue
-        echo = structure._for_header_incomplete(text, profile)
-        if echo is None:
-            continue
+        found = structure._for_header_incomplete(text, profile)
+        kind = "incomplete"
+        if found is None:
+            parts = structure._for_header_parts(text, profile)
+            if not parts:
+                continue
+            kind = parts[0][0]
+            init = structure._FOR_INIT_RE.match(text)
+            found = (parts[0][1], bool(init) and parts[0][1] == init.group(1))
+        echo, is_init = found
         key = (stmt.line, stmt.file)
         own = [d for d in diags.items if (d.line, d.file) == key]
         if not all(d.message.endswith(_UNRESOLVED_SUFFIX) or d.message.startswith(
-                (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:")) for d in own):
+                (_GENERIC_FALLBACK_PREFIX, "Incomplete expression:",
+                 "No Matching, or out of place )")) for d in own):
             continue
         if known is None:
             known = prose_known(program, profile)
         here = known - declared_later(first_declarations(program), stmt.line, stmt.file)
         start = structure._FOR_TO_RE.match(text).start(1)
         eq = re.search(r"=(.*?)\sTo\s", text[:start], re.I | re.S)
-        words = (_leading_unknown_words(eq.group(1), here) if eq else []) + _leading_unknown_words(echo, here)
+        words = ([] if is_init or not eq else _leading_unknown_words(eq.group(1), here)) + \
+            _leading_unknown_words(echo, here)
         at = next((i for i, d in enumerate(diags.items) if (d.line, d.file) == key), len(diags.items))
         diags.items[:] = [d for d in diags.items if (d.line, d.file) != key]
         diags.items[at:at] = [Diagnostic("error", stmt.line, profile.unresolved_symbol_message.format(name=w),
                                          stmt.file, True) for w in words] + [
-            Diagnostic("error", stmt.line, f"Incomplete expression: {echo}.", stmt.file)]
+            Diagnostic("error", stmt.line, structure._for_header_message(kind, echo), stmt.file)]
 
 
 def _echo_key(text: str) -> str:

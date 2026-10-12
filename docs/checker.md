@@ -6062,3 +6062,14 @@ Oracle, all four loggers, 2026-10-12 (`expressions.check_digit_members`, `parser
   Zork.` (ours: `Invalid symbol in expression`); `T.(1)` compiles (ours rejects); `T..X` is
   `Could not find T..X(1).`; `A(1).Y` is `Incomplete expression: <statement>.` (accepted);
   CR300/CR350 `To T. 3` echoes only the broken half (`T. 3`), ours the whole statement (task 3).
+
+### CR300/CR350 `For` header: only the broken half is echoed (fixture `r14_for_header_halves_cr3xx`)
+
+Oracle, all four loggers, 2026-10-12. CR300/CR350 print the same half message as CR6/CR1000X
+(`structure._for_header_parts`): `To T.X 3` -> `Incomplete expression: T.X 3.`, `Step T.X 2` -> `T.X 2`,
+init `1 4` -> ` 1 4` (leading blank kept), `To (3` -> `No Matching, or out of place ) in expression:
+(3.`, `To 3 +` -> `Invalid, or out of place expression: 3 +.`. The unknown-word lines before it
+(`Step is not defined.`) only come from the `To`/`Step` half, never from a broken init. An empty init or
+`To` expression is `Invalid, or out of place expression: .` (all four). Not done: both init and `To`
+empty prints two lines (we print one); `For I = 1 To Step 2` is `Invalid symbol in expression: Step 2.`
+on CR6/CR1000X (we print Incomplete).

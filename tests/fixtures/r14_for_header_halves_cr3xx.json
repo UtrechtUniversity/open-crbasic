@@ -1,0 +1,491 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-fh-0-to_34",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 4\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr1000x-fh-0-to_34",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 4\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr300-fh-0-to_34",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 4\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr350-fh-0-to_34",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 4\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 4."
+  },
+  {
+   "id": "cr6-fh-1-init_14",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 4 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  1 4."
+  },
+  {
+   "id": "cr1000x-fh-1-init_14",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 4 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  1 4."
+  },
+  {
+   "id": "cr300-fh-1-init_14",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 4 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  1 4."
+  },
+  {
+   "id": "cr350-fh-1-init_14",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 4 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  1 4."
+  },
+  {
+   "id": "cr6-fh-2-step_12",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step 1 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr1000x-fh-2-step_12",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step 1 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr300-fh-2-step_12",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step 1 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr350-fh-2-step_12",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step 1 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 1 2."
+  },
+  {
+   "id": "cr6-fh-3-to_TX3",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr1000x-fh-3-to_TX3",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr300-fh-3-to_TX3",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr350-fh-3-to_TX3",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 3."
+  },
+  {
+   "id": "cr6-fh-4-init_TX3",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X 3 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  T.X 3."
+  },
+  {
+   "id": "cr1000x-fh-4-init_TX3",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X 3 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  T.X 3."
+  },
+  {
+   "id": "cr300-fh-4-init_TX3",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X 3 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  T.X 3."
+  },
+  {
+   "id": "cr350-fh-4-init_TX3",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T.X 3 To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:  T.X 3."
+  },
+  {
+   "id": "cr6-fh-5-step_TX2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  },
+  {
+   "id": "cr1000x-fh-5-step_TX2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  },
+  {
+   "id": "cr300-fh-5-step_TX2",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  },
+  {
+   "id": "cr350-fh-5-step_TX2",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T.X 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T.X 2."
+  },
+  {
+   "id": "cr6-fh-6-to_paren",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To (3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: (3."
+  },
+  {
+   "id": "cr1000x-fh-6-to_paren",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To (3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: (3."
+  },
+  {
+   "id": "cr300-fh-6-to_paren",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To (3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: (3."
+  },
+  {
+   "id": "cr350-fh-6-to_paren",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To (3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: No Matching, or out of place ) in expression: (3."
+  },
+  {
+   "id": "cr6-fh-7-to_plus",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 +\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr1000x-fh-7-to_plus",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 +\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr300-fh-7-to_plus",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 +\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr350-fh-7-to_plus",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 +\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: 3 +."
+  },
+  {
+   "id": "cr6-fh-8-step_none",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 Step."
+  },
+  {
+   "id": "cr1000x-fh-8-step_none",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: 3 Step."
+  },
+  {
+   "id": "cr300-fh-8-step_none",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Step is not defined.\nline 8: Incomplete expression: 3 Step."
+  },
+  {
+   "id": "cr350-fh-8-step_none",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Step is not defined.\nline 8: Incomplete expression: 3 Step."
+  },
+  {
+   "id": "cr6-fh-9-init_empty",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-fh-9-init_empty",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-fh-9-init_empty",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-fh-9-init_empty",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-fh-10-to_X3",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X 3."
+  },
+  {
+   "id": "cr1000x-fh-10-to_X3",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X 3."
+  },
+  {
+   "id": "cr300-fh-10-to_X3",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X 3."
+  },
+  {
+   "id": "cr350-fh-10-to_X3",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: X 3."
+  },
+  {
+   "id": "cr6-fh-11-to_f",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Sin(1) 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Sin(1) 3."
+  },
+  {
+   "id": "cr1000x-fh-11-to_f",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Sin(1) 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Sin(1) 3."
+  },
+  {
+   "id": "cr300-fh-11-to_f",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Sin(1) 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Sin(1) 3."
+  },
+  {
+   "id": "cr350-fh-11-to_f",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Sin(1) 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: Sin(1) 3."
+  },
+  {
+   "id": "cr6-fh-12-init_plus",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 + To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  1 +."
+  },
+  {
+   "id": "cr1000x-fh-12-init_plus",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 + To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  1 +."
+  },
+  {
+   "id": "cr300-fh-12-init_plus",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 + To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  1 +."
+  },
+  {
+   "id": "cr350-fh-12-init_plus",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 + To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  1 +."
+  },
+  {
+   "id": "cr6-fh-13-init_empty2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I =  To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  ."
+  },
+  {
+   "id": "cr1000x-fh-13-init_empty2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I =  To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  ."
+  },
+  {
+   "id": "cr300-fh-13-init_empty2",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I =  To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  ."
+  },
+  {
+   "id": "cr350-fh-13-init_empty2",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I =  To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression:  ."
+  },
+  {
+   "id": "cr6-fh-14-to_empty",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To  Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-fh-14-to_empty",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To  Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-fh-14-to_empty",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To  Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-fh-14-to_empty",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To  Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-fh-15-to_empty2",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Step is not defined.\nline 8: Incomplete expression: Step 2."
+  },
+  {
+   "id": "cr350-fh-15-to_empty2",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Step 2\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Step is not defined.\nline 8: Incomplete expression: Step 2."
+  },
+  {
+   "id": "cr6-fh-16-init_empty_step",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3 Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-fh-16-init_empty_step",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3 Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr300-fh-16-init_empty_step",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3 Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr350-fh-16-init_empty_step",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To 3 Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr6-fh-17-init_empty_to_empty",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To  Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: .\nline 8: Invalid, or out of place expression: ."
+  },
+  {
+   "id": "cr1000x-fh-17-init_empty_to_empty",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = To  Step 1\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid, or out of place expression: .\nline 8: Invalid, or out of place expression: ."
+  }
+ ]
+}

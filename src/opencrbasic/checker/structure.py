@@ -2741,23 +2741,27 @@ _FOR_TO_RE = re.compile(r"^\s*For\s(?:.*?)=(?:.*?)\sTo\s(.*)$", re.I | re.S)
 _FOR_STEP_RE = re.compile(r"\sStep\s", re.I)
 
 
-def _for_header_incomplete(text: str, profile) -> str | None:
-    """`For I = 5 To 1 Step-1`, `... Step(-1)`, `... To 12 Step`, `... Step -1 X`: the text after
-    `To` splits at a blank-delimited `Step`; each half is an expression, and one with adjacent
-    operands is a pass-1 `Incomplete expression: <half>.` (oracle, CR6/CR1000X, 2026-10-10). The
-    echo is the half as written, trailing blanks kept. `None`: not this shape."""
+def _for_header_incomplete(text: str, profile) -> tuple[str, bool] | None:
+    """`For I = 5 To 1 Step-1`, `... Step(-1)`, `... To 12 Step`, `... Step -1 X`, `... To T.X 3`: the
+    init expression and the text after `To` (split at a blank-delimited `Step`) are each an
+    expression, and one with adjacent operands is a pass-1 `Incomplete expression: <half>.` (oracle,
+    CR6/CR1000X 2026-10-10; CR300/CR350 2026-10-12: only the half is echoed, `For I = 1 To T.X 3` ->
+    `T.X 3`, `For I = 1 4 To 3` -> ` 1 4`). Returns `(half as written, is the init half)`, the
+    first broken half in order, trailing blanks kept. `None`: not this shape."""
     m = _FOR_TO_RE.match(text)
     if not m:
         return None
-    parts = _FOR_STEP_RE.split(m.group(1), maxsplit=1)
-    for part in parts:
+    init = _FOR_INIT_RE.match(text)
+    parts = [(init.group(1), True)] * bool(init) + [(h, False) for h in _FOR_STEP_RE.split(
+        m.group(1), maxsplit=1)]
+    for part, is_init in parts:
         try:
             toks = [t for t in lexer.tokenize(part, 0) if t.kind != "EOF"]
         except lexer.LexError:
             return None
-        if toks and _scan_expr(toks, 0, _Everything(), profile.functions, assign=False,
-                               start_operand=False) == ("pass1", "incomplete"):
-            return part
+        if toks and _scan_expr(_merge_members(toks), 0, _Everything(), profile.functions,
+                               assign=False, start_operand=False) == ("pass1", "incomplete"):
+            return part, is_init
     return None
 
 
@@ -2792,13 +2796,10 @@ def _merge_members(toks: list) -> list:
     return out
 
 
-def _for_header_findings(text: str, profile) -> list[str]:
-    """CR6/CR1000X pass-1 message of a `For` header whose init, `To` or `Step` expression is
-    broken, echoing that expression as written (oracle, 2026-10-12: `For x = y To (y +` is
-    `Invalid, or out of place expression: (y +.`, `To (y 5` is `No Matching, or out of place )
-    in expression: (y 5.`, `For x = y +  To 5` echoes ` y + `). Every broken half is reported, in
-    order."""
-    out: list[str] = []
+def _for_header_parts(text: str, profile) -> list[tuple[str, str]]:
+    """The broken halves of a `For` header, init first, then `To`, then `Step`: `(kind, half as
+    written)` with kind `incomplete`, `fallback` or `no_matching` (`_scan_expr` verdicts)."""
+    out: list[tuple[str, str]] = []
     m = _FOR_TO_RE.match(text)
     if not m:
         return out
@@ -2810,17 +2811,34 @@ def _for_header_findings(text: str, profile) -> list[str]:
         except lexer.LexError:
             return []
         if not toks:
+            if is_init or part is halves[0]:
+                out.append(("fallback", part))  # an empty init / `To` expression (oracle 2026-10-12)
             continue
         toks = _merge_members(toks)
         verdict = _scan_expr(toks, 0, _Everything(), profile.functions, assign=True,
                              start_operand=False, unclosed="no_matching", open_fallback=True)
         if verdict == ("pass1", "incomplete"):
-            out.append(f"Incomplete expression: {part}.")
+            out.append(("incomplete", part))
         if verdict == ("pass1", "fallback"):
-            out.append(f"Invalid, or out of place expression: {part}.")
+            out.append(("fallback", part))
         if verdict == ("pass1", "no_matching"):
-            out.append(f"No Matching, or out of place ) in expression: {part}.")
+            out.append(("no_matching", part))
     return out
+
+
+def _for_header_findings(text: str, profile) -> list[str]:
+    """CR6/CR1000X pass-1 message of a `For` header whose init, `To` or `Step` expression is
+    broken, echoing that expression as written (oracle, 2026-10-12: `For x = y To (y +` is
+    `Invalid, or out of place expression: (y +.`, `To (y 5` is `No Matching, or out of place )
+    in expression: (y 5.`, `For x = y +  To 5` echoes ` y + `). Every broken half is reported, in
+    order."""
+    return [_for_header_message(kind, part) for kind, part in _for_header_parts(text, profile)]
+
+
+def _for_header_message(kind: str, part: str) -> str:
+    return {"incomplete": f"Incomplete expression: {part}.",
+            "fallback": f"Invalid, or out of place expression: {part}.",
+            "no_matching": f"No Matching, or out of place ) in expression: {part}."}[kind]
 
 
 def _block_keyword_call(stmt: S.Stmt) -> bool:
