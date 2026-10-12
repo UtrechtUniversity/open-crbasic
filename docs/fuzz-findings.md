@@ -638,3 +638,114 @@ undefined-name cascade lines and were not triaged.
 
 Environment note: the machine's POSIX semaphore table was exhausted during this round, so `fuzz_replay.py`
 and pytest were run with `--workers 2` / `-n 8 -m "not server"` and no semaphore errors occurred.
+
+## Round 15: fresh seeds 405-408 (2026-10-12)
+
+New seeds (previous: 0, 1, 42-54, 100, 201-208, 301-308, 401-404), 600 mutants per logger and seed
+(`--workers 3`, the four loggers of a seed in parallel, `scratch/r15/run.sh`; every run finished well inside the
+30 minute limit). Counts are the tool's classify-phase tallies; `oracle_error` mutants (real-compiler page fault) are
+excluded. 323 reproducers saved (319 new files). All 16 runs had the round-14 fixes in the tree; the fixes of this round
+came afterwards.
+
+| Seed | Logger | exact | false_reject | false_accept | message_diff | mode_diff | other |
+|---|---|---|---|---|---|---|---|
+| 405 | cr6 | 584 | 0 | 2 | 12 | 0 | 2 oracle errors |
+| 405 | cr1000x | 582 | 0 | 7 | 10 | 0 | 1 oracle errors |
+| 405 | cr300 | 580 | 0 | 2 | 18 | 0 | - |
+| 405 | cr350 | 578 | 0 | 2 | 17 | 1 | 2 oracle errors |
+| 406 | cr6 | 571 | 0 | 5 | 21 | 1 | 2 oracle errors |
+| 406 | cr1000x | 581 | 0 | 5 | 13 | 1 | - |
+| 406 | cr300 | 575 | 0 | 1 | 22 | 0 | 2 oracle errors |
+| 406 | cr350 | 575 | 0 | 2 | 23 | 0 | - |
+| 407 | cr6 | 578 | 0 | 3 | 17 | 0 | 2 oracle errors |
+| 407 | cr1000x | 582 | 1 | 2 | 12 | 1 | 2 oracle errors |
+| 407 | cr300 | 574 | 0 | 3 | 23 | 0 | - |
+| 407 | cr350 | 580 | 0 | 2 | 17 | 0 | 1 oracle errors |
+| 408 | cr6 | 579 | 0 | 4 | 17 | 0 | - |
+| 408 | cr1000x | 574 | 2 | 4 | 18 | 0 | 2 oracle errors |
+| 408 | cr300 | 573 | 0 | 5 | 20 | 0 | 2 oracle errors |
+| 408 | cr350 | 582 | 0 | 1 | 17 | 0 | - |
+
+No crash, hang or `implementation_exception`. Three false rejects (all CR1000X), three families, all fixed below.
+Replay of the whole corpus after the fixes (`tools/fuzz_replay.py`, 2,923 reproducers): old set (2,604 reproducers, rounds
+up to 14) 2,034 exact / 33 false accepts / 52 recorded false accepts that now differ only in messages / 459 message diffs /
+10 mode diffs / 16 oracle errors / 0 false rejects (round-14 baseline 2,017 exact, 33 false accepts); new set (319
+reproducers of this round) 16 exact / 46 false accepts / 253 message diffs / 4 mode diffs / 0 false rejects.
+
+### Closed this round (4 families, one fixture each, `tests/fixtures/r15_*.json`)
+
+False rejects: `MoveBytes` option tested on its low 15 bits (`MoveBytes(...,1,"fuzz")`, `NAN`, `65540`, `-2^31`;
+`cr1000x/false_reject/240340975c77`; `r15_movebytes_option`); `AddPrecise`/`MovePrecise` first argument given as a
+string, string `Const`, function call or `Status.X` (`cr1000x/false_reject/bea2207a74da`; `r15_addprecise_string_arg`);
+`Call r  un(...)` with spaces inside the Sub name, plus `Call S(a,b,c,` with the empty slot after the last comma
+(`cr1000x/false_reject/f4932fe73ffd`; `r15_call_name_spaces`). Message diffs: no `never reached at run time` warning after
+a `Scan` before `BeginProg` on CR6/CR1000X, `Expr never reached` for a bare non-Sub name (13 reproducers,
+`r15_unreachable_warning`). Rules are in `docs/instructions.md` and `docs/checker.md` ("Round 15").
+
+### Not closed
+
+False accepts (46 new, each needs a value model or a statement-level rule; examples with hashes):
+CR300/CR350 storage allocation `Unable to allocate enough data table space to manage flash write cycle limits.`
+(`cr300/361cb4b5d2d5`, `cr350/7d495abe4b98`, `cr350/fa0787025392`; owned by the storage-limit worker); SNMP
+`Illegal OID since already declared.` (`cr300/68f6c2e84a10`, `d64756cdf94c`, `cr350/143c2e649ab2`; owned by the
+DNP3/SNMP worker); `Settling time -2147483648 too short, min time is 20.` (`cr1000x/414ffa08bfec`, `642794f6e777`);
+`Invalid port -2147483648, use C1..C8.` (`cr1000x/870ca9a9562e`, `e8c854e3493d`); `Unrecognized port!`
+(`cr1000x/ad8bc2adcf5d`, `cr6/6ac24bd775f1`); `Invalid symbol in expression: UndeclaredFuzzName123.` for an argument that
+is not name-checked (`cr1000x/b69e022a8ebb`, `cr6/943ff7306384`, `cr1000x/06044c89e4ee` `SIO4Data(Undeclared)`);
+`Destination variable cannot be indexed` (`cr300/2efe1052586d`, `ef53e495b0d1`); `Quad not yet declared so cannot be
+aliased.` (`cr300/92a6b05b0d8b`, `cr350/92a6b05b0d8b`); `Warning: Invalid fnotch value, must be N,N N or N`
+(`cr300/b18b9f8fee66`, `cr350/e5b2c9e12e2a`); `Illegal object id.` (`cr6/05b403830c47`, `362bb82ee0d7`); singles:
+`Number of bytes 100 must be less than input buffer 0` (`cr1000x/25f44329bc6e`), `Illegal spectral binning.`
+(`cr1000x/51f39a5f2393`), `Scan illegally occurs after EndSequence.` (`cr1000x/9bad4ab7944b`), `Excitation magnitude:
+-2147483648, out of range (20 - 5000).` (`cr1000x/a0b2b0b059b3`), `Variable Mux2 out of bounds.`
+(`cr1000x/ae03090ec885`), `GoesTable not active.` (`cr1000x/bcfde245a27a`), `StartWord, NumberBytes and EndWord cannot
+all be not used` (`cr1000x/e9d625f3f51f`), `Value in preceding MenuItem must be a variable or a Const` (`cr1000x/ec6b11bc3176`),
+`P1 already used as PulseCount in this scan.` (`cr1000x/f741f116b199`), `FieldNames cannot be a variable.`
+(`cr300/8734cd779df1`), `DataTable is declared in the middle of an executing sequence` (`cr300/ae9eb6bb2d37`), `Justify
+option ... is illegal when spliting into a structure` (`cr300/fb802c166ba6`), `Option must be 0-N.` (`cr350/1d86ada2d10b`),
+`Cannot autoallocate memory for DataTable AmpPhase called outside of Scan` (`cr350/c01544a79750`, storage worker),
+`Flag paramter must be of type LONG` (`cr6/72f95eac103f`), `Illegal EVT, N..N are legal` (`cr6/d12785e05faf`),
+`Variable Ver_Value out of bounds.` (`cr6/cbfffbba2919`), `GOESResult1 not yet declared so cannot be aliased.`
+(`cr6/2b97599754d2`). Three `Warning: Table X, is declared but never called` false accepts hide a missing `No Matching ) /
+Dimensions not declared / Expression expects ,` error inside a long `"got=" + FormatLong(...)` string expression
+(`cr1000x/cca13e3dfce5`, `cr6/fe18dc272183`, `cr6/9d2dd45508e6`, and `cr6/95e2a4d5d433`, `cr6/db82630bee84`); that is the
+unclosed-call family (see overlaps).
+
+Message-diff families (266 new, 173+ distinct signatures; the large ones):
+- `NextScan with no Scan.` printed where the real compiler prints nothing, 14 on CR300/CR350 (`cr300/005046ba1509`,
+  `5229bbe0cbb4`, `6406c500041e`, `96c2c3b42ded`): round-14 row 11 (typo'd `CallTable` hides it), still open.
+- `No BeginProg in Program.` where the real compiler reports a name error first (`Table name 1+2 illegal, starts with a
+  number.` 5: `cr1000x/3693375da054`, `4dca2b0a45a4`, `cr350/ebcbd5751522`, `cr6/892d21ccb256`; `DataTable name
+  UndeclaredFuzzName123 is 4 chars too long.` 3: `cr1000x/439122e6595b`, `cr6/1ad6364e0c01`, `fcbf187409c5`;
+  `GoesTable must be used inside a table declaration.` 3: `cr300/bb04db7cf478`, `d410db849320`, `cr350/a620020511bd`;
+  `Could not find DataTable CRNXTable.` 2: `cr6/08fa9332d936`, `961836f88a83`; `ApplyAndRestartSequence not declared`
+  2: `cr300/0e7029d14d19`, `cr350/65a18f9b4cfc`). A structure/ordering family: which pass reports before `No BeginProg`.
+- CR300/CR350 `Too many parameters` / `... is not defined.` cascade variants (`Too many parameters:  LastRx_Secs.` vs
+  `Dest is not defined.` 5: `cr300/2e569d46941b`, `cr350/13987052713c`, `75ceeb9c9c39`, `a9cef0d82705`;
+  `<END>` vs `Too many parameters:  N.` 4: `cr300/05be9ef4063f`, `4a8bd6af936d`, `c775ad36cd0f`, `cr350/f13ecd39e0ea`; `x is
+  not defined.` missing 3: `cr300/0d350c869cac`, `30177829c087`, `c7ded82225ac`): round-14 rows 1, 5, 10, 15, 16, 20.
+- `Variable illegal in Parameter: X` where we print `Invalid or missing parameter.` (CR300/CR350, 12:
+  `cr300/0381a1474b84`, `4b6bdd8c4103`, `51dd5446fc0e`, `782fb1d134cc`, `e36a3f9b4e79`, `cr350/120155f840e6`, `27db3e7b50a8`,
+  `533b7df22e8b`, `827b704d58e1`, `ab64efa0d671`, `dbd33291e3df`): a constant-only argument given a variable; round-14 row 16.
+- `Sample must be used inside a table declaration.` printed instead of our `X is not defined.` (CR300/CR350, 12:
+  `cr300/1316b1da473f`, `3fef0909986c`, `5d4d735705eb`, `88d0f1bca601`, `a0e9247aae41`, `e5c3d3be4cdd`, `cr350/032f5ef88507`,
+  `15bd80dc798a`, `165d1165e8a1`, `189fa1a9ece9`, `677ae3d5d36e`, `94cab2c6f117`, `dcc5099556cc`, `f3d9ade7862e`): a `Sample`/`Min`
+  outside a table (mutated `EndTable`) is reported by name before the cascade.
+- `Cannot use DataTable value as a MenuItem, use DisplayValue.` missing (`cr6/793d279a9673`, `a7167e69be69`, `f84bd157c864`);
+  `Dimensions not declared: array1(i) <> array1(i) .` vs `i is not defined.` (`cr300/a4c5769e043f`, `b25d267e4102`, `f34bd1b2445c`,
+  `cr350/a4c5769e043f`); `EndSelect w/o Select` vs `Sub InitPowerProfile not defined.` (`cr6/5239b3e5584c`, `829ba0937859`,
+  `fa45417faea4`); `Warning: Attempt to initialize variable out of bounds.` missing (`cr1000x/e9385f666883`, `cr300/52e19bffe312`, round-14 row 12);
+  `Duplicate variable name` echo with bytes `l\x93"` (`cr350/7c413416d561`, `e9adffc4ffb3`: the real compiler echoes a corrupted
+  name, not reproducible); a trailing space in the echoed text `Dimensions not declared: X( I ) .` (`cr350/03da58aee91f`, `402a6e663007`).
+- Found while triaging, fixed above: `Call run(A,B,C,D` with an undeclared argument still lacks the leading
+  `Invalid symbol in expression: D.` (CR6/CR1000X) / `D is not defined.` (CR300/CR350) line, and `Call run(A` / `Call run(` /
+  `Call run` print one `Call argument required.` where the real compiler prints two or three; `Call run(A,B,C,A` etc. are exact.
+  CR300/CR350 `Abs(x)` after an endless scan is `Expr never reached`, `Foo(1)` (wrong count) and `Nope.x` keep their warning there.
+
+Overlaps with other workers (not fixed here): unclosed `Abs`-like calls / one-line `ElseIf` / inline-`If` bodies
+(`cr6/95e2a4d5d433`, `cr6/db82630bee84`, `cr350/05a9c1794237`, `cr350/396192db3ee7`, `cr300/c04335b534c6`, `cr350/0f82541c62ee`
+`Incomplete expression: Xabs = ABS(X,Undeclared)`, `cr300/fc8f299fb83a`, `cr300/6df6fa35c5e6`); DNP3/SNMP/CDM ports/FieldCal/Debug/
+RoutersNeighbors value models (`Illegal OID`, `Illegal object id.`, `Settling time`, `Excitation magnitude`, `Unrecognized port!`,
+`Invalid port`, `Option must be`, `cr300/c2df4fc25e40` and `cr300/8da22221926c` `MaxNeighbors is not defined.`);
+CR300/CR350 storage limit / autoallocate / `CDM_Delay` (`cr300/361cb4b5d2d5`, `cr350/7d495abe4b98`, `cr350/fa0787025392`,
+`cr350/c01544a79750`); message-diff ranking (everything in the list above).
