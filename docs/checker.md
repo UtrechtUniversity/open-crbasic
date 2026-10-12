@@ -6475,8 +6475,8 @@ a `Sub` (`If without EndIf inside of Sub.`).
 
 ## Round 15: `SubScan` rules and `NextScan`/`SubScan`/`NextSubScan` in a one-line `If` body (2026-10-12)
 
-Oracle, all four loggers unless noted (fixture `tests/fixtures/r15_subscan_nextscan.json`, 69 shapes x 4
-minus 24 message-only (logger, shape) pairs pruned, see below):
+Oracle, all four loggers unless noted (fixture `tests/fixtures/r15_subscan_nextscan.json`, 276 cases; shapes
+whose message differs are left out, see the last item):
 
 - **Hoisting** (extends `parser._INLINE_BLOCK_WORDS`): `NextScan`, `SubScan`, `NextSubScan` in a one-line `If`
   body (or its `Else` body) open and close their block like statements of their own. `Scan` ... `If C Then
