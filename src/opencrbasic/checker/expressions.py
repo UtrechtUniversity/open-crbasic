@@ -471,6 +471,35 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
 
 
 
+def _names_through_over_index(expr: S.Expr | None, known: set[str], dim_counts: dict) -> list[str]:
+    """The undefined names of `expr` up to and including the arguments of its first over-indexed
+    subscript (`_over_indexed`): the compile of the statement ends there (oracle, CR300/CR350,
+    2026-10-12: `x = R(4,Zork) + R(5,Zork2)` for `Public R(4)` names only `Zork`)."""
+    out: list[str] = []
+
+    def walk(e: S.Expr | None) -> bool:
+        if e is None:
+            return False
+        if isinstance(e, S.Unary):
+            return walk(e.operand)
+        if isinstance(e, S.Binary):
+            return walk(e.left) or walk(e.right)
+        if isinstance(e, S.Index):
+            if e.name.upper() not in known:
+                out.append(e.name)
+            for a in e.args:
+                if walk(a):
+                    return True
+            count = dim_counts.get(e.name.upper())
+            return count is not None and len(e.args) > count and not (
+                len(e.args) == 3 and e.name.upper() in getattr(dim_counts, "strings", ()))
+        out.extend(_undefined_names_walk(e, known))
+        return False
+
+    walk(expr)
+    return out
+
+
 def _over_indexed(expr: S.Expr | None, dim_counts: dict[str, int], limit: int | None = None) -> bool:
     """Whether `expr` indexes a declared variable with more subscripts than it has dimensions
     (`limit`: more than `limit` subscripts instead). CR300/CR350 reject `R(2,1)` for `Public R(5)`
@@ -505,9 +534,10 @@ class DimsState:
     `Dimensions not declared`. `var_dims` maps names to counts (None: counted differently in
     two declarations), `before` maps `id(stmt)` to the count when the statement starts."""
 
-    def __init__(self, var_dims: dict, before: dict | None = None):
+    def __init__(self, var_dims: dict, before: dict | None = None, dim_counts: dict | None = None):
         self.var_dims = var_dims
         self.before = before or {}
+        self.dim_counts = dim_counts    # `symbols.declared_dim_counts(program, strings=True)`
 
 
 def _stmt_exprs(stmt: S.Stmt) -> list:
@@ -560,7 +590,7 @@ def dims_state(program: S.Program, known=_NO_NAMES) -> DimsState:
         for expr in _stmt_exprs(stmt):
             if _dims_walk(expr, known, var_dims, state):
                 break
-    return DimsState(var_dims, before)
+    return DimsState(var_dims, before, symbols.declared_dim_counts(program, strings=True))
 
 
 
@@ -1511,9 +1541,11 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env,
                         stmt=stmt)
         else:
             names, dims = _names_and_dims(known, ds, stmt, (stmt.target,), stmt.value)
+            if not dims and _over_indexed(stmt.value, dim_counts):
+                names = _names_through_over_index(stmt.value, known, dim_counts)
             for name in names:
                 diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
-            if dims:
+            if dims or _over_indexed(stmt.value, dim_counts):   # (names, then the over-indexed read: oracle, CR300, 2026-10-12)
                 diags.error(stmt.line, dimensions_message(stmt.text, profile, True, stmt.at_eol),
                             stmt.file)
 

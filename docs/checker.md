@@ -6604,3 +6604,13 @@ The deferred source and the table name are not looked at while the earlier argum
 (`Str`, `ing`, `Incomplete expression`, `Variable illegal in Parameter`). Outside a table the placement message alone is
 printed (not modelled for the unparsed shape: `Sample (1,x y,String)` outside a table still prints our fallback);
 `SampleMaxMin` and `Moment` add their own earlier messages (not modelled).
+
+### CR300/CR350: an assignment to or from an over-indexed array with undefined subscripts (oracle, 2026-10-12; `tests/fixtures/r15_assign_over_indexed_names.json`)
+
+For `Public R(4), Q(3,3)`: `R(4,Zork) = 1`, `R(Zork,1) = x`, `Q(1,Zork,2) = 1`, `x(1,Zork) = 1` (more subscripts than
+dimensions, an undefined name among them) print the undefined names and then `Invalid, or out of place expression:
+<statement>.`; the value is not read (`R(4,Zork) = Zork2` names `Zork` only). A scalar `String` takes up to three subscripts
+(`s(1,Zork,2) = "a"` names only `Zork`). The read form `x = R(4,Zork)` prints the names and then `Dimensions not declared:
+<statement>.`, and the names stop after the first over-indexed subscript (`x = R(4,Zork) + R(5,Zork2)` names `Zork`).
+CR6/CR1000X: unchanged (the generic fallback / `Invalid symbol`). `structure._over_indexed_target`,
+`expressions._names_through_over_index`.

@@ -3478,6 +3478,18 @@ def _check_call_pass2(stmt: S.Call, subs: set[str], profile, diags: Diagnostics,
     return None
 
 
+def _over_indexed_target(target: S.Index, ds) -> bool:
+    """A declared variable written with more subscripts than it has dimensions: with an undefined
+    subscript the names are followed by the generic fallback, and the value is not read (oracle,
+    CR300/CR350, 2026-10-12: `R(4,Zork) = Zork2` for `Public R(4)`)."""
+    counts = getattr(ds, "dim_counts", None)
+    if counts is None:
+        return False
+    count = counts.get(target.name.upper())
+    return count is not None and len(target.args) > count and not (
+        len(target.args) == 3 and target.name.upper() in getattr(counts, "strings", ()))
+
+
 def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnostics,
                              before_bp: bool, in_body_block: bool,
                              profile=None, ds=None) -> int | None:
@@ -3521,8 +3533,9 @@ def _check_assignment_pass2(stmt: S.Assignment, known: set[str], diags: Diagnost
         for name in target_names:
             diags.error(stmt.line, profile.unresolved_symbol_message.format(name=name), stmt.file)
         if isinstance(stmt.target, S.Index) and (
-                stmt.target.name.upper() not in known
-                and expressions._has_undefined_index(stmt.target, known, ds, stmt)):
+                (stmt.target.name.upper() not in known
+                 and expressions._has_undefined_index(stmt.target, known, ds, stmt))
+                or _over_indexed_target(stmt.target, ds)):
             # (an undefined array whose subscripts fit the running dimension count is not
             # a placement error, nor is a declared one with an undefined subscript: `Rv(1)=1`
             # then `Nope(1)=Sc` names only `Nope`; oracle 2026-10-04)

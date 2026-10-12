@@ -1,0 +1,975 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-assign_over_indexed_names-0-c17-0",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-0-c17-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-0-c17-0",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-0-c17-0",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-1-c17-1",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(Zork,1) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-1-c17-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(Zork,1) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-1-c17-1",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(Zork,1) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-1-c17-1",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(Zork,1) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-2-c17-2",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(Zork) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-2-c17-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(Zork) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-2-c17-2",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-2-c17-2",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-3-c17-3",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-3-c17-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-3-c17-3",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(1,2) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-3-c17-3",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(1,2) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-4-c17-4",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = Zork2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = Zork2."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-4-c17-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = Zork2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = Zork2."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-4-c17-4",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = Zork2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = Zork2\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-4-c17-4",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = Zork2\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = Zork2\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-5-c17-5",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = x."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-5-c17-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = x."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-5-c17-5",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = x\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-5-c17-5",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = x\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-6-c17-6",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = x + 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-6-c17-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork) = x + 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-6-c17-6",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = x + 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-6-c17-6",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork) = x + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork) = x + 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-7-c17-7",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork,Zork2) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-7-c17-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,Zork,Zork2) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-7-c17-7",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork2 is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork,Zork2) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-7-c17-7",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork2 is not defined.\nline 4: Invalid, or out of place expression:     R(4,Zork,Zork2) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-8-c17-8",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x(1,Zork) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-8-c17-8",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     x(1,Zork) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-8-c17-8",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     x(1,Zork) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-8-c17-8",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     x(1,Zork) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-9-c17-9",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,Zork) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-9-c17-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,Zork) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-9-c17-9",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-9-c17-9",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-10-c17-10",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,Zork,2) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-10-c17-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,Zork,2) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-10-c17-10",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Q(1,Zork,2) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-10-c17-10",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,Zork,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Q(1,Zork,2) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-11-c17-11",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(Zork,Zork2) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-11-c17-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(Zork,Zork2) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-11-c17-11",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork2 is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-11-c17-11",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(Zork,Zork2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Zork2 is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-12-c17-12",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,1,Zork) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-12-c17-12",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Q(1,1,Zork) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-12-c17-12",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Q(1,1,Zork) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-12-c17-12",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Q(1,1,Zork) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Q(1,1,Zork) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-13-c17-13",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,x) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-13-c17-13",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,x) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-13-c17-13",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,x) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,x) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-13-c17-13",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,x) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,x) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-14-c17-14",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = R(4,Zork)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-14-c17-14",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = R(4,Zork)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-14-c17-14",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = R(4,Zork)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-14-c17-14",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = R(4,Zork)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-15-c17-15",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = R(4,Zork) + 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-15-c17-15",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = R(4,Zork) + 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-15-c17-15",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = R(4,Zork) + 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-15-c17-15",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = R(4,Zork) + 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-16-c17-16",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Q(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Q(1,Zork,2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-16-c17-16",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Q(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid symbol in expression:     x = Q(1,Zork,2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-16-c17-16",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Q(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = Q(1,Zork,2)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-16-c17-16",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    x = Q(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Dimensions not declared:     x = Q(1,Zork,2)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-17-c17-17",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork(1,2) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-17-c17-17",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork(1,2) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-17-c17-17",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Zork(1,2) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-17-c17-17",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1,2) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Zork(1,2) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-18-c17-18",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork(1) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-18-c17-18",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     Zork(1) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-18-c17-18",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Zork(1) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-18-c17-18",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    Zork(1) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     Zork(1) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-19-c17-19",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,1.5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-19-c17-19",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,1.5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-19-c17-19",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,1.5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,1.5) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-19-c17-19",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4,1.5) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4,1.5) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-20-c17-20",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4, Zork ) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4, Zork ) = 1."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-20-c17-20",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4, Zork ) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Invalid, or out of place expression:     R(4, Zork ) = 1."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-20-c17-20",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4, Zork ) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4, Zork ) = 1\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-20-c17-20",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nBeginProg\n  Scan(1,Sec,0,0)\n    R(4, Zork ) = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 4: Zork is not defined.\nline 4: Invalid, or out of place expression:     R(4, Zork ) = 1\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-21-c18-0",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(1,Zork,2) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-21-c18-0",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(1,Zork,2) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-21-c18-0",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-21-c18-0",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-22-c18-1",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(1,Zork) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-22-c18-1",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(1,Zork) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-22-c18-1",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     s(1,Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-22-c18-1",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     s(1,Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-23-c18-2",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-23-c18-2",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-23-c18-2",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     S2(1,Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-23-c18-2",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     S2(1,Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-24-c18-3",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork,2) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-24-c18-3",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork,2) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-24-c18-3",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-24-c18-3",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-25-c18-4",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2,3) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork,2,3) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-25-c18-4",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2,3) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     S2(1,Zork,2,3) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-25-c18-4",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2,3) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     S2(1,Zork,2,3) = \"a\"\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-25-c18-4",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    S2(1,Zork,2,3) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     S2(1,Zork,2,3) = \"a\"\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-26-c18-5",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(Zork) = \"a\"."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-26-c18-5",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     s(Zork) = \"a\"."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-26-c18-5",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     s(Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-26-c18-5",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    s(Zork) = \"a\"\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     s(Zork) = \"a\"\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-27-c18-6",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = S2(1,Zork,2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-27-c18-6",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = S2(1,Zork,2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-27-c18-6",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-27-c18-6",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-28-c18-7",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = S2(1,Zork,2,3)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-28-c18-7",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = S2(1,Zork,2,3)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-28-c18-7",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = S2(1,Zork,2,3)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-28-c18-7",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = S2(1,Zork,2,3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = S2(1,Zork,2,3)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-29-c18-8",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = s(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = s(1,Zork,2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-29-c18-8",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = s(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = s(1,Zork,2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-29-c18-8",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = s(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-29-c18-8",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = s(1,Zork,2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-30-c18-9",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1,1) = Zork2 + R(4,Zork3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     R(Zork,1,1) = Zork2 + R(4,Zork3)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-30-c18-9",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1,1) = Zork2 + R(4,Zork3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid, or out of place expression:     R(Zork,1,1) = Zork2 + R(4,Zork3)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-30-c18-9",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1,1) = Zork2 + R(4,Zork3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     R(Zork,1,1) = Zork2 + R(4,Zork3)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-30-c18-9",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    R(Zork,1,1) = Zork2 + R(4,Zork3)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Invalid, or out of place expression:     R(Zork,1,1) = Zork2 + R(4,Zork3)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-31-c18-10",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = R(4,Zork) + R(5,Zork2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-31-c18-10",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = R(4,Zork) + R(5,Zork2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-31-c18-10",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = R(4,Zork) + R(5,Zork2)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-31-c18-10",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = R(4,Zork) + R(5,Zork2)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-32-c18-11",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    y = R(Zork) + R(4,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     y = R(Zork) + R(4,Zork2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-32-c18-11",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    y = R(Zork) + R(4,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     y = R(Zork) + R(4,Zork2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-32-c18-11",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    y = R(Zork) + R(4,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Zork2 is not defined.\nline 6: Dimensions not declared:     y = R(Zork) + R(4,Zork2)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-32-c18-11",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    y = R(Zork) + R(4,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Zork2 is not defined.\nline 6: Dimensions not declared:     y = R(Zork) + R(4,Zork2)\n."
+  },
+  {
+   "id": "cr6-assign_over_indexed_names-33-c18-x",
+   "logger": "cr6",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = R(4,Zork) + R(5,Zork2)."
+  },
+  {
+   "id": "cr1000x-assign_over_indexed_names-33-c18-x",
+   "logger": "cr1000x",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Invalid symbol in expression:     x = R(4,Zork) + R(5,Zork2)."
+  },
+  {
+   "id": "cr300-assign_over_indexed_names-33-c18-x",
+   "logger": "cr300",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = R(4,Zork) + R(5,Zork2)\n."
+  },
+  {
+   "id": "cr350-assign_over_indexed_names-33-c18-x",
+   "logger": "cr350",
+   "source": "Public x, y, R(4), Q(3,3)\nPublic s As String * 20\nPublic S2(3) As String * 20\nBeginProg\n  Scan(1,Sec,0,0)\n    x = R(4,Zork) + R(5,Zork2)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Zork is not defined.\nline 6: Dimensions not declared:     x = R(4,Zork) + R(5,Zork2)\n."
+  }
+ ]
+}
