@@ -496,6 +496,18 @@ def _check_sw12(stmt: S.Instruction, measure: dict, env: consteval.Env, diags: D
 _DELAY_US_PER_UNIT = {0: 1, 1: 1_000, 2: 1_000_000, 3: 60_000_000, 4: 3_600_000_000, 5: 86_400_000_000}
 
 
+def _delay_option_byte(value: int) -> int:
+    """`Option` is taken as an unsigned byte (256 acts as 0, 257 as 1, -254 as 2). A constant
+    outside the Long range is a float32: its low byte is 0, or 255 above the float32 maximum
+    (oracle, all four loggers; docs/instructions.md#delay). Not modelled: CR300/CR350 report
+    255 for exactly 2147483648."""
+    if value > 3.4028235e38:
+        return 255
+    if not -2**31 <= value < 2**31:
+        return 0
+    return value % 256
+
+
 def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diagnostics) -> None:
     args = stmt.args
     option_arg = args[0] if len(args) > 0 else None
@@ -503,8 +515,10 @@ def _check_delay(stmt: S.Instruction, cfg: dict, env: consteval.Env, diags: Diag
     units_arg = args[2] if len(args) > 2 else None
 
     option = _int_value(option_arg, env)
-    if option is not None and option not in (0, 1, 2):
-        diags.error(stmt.line, f"Illegal option {option % 256}", stmt.file)
+    if option is not None:
+        option = _delay_option_byte(option)
+        if option not in (0, 1, 2):
+            diags.error(stmt.line, f"Illegal option {option}", stmt.file)
 
     interval_value = _const_value(interval_arg, env)
     if isinstance(interval_value, str):

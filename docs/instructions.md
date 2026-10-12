@@ -672,6 +672,14 @@ per logger (boundary values in `min`/`hr`/`sec` units, and a string/variable `In
 - `Illegal option %d` (all four loggers) when `Option` does not fold to `0`, `1` or `2` -- the shown
   value is the folded number truncated to an unsigned byte (oracle: `Option=-1` shows as `255`,
   `Option=3` shows as `3`, matching Python's own `value % 256`).
+  The byte is also what is tested: `Delay(256,...)`, `257`, `258`, `-254`, `-256` and `256.5` act as
+  options 0/1/2 and compile (R14, `tests/fixtures/r14_delay_option_byte.json`, fuzz reproducer
+  `cr6/false_reject/77cb0ca38412`). A constant outside the Long range is a float32 whose low byte is
+  0, so `999999999999`, `4294967297`, `-999999999999`, `-2147483649` and `1e38` compile; above the
+  float32 maximum (`3.5e38`, `1e39`) the shown value is `255`, below it (`-1e39`) it compiles. Not
+  modelled: CR300/CR350 report `255` for exactly `2147483648`, and a huge option with a `Hr`
+  interval on CR300/CR350 (`Delay(4294967297,25,Hr)` gives `Max Delay is 24 Hours` there); other
+  option-dependent checks still read the unmasked option on CR6/CR1000X (`Delay(256,61,min)`).
 - `Delay interval cannot be of type String.` (all four loggers, any `Option`) when `Interval` folds
   to a string constant -- this is the *only* diagnostic for a string interval (oracle: no
   accompanying "must be constant" line, unlike a non-constant *variable* interval).
