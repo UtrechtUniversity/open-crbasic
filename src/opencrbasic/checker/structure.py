@@ -1118,11 +1118,18 @@ def check_pass1(program: S.Program, profile, diags: Diagnostics, env: consteval.
                 elif verdict == ("pass2", "symbol") and re.match(r"\s*SELECT\b", stmt.text, re.I):
                     cond_depth += 1  # an unresolved `Select Case` still opens its block
                     select_depth += 1
+        elif (isinstance(stmt, S.Assignment) and isinstance(stmt.target, S.Member)
+              and isinstance(stmt.target.base, S.Name) and stmt.target.base.name.upper() == "PUBLIC"
+              and stmt.target.member.upper() not in symbols.declared_variable_names(program)):
+            # `Public.Nope = 1`: not a variable (oracle, all four loggers, 2026-10-12)
+            diags.error(stmt.line, f"Could not find Public.{stmt.target.member}(1).", stmt.file)
+            diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
         elif (isinstance(stmt, S.Assignment) and (profile.known_first_word_pass1 or profile.single_pass)
               and isinstance(stmt.target, S.Name)
-              and stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
               and stmt.target.name.upper() not in profile.instructions
-              and stmt.target.name.upper() not in symbols.declared_variable_names(program)):
+              and stmt.target.name.upper() not in symbols.declared_variable_names(program)
+              and (stmt.target.name.upper() in set(profile.symbols) | expressions._EXTRA_PREDEFINED_SYMBOLS
+                   or _assigns_user_const(stmt, program))):
             # `Sec = 3`, `String = "x"`: a predefined symbol cannot be assigned (oracle, CR6/CR1000X,
             # 2026-10-10)
             diags.error(stmt.line, _pass1_message(profile, stmt, "invalid_assignment"), stmt.file)
@@ -1998,6 +2005,8 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     if not toks:
         return None
     functions = profile.functions
+    if _logical_bad_target(toks, operands, functions):
+        return ("pass1", "invalid_assignment")
     first = toks[0]
     i = 1
     if first.kind == "IDENT":
@@ -2108,6 +2117,84 @@ def _pass1_scan(text: str, operands: set[str], profile) -> tuple[str, str] | Non
     return None
 
 
+def _assigns_user_const(stmt: S.Assignment, program: S.Program) -> bool:
+    """`K = 1` with `K` a program `Const` (and no variable or enclosing-`Sub` parameter of that
+    name): `Invalid assignment in expression` (oracle, all four loggers, 2026-10-12)."""
+    name = stmt.target.name.upper()
+    if not any(isinstance(st, S.ConstDecl) and st.name.upper() == name for st in program.statements):
+        return False
+    sub = _enclosing_sub(stmt, program)
+    return sub is None or name not in {p.name.upper() for p in sub.params}
+
+
+_LOGICAL_WORDS = ("AND", "OR", "XOR", "IMP", "EQV")
+
+
+def _logical_bad_target(toks, operands, functions) -> bool:
+    """`X AND Y + 1 = 1`, `X AND 1 = 1`, `X AND -Y = 1`, `X AND Not Y = 1`, `X AND Abs(Y) = 1`,
+    `X AND (Y + 1) = 1`: the first top-level `=` follows a logical word and what lies between them
+    is not a variable, so pass 1 says `Invalid assignment in expression` (oracle, all four loggers,
+    2026-10-12; only when every name in the statement is defined)."""
+    depth, last_logical, eq = 0, None, None
+    for k, t in enumerate(toks):
+        if t.kind == "OP":
+            if t.text in ("(", "{"):
+                depth += 1
+            elif t.text in (")", "}"):
+                depth -= 1
+            elif t.text == "=" and depth == 0:
+                eq = k
+                break
+            elif t.text == ".":
+                return False
+        elif t.kind == "IDENT" and depth == 0 and t.upper in _LOGICAL_WORDS:
+            last_logical = k
+    if eq is None or last_logical is None or last_logical + 1 >= eq:
+        return False
+    if any(t.kind == "STRING" for t in toks):
+        return False
+    for t in toks:
+        if t.kind == "IDENT" and t.upper not in _BINARY_WORDS and t.upper != "NOT" \
+                and t.upper not in operands and t.upper not in functions:
+            return False
+    seg = toks[last_logical + 1:eq]
+    if any(t.kind == "OP" and t.text in ("<", ">", "<>", "<=", ">=") for t in seg):
+        return False  # a comparison between the word and the `=` is not probed
+    while len(seg) > 2 and seg[0].text == "(" and seg[-1].text == ")":
+        d, closes_at_end = 0, True
+        for j, t in enumerate(seg):
+            d += (t.text == "(") - (t.text == ")") if t.kind == "OP" else 0
+            if d == 0 and j < len(seg) - 1:
+                closes_at_end = False
+                break
+        if not closes_at_end:
+            break
+        seg = seg[1:-1]
+    if not seg:
+        return False
+    first = seg[0]
+    if first.kind == "NUMBER":
+        return True
+    if first.kind == "OP" and first.text in ("-", "+"):
+        return True
+    if first.kind != "IDENT":
+        return False
+    if first.upper == "NOT":
+        return True
+    if first.upper in functions and first.upper not in operands:
+        return len(seg) > 1 and seg[1].text == "("
+    d = 0
+    for j, t in enumerate(seg):
+        if t.kind == "OP" and t.text == "(":
+            d += 1
+        elif t.kind == "OP" and t.text == ")":
+            d -= 1
+        elif d == 0 and j and (t.kind == "OP" and t.text in _BINARY_OPS
+                               or t.kind == "IDENT" and t.upper in _BINARY_WORDS):
+            return True
+    return False
+
+
 def _logical_assign_eq(toks, i: int) -> int | None:
     """The index of the first top-level `=` after the logical word at `toks[i]` when a name or a
     closing `)` precedes it (the `parser.LOGICAL_ASSIGN` shape), else None."""
@@ -2184,6 +2271,30 @@ def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile
               if isinstance(st, S.Instruction) and st.keyword.upper() == "DATATABLE" and st.args
               and isinstance(st.args[0], S.Name)} | {"STATUS"}
     base_undefined = False
+    if profile.single_pass and stmt.text.lstrip().startswith("("):
+        return "rejected", [], False  # CR300/CR350 read a leading group as a lone operand
+    struct_vars = {v.name.upper() for st in program.statements if isinstance(st, S.Declaration)
+                   for v in st.vars if v.type and v.type.upper() not in _VARIABLE_TYPES}
+
+    def public_member(m) -> bool:
+        """`Public.X` names the declared variable `X` (oracle, CR6 and CR300, 2026-10-12)."""
+        return isinstance(m.base, S.Name) and m.base.name.upper() == "PUBLIC" \
+            and m.member.upper() in variables
+
+    def members_ok(e) -> bool:
+        """Every `Base.member` read has a table (or structure variable) base: `X.a` with a plain
+        variable `X` is `Could not find X.` (oracle, 2026-10-12)."""
+        if isinstance(e, S.Member):
+            return public_member(e) or isinstance(e.base, S.Name) and (e.base.name.upper() in tables
+                                                   or e.base.name.upper() in struct_vars
+                                                   or e.base.name in undefined)
+        if isinstance(e, S.Binary):
+            return members_ok(e.left) and members_ok(e.right)
+        if isinstance(e, S.Unary):
+            return members_ok(e.operand)
+        if isinstance(e, S.Index):
+            return all(members_ok(a) for a in e.args if a is not None)
+        return True
 
     def target_ok(t) -> bool:
         nonlocal base_undefined
@@ -2200,6 +2311,8 @@ def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile
                 return True  # CR6/CR1000X: any subscript count, even on a scalar
             return len(t.args) <= dims[name] and (len(t.args) > 0 or dims[name] > 0)
         if isinstance(t, S.Member):
+            if public_member(t):
+                return True
             return isinstance(t.base, S.Name) and t.base.name.upper() in tables \
                 and t.base.name not in undefined
         return False
@@ -2211,7 +2324,7 @@ def _logical_assign_state(stmt: S.Unparsed, program: S.Program, profile
             return False
         return targets_ok(expr.left) and targets_ok(expr.right)
 
-    if not targets_ok(stmt.expr):
+    if not targets_ok(stmt.expr) or not members_ok(stmt.expr):
         return "rejected", [], False
     if not undefined:
         return "ok", [], False

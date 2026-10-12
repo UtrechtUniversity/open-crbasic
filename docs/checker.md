@@ -5844,3 +5844,33 @@ Oracle-confirmed on all four loggers, 2026-10-12 (fixtures `r14_for_header_membe
   `If X Then Y = 1 +`, `If X = Then`, `If X Then Status = 1` on CR300/CR350): CR6/CR1000X
   `<l.crb> line N:`, CR300/CR350 `<CPU:l.crb> line N:`. Open: `If X Then Scan(1)` in an include
   is `Invalid or missing parameter.` in the real compiler (we differ, with or without include).
+## Round 14: logical-assignment left operands, parenthesised targets, `Public.X` (2026-10-12)
+
+Oracle, all four loggers, fixture `tests/fixtures/r14_logical_assign_operands.json` (probes `scratch/r14/`).
+
+- Any left operand may lead into `A AND B = C`: `X > 2 And Y = 1`, `X + 1 And Y = 1`, `1 And Y = 1`,
+  `-X And Y = 1`, `Not X And Y = 1`, `A(1) > 2 And Y = 1`, `X > 2 And Y(1) = 1`, `S > "a" And Y = 1`, all
+  words (`Or`, `Xor`, `Imp`, `Eqv`). The accepted-target rules of "Logical-prefixed assignment
+  targets" still apply to the target after the last word. Implementation: `parser._try_logical_assign`
+  (tried for a statement starting with a number, string, `(`, `-`, `+`, `Not`, or a name/atom followed by
+  a binary operator or logical word).
+- CR300/CR350 reject a statement that starts with a group, `(X > 2) And Y = 1` -> `Invalid, or
+  out of place expression: X > 2.` (kept: not accepted there).
+- A parenthesised target is a variable: `X And (Y) = 1`, `X And ((Y)) = 1`, `X And (A(1)) = 1`, `X And
+  (T.X) = 1` compile; `(Y+1)`, `(1)`, `(K)` (K a `Const`) are `Invalid assignment in expression`.
+- A non-variable between the last word and the first `=` (`X And Y + 1 = 1`, `1`, `-Y`, `Not Y`,
+  `Abs(Y)`, `(Y+1)`, a `Const`) is `Invalid assignment in expression: <stmt>.` when every name is
+  defined (`structure._logical_bad_target`; the `Abs(Y)` and `Const` shapes on CR300/CR350, and the
+  undefined-name variants, are not modelled).
+- CR6/CR1000X: a statement starting with a parenthesised variable is an assignment (`(Y) = 1`, `(Y) += 1`,
+  `(A(1)) = 1`); CR300/CR350 reject it (`Invalid, or out of place expression: Y.`).
+- Assigning to a program `Const` (`K = 1`, `K += 1`, `(K) = 1`) is `Invalid assignment in expression`
+  (all four loggers; `structure._assigns_user_const`).
+- A trailing `;` after a logical-prefixed assignment is skipped on CR6/CR1000X (`X AND Y = 1 ;`);
+  CR300/CR350 say `Invalid symbol in expression` (not modelled, both reject).
+- `Public.X` names the declared variable `X`: `Public.X = 1`, `Public.X(1) = 1`, `Public.X += 1`, `X And
+  Public.X = 1`, `Public.X And Y = 1` compile; `Public.Nope = 1` / `Public.K = 1` (not a variable) are
+  `Could not find Public.Nope(1).` + `Invalid assignment in expression: <stmt>.`. Not done: reading
+  `Y = Public.Nope` really is `Could not find Public.Nope(1).` (we accept); `X And Dim.X = 1`,
+  `X And Settings.X = 1`, `X And Q.X = 1` are `Could not find ...` + invalid assignment (we reject with
+  the generic fallback).

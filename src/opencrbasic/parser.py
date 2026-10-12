@@ -262,6 +262,8 @@ _WORD_BINARY_OPS = {"MOD", "AND", "OR", "XOR", "EQV", "IMP"}  # `Fn(1) MOD 2` is
 _FUNCTION_DEF_RE = re.compile(r"\s*Function\s+([A-Za-z_][A-Za-z0-9_]*)", re.I)
 
 
+_LOGICAL_LEAD_OPS = {"+", "-", "*", "/", "\\", "^", "&", "<", ">", "<=", ">=", "<>", "=<", "=>", "><"}
+
 LOGICAL_ASSIGN = "logical-prefixed assignment"
 
 
@@ -612,6 +614,22 @@ class _Parser:
             # docs/frontend.md; pointervariable_3.CR6).
             return self._parse_assignment_or_call(p, line, file)
         if first.kind != "IDENT":
+            start = p.i
+            if first.text == "(" and not self.profile.single_pass:
+                # `(Y) = 1`, `(A(1)) += 1`: a parenthesised variable is an assignment target on
+                # CR6/CR1000X (oracle, 2026-10-12); CR300/CR350 reject a leading group
+                try:
+                    stmt = self._parse_assignment_or_call(p, line, file)
+                except _ParseError:
+                    stmt = None
+                if isinstance(stmt, S.Assignment) and isinstance(
+                        stmt.target, (S.Name, S.Index, S.Member)):
+                    return stmt
+                p.i = start
+            if first.kind in ("NUMBER", "STRING") or (first.kind == "OP" and first.text in ("(", "-", "+")):
+                if (result := self._try_logical_assign(p, start, line, file)) is not None:
+                    return result  # `1 And Y = 1`, `-X And Y = 1`
+                p.i = start
             raise _ParseError(
                 f"statement does not start with an identifier (found {first.text or first.kind!r})"
             )
@@ -632,6 +650,8 @@ class _Parser:
             return self._parse_subdef(p, line, file, kw)
         if kw == "CONST":
             return self._parse_const(p, line, file)
+        if kw in ("PUBLIC", "DIM") and p.is_op(".", 1):
+            return self._parse_assignment_or_call(p, line, file)  # `Public.X = 1`
         if kw in ("PUBLIC", "DIM"):
             return self._parse_declaration(p, line, file, kw)
         if kw == "ALIAS":
@@ -840,6 +860,29 @@ class _Parser:
             args, _spans = self._parse_bare_arglist(p, line, file)
         return S.Call(line, file, name=name_tok.text, args=args, explicit=True)
 
+    def _try_logical_assign(self, p: _TokStream, start: int, line: int, file: str
+                            ) -> S.Stmt | None:
+        """The `LOGICAL_ASSIGN` reading of the whole statement from token `start`, or None
+        (position restored by the caller)."""
+        p.i = start
+        saved = p.toks
+        n = len(saved) - 1
+        while self.profile.name in ("cr6", "cr1000x") and n > start and saved[n - 1].kind == "OP" \
+                and saved[n - 1].text == ";":
+            n -= 1  # a trailing `;` is skipped like a blank on CR6/CR1000X (`X AND Y = 1 ;`)
+        p.toks = saved[:n] + saved[-1:]
+        self._logical_assign = True
+        try:
+            expr = self._parse_expr(p, line, file)
+        except _ParseError:
+            expr = None
+        finally:
+            self._logical_assign = False
+        if expr is not None and p.at_end() and _has_assign(expr):
+            return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN, expr=expr)
+        p.toks = saved
+        return None
+
     def _parse_assignment_or_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         # An lvalue only (never a full expression): `=` is also the relational operator, so
         # going through `_parse_expr` here would swallow it as an equality test instead of
@@ -850,9 +893,16 @@ class _Parser:
         # recognised instruction (oracle-confirmed) -- but only for *this* atom's own outermost
         # parens; anything nested inside it is parsed via `_parse_expr` and is strict again.
         start = p.i
+        if p.is_ident("NOT") and (result := self._try_logical_assign(p, start, line, file)):
+            return result  # `Not X And Y = 1`
+        p.i = start
         outer, self._to_ok = self._to_ok, True  # `A(1 To 2) = 3` compiles
         try:
             target = self._parse_atom(p, line, file, strict=False)
+        except _ParseError:
+            if (result := self._try_logical_assign(p, start, line, file)) is not None:
+                return result
+            raise
         finally:
             self._to_ok = outer
         t = p.peek()
@@ -873,19 +923,13 @@ class _Parser:
                 value = S.Binary(op_tok.line, file, base_op, target, value)
             return S.Assignment(line, file, target=target, value=value,
                                 compound=op_tok.text != "=")
-        if isinstance(target, (S.Name, S.Index)) and p.peek().kind == "IDENT" \
-                and p.peek().upper in _WORD_BINARY_OPS - {"MOD"}:
+        if (p.peek().kind == "IDENT" and p.peek().upper in _WORD_BINARY_OPS - {"MOD"}) or (
+                p.peek().kind == "OP" and p.peek().text in _LOGICAL_LEAD_OPS):
+            # `X > 2 And Y = 1`, `X + 1 And Y = 1`, `(X > 2) And Y = 1`: any left operand may
+            # lead into the logical-assignment reading (oracle, all four loggers, 2026-10-12)
             end = p.i
-            p.i = start
-            self._logical_assign = True
-            try:
-                expr = self._parse_expr(p, line, file)
-            except _ParseError:
-                expr = None
-            finally:
-                self._logical_assign = False
-            if expr is not None and p.at_end() and _has_assign(expr):
-                return S.Unparsed(line, file, text="", reason=LOGICAL_ASSIGN, expr=expr)
+            if (result := self._try_logical_assign(p, start, line, file)) is not None:
+                return result
             p.i = end
         if isinstance(target, S.Name) and p.is_ident("AS") and (
                 self._in_struct or not self.profile.single_pass):
@@ -1559,6 +1603,17 @@ class _Parser:
     @staticmethod
     def _at_assign_target(p: _TokStream) -> bool:
         """`name =`, `name(...) =` or `name.member[(...)] =` ahead."""
+        if p.is_op("("):
+            # `(Y) = 1`, `((Y)) = 1`, `(A(1)) = 1`: a parenthesised target (oracle, all four
+            # loggers, 2026-10-12)
+            depth, k = 0, 0
+            while p.peek(k).kind != "EOF":
+                t = p.peek(k)
+                depth += (t.text == "(") - (t.text == ")") if t.kind == "OP" else 0
+                k += 1
+                if depth == 0:
+                    break
+            return p.is_op("=", k)
         if p.peek().kind != "IDENT" or p.peek().upper in _WORD_BINARY_OPS | {"NOT"}:
             return False
         k = 1
