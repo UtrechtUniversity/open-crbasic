@@ -6412,3 +6412,14 @@ Implementation: `parser._hoist_block_statements` moves such body statements out 
 Still false accepts (checked, pre-existing, not block-keyword hoisting): `While X` without `Wend` and a
 stray `Wend`, `If C Then Case 1` outside a `Select`, `If C Then Exit Do` outside a loop, `If C Then Scan(...)`
 (`IF or SELECT statement illegally has SCAN without NEXT SCAN.`).
+## Round 15: `Call` name with spaces, `Call S(a,b,` with a trailing comma
+
+- Spaces and tabs inside the Sub name of a `Call` are dropped: `Call r  un(A,B,C`, `Call ru n (A,B,C)`, `Call R UN(...)`,
+  `Call o ther` call `run`/`other` (all four loggers; `Call T ab1` and `Call n ope(A)` already gave `Tab1`/`nope is not
+  declared as a Subroutine.`). A bare `r un(A,B,C)` is NOT merged (`Invalid, or out of place expression`). The parser merges
+  consecutive identifier tokens after `Call` when the run ends at `(` or at the end of the line (`Parser._parse_call`).
+- A `Call S(a,b,c,` or bare `S(a,b,c,` whose parenthesis is never closed does not count the empty slot after the last
+  comma: it compiles for a 3-parameter Sub, `S(a,b,c,,` counts 4 arguments. Closed `S(a,b,c,)` counts 4 as before.
+- Left open (message diffs): the number of `Call argument required.` lines (`Call run(A` two, `Call run(` and `Call run` three, we print one)
+  and an undeclared name in an unclosed `Call run(A,B,C,D` (`Invalid symbol in expression: D |.` / `D is not defined.` precede the count line).
+- R15, `tests/fixtures/r15_call_name_spaces.json` (audited 0 differing), fuzz false reject `cr1000x/false_reject/f4932fe73ffd`.

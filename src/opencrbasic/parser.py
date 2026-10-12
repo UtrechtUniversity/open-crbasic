@@ -1253,10 +1253,23 @@ class _Parser:
     def _parse_call(self, p: _TokStream, line: int, file: str) -> S.Stmt:
         p.next()  # CALL
         name_tok = p.expect_ident()
+        j = p.i
+        while p.toks[j].kind == "IDENT":
+            j += 1
+        if j > p.i and (p.toks[j].kind == "EOF" or (p.toks[j].kind == "OP" and p.toks[j].text == "(")):
+            # spaces inside the Sub name are dropped: `Call r un(A,B)` calls `run` (oracle, all
+            # four loggers, 2026-10-12; fuzz false reject `cr1000x/false_reject/f4932fe73ffd`)
+            merged = name_tok.text + "".join(t.text for t in p.toks[p.i:j])
+            name_tok = dataclasses.replace(name_tok, text=merged, upper=merged.upper())
+            p.i = j
         args: list[S.Expr | None] = []
         if p.is_op("("):
             p.next()
             args, _spans = self._parse_arglist(p, ")", line, file, strict=False)  # see above
+            if len(args) > 1 and args[-1] is None and not (p.toks[p.i - 1].kind == "OP"
+                                                          and p.toks[p.i - 1].text == ")"):
+                args.pop()   # `Call S(a,b,` (never closed): the empty slot after the last comma is
+                # not an argument (oracle, all four loggers, 2026-10-12)
             ignored = self._absorb_sub_tail(p, args, line, file)
             return S.Call(line, file, name=name_tok.text, args=args, explicit=True,
                           tail_ignored=ignored)
@@ -1400,6 +1413,9 @@ class _Parser:
                           tail_expr=expr)
         if isinstance(target, S.Index):
             args = list(target.args)
+            if len(args) > 1 and args[-1] is None and not (p.toks[p.i - 1].kind == "OP"
+                                                          and p.toks[p.i - 1].text == ")"):
+                args.pop()   # never closed: see `_parse_call`
             ignored = self._absorb_sub_tail(p, args, line, file)
             return S.Call(line, file, name=target.name, args=args, explicit=False,
                           tail_ignored=ignored)
