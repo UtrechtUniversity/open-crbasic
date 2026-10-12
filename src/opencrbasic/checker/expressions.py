@@ -433,6 +433,9 @@ def _undefined_names_walk(expr: S.Expr | None, known: set[str]) -> list[str]:
     if expr is None:
         return []
     if isinstance(expr, S.Name):
+        if expr.name.endswith(".") and len(expr.name) > 1 and (
+                expr.name[0].isalpha() or expr.name[0] == "_"):
+            return []  # `T.` / `X.` / `Zork.`: `check_digit_members` owns a trailing-dot name
         upper = expr.name.upper()
         if id(expr) in getattr(known, "out_of_scope", ()):
             return [expr.name]
@@ -1114,41 +1117,61 @@ def check_table_members(program: S.Program, profile, diags: Diagnostics) -> None
                 break
 
 
-def _digit_members(expr: S.Expr | None) -> list[S.Member]:
-    """Every `Name.<digits...>` member in `expr`, in source order (`X.5`, `T.1(2)`, `Status.1`)."""
+def _dotted_members(expr: S.Expr | None) -> list[tuple[str, S.Member | None]]:
+    """Every `Name.member` access (and `Name.` with a trailing dot, member `None`) in `expr`, in
+    source order (`X.5`, `T.1(2)`, `Status.1`, `X.dat`, `T.`)."""
     if expr is None:
         return []
+    if isinstance(expr, S.Name):
+        return [(expr.name[:-1], None)] if expr.name.endswith(".") and len(expr.name) > 1 \
+            and (expr.name[0].isalpha() or expr.name[0] == "_") else []
     if isinstance(expr, S.Member):
-        out = _digit_members(expr.base)
-        if isinstance(expr.base, S.Name) and expr.member[:1].isdigit():
-            out.append(expr)
+        out = _dotted_members(expr.base)
+        if isinstance(expr.base, S.Name) and not expr.base.name.endswith("."):
+            out.append((expr.base.name, expr))
         for a in expr.args or []:
-            out += _digit_members(a)
+            out += _dotted_members(a)
         return out
     if isinstance(expr, S.Index):
-        return [m for a in expr.args for m in _digit_members(a)]
+        return [m for a in expr.args for m in _dotted_members(a)]
     if isinstance(expr, S.Unary):
-        return _digit_members(expr.operand)
+        return _dotted_members(expr.operand)
     if isinstance(expr, S.Binary):
-        return _digit_members(expr.left) + _digit_members(expr.right)
+        return _dotted_members(expr.left) + _dotted_members(expr.right)
     if isinstance(expr, S.ArrayLiteral):
-        return [m for item in expr.items for m in _digit_members(item)]
+        return [m for item in expr.items for m in _dotted_members(item)]
     return []
 
 
 def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None:
-    """`Declared.<digits>` (`X = X.5`, `A.1`, `T.1`, `Status.1`): no variable, data table or
-    `Status` has a member starting with a digit. A declared variable base is `Could not find X.`
-    (CR300/CR350 `Could not find DataTable X.`), a data table or `Status` base is `Could not
-    find T.1(1).` (the index echoed as `_member_index_text`), one line per access in source order;
-    an assignment target adds `Invalid assignment in expression: <line>.` (oracle, all four
-    loggers, 2026-10-12, `docs/checker.md` "Digit-led members"). Statements that also name an
-    undefined symbol are left to the generic undefined-name reporting."""
+    """A member of a declared name that no variable, data table or `Status` has (oracle, all four
+    loggers, 2026-10-12, `docs/checker.md` "Digit-led members", "Letter-led members"):
+
+    - `ident.digits` (`X = X.5`, `A.1`, `T.1`, `Status.1`): `Could not find X.` for a declared
+      variable (CR300/CR350 `Could not find DataTable X.`), `Could not find T.1(1).` for a data
+      table or `Status` (the index echoed as `_member_index_text`), one line per access in source
+      order, in assignment values, subscripts, `If` conditions, `For` headers and function
+      arguments; an assignment target (`X.5 = 1`, `T.1 = 1`) adds `Invalid assignment in
+      expression: <line>.`.
+    - a letter-led member of a plain declared name (`X.Y`, `A.Y`, `S.Y`, `D.Y`, `K.Y`, an alias, a
+      pointer, a routine parameter, a function name) is `Could not find X.` as well (structure-typed
+      names and data tables / `Status` keep their members: field existence is not modelled).
+    - a trailing dot (`T.`, `Status.`) is a valid operand for a data table or `Status`; any other
+      name (`X.`, `Zork.`) is `Could not find X.` (CR300/CR350 `Could not find DataTable X.`).
+
+    Statements that also name an undefined symbol and structure-typed bases are not touched."""
     from . import structs
     variables = {n for n in symbols.declared_variable_names(program)
                  if not symbols.is_reserved_predefined_name(n, profile)}
     kinds = structs._variable_kinds(program, structs._structure_members(program))
     variables = {n for n in variables if not str(kinds.get(n, "")).startswith("STRUCT")}
+    variables |= {str(n).upper() for n in program.consts}
+    for stmt in program.statements:
+        if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "ALIAS" \
+                and len(stmt.args) == 2 and isinstance(stmt.args[1], S.Name):
+            variables.add(stmt.args[1].name.upper())  # (`Alias Xal = X`: `Xal.Y` is `Could not find Xal.`)
+        elif isinstance(stmt, S.SubDef) and stmt.keyword.upper() == "FUNCTION":
+            variables.add(stmt.name.upper())
     data_tables = {
         stmt.args[0].name.upper() for stmt in program.statements
         if isinstance(stmt, S.Instruction) and stmt.keyword.upper() == "DATATABLE" and stmt.args
@@ -1160,26 +1183,33 @@ def check_digit_members(program: S.Program, profile, diags: Diagnostics) -> None
             exprs = [stmt.target, stmt.value]
         elif isinstance(stmt, S.If):
             exprs = [stmt.cond]
+        elif isinstance(stmt, S.For):
+            exprs = [stmt.var, stmt.start, stmt.end, stmt.step]
         elif isinstance(stmt, (S.Instruction, S.Call)):
             exprs = stmt.args
         else:
             continue
-        members = [m for e in exprs for m in _digit_members(e)]
+        members = [m for e in exprs for m in _dotted_members(e)]
         if not members or any(_undefined_names(e, known) for e in exprs):
             continue
         lines = []
-        for m in members:
-            base = m.base.name
-            if base.upper() in data_tables:
-                lines.append(f"Could not find {base}.{m.member}{_member_index_text(m.args)}.")
-            elif base.upper() in variables:
+        for base, m in members:
+            upper = base.upper()
+            if m is None:
+                if upper not in data_tables:
+                    lines.append(f"Could not find DataTable {base}." if profile.single_pass
+                                 else f"Could not find {base}.")
+            elif upper in data_tables:
+                if m.member[:1].isdigit():
+                    lines.append(f"Could not find {base}.{m.member}{_member_index_text(m.args)}.")
+            elif upper in variables:
                 lines.append(f"Could not find DataTable {base}." if profile.single_pass
                              else f"Could not find {base}.")
         if not lines:
             continue
         for line in lines:
             diags.error(stmt.line, line, stmt.file)
-        if isinstance(stmt, S.Assignment) and _digit_members(stmt.target):
+        if isinstance(stmt, S.Assignment) and any(m for _, m in _dotted_members(stmt.target)):
             sep = "\n" if profile.fallback_echo_newline and stmt.at_eol else ""
             diags.error(stmt.line, f"Invalid assignment in expression: {stmt.text}{sep}.", stmt.file)
 

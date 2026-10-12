@@ -1829,9 +1829,12 @@ class _Parser:
                 args, _spans = self._parse_arglist(p, ")", line, file, strict=strict)
                 node = S.Index(tok.line, file, tok.text, args)
             while p.is_op("."):
-                if (isinstance(node, S.Name) and p.peek(1).kind != "IDENT"
-                        and self.profile.known_first_word_pass1):
-                    # a trailing `.` stays on the name (`junk.`: an unknown name, oracle 2026-10-08)
+                if (isinstance(node, S.Name) and (
+                        p.peek(1).kind != "IDENT" or p.peek(1).col > p.peek().col + 1)
+                        and (self.profile.known_first_word_pass1 or p.i > 1)):
+                    # a trailing `.` stays on the name (`junk.`: an unknown name, oracle 2026-10-08;
+                    # `T.` compiles for a table, `X.` is `Could not find X.`, all four loggers; a blank
+                    # between the dot and a name ends the member: `T. To 3`, `T. Then`, `T. X` adjacent operands)
                     p.next()
                     node = S.Name(tok.line, file, tok.text + ".")
                     break

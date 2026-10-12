@@ -6032,3 +6032,33 @@ first: once per missing argument and once per argument holding a variable, then 
 `Invalid, or out of place expression:`), `A = IfTime(A,B,Min,3)`: two (then `No Matching, or out of place )`). A valid call is
 quiet unless an argument is a variable: `If IfTime(A,1,Min) Then` compiles with two of these warnings per variable
 (both passes); not modelled (the order against other output is unprobed). 9 fuzz reproducers. `warnings.add_truncate_warnings`.
+
+## Round 14 follow-ups
+
+### Trailing dot and letter-led members (fixture `tests/fixtures/r14_trailing_dot_members.json`)
+
+Oracle, all four loggers, 2026-10-12 (`expressions.check_digit_members`, `parser._parse_atom`):
+
+- **`T.` / `Status.` is a valid operand** (a data table or `Status` followed by a dot and no
+  member) in assignments, `If` conditions and every `For` header position
+  (`For I = 1 To T. `, `... Step T. `, `For I = T. To 3`, `X = T. + 1`, `If T. Then`). Any other name
+  (`X.`, `A.`, `Zork.`) is the single line `Could not find X.` (CR300/CR350
+  `Could not find DataTable X.`). The parser keeps the trailing dot on the name on every logger
+  (CR300/CR350 formerly only kept it for the first token of a statement, which stays, `instruction.`
+  prose lines), and a blank between the dot and the next name ends the member: `T. To 3`,
+  `T. Then`, `T. And 1` compile, `T. X` is adjacent operands (`Incomplete expression`), while
+  `T.To` / `T.Then` (no blank) are members (`Could not find T.To(1).`).
+- **A letter-led member of a plain declared name** is `Could not find X.` exactly like the digit-led
+  one (`X.Y`, `A.Y`, `S.Y`, `D.Y`, `K.Y` for a `Const`, an `Alias` name, a pointer `P As Long!`, a `Sub`
+  parameter, a `Function` name, `X.Y.Z`; as an assignment target also `Invalid assignment in
+  expression`; CR300/CR350 `Could not find DataTable X.`). Structure-typed names accept any member
+  (not modelled).
+- **Not implemented (documented):** member existence of a data table or `Status` (`T.Nope`,
+  `Status.RecNum`, `To Status.RecNum` -> `Could not find Status.RecNum(1).`, accepted here). The
+  `Status` field set depends on the logger and on program features (the CR6 TDF list plus
+  `SkippedSlowScan`/`SlowProcTime`/..., CR300/CR350 have a different, smaller list with e.g.
+  `IPInfo`, `Version`); 398 candidate names were probed per logger and the valid sets differ, so a
+  rule would risk false rejects. CR6/CR1000X `Zork.X` for an undeclared name is `Could not find
+  Zork.` (ours: `Invalid symbol in expression`); `T.(1)` compiles (ours rejects); `T..X` is
+  `Could not find T..X(1).`; `A(1).Y` is `Incomplete expression: <statement>.` (accepted);
+  CR300/CR350 `To T. 3` echoes only the broken half (`T. 3`), ours the whole statement (task 3).

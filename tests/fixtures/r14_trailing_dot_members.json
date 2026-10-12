@@ -1,0 +1,1331 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-trail-0-f1_to_T_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-0-f1_to_T_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-0-f1_to_T_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-0-f1_to_T_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-1-f1_to_T_dot_nospace",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-1-f1_to_T_dot_nospace",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-1-f1_to_T_dot_nospace",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-1-f1_to_T_dot_nospace",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-2-f1_to_X_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-2-f1_to_X_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-2-f1_to_X_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-2-f1_to_X_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-3-f1_step_T_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-3-f1_step_T_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-3-f1_step_T_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-3-f1_step_T_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-4-f1_init_T_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-4-f1_init_T_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-4-f1_init_T_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-4-f1_init_T_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-6-f1_to_A_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To A. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find A."
+  },
+  {
+   "id": "cr1000x-trail-6-f1_to_A_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To A. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find A."
+  },
+  {
+   "id": "cr300-trail-6-f1_to_A_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To A. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr350-trail-6-f1_to_A_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To A. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr6-trail-8-f1_to_Tdotsp3",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T. 3."
+  },
+  {
+   "id": "cr1000x-trail-8-f1_to_Tdotsp3",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T. 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression: T. 3."
+  },
+  {
+   "id": "cr6-trail-9-f1_to_status_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-9-f1_to_status_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-9-f1_to_status_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-9-f1_to_status_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-10-f1b_to_X_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-10-f1b_to_X_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-10-f1b_to_X_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-10-f1b_to_X_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-11-f1b_to_Zork_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Zork."
+  },
+  {
+   "id": "cr1000x-trail-11-f1b_to_Zork_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Zork."
+  },
+  {
+   "id": "cr300-trail-11-f1b_to_Zork_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr350-trail-11-f1b_to_Zork_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr300-trail-12-f1b_to_Zork_x",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr350-trail-12-f1b_to_Zork_x",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Zork.X\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr6-trail-13-f1b_to_X_x",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X.Y\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-13-f1b_to_X_x",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X.Y\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-13-f1b_to_X_x",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X.Y\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-13-f1b_to_X_x",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To X.Y\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-20-f1b_to_status_ts",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-20-f1b_to_status_ts",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-20-f1b_to_status_ts",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-20-f1b_to_status_ts",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To Status.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-21-f1b_to_T_ts",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-21-f1b_to_T_ts",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-21-f1b_to_T_ts",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-21-f1b_to_T_ts",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.TimeStamp(1,1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-22-f1b_to_T_rn",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.Record(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-22-f1b_to_T_rn",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.Record(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-22-f1b_to_T_rn",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.Record(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-22-f1b_to_T_rn",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To T.Record(1)\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-23-g2_as_t_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-23-g2_as_t_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-23-g2_as_t_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-23-g2_as_t_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-24-g2_as_x_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-24-g2_as_x_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-24-g2_as_x_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-24-g2_as_x_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-25-g2_as_x_y",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-25-g2_as_x_y",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-25-g2_as_x_y",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-25-g2_as_x_y",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-26-g2_as_a_y",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find A."
+  },
+  {
+   "id": "cr1000x-trail-26-g2_as_a_y",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find A."
+  },
+  {
+   "id": "cr300-trail-26-g2_as_a_y",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr350-trail-26-g2_as_a_y",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable A."
+  },
+  {
+   "id": "cr6-trail-27-g2_as_status_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Status. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-27-g2_as_status_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Status. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-27-g2_as_status_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Status. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-27-g2_as_status_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Status. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-28-g2_if_t_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-28-g2_if_t_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-28-g2_if_t_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-28-g2_if_t_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-29-g2_as_zork_dot",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Zork. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Zork."
+  },
+  {
+   "id": "cr1000x-trail-29-g2_as_zork_dot",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Zork. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find Zork."
+  },
+  {
+   "id": "cr300-trail-29-g2_as_zork_dot",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Zork. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr350-trail-29-g2_as_zork_dot",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = Zork. \n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable Zork."
+  },
+  {
+   "id": "cr6-trail-30-g2_as_t_dot_plus",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-30-g2_as_t_dot_plus",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-30-g2_as_t_dot_plus",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-30-g2_as_t_dot_plus",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-31-g2_as_x_dot_plus",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-31-g2_as_x_dot_plus",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-31-g2_as_x_dot_plus",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-31-g2_as_x_dot_plus",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = X. + 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-32-g4_pub",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-32-g4_pub",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr300-trail-32-g4_pub",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-32-g4_pub",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-33-g4_arr",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find A."
+  },
+  {
+   "id": "cr1000x-trail-33-g4_arr",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find A."
+  },
+  {
+   "id": "cr300-trail-33-g4_arr",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable A."
+  },
+  {
+   "id": "cr350-trail-33-g4_arr",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = A.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable A."
+  },
+  {
+   "id": "cr6-trail-35-g4_str",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = S.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S."
+  },
+  {
+   "id": "cr1000x-trail-35-g4_str",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = S.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find S."
+  },
+  {
+   "id": "cr300-trail-35-g4_str",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = S.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S."
+  },
+  {
+   "id": "cr350-trail-35-g4_str",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = S.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable S."
+  },
+  {
+   "id": "cr6-trail-36-g4_dim",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = D.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find D."
+  },
+  {
+   "id": "cr1000x-trail-36-g4_dim",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = D.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find D."
+  },
+  {
+   "id": "cr300-trail-36-g4_dim",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = D.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable D."
+  },
+  {
+   "id": "cr350-trail-36-g4_dim",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = D.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable D."
+  },
+  {
+   "id": "cr6-trail-37-g4_const",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = K.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find K."
+  },
+  {
+   "id": "cr1000x-trail-37-g4_const",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = K.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find K."
+  },
+  {
+   "id": "cr300-trail-37-g4_const",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = K.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable K."
+  },
+  {
+   "id": "cr350-trail-37-g4_const",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = K.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable K."
+  },
+  {
+   "id": "cr6-trail-38-g4_alias",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Xal.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Xal."
+  },
+  {
+   "id": "cr1000x-trail-38-g4_alias",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Xal.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find Xal."
+  },
+  {
+   "id": "cr300-trail-38-g4_alias",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Xal.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Xal."
+  },
+  {
+   "id": "cr350-trail-38-g4_alias",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Xal.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable Xal."
+  },
+  {
+   "id": "cr6-trail-39-g4_ptr",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = P.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find P."
+  },
+  {
+   "id": "cr1000x-trail-39-g4_ptr",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = P.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find P."
+  },
+  {
+   "id": "cr300-trail-39-g4_ptr",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = P.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable P."
+  },
+  {
+   "id": "cr350-trail-39-g4_ptr",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = P.Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable P."
+  },
+  {
+   "id": "cr6-trail-40-g4_struct",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.n\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-40-g4_struct",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.n\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-40-g4_struct",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.n\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-40-g4_struct",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.n\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-41-g4_structbad",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.zz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: In structure Cfg, could not find .zz"
+  },
+  {
+   "id": "cr1000x-trail-41-g4_structbad",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.zz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: In structure Cfg, could not find .zz"
+  },
+  {
+   "id": "cr300-trail-41-g4_structbad",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.zz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Could not find Cfg.zz(1)."
+  },
+  {
+   "id": "cr350-trail-41-g4_structbad",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nStructureType ST\n  n As Long\nEndStructureType\nPublic Cfg As ST\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Cfg.zz\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 11: Could not find Cfg.zz(1)."
+  },
+  {
+   "id": "cr6-trail-42-g4_lit",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-42-g4_lit",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr300-trail-42-g4_lit",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-42-g4_lit",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = X.Y.Z\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-43-g4_target",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid assignment in expression:     X.Y = 1."
+  },
+  {
+   "id": "cr1000x-trail-43-g4_target",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X.\nline 7: Invalid assignment in expression:     X.Y = 1."
+  },
+  {
+   "id": "cr300-trail-43-g4_target",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X.\nline 7: Invalid assignment in expression:     X.Y = 1\n."
+  },
+  {
+   "id": "cr350-trail-43-g4_target",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    X.Y = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X.\nline 7: Invalid assignment in expression:     X.Y = 1\n."
+  },
+  {
+   "id": "cr6-trail-44-g4_inargs",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Sin(X.Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-44-g4_inargs",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Sin(X.Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr300-trail-44-g4_inargs",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Sin(X.Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-44-g4_inargs",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Sin(X.Y)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-45-g4_inif",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    If X.Y > 1 Then I = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-45-g4_inif",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    If X.Y > 1 Then I = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find X."
+  },
+  {
+   "id": "cr300-trail-45-g4_inif",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    If X.Y > 1 Then I = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-45-g4_inif",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nBeginProg\n  Scan (1,Sec,3,0)\n    If X.Y > 1 Then I = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 7: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-46-g4_subparam",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nSub Sb(R)\n  I = R.n\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Sb(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find R."
+  },
+  {
+   "id": "cr1000x-trail-46-g4_subparam",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nSub Sb(R)\n  I = R.n\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Sb(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find R."
+  },
+  {
+   "id": "cr300-trail-46-g4_subparam",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nSub Sb(R)\n  I = R.n\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Sb(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable R."
+  },
+  {
+   "id": "cr350-trail-46-g4_subparam",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nSub Sb(R)\n  I = R.n\nEndSub\nBeginProg\n  Scan (1,Sec,3,0)\n    Sb(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable R."
+  },
+  {
+   "id": "cr6-trail-47-g4_fnname",
+   "logger": "cr6",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nFunction Fn(Q)\n  Fn = Fn.Y\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find Fn."
+  },
+  {
+   "id": "cr1000x-trail-47-g4_fnname",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nFunction Fn(Q)\n  Fn = Fn.Y\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find Fn."
+  },
+  {
+   "id": "cr300-trail-47-g4_fnname",
+   "logger": "cr300",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nFunction Fn(Q)\n  Fn = Fn.Y\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Fn."
+  },
+  {
+   "id": "cr350-trail-47-g4_fnname",
+   "logger": "cr350",
+   "source": "Public I, X, A(3), S As String * 8, P As Long!\nAlias X = Xal\nDim D As Long\nConst K = 5\nFunction Fn(Q)\n  Fn = Fn.Y\nEndFunction\nBeginProg\n  Scan (1,Sec,3,0)\n    I = Fn(1)\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 6: Could not find DataTable Fn."
+  },
+  {
+   "id": "cr6-trail-48-g5_then",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-48-g5_then",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-48-g5_then",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-48-g5_then",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-49-g5_and",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. And 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-49-g5_and",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. And 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-49-g5_and",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. And 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-49-g5_and",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. And 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-50-g5_and2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. And 1 Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-50-g5_and2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. And 1 Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-50-g5_and2",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. And 1 Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-50-g5_and2",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If T. And 1 Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-51-g5_mod",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = 3 Mod T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-51-g5_mod",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = 3 Mod T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-51-g5_mod",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = 3 Mod T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-51-g5_mod",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = 3 Mod T. \n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-trail-52-g5_sp_ident",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:     X = T. X\n."
+  },
+  {
+   "id": "cr350-trail-52-g5_sp_ident",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. X\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Incomplete expression:     X = T. X\n."
+  },
+  {
+   "id": "cr6-trail-53-g5_sp_ident2",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = T. Y."
+  },
+  {
+   "id": "cr1000x-trail-53-g5_sp_ident2",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    X = T. Y\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Invalid symbol in expression:     X = T. Y."
+  },
+  {
+   "id": "cr6-trail-55-g5_for_init",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-55-g5_for_init",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-55-g5_for_init",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-55-g5_for_init",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = T. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-56-g5_for_step",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-trail-56-g5_for_step",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-trail-56-g5_for_step",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-trail-56-g5_for_step",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = 1 To 3 Step T. \n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-trail-57-g5_for_init_x",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = X. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-57-g5_for_init_x",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = X. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-57-g5_for_init_x",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = X. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-57-g5_for_init_x",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    For I = X. To 3\n    Next I\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr6-trail-58-g5_then_x",
+   "logger": "cr6",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If X. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr1000x-trail-58-g5_then_x",
+   "logger": "cr1000x",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If X. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find X."
+  },
+  {
+   "id": "cr300-trail-58-g5_then_x",
+   "logger": "cr300",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If X. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  },
+  {
+   "id": "cr350-trail-58-g5_then_x",
+   "logger": "cr350",
+   "source": "Public I, X, A(3)\nDataTable (T,True,-1)\n  Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (1,Sec,3,0)\n    CallTable T\n    If X. Then X = 1\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 8: Could not find DataTable X."
+  }
+ ]
+}
