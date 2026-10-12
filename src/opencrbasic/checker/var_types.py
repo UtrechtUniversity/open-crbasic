@@ -166,18 +166,29 @@ def _same_type(dest: str, source: str) -> bool:
     return dest == source or (dest == "STRING" and source == "FLOAT")
 
 
-def _indexed_past_first(typer: "_Typer", dest: S.Expr) -> bool:
+def _indexed_past_first(typer: "_Typer", dest: S.Expr, env: consteval.Env) -> bool:
     """`RoutersNeighbors` takes the whole array: a subscript that is a variable, a binary
     expression or a literal of 2 or more is `Destination variable cannot be indexed` (oracle,
     2026-10-08: `L(1)`, `L(1.5)`, `L(-1)` and `(1,1)` compile, `L(0)` adds an out-of-bounds line
     and is not modelled). A subscript that is a `Const` name, or a parenthesised literal, is not
-    probed (the parser drops the parentheses, so `(1)` reads as `1`)."""
+    probed (the parser drops the parentheses, so `(1)` reads as `1`). Also (oracle, all four
+    loggers, 2026-10-12, r15_routers_neighbors_index): a string literal and a
+    `Const` name whose value is 2 or more (`Const One=1.5` compiles; `Const Zero=0` adds the
+    out-of-bounds line, not modelled)."""
     if not isinstance(dest, S.Index):
         return False
     for a in dest.args:
-        if isinstance(a, S.Binary) or (isinstance(a, S.Name) and typer.variable(a) is not None) \
+        if isinstance(a, (S.Binary, S.String)) or \
+                (isinstance(a, S.Name) and typer.variable(a) is not None) \
                 or (isinstance(a, S.Number) and a.value >= 2):
             return True
+        if isinstance(a, S.Name):
+            try:
+                value = consteval.value_of(a, env)
+            except consteval.NotConstant:
+                continue
+            if isinstance(value, (int, float)) and not isinstance(value, bool) and value >= 2:
+                return True
     return False
 
 
@@ -208,7 +219,7 @@ def check(program: S.Program, profile, diags: Diagnostics, env: consteval.Env) -
             if typer.variable(args[0]) is not None or isinstance(args[0], S.String):
                 if kind != "LONG":
                     message = "Destination variable must be type LONG"
-                elif _indexed_past_first(typer, args[0]):
+                elif _indexed_past_first(typer, args[0], env):
                     message = "Destination variable cannot be indexed"
         elif kw == "INSTRUCTIONTIMES" and args and typer.variable(args[0]) is not None:
             # (oracle, all four loggers, 2026-10-12: a Float/String/Boolean destination anywhere;

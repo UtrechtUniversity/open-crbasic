@@ -1989,3 +1989,13 @@ the uninitialised shape `-842150451,-842150451`): options 1, 2, 4, 5 `Illegal Ma
 dimensioned, must be m,q` (`m` = rows of A, `q` = columns of B, either may print as `-842150451`) when `Dest` is undefined.
 `Matrix(Zork,X,X,Add)` (the option undefined) and an indexed operand are unchanged. CR300/CR350 are unchanged (`Zork is not
 defined.` then the cascade). `instr_rules.matrix_undefined_operands`.
+### `RoutersNeighbors` destination subscripts: string literals, negated literals, `Const` names
+
+`RoutersNeighbors (DestArray(<index>))` is `Destination variable cannot be indexed` (all four loggers)
+for a string literal subscript (`("fuzz")`, `("")`, `("1")`, `(1,"1")`, `("a",1)`) and a `Const` name whose
+value is 2 or more (`Const MaxRouters=3`, `Const Two=2`); `Const One=1` and `Const OneF=1.5` compile, as do
+`(1)`, `(+1)`, `(1.5,1)`. A `Const` of 0 or -1 and the literal 0, 0.5, `TRUE`, `NAN` also add `Variable
+DestArray out of bounds.` before it (not modelled). A negative literal is not modelled either: `Arr(-1)`
+and `DestArray(1,-1)` (the last subscript) compile, `DestArray(-1)`, `DestArray(-1,1)` and `Arr(-2)` do not. R15,
+`tests/fixtures/r15_routers_neighbors_index.json` (audited 0 differing); fuzz reproducer
+`cr350/false_accept/00c15e34f28e`.
