@@ -1926,3 +1926,16 @@ differing), fuzz reproducer `cr1000x/false_reject/802ff201c036`
 table builder raised `ValueError` from `float("fuzz")` (an `IMPLEMENTATION EXCEPTION`, reported as
 `Internal error`); the string is now taken as 0. R14, `tests/fixtures/r14_datainterval_string_arg.json`
 (audited 0 differing), fuzz reproducer `cr350/implementation_exception/25a45bf41175`.
+
+### Structure-typed output sources on CR300/CR350: one element, no bounds check, `Fieldnames` inert
+
+On CR300/CR350 an output instruction (`Sample`, `Average`, `Minimum`, `Maximum`, ...) whose source is a
+`StructureType` variable expands one element's members whatever `Reps` says: `Sample (255,P,VW)`,
+`Sample (4,P(2),VW)` and `Average (3,P,VW,False)` for `Public P(3) As VW` compile, with no `Variable P
+out of bounds.` and no `Duplicate field name` lines for the repeated members. `Fieldnames` after such
+an instruction renames nothing (`Fieldnames("a,a,a")` is clean, two instructions both followed by
+`Fieldnames("a,b,c")` do not collide). Duplicates still appear for a genuine second element or
+instruction (`Sample (1,P(1),VW) : Sample (1,P(2),VW)` -> `F`, `A`). CR6/CR1000X are unchanged (the
+duplicate lists there are long and not re-verified here). R14, `tests/fixtures/r14_cr3xx_struct_source_reps.json`
+(CR300/CR350 only, audited 0 differing); fuzz false rejects `structuretype_1.CR6` mutants (seed 403,
+`Average (&HFF,Piezometer,...)` and an `EndTable` moved above the last `Fieldnames`).

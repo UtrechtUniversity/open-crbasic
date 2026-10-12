@@ -845,6 +845,14 @@ def _report_undefined_source(st: S.Instruction, record: dict, known: set[str], p
     return False
 
 
+def _is_struct_typed(program: S.Program, name: str) -> bool:
+    types = {st.args[0].name.upper() for st in program.statements
+             if isinstance(st, S.Instruction) and st.keyword.upper() == "STRUCTURETYPE"
+             and st.args and isinstance(st.args[0], S.Name)}
+    return any((v.type or "").upper() in types for d in program.statements
+               if isinstance(d, S.Declaration) for v in d.vars if v.name.upper() == name.upper())
+
+
 def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env,
                    destinations: bool) -> bool:
     from . import expressions
@@ -890,6 +898,8 @@ def _check_stage2a(program: S.Program, profile: Profile, diags: Diagnostics, env
             shape = dims.get(source.name.upper())
             if shape is None or len(shape) != 1:
                 continue
+            if not destinations and _is_struct_typed(program, source.name):
+                continue  # CR300/CR350 never bounds-check a StructureType source (oracle, 2026-10-12)
             start = 1
             if isinstance(source, S.Index):
                 if len(source.args) != 1 or source.args[0] is None:

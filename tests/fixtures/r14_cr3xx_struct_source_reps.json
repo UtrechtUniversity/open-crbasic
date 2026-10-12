@@ -1,0 +1,491 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-0",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-1",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (255,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-2",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-3",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (5,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-4",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (&HFF,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-5",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (255,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-6",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-7",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Minimum (255,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-8",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Maximum (255,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-9",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (255,S,IEEE4,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable S out of bounds.\nline 10: Variable S, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-10",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,S,IEEE4,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable S out of bounds.\nline 10: Variable S, index 1, reps 4, out of bounds."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-11",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (2,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-12",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P,FP2)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-13",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-14",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-15",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P(1),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-16",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-17",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-18",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P(1),VW) : Sample (1,P(1),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-19",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P(1),VW) : Sample (1,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-20",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,X,FP2) : Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name X in DataTable T."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-21",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Sample (3,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-22",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (1,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-23",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (2,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-24",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-25",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-26",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,a,a\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-27",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-28",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\") : Average (3,P,VW,False) : Fieldnames(\"a,b,c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-29",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\") : Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-30",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-31",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Average (3,P,VW,False) : Minimum (3,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-32",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (2,P,VW) : Fieldnames(\"a,b\") : Sample (1,P(3),VW) : Fieldnames(\"c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr300-r14_cr3xx_struct_source_reps-33",
+   "logger": "cr300",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (2,P,VW) : Sample (1,P(3),VW) \nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-0",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-1",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (255,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-2",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-3",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (5,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-4",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (&HFF,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-5",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (255,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-6",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-7",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Minimum (255,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-8",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Maximum (255,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-9",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (255,S,IEEE4,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable S out of bounds.\nline 10: Variable S, index 1, reps 255, out of bounds."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-10",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,S,IEEE4,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 10: Variable S out of bounds.\nline 10: Variable S, index 1, reps 4, out of bounds."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-11",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (2,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-12",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P,FP2)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-13",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-14",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-15",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P(1),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-16",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-17",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (4,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-18",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P(1),VW) : Sample (1,P(1),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-19",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,P(1),VW) : Sample (1,P(2),VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-20",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (1,X,FP2) : Sample (1,X,FP2)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name X in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-21",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Sample (3,P,VW)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-22",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (1,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-23",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (2,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-24",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Average (4,P(1),VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-25",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-26",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,a,a\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-27",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-28",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\") : Average (3,P,VW,False) : Fieldnames(\"a,b,c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-29",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Fieldnames(\"a,b,c\") : Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-30",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Average (3,P,VW,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-31",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (3,P,VW) : Average (3,P,VW,False) : Minimum (3,P,VW,False,False)\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-32",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (2,P,VW) : Fieldnames(\"a,b\") : Sample (1,P(3),VW) : Fieldnames(\"c\")\nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  },
+  {
+   "id": "cr350-r14_cr3xx_struct_source_reps-33",
+   "logger": "cr350",
+   "source": "StructureType VW\n  F As Float\n  A As Float\nEndStructureType\nPublic P(3) As VW\nPublic S(3)\nPublic X\nDataTable (T,True,500)\n  DataInterval (0,60,Sec,10)\n  Sample (2,P,VW) : Sample (1,P(3),VW) \nEndTable\nBeginProg\n  Scan (6,Sec,3,0)\n    CallTable T\n  NextScan\nEndProg\n",
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nDuplicate field name F in DataTable T.\nDuplicate field name A in DataTable T."
+  }
+ ]
+}

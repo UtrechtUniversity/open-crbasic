@@ -914,6 +914,8 @@ def _emit_struct_fields(instr: S.Instruction, var_info: dict, env: consteval.Env
     if kw in ("MAXIMUM", "MINIMUM") and len(a) > 4 and str(getattr(a[4], "name", "")).upper() == "TRUE":
         return None  # time-of-extreme fields of a structure source: not probed
     reps = _as_int(_fold(a[0], env, 1), 1)
+    if env.profile.name in ("cr300", "cr350"):
+        reps = 1  # CR300/CR350 expand one element whatever Reps says (oracle, 2026-10-12)
     suffix, tag = _STRUCT_SUFFIX[kw]
     st = info.struct
     out = []
@@ -1046,9 +1048,11 @@ def _emit_output_fields_raw(instr: S.Instruction, var_info: dict, by_display: di
     return []
 
 
-def _apply_fieldnames(fields: list[_OutField], arg: str) -> list[_OutField]:
+def _apply_fieldnames(fields: list[_OutField], arg: str, profile_name: str = "") -> list[_OutField]:
     parts = arg.split(",")
     n_members = fields[0].struct_members if fields else 0
+    if n_members and profile_name in ("cr300", "cr350"):
+        return fields  # `Fieldnames` after a structure source renames nothing there (oracle, 2026-10-12)
     if n_members:
         # structure source: name k prefixes every member of element k (`<name>_<member>`), the
         # instruction's own suffix (`_Avg`...) is dropped; unnamed elements keep default names
@@ -1187,7 +1191,7 @@ def _build_data_table(dt: DataTableDecl, env: consteval.Env, var_info: dict,
             has_card = True
         elif kw == "FIELDNAMES":
             if s.args and isinstance(s.args[0], S.String) and pending:
-                pending = _apply_fieldnames(pending, s.args[0].value)
+                pending = _apply_fieldnames(pending, s.args[0].value, env.profile.name)
                 out_fields.extend(split_pending())
                 pending, pending_src = [], None
         elif kw in _OUTPUT_KEYWORDS:
