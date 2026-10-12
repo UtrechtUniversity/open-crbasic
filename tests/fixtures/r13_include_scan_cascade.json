@@ -1,0 +1,615 @@
+{
+ "observation_date": "2026-10-12",
+ "compilers": {
+  "cr6": {
+   "exe": "CR6Comp.exe",
+   "sha256": "f6a6efca455f88225fe4f46732409ccf96d8cd4f9201b717746c4dc69ba14f55"
+  },
+  "cr1000x": {
+   "exe": "cr1000xcomp.exe",
+   "sha256": "9c327f8bae2e55546e5c7a35c931d2f5c21516ed121612e869e1c9c8a6072175"
+  },
+  "cr300": {
+   "exe": "cr300comp.exe",
+   "sha256": "755329ee63309bfe8299fc65523e5e231ce18138cfb59209a79b4eb2c04275a1"
+  },
+  "cr350": {
+   "exe": "cr350comp.exe",
+   "sha256": "741ed2701391b8d570a9cf64220c656d90e3caf06c4c60266815c9d0deec5381"
+  }
+ },
+ "cases": [
+  {
+   "id": "cr6-include_scan_cascade-0-scan-only",
+   "logger": "cr6",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-0-scan-only",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-include_scan_cascade-0-scan-only",
+   "logger": "cr300",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-include_scan_cascade-0-scan-only",
+   "logger": "cr350",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-include_scan_cascade-1-badext",
+   "logger": "cr6",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-1-badext",
+   "logger": "cr1000x",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-1-badext",
+   "logger": "cr300",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-1-badext",
+   "logger": "cr350",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-2-badext-exists",
+   "logger": "cr6",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "x.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-2-badext-exists",
+   "logger": "cr1000x",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "x.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-2-badext-exists",
+   "logger": "cr300",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "x.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-2-badext-exists",
+   "logger": "cr350",
+   "source": "Include \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "x.txt": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-3-badext-section",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-3-badext-section",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-3-badext-section",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-3-badext-section",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-4-missing",
+   "logger": "cr6",
+   "source": "Include \"x.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  x.crb."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-4-missing",
+   "logger": "cr1000x",
+   "source": "Include \"x.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode.\nline 1: Warning: Cannot open include file  x.crb."
+  },
+  {
+   "id": "cr300-include_scan_cascade-4-missing",
+   "logger": "cr300",
+   "source": "Include \"x.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  x.crb."
+  },
+  {
+   "id": "cr350-include_scan_cascade-4-missing",
+   "logger": "cr350",
+   "source": "Include \"x.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK.\nline 1: Warning: Cannot open include file  x.crb."
+  },
+  {
+   "id": "cr6-include_scan_cascade-5-lib-error",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-5-lib-error",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-include_scan_cascade-5-lib-error",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-5-lib-error",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Public X\nPublic X\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 2: X already declared as a variable.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-6-lib-error-syntax",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-6-lib-error-syntax",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Invalid, or out of place expression: (1,2)."
+  },
+  {
+   "id": "cr300-include_scan_cascade-6-lib-error-syntax",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: 1,2.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-6-lib-error-syntax",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "(1,2)\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Invalid, or out of place expression: 1,2.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-7-lib-nested",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\n",
+    "m.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-7-lib-nested",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\n",
+    "m.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-include_scan_cascade-7-lib-nested",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\n",
+    "m.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Include file within an Include file is illegal.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-7-lib-nested",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\n",
+    "m.crb": "Public Q\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Include file within an Include file is illegal.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-8-badext-mid",
+   "logger": "cr6",
+   "source": "BeginProg\nInclude \"x.txt\"\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-8-badext-mid",
+   "logger": "cr1000x",
+   "source": "BeginProg\nInclude \"x.txt\"\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-8-badext-mid",
+   "logger": "cr300",
+   "source": "BeginProg\nInclude \"x.txt\"\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-8-badext-mid",
+   "logger": "cr350",
+   "source": "BeginProg\nInclude \"x.txt\"\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-9-badext-late",
+   "logger": "cr6",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\nInclude \"x.txt\"\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-9-badext-late",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\nInclude \"x.txt\"\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled in PipelineMode."
+  },
+  {
+   "id": "cr300-include_scan_cascade-9-badext-late",
+   "logger": "cr300",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\nInclude \"x.txt\"\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr350-include_scan_cascade-9-badext-late",
+   "logger": "cr350",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\nInclude \"x.txt\"\n",
+   "siblings": {},
+   "expected_exit": 0,
+   "expected_stdout": "t.CR6 -- Compiled OK."
+  },
+  {
+   "id": "cr6-include_scan_cascade-10-main-err",
+   "logger": "cr6",
+   "source": "Public X\nPublic X\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-10-main-err",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic X\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable."
+  },
+  {
+   "id": "cr300-include_scan_cascade-10-main-err",
+   "logger": "cr300",
+   "source": "Public X\nPublic X\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-10-main-err",
+   "logger": "cr350",
+   "source": "Public X\nPublic X\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 4: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-11-main-err-plus-bad",
+   "logger": "cr6",
+   "source": "Public X\nPublic X\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-11-main-err-plus-bad",
+   "logger": "cr1000x",
+   "source": "Public X\nPublic X\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-11-main-err-plus-bad",
+   "logger": "cr300",
+   "source": "Public X\nPublic X\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 3: Include file x.txt must have valid program file extension.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-11-main-err-plus-bad",
+   "logger": "cr350",
+   "source": "Public X\nPublic X\nInclude \"x.txt\"\nBeginProg\nScan (1,Sec,0,0)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 2: X already declared as a variable.\nline 3: Include file x.txt must have valid program file extension.\nline 5: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-12-badext-inscan",
+   "logger": "cr6",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nInclude \"x.txt\"\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-12-badext-inscan",
+   "logger": "cr1000x",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nInclude \"x.txt\"\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-12-badext-inscan",
+   "logger": "cr300",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nInclude \"x.txt\"\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr350-include_scan_cascade-12-badext-inscan",
+   "logger": "cr350",
+   "source": "BeginProg\nScan (1,Sec,0,0)\nInclude \"x.txt\"\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 3: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr6-include_scan_cascade-13-badext-pre-table",
+   "logger": "cr6",
+   "source": "Include \"x.txt\"\nDataTable(T,1,-1)\nSample(1,Q,IEEE4)\nEndTable\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-13-badext-pre-table",
+   "logger": "cr1000x",
+   "source": "Include \"x.txt\"\nDataTable(T,1,-1)\nSample(1,Q,IEEE4)\nEndTable\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-13-badext-pre-table",
+   "logger": "cr300",
+   "source": "Include \"x.txt\"\nDataTable(T,1,-1)\nSample(1,Q,IEEE4)\nEndTable\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  Q.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr350-include_scan_cascade-13-badext-pre-table",
+   "logger": "cr350",
+   "source": "Include \"x.txt\"\nDataTable(T,1,-1)\nSample(1,Q,IEEE4)\nEndTable\nBeginProg\nScan (1,Sec,0,0)\nCallTable T\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 2: Too many parameters:  1.\nline 3: Too many parameters:  Q.\nline 6: Too many parameters:  Sec."
+  },
+  {
+   "id": "cr6-include_scan_cascade-14-nested-then-use",
+   "logger": "cr6",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nQ=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\nPublic Q\n",
+    "m.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-14-nested-then-use",
+   "logger": "cr1000x",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nQ=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\nPublic Q\n",
+    "m.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<l.crb> line 1: Include file within an Include file is illegal."
+  },
+  {
+   "id": "cr300-include_scan_cascade-14-nested-then-use",
+   "logger": "cr300",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nQ=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\nPublic Q\n",
+    "m.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Include file within an Include file is illegal.\nline 3: Too many parameters:  Sec.\nline 4: Q is not defined."
+  },
+  {
+   "id": "cr350-include_scan_cascade-14-nested-then-use",
+   "logger": "cr350",
+   "source": "Include \"CPU:l.crb\"\nBeginProg\nScan (1,Sec,0,0)\nQ=1\nNextScan\nEndProg\n",
+   "siblings": {
+    "l.crb": "Include \"CPU:m.crb\"\nPublic Q\n",
+    "m.crb": "Public Z\n"
+   },
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\n<CPU:l.crb> line 1: Include file within an Include file is illegal.\nline 3: Too many parameters:  Sec.\nline 4: Q is not defined."
+  },
+  {
+   "id": "cr6-include_scan_cascade-15-badext-then-batt",
+   "logger": "cr6",
+   "source": "Include \"x.txt\"\nPublic B\nBeginProg\nScan (1,Sec,0,0)\nBattery(B)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-15-badext-then-batt",
+   "logger": "cr1000x",
+   "source": "Include \"x.txt\"\nPublic B\nBeginProg\nScan (1,Sec,0,0)\nBattery(B)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-15-badext-then-batt",
+   "logger": "cr300",
+   "source": "Include \"x.txt\"\nPublic B\nBeginProg\nScan (1,Sec,0,0)\nBattery(B)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 4: Too many parameters:  Sec.\nline 5: B is not defined."
+  },
+  {
+   "id": "cr350-include_scan_cascade-15-badext-then-batt",
+   "logger": "cr350",
+   "source": "Include \"x.txt\"\nPublic B\nBeginProg\nScan (1,Sec,0,0)\nBattery(B)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 4: Too many parameters:  Sec.\nline 5: B is not defined."
+  },
+  {
+   "id": "cr6-include_scan_cascade-16-badext-sec-section",
+   "logger": "cr6",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nPortSet(C1,1)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr1000x-include_scan_cascade-16-badext-sec-section",
+   "logger": "cr1000x",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nPortSet(C1,1)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension."
+  },
+  {
+   "id": "cr300-include_scan_cascade-16-badext-sec-section",
+   "logger": "cr300",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nPortSet(C1,1)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  1."
+  },
+  {
+   "id": "cr350-include_scan_cascade-16-badext-sec-section",
+   "logger": "cr350",
+   "source": "IncludeSection(\"A\",\"x.txt\")\nBeginProg\nScan (1,Sec,0,0)\nPortSet(C1,1)\nNextScan\nEndProg\n",
+   "siblings": {},
+   "expected_exit": 1,
+   "expected_stdout": "t.CR6 -- Compile Failed!\n\nline 1: Include file x.txt must have valid program file extension.\nline 3: Too many parameters:  Sec.\nline 4: Too many parameters:  1."
+  }
+ ]
+}

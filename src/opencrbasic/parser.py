@@ -326,6 +326,8 @@ class _Parser:
                 if self._active():
                     (self.diags.warning if ll.kind == "include_warning" else self.diags.error)(
                         ll.line, ll.text, ll.file)
+                    if ll.kind == "include_error":  # (CR300/CR350 cascade trigger, `cr3xx`)
+                        self.program.include_error_at.append(len(self.program.statements))
                 continue
             if ll.kind == "overflow":
                 self.diags.error(ll.line, "Line exceeds max characters of 512.", ll.file)

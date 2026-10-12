@@ -65,9 +65,16 @@ commands are given so they can be re-run.
   the bare `Include` error was raised even in an inactive branch or after `EndProg` (false
   reject). Not covered: a self-include written without a drive (`Include "t.CR6"`) still prints
   no `<t.CR6>` prefix (its name is indistinguishable from the main program's); an inline
-  `If x Then Include "f"` and `Include:"f"` in an included file are not recognised; CR300/CR350 omit
-  the `Too many parameters:  Sec.` cascade after an include error with `Scan (1,Sec,0,0)` in the
-  program (also for a bad include extension in the main file; pre-existing).
+  `If x Then Include "f"` and `Include:"f"` in an included file are not recognised.
+- **An include error starts the CR300/CR350 `Too many parameters` cascade** (oracle, 2026-10-12,
+  fixture `r13_include_scan_cascade.json`, 68 cases): after `Include file ... must have valid
+  program file extension.` or `Include file within an Include file is illegal.` (main or included
+  file, `Include` or `IncludeSection`) the statements that follow are rewritten like after any
+  undefined-name error (`line N: Too many parameters:  Sec.` for `Scan (1,Sec,0,0)`, the table
+  fields of a later `DataTable`, `Q is not defined.`); statements before the error, and a missing
+  file's warning, are unaffected. `Program.include_error_at` records the statement count at each
+  reported include error; `cr3xx.check_too_many_cascade` taints from the first statement at or
+  after it. CR6/CR1000X have no cascade.
 - `Section` (as read by a `#If Section = "Name" Then` inside an `IncludeSection()`-included file)
   is bound to the `Name` argument only for the lines that call brought in. Referencing `Section`
   anywhere else is an ordinary undefined-symbol error: `Invalid symbol in expression: Section =

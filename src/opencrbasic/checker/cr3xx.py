@@ -303,8 +303,12 @@ def check_too_many_cascade(program: S.Program, profile, diags: Diagnostics) -> N
     rewritten: set[int] = set()
     dropped_names: set[str] = set()
     registered_names: set[str] = set()
+    include_errors = sorted(program.include_error_at)  # `Include` extension / nesting errors trigger it too
     for index, stmt in enumerate(program.statements):
         key = (stmt.line, stmt.file)
+        if not tainted and include_errors and include_errors[0] <= index:
+            tainted = True  # (oracle, 2026-10-12: the statements after the error are rewritten)
+            taint_at = index
         if not tainted and isinstance(stmt, S.Declaration):
             registered_names.update(v.name.upper() for v in stmt.vars)
         existing = [d for d in diags.items if (d.line, d.file) == key]
