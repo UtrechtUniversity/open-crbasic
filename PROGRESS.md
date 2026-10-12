@@ -149,6 +149,37 @@ History, older measurements and the per-chunk log: `docs/progress-history.md`.
 
 ## Resume here (2026-10-12, after round 14)
 
+- Cloud session (Linux container, Wine 9.0, 2026-10-12, after round 14): `3835326..235db55`, each
+  rule oracle-probed, recorded in a fixture and gated (full pytest, `difftest --group all` on all
+  four loggers vs a fresh baseline, `fuzz_replay` vs a baseline taken in the same container).
+  Measured there at `235db55`: pytest `-m "not server"` 30,205 passed / 311 skipped, `-m server`
+  161 passed (on 14072c8, so the LSP server tests do pass off the Mac); help corpus unchanged
+  (506/506/505/505 exact, only reference faults); `fuzz_replay` 2,015 exact (1,971 at the start
+  of the session in the same container; the Mac counted 1,972), 34 false accepts, 0 false rejects.
+  Done: R14C-1 (structure-typed routine parameters, regression), R14C-2 (probed; DataTable name
+  slot `T ;`/`T;` modelled), R14C-3..6, R13C-3..8 (four fixed, rest not defects), CR300/CR350 `;`
+  in instruction arguments, trailing `;` after a function statement (false reject), string
+  literal ports (INT_MIN), numeric DataType codes, bounds in conditions/code 24/SplitStr element
+  reps/Calibrate size, SlowSequence with an open Scan, SerialOpen TX delay, ArgosError,
+  MenuPick after a plain Const, MoveBytes option, CDM settling time, InstructionTimes,
+  MQTTPublishConstTable placement, GOESData/ArgosData arity, CR6/CR1000X TCPOpen handle type.
+  Details: `docs/checker.md` sections from "Round 14 cloud review follow-up" on; fixtures
+  `tests/fixtures/r14_review_r13c.json`, `r14_string_ports.json`, `r14_output_datatype.json`,
+  `r14_bounds_conditions.json`, `r14_slowsequence_open_scan.json`,
+  `r14_serialopen_txdelay_argos.json`, `r14_menupick_plain_const.json`,
+  `r14_movebytes_cdm_insttimes_mqtt.json`, `r14_goes_argos_tcpopen.json` (and additions to
+  `r14_semicolon.json`, `r14_trailing_dot_members.json`, `r14_abs_unclosed.json`).
+- In progress when the session ended (probed, NOT implemented): `Status.X` / `Public.X` member
+  READS of an unknown field are `Could not find Status.X(1).` (index echoed as its first
+  subscript, `(1)` when none; `Public.Nope(2)` likewise) on all four loggers, in assignments,
+  conditions and instruction arguments, once per access. Known-good reads: `Status.PakBusAddress`,
+  `StationName`, `SkippedSlowScan`, `SW12Volts(1)`, `LastSlowScan(1)` (all four);
+  `Status.CalGain(1)` compiles on CR6/CR1000X but not CR300/CR350; `Status.IPAddressEth` fails on
+  CR350 only. So the valid read set is the `SetStatus` list plus settings, per logger, with
+  exceptions: build it per logger from the compiler tables (`data/**/settings_fields.json` holds
+  the SetStatus/SetSetting names) and probe before enabling (false-reject risk). Also probed:
+  `RoutersNeighbors(D("fuzz"))` is `Destination variable cannot be indexed` on all four loggers.
+
 - Round 14 (2026-10-12) is integrated and pushed (`eaebfddd..6ca00592`). Reviews: local Opus
   `scratch/reviews/review-r14.md` (all HIGH findings fixed) and cloud reviewer
   `origin/reviews/r13-cloud` = `scratch/reviews/review-r13-cloud.md` (R13C-1..8 open, see Next
@@ -244,12 +275,14 @@ are in `docs/lsp-rounds/`.
 
 ## Next steps
 
-1. Reboot (semaphores), then run the FULL pytest suite incl. `-m server` once on the branch head.
-2. Integrate `ocb-r14-followups/2330aa24` (see Resume here).
-3. Cloud review R13C-3..8 (`scratch/reviews/review-r13-cloud.md`, probe list at its end; R13C-1
-   fixed, R13C-2 not a defect, R13C-9 closed); all low.
-4. Push the round-14 range for a cloud review (`firnmelt-datalogger-reviewer`; may need the human
-   to approve the request in the cloud session).
+1. Reboot (semaphores), then run the FULL pytest suite incl. `-m server` once on the branch head
+   (it passed in the cloud container on 14072c8).
+2. Integrate `ocb-r14-followups/2330aa24` (see Resume here; the branch exists only on the Mac).
+3. Done in the cloud session: R13C-3..8 and R14C-1..6 (see Resume here).
+4. Status/Public member reads (see "In progress" in Resume here), then the 34 remaining fuzz false
+   accepts (`fuzz_replay` "still false_accept" lines): storage limits and autoallocate (CR300/
+   CR350), DNP3 rules, SNMP object ids, CDM port sets per device, FieldCal/Debug parameters,
+   `RoutersNeighbors` string index.
 5. Known false rejects: one-line `ElseIf c Then Z = 1`; `While Abs(X Then`, `Abs(Abs(X`,
    `X = Abs(X,`, empty `LineNum(`/`Signature(`; `If X Then SubScan(...)` etc. (see docs).
 6. False accepts: Status/table field existence (`Status.RecNum`, `T.Nope`, `Public.Nope`) needs
