@@ -572,3 +572,69 @@ Causes behind the rows, by what was done about them:
   variable. False accepts left: CR6/CR1000X `Const Pi = 1 / 0` (`Divide by zero in expression: 1 / 0.`), `SendData(...,T1)` etc. counted as calling
   `T1` for the "declared but never called" warning, and `PulseCount` outside a `Scan` (argument errors come before the
   placement message).
+## Round 14: fresh seeds 401-404 (2026-10-12)
+
+New seeds (previous: 0, 1, 42-54, 100, 201-208, 301-308), 600 mutants per logger and seed
+(`--workers 4`; seed 402 cr350 was rerun alone after its first run was cut off by the 30 minute
+background limit). Counts are the tool's classify-phase tallies; `oracle_error` mutants (real-compiler
+page fault) are excluded. 353 new reproducers saved. Seeds 401-402 ran before any fix of this round,
+403-404 with the first fixes already in the tree.
+
+| Seed | Logger | exact | false_reject | false_accept | message_diff | mode_diff | other |
+|---|---|---|---|---|---|---|---|
+| 401 | cr6 | 582 | 1 | 7 | 7 | 1 | 4 oracle errors |
+| 401 | cr1000x | 580 | 0 | 3 | 15 | 1 | 2 |
+| 401 | cr300 | 570 | 0 | 4 | 26 | 0 | 3 |
+| 401 | cr350 | 579 | 0 | 4 | 16 | 0 | 4 |
+| 402 | cr6 | 578 | 0 | 2 | 18 | 0 | 3 |
+| 402 | cr1000x | 572 | 1 | 5 | 20 | 1 | 3 |
+| 402 | cr300 | 565 | 0 | 4 | 30 | 1 | 6 |
+| 402 | cr350 | 576 | 0 | 3 | 21 | 0 | 2 |
+| 403 | cr6 | 580 | 1 | 5 | 14 | 0 | 2 |
+| 403 | cr1000x | 569 | 0 | 7 | 23 | 0 | 5 |
+| 403 | cr300 | 580 | 2 | 3 | 14 | 1 | 5 |
+| 403 | cr350 | 576 | 0 | 4 | 19 | 1 | 3 |
+| 404 | cr6 | 582 | 0 | 3 | 13 | 0 | 4 |
+| 404 | cr1000x | 576 | 1 | 7 | 14 | 2 | 4 |
+| 404 | cr300 | 577 | 0 | 4 | 18 | 1 | 3 |
+| 404 | cr350 | 564 | 0 | 5 | 27 | 2 | 6 (1 implementation_exception) |
+
+No crash or hang. Replay of the 353 new reproducers after the fixes below: 11 exact, 65 false accepts,
+277 message/mode diffs, 0 false rejects (the old 2251-reproducer set: 1855 exact, 4 false accepts,
+no false reject). The `summary-<logger>.json` files hold the last run per logger only (this document
+is the record of the others). Two cr300 false rejects of seed 403 were not saved because the real
+compiler page-faulted while shrinking them; they were recovered with an unshrunk dump
+(`structuretype_1.CR6` mutants) and are covered by the fixture below instead.
+
+### Closed this round (7 families, one fixture each, `tests/fixtures/r14_*.json`)
+
+False rejects: `Delay` option tested as an unsigned byte, with out-of-Long constants as float32
+(`cr6/false_reject/77cb0ca38412`); `ModemCallBack` first argument unresolved on CR6/CR1000X
+(`cr1000x/false_reject/5fe667412d48`); `AddPrecise`/`MovePrecise` second argument unresolved
+(`cr6/false_reject/9124242872d5`); `NewFile` third argument unresolved on CR6/CR1000X
+(`cr1000x/false_reject/802ff201c036`); CR300/CR350 `StructureType` output source (reps not
+bounds-checked, one element, `Fieldnames` inert; two unsaved `structuretype_1` mutants). Crash:
+String `DataInterval` argument on CR300/CR350 (`cr350/implementation_exception/25a45bf41175`).
+False warning: bare `End`/`End Prog` after an endless `Scan` (8 mode_diff reproducers on all loggers).
+Rules are in `docs/instructions.md`.
+
+### Not closed (minimal reproducers saved in the corpus)
+
+False accepts, each needing a per-instruction value model: negative or `-2147483648` constants rejected
+by the real compiler for a port/channel/`SW12` argument (`cr6/false_accept/5fcfdf4bf199`,
+`ff5870227e02`, `cr300/3e5633d3dbab`, `cr1000x/f543da8c46ab`); `-1 usec delay before transmit is illegal`
+(`cr1000x/aa4b5b0d7146`, `cr350/7c946122d849`); `Settling time: -1, out of range` (`cr1000x/9b74d6ed1ab5`);
+`Invalid transfer option -1, must be 0..4` (`cr300/ac67a412327f`); `Unrecognized port!`
+(`cr6/05c461af995f`, `cr1000x/496cca6dbced`); `Variable X out of bounds` for destinations
+(`cr1000x/21b098070e8c`, `e782a0af6cb3`, `caa680dc46c4`, `cr350/5a5580d7665d`); `A string variable
+destination is required` (`cr6/bcdf64fca4ad`, `c36a6d1186cb`); `Parameter must be a constant integer`
+(`cr300/ef8a04a7c081`, `cr350/918143423fb9`); `Destination variable cannot be indexed` (`cr350/00c15e34f28e`);
+`No Matching ) in expression` for an added argument to a nested call (`cr1000x/8fec3d32a4c5`, `ee26b0ad7cda`);
+storage allocation (`cr300/8888b85b87ce`, `cr350/ec31b827adb1`); `Missing NextScan` after a swapped
+`NextScan` (`cr6/1c3aa2095176`, `46663179c624`). Known partial: `Delay(256,61,min)` loses the
+`Scan interval too short` line (see `docs/instructions.md`); `NewFile(fa,Nope,nf)` lacks `FileName
+parameter must be type String.`; `End 1` / `End Prog 1`. The 272 message/mode diffs are mostly
+undefined-name cascade lines and were not triaged.
+
+Environment note: the machine's POSIX semaphore table was exhausted during this round, so `fuzz_replay.py`
+and pytest were run with `--workers 2` / `-n 8 -m "not server"` and no semaphore errors occurred.
