@@ -231,6 +231,44 @@ def _drop_semicolons(tokens: list[Token], profile) -> list[Token]:
     return body + eof if ok else tokens
 
 
+_SELF_CLOSING_CALLS = frozenset({"ABS", "ABSLONG", "ARRAYLENGTH", "TYPEOF", "LINENUM", "SIGNATURE"})
+
+
+def _close_open_call(tokens: list[Token], profile) -> list[Token]:
+    """`X = Abs(X`, `If Abs(X + 1 Then`, `Do While AbsLong(X`: these six built-ins accept their
+    one argument without the closing parenthesis, which the end of the statement (or the `Then` of
+    an `If`/`ElseIf`) supplies, when it is the only open group and holds a single argument
+    (oracle, all four loggers, 2026-10-12, `tests/fixtures/r14_abs_unclosed.json`). The comma,
+    juxtaposed-operand, nested-call and empty-argument shapes behave differently per function and
+    stay as they were."""
+    real = [t for t in tokens if t.kind != "EOF"]
+    stack: list[int] = []
+    end = len(real)
+    head = real[0].upper if real and real[0].kind == "IDENT" else ""
+    for i, t in enumerate(real):
+        if t.kind == "OP" and t.text == "(":
+            stack.append(i)
+        elif t.kind == "OP" and t.text == ")":
+            if not stack:
+                return tokens
+            stack.pop()
+        elif t.kind == "IDENT" and t.upper == "THEN" and stack and head in ("IF", "ELSEIF"):
+            end = i
+            break
+    if len(stack) != 1 or head in ("WHILE", "LOOP") and end != len(real):
+        return tokens
+    open_at = stack[0]
+    prev = real[open_at - 1] if open_at else None
+    if prev is None or prev.kind != "IDENT" or prev.upper not in _SELF_CLOSING_CALLS \
+            or open_at + 1 >= end or (open_at > 1 and real[open_at - 2].text == "."):
+        return tokens
+    if any(t.kind == "OP" and t.text in (",", "{", "}") for t in real[open_at + 1:end]) \
+            or any(t.kind == "IDENT" and t.upper == "THEN" for t in real[open_at + 1:end]):
+        return tokens
+    close = lexer.Token("OP", ")", ")", real[end - 1].col + len(real[end - 1].text), real[end - 1].line)
+    return real[:end] + [close] + real[end:] + tokens[len(real):]
+
+
 def _split_colon_segments(tokens: list[Token]) -> list[list[Token]]:
     """Split a fully-tokenised logical line on top-level `:` (not inside `(...)`)."""
     segments: list[list[Token]] = []
@@ -524,6 +562,7 @@ class _Parser:
             return S.Unparsed(line, file, text=seg_text_raw.strip(), reason="empty statement")
         seg_text = self._segment_text(seg_text_raw, real)
         tokens = _drop_semicolons(tokens, self.profile)
+        tokens = _close_open_call(tokens, self.profile)
         return self._parse_segment(tokens, line, file, seg_text)
 
     @staticmethod

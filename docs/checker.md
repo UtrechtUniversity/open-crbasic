@@ -5874,3 +5874,18 @@ Oracle, all four loggers, fixture `tests/fixtures/r14_logical_assign_operands.js
   `Y = Public.Nope` really is `Could not find Public.Nope(1).` (we accept); `X And Dim.X = 1`,
   `X And Settings.X = 1`, `X And Q.X = 1` are `Could not find ...` + invalid assignment (we reject with
   the generic fallback).
+
+## Round 14: `Abs(X` without the closing parenthesis (2026-10-12)
+
+Oracle, all four loggers (identical), fixture `tests/fixtures/r14_abs_unclosed.json`: `Abs`, `AbsLong`,
+`ArrayLength`, `TypeOf`, `LineNum` and `Signature` compile with their argument group left open at
+the end of the statement: `X = Abs(X`, `X = Abs(X + 1`, `X = 1 + Abs(X`, `X = Abs(X And Y`, `If Abs(X
+Then` (block and inline), `If Abs(X + 1 Then`, `Do While Abs(X`, `Select Case Abs(X`, with `Then`
+ending the group in an `If`/`ElseIf`. Every other function keeps `No Matching, or out of place )` /
+`Expression expects ,` (`Round`, `Sin`, `Int`, `Len`, `Mid`, `Left`, ...). Implementation:
+`parser._close_open_call` adds the missing `)` when the call is the only open group, holds no comma
+and is not empty. Still false rejects (really accepted, all four loggers; their shapes differ per
+function and are not modelled): `While F(X Then` (the `Then` is swallowed), nested `Abs(Abs(X`,
+`X = Abs(X,` / `Abs(X Y` for `Abs`/`AbsLong`/`ArrayLength`/`TypeOf` (`LineNum`/`Signature` say
+`Incomplete expression`), an empty `LineNum(` / `Signature(`, `A(LineNum(X) = 1`. `If Abs(X, 1 Then`
+is `Incomplete expression: Abs(X, 1 .` (we say `No Matching`).
